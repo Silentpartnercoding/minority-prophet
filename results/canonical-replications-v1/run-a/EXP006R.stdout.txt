@@ -1,0 +1,82 @@
+A x=0.00 signed=+0.001 acc=0.980
+A x=0.05 signed=+0.015 acc=0.966
+A x=0.10 signed=+0.052 acc=0.961
+A x=0.15 signed=+0.097 acc=0.862
+A x=0.20 signed=+0.129 acc=0.771
+A x=0.25 signed=+0.187 acc=0.689
+A x=0.30 signed=+0.187 acc=0.628
+A x=0.35 signed=+0.220 acc=0.556
+A x=0.40 signed=+0.218 acc=0.516
+A x=0.45 signed=+0.201 acc=0.545
+A x=0.50 signed=+0.190 acc=0.525
+A x=0.55 signed=+0.220 acc=0.476
+A x=0.60 signed=+0.192 acc=0.515
+A x=0.65 signed=+0.187 acc=0.480
+A x=0.70 signed=+0.180 acc=0.513
+A x=0.75 signed=+0.150 acc=0.546
+A x=0.80 signed=+0.129 acc=0.596
+A x=0.85 signed=+0.110 acc=0.691
+A x=0.90 signed=+0.091 acc=0.716
+A x=0.95 signed=+0.045 acc=0.814
+A x=1.00 signed=-0.001 acc=0.925
+B x=0.00 signed=+0.000 acc=0.990
+B x=0.05 signed=+0.045 acc=0.993
+B x=0.10 signed=+0.088 acc=0.976
+B x=0.15 signed=+0.117 acc=0.968
+B x=0.20 signed=+0.136 acc=0.958
+B x=0.25 signed=+0.169 acc=0.957
+B x=0.30 signed=+0.196 acc=0.901
+B x=0.35 signed=+0.194 acc=0.928
+B x=0.40 signed=+0.232 acc=0.877
+B x=0.45 signed=+0.257 acc=0.850
+B x=0.50 signed=+0.250 acc=0.844
+B x=0.55 signed=+0.298 acc=0.763
+B x=0.60 signed=+0.281 acc=0.751
+B x=0.65 signed=+0.303 acc=0.730
+B x=0.70 signed=+0.312 acc=0.663
+B x=0.75 signed=+0.333 acc=0.636
+B x=0.80 signed=+0.325 acc=0.657
+B x=0.85 signed=+0.321 acc=0.615
+B x=0.90 signed=+0.356 acc=0.605
+B x=0.95 signed=+0.380 acc=0.538
+B x=1.00 signed=+0.322 acc=0.566
+C x=0.00 signed=+0.000 acc=0.990
+C x=0.05 signed=+0.000 acc=0.993
+C x=0.10 signed=+0.000 acc=1.000
+C x=0.15 signed=+0.000 acc=1.000
+C x=0.20 signed=+0.000 acc=0.997
+C x=0.25 signed=+0.000 acc=0.997
+C x=0.30 signed=+0.000 acc=0.983
+C x=0.35 signed=+0.000 acc=0.983
+C x=0.40 signed=+0.000 acc=0.993
+C x=0.45 signed=+0.000 acc=0.987
+C x=0.50 signed=+0.000 acc=0.983
+C x=0.55 signed=+0.000 acc=0.997
+C x=0.60 signed=+0.000 acc=0.983
+C x=0.65 signed=+0.000 acc=0.990
+C x=0.70 signed=+0.000 acc=0.990
+C x=0.75 signed=+0.000 acc=0.990
+C x=0.80 signed=+0.000 acc=0.990
+C x=0.85 signed=+0.000 acc=0.983
+C x=0.90 signed=+0.000 acc=1.000
+C x=0.95 signed=+0.000 acc=0.993
+C x=1.00 signed=+0.000 acc=0.987
+
+bin  |   A     B     C   (acc; n)
+-0.4 | B:1.00(16)
+-0.3 | A:1.00(7)  B:1.00(110)
+-0.2 | A:0.98(58)
+-0.1 | A:1.00(459)  B:1.00(605)
++0.0 | A:0.97(2652)  B:1.00(2283)  C:0.99(6300)
++0.1 | A:0.64(570)  B:0.97(373)
++0.2 | A:0.37(615)
++0.3 | A:0.16(451)  B:0.81(501)
++0.4 | A:0.24(601)  B:0.70(410)
++0.5 | A:0.00(129)
++0.6 | A:0.11(166)  B:0.48(814)
++0.7 | A:0.00(23)  B:0.00(199)
++0.8 | A:0.00(12)
++0.9 | A:0.00(1)  B:0.00(211)
+
+max cross-mode accuracy spread in shared bins: 0.651
+H5 VERDICT: REJECTED (residual mode effect 0.651 > 0.10)

@@ -1,0 +1,8 @@
+== (a) MULTI-SEED REPLICATION, 10 seeds x 150 worlds ==
+baseline_declared          acc=0.987  95%CI [0.981,0.992]
+immunity_C_x1.0            acc=0.994  95%CI [0.989,0.999]
+valley_composed_x0.5       acc=0.514  95%CI [0.495,0.534]
+recovery_composed_x1.0     acc=0.910  95%CI [0.890,0.929]
+-> immunity survives seeds: True; valley<recovery non-overlapping: True
+
+== (b) OPTIMIZING ADVERSARY (random-restart hill climb, budget 45 evals) ==

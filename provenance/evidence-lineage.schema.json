@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.invalid/schemas/evidence-lineage-v0.1.json",
+  "title": "Minority Prophet Evidence Lineage",
+  "type": "object",
+  "required": ["version", "nodes"],
+  "properties": {
+    "version": { "const": "0.1" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["node_id", "proposition_id", "value", "observer_id", "source_id", "timestamp", "confidence", "evidence", "copied_from", "transformations"],
+        "properties": {
+          "node_id": { "type": "string", "minLength": 1 },
+          "proposition_id": { "type": "string", "minLength": 1 },
+          "value": { "type": "boolean" },
+          "observer_id": { "type": "string", "minLength": 1 },
+          "source_id": { "type": "string", "minLength": 1 },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidence": { "type": "object" },
+          "copied_from": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "transformations": { "type": "array", "items": { "type": "string" } },
+          "signature": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

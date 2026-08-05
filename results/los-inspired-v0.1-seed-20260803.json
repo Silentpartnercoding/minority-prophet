@@ -1,0 +1,346 @@
+{
+  "artifact_status": "CANONICAL (exploratory): frozen in-repository pilot output; not a confirmatory result.",
+  "caveat": "Finite proxy with declared lineage and competence; not a literal ultraproduct and not evidence that real-world provenance is reliable.",
+  "constraint": "r iff (p and q)",
+  "experiment": "finite-los-inspired-semantic-aggregation",
+  "lineage_corruption_sweep": [
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "forged_roots": 0,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "forged_roots": 0,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "forged_roots": 1,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "forged_roots": 1,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 1.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 2,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "forged_roots": 2,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 3,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "forged_roots": 3,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 4,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.308,
+      "exact_truth_accuracy": 0.692,
+      "forged_roots": 4,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 5,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.914,
+      "exact_truth_accuracy": 0.086,
+      "forged_roots": 5,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 6,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.954,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 6,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 7,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.362,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 7,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 8,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.092,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 8,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 9,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 9,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 10,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 10,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 11,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 11,
+      "method": "semantic_coalition",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 12,
+      "method": "evidence_root_vote",
+      "worlds": 500
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "forged_roots": 12,
+      "method": "semantic_coalition",
+      "worlds": 500
+    }
+  ],
+  "results": [
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 14.319232,
+      "method": "proposition_majority",
+      "proposition_accuracy": 0.3363333333333333,
+      "regime": "copied_false_majority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 6.713075,
+      "method": "evidence_root_vote",
+      "proposition_accuracy": 1.0,
+      "regime": "copied_false_majority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 14.756831,
+      "method": "semantic_coalition",
+      "proposition_accuracy": 1.0,
+      "regime": "copied_false_majority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 14.313171,
+      "method": "proposition_majority",
+      "proposition_accuracy": 1.0,
+      "regime": "independent_true_majority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 22.427683000000002,
+      "method": "evidence_root_vote",
+      "proposition_accuracy": 1.0,
+      "regime": "independent_true_majority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 160.2981695,
+      "method": "semantic_coalition",
+      "proposition_accuracy": 1.0,
+      "regime": "independent_true_majority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 3.5463649999999998,
+      "method": "proposition_majority",
+      "proposition_accuracy": 1.0,
+      "regime": "unsupported_false_minority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 3.771441,
+      "method": "evidence_root_vote",
+      "proposition_accuracy": 1.0,
+      "regime": "unsupported_false_minority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 10.5877765,
+      "method": "semantic_coalition",
+      "proposition_accuracy": 1.0,
+      "regime": "unsupported_false_minority",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "logical_consistency": 0.0,
+      "mean_compute_microseconds": 2.8175625,
+      "method": "proposition_majority",
+      "proposition_accuracy": 0.6666666666666666,
+      "regime": "doctrinal_split",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "logical_consistency": 0.0,
+      "mean_compute_microseconds": 2.952133,
+      "method": "evidence_root_vote",
+      "proposition_accuracy": 0.6666666666666666,
+      "regime": "doctrinal_split",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 1.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 11.7961145,
+      "method": "semantic_coalition",
+      "proposition_accuracy": 1.0,
+      "regime": "doctrinal_split",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 14.3952405,
+      "method": "proposition_majority",
+      "proposition_accuracy": 0.3363333333333333,
+      "regime": "corrupted_lineage",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 22.3898335,
+      "method": "evidence_root_vote",
+      "proposition_accuracy": 0.3363333333333333,
+      "regime": "corrupted_lineage",
+      "worlds": 2000
+    },
+    {
+      "abstention_rate": 0.0,
+      "exact_truth_accuracy": 0.0,
+      "logical_consistency": 1.0,
+      "mean_compute_microseconds": 158.5276225,
+      "method": "semantic_coalition",
+      "proposition_accuracy": 0.3363333333333333,
+      "regime": "corrupted_lineage",
+      "worlds": 2000
+    }
+  ],
+  "seed": 20260803,
+  "total_worlds": 10000,
+  "version": "0.1",
+  "worlds_per_regime": 2000
+}

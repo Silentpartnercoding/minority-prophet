@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Minority Prophet: evidence-aware aggregation research"
+authors:
+  - family-names: "He"
+    given-names: "James Siyuan"
+    alias: "Silentpartnercoding"
+version: 0.1.0
+date-released: 2026-08-03
+repository-code: "https://github.com/Silentpartnercoding/minority-prophet"
+message: "If you use this research, please cite it."

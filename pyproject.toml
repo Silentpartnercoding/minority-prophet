@@ -1,0 +1,13 @@
+[project]
+name = "minority-prophet"
+version = "0.1.0"
+description = "A benchmark for truth aggregation under social pressure"
+authors = [{name = "James Siyuan He"}]
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.invalid/contracts/authority-evidence-v0.1.json",
+  "title": "Vendor-neutral authority and evidence envelope v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request", "receipt"],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "request": {"$ref": "#/$defs/request"},
+    "receipt": {"$ref": "#/$defs/receipt"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "subject_id", "principal_id", "delegation_id", "action", "created_at", "nonce"],
+      "properties": {
+        "request_id": {"type": "string", "minLength": 1},
+        "subject_id": {"type": "string", "minLength": 1},
+        "principal_id": {"type": "string", "minLength": 1},
+        "delegation_id": {"type": "string", "minLength": 1},
+        "action": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "target", "payload_digest"],
+          "properties": {
+            "type": {"type": "string", "minLength": 1},
+            "target": {"type": "string", "minLength": 1},
+            "payload_digest": {"$ref": "#/$defs/digest"}
+          }
+        },
+        "created_at": {"type": "string", "format": "date-time"},
+        "nonce": {"type": "string", "minLength": 16}
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receipt_id", "request_id", "action_digest", "subject_id", "principal_id", "delegation", "decision", "effect", "evidence_origin", "provider", "issued_at", "signature"],
+      "properties": {
+        "receipt_id": {"type": "string", "minLength": 1},
+        "request_id": {"type": "string", "minLength": 1},
+        "action_digest": {"$ref": "#/$defs/digest"},
+        "subject_id": {"type": "string", "minLength": 1},
+        "principal_id": {"type": "string", "minLength": 1},
+        "delegation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["delegation_id", "status", "not_before", "expires_at"],
+          "properties": {
+            "delegation_id": {"type": "string", "minLength": 1},
+            "status": {"enum": ["active", "expired", "revoked"]},
+            "not_before": {"type": "string", "format": "date-time"},
+            "expires_at": {"type": "string", "format": "date-time"}
+          }
+        },
+        "decision": {"enum": ["allow", "deny"]},
+        "effect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "attempt_count", "idempotency_key"],
+          "properties": {
+            "status": {"enum": ["succeeded", "prevented"]},
+            "attempt_count": {"type": "integer", "minimum": 0, "maximum": 1},
+            "idempotency_key": {"type": "string", "minLength": 16},
+            "result_digest": {"$ref": "#/$defs/digest"}
+          }
+        },
+        "evidence_origin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["claim_digest", "origin_type", "root_id", "parent_roots", "independence_basis"],
+          "properties": {
+            "claim_digest": {"$ref": "#/$defs/digest"},
+            "origin_type": {"enum": ["observation", "derived", "copied", "unknown"]},
+            "root_id": {"type": "string", "minLength": 1},
+            "parent_roots": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+            "independence_basis": {"enum": ["attested", "declared", "inferred", "unknown"]}
+          }
+        },
+        "provider": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["provider_id", "key_id"],
+          "properties": {
+            "provider_id": {"type": "string", "minLength": 1},
+            "key_id": {"type": "string", "minLength": 1}
+          }
+        },
+        "issued_at": {"type": "string", "format": "date-time"},
+        "signature": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["algorithm", "key_id", "value"],
+          "properties": {
+            "algorithm": {"type": "string", "minLength": 1},
+            "key_id": {"type": "string", "minLength": 1},
+            "value": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    }
+  }
+}

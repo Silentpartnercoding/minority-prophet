@@ -1,0 +1,20 @@
+
+== NO ADVERSARY == (5 seeds x 100 worlds x 8 items; mean [95% CI])
+method                      accuracy      minority-recovery  false-rev
+majority         0.738 [0.731,0.744]    0.000 [0.000,0.000]     0.000
+dawid_skene      0.734 [0.726,0.741]    0.009 [0.003,0.014]     0.006
+truthfinder      0.737 [0.732,0.743]   0.001 [-0.001,0.003]     0.001
+accu_lite        0.738 [0.731,0.744]    0.000 [0.000,0.000]     0.000
+cluster_vote     0.821 [0.816,0.827]    0.407 [0.385,0.430]     0.023
+ev_root_inf      0.811 [0.805,0.816]    0.399 [0.376,0.421]     0.031
+ev_root_decl     0.996 [0.993,0.998]    0.989 [0.980,0.997]     0.001
+
+== ATTACK (optimizer mix) == (5 seeds x 100 worlds x 8 items; mean [95% CI])
+method                      accuracy      minority-recovery  false-rev
+majority         0.742 [0.730,0.754]    0.000 [0.000,0.000]     0.000
+dawid_skene      0.728 [0.717,0.738]    0.089 [0.080,0.098]     0.037
+truthfinder      0.743 [0.732,0.754]    0.008 [0.003,0.012]     0.002
+accu_lite        0.742 [0.731,0.754]   0.001 [-0.001,0.003]     0.000
+cluster_vote     0.723 [0.707,0.738]    0.183 [0.162,0.205]     0.067
+ev_root_inf      0.656 [0.640,0.672]    0.460 [0.445,0.475]     0.205
+ev_root_decl     0.997 [0.996,0.998]    0.991 [0.986,0.997]     0.001
