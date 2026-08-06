@@ -1,0 +1,397 @@
+{
+  "ledger_version": "1.1.0",
+  "generated": "2026-08-05",
+  "audit_record": "formal-core-remediation",
+  "base_commit": {
+    "minority-prophet": "e1403a7",
+    "minority-prophet-gate": "a120274"
+  },
+  "definition_version": "core-v3-dag",
+  "definition_version_notes": "core-v3-dag formalizes multi-parent acyclic lineage (Finset of strictly-earlier parents), superseding core-v2-forest (parent : Fin n -> Option (Fin n)) used by formal/PROOFS.md, formal/MinorityProphetV2.lean and verification/independent_check_2026-08.py. v3 subsumes v2: every v2 world is a v3 world in which every parent set is a singleton or empty.",
+  "status_vocabulary": {
+    "proved_compiled": "A Lean proof that compiles from the pinned clean environment with no sorry, no admit, no added axioms beyond propext/Classical.choice/Quot.sound.",
+    "proved_on_paper_only": "A written proof with no compiler ratification.",
+    "verified_finite": "Exhaustively checked over a bounded finite domain. NOT a proof of the universally quantified statement.",
+    "tested_implementation": "Covered by an executable test against shipped code.",
+    "hypothesis": "Believed, not established.",
+    "falsified": "A counterexample exists.",
+    "underspecified": "Cannot be assigned a truth value until a definition is supplied."
+  },
+  "lean_environment": {
+    "toolchain": "leanprover/lean4:v4.32.2",
+    "mathlib_rev": "905b95818eb32af7874a58b427f50c1711a5e96c",
+    "mathlib_input_rev": "v4.32.2",
+    "build_command": "lake exe cache get && lake build",
+    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs",
+    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none",
+    "sorry_count": 0,
+    "native_decide_count": 0
+  },
+  "claims": [
+    {
+      "id": "L1",
+      "short": "Side-locality",
+      "statement": "For a side-consistent world W and side a, S_a(W) equals exactly the set of parentless claims asserting a.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "finite claim set",
+        "acyclicity via strict time order on indices",
+        "SideConsistent W: every parent of a claim asserts what the claim asserts",
+        "root identity = claim index (see CE-08: identity is an unstated parameter in the implementation)"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.side_locality",
+      "lean_file": "formal/lean/MinorityProphetCore/Locality.lean",
+      "finite_verifier_coverage": "verification/independent_check_2026-08.py: 5912 side-consistent forest worlds n<=6, 0 violations. audit/falsify.py: 252 side-consistent DAG worlds n<=4, 0 violations.",
+      "known_counterexamples_outside_scope": [
+        "CE-06: without side-consistency the same root lands in BOTH S_0 and S_1 in 3410/3410 non-SC worlds tested (44450/44450 in the repository's own n<=6 check).",
+        "CE-07: in the DAG, side-consistency forbids any claim derived from both sides, i.e. it forbids synthesis."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce06_without_side_consistency_a_root_serves_both_sides"
+      ],
+      "security_interpretation": "Side separation (R2) is the single hypothesis the entire theorem stack consumes. Its failure mode is double-counting, not graceful degradation.",
+      "prohibited_overstatement": "Do NOT say the aggregator 'degrades gracefully' outside side-consistency. It does not degrade; it double-counts."
+    },
+    {
+      "id": "T1",
+      "short": "Immunity to lineage corruption",
+      "statement": "If W and W' are side-consistent, have the same assertion function, and have the same root set, then F(W) = F(W'). No constraint whatsoever is placed on how the non-root lineage differs.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W and SideConsistent W'",
+        "W.assert = W'.assert  (assertions unchanged)",
+        "rootSet W = rootSet W'  (no root created or destroyed)"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.immunity",
+      "lean_theorem_alt": "MinorityProphet.immunity_pointwise (the 'preserves the set of roots' phrasing used by PROOFS.md)",
+      "lean_file": "formal/lean/MinorityProphetCore/Immunity.lean",
+      "finite_verifier_coverage": "verification/independent_check_2026-08.py: 116032 root-preserving forest rewirings, 0 violations. audit/falsify.py: 1992 root-preserving DAG rewirings, 0 violations.",
+      "narrowed_from_repository": false,
+      "generalized_from_repository": true,
+      "generalization_note": "PROOFS.md states T1 for rewirings that 'only re-target existing edges, never delete or create'. The compiled form quantifies over PAIRS of worlds and so additionally covers edge additions and deletions that happen to leave the root set fixed. Strictly stronger.",
+      "known_counterexamples_outside_scope": [
+        "Root-changing rewirings are NOT covered and change the verdict 33.0% of the time pooled (9364/28368 at n=6, the repository's own figure, reproduced exactly in this audit).",
+        "CE-02: dropping the equal-assertions hypothesis makes the statement false even with an identical root set."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_t1_holds_in_the_dag_model_on_a_representative_pair"
+      ],
+      "security_interpretation": "Who-copied-whom may be arbitrarily wrong without affecting any verdict, provided camps never blend and roots are neither forged nor destroyed. This is a real and useful demotion of attribution accuracy.",
+      "prohibited_overstatement": "Do NOT say 'attribution is irrelevant'. It is irrelevant AMONG NON-ROOTS only. Do NOT drop the equal-assertions hypothesis."
+    },
+    {
+      "id": "T2",
+      "short": "Recorded-copy invariance",
+      "statement": "Appending a claim whose recorded parent is an existing claim c, and which asserts what c asserts, leaves both side-root counts and therefore the verdict unchanged.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W",
+        "the copy RECORDS a parent edge to an existing claim",
+        "the copy asserts what its parent asserts",
+        "the copy is appended last in time order (without loss of generality up to relabelling)"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.copy_invariance",
+      "lean_theorem_alt": "MinorityProphet.margin_addCopy (margin form, for chaining with T4/T5)",
+      "lean_file": "formal/lean/MinorityProphetCore/Copy.lean",
+      "repository_status_before_audit": "Listed as future work in formal/MinorityProphetV2.lean ('Do it AFTER immunity compiles'). Now compiled.",
+      "finite_verifier_coverage": "verification/independent_check_2026-08.py: 4166 forest duplications, 0 violations. audit/falsify.py: 962 DAG duplications, 0 violations. minority-prophet-gate verify_multivalue: 2955 worlds over a 3-letter alphabet, 0 violations (see caveat in F3).",
+      "known_counterexamples_outside_scope": [
+        "CE-01 (FALSIFIES the plain-English restatement): a copy whose provenance is NOT recorded is a parentless claim, i.e. a root, and reverses the verdict. Witness: [-1,-1,-1]/[1,1,0] verdict 1 becomes [-1,-1,-1,-1,-1]/[1,1,0,0,0] verdict 0."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce01_recorded_copy_is_harmless",
+        "audit/test_counterexamples.py::test_ce01_unrecorded_copy_reverses_the_verdict",
+        "audit/test_counterexamples.py::test_t2_holds_in_the_dag_model_when_the_copy_edge_is_recorded",
+        "tests/test_provenance.py (repository, EvidenceGraph.roots behaviour)"
+      ],
+      "security_interpretation": "The aggregator is immune to copy VOLUME once copying is detected. It is not immune to copying as such. Detection is R1's job and is outside these theorems.",
+      "prohibited_overstatement": "NEVER state T2 as 'adding copied claims cannot change the verdict'. That sentence is false (CE-01) and false in the direction of the project's own threat model. Always state 'copies whose parent edge is recorded'."
+    },
+    {
+      "id": "T3",
+      "short": "Majority voting is not copy-invariant",
+      "statement": "There exist a claim vector v and its duplication dup such that majority(v) = true and majority(dup) = false.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.majority_not_copy_invariant",
+      "lean_file": "formal/lean/MinorityProphetCore/Copy.lean",
+      "finite_verifier_coverage": "verification/independent_check_2026-08.py: 592 witnesses at n<=5.",
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [
+        "tests/test_markets.py, tests/test_benchmark.py (repository baselines)"
+      ],
+      "security_interpretation": "Establishes that root counting is not vacuously equivalent to majority voting.",
+      "prohibited_overstatement": "This is an existence claim about a witness. It says nothing about how often majority voting fails in practice."
+    },
+    {
+      "id": "T4",
+      "short": "Margin flip condition",
+      "statement": "If F(W) = one and F(W') != one, then flow(W,W') >= margin(W), where flow(W,W') := margin(W) - margin(W').",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "flow is measured as net per-side root gain, p_0 - p_1, equivalently the drop in the signed margin",
+        "no side-consistency hypothesis is required for this arithmetic step; it follows from F being a threshold on margin"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.T4_flip_requires_margin",
+      "lean_file": "formal/lean/MinorityProphetCore/Margin.lean",
+      "finite_verifier_coverage": "Not applicable; T4 is definitional arithmetic on the margin. The repository's check_t4_tightness does not test it (see F2).",
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [],
+      "security_interpretation": "The attacker's budget, MEASURED IN UNITS OF p_0 - p_1, equals the true root margin. This is the correct and useful form of R3.",
+      "prohibited_overstatement": "Do NOT restate this as 'the attacker must forge margin-many roots'. One adversary action that CONVERTS a root's side contributes 2 units, not 1. State the unit every time."
+    },
+    {
+      "id": "T4prime",
+      "short": "Tightness of the flip condition",
+      "statement": "Flow of exactly the margin yields ABSTENTION; a full reversal requires flow >= margin + 1. Flow is in units of p_0 - p_1.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "flow measured as p_0 - p_1 (Meaning A). The statement is FALSE under the reading its own name invites, 'number of roots crossing sides' (Meaning B)."
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.T4'_flow_eq_margin_abstains",
+      "lean_theorem_alt": "MinorityProphet.T4'_reversal_needs_margin_succ",
+      "lean_file": "formal/lean/MinorityProphetCore/Margin.lean",
+      "narrowed_from_repository": true,
+      "narrowing_note": "The repository states T4' as 'net CROSS-SIDE phantom root flow of exactly the margin forces ABSTENTION'. Under the cross-side reading this is false by a factor of 2 (CE-03). The compiled statement fixes the unit.",
+      "finite_verifier_coverage": "NONE that is valid. See F2: the repository's own check is circular.",
+      "known_counterexamples_outside_scope": [
+        "CE-03: measured in root CONVERSIONS, reversal costs floor(margin/2)+1, not margin+1. At margin 8 that is 5 actions, not 9."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce03_reversal_costs_margin_not_margin_plus_one",
+        "audit/test_counterexamples.py::test_conversion_budget_is_about_half_the_doctrine"
+      ],
+      "security_interpretation": "Denial-of-decision and deception are separated by one unit of p_0 - p_1. They are NOT separated by one adversary action.",
+      "prohibited_overstatement": "Do NOT cite '4,638/4,638 decisive worlds' as evidence for T4'. That computation never constructs a second world and cannot fail. Cite the compiled proof instead."
+    },
+    {
+      "id": "T5",
+      "short": "Root-error tolerance",
+      "statement": "If W and W' are side-consistent, have the SAME assertion function, and their root sets differ by at most k elements in total, then a verdict with |margin(W)| > k survives unchanged.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W and SideConsistent W'",
+        "W.assert = W'.assert  -- THE HYPOTHESIS MISSING FROM THE REPOSITORY'S T5",
+        "#(rootSet W \\ rootSet W') + #(rootSet W' \\ rootSet W) <= k",
+        "k counts UNITS OF ROOT-SET CHANGE, not real-world incidents"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.root_error_tolerance",
+      "lean_theorem_alt": "MinorityProphet.no_reversal_of_margin_ge (reversal form), MinorityProphet.margin_diff_le_rootSet_diff (the underlying counting bound)",
+      "lean_file": "formal/lean/MinorityProphetCore/Margin.lean",
+      "narrowed_from_repository": true,
+      "generalized_from_repository": true,
+      "narrowing_note": "NARROWED by adding W.assert = W'.assert, which the repository's T5 omits and which CE-02 proves is necessary (Lean: T5_needs_assert_fixed).",
+      "generalization_note": "GENERALIZED by dropping all reference to 'edits': the compiled form bounds the margin by the root-set symmetric difference, so it covers arbitrary combinations of edge changes, claim insertions and claim deletions applied simultaneously.",
+      "finite_verifier_coverage": "audit/falsify.py: 1072 single-edge DAG edits, maximum total root-count movement 1, 0 edits exceeding 1 -- confirms the repository's +/-1 edge lemma survives the forest-to-DAG generalisation. verification/r1_degradation_curve.py provides the sampled empirical shadow (not a proof).",
+      "known_counterexamples_outside_scope": [
+        "CE-02 (FALSIFIES the repository's corollary): one side conversion changes a margin-2 verdict with zero root-set change.",
+        "CE-04 (FALSIFIES the attached doctrine): deleting ONE claim record orphans all its children at once and reversed a margin-3 verdict.",
+        "CE-05 (FALSIFIES the attached doctrine): ONE compromised root-signing key minted 4 roots and reversed a margin-3 verdict."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce02_one_conversion_changes_a_margin_two_verdict",
+        "audit/test_counterexamples.py::test_ce04_one_deleted_record_orphans_a_whole_subtree",
+        "audit/test_counterexamples.py::test_ce05_one_key_compromise_mints_many_roots"
+      ],
+      "security_interpretation": "Margin buys tolerance to root-set corruption measured in root-set units. Converting the budget into a claim about operational incidents requires a SEPARATE, currently missing, bound on how many root-set units one incident can produce.",
+      "prohibited_overstatement": "NEVER say 'min_flip_budget >= 2 confers proved immunity to any single key compromise or ops error'. Falsified by CE-04 and CE-05. Do NOT say 'k root-integrity errors'; say 'k units of root-set change with assertions fixed'."
+    },
+    {
+      "id": "T6",
+      "short": "Conversion parity invariant (NEW, not in the repository)",
+      "statement": "If the root set is held fixed and only assertions move, the parity of the margin is invariant. Consequently a pure conversion attack can never produce abstention from an odd margin.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W and SideConsistent W'",
+        "rootSet W = rootSet W'"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.margin_parity_of_rootSet_eq",
+      "lean_theorem_alt": "MinorityProphet.no_abstention_of_odd_margin",
+      "lean_file": "formal/lean/MinorityProphetCore/Margin.lean",
+      "finite_verifier_coverage": "audit/test_counterexamples.py::test_odd_margin_cannot_be_driven_to_abstention_by_conversions (margins 1,3,5,7)",
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [],
+      "security_interpretation": "An attacker restricted to relabelling attested roots (as opposed to minting or destroying them) cannot force a tie at odd margin; the cheapest outcome available is full reversal. Defenders who model 'denial' as strictly cheaper than 'deception' are wrong at odd margins under this attack class.",
+      "prohibited_overstatement": "This concerns attacks that leave the root SET fixed. An attacker who can also mint or destroy roots changes parity at will."
+    },
+    {
+      "id": "F1",
+      "short": "MinorityProphetV2.lean has never compiled and cannot compile as written",
+      "statement": "formal/MinorityProphetV2.lean uses `induction ... using Fin.strongRecOn` in two proofs. No constant `Fin.strongRecOn` exists in Mathlib at rev 905b958 / Lean 4.32.2.",
+      "definition_version": "core-v2-forest",
+      "assumptions": [],
+      "proof_status": "verified_finite",
+      "evidence": "Direct compilation attempt against the pinned toolchain produced: 'error: Unknown constant `Fin.strongRecOn`' at two sites. A grep of the full Mathlib tree returns no such declaration.",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [],
+      "security_interpretation": "None. This is an evidence-class correction.",
+      "prohibited_overstatement": "The file's own header already says UNCOMPILED, which is honest. The correction is that the recursion principle it names does not exist, so 'translate, don't redesign' was not achievable; a substitute induction principle had to be supplied (MinorityProphet.lineage_induction).",
+      "remediation": "formal/MinorityProphetV2.lean now carries a SUPERSEDED header stating that it cannot compile and why. Retained unmodified."
+    },
+    {
+      "id": "F2",
+      "short": "The T4' finite check is arithmetically circular",
+      "statement": "verification/independent_check_2026-08.py::check_t4_tightness enumerates worlds only to read off the margin, then computes the post-attack verdict in closed form from d - flow. It never constructs a second world, so the reported 4638/4638 cannot fail for any input.",
+      "definition_version": "core-v2-forest",
+      "assumptions": [],
+      "proof_status": "verified_finite",
+      "evidence": "Source inspection of lines 133-158; the loop body contains no construction of a perturbed parent function or assertion vector.",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [],
+      "security_interpretation": "None directly, but it means T4' had no independent machine evidence before this audit. It now has a compiled proof.",
+      "prohibited_overstatement": "Do not cite the 4,638 figure as verification of T4'.",
+      "remediation": "check_t4_tightness rewritten to construct W' explicitly under two adversary shapes. Corrected result: addition at flow==margin abstains in 4638/4638 and never flips; margin+1 additions reverse in 4638/4638; CONVERSION reverses at or below the margin in 4638/4638 with minimum cost floor(m/2)+1 in 4638/4638; odd-margin abstentions via conversion 0/4638 (T6 confirmed)."
+    },
+    {
+      "id": "F3",
+      "short": "The Gate multivalue verifier has a latent (not active) sampling fallback",
+      "statement": "minority_prophet/verify_multivalue.py is documented as 'Exhaustively check value-local T1/T2' and contains a fallback that samples 200 deterministically-seeded rewirings when a world admits more than 200. MEASURED: at the shipped parameters (n<=5, three-letter alphabet) that branch never fires -- 2955/2955 worlds are enumerated exhaustively, 0 sampled. The published result was therefore accurate in fact; the defect is that the fallback would begin firing silently on any increase to n or the alphabet, with no change to the output line.",
+      "definition_version": "n/a",
+      "assumptions": [],
+      "proof_status": "verified_finite",
+      "evidence": "Source lines 38-45 plus instrumented execution 2026-08-05: worlds=2955 rewirings=11031 violations=0, enumerated_worlds=2955, sampled_worlds=0, exit 0.",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [],
+      "security_interpretation": "None. Evidence-class correction: the result is 'exhaustive to n<=5 with sampled rewirings beyond 200 combinations', which is between verified_finite and a randomized experiment.",
+      "prohibited_overstatement": "Do not describe future runs as exhaustive without checking the reported sampled_worlds count. Exhaustiveness here is a property of the parameters, not of the code.",
+      "remediation": "Docstring corrected to state the measured coverage; the verifier now prints the enumerated/sampled split on every run, so a future parameter change cannot silently downgrade the evidence class.",
+      "correction_to_this_audit": "The first pass of this ledger stated that the verifier 'samples above 200 rewirings', implying the published number was partly randomized. Instrumentation shows it was not. Corrected here rather than left standing."
+    },
+    {
+      "id": "F4",
+      "short": "The canonical repository fails its own suite from a clean clone",
+      "statement": "A fresh git clone of minority-prophet at e1403a7 runs 38 passed / 2 failed, because .gitignore excludes results/*.json which tests/test_canonical_records.py requires.",
+      "definition_version": "n/a",
+      "assumptions": [],
+      "proof_status": "tested_implementation",
+      "evidence": "Clean clone executed this audit. In-place working copy: 40 passed. Clean clone: 2 failed, 38 passed, FileNotFoundError on results/resolved-weather-v0.1.manifest.json.",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [],
+      "implementation_tests": [
+        "see REPRODUCE.md step 6"
+      ],
+      "security_interpretation": "None.",
+      "prohibited_overstatement": "Do not claim the canonical-records checks are reproducible until the manifests are committed or the tests skip loudly.",
+      "remediation": "FIXED. .gitignore now negates results/*.manifest.json and results/resolved-weather-v0.1.json. Clean clone verified at 40 passed."
+    },
+    {
+      "id": "H1",
+      "short": "R2 is enforced at ingest",
+      "statement": "provenance.EvidenceGraph.add rejects cross-side and cross-proposition edges, making side consistency a checked implementation invariant rather than an unchecked hypothesis.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [],
+      "proof_status": "tested_implementation",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [
+        "CE-07: in the DAG this would reject any claim synthesised from both sides, which may be too strong for real use. The right fix may be edge polarity rather than edge rejection."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce09_cross_side_edge_is_now_rejected",
+        "audit/test_counterexamples.py::test_ce09_permissive_mode_records_rather_than_hides",
+        "audit/test_counterexamples.py::test_ce10_cross_proposition_edge_is_now_rejected"
+      ],
+      "security_interpretation": "Would convert the load-bearing assumption into a checked invariant.",
+      "prohibited_overstatement": "Enforcement makes R2 checkable, not automatically satisfiable. CE-07 stands: in a DAG this rejects claims synthesised from both sides, and the false-rejection rate on real data has not been measured."
+    },
+    {
+      "id": "H2",
+      "short": "Roots-per-attested-identity must be bounded",
+      "statement": "R1 requires a sub-requirement bounding how many roots one attested identity can create per unit time; without it, margin is not a budget an attacker must pay.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [],
+      "proof_status": "hypothesis",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [
+        "CE-05 is the motivating witness."
+      ],
+      "implementation_tests": [],
+      "security_interpretation": "This is the missing link between the compiled T5 and any operational immunity claim.",
+      "prohibited_overstatement": "No such bound exists in the current requirement stack."
+    },
+    {
+      "id": "U1",
+      "short": "Root identity criterion",
+      "statement": "When are two roots the same root?",
+      "definition_version": "core-v3-dag",
+      "assumptions": [],
+      "proof_status": "underspecified",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [
+        "CE-08: one identity merge changes a verdict."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce08_identity_merge_changes_the_verdict"
+      ],
+      "security_interpretation": "Any de-duplication or canonicalisation step is inside the trusted base.",
+      "prohibited_overstatement": "No theorem can be cited about semantic root identity until this is defined."
+    },
+    {
+      "id": "U2",
+      "short": "Meaning of absent provenance -- decided and named",
+      "statement": "aggregation.root_vote.verdict takes an explicit unattributed_policy. Default 'abstain_if_decisive' fails closed: unattributed claims are not roots, but if there are at least flip_budget of them the verdict is withheld. The two previously-contradictory readings are retained as named policies 'ignore' and 'treat_as_root'.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [],
+      "proof_status": "tested_implementation",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [
+        "CE-01: PROOFS.md treats it as a root, i.e. maximum influence.",
+        "CE-12: aggregation.semantic.evidence_root_vote drops it, i.e. zero influence.",
+        "Neither abstains, and the two components of the same codebase disagree."
+      ],
+      "implementation_tests": [
+        "audit/test_counterexamples.py::test_ce12_unattributed_claims_are_reported_not_silently_dropped",
+        "audit/test_counterexamples.py::test_ce12_the_two_rejected_readings_are_still_available_and_named"
+      ],
+      "security_interpretation": "This is the undetected-copy threat surface. The two readings differ by the entire attack.",
+      "prohibited_overstatement": "The default is a POLICY CHOICE, not a theorem. No theorem covers unattributed claims; they are simply not roots."
+    },
+    {
+      "id": "U3",
+      "short": "Weighted roots",
+      "statement": "No theorem covers any weighted aggregator.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [],
+      "proof_status": "underspecified",
+      "lean_theorem": null,
+      "known_counterexamples_outside_scope": [
+        "F is a pure cardinality comparison; a confidence-0.01 root and a confidence-1.0 root count identically.",
+        "weighted_vote and semantic_coalition use confidence x competence clamped to [0,1]; negative weights are silently clamped to 0."
+      ],
+      "implementation_tests": [],
+      "security_interpretation": "None available.",
+      "prohibited_overstatement": "Do not cite T1/T2/T4/T5 in support of any weighted aggregation result. See EXTENSION-SOCKETS.md section 2."
+    }
+  ],
+  "remediation": {
+    "date": "2026-08-05",
+    "note": "Corrections applied to the repository in the same branch as the audit. Every falsified statement now has a corrected form in formal/PROOFS.md and papers/ERRATA.md; every implementation defect is either fixed or explicitly retained with a stated reason.",
+    "applied": [
+      "formal/PROOFS.md rewritten to v3 with corrected statements, compiled theorem names and an explicit corrections table (C1-C8).",
+      "PROVENANCE-REQUIREMENTS.md v3: R1.4 added (roots-per-identity bound, no hard delete); R3's unit stated; R2 enforcement point named.",
+      "papers/ERRATA.md issued; v1.0.1 corrected inline with markers [E1]-[E4]; v1.0 and v0.9 bannered as historical.",
+      "formal/MinorityProphetV2.lean marked SUPERSEDED and retained unmodified.",
+      "provenance/graph.py enforces side consistency and proposition identity at ingest, adds a cycle guard, memoises roots(), and gains a validating from_dict loader.",
+      "aggregation/root_vote.py added: order-independent, fails closed on conflicting roots, explicit unattributed policy, reports both attack units.",
+      "verification/independent_check_2026-08.py: check_t4_tightness rewritten to construct worlds.",
+      ".gitignore now tracks the canonical manifests; a clean clone passes 40/40.",
+      "formal/lean/ is the pinned compiled core; audit fixtures extended to 32 tests."
+    ],
+    "deliberately_not_changed": [
+      "aggregation/semantic.py -- its sha256 is bound by results/los-inspired-v0.1.manifest.json as canonical evidence for EXPERIMENT-001. Correcting it in place would falsify a canonical record, so the corrected aggregator lives in aggregation/root_vote.py and the defects CE-11/CE-12 are retained and documented.",
+      "R1.4 is specified but NOT enforced in code: no roots-per-identity limiter and no tombstone storage model exist yet. CE-04 and CE-05 remain reachable in a deployment.",
+      "Root identity (U1) remains undefined. It is now explicitly declared part of the trusted base rather than silently assumed.",
+      "CE-07 (side consistency forbids synthesis in a DAG) is a scope limit, not a bug. Edge polarity is the proposed repair and is not implemented."
+    ]
+  }
+}

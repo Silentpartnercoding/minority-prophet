@@ -1,0 +1,43 @@
+{
+  "schema": "minority-prophet.canonical-derived-record/v1",
+  "experiment": "EXP002",
+  "record": "resolved-weather-v0.1",
+  "status": "canonical-derived-record",
+  "preregistrationCommit": "49ff3305e123994a3efd404eec1c6e8bd741ead2",
+  "resultDataCommit": "d6e1a69a458d4570df570a386e5ca655a07c558e",
+  "hashAlgorithm": "sha256",
+  "artifacts": [
+    {
+      "path": "experiments/EXPERIMENT-002-PREREGISTRATION.md",
+      "sha256": "ae8157df651a96c57c3ddefa042a56ea554f7bcbc3ec2e1b5e69f7f3327ca9a1"
+    },
+    {
+      "path": "aggregation/markets.py",
+      "sha256": "4715d6d3149afdce068a38d0e2fd116e2c27396f030fcfa83e13b4862d6fc030"
+    },
+    {
+      "path": "experiments/resolved_weather_v01.py",
+      "sha256": "9afd35ed06e331b4de066253f4cbb0477c8dca14e0f8c330a684d8182eefe7b4"
+    },
+    {
+      "path": "tests/test_markets.py",
+      "sha256": "431c9aa92b9d56fafd42445890928dc0df225b7a15b03ae5aa8d6989138c8803"
+    },
+    {
+      "path": "results/resolved-weather-v0.1.json",
+      "sha256": "9cc04e8c78d2db1852bb190ac0a0d494569fea13c8606332fdce6fc92505d15e"
+    },
+    {
+      "path": "results/resolved-weather-v0.1.md",
+      "sha256": "2c18b61b81828afb08510e8d4910e556b80bb72a11afee112705d8d1290f0acb"
+    }
+  ],
+  "sourceBoundary": {
+    "provider": "public resolved binary weather-market APIs",
+    "rawTradesCommitted": false,
+    "pseudonymousWalletIdentifiersCommitted": false,
+    "byteIdenticalSourceReplayClaimed": false,
+    "reason": "The upstream APIs are mutable and the privacy boundary excludes raw pseudonymous trade records."
+  },
+  "claim": "The committed derived result, preregistration, implementation, and tests are content-bound. Independent reacquisition may test the method but is not expected to reproduce mutable upstream bytes exactly."
+}
