@@ -1,3 +1,24 @@
+/-  ============================================================================
+    SUPERSEDED — HISTORICAL RECORD ONLY.  DO NOT CITE AS VERIFICATION.
+
+    Replaced 2026-08-05 by `formal/lean/`, a pinned Lake project that compiles
+    (Lean 4.32.2, Mathlib 905b958, 0 sorry, standard axioms only).
+
+    This file CANNOT compile as written. `Fin.strongRecOn`, used by
+    `parent_root_eq_none` and `assert_root` below, does not exist in Mathlib —
+    verified against mathlib4 @ 905b958. The instruction in the original header,
+    "translate, don't redesign", was therefore not achievable; the replacement
+    supplies an explicit lineage induction principle
+    (`MinorityProphet.lineage_induction`) instead.
+
+    It also models lineage as a FOREST (`parent : Fin n → Option (Fin n)`),
+    while `provenance/graph.py` and FOUNDATIONS.md describe a DAG. The
+    replacement formalizes the DAG, which subsumes the forest.
+
+    Retained unmodified below so the record is not erased. See formal/PROOFS.md
+    §7 correction C6 and formal/THEOREM-LEDGER.json entry F1.
+    ============================================================================ -/
+
 /- Minority Prophet formal core, v2 — full proof attempts, no sorry.
    UNCOMPILED (sandbox has no toolchain): treat every proof as a strategy
    the compiler must ratify. Restructured from v1 for provability:

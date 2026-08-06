@@ -1,4 +1,11 @@
-"""Independent re-implementation of 'The Minority Prophet Property' (v1.0 draft) Section 3, by Christopher He, August 2026. Reproduced all formal checks (Lemma 1, Theorems 1–3: zero violations across 5,912 side-consistent worlds, 116,032 root-preserving rewirings, 4,166 duplications); identified the T4 abstention/reversal distinction (correction C2) and the E2 precision misframing (correction C1)."""
+"""Independent re-implementation of 'The Minority Prophet Property' (v1.0 draft) Section 3, by Christopher He, August 2026. Reproduced all formal checks (Lemma 1, Theorems 1–3: zero violations across 5,912 side-consistent worlds, 116,032 root-preserving rewirings, 4,166 duplications); identified the T4 abstention/reversal distinction (correction C2) and the E2 precision misframing (correction C1).
+
+AMENDED 2026-08-05 (formal-core audit): check_t4_tightness has been rewritten.
+The original never constructed a perturbed world and therefore could not fail;
+see formal/COUNTEREXAMPLES.md CE-03. The replacement builds W' explicitly under
+two adversary shapes and shows that a root CONVERSION costs two units, not one.
+No other function in this file was changed; all previously published counts
+reproduce exactly."""
 
 """
 Autoformalization of "The Minority Prophet Property" (draft v0.9).
@@ -131,11 +138,36 @@ def check_t3(nmax=5):
 # ------------------------------------------------------- Theorem 4 tightness
 
 def check_t4_tightness(nmax=NMAX):
-    """T4 as stated: flip requires |net cross-side root flow| >= margin.
-    Tight version: a genuine FLIP requires margin+1; exactly margin buys only
-    an abstention. Count worlds where flow == margin and outcome is abstain."""
-    exact_margin_gives_abstain = 0
-    exact_margin_gives_flip = 0
+    """T4 tightness, checked against CONSTRUCTED worlds.
+
+    CORRECTED 2026-08-05. The previous version of this function enumerated
+    worlds only to read off `d` and `m`, then computed `d_after = d - flow` in
+    closed form and reported the verdict of that integer. It never built a
+    second world, so its result ("4,638/4,638") restated the definition of a
+    threshold function and could not fail for any input. It was not evidence
+    for T4'. See formal/COUNTEREXAMPLES.md CE-03 finding 1.
+
+    This version builds W' explicitly, by two DISTINCT adversary shapes whose
+    costs differ by a factor of two:
+
+      ADDITION   append `flow` fresh roots on the losing side.
+                 Each is worth 1 unit of p0 - p1.
+      CONVERSION move `k` existing roots (and, vacuously here, their subtrees)
+                 to the other side. Each is worth 2 units of p0 - p1.
+
+    The theorem T4'/`T4'_flow_eq_margin_abstains` is about UNITS, so it is the
+    addition column that must show abstention at flow == margin. The conversion
+    column is reported alongside because the repository's prose reads T4' in
+    conversion terms, under which it is false by a factor of two.
+    """
+    add_flow_eq_margin_abstain = 0
+    add_flow_eq_margin_flip = 0
+    add_flow_margin_plus_one_reverses = 0
+    conv_reversed_at_or_below_margin = 0
+    conv_min_cost_matches_floor_formula = 0
+    conv_worlds = 0
+    parity_violations = 0
+
     for n in range(1, nmax + 1):
         for p, a in all_worlds(n):
             if not side_consistent(p, a):
@@ -144,18 +176,62 @@ def check_t4_tightness(nmax=NMAX):
             if v is None:
                 continue
             m = margin(p, a)
-            d = len(S(p, a, 1)) - len(S(p, a, 0))
-            # adversary applies net cross-side root flow of exactly `margin`,
-            # each unit shifting the difference one step toward the loser
-            flow = m
-            d_after = d - flow if d > 0 else d + flow
-            new_v = 1 if d_after > 0 else (0 if d_after < 0 else None)
-            if new_v is None:
-                exact_margin_gives_abstain += 1
-            elif new_v != v:
-                exact_margin_gives_flip += 1
-    return dict(flow_equals_margin_yields_abstain=exact_margin_gives_abstain,
-                flow_equals_margin_yields_flip=exact_margin_gives_flip)
+            loser = 0 if v == 1 else 1
+
+            # --- ADDITION: append m fresh roots to the losing side -----------
+            p_add = tuple(list(p) + [-1] * m)
+            a_add = tuple(list(a) + [loser] * m)
+            v_add = verdict(p_add, a_add)
+            if v_add is None:
+                add_flow_eq_margin_abstain += 1
+            elif v_add != v:
+                add_flow_eq_margin_flip += 1
+
+            # margin + 1 additions must reverse
+            p_rev = tuple(list(p) + [-1] * (m + 1))
+            a_rev = tuple(list(a) + [loser] * (m + 1))
+            if verdict(p_rev, a_rev) == loser:
+                add_flow_margin_plus_one_reverses += 1
+
+            # --- CONVERSION: relabel winning-side roots one at a time --------
+            winners = sorted(r for r in roots(p) if a[r] == v)
+            conv_worlds += 1
+            reversed_at = None
+            abstained_at = None
+            for k in range(1, len(winners) + 1):
+                a_conv = list(a)
+                for r in winners[:k]:
+                    # flip the root and its whole descendant subtree, so the
+                    # perturbed world stays side-consistent
+                    for c in range(len(p)):
+                        if root(p, c) == r:
+                            a_conv[c] = loser
+                a_conv = tuple(a_conv)
+                assert side_consistent(p, a_conv), "conversion broke side-consistency"
+                v_conv = verdict(p, a_conv)
+                if v_conv is None and abstained_at is None:
+                    abstained_at = k
+                if v_conv == loser and reversed_at is None:
+                    reversed_at = k
+                    break
+            if reversed_at is not None:
+                if reversed_at <= m:
+                    conv_reversed_at_or_below_margin += 1
+                if reversed_at == m // 2 + 1:
+                    conv_min_cost_matches_floor_formula += 1
+            # parity: conversions cannot produce a tie at odd margin
+            if m % 2 == 1 and abstained_at is not None:
+                parity_violations += 1
+
+    return dict(
+        addition_flow_eq_margin_yields_abstain=add_flow_eq_margin_abstain,
+        addition_flow_eq_margin_yields_flip=add_flow_eq_margin_flip,
+        addition_margin_plus_one_reverses=add_flow_margin_plus_one_reverses,
+        conversion_decisive_worlds=conv_worlds,
+        conversion_reversed_at_or_below_margin=conv_reversed_at_or_below_margin,
+        conversion_min_cost_equals_floor_margin_half_plus_one=conv_min_cost_matches_floor_formula,
+        odd_margin_abstentions_via_conversion=parity_violations,
+    )
 
 # --------------------------------- what happens when side-consistency is lost
 
@@ -247,7 +323,7 @@ if __name__ == "__main__":
     print("\n== Theorem 3 ==")
     for k, v in check_t3().items():
         print(f"  {k}: {v}")
-    print("\n== Theorem 4 tightness ==")
+    print("\n== Theorem 4 tightness (constructed worlds; addition vs conversion) ==")
     for k, v in check_t4_tightness().items():
         print(f"  {k}: {v}")
     print("\n== Non-side-consistent regime (where T4's 'cross-side' lives) ==")

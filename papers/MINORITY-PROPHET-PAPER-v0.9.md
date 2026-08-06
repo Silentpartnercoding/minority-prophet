@@ -1,4 +1,7 @@
 # The Minority Prophet Property
+
+> **HISTORICAL VERSION.** Superseded; retained as record. See [`papers/ERRATA.md`](./ERRATA.md) for corrections that apply to this text.
+
 ## Truth recovery under copying pressure requires unforgeable origins, unblended sides, and a protected margin — and nothing more
 
 **Historical draft v0.9 — superseded by v1.0.1 and the canonical registry. Numeric E7 claims in earlier revisions were not backed by a complete archived optimizer; this copy is evidence-aligned to EXP007A but remains non-submission material.**

@@ -1,5 +1,21 @@
 """Evidence lineage primitives."""
 
-from .graph import EvidenceGraph, EvidenceNode
+from .graph import (
+    CycleError,
+    EvidenceGraph,
+    EvidenceNode,
+    PropositionMismatchError,
+    SideConsistencyError,
+    Violation,
+    build,
+)
 
-__all__ = ["EvidenceGraph", "EvidenceNode"]
+__all__ = [
+    "CycleError",
+    "EvidenceGraph",
+    "EvidenceNode",
+    "PropositionMismatchError",
+    "SideConsistencyError",
+    "Violation",
+    "build",
+]

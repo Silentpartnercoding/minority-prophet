@@ -1,0 +1,31 @@
+{
+  "schema": "minority-prophet.canonical-derived-record/v1",
+  "experiment": "EXP001",
+  "record": "los-inspired-v0.1-seed-20260803",
+  "status": "canonical-derived-record",
+  "resultCommit": "17307d9fb6ef878163f659e9a6e4e7df26a858c8",
+  "hashAlgorithm": "sha256",
+  "artifacts": [
+    {
+      "path": "experiments/EXPERIMENT-001.md",
+      "sha256": "7046b01f6814ed04f0ff7064ed21a0087bf92412dcf0b0ab89a367c1781b21e5"
+    },
+    {
+      "path": "experiments/los_inspired_v01.py",
+      "sha256": "1060a1ce10ef68d9126e46b94f8ab4628b0b2cb147fbfbda2a12b258bbbb92a8"
+    },
+    {
+      "path": "aggregation/semantic.py",
+      "sha256": "c763814f84023c56a0a79438dcaab6e74e4d4b3ed5995efde61e04b6f7b6275f"
+    },
+    {
+      "path": "results/los-inspired-v0.1-seed-20260803.json",
+      "sha256": "203d70b9bc89703388388b1cb68dafb78b248963210079a8912ff44d008169fb"
+    },
+    {
+      "path": "results/los-inspired-v0.1.md",
+      "sha256": "6e15163aea961e910a0dd300f620ffc225c2a11238e99340a1c2594a6af0df5c"
+    }
+  ],
+  "claim": "The committed constructed-world design, implementation, fixed-seed output, and interpretation are content-bound. This record does not generalize beyond the stated synthetic world."
+}
