@@ -108,19 +108,22 @@ resampling unit.
 
 The attack regime is primary.
 
-- **H9-1 — baseline preservation:** inferred selective-challenger accuracy is
-  no more than `0.010` below simple-majority accuracy.
-- **H9-2 — reversal safety:** its false-reversal rate is at most `0.010`.
-- **H9-3 — useful discretion:** its copied-minority recovery is at least
-  `0.015` and strictly greater than majority's recovery.
+- **H9-1 — baseline preservation:** the lower bound of the paired 95%
+  bootstrap confidence interval for inferred selective-challenger accuracy
+  minus simple-majority accuracy is at least `-0.010`.
+- **H9-2 — reversal safety:** the upper bound of its 95% bootstrap confidence
+  interval for false-reversal rate is at most `0.010`.
+- **H9-3 — useful discretion:** its copied-minority recovery point estimate is
+  at least `0.015`, and the lower bound of the paired 95% bootstrap confidence
+  interval for recovery minus majority recovery is greater than `0`.
 - **H9-4 — provenance ceiling:** the declared selective challenger recovers
   at least `0.80` of copied-minority cases with false-reversal rate at most
   `0.005`.
 
 The primary selective-hybrid claim is `supported` only if H9-1, H9-2, and
-H9-3 all hold on point estimates in the attack regime. H9-4 is reported
-separately and cannot rescue a failed primary claim. Confidence intervals and
-all non-attack results must be reported regardless of the verdict.
+H9-3 all hold under these frozen confidence-interval rules in the attack
+regime. H9-4 is reported separately and cannot rescue a failed primary claim.
+All non-attack results must be reported regardless of the verdict.
 
 ## Discriminator comparison
 
