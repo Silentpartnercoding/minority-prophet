@@ -19,3 +19,21 @@ __all__ = [
     "Violation",
     "build",
 ]
+from .root_registry import (
+    ClockError,
+    HmacIssuerVerifier,
+    IssuanceLimitError,
+    IssuerAuthenticationError,
+    RegistryIntegrityError,
+    ReplayError,
+    RootReceipt,
+    RootRegistry,
+    RootRequest,
+)
+from .graph import RootAuthorizationError
+
+__all__ = [
+    "ClockError", "HmacIssuerVerifier", "IssuanceLimitError",
+    "IssuerAuthenticationError", "RegistryIntegrityError", "ReplayError",
+    "RootAuthorizationError", "RootReceipt", "RootRegistry", "RootRequest",
+]

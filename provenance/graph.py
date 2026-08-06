@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Iterable
+from typing import Any, Iterable, Protocol
 
 
 class SideConsistencyError(ValueError):
@@ -47,6 +47,14 @@ class PropositionMismatchError(ValueError):
 
 class CycleError(ValueError):
     """A derivation cycle. `rootsOf` is only well defined on a DAG."""
+
+
+class RootAuthorizationError(ValueError):
+    """A parentless claim was not minted by the configured root authority."""
+
+
+class RootAuthority(Protocol):
+    def active_roots(self) -> frozenset[str]: ...
 
 
 @dataclass(frozen=True)
@@ -107,10 +115,11 @@ class EvidenceGraph:
         no theorem in formal/PROOFS.md applies to such a graph.
     """
 
-    def __init__(self, *, strict: bool = True) -> None:
+    def __init__(self, *, strict: bool = True, root_authority: RootAuthority | None = None) -> None:
         self._nodes: dict[str, EvidenceNode] = {}
         self._violations: list[Violation] = []
         self._strict = strict
+        self._root_authority = root_authority
 
     # ------------------------------------------------------------------ ingest
 
@@ -121,6 +130,12 @@ class EvidenceGraph:
         missing = [parent for parent in node.copied_from if parent not in self._nodes]
         if missing:
             raise ValueError(f"unknown ancestors: {', '.join(missing)}")
+
+        if node.is_root and self._root_authority is not None:
+            if node.node_id not in self._root_authority.active_roots():
+                raise RootAuthorizationError(
+                    f"root {node.node_id!r} is not active in the configured authority"
+                )
 
         for parent_id in node.copied_from:
             parent = self._nodes[parent_id]

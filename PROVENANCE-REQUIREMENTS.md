@@ -54,6 +54,13 @@ converted into any operational claim**.
 **Measurement:** roots-minted-per-identity-per-window; orphans-created-per-delete
 (must be 0).
 
+**Implementation.** `provenance/root_registry.py` defines `mp-root-v1` and
+enforces this requirement with authenticated issuer requests, durable
+per-window quotas, append-only tombstones, replay protection, serialized
+cross-process allocation and an integrity-protected event chain. The production
+identity verifier and protected registry-integrity key remain deployment trust
+inputs. See `provenance/ROOT-IDENTITY.md`.
+
 **Theorem dependency:** none — this is precisely the gap the theorems do not
 cover. It is the bridge between the proved unit and any incident-level statement.
 
@@ -166,9 +173,10 @@ edge_confidence, inferred  lineage schema extensions, backward compatible
 
 ## Known limits of the current definition
 
-- **Root identity is undefined.** `S_a` is a set, so the verdict is a function of
-  when two roots count as one — a criterion no artifact states. Any semantic
-  de-duplication is **inside the trusted base**. Ledger `U1`.
+- **Root identity is defined operationally, not proved semantically.**
+  `mp-root-v1` binds issuer, issuer-scoped observation, proposition, value and
+  evidence digest. Whether an issuer truthfully labels two real-world
+  observations remains inside the trusted base.
 - Binary assertions only; multi-proposition and continuous claims unformalized.
 - "Independence" is modeled as **disjoint root sets** — all-or-nothing. Graded
   independence (partially correlated observers) is unrepresentable and untheorised.
