@@ -1,0 +1,276 @@
+{
+  "schema": "minority-prophet.preregistration.v0.2",
+  "experimentId": "KL-000",
+  "protocolVersion": "1.1.0",
+  "status": "preregistered",
+  "registrationNote": "New registration, not an edit. The v1.0.0 registration (preregistration.json, PROTOCOL.md, fixtures/c01..c10.json, frozen at commit c977347) is preserved byte-for-byte and continues to govern RUN-20260807-1's result and the independent reimplementation's v1.0.0 result. v1.1.0 changes specification text only: it documents behaviour both existing implementations already have, or resolves an ambiguity in favour of existing reference behaviour. The evaluator under test is bit-identical to v1.0.0's.",
+
+  "question": "Can the evaluator prevent recorded copies from adding evidence and incomplete coverage from proving absence -- and do the four v1.1.0 specification repairs document existing behaviour rather than change it?",
+  "null": "At least one recorded copy changes evidential mass, or one incomplete search yields absence, or a v1.1.0 repair moves any preregistered number relative to RUN-20260807-1.",
+  "target": "Zero violations in exhaustive small worlds and one million frozen randomized worlds, with every number in expectedIdenticalToRun1 reproduced exactly.",
+
+  "repairs": [
+    {
+      "id": "R1",
+      "title": "tie rule for presence claims",
+      "resolves": "independent ambiguity A3 (22,440 exhaustive worlds, 20.2% of receipts)",
+      "statement": "For claim.type == 'presence': conclusion == 'supported' iff distinct supporting roots strictly exceed distinct opposing roots; otherwise 'not_established'. Ties are undecided, not supported. Presence claims never conclude 'present' or 'absent_within_declared_scope'.",
+      "decidedBy": "owner",
+      "ownerDecision": true,
+      "ownerDecisionNote": "This was decided, not derived, and could defensibly have gone the other way. The independent implementer's contrary reading (presence is existential; opposition cannot defeat a witness) is preserved with its rationale in results/independent/FINDINGS.md (F6, A3). The decided rule matches the reference's existing behaviour (transaction.py:69, strict >).",
+      "expectedNumericChange": "none",
+      "verifiedExistingBehaviour": "probed 2026-08-07 against evaluator sha256 15dfd500...3a3e21f: tie -> not_established; strict minority -> not_established; strict majority -> supported"
+    },
+    {
+      "id": "R2",
+      "title": "non-empty declared scope",
+      "resolves": "independent finding F8 (specification defect: vacuous absence for a zero-location ledger)",
+      "statement": "search.complete requires declared > 0, and a search ledger declaring zero locations is inadmissible: evaluation refuses fail-closed and no receipt is produced.",
+      "decidedBy": "owner, adopting the repair both implementations already made unprompted",
+      "ownerDecision": false,
+      "expectedNumericChange": "none (declared bounds already require locationCount >= 1, so only adversarial input reaches this rule)",
+      "verifiedExistingBehaviour": "reference refuses with 'ValueError: The declared search space must not be empty.' (transaction.py:31-32); independent refuses with cause empty_search_ledger (its attack A06). Neither was told to by the v1.0.0 specification."
+    },
+    {
+      "id": "R3",
+      "title": "location identifier uniqueness, registered as new hard invariant I11",
+      "resolves": "independent finding F9 (specification gap: duplicate location ids inflate declared)",
+      "statement": "See invariants[10] (I11). Registered as a new invariant, not an extension of I8: I8 constrains the arithmetic of an emitted receipt, I11 is an admissibility rule whose correct outcome is refusal with no receipt, and extending I8's registered statement would muddy cross-version comparison of I8 violation counts.",
+      "decidedBy": "owner, adopting the repair both implementations already made unprompted",
+      "ownerDecision": false,
+      "expectedNumericChange": "none (both generators emit distinct location ids; I11 is exercised by the adversarial phase)",
+      "verifiedExistingBehaviour": "reference refuses with 'ValueError: Search-location identifiers must be unique.' (transaction.py:34-36); independent refuses with cause duplicate_location_id (its attack A07). Neither was required to by the v1.0.0 specification."
+    },
+    {
+      "id": "R4",
+      "title": "canonical form and digest scope",
+      "resolves": "independent finding F10 (I4/I6 constrained an implementation against itself)",
+      "statement": "Canonical JSON and contentDigest scope are defined in canonicalForm below; fixture C11 carries an expected digest so the definition is testable across implementations.",
+      "decidedBy": "owner, adopting the reference's existing canonicalisation as the protocol definition",
+      "ownerDecision": false,
+      "expectedNumericChange": "none",
+      "verifiedExistingBehaviour": "recomputing sha256 over the canonical bytes of a receipt minus its top-level contentDigest reproduces the reference's stored digest; C11's pinned digest was computed from the frozen evaluator before registration"
+    }
+  ],
+
+  "conclusionFunction": {
+    "admissibility": "Input must parse and be well-formed (I9); the declared search space must be non-empty (R2); location ids must be pairwise distinct (I11); every evidence side must be 'support' or 'oppose'; no rootId may appear on both sides (I3). Inadmissible input refuses fail-closed: no receipt exists.",
+    "presence": "supported iff |distinct supporting roots| > |distinct opposing roots|, else not_established. Ties are not_established (R1, owner decision).",
+    "absence": "present if any distinct opposing root exists (I5); else absent_within_declared_scope if search.complete (which requires every declared location searched and declared > 0); else not_established.",
+    "note": "This section makes the conclusion function part of the registered surface for the first time. Under v1.0.0 no invariant constrained 'conclusion', which is how two conforming implementations diverged on 22,440 worlds."
+  },
+
+  "canonicalForm": {
+    "encoding": "UTF-8, no BOM, no trailing newline",
+    "objectMemberOrder": "sorted by key, keys compared as sequences of Unicode code points, ascending",
+    "whitespace": "none; item separator ',', key separator ':'",
+    "stringEscaping": "minimal: '\"' as '\\\"', '\\' as '\\\\'; U+0008/U+0009/U+000A/U+000C/U+000D as \\b \\t \\n \\f \\r; other code points below U+0020 as \\u00XX lowercase hex; every code point at or above U+0020, including all non-ASCII, emitted literally as raw UTF-8",
+    "numbers": "receipts contain only non-negative integers, emitted base-10 with no sign, decimal point, exponent, or leading zeros; booleans are true/false; a receipt containing a float or null has no defined canonical form",
+    "arrays": "order-preserving; canonicalisation never reorders arrays",
+    "referenceRealisation": "python json.dumps(value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=False).encode('utf-8')",
+    "digestScope": "contentDigest = 'sha256:' + lowercase-hex(SHA-256(canonical bytes of the receipt object with its top-level contentDigest member removed and nothing else removed))",
+    "crossImplementationTest": "fixtures/v1.1.0/c11-canonical-digest.json pins an expected contentDigest (unsigned canonical form 703 bytes)"
+  },
+
+  "population": {
+    "description": "Synthetic knowledge-transaction worlds. A world is one claim type, one search ledger of location statuses, and one evidence ledger of (rootId, side) records. No natural-language content, no real entities, no personal data. Identical to v1.0.0.",
+    "exhaustive": {
+      "method": "complete cartesian enumeration within declared bounds",
+      "locationCount": [1, 2, 3, 4],
+      "locationStatuses": ["searched", "unavailable", "failed", "not_searched"],
+      "recordCount": [0, 1, 2, 3],
+      "rootIds": ["r1", "r2", "r3"],
+      "sides": ["support", "oppose"],
+      "claimTypes": ["absence", "presence"],
+      "declaredWorldCount": 176120,
+      "worldCountDerivation": "sum(4^L for L in 1..4) = 340 location ledgers; sum(6^R for R in 0..3) = 259 evidence ledgers; 340 * 259 * 2 claim types = 176120"
+    },
+    "randomized": {
+      "method": "frozen-seed sampling, seed declared below",
+      "worldCount": 1000000,
+      "locationCountRange": [1, 12],
+      "recordCountRange": [0, 24],
+      "rootIdPool": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
+      "locationStatuses": ["searched", "unavailable", "failed", "not_searched"],
+      "sides": ["support", "oppose"],
+      "claimTypes": ["absence", "presence"]
+    }
+  },
+
+  "searchSpace": {
+    "definition": "For this conformance kernel the searched space is the space of worlds, not a space of real locations. The exhaustive phase enumerates it completely within the declared bounds above; absence of a violation is therefore admissible only for worlds inside those bounds.",
+    "enumerationMethod": "deterministic nested iteration in src/kl000_worlds.py, verified against declaredWorldCount before any invariant is evaluated",
+    "boundedAbsenceStatement": "Zero violations across the exhaustive phase supports 'no violation exists within the declared bounds' and supports nothing about worlds outside them."
+  },
+
+  "rootDefinition": {
+    "root": "An evidence root is the value of a record's rootId field. Root identity is declared operationally by the transaction author; it is not inferred, proved semantically, or verified against any external issuer.",
+    "copy": "Two records are copies of one another when they carry the same rootId. A copy may differ in every other respect, including record id.",
+    "sharedDependency": "Not representable in schema v0.1. Recorded as a limit, not tested as a hypothesis.",
+    "independence": "Distinct rootId values are treated as independent by assumption. KL-000 tests that the evaluator honours declared independence, not that the declaration is true."
+  },
+
+  "baselines": [
+    {"id": "B1-head-count", "description": "Concludes from record count alone, ignoring roots entirely.", "expectedOutcome": "MUST FAIL copy invariance (I1)."},
+    {"id": "B2-source-count", "description": "Counts distinct roots but ignores the search ledger.", "expectedOutcome": "MUST FAIL bounded absence (I2). Known caveat, deliberately unrepaired in v1.1.0: as literally read, I2's receipt-internal form is satisfiable by a fabricated search block; see openFindings F1/F3."},
+    {"id": "B3-evidence-ledger-without-coverage", "description": "Full root collapse, no coverage requirement for absence.", "expectedOutcome": "MUST FAIL bounded absence (I2)."},
+    {"id": "B4-search-ledger-without-collapse", "description": "Full coverage accounting, counts records rather than roots.", "expectedOutcome": "MUST FAIL copy invariance (I1)."},
+    {"id": "B5-dual-ledger", "description": "The evaluator under test, knowledge_ledger.evaluate_transaction.", "expectedOutcome": "MUST PASS all eleven invariants."}
+  ],
+
+  "controls": [
+    {"id": "C01", "requirement": "head or record counting", "fixture": "fixtures/c01-head-count.json"},
+    {"id": "C02", "requirement": "source counting", "fixture": "fixtures/c02-source-count.json"},
+    {"id": "C03", "requirement": "evidence ledger without search coverage", "fixture": "fixtures/c03-evidence-without-coverage.json"},
+    {"id": "C04", "requirement": "search ledger without root collapse", "fixture": "fixtures/c04-search-without-collapse.json"},
+    {"id": "C05", "requirement": "dual ledger", "fixture": "fixtures/c05-dual-ledger.json"},
+    {"id": "C06", "requirement": "genuinely independent evidence", "fixture": "fixtures/c06-independent-evidence.json"},
+    {"id": "C07", "requirement": "copied or shared-dependency condition", "fixture": "fixtures/c07-copied-source.json"},
+    {"id": "C08", "requirement": "incomplete coverage", "fixture": "fixtures/c08-incomplete-coverage.json"},
+    {"id": "C09", "requirement": "counterexample in a searched location", "fixture": "fixtures/c09-counterexample-searched.json"},
+    {"id": "C10", "requirement": "counterexample in an unsearched location", "fixture": "fixtures/c10-counterexample-unsearched.json"},
+    {"id": "C11", "requirement": "canonical form and digest scope pinned across implementations; tie concludes not_established", "fixture": "fixtures/v1.1.0/c11-canonical-digest.json", "newInVersion": "1.1.0"}
+  ],
+  "controlsNote": "C01-C10 are byte-identical to their v1.0.0 registration. C09/C10 remain preregistered as indistinguishable to this evaluator (schema v0.1 has no record-to-location link); identical treatment remains the expected and permitted outcome. C11 is new in v1.1.0 and is the first fixture whose expected values include a contentDigest.",
+
+  "primaryEndpoint": "count of hard-invariant violations, target exactly 0",
+  "secondaryEndpoints": [
+    "count of fail-closed rejections, by cause",
+    "conclusion distribution across enumerated worlds",
+    "baseline violation counts, which must be non-zero for B1-B4",
+    "equality of every value in expectedIdenticalToRun1 with its observed value",
+    "wall-clock and worlds-per-second, for reproduction budgeting"
+  ],
+
+  "expectedIdenticalToRun1": {
+    "statement": "The four repairs document existing behaviour; therefore the v1.1.0 confirmatory run must reproduce RUN-20260807-1's numbers exactly. This table is the preregistered prediction. Any deviation halts the run, is reported as a finding, and falsifies the documentation-only claim.",
+    "exhaustive": {"worldsChecked": 176120, "receiptProducingWorlds": 110840, "failClosedRejections": 65280, "totalViolations": 0, "conclusionDistribution": {"absent_within_declared_scope": 160, "not_established": 49480, "present": 41820, "supported": 19380}},
+    "randomized": {"worldsChecked": 1000000, "receiptProducingWorlds": 243381, "failClosedRejections": 756619, "totalViolations": 0, "conclusionDistribution": {"absent_within_declared_scope": 1092, "not_established": 119228, "present": 81792, "supported": 41269}},
+    "baselines": {"B1-head-count": 634440, "B2-source-count": 26880, "B3-evidence-ledger-without-coverage": 26208, "B4-search-ledger-without-collapse": 189720},
+    "failClosedCauses": ["ValueError: One root cannot support opposing sides."],
+    "fixture": "C01-C10 pass exactly as in RUN-20260807-1; C11 passes with its pinned digest"
+  },
+
+  "invariants": [
+    {"id": "I1", "name": "copy invariance", "statement": "Appending a duplicate of any existing record (same rootId, same side) leaves conclusion, distinctRoots, supportingRoots, opposingRoots, margin, and conversionsToReverse unchanged, and increases records and repeatedRecordsCollapsed by exactly 1 each.", "hard": true},
+    {"id": "I2", "name": "bounded absence", "statement": "conclusion == 'absent_within_declared_scope' implies search.complete is true and opposingRoots is empty. Equivalently no absence conclusion is reachable while any location status is not 'searched'.", "hard": true, "v110Note": "Statement carried over verbatim from v1.0.0, including the known-defective 'Equivalently' (openFindings F1) -- deliberately unrepaired in this version. R2 strengthens the antecedent: complete now requires declared > 0."},
+    {"id": "I3", "name": "side separation", "statement": "If any rootId appears with both sides, evaluation raises and no receipt is produced.", "hard": true},
+    {"id": "I4", "name": "deterministic replay", "statement": "Evaluating the same world twice yields byte-identical canonical JSON and an equal contentDigest, where 'canonical' is defined in canonicalForm.", "hard": true, "v110Note": "v1.0.0 left 'canonical' undefined; R4 defines it."},
+    {"id": "I5", "name": "counterexample dominance", "statement": "For absence claims, a non-empty opposingRoots implies conclusion == 'present', at any coverage level.", "hard": true},
+    {"id": "I6", "name": "digest integrity", "statement": "verify_content_digest holds for every emitted receipt, and fails for every single-field mutation of one. The digest's covered fields are defined in canonicalForm.digestScope.", "hard": true, "v110Note": "v1.0.0 left the digest scope undefined; R4 defines it."},
+    {"id": "I7", "name": "order invariance", "statement": "Permuting locations or records changes no evidential field, no conclusion, and no contentDigest.", "hard": true},
+    {"id": "I8", "name": "search arithmetic", "statement": "declared == len(locations), searched and unavailable equal their status counts, searched + unavailable <= declared, and complete == (searched == declared and declared > 0).", "hard": true, "v110Note": "The 'and declared > 0' conjunct is new (R2). Everything else is verbatim v1.0.0."},
+    {"id": "I9", "name": "fail-closed parsing", "statement": "Malformed input raises an exception and never returns a receipt.", "hard": true},
+    {"id": "I10", "name": "copies never mint roots", "statement": "distinctRoots equals the number of distinct rootId values in the input, and appending any number of copies of existing roots leaves it unchanged.", "hard": true},
+    {"id": "I11", "name": "location identifier uniqueness", "statement": "The id values of searchLedger.locations must be pairwise distinct. A ledger containing a duplicate location id is inadmissible: evaluation refuses fail-closed and no receipt is produced. Duplicate location entries are the search-ledger analogue of the copied evidence records I1 collapses; without this rule, declared counts entries rather than locations and I8's coverage arithmetic can be inflated by padding.", "hard": true, "v110Note": "New in v1.1.0 (R3). Registered as a new invariant rather than an extension of I8: I8 constrains the arithmetic of an emitted receipt, I11 is an admissibility rule whose correct outcome is that no receipt exists."}
+  ],
+
+  "effectSize": {
+    "statement": "Conformance kernel; the endpoint is a count with a target of exactly zero, plus an exact-equality prediction table. A single violation, or a single moved number, rejects.",
+    "powerOfTest": "Established by baselines B1-B4, which MUST be caught by the identical checker code path that clears B5. If any of them passes, the checker is vacuous and the run is invalidated."
+  },
+
+  "uncertainty": {
+    "exhaustivePhase": "No sampling uncertainty. Zero violations across a complete enumeration is exact within the declared bounds and says nothing outside them.",
+    "randomizedPhase": "Zero violations in n = 1,000,000 draws gives a 95% upper bound on per-world violation probability of 3/n = 3.0e-6 by the rule of three. This bounds a rate; it does not establish zero. 75.7% of these worlds fail closed; eight of the invariants are exercised on 243,381 receipt-producing worlds, for which the bound is 1.23e-5.",
+    "familyWise": "Eleven invariants are checked. Under a Bonferroni-style adjustment the per-invariant upper bound is approximately 5.5/n = 5.5e-6 (eleven simultaneous bounds; v1.0.0's figure was 5.3e-6 over ten).",
+    "whatItCannotShow": "Neither phase can show the invariants hold outside the declared bounds, for shared dependencies the schema cannot express, or for any real-world evidence process. I11 and R2 are exercised only adversarially: the enumerated phases never emit an inadmissible world."
+  },
+
+  "multipleTestingCorrection": {
+    "method": "none applied to the primary endpoint",
+    "justification": "No null-hypothesis significance test is performed. The primary endpoint is a violation count with target zero. Bonferroni is reported only for the secondary rule-of-three rate bound, now over eleven simultaneous bounds."
+  },
+
+  "successCondition": "Zero hard-invariant violations across the exhaustive phase, the randomized phase, and the adversarial suite; non-zero violation counts for each of B1-B4; C11 matching its pinned digest; AND every value in expectedIdenticalToRun1 equal to its observed value.",
+  "failureCondition": "One or more hard-invariant violations by B5. This rejects the invariant, sets KL-000 to failed, and blocks promotion of every downstream kernel.",
+  "invalidationCondition": "Any of: the generator emits a world outside declared bounds; the enumerated world count differs from declaredWorldCount; the evaluator source hash differs from evaluatorUnderTest; the frozen seed does not reproduce an identical stream within this implementation; any baseline B1-B4 records zero violations; any unexpected fail-closed cause appears. Additionally for v1.1.0: any value in expectedIdenticalToRun1 differing from observation marks the run incomplete and is reported as a finding -- it would mean a repair changed behaviour and the documentation-only claim is false. An invalidated run is never negative and never positive.",
+  "stopCondition": "One hard violation halts the confirmatory run and preserves the world verbatim. One moved number halts the comparison and becomes the primary finding.",
+
+  "frozenSeedsOrSplits": {
+    "randomizedSeed": 20260807,
+    "rng": "Python stdlib random.Random, seeded per phase, no OS entropy",
+    "rngScopeNote": "The seed freezes this implementation's world stream only. It does not and cannot freeze a cross-implementation stream (independent finding F11, accepted as an open limit; see openFindings). Between implementations the randomized phase is a replication, never a reproduction.",
+    "splitPolicy": "No train/test split applies."
+  },
+
+  "protocolCommit": null,
+  "protocolCommitNote": "Assigned by git to the commit introducing this file; recorded post-commit in PROTOCOL-COMMIT-v1.1.0.txt. This file is never edited after registration. The load-bearing freeze is evaluatorUnderTest, the declared bounds, the seed, the conclusionFunction, the canonicalForm, and expectedIdenticalToRun1, all inside this file.",
+
+  "evaluatorUnderTest": {
+    "path": "knowledge_ledger/transaction.py",
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f",
+    "packageInit": "knowledge_ledger/__init__.py",
+    "packageInitSha256": "32f2b46d231e68e8c568cdabf84e9180e9acd244ca3642dd67cc299f81a786d7",
+    "note": "Bit-identical to the v1.0.0 registration by design: v1.1.0 asserts these repairs are documentation, and an unchanged evaluator hash plus unchanged numbers is what that assertion predicts. No evaluator behaviour is changed by this experiment."
+  },
+
+  "environment": {
+    "python": "3.14.6",
+    "interpreter": "/Users/james/Development/.mp-runner-venv/bin/python",
+    "reproductionInterpreter": "any CPython 3.11+; standard library only",
+    "thirdPartyRuntimeDependencies": "none",
+    "network": "not used",
+    "os": "macOS 26.4.1, Darwin 25.4.0, arm64",
+    "determinismNote": "Results must be byte-identical across interpreters and platforms. Any platform-dependent output invalidates the run rather than being explained away."
+  },
+
+  "safetyBoundary": {
+    "dataClass": "synthetic only; no personal, patient, sealed, classified, or legally restricted data",
+    "decisionAuthority": "none",
+    "network": "no network access required or used",
+    "spend": "zero",
+    "actuation": "none"
+  },
+  "humanAuthorization": {
+    "requiredForExecution": false,
+    "requiredForExecutionReason": "Offline, synthetic, zero-spend, no live decision authority, no restricted data.",
+    "requiredFor": [
+      {"action": "publishing this branch or its base to the public github remote", "status": "not granted; referred to the founder"},
+      {"action": "promoting any KL-000 result into CANONICAL-RECORDS.md or PUBLIC-CLAIMS.md", "status": "not sought by this run"},
+      {"action": "commissioning the independent implementation's re-run against v1.1.0 (this kernel's next gate)", "status": "owner's to commission; explicitly not performed by this repository's agents"},
+      {"action": "durable-history anchoring of any artifact", "status": "out of scope"}
+    ]
+  },
+
+  "openFindings": {
+    "note": "Real defects and gaps from results/independent/FINDINGS.md deliberately NOT repaired in v1.1.0, because this version's repair list is exactly the owner's R1-R4. Candidates for v1.2.0.",
+    "items": [
+      {"finding": "F1", "summary": "I2's two forms (receipt-internal vs world-referential) are not equivalent; B2 as registered does not fail literal I2"},
+      {"finding": "F2", "summary": "I5 has the same receipt-internal defect and no baseline has power against it"},
+      {"finding": "F3", "summary": "B2 and B3 describe the same ablation unless B2 fabricates its search block"},
+      {"finding": "F4", "summary": "conversionsToReverse is undefined; empty-ledger value 1 is arguably wrong"},
+      {"finding": "F5", "summary": "margin sign is unpinned (reference absolute, independent signed); 38,760 worlds' receipts differ; C11 deliberately sign-agnostic"},
+      {"finding": "F11", "summary": "the frozen seed does not freeze a cross-implementation stream; randomized phase is replication-only between implementations"},
+      {"finding": "F12", "summary": "the adversarial phase is defined by reference to a test file, not by specification"},
+      {"finding": "F13", "summary": "C06's 'here and only here' note is contradicted by C04 and C07"},
+      {"finding": "F14", "summary": "unavailable is reported and reconciled but no conclusion depends on it"}
+    ]
+  },
+
+  "artifacts": [
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL.md",
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL-v1.1.0.md",
+    "research/knowledge-ledger/experiments/KL-000/preregistration.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.1.0.json",
+    "research/knowledge-ledger/experiments/KL-000/fixtures/",
+    "research/knowledge-ledger/experiments/KL-000/fixtures/v1.1.0/",
+    "research/knowledge-ledger/experiments/KL-000/src/kl000_worlds.py",
+    "research/knowledge-ledger/experiments/KL-000/src/kl000_invariants.py",
+    "research/knowledge-ledger/experiments/KL-000/src/kl000_baselines.py",
+    "research/knowledge-ledger/experiments/KL-000/src/run_kl000.py",
+    "research/knowledge-ledger/experiments/KL-000/tests/",
+    "research/knowledge-ledger/experiments/KL-000/results/",
+    "research/knowledge-ledger/experiments/KL-000/results/independent/",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE.md",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE-v1.1.0.md",
+    "research/knowledge-ledger/experiments/KL-000/STATUS.json"
+  ],
+
+  "claimDiscipline": {
+    "strongestSupportedIfPassed": "Within the declared bounds, the reference evaluator conforms to protocol v1.1.0, and the four repairs documented behaviour it already had: no number moved relative to RUN-20260807-1.",
+    "reproductionStatus": "The independent reimplementation reproduced the v1.0.0 exhaustive enumeration exactly and agreed on all ten v1.0.0 invariants, while disagreeing on the conclusion of 22,440 receipt-producing worlds over a conclusion function the specification left open until R1. Its randomized phase is a replication, not a reproduction. 'Verified' is not licensed by any of this.",
+    "nearestUnsupportedExtension": "That the independent implementation conforms to v1.1.0 (its re-run is a future, separate commission); that the dual ledger recovers truth; that declared roots are genuinely independent; that the invariants hold outside the declared bounds; that any real-world evidence process is improved.",
+    "ifFailed": "Recorded as a rejection with the counterexample world preserved. If instead a number moves, the run is incomplete and the moved number is the finding: the documentation-only claim is false."
+  }
+}
