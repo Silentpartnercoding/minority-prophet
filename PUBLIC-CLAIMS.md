@@ -41,7 +41,6 @@ that a deployment identified its roots correctly.
 - Released-implementation comparisons, matched-coverage analysis, and primary-
   source citation verification remain incomplete.
 - EXP009's selective challenger is preregistered but has no confirmatory result.
-- The project makes no claim about cognition or consciousness.
 
 The detailed status is controlled by [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md),
 [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md), and
