@@ -1,0 +1,91 @@
+RUN-20260807-2 — specification repair and re-run of KL-000.
+
+Continue the master loop in the same repository and worktree
+(/Users/james/Development/minority-prophet-first-transmission, branch
+agent/knowledge-ledger-run-20260807-1). Same discipline as RUN-20260807-1:
+run directory, provenance, versioned closing packet, draft PR only, no
+promotion, nothing pushed.
+
+An independent reimplementation of KL-000 was commissioned and has completed.
+It was written in Rust from PROTOCOL.md, preregistration.json and the ten
+fixtures only, with hand-written SHA-256, JSON codec and PRNG. Its report is at
+/Users/james/Development/kl000-independent-spec/impl-rs/FINDINGS.md and its
+result at .../impl-rs/results/kl000-independent-result.json. You may read both.
+Do NOT modify anything under kl000-independent-spec/ — its independence is the
+evidence, and editing it destroys that.
+
+Two operator notes must be read and treated as part of the record:
+/Users/james/Development/kl000-operator-notes/OPERATOR-DISCLOSURE.md
+/Users/james/Development/kl000-operator-notes/NAMING-CONVERGENCE.md
+
+WHAT THE REPRODUCTION ESTABLISHED
+
+Exhaustive phase agrees exactly across both implementations: 176,120 worlds,
+110,840 receipt-producing, 65,280 fail-closed, 0 violations. Randomized phase
+agrees on 0 violations at an equivalent fail-closed rate, but ran a different
+world stream (Python Mersenne Twister vs an independent PRNG), so it is a
+replication, not a reproduction. Say so in the record.
+
+The conclusion distributions DISAGREE on 22,440 of 110,840 exhaustive worlds
+(20.2%): the reference reports supported=19,380 / not_established=49,480; the
+independent reports supported=41,820 / not_established=27,040. The independent
+implementation predicted this before any comparison and quantified it at exactly
+22,440 (its ambiguity A3). No invariant constrains `conclusion`, which is why
+the divergence passed all ten in both.
+
+FOUR SPECIFICATION REPAIRS
+
+All four document behaviour BOTH implementations already have, or resolve an
+ambiguity in favour of the existing reference behaviour. None should change any
+number. Verify that claim rather than assume it.
+
+R1. Tie rule (resolves ambiguity A3). OWNER DECISION, not derived: a claim with
+    equal supporting and opposing roots is `not_established`. Ties are
+    undecided, not supported. Record explicitly that this was decided by the
+    owner and could have gone the other way; the independent implementer's
+    contrary reading was defensible and is preserved in its FINDINGS.md.
+    The reference already implements this. Expect no numeric change.
+
+R2. Non-empty declared scope (finding F8). `complete` must require
+    `declared > 0`. Under the current text a zero-location search ledger has
+    declared==0, searched==0, complete==true, and I2's antecedent is vacuously
+    satisfied — issuing `absent_within_declared_scope` for a world in which
+    nothing was searched. I verified the reference already refuses this
+    ("The declared search space must not be empty") and the Rust implementation
+    refuses it too. Neither was told to by the specification. Write it down.
+
+R3. Location identifier uniqueness (finding F9). Nothing in the invariant set
+    stops duplicate location ids inflating `declared` — the search-ledger mirror
+    of the copy attack I1 prevents on the evidence ledger. Both implementations
+    refuse duplicates; the specification never required it. Add it as an
+    invariant, not a footnote, and state whether it is I11 or an extension of
+    I8.
+
+R4. Canonicalisation and digest scope (finding F10). I4 requires
+    "byte-identical canonical JSON" and I6 a self-verifying contentDigest, and
+    neither is defined: no key ordering, no escaping rule, no statement of which
+    fields the digest covers, and no fixture pins one down. As written, I4 and
+    I6 constrain an implementation against itself rather than against the
+    protocol. Define the canonical form and the digest's covered fields, and add
+    at least one fixture carrying an expected digest so the definition is
+    testable across implementations.
+
+THEN
+
+- Publish these as PROTOCOL v1.1.0. Preserve v1.0.0 unmodified; do not rewrite
+  it. Preregistration for v1.1.0 is a new registration, not an edit.
+- Re-run KL-000 in full against v1.1.0.
+- The numbers MUST be identical to RUN-20260807-1: exhaustive 176,120 /
+  110,840 / 65,280 / 0, randomized 1,000,000 / 0, baselines B1 634,440,
+  B2 26,880, B3 26,208, B4 189,720. Identical numbers are the evidence that
+  these repairs were documentation rather than behaviour change. If any number
+  moves, stop and report it as a finding — a repair changed behaviour and the
+  claim that it merely documented existing conduct is false.
+- Record what the reproduction did and did not establish. Agreed invariants over
+  a conclusion function that was contested until R1 decided it. Not "verified".
+- KL-000's next gate after this is the independent implementation re-running
+  against v1.1.0. That is a separate commission; do not attempt it yourself and
+  do not edit impl-rs to make it agree.
+
+Close the run with the full versioned packet as before. Nothing is pushed and
+nothing is promoted without the owner.
