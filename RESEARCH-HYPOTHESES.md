@@ -34,6 +34,12 @@ shared control, and (e) unknown control relationships. Compare head count,
 signature-only validation, identity-distinct counting, and control-domain
 collapse under identical evidence and abstention budgets.
 
+**Baselines:** Head count; signature-only validation; identity-distinct
+counting; scalar validator-score mean and median; median with outlier clipping;
+and control-domain-aware evidence-root aggregation. The score baselines test
+whether robust aggregation alone can resist correlated or commonly controlled
+validators without independently supported control provenance.
+
 **Metrics:** False-independent-root acceptance rate, retention of supported
 independent roots, decision error, abstention rate, and the change in root mass
 caused solely by renaming identities or rotating keys.

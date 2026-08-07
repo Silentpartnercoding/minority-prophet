@@ -22,5 +22,7 @@ test("server-renders the Minority Prophet research interface", async () => {
   assert.match(html, /THE CENTRAL BENCHMARK/);
   assert.match(html, /EPISTEMIC OBSERVATORY/);
   assert.match(html, /DEMONSTRATION WORLD/);
+  assert.match(html, /Evidence is not/);
+  assert.match(html, /Evidence assessment never grants authority/);
   assert.doesNotMatch(html, /Starter Project|react-loading-skeleton/i);
 });
