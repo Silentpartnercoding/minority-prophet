@@ -76,7 +76,7 @@ applies to **all three** `PROTOCOL-COMMIT*.txt` files.
 | 1 | Publish base branch or cherry-pick onto `github/main` (unchanged from run 1) | the draft PR |
 | 2 | **Commission IND-20260807-3** under the registered packaging requirements (BL-020; manifest, per-file screening in both number formats, resolvable paths, ideally a reference-free machine) | KL-000's next gate, KL-011, and the `verified-independent` promotion decision |
 | 3 | v1.3.0 bundle (BL-021) — **after** #2 returns. Its I12 component is a **committed gate** (owner direction at this run's close; evidence in STATUS `committedGates`), not an optional item | specification loop |
-| 4 | Ratify R5.2 (margin absolute) — decided this run per the run instruction as an owner-style decision; the contrary reading is preserved and reversal before IND-20260807-3 would be cheap, after it expensive | none immediately |
+| 4 | ~~Ratify R5.2 (margin absolute)~~ **RESOLVED post-close: owner ratified absolute** (`RATIFICATION-R5.2.md`). The IND-20260807-3 target is fully owner-endorsed and frozen | — |
 | 5 | Confirm nothing is promoted yet | — |
 
 Nothing in `EXPERIMENT-REGISTRY.json`, `CANONICAL-RECORDS.md`,
