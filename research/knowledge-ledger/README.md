@@ -1,4 +1,4 @@
-# Knowledge-ledger experimental program
+# Knowledge-ledger research program
 
 Status: **seeded research program.** Only artifacts listed as completed in the
 canonical registry may be described as results. Plans, fixtures, expected
@@ -6,13 +6,10 @@ outputs, simulations, and failed runs are not results.
 
 ## Start here
 
-1. [`MASTER-LOOP-PROMPT.md`](MASTER-LOOP-PROMPT.md) is the complete Claude Code
-   Fable 5 execution prompt.
-2. [`EXPERIMENT-CONTRACT.md`](EXPERIMENT-CONTRACT.md) defines the rules every
-   kernel must satisfy.
-3. [`kernels.json`](kernels.json) is the machine-readable kernel registry.
-4. [`first-transaction/README.md`](first-transaction/README.md) defines the
-   interoperability milestone analogous to a first Bitcoin transaction.
+1. [`RESEARCH-METHOD.md`](RESEARCH-METHOD.md) defines the public method and claim rules.
+2. [`EXPERIMENT-REGISTRY.json`](EXPERIMENT-REGISTRY.json) is the machine-readable experiment registry.
+3. [`experiments/`](experiments/) contains versioned protocols, statuses, and results.
+4. [`interoperability/`](interoperability/) contains reference conformance fixtures and cross-system acceptance criteria.
 5. `knowledge_ledger.transaction` is a deliberately small reference evaluator.
 
 ## Program invariants
@@ -30,7 +27,7 @@ outputs, simulations, and failed runs are not results.
 
 ## Current milestone
 
-`transaction-zero` is a local conformance artifact. It demonstrates that four
+`reference-conformance-001` is a local conformance artifact. It demonstrates that four
 searched locations out of five produce `not_established`, even when several
-reports agree. It is not the cross-system first transaction and is not evidence
+reports agree. It is not a cross-system result and is not evidence
 that the method improves real-world truth recovery.
