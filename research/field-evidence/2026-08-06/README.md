@@ -25,7 +25,9 @@ cd research/field-evidence/2026-08-06 && shasum -a 256 -c SHA256SUMS
 
 ## Findings
 
-Claim labels below distinguish what the artifacts establish.
+An **invariant** is a rule that must remain true when allowed changes occur.
+Here, the key invariant is simple: repeated records from one source must not
+become independent witnesses.
 
 ### F1 — The run exposes root identity as an operational choice
 
@@ -35,9 +37,8 @@ Claim labels below distinguish what the artifacts establish.
 - **Derived:** Six supporting records for `claim-009` count as one root when
   keyed by observer, but six roots when keyed by event. The resulting margin
   changes from 1 to 6 without changing any claim value.
-- **Inferred:** A deployment must define and defend its root-identity rule
-  before the theorem's margin can carry operational meaning. This is a field
-  instance of the repository's existing U1 limitation, not a resolution of U1.
+- **Inferred:** Root identity must be defined and defended before margin has
+  operational meaning. This demonstrates U1; it does not resolve it.
 
 ### F2 — Partial correlation is not representable
 
@@ -45,17 +46,16 @@ Claim labels below distinguish what the artifacts establish.
   relay and control plane.
 - **Derived:** The current binary root model can collapse them to one root or
   treat them as two roots.
-- **Inferred:** It cannot express an intermediate independence value. Any
-  fractional weighting would require new semantics and proofs; this packet does
-  not introduce them.
+- **Inferred:** Intermediate dependence needs new semantics and proofs; this
+  packet introduces neither.
 
 ### F3 — Observer concentration is visible and decision-relevant
 
 - **Read:** One observer supplies 8 of 17 claim groups; another supplies all six
   records in the repeated-record case.
 - **Derived:** Repetition does not improve the observer-keyed margin.
-- **Inferred:** Claim count is not evidence diversity. Operational reporting
-  should expose root concentration alongside verdicts.
+- **Inferred:** Claim count is not evidence diversity. Verdicts should report
+  root concentration.
 
 ### F4 — Attack-cost units must remain separate
 

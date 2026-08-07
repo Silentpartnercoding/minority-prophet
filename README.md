@@ -1,12 +1,23 @@
 # Minority Prophet
 
-**A benchmark for evidence-aware aggregation.**
+**Count independent evidence, not repeated claims.**
 
 > **Research status:** EXP001–EXP002 are canonical derived records; EXP003R–EXP006R and EXP008R are canonical archived-implementation replays; EXP007R is canonically incomplete; EXP007A is the canonical synthetic adversary completion. None establishes real-world provenance recovery. See the registry and evidence-alignment ledger.
 
-Minority Prophet asks a precise question: can an aggregation method recover independently grounded truth when an overwhelming majority repeats a false belief?
+Minority Prophet asks whether grounded evidence can survive an overwhelming
+copied majority.
 
-This foundational release contains one public benchmark, two baseline aggregators, an evidence-lineage schema, research foundations, and a small public dashboard.
+## Core invariant
+
+**A recorded copy must not gain a new vote.** In plain language: photocopying one
+witness statement does not create more witnesses.
+
+This holds only when evidence roots cannot be freely forged, claims do not cross
+between opposing roots, and the surviving root margin is large enough. See
+[`PUBLIC-CLAIMS.md`](PUBLIC-CLAIMS.md) for the shortest supported claim set.
+
+The repository contains the benchmark, formal model, canonical record registry,
+root-issuance reference, neutral evidence contract, tests, and dashboard.
 
 ## Minority Prophet Test v0.1
 
@@ -27,11 +38,10 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 
 - [`papers/minority-prophet-v1.0.1.md`](papers/minority-prophet-v1.0.1.md)
   — corrected pre-canonical paper; it supersedes v1.0 without deleting it.
-- [`formal/PROOFS.md`](formal/PROOFS.md),
-  [`formal/MinorityProphetV2.lean`](formal/MinorityProphetV2.lean) (an
-  uncompiled Lean proof candidate pending compiler ratification), and
+- [`formal/PROOFS.md`](formal/PROOFS.md), [`formal/lean/`](formal/lean/) (pinned,
+  compiling Lean 4 proofs), and
   [`verification/r1_degradation_curve.py`](verification/r1_degradation_curve.py)
-  — proof text and verification-track computation, not canonical experiments.
+  — formal and verification tracks, not canonical experiments.
 
 - [`FOUNDATIONS.md`](FOUNDATIONS.md) — problem, philosophy, program, and mathematical framing
 - [`ROADMAP.md`](ROADMAP.md) — v0.1 acceptance criteria and immediate next steps
@@ -45,16 +55,13 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`experiments/resolved_weather_v01.py`](experiments/resolved_weather_v01.py) — Experiment 002 acquisition and scoring runner
 - [`provenance/`](provenance/) — evidence graph implementation and JSON Schema
 - [`results/resolved-weather-v0.1.manifest.json`](results/resolved-weather-v0.1.manifest.json) — canonical derived-record hashes and reproducibility boundary
+- [`research/field-evidence/2026-08-06/`](research/field-evidence/2026-08-06/) — sanitized field observation showing why root identity and dependency matter
 - [Minority Prophet Gate](https://github.com/Silentpartnercoding/minority-prophet-gate) — reference implementation of evidence-root aggregation
 - [`website/`](website/) and [`app/`](app/) — dashboard specification and implementation
 
 ## Research rules
 
 Every hypothesis states a question, null hypothesis, metric, failure condition, and success condition. Consensus is never treated as truth; confidence is never treated as correctness; correlation is never treated as independence.
-
-## Public/private boundary
-
-This repository is the public foundational surface: benchmark, generator, baselines, schema, metrics, tests, and explanatory interface. It contains no private engine or production runtime.
 
 ## Pilot result
 
