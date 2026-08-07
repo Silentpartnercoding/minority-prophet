@@ -185,6 +185,13 @@ edge_confidence, inferred  lineage schema extensions, backward compatible
 - No time: expiry and revocation are outside every theorem.
 - R1's cost mechanism is imported from the attestation layer and is outside these
   theorems' scope — the theorems quietly become vacuous if R1 or R1.4 fails.
+- **Absence claims need an enumerated search space.** R1–R3 constrain the roots
+  behind a claim, not whether those roots covered the places a counterexample
+  could be. A universal negative is admissible only if the locations in scope are
+  stated and coverage over them reported; otherwise the supported conclusion is
+  “not established”, which is weaker than “absent”. Margin does not substitute:
+  it measures corroboration among the roots you have, not completeness of the
+  search that produced them.
 - Canonical replication of EXP003–006 findings is recorded in
   `CANONICAL-RECORDS.md` and the replication protocol under `experiments/`.
 
