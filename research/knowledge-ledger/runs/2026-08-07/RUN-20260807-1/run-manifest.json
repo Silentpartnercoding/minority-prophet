@@ -1,0 +1,120 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-1",
+  "startUtc": "2026-08-07T17:30:04Z",
+  "endUtc": "2026-08-07T18:20:59Z",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "887bd2f",
+    "headCommit": "8d1bc319985533ca6fef3001e836c823d580d333",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Opus 5 (1M context)",
+    "id": "claude-opus-5[1m]",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "The agent reports its own model identity from its runtime context and cannot verify it independently. Per constraint PROV-004 this field is unverified. It is recorded because the run provenance spec requires it, not because the agent can attest to it."
+  },
+  "promptCaptureMethod": "operator-file",
+  "promptCaptureNote": "Authoritative bytes supplied by the operator, digested before the session began. The agent's own transcription differed by 4 bytes and is retained as PROMPT-TRANSCRIBED-SUPERSEDED.txt. See PROV-004.",
+  "inputs": {
+    "prompt": "sha256:729bfb70f39916e320f6bcb248febb273e4a1d832f6de9356b0e34940b2f5ccb",
+    "promptSuperseded": "sha256:8478639c1e90dcecd0ca12cffbf3462503124e40967fbefc3cbaecc5a693024a",
+    "promptV3": "sha256:4bf92221f371cf55b67112f885d4c0b2496843a0ba19acc4d403d25fd117173f (operator-stated; NOT read by this run; governs the next run)"
+  },
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "not used by any experiment",
+    "spend": 0
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "KL-000/results/kl000-confirmatory.json",
+      "status": "confirmatory",
+      "digest": "sha256:0b73541a49bc4ec30c0e756d1d5c100270d857cf29e9a00dd1168b7a1d5ae1b0"
+    },
+    {
+      "artifact": "KL-000/results/kl000-reproduction.json",
+      "status": "confirmatory",
+      "digest": "sha256:33cf35e9828ff4ea42fb0c3951012534fc2735690ee84e3d09b17ef533923206",
+      "note": "determinism and base independence; NOT independent reproduction -- same author, same machine, same CPython version"
+    },
+    {
+      "artifact": "KL-000/results/kl000-effective-sample.json",
+      "status": "confirmatory",
+      "digest": "sha256:08ecd9f28c296e7755e47064b51d80082500d16881a51d279faeb982be1cbabf"
+    },
+    {
+      "artifact": "KL-000/results/superseded/",
+      "status": "failed",
+      "note": "first execution, superseded for under-reporting; retained under governing principle 9"
+    },
+    {
+      "artifact": "KL-000/fixtures/ (C01-C10)",
+      "status": "fixture"
+    },
+    {
+      "artifact": "KL-000/preregistration.json",
+      "status": "canonical",
+      "digest": "sha256:5204e6400e0b90d5ed1f127c548050e4469ad65739b6213e21976f6446bcaaa5",
+      "note": "canonical as a registered protocol, not as a result"
+    },
+    {
+      "artifact": "interoperability/reference-receipt.json",
+      "status": "fixture",
+      "note": "pre-existing; reproduced byte-identically during orientation; NOT promoted and NOT a cross-system result"
+    },
+    {
+      "artifact": "KL-001..KL-011",
+      "status": "incomplete",
+      "note": "seeded; no results; exact next gates recorded"
+    },
+    {
+      "artifact": "KL-011 cross-system transaction",
+      "status": "incomplete",
+      "note": "NOT REACHED -- never eligible; requires two independent implementations"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; neither title claimed nor claimable by this run"
+    },
+    {
+      "artifact": "durable-history anchor",
+      "status": "incomplete",
+      "note": "not_attempted; ineligible until every KL-011 gate passes"
+    },
+    {
+      "artifact": "four-layer synthesis chapter",
+      "status": "incomplete",
+      "note": "deferred, not omitted; 2 of its 5 negative controls require an anchoring capability correctly gated off, and writing it now would assert the separation rather than test it"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "74 passed",
+    "kl000Pytest": "54 passed",
+    "nodeTest": "1 passed after npm ci",
+    "note": "repo root was 73 before this run; one snapshot test was replaced by two invariant tests"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "operator supplied authoritative prompt bytes; agent transcription superseded (PROV-004)",
+    "operator corrected exact unpopulated-field counts (11 null + 3 empty = 14 of 22)",
+    "operator supplied the deleted-remote mechanism behind the stale base measurement (PROV-005)",
+    "operator identified the agent misattributing a state change to its own measurement error (PROV-006)",
+    "operator required the protocolCommit sidecar decision be declared, not merely practised (M1)",
+    "operator required inline correction markers so corrections travel with quoted claims",
+    "operator review of the first confirmatory result found the baseline subsample, the undifferentiated fail-closed counter, and the ambiguous stop condition",
+    "operator identified the amended results commit and the preservation-standard inconsistency (PROV-007, M6)"
+  ],
+  "interventionsNote": "Every provenance defect in this run was found by the operator, not by the agent. A run that reports its own provenance is exactly as reliable as a system that counts its own copies.",
+  "firstTransactionGate": "NOT REACHED"
+}
