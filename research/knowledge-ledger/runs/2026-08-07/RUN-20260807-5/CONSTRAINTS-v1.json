@@ -1,0 +1,29 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-5",
+  "version": 1,
+  "note": "The gate run. No new scientific defect surfaced; the constraints below are operational.",
+  "constraints": [
+    {
+      "id": "VER-101",
+      "category": "engineering",
+      "severity": "low",
+      "title": "The permanent checker now carries I12, so REPRODUCE.md's whole-document equality check is stale for fresh reproductions",
+      "statement": "check_world gained I12 permanently. Re-running any older registration still reproduces every registered number (B5 records zero I12 violations; baseline preserved totals are the I1-I11 sums), but result documents gain two baseline fields (i12Violations, totalViolationsNote), so the v1.0.0 REPRODUCE.md one-liner comparing whole documents no longer holds against a fresh reproduction.",
+      "remediation": "Documented in REPRODUCE-v1.3.0.md's version-compatibility note and in HANDOFF known-stale items. Field-level comparisons in the versioned REPRODUCE documents are the operative checks. The registered v1.0.0 document itself is not edited.",
+      "affectsConclusions": false,
+      "discoveredDuring": "implementation",
+      "status": "documented"
+    },
+    {
+      "id": "PROV-011",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the fifth consecutive run",
+      "statement": "Unchanged class (PROV-004/008/009/010). No scientific number derives from the prompt: the gate executed was registered in STATUS committedGates before this run existed, and every expected value was a prior measurement.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program; backlog BL-023"
+    }
+  ]
+}

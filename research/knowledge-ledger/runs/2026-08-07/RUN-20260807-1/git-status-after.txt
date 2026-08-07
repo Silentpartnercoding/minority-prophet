@@ -1,0 +1,6 @@
+?? research/knowledge-ledger/runs/2026-08-07/RUN-20260807-1/DRAFT-RUN-REPORT-v1.md
+?? research/knowledge-ledger/runs/2026-08-07/RUN-20260807-1/END-UTC.txt
+?? research/knowledge-ledger/runs/2026-08-07/RUN-20260807-1/KERNEL-STATUS-SNAPSHOT-v1.json
+?? research/knowledge-ledger/runs/2026-08-07/RUN-20260807-1/NEXT-RUN-PROPOSAL-v1.md
+?? research/knowledge-ledger/runs/2026-08-07/RUN-20260807-1/RESEARCH-BACKLOG-v1.json
+?? research/knowledge-ledger/runs/2026-08-07/RUN-20260807-1/git-status-after.txt

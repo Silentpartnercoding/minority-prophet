@@ -1,0 +1,8 @@
+fixture controls: 11 passed: True mismatched: []
+C11: {'control': 'C11', 'differences': [], 'fixture': 'c11-canonical-digest.json', 'passed': True}
+result: passed | invalidationReasons: [] | protocolVersion: 1.1.0 | evaluator matches prereg: True
+exhaustive: {'worldsChecked': 176120, 'receiptProducingWorlds': 110840, 'failClosedRejections': 65280, 'totalViolations': 0}
+randomized: {'worldsChecked': 1000000, 'receiptProducingWorlds': 243381, 'failClosedRejections': 756619, 'totalViolations': 0}
+baselines: {'B1-head-count': 634440, 'B2-source-count': 26880, 'B3-evidence-without-coverage': 26208, 'B4-search-without-collapse': 189720}
+
+IDENTICAL -- every RUN-20260807-1 number reproduced and every registered prediction met

@@ -1,0 +1,102 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-3",
+  "version": 1,
+  "note": "Written as constraints were discovered. Numbering continues the program-wide series.",
+  "constraints": [
+    {
+      "id": "LEAK-101",
+      "category": "provenance",
+      "severity": "high",
+      "title": "The v1.1.0 commission package leaked every screened value, and the leak's origin is the registration itself",
+      "statement": "kl000-v110-spec/PROTOCOL.md -- byte-identical to the registered PROTOCOL-v1.1.0.md -- carries the preregistered-prediction table and with it all eight values the operator's v1.0.0 screening list was written to withhold, comma-formatted. The redaction was correctly applied to preregistration.json and defeated by the file beside it. A prediction table is scientifically necessary in a registration (it makes the documentation-only claim falsifiable) and fatal in a commission package; one file served both roles.",
+      "evidence": {
+        "disclosure": "FINDINGS-v110.md section 0, disclosed by the implementer before comparison",
+        "verified": "all eight values present in PROTOCOL-v1.1.0.md lines 26-33, comma-formatted; grep reproduced this run (a first comma-less grep against the wrong directory found nothing -- both scoping errors recorded in ORIENTATION.md)",
+        "packageDigests": "PROTOCOL.md 2ce181f3... (== registered), preregistration.json 6a95d024... (redacted variant of e9458f71...)"
+      },
+      "impact": "The exhaustive conclusion-distribution agreement line of IND-20260807-2 was not blind. Mitigations, both verified: derivable from IND-20260807-1's published output plus R1's stated rule (41,820-22,440=19,380; 27,040+22,440=49,480), and recomputed from the worlds by the implementer. The conformance claim is qualified, not void, not clean.",
+      "whyItGeneralises": "This is the v1.0.0 artifacts-list leak recurring one file over, in the version written to correct it, and strictly larger: v1.0.0 leaked structure, v1.1.0 leaked answers. A screening check scoped to the wrong file passes while the leak ships. Registration documents and commission packages are different artifacts with contradictory requirements and must be derived, not copied.",
+      "remediation": "Registered in v1.2.0 itself (expectedIdenticalToRun1's packaging note and the protocol's packaging section) and in STATUS's next-gate instructions: packages derive from the registration by REMOVING the prediction table and expectedIdenticalToRun1; screening greps run against every shipped file in comma and comma-less formats; backlog BL-019 upgraded from proposal to requirement.",
+      "affectsConclusions": true,
+      "affectsConclusionsReason": "Qualifies (does not void) the cross-implementation conformance claim; the qualification and both mitigations are stated wherever the claim is made.",
+      "discoveredDuring": "reading FINDINGS-v110.md; verified and traced this run",
+      "status": "recorded; remediation registered for IND-20260807-3"
+    },
+    {
+      "id": "SPEC-108",
+      "category": "scientific",
+      "severity": "high",
+      "title": "A digest pins a codec AND an object; v1.1.0 registered only the codec (IND finding G2)",
+      "statement": "C11's digest could not be reproduced by a conforming implementation because 279 of its 703 hashed bytes -- the values of schema, reason, limits -- and the receipt's member list were registered nowhere. C11 as registered tested whether an implementation happens to emit the reference's receipt schema, not whether its canonicalisation conforms.",
+      "evidence": {
+        "roundTrip": "the implementer's canonical bytes are byte-identical through the protocol's own stated realisation (verified); its digest recomputes from its own bytes (verified)",
+        "byteBudget": "703 total / 424 package-stated / 279 unregistered = 39.7% (recomputed exactly)",
+        "memberSets": "reference: nine members; implementation: seven including receiptVersion -- two conformant codecs, two objects, two digests"
+      },
+      "remediation": "Repaired by v1.2.0 R5.1: closed member list, types, exact values, formulas, and the deliberate all-members digest-coverage decision. C11 re-pinned with its full canonical string so mismatches localise to bytes.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "No prior claim asserted cross-implementation digest agreement; the record already said I4/I6 were untested across implementations.",
+      "discoveredDuring": "IND-20260807-2",
+      "status": "repaired-in-v1.2.0; tested by IND-20260807-3"
+    },
+    {
+      "id": "SPEC-109",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "v1.1.0 contradicted itself on the margin sign, and the contradiction was load-bearing for a third of receipts (IND finding G1)",
+      "statement": "canonicalForm.numbers asserted receipts contain only non-negative integers -- a property only the absolute-margin reading has -- while openFindings listed the sign as open (F5) and C11 was declared sign-agnostic precisely to avoid resolving it. Under the signed reading, 38,760 exhaustive receipts (35.0%) had no defined canonical form, leaving I4/I6 undefined for them.",
+      "evidence": {"verified": "0 negative margins in the reference across all 110,840 receipts; 38,760 under the signed reading -- both recomputed, matching the implementer's counts exactly"},
+      "remediation": "Repaired by v1.2.0 R5.2: margin is absolute, decided as a decision with the signed reading recorded as defensible and rejected with reasons. C12 pins it on a strict-minority world.",
+      "affectsConclusions": false,
+      "discoveredDuring": "IND-20260807-2",
+      "status": "repaired-in-v1.2.0"
+    },
+    {
+      "id": "SPEC-110",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "The conclusion function has no enforcing invariant; its detection surface is one fixture (IND finding G4)",
+      "statement": "An evaluator implementing the inverted (existential) presence reading changes 22,440 exhaustive conclusions, violates zero of the eleven hard invariants over the complete enumeration, and is caught only by fixture C11. conclusionFunction is registered prose plus one world; the structural defect that produced the original divergence is intact, only the specific disagreement was resolved.",
+      "evidence": {"verified": "this run, full enumeration through check_world: 22,440 / 0 violations / C11-only. First attempt used a blanket inversion (55,420 / 0 / C01+C02+C11) -- the wrong ablation, preserved with its correction in logs/g4-inverted-r1-ablation.txt; both agree on zero violations"},
+      "remediation": "Not repaired (owner list was exactly R5.1/R5.2). I12 -- conclusion == conclusionFunction(world), subsuming I2's and I5's conclusion clauses -- was recorded as a v1.3.0 candidate at registration and PROMOTED TO A COMMITTED GATE by owner direction at run close, with evidence and exact pass condition attached in STATUS.json committedGates: a deferred gate and an optional idea must not look the same in the record. The registered v1.2.0 documents' 'candidate' wording is frozen and superseded without edit.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "Both existing implementations demonstrably implement the registered function; the constraint is about power against a third.",
+      "discoveredDuring": "IND-20260807-2; verified this run",
+      "status": "recorded-open; COMMITTED v1.3.0 gate (sequenced after IND-20260807-3)"
+    },
+    {
+      "id": "SPEC-111",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "v1.1.0's 'repairs are exactly R1-R4' was false: conclusionFunction silently closed two further ambiguities (IND finding G5)",
+      "statement": "conclusionFunction.absence closed F7/A1 (4 worlds) and conclusionFunction.presence closed F6/A2 (19,152 worlds) -- neither listed as a repair. No number moved between the two existing implementations because both already read those clauses identically, but a third implementation with the other defensible A2 reading would move 19,152 worlds on adopting v1.1.0, attributable to no listed repair. The documentation-only claim was tested against one implementation and stated as if against all.",
+      "evidence": {"source": "FINDINGS-v110.md G5; surfaces from IND-20260807-1's ambiguity table"},
+      "remediation": "Acknowledged in PROTOCOL-v1.2.0.md's corrections section; v1.2.0's own sub-decision list (F4 formula, sorted lists, claim echo) is stated exhaustively per the same lesson.",
+      "affectsConclusions": false,
+      "discoveredDuring": "IND-20260807-2",
+      "status": "recorded; correction published in v1.2.0"
+    },
+    {
+      "id": "REC-102",
+      "category": "knowledge",
+      "severity": "low",
+      "title": "Two findings fell out of the openFindings ledger between versions, and a registered path did not resolve in the shipped package (IND finding G6)",
+      "statement": "F15 and the I9-zero-exercise fact appeared in IND-20260807-1's findings, were absent from v1.1.0's openFindings, and thereby left the record without being repaired or rejected. The package shipped C11 at fixtures/c11-canonical-digest.json while every registered reference says fixtures/v1.1.0/. The uncertainty text said 'eight of the invariants' where the true partition is ten-on-receipts / I3-on-all / I9-on-none.",
+      "remediation": "F15 and I9-coverage reinstated in v1.2.0's openFindings; uncertainty wording corrected; resolvable-paths requirement added to the next-gate packaging instructions. A finding leaves the ledger only by repair or by recorded rejection, never by omission.",
+      "affectsConclusions": false,
+      "discoveredDuring": "IND-20260807-2",
+      "status": "remediated-in-v1.2.0"
+    },
+    {
+      "id": "PROV-009",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the third consecutive run",
+      "statement": "No operator-side prompt artifact existed; inputs/PROMPT.txt authenticates the transcription only. Marked unverified per PROV-004/PROV-008; the durable fix remains harness-side capture, which no run can perform for itself.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program"
+    }
+  ]
+}

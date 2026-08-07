@@ -1,0 +1,8 @@
+python_executable=/Users/james/Development/.mp-runner-venv/bin/python
+Python 3.14.6
+pytest=pytest 9.1.1
+node=v24.18.1
+npm=11.16.0
+git=git version 2.50.1 (Apple Git-155)
+uname=Darwin Jamess-MacBook-Air.local 25.4.0 Darwin Kernel Version 25.4.0: Thu Mar 19 19:31:09 PDT 2026; root:xnu-12377.101.15~1/RELEASE_ARM64_T8132 arm64
+sw_vers=26.4.1

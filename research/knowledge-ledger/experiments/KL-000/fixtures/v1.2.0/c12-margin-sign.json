@@ -1,0 +1,80 @@
+{
+  "control": "C12",
+  "requirement": "margin sign pinned across implementations: opposing roots strictly outnumber supporting, margin is the ABSOLUTE difference (R5.2), and the receipt has a defined canonical form",
+  "protocolVersion": "1.2.0",
+  "note": "New in v1.2.0. One supporting root against two distinct opposing roots (one opposing root duplicated, so the collapse arithmetic is also live). Under R5.2 margin = |1 - 2| = 1 and the canonical form exists; under the rejected signed reading margin would be -1 and the receipt would have no canonical form under canonicalForm.numbers. This is the distinguishing world C11 was deliberately built not to be. conversionsToReverse = floor(1/2) + 1 = 1 per the formula registered in receiptObject.",
+  "input": {
+    "transactionId": "kl000-c12",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the declared components — margin-sign pin."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "unavailable"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r2",
+          "side": "oppose"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r3",
+          "side": "oppose"
+        },
+        {
+          "id": "rec-4",
+          "rootId": "r3",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "not_established",
+    "search": {
+      "declared": 2,
+      "searched": 1,
+      "unavailable": 1,
+      "complete": false
+    },
+    "evidence": {
+      "records": 4,
+      "distinctRoots": 3,
+      "repeatedRecordsCollapsed": 1,
+      "supportingRoots": [
+        "r1"
+      ],
+      "opposingRoots": [
+        "r2",
+        "r3"
+      ],
+      "margin": 1,
+      "conversionsToReverse": 1
+    },
+    "reason": "The conclusion follows only from the declared root counts.",
+    "schema": "minority-prophet.knowledge-transaction.v0.1",
+    "limits": [
+      "Root identity and independence are declared operationally, not proved semantically.",
+      "This result applies only to the declared search space."
+    ],
+    "canonicalUnsignedForm": "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components — margin-sign pin.\",\"type\":\"presence\"},\"conclusion\":\"not_established\",\"evidence\":{\"conversionsToReverse\":1,\"distinctRoots\":3,\"margin\":1,\"opposingRoots\":[\"r2\",\"r3\"],\"records\":4,\"repeatedRecordsCollapsed\":1,\"supportingRoots\":[\"r1\"]},\"limits\":[\"Root identity and independence are declared operationally, not proved semantically.\",\"This result applies only to the declared search space.\"],\"reason\":\"The conclusion follows only from the declared root counts.\",\"schema\":\"minority-prophet.knowledge-transaction.v0.1\",\"search\":{\"complete\":false,\"declared\":2,\"searched\":1,\"unavailable\":1},\"transactionId\":\"kl000-c12\"}",
+    "contentDigest": "sha256:61000a9b978222ce227601621167d8d66109ba2a0fea13f6431f7830b0aa3b6e"
+  }
+}

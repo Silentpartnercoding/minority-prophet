@@ -1,0 +1,307 @@
+{
+  "schema": "minority-prophet.preregistration.v0.2",
+  "experimentId": "KL-000",
+  "protocolVersion": "1.2.0",
+  "status": "preregistered",
+  "registrationNote": "New registration, not an edit. v1.0.0 (frozen at c977347) and v1.1.0 (frozen at 1a8256f) are preserved byte-for-byte and continue to govern RUN-20260807-1, RUN-20260807-2, IND-20260807-1 and IND-20260807-2. v1.2.0 registers the receipt object (R5.1) and the margin sign (R5.2) -- both serialisation-level facts the reference already exhibits. The evaluator under test is bit-identical to v1.0.0's.",
+
+  "question": "Can the evaluator prevent recorded copies from adding evidence and incomplete coverage from proving absence -- and do R5.1/R5.2 register the receipt the reference already emits, byte for byte?",
+  "null": "At least one recorded copy changes evidential mass, or one incomplete search yields absence, or a v1.2.0 repair moves any count, any conclusion, or C11's pinned digest.",
+  "target": "Zero violations; every value in expectedIdenticalToRun1 reproduced exactly, including C11's unchanged contentDigest.",
+
+  "repairs": [
+    {
+      "id": "R5.1",
+      "title": "register the receipt object",
+      "resolves": "IND-20260807-2 finding G2: R4 defined the canonical form and digest scope but not the receipt object; 279 of C11's 703 hashed bytes (schema, reason, limits) were stated nowhere, so no conforming implementation could compute the digest",
+      "statement": "See receiptObject. The member list is closed (exactly ten top-level members; extra members such as receiptVersion are nonconformant), every member's type is stated, and schema, reason and limits have exact registered values. Digest coverage decision: the digest covers ALL nine non-contentDigest members -- everything is specified, nothing is excluded. Shrinking the scope to the previously-pinned five members was rejected because it would leave reason and limits tamperable without digest failure, which is what I6 exists to prevent.",
+      "decidedBy": "owner-directed repair; contents verified as existing reference behaviour before registration",
+      "ownerDecision": false,
+      "subDecisionsNote": "Stated per the G5 lesson (no silent repairs). Registering conversionsToReverse's formula (floor(margin/2)+1 if margin>0 else 1) decides open finding F4 in favour of existing reference behaviour, including the empty-ledger value 1 that IND-20260807-1 argued is questionable; the objection is preserved and the value registered as-is for compatibility with every receipt both implementations have emitted. Sorted root lists and claim-as-verbatim-echo are likewise promoted from implicit behaviour to specification.",
+      "expectedNumericChange": "none, including no digest change",
+      "verifiedExistingBehaviour": "reference receipt members enumerated (exactly the ten registered); reason strings and limits read from transaction.py:58-96; C11's digest recomputed from the registered object equals the v1.1.0 pin"
+    },
+    {
+      "id": "R5.2",
+      "title": "margin is the absolute difference",
+      "resolves": "IND-20260807-2 finding G1: v1.1.0's canonicalForm.numbers asserted receipts contain only non-negative integers while openFindings listed the margin sign as open (F5) and C11 was declared sign-agnostic -- a self-contradiction load-bearing for 38,760 exhaustive receipts under the signed reading",
+      "statement": "margin = abs(count(supportingRoots) - count(opposingRoots)). Never negative. canonicalForm.numbers is therefore true with no other change.",
+      "decidedBy": "owner-style decision, recommended and adopted by RUN-20260807-3 under the run instruction; a decision, not a derivation -- it could defensibly have gone the other way",
+      "ownerDecision": true,
+      "ownerDecisionNote": "The rejected reading -- signed margin -- carries strictly more information (which side leads) and was the independent implementation's defensible choice in IND-20260807-1 (its F5), preserved in its FINDINGS.md. Rejected because: the reference has emitted absolute margins in every receipt of every run (verified: 0 negative margins across all 110,840 exhaustive receipts); the sign is recoverable from the two root lists the receipt already carries; and signed margins would require negative-integer serialisation rules and leave 38,760 exhaustive receipts without a canonical form under the current numbers clause. Closes F5; C11's sign-agnosticism is moot; C12 pins the decision on a strict-minority world.",
+      "expectedNumericChange": "none",
+      "verifiedExistingBehaviour": "full 110,840-receipt enumeration: zero negative margins; 38,760 would be negative under the rejected reading (matches the independent implementation's count exactly)"
+    }
+  ],
+
+  "receiptObject": {
+    "memberList": ["schema", "transactionId", "claim", "search", "evidence", "conclusion", "reason", "limits", "contentDigest"],
+    "closedWorld": "A conforming receipt has exactly these top-level members and no others. A receipt carrying any additional member (e.g. receiptVersion) does not conform to v1.2.0.",
+    "members": {
+      "schema": {"type": "string", "value": "minority-prophet.knowledge-transaction.v0.1"},
+      "transactionId": {"type": "string", "value": "echoed verbatim from the input payload"},
+      "claim": {"type": "object", "value": "exactly {type, proposition}, both echoed verbatim from the input payload"},
+      "search": {"type": "object", "value": "exactly {declared, searched, unavailable, complete}; three non-negative integers per I8 and one boolean"},
+      "evidence": {
+        "type": "object",
+        "value": "exactly {records, distinctRoots, repeatedRecordsCollapsed, supportingRoots, opposingRoots, margin, conversionsToReverse}",
+        "records": "non-negative integer, count of input records (I10)",
+        "distinctRoots": "non-negative integer, count of distinct rootIds (I10)",
+        "repeatedRecordsCollapsed": "non-negative integer, records - distinctRoots (I10)",
+        "supportingRoots": "array of distinct rootId strings, sorted ascending by Unicode code point",
+        "opposingRoots": "array of distinct rootId strings, sorted ascending by Unicode code point",
+        "margin": "non-negative integer, abs(count(supportingRoots) - count(opposingRoots)) -- R5.2",
+        "conversionsToReverse": "positive integer, floor(margin/2) + 1 when margin > 0, else 1 -- registers finding F4's formula; the empty-ledger value 1 is registered as-is with IND-20260807-1's objection preserved"
+      },
+      "conclusion": {"type": "string", "value": "one of present | supported | not_established | absent_within_declared_scope, per conclusionFunction"},
+      "reason": {
+        "type": "string",
+        "value": "exactly one of four registered strings, by branch",
+        "branches": {
+          "absenceWithOpposingRoot": "At least one distinct counterexample root was recorded.",
+          "absenceCompleteNoOpposing": "Every declared location was searched and no counterexample root was recorded.",
+          "absenceOtherwise": "The declared search space was not exhaustively searched.",
+          "presenceAlways": "The conclusion follows only from the declared root counts."
+        }
+      },
+      "limits": {
+        "type": "array",
+        "value": [
+          "Root identity and independence are declared operationally, not proved semantically.",
+          "This result applies only to the declared search space."
+        ]
+      },
+      "contentDigest": {"type": "string", "value": "sha256: + 64 lowercase hex over the canonical bytes of the receipt with the top-level contentDigest member removed (canonicalForm.digestScope)"}
+    },
+    "digestCoverage": "The digest covers all nine non-contentDigest members. Everything the digest covers is specified above; nothing is excluded. This is the deliberate choice R5.1 requires."
+  },
+
+  "conclusionFunction": {
+    "admissibility": "Input must parse and be well-formed (I9); the declared search space must be non-empty (R2); location ids must be pairwise distinct (I11); every evidence side must be 'support' or 'oppose'; no rootId may appear on both sides (I3). Inadmissible input refuses fail-closed: no receipt exists.",
+    "presence": "supported iff |distinct supporting roots| > |distinct opposing roots|, else not_established. Ties are not_established (R1, owner decision, v1.1.0).",
+    "absence": "present if any distinct opposing root exists (I5); else absent_within_declared_scope if search.complete (which requires every declared location searched and declared > 0); else not_established.",
+    "note": "Carried verbatim from v1.1.0. Cross-implementation agreement on this function was established by IND-20260807-2. Per G4 it still has no enforcing invariant; the recommended I12 is the leading v1.3.0 candidate and is deliberately not added in this version."
+  },
+
+  "canonicalForm": {
+    "encoding": "UTF-8, no BOM, no trailing newline",
+    "objectMemberOrder": "sorted by key, keys compared as sequences of Unicode code points, ascending",
+    "whitespace": "none; item separator ',', key separator ':'",
+    "stringEscaping": "minimal: '\"' as '\\\"', '\\' as '\\\\'; U+0008/U+0009/U+000A/U+000C/U+000D as \\b \\t \\n \\f \\r; other code points below U+0020 as \\u00XX lowercase hex; every code point at or above U+0020, including all non-ASCII, emitted literally as raw UTF-8",
+    "numbers": "receipts contain only non-negative integers (true by construction under R5.2), emitted base-10 with no sign, decimal point, exponent, or leading zeros; booleans are true/false; a receipt containing a float or null has no defined canonical form",
+    "arrays": "order-preserving; canonicalisation never reorders arrays; the sortedness of supportingRoots/opposingRoots is the evaluator's responsibility (receiptObject), not the codec's",
+    "referenceRealisation": "python json.dumps(value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=False).encode('utf-8')",
+    "digestScope": "contentDigest = 'sha256:' + lowercase-hex(SHA-256(canonical bytes of the receipt object with its top-level contentDigest member removed and nothing else removed))",
+    "crossImplementationTest": "fixtures/v1.2.0/c11-canonical-digest.json (703-byte unsigned form, digest unchanged from the v1.1.0 pin) and fixtures/v1.2.0/c12-margin-sign.json (691-byte unsigned form). Both expected blocks carry the complete canonical unsigned string, so a digest mismatch localises to bytes."
+  },
+
+  "population": {
+    "description": "Synthetic knowledge-transaction worlds, identical to v1.0.0/v1.1.0 in every bound.",
+    "exhaustive": {
+      "method": "complete cartesian enumeration within declared bounds",
+      "locationCount": [1, 2, 3, 4],
+      "locationStatuses": ["searched", "unavailable", "failed", "not_searched"],
+      "recordCount": [0, 1, 2, 3],
+      "rootIds": ["r1", "r2", "r3"],
+      "sides": ["support", "oppose"],
+      "claimTypes": ["absence", "presence"],
+      "declaredWorldCount": 176120,
+      "worldCountDerivation": "sum(4^L for L in 1..4) = 340 location ledgers; sum(6^R for R in 0..3) = 259 evidence ledgers; 340 * 259 * 2 claim types = 176120"
+    },
+    "randomized": {
+      "method": "frozen-seed sampling, seed declared below",
+      "worldCount": 1000000,
+      "locationCountRange": [1, 12],
+      "recordCountRange": [0, 24],
+      "rootIdPool": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
+      "locationStatuses": ["searched", "unavailable", "failed", "not_searched"],
+      "sides": ["support", "oppose"],
+      "claimTypes": ["absence", "presence"]
+    }
+  },
+
+  "searchSpace": {
+    "definition": "The searched space is the space of worlds; the exhaustive phase enumerates it completely within the declared bounds; absence of a violation is admissible only inside those bounds.",
+    "enumerationMethod": "deterministic nested iteration in src/kl000_worlds.py, verified against declaredWorldCount before any invariant is evaluated",
+    "boundedAbsenceStatement": "Zero violations across the exhaustive phase supports 'no violation exists within the declared bounds' and nothing outside them."
+  },
+
+  "rootDefinition": {
+    "root": "An evidence root is the value of a record's rootId field, declared operationally by the transaction author.",
+    "copy": "Two records are copies when they carry the same rootId.",
+    "sharedDependency": "Not representable in schema v0.1. Recorded as a limit.",
+    "independence": "Distinct rootId values are treated as independent by assumption; KL-000 tests that the evaluator honours the declaration, not that it is true."
+  },
+
+  "baselines": [
+    {"id": "B1-head-count", "description": "Concludes from record count alone, ignoring roots entirely.", "expectedOutcome": "MUST FAIL copy invariance (I1)."},
+    {"id": "B2-source-count", "description": "Counts distinct roots but ignores the search ledger.", "expectedOutcome": "MUST FAIL bounded absence (I2). Known caveat, still open (F1/F3): the receipt-internal reading of I2 is satisfiable vacuously."},
+    {"id": "B3-evidence-ledger-without-coverage", "description": "Full root collapse, no coverage requirement for absence.", "expectedOutcome": "MUST FAIL bounded absence (I2)."},
+    {"id": "B4-search-ledger-without-collapse", "description": "Full coverage accounting, counts records rather than roots.", "expectedOutcome": "MUST FAIL copy invariance (I1)."},
+    {"id": "B5-dual-ledger", "description": "The evaluator under test, knowledge_ledger.evaluate_transaction.", "expectedOutcome": "MUST PASS all eleven invariants."}
+  ],
+  "baselineIdNote": "The runner reports these as B1-head-count, B2-source-count, B3-evidence-without-coverage, B4-search-without-collapse (constraint NAM-101, RUN-20260807-2). The mapping is recorded here so no comparison script needs to hold it privately; unifying the vocabulary remains open.",
+
+  "controls": [
+    {"id": "C01", "requirement": "head or record counting", "fixture": "fixtures/c01-head-count.json"},
+    {"id": "C02", "requirement": "source counting", "fixture": "fixtures/c02-source-count.json"},
+    {"id": "C03", "requirement": "evidence ledger without search coverage", "fixture": "fixtures/c03-evidence-without-coverage.json"},
+    {"id": "C04", "requirement": "search ledger without root collapse", "fixture": "fixtures/c04-search-without-collapse.json"},
+    {"id": "C05", "requirement": "dual ledger", "fixture": "fixtures/c05-dual-ledger.json"},
+    {"id": "C06", "requirement": "genuinely independent evidence", "fixture": "fixtures/c06-independent-evidence.json"},
+    {"id": "C07", "requirement": "copied or shared-dependency condition", "fixture": "fixtures/c07-copied-source.json"},
+    {"id": "C08", "requirement": "incomplete coverage", "fixture": "fixtures/c08-incomplete-coverage.json"},
+    {"id": "C09", "requirement": "counterexample in a searched location", "fixture": "fixtures/c09-counterexample-searched.json"},
+    {"id": "C10", "requirement": "counterexample in an unsearched location", "fixture": "fixtures/c10-counterexample-unsearched.json"},
+    {"id": "C11", "requirement": "canonical form, digest scope, and registered receipt object pinned across implementations; tie is not_established", "fixture": "fixtures/v1.2.0/c11-canonical-digest.json", "newInVersion": "1.2.0 (input byte-identical to the v1.1.0 C11; expected block extended with schema/reason/limits values and the full canonical unsigned form; digest unchanged)"},
+    {"id": "C12", "requirement": "margin sign: strict minority, margin is the absolute difference, canonical form defined", "fixture": "fixtures/v1.2.0/c12-margin-sign.json", "newInVersion": "1.2.0"}
+  ],
+  "controlsNote": "C01-C10 byte-identical to their v1.0.0 registration; C06's note remains wrong (F13, open) and the fixture is carried as-registered with the error on record. C09/C10 remain preregistered as indistinguishable. C11 and C12 expected blocks each carry the complete canonical unsigned string so digest mismatches localise to bytes.",
+
+  "primaryEndpoint": "count of hard-invariant violations, target exactly 0",
+  "secondaryEndpoints": [
+    "count of fail-closed rejections, by cause",
+    "conclusion distribution across enumerated worlds",
+    "baseline violation counts, non-zero for B1-B4",
+    "equality of every value in expectedIdenticalToRun1, including C11's unchanged digest",
+    "wall-clock and worlds-per-second"
+  ],
+
+  "expectedIdenticalToRun1": {
+    "statement": "R5.1 and R5.2 register serialisation-level facts the reference already exhibits, so nothing may move -- counts, conclusions, or bytes. Any deviation halts the run, is reported as a finding, and falsifies the registration-only claim. A moved count or conclusion additionally means a repair changed evaluation rather than serialisation. PACKAGING: this block and the protocol's prediction table must never ship in a commission package (constraint LEAK-101); screening runs against every shipped file in comma and comma-less formats.",
+    "exhaustive": {"worldsChecked": 176120, "receiptProducingWorlds": 110840, "failClosedRejections": 65280, "totalViolations": 0, "conclusionDistribution": {"absent_within_declared_scope": 160, "not_established": 49480, "present": 41820, "supported": 19380}},
+    "randomized": {"worldsChecked": 1000000, "receiptProducingWorlds": 243381, "failClosedRejections": 756619, "totalViolations": 0, "conclusionDistribution": {"absent_within_declared_scope": 1092, "not_established": 119228, "present": 81792, "supported": 41269}},
+    "baselines": {"B1-head-count": 634440, "B2-source-count": 26880, "B3-evidence-ledger-without-coverage": 26208, "B4-search-ledger-without-collapse": 189720},
+    "failClosedCauses": ["ValueError: One root cannot support opposing sides."],
+    "c11ContentDigest": "sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe",
+    "c12ContentDigest": "sha256:61000a9b978222ce227601621167d8d66109ba2a0fea13f6431f7830b0aa3b6e",
+    "fixture": "C01-C10 pass as in every prior run; C11 passes with its unchanged digest; C12 passes with its newly pinned digest"
+  },
+
+  "invariants": [
+    {"id": "I1", "name": "copy invariance", "statement": "Appending a duplicate of any existing record (same rootId, same side) leaves conclusion, distinctRoots, supportingRoots, opposingRoots, margin, and conversionsToReverse unchanged, and increases records and repeatedRecordsCollapsed by exactly 1 each.", "hard": true},
+    {"id": "I2", "name": "bounded absence", "statement": "conclusion == 'absent_within_declared_scope' implies search.complete is true and opposingRoots is empty. Equivalently no absence conclusion is reachable while any location status is not 'searched'.", "hard": true, "carryNote": "Verbatim from v1.0.0 including the known-defective 'Equivalently' (F1, open)."},
+    {"id": "I3", "name": "side separation", "statement": "If any rootId appears with both sides, evaluation raises and no receipt is produced.", "hard": true},
+    {"id": "I4", "name": "deterministic replay", "statement": "Evaluating the same world twice yields byte-identical canonical JSON and an equal contentDigest, where 'canonical' is defined in canonicalForm and the hashed object in receiptObject.", "hard": true, "v120Note": "With receiptObject registered, I4 is cross-implementation testable for the first time; it remains untested across implementations until IND-20260807-3 reproduces a digest."},
+    {"id": "I5", "name": "counterexample dominance", "statement": "For absence claims, a non-empty opposingRoots implies conclusion == 'present', at any coverage level.", "hard": true},
+    {"id": "I6", "name": "digest integrity", "statement": "verify_content_digest holds for every emitted receipt, and fails for every single-field mutation of one. Covered fields per canonicalForm.digestScope and receiptObject.digestCoverage.", "hard": true, "v120Note": "Same cross-implementation status as I4."},
+    {"id": "I7", "name": "order invariance", "statement": "Permuting locations or records changes no evidential field, no conclusion, and no contentDigest.", "hard": true},
+    {"id": "I8", "name": "search arithmetic", "statement": "declared == len(locations), searched and unavailable equal their status counts, searched + unavailable <= declared, and complete == (searched == declared and declared > 0).", "hard": true},
+    {"id": "I9", "name": "fail-closed parsing", "statement": "Malformed input raises an exception and never returns a receipt.", "hard": true, "coverageNote": "Reinstated per G6: I9 is exercised by zero fixture, exhaustive, or randomized worlds across all runs to date; its entire evidence is the adversarial suite."},
+    {"id": "I10", "name": "copies never mint roots", "statement": "distinctRoots equals the number of distinct rootId values in the input, and appending any number of copies of existing roots leaves it unchanged.", "hard": true},
+    {"id": "I11", "name": "location identifier uniqueness", "statement": "The id values of searchLedger.locations must be pairwise distinct. A ledger containing a duplicate location id is inadmissible: evaluation refuses fail-closed and no receipt is produced.", "hard": true}
+  ],
+
+  "effectSize": {
+    "statement": "Conformance kernel; the endpoint is a violation count with target zero plus an exact-equality prediction table including two pinned digests.",
+    "powerOfTest": "Established by baselines B1-B4 caught by the identical checker path that clears B5. Known limit, open and measured (G4): the conclusion function itself has no enforcing invariant, and an evaluator inverting R1 is caught only by fixture C11."
+  },
+
+  "uncertainty": {
+    "exhaustivePhase": "No sampling uncertainty; exact within the declared bounds.",
+    "randomizedPhase": "Zero violations in n = 1,000,000 gives a 95% rule-of-three upper bound of 3.0e-6 per world. 75.7% of these worlds fail closed; for invariants exercised only on receipt-producing worlds the bound is 1.23e-5 over 243,381.",
+    "invariantCoverage": "Corrected wording per G6: ten invariants are exercised on receipt-producing worlds, I3 on all 1,000,000, and I9 on none outside the adversarial suite.",
+    "familyWise": "Eleven invariants; Bonferroni-style per-invariant upper bound approximately 5.5e-6.",
+    "whatItCannotShow": "Nothing outside the declared bounds, nothing about shared dependencies the schema cannot express, nothing about real-world evidence processes, and nothing cross-implementation about I4/I6 until a digest reproduces."
+  },
+
+  "multipleTestingCorrection": {
+    "method": "none applied to the primary endpoint",
+    "justification": "No null-hypothesis significance test; the primary endpoint is a violation count with target zero. Bonferroni reported only for the secondary rate bound."
+  },
+
+  "successCondition": "Zero hard-invariant violations across all phases; non-zero counts for each of B1-B4; C11 and C12 matching their pinned digests; AND every value in expectedIdenticalToRun1 equal to observation.",
+  "failureCondition": "One or more hard-invariant violations by B5.",
+  "invalidationCondition": "Any of the v1.1.0 conditions; additionally any expectedIdenticalToRun1 value differing from observation marks the run incomplete and is the reported finding. A moved count or conclusion distribution means a repair changed evaluation rather than serialisation.",
+  "stopCondition": "One hard violation halts the run and preserves the world. One moved value halts the comparison and becomes the primary finding.",
+
+  "frozenSeedsOrSplits": {
+    "randomizedSeed": 20260807,
+    "rng": "Python stdlib random.Random, seeded per phase, no OS entropy",
+    "rngScopeNote": "Freezes this implementation's stream only (F11, open); between implementations the randomized phase is a replication, never a reproduction.",
+    "splitPolicy": "No train/test split applies."
+  },
+
+  "protocolCommit": null,
+  "protocolCommitNote": "Assigned by git to the commit introducing this file; recorded post-commit in PROTOCOL-COMMIT-v1.2.0.txt. This file is never edited after registration.",
+
+  "evaluatorUnderTest": {
+    "path": "knowledge_ledger/transaction.py",
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f",
+    "packageInit": "knowledge_ledger/__init__.py",
+    "packageInitSha256": "32f2b46d231e68e8c568cdabf84e9180e9acd244ca3642dd67cc299f81a786d7",
+    "note": "Bit-identical to the v1.0.0 registration. v1.2.0 registers what the evaluator already emits; an unchanged hash plus unchanged numbers plus an unchanged C11 digest is what that predicts."
+  },
+
+  "environment": {
+    "python": "3.14.6",
+    "interpreter": "/Users/james/Development/.mp-runner-venv/bin/python",
+    "reproductionInterpreter": "any CPython 3.11+; standard library only",
+    "thirdPartyRuntimeDependencies": "none",
+    "network": "not used",
+    "os": "macOS 26.4.1, Darwin 25.4.0, arm64",
+    "determinismNote": "Results must be byte-identical across interpreters and platforms."
+  },
+
+  "safetyBoundary": {
+    "dataClass": "synthetic only; no personal, patient, sealed, classified, or legally restricted data",
+    "decisionAuthority": "none",
+    "network": "no network access required or used",
+    "spend": "zero",
+    "actuation": "none"
+  },
+  "humanAuthorization": {
+    "requiredForExecution": false,
+    "requiredForExecutionReason": "Offline, synthetic, zero-spend, no live decision authority, no restricted data.",
+    "requiredFor": [
+      {"action": "publishing this branch or its base to the public github remote", "status": "not granted; referred to the founder"},
+      {"action": "promoting any KL-000 result into CANONICAL-RECORDS.md or PUBLIC-CLAIMS.md", "status": "not sought by this run"},
+      {"action": "commissioning IND-20260807-3 (independent re-run against v1.2.0, attempting C11)", "status": "owner's to commission; not performed by this repository's agents; packaging must screen every file including PROTOCOL (LEAK-101)"},
+      {"action": "durable-history anchoring of any artifact", "status": "out of scope"}
+    ]
+  },
+
+  "openFindings": {
+    "note": "Deliberately not repaired in v1.2.0; the owner-directed list is exactly R5.1 and R5.2. F4 and F5 are closed by this registration (F4 by R5.1's formula registration, F5 by R5.2). F15 and the I9 coverage fact are reinstated after falling out of v1.1.0's list (G6).",
+    "items": [
+      {"finding": "F1", "summary": "I2's two forms are not equivalent; B2 as registered does not fail literal I2 (measured, both implementations)"},
+      {"finding": "F2", "summary": "I5 is receipt-internal and vacuously satisfiable; no baseline has power against it"},
+      {"finding": "F3", "summary": "B2 and B3 describe the same ablation unless B2 fabricates its search block"},
+      {"finding": "F11", "summary": "the frozen seed freezes no cross-implementation stream; candidate repair: register a draw schedule or adopt worldStreamHash"},
+      {"finding": "F12", "summary": "the adversarial phase is defined by reference to a test file, not by specification"},
+      {"finding": "F13", "summary": "C06's 'here and only here' note is contradicted by C04 and C07; fixture carried as-registered with the error on record"},
+      {"finding": "F14", "summary": "unavailable is reported and reconciled but no conclusion depends on it"},
+      {"finding": "F15", "summary": "reinstated: the exhaustive phase exercises conclusion logic on 110,840 of 176,120 worlds (63%); the report carries both numbers so the headline cannot silently claim the larger"},
+      {"finding": "I9-coverage", "summary": "reinstated: I9 is exercised by zero non-adversarial worlds in every run to date"},
+      {"finding": "G4/I12", "summary": "the conclusion function has no enforcing invariant; an R1-inverting evaluator passes all eleven invariants and is caught only by C11 (verified). I12 -- conclusion == conclusionFunction(world) -- is the leading v1.3.0 candidate"}
+    ]
+  },
+
+  "artifacts": [
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL.md",
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL-v1.1.0.md",
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL-v1.2.0.md",
+    "research/knowledge-ledger/experiments/KL-000/preregistration.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.1.0.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.2.0.json",
+    "research/knowledge-ledger/experiments/KL-000/fixtures/",
+    "research/knowledge-ledger/experiments/KL-000/fixtures/v1.1.0/",
+    "research/knowledge-ledger/experiments/KL-000/fixtures/v1.2.0/",
+    "research/knowledge-ledger/experiments/KL-000/src/",
+    "research/knowledge-ledger/experiments/KL-000/tests/",
+    "research/knowledge-ledger/experiments/KL-000/results/",
+    "research/knowledge-ledger/experiments/KL-000/results/independent/",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE.md",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE-v1.1.0.md",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE-v1.2.0.md",
+    "research/knowledge-ledger/experiments/KL-000/STATUS.json"
+  ],
+
+  "claimDiscipline": {
+    "strongestSupportedIfPassed": "Within the declared bounds, the reference evaluator conforms to protocol v1.2.0, and R5.1/R5.2 registered the receipt it already emits: no count, no conclusion, and no pinned digest moved.",
+    "establishedAlready": "Cross-implementation conformance of the evaluator and the conclusion function, by two independent implementations (IND-20260807-2; identical exhaustive conclusion distributions; qualified by the commission-package leak recorded in results/independent/PROVENANCE-IND-20260807-2.md with both mitigations verified).",
+    "notEstablished": "I4 and I6 across implementations -- no digest has ever reproduced between implementations; v1.2.0 makes agreement possible (every hashed byte is now registered), not actual. The randomized phase across implementations (F11). Conclusion-function enforcement (G4). 'Verified' remains unlicensed.",
+    "nearestUnsupportedExtension": "That IND-20260807-3 will reproduce C11's digest; that the dual ledger recovers truth; that declared roots are genuinely independent; that the invariants hold outside the declared bounds; that any real-world evidence process is improved.",
+    "ifFailed": "A violation is recorded with its world. A moved count or conclusion is worse than a violation: it means a serialisation repair changed evaluation, and the run halts with that as the primary finding."
+  }
+}

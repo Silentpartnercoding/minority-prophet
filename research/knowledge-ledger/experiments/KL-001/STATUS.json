@@ -1,9 +1,21 @@
 {
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-001",
+  "realm": "software and cybersecurity",
   "state": "seeded",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
-  "nextGate": "complete and commit preregistration",
-  "claimAllowed": "This experiment is seeded and supports no result claim."
+  "reviewedByRun": "RUN-20260807-1",
+  "nextGate": "Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.",
+  "blockers": [
+    "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+    "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+    "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+    "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable"
+  ],
+  "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed.",
+  "dependsOn": [
+    "KL-000"
+  ],
+  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed in RUN-20260807-1, so this dependency is satisfied for fixture-stage work but NOT for any promotion: KL-000 itself awaits independent reimplementation."
 }

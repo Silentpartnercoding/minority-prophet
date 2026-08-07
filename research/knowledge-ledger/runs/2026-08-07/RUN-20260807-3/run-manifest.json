@@ -1,0 +1,102 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-3",
+  "startUtc": "2026-08-07T20:48:15Z",
+  "endUtc": "see END-UTC.txt (written with the closing commit)",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "0b6614f",
+    "headCommit": "the closing-packet commit carrying this file",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtStartNote": "git-status-before.txt holds exactly one entry: this run directory's own creation",
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per constraint PROV-004."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Third consecutive run without an operator-side prompt artifact; digest unverified. See PROV-009 and inputs/PROMPT-CAPTURE-NOTE.md.",
+  "inputs": {
+    "prompt": "sha256:78157a926dea5b6fad9a1055044c283d205f6fd882364fa523a9ea5149064eee (agent transcription, unverified)",
+    "externalEvidence": {
+      "findingsV110": "sha256:c0aa3d62089331065c0a6af9cc626eac27342afbc912717e96c02263c86802e5",
+      "resultV110": "sha256:465032f5fa34a2b5eff5693564f5c9c87a074c3a8980869251e42788a9512c79",
+      "packageProtocol": "sha256:2ce181f3894d284cba9ecd4edf8897da0c767d4aa49b75473c80a2067390075c (kl000-v110-spec/PROTOCOL.md, byte-identical to the registered PROTOCOL-v1.1.0.md -- the LEAK-101 vector)",
+      "packagePreregistration": "sha256:6a95d024b07ddd9d733ebb31900ab7c36767c29c3d56a2b073fb000b6321ba7b (redacted variant)",
+      "packageBrief": "sha256:6c18c7fd1b70275d654796bcbaf5741c11402b89d85d999334473bdba6f2f528",
+      "packageC11": "sha256:b598152908e4e75f3ff1f48af1d14e9f3345647e480cc1cf4f12094b3d6aab3f (byte-identical to registered; flattened path, G6)"
+    }
+  },
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "not used by any experiment",
+    "spend": 0,
+    "note": "identical to RUN-20260807-2 (lock copied, pip freeze verified identical)"
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "KL-000/preregistration-v1.2.0.json + PROTOCOL-v1.2.0.md (Amendment 1) + fixtures/v1.2.0/",
+      "status": "canonical",
+      "digest": "sha256:3e9d117e04740947763578a60b55ab868016ff951a297c6ad9fc27eb36bfe215 (preregistration)",
+      "note": "registered at 7e9e55f; Amendment 1 (member-count typo) applied to the protocol pre-execution; preregistration untouched, its prose error documented"
+    },
+    {
+      "artifact": "KL-000/results/kl000-confirmatory-v1.2.0.json",
+      "status": "confirmatory",
+      "digest": "sha256:0ce125057080cfb90f04f1772b79e9b89ffe828e0d580070941f1acb42cd36e9",
+      "note": "passed; no count, conclusion, or pinned digest moved -- every registered prediction met"
+    },
+    {
+      "artifact": "cross-implementation conformance: evaluator + conclusion function",
+      "status": "confirmatory",
+      "note": "ESTABLISHED by IND-20260807-2 (imported with provenance): identical exhaustive conclusion distributions, zero violations of all eleven invariants on both sides. QUALIFIED by LEAK-101 (the commission package leaked the expected values; both mitigations verified). Not this repository's own result; the independent implementation produced it."
+    },
+    {
+      "artifact": "cross-implementation digest agreement (I4/I6)",
+      "status": "incomplete",
+      "note": "NEVER TESTED. C11 passing on the reference is by construction (the pin was computed from the reference) -- owner correction, recorded. v1.2.0 makes the digest COMPUTABLE by an independent implementation; only IND-20260807-3 can show it AGREES."
+    },
+    {
+      "artifact": "KL-000 'verified' / 'verified-independent'",
+      "status": "incomplete",
+      "note": "not claimed, not claimable before IND-20260807-3 passes and the owner promotes"
+    },
+    {
+      "artifact": "v1.3.0 gate I12 (conclusion enforcement)",
+      "status": "canonical",
+      "note": "COMMITTED GATE by owner direction at run close, with evidence and exact pass condition in STATUS committedGates; deferred behind IND-20260807-3, deferral is not optionality"
+    },
+    {
+      "artifact": "KL-001..KL-011",
+      "status": "incomplete",
+      "note": "unchanged except KL-011's blocker narrowed to cross-implementation digest agreement"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; neither title claimed nor claimable"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "74 passed",
+    "kl000Pytest": "80 passed",
+    "note": "12 permanent v1.2.0 tests added (test_kl000_v120.py); no prior test modified"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "operator, mid-close: promoted I12 from 'leading v1.3.0 candidate' to committed gate with evidence attached -- a deferred gate and an optional idea must not look the same in the record (RESEARCH-METHOD.md exact-next-gate requirement); work deferral behind IND-20260807-3 upheld",
+    "operator, mid-close: required the record to state that C11 passing on the reference is by construction (the pin was computed from the reference) -- v1.2.0 establishes the digest is computable by an independent implementation, not that it agrees; adopted into the report, STATUS, and this manifest"
+  ],
+  "interventionsNote": "Both interventions corrected the RECORDING of results, not the results. The distinction between a committed gate and a candidate, and between computable and agreeing, are exactly the claim-discipline boundaries this program exists to keep -- and both were initially drawn too loosely by the agent.",
+  "firstTransactionGate": "NOT REACHED"
+}

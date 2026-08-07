@@ -1,0 +1,926 @@
+{
+  "adversarial": {
+    "allCaught": true,
+    "attacks": 12,
+    "note": "tests/test_kl000_adversarial.py is named by PROTOCOL.md but is NOT part of either specification package (open finding F12). These attacks are this implementation's own construction, derived from the invariants and the declared limits. A01-A10 are carried unchanged from IND-20260807-1; A11 (R1 tie rule) and A12 (R4 canonical form) are new in v1.1.0, and A06/A07 are reclassified from 'defect probes' to permanent regression tests now that R2 and I11 require the behaviour they exercise.",
+    "phase": "adversarial",
+    "results": [
+      {
+        "attack": "same rootId on both sides",
+        "caught": true,
+        "id": "A01",
+        "note": "refusal with cause root_on_both_sides; no receipt",
+        "targets": "I3"
+      },
+      {
+        "attack": "truncated JSON document",
+        "caught": true,
+        "id": "A02",
+        "note": "parser rejects; evaluator is never reached",
+        "targets": "I9"
+      },
+      {
+        "attack": "location status outside the declared enum",
+        "caught": true,
+        "id": "A03",
+        "note": "refusal with cause bad_enum",
+        "targets": "I9"
+      },
+      {
+        "attack": "evidenceLedger removed entirely",
+        "caught": true,
+        "id": "A04",
+        "note": "refusal with cause missing_field; note the tempting failure mode is to read a missing ledger as an empty one and then conclude absence",
+        "targets": "I9"
+      },
+      {
+        "attack": "rootId is an integer, not a string",
+        "caught": true,
+        "id": "A05",
+        "note": "refusal with cause bad_type; a coercing evaluator would mint root \"1\" distinct from \"r1\"",
+        "targets": "I9"
+      },
+      {
+        "attack": "search ledger declaring zero locations",
+        "caught": true,
+        "id": "A06",
+        "note": "NOW REQUIRED BEHAVIOUR. Under v1.0.0 this was a defect this implementation repaired unprompted; v1.1.0 repair R2 makes the refusal mandatory ('a search ledger declaring zero locations is inadmissible'). Behaviour here is unchanged from IND-20260807-1 -- only its status changed, from a defensible choice to conformance. Permanent regression test, as PROTOCOL.md v1.1.0 phase 4 requires.",
+        "targets": "R2 (was I2 / specification defect F8)"
+      },
+      {
+        "attack": "two location entries with the same id",
+        "caught": true,
+        "id": "A07",
+        "note": "NOW A HARD INVARIANT. v1.1.0 repair R3 registers I11: location ids must be pairwise distinct and a duplicate is inadmissible. Behaviour here is unchanged from IND-20260807-1, which refused although nothing required it. Permanent regression test, as PROTOCOL.md v1.1.0 phase 4 requires.",
+        "targets": "I11 (new in v1.1.0, was gap F9)"
+      },
+      {
+        "attack": "mutate each receipt field in turn and re-verify",
+        "caught": true,
+        "id": "A08",
+        "note": "the receipt self-verifies and all 15 single-field mutations, including a substituted contentDigest, fail verification",
+        "targets": "I6"
+      },
+      {
+        "attack": "one record copied to fifty, then permuted",
+        "caught": true,
+        "id": "A09",
+        "note": "records 1 -> 50, distinctRoots stays 1, margin stays 1, conclusion stays absent_within_declared_scope; the permuted flood has an identical contentDigest",
+        "targets": "I1, I7, I10"
+      },
+      {
+        "attack": "receipt asserts a location was unavailable while carrying evidence that could only have come from it",
+        "caught": true,
+        "id": "A10",
+        "note": "CONFIRMED UNDETECTABLE, as preregistered. Schema v0.1 has no record-to-location link, so the contradiction is invisible. The coverage gate still refuses absence, which bounds the damage but does not detect the lie. Reported whatever the result, per PROTOCOL.md.",
+        "targets": "declared blind spot"
+      },
+      {
+        "attack": "presence claim at a tie, at a strict minority, and at a strict majority",
+        "caught": true,
+        "id": "A11",
+        "note": "tie -> not_established, minority -> not_established, majority -> supported. This is the owner decision that reversed this implementation's v1.0.0 reading; it is pinned here so a later regression is caught. Note R1 also makes `present` and `absent_within_declared_scope` unreachable for presence claims, which this implementation already satisfied.",
+        "targets": "R1 tie rule"
+      },
+      {
+        "attack": "receipt whose proposition carries a quote, a backslash, an em dash and an accented letter",
+        "caught": true,
+        "id": "A12",
+        "note": "escaping follows canonicalForm.stringEscaping: '\\\"' and '\\\\' escaped, U+2014 and U+00E9 emitted as raw UTF-8 with no \\uXXXX form, and the receipt self-verifies. This tests the codec against the stated rule; it does NOT test it against the reference, which only C11 can do.",
+        "targets": "R4 canonical form"
+      }
+    ]
+  },
+  "baselines": {
+    "checkerHasPower": true,
+    "note": "Run against the full 176,120-world exhaustive set, not a subsample. Halting is disabled for baselines so that complete counts are obtained. B2p is not preregistered; it is B2 with an honest search block, and it exists to isolate the I2a/I2b split. FINDING: B2p is byte-identical to B3 on every world. The preregistration's B2 ('counts distinct roots but ignores the search ledger') and B3 ('full root collapse, no coverage requirement for absence') describe the SAME ablation unless B2 is additionally taken to fabricate its search block, which is the reading used for the registered B2 here.",
+    "results": [
+      {
+        "baseline": "B1-head-count",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 828240,
+            "I10": 297840,
+            "I11": 0,
+            "I2a": 13440,
+            "I2b": 13440,
+            "I3": 65280,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 1218240,
+          "worldsExercisingInvariant": {
+            "I1": 175440,
+            "I10": 176120,
+            "I11": 176120,
+            "I2a": 176120,
+            "I2b": 176120,
+            "I3": 176120,
+            "I4": 176120,
+            "I5a": 88060,
+            "I5b": 88060,
+            "I6": 176120,
+            "I7": 176120,
+            "I8": 176120,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 47260,
+          "present": 74460,
+          "supported": 40800
+        },
+        "failClosed": 0,
+        "failClosedByCause": {},
+        "preregistered": true,
+        "receiptProducing": 176120,
+        "wallClockSeconds": "8.331",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B2-source-count",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 0,
+            "I10": 0,
+            "I11": 0,
+            "I2a": 0,
+            "I2b": 13440,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 110840,
+            "I9": 0
+          },
+          "violationsTotal": 124280,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I11": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 36040,
+          "present": 41820,
+          "supported": 19380
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": true,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.506",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B2p-source-count-honest-arithmetic",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 0,
+            "I10": 0,
+            "I11": 0,
+            "I2a": 13440,
+            "I2b": 13440,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 26880,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I11": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 36040,
+          "present": 41820,
+          "supported": 19380
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": false,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.439",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B3-evidence-ledger-without-coverage",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 0,
+            "I10": 0,
+            "I11": 0,
+            "I2a": 13440,
+            "I2b": 13440,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 26880,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I11": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 36040,
+          "present": 41820,
+          "supported": 19380
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": true,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.457",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B4-search-ledger-without-collapse",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 520200,
+            "I10": 167280,
+            "I11": 0,
+            "I2a": 0,
+            "I2b": 0,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 687480,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I11": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 160,
+          "not_established": 43360,
+          "present": 41820,
+          "supported": 25500
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": true,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.610",
+        "worlds": 176120
+      }
+    ]
+  },
+  "c11DigestAnalysis": {
+    "computedDigest": "sha256:0d178b7f8a8057c6fec0aa9d8f013ad362df43074e759afb6f6e1218ab389c68",
+    "control": "C11",
+    "diagnosis": "See finding G2. R4 defines the canonical FORM (codec) and the digest SCOPE (which member is removed) but does not define the receipt OBJECT. canonicalForm.digestScope enumerates covered members including `schema`, `reason` and `limits`; the value of none of these is stated anywhere in the v1.1.0 package, nor is the receipt's member list registered. A conforming codec therefore still cannot reproduce this digest, because the bytes it must hash are not specified. The byte-length gap below quantifies exactly how much of the hashed content is unregistered.",
+    "digestMatches": false,
+    "membersRequiredByR4ButUndefinedAnywhere": [
+      "schema",
+      "reason",
+      "limits"
+    ],
+    "myReceiptTopLevelMembers": [
+      "receiptVersion",
+      "transactionId",
+      "claim",
+      "conclusion",
+      "search",
+      "evidence",
+      "contentDigest"
+    ],
+    "myUnsignedCanonicalByteLength": 463,
+    "myUnsignedCanonicalForm": "{\"claim\":{\"proposition\":\"A target-class defect exists in the déclared \\\"components\\\" \\\\ set — canonicalisation pin.\",\"type\":\"presence\"},\"conclusion\":\"not_established\",\"evidence\":{\"conversionsToReverse\":1,\"distinctRoots\":2,\"margin\":0,\"opposingRoots\":[\"r2\"],\"records\":3,\"repeatedRecordsCollapsed\":1,\"supportingRoots\":[\"r1\"]},\"receiptVersion\":\"kl000-independent/1\",\"search\":{\"complete\":false,\"declared\":2,\"searched\":1,\"unavailable\":0},\"transactionId\":\"kl000-c11\"}",
+    "pinnedDigest": "sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe",
+    "protocolDigestScopeMembers": [
+      "schema",
+      "transactionId",
+      "claim",
+      "search",
+      "evidence",
+      "conclusion",
+      "reason",
+      "limits"
+    ],
+    "protocolStatedUnsignedByteLength": 703
+  },
+  "canonicalFormConformance": {
+    "conformsToStatedRules": true,
+    "digestByteBudget": {
+      "lengthOfR4MembersWhoseValuesThePackageStates": 424,
+      "membersCounted": "transactionId, claim{type,proposition}, search{4}, evidence{7}, conclusion -- all taken from C11's own input and expected blocks",
+      "note": "40% of the bytes C11 pins are the values of three members that R4 names as covered by the digest and that no document in the package defines. No conforming implementation can compute this digest from the specification alone.",
+      "protocolStatedUnsignedLength": 703,
+      "unaccountedBytes": 279,
+      "unaccountedFraction": "0.397",
+      "unaccountedMembers": [
+        "schema",
+        "reason",
+        "limits"
+      ]
+    },
+    "externalCrossCheck": "The unsigned canonical form this implementation produces for C11 was independently round-tripped through the protocol's own stated realisation, python json.dumps(value, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8'), and is BYTE-IDENTICAL to it. The codec therefore conforms to canonicalForm; the C11 digest mismatch is not a codec defect. See c11DigestAnalysis and finding G2.",
+    "vectors": [
+      {
+        "canonicalOutput": "{\"C\":3,\"a\":1,\"b\":2}",
+        "conforms": true,
+        "expected": "{\"C\":3,\"a\":1,\"b\":2}",
+        "rule": "rule 1-3: sorted keys, no whitespace"
+      },
+      {
+        "canonicalOutput": "{\"k\":\"a\\\"b\\\\c\"}",
+        "conforms": true,
+        "expected": "{\"k\":\"a\\\"b\\\\c\"}",
+        "rule": "rule 4: quote and backslash escaped"
+      },
+      {
+        "canonicalOutput": "{\"k\":\"\\b\\t\\n\\f\\r\"}",
+        "conforms": true,
+        "expected": "{\"k\":\"\\b\\t\\n\\f\\r\"}",
+        "rule": "rule 4: the five two-character control escapes"
+      },
+      {
+        "canonicalOutput": "{\"k\":\"\\u0001\\u001f\"}",
+        "conforms": true,
+        "expected": "{\"k\":\"\\u0001\\u001f\"}",
+        "rule": "rule 4: other C0 controls as \\u00XX lowercase hex"
+      },
+      {
+        "canonicalOutput": "{\"k\":\"é—漢 \"}",
+        "conforms": true,
+        "expected": "{\"k\":\"é—漢 \"}",
+        "rule": "rule 4: every code point >= U+0020 raw, including non-ASCII"
+      },
+      {
+        "canonicalOutput": "{\"k\":[\"r3\",\"r1\",\"r2\"]}",
+        "conforms": true,
+        "expected": "{\"k\":[\"r3\",\"r1\",\"r2\"]}",
+        "rule": "rule 5: arrays never reordered"
+      },
+      {
+        "canonicalOutput": "{\"n\":1024,\"z\":0}",
+        "conforms": true,
+        "expected": "{\"n\":1024,\"z\":0}",
+        "rule": "rule 6: integers plain, zero has no sign or leading zeros"
+      }
+    ]
+  },
+  "derivedWorldCount": {
+    "agrees": true,
+    "claimTypes": 2,
+    "declared": 176120,
+    "derivation": "sum(4^L, L=1..4)=340; sum(6^R, R=0..3)=259; 340*259*2=176120. Derived independently before implementation; agrees with the declared figure.",
+    "derived": 176120,
+    "evidenceLedgers": 259,
+    "locationLedgers": 340
+  },
+  "exhaustiveSmall": {
+    "checker": {
+      "violationsByInvariant": {
+        "I1": 0,
+        "I10": 0,
+        "I11": 0,
+        "I2a": 0,
+        "I2b": 0,
+        "I3": 0,
+        "I4": 0,
+        "I5a": 0,
+        "I5b": 0,
+        "I6": 0,
+        "I7": 0,
+        "I8": 0,
+        "I9": 0
+      },
+      "violationsTotal": 0,
+      "worldsExercisingInvariant": {
+        "I1": 110160,
+        "I10": 110840,
+        "I11": 110840,
+        "I2a": 110840,
+        "I2b": 110840,
+        "I3": 176120,
+        "I4": 110840,
+        "I5a": 55420,
+        "I5b": 55420,
+        "I6": 110840,
+        "I7": 110840,
+        "I8": 110840,
+        "I9": 0
+      }
+    },
+    "conclusionDistribution": {
+      "absent_within_declared_scope": 160,
+      "not_established": 49480,
+      "present": 41820,
+      "supported": 19380
+    },
+    "failClosed": 65280,
+    "failClosedByCause": {
+      "root_on_both_sides": 65280
+    },
+    "failClosedPreservedWorlds": {
+      "root_on_both_sides": [
+        "{\"claim\":{\"proposition\":\"No target-class defect exists in the declared components.\",\"type\":\"absence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r1\",\"side\":\"oppose\"},{\"id\":\"rec-2\",\"rootId\":\"r1\",\"side\":\"support\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-ex-16\"}",
+        "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components.\",\"type\":\"presence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r1\",\"side\":\"oppose\"},{\"id\":\"rec-2\",\"rootId\":\"r1\",\"side\":\"support\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-ex-17\"}",
+        "{\"claim\":{\"proposition\":\"No target-class defect exists in the declared components.\",\"type\":\"absence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r1\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r1\",\"side\":\"oppose\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-ex-26\"}"
+      ]
+    },
+    "failClosedUnexpectedCauses": [],
+    "firstViolation": null,
+    "phase": "exhaustive-small",
+    "receiptProducing": 110840,
+    "receiptsWithNoCanonicalFormNote": "Receipts containing a negative integer (signed `margin`, finding F5, which v1.1.0 leaves open). canonicalForm.numbers asserts receipts hold only non-negative integers, so the protocol defines no canonical form for these and I4/I6 are undefined on them. Finding G1. Zero under the absolute-margin reading.",
+    "receiptsWithNoCanonicalFormUnderV110": 38760,
+    "stopConditionArmed": true,
+    "stopConditionNote": "armed and never triggered: the halt path exists and was exercised by the ablated baselines, which do trigger it",
+    "stopConditionTriggered": false,
+    "wallClockSeconds": "12.080",
+    "worldStreamHash": "fnv1a64:bf6b3b722baa4bb1",
+    "worlds": 176120,
+    "worldsPerSecond": 14580
+  },
+  "experimentId": "KL-000",
+  "fixture": {
+    "allMatch": true,
+    "checker": {
+      "violationsByInvariant": {
+        "I1": 0,
+        "I10": 0,
+        "I11": 0,
+        "I2a": 0,
+        "I2b": 0,
+        "I3": 0,
+        "I4": 0,
+        "I5a": 0,
+        "I5b": 0,
+        "I6": 0,
+        "I7": 0,
+        "I8": 0,
+        "I9": 0
+      },
+      "violationsTotal": 0,
+      "worldsExercisingInvariant": {
+        "I1": 11,
+        "I10": 11,
+        "I11": 11,
+        "I2a": 11,
+        "I2b": 11,
+        "I3": 11,
+        "I4": 11,
+        "I5a": 8,
+        "I5b": 8,
+        "I6": 11,
+        "I7": 11,
+        "I8": 11,
+        "I9": 0
+      }
+    },
+    "controls": 11,
+    "digestNote": "C01-C10 pin no digest, so their values remain this implementation's own. C11 pins one; see c11DigestAnalysis.",
+    "phase": "fixture",
+    "receiptDigests": {
+      "C01": "sha256:8efa245028afc6cbefa4388d5ebf9ad72780357fba565cdc70e7f2a3bf0503af",
+      "C02": "sha256:a3af580e0b544002fdacff07caceb6fd27f32ff7dbcba317886efacb51fae7a4",
+      "C03": "sha256:65fd0c6f1d274f71c45ea88af664028e5ff747a65e2b9b361c3457b4f56a88fe",
+      "C04": "sha256:76fc674e48e5af72b94bf47d614d6d372f17705c7d6fb87dfc2f92abb1f59398",
+      "C05": "sha256:dec9a5ffd9b4833214904224828c897808da0bebcdd1392cf7211793654944fe",
+      "C06": "sha256:7f0af22132d602c14b8a62d574fd5f836f8cfd5d76c404b275e78b9b77c1fbe4",
+      "C07": "sha256:36d36b848d8122a1534d6f9f95b1fecb873ff77bbac6ad4868535992f31aec00",
+      "C08": "sha256:7d0cf422a1c091997d2b0abf1fe99f4a9998d39272dddfff5ffb93871b9dd62c",
+      "C09": "sha256:e5d16c88fe80f5822404be2df35ab8b74b57813ae5c1606f9369cfeb5ed073bf",
+      "C10": "sha256:e8680f68560fee1b01a7e597735c9016eaa035e574c3ecdf2e28ae3301537d62",
+      "C11": "sha256:0d178b7f8a8057c6fec0aa9d8f013ad362df43074e759afb6f6e1218ab389c68"
+    },
+    "results": [
+      {
+        "control": "C01",
+        "fixture": "c01-head-count",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C02",
+        "fixture": "c02-source-count",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C03",
+        "fixture": "c03-evidence-without-coverage",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C04",
+        "fixture": "c04-search-without-collapse",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C05",
+        "fixture": "c05-dual-ledger",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C06",
+        "fixture": "c06-independent-evidence",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C07",
+        "fixture": "c07-copied-source",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C08",
+        "fixture": "c08-incomplete-coverage",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C09",
+        "fixture": "c09-counterexample-searched",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C10",
+        "fixture": "c10-counterexample-unsearched",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C11",
+        "fixture": "c11-canonical-digest",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      }
+    ]
+  },
+  "implementation": "independent reimplementation, Rust 2021, zero dependencies; updated in place from IND-20260807-1, not rewritten",
+  "implementationNote": "Written from PROTOCOL.md, preregistration.json and fixtures/ only, across both versions. The reference implementation was neither read nor located in either run. JSON, SHA-256 and the PRNG are hand-written so that no library is shared with it.",
+  "predecessor": "IND-20260807-1 (this same implementation, against protocol v1.0.0)",
+  "protocolVersion": "1.1.0",
+  "randomized": {
+    "checker": {
+      "violationsByInvariant": {
+        "I1": 0,
+        "I10": 0,
+        "I11": 0,
+        "I2a": 0,
+        "I2b": 0,
+        "I3": 0,
+        "I4": 0,
+        "I5a": 0,
+        "I5b": 0,
+        "I6": 0,
+        "I7": 0,
+        "I8": 0,
+        "I9": 0
+      },
+      "violationsTotal": 0,
+      "worldsExercisingInvariant": {
+        "I1": 203943,
+        "I10": 244091,
+        "I11": 244091,
+        "I2a": 244091,
+        "I2b": 244091,
+        "I3": 1000000,
+        "I4": 244091,
+        "I5a": 121875,
+        "I5b": 121875,
+        "I6": 244091,
+        "I7": 244091,
+        "I8": 244091,
+        "I9": 0
+      }
+    },
+    "conclusionDistribution": {
+      "absent_within_declared_scope": 1070,
+      "not_established": 119641,
+      "present": 82077,
+      "supported": 41303
+    },
+    "crossImplementationComparability": "NOT comparable. The preregistration freezes the seed but not the draw schedule or the distribution over the declared ranges, so no two independent implementations sample the same worlds. Only the shape of these counts is comparable, never the counts themselves.",
+    "failClosed": 755909,
+    "failClosedByCause": {
+      "root_on_both_sides": 755909
+    },
+    "failClosedPreservedWorlds": {
+      "root_on_both_sides": [
+        "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components.\",\"type\":\"presence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r3\",\"side\":\"support\"},{\"id\":\"rec-3\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-4\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-5\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-6\",\"rootId\":\"r5\",\"side\":\"oppose\"},{\"id\":\"rec-7\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-8\",\"rootId\":\"r1\",\"side\":\"support\"},{\"id\":\"rec-9\",\"rootId\":\"r5\",\"side\":\"support\"},{\"id\":\"rec-10\",\"rootId\":\"r6\",\"side\":\"oppose\"},{\"id\":\"rec-11\",\"rootId\":\"r3\",\"side\":\"oppose\"},{\"id\":\"rec-12\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-13\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-14\",\"rootId\":\"r1\",\"side\":\"support\"},{\"id\":\"rec-15\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-16\",\"rootId\":\"r4\",\"side\":\"oppose\"},{\"id\":\"rec-17\",\"rootId\":\"r4\",\"side\":\"oppose\"},{\"id\":\"rec-18\",\"rootId\":\"r3\",\"side\":\"support\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"not_searched\"}]},\"transactionId\":\"kl000-rand-0\"}",
+        "{\"claim\":{\"proposition\":\"No target-class defect exists in the declared components.\",\"type\":\"absence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-3\",\"rootId\":\"r6\",\"side\":\"oppose\"},{\"id\":\"rec-4\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-5\",\"rootId\":\"r8\",\"side\":\"oppose\"},{\"id\":\"rec-6\",\"rootId\":\"r3\",\"side\":\"support\"},{\"id\":\"rec-7\",\"rootId\":\"r8\",\"side\":\"oppose\"},{\"id\":\"rec-8\",\"rootId\":\"r6\",\"side\":\"oppose\"},{\"id\":\"rec-9\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-10\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-11\",\"rootId\":\"r3\",\"side\":\"support\"},{\"id\":\"rec-12\",\"rootId\":\"r3\",\"side\":\"oppose\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"failed\"}]},\"transactionId\":\"kl000-rand-1\"}",
+        "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components.\",\"type\":\"presence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-3\",\"rootId\":\"r7\",\"side\":\"oppose\"},{\"id\":\"rec-4\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-5\",\"rootId\":\"r7\",\"side\":\"oppose\"},{\"id\":\"rec-6\",\"rootId\":\"r4\",\"side\":\"oppose\"},{\"id\":\"rec-7\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-8\",\"rootId\":\"r5\",\"side\":\"oppose\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"unavailable\"},{\"id\":\"loc-2\",\"status\":\"unavailable\"},{\"id\":\"loc-3\",\"status\":\"not_searched\"},{\"id\":\"loc-4\",\"status\":\"searched\"},{\"id\":\"loc-5\",\"status\":\"unavailable\"},{\"id\":\"loc-6\",\"status\":\"searched\"},{\"id\":\"loc-7\",\"status\":\"not_searched\"},{\"id\":\"loc-8\",\"status\":\"not_searched\"},{\"id\":\"loc-9\",\"status\":\"failed\"},{\"id\":\"loc-10\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-rand-2\"}"
+      ]
+    },
+    "failClosedUnexpectedCauses": [],
+    "firstViolation": null,
+    "generatorWithinDeclaredBounds": true,
+    "phase": "randomized",
+    "receiptProducing": 244091,
+    "receiptsWithNoCanonicalFormNote": "Receipts containing a negative integer (signed `margin`, finding F5, which v1.1.0 leaves open). canonicalForm.numbers asserts receipts hold only non-negative integers, so the protocol defines no canonical form for these and I4/I6 are undefined on them. Finding G1. Zero under the absolute-margin reading.",
+    "receiptsWithNoCanonicalFormUnderV110": 82830,
+    "rng": "splitmix64-seeded xoshiro256**, rejection sampling for uniform ranges",
+    "seed": 20260807,
+    "seedReproducesIdenticalStream": true,
+    "stopConditionArmed": true,
+    "stopConditionNote": "armed and never triggered: the halt path exists and was exercised by the ablated baselines, which do trigger it",
+    "stopConditionTriggered": false,
+    "wallClockSeconds": "36.037",
+    "worldStreamHash": "fnv1a64:4dee7326f948b0fe",
+    "worlds": 1000000,
+    "worldsPerSecond": 27748
+  },
+  "repairR1Surface": {
+    "conclusionDistributionUnderIND1Reading": {
+      "absent_within_declared_scope": 160,
+      "not_established": 27040,
+      "present": 41820,
+      "supported": 41820
+    },
+    "conclusionDistributionUnderV110Reading": {
+      "absent_within_declared_scope": 160,
+      "not_established": 49480,
+      "present": 41820,
+      "supported": 19380
+    },
+    "note": "Both distributions computed in this run over the same 176,120 worlds. The IND-20260807-1 column is what this implementation reported under v1.0.0; reproducing it here confirms the only thing that changed is the reading, not the enumeration.",
+    "ofWhichStrictMinority": 6120,
+    "ofWhichTies": 16320,
+    "receiptsWhoseConclusionMoved": 22440,
+    "repair": "R1 (owner decision): presence concludes `supported` iff distinct supporting roots strictly exceed distinct opposing roots; ties are not_established."
+  },
+  "repairR1TestSurface": {
+    "ablation": "B5 with R1 inverted -- i.e. exactly the IND-20260807-1 reading, in which a tie or a strict minority still concludes `supported`.",
+    "finding": "See G4. If invariantViolationsDetected is 0, then no invariant in the registered set constrains the presence conclusion, and the entire enforcement of R1 -- a rule the protocol measures at 22,440 exhaustive worlds -- rests on the fixtures listed above. v1.1.0 repaired the specification text that allowed the divergence; it did not add a checker that would detect the divergence recurring. This is the same structural defect PROTOCOL.md v1.1.0 diagnoses in its own words ('No invariant constrains conclusion, so the divergence was invisible to the entire v1.0.0 test surface') -- still true of the v1.1.0 test surface.",
+    "fixtureCount": 1,
+    "fixturesThatCatchIt": [
+      "C11"
+    ],
+    "invariantViolationsDetected": 0,
+    "question": "Do the eleven v1.1.0 invariants have power against a wrong presence rule?",
+    "violationsByInvariant": {
+      "I1": 0,
+      "I10": 0,
+      "I11": 0,
+      "I2a": 0,
+      "I2b": 0,
+      "I3": 0,
+      "I4": 0,
+      "I5a": 0,
+      "I5b": 0,
+      "I6": 0,
+      "I7": 0,
+      "I8": 0,
+      "I9": 0
+    },
+    "worldsWhoseConclusionTheAblationChanges": 22440
+  },
+  "runId": "IND-20260807-2",
+  "runIdNote": "IND- is a sequence separate from the reference repository's RUN- numbering, deliberately: a RUN- number would imply that repository's agents executed this work. This run's predecessor, the v1.0.0 reimplementation, was named RETROACTIVELY as IND-20260807-1 -- it carried no identifier at the time it was produced and was cited only as 'imported by RUN-20260807-2'. The retroactive naming is recorded here rather than presented as the name it always had.",
+  "specificationAmbiguities": {
+    "ambiguities": [
+      {
+        "ambiguity": "A1-absence-requires-support",
+        "exhaustiveWorldsChanged": 4,
+        "firstDistinguishingWorld": {
+          "chosenReading": "absent_within_declared_scope",
+          "rejectedReading": "not_established",
+          "world": {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": []
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-0"
+          }
+        },
+        "fractionOfExhaustive": "0.0000",
+        "rejectedReading": "absence needs >= 1 supporting root, not coverage alone",
+        "v110Status": "CLOSED by v1.1.0 conclusionFunction.absence, which gates absence on coverage alone and names no evidence requirement. This implementation already read it that way; the count below is the surface the closure removed, not a change."
+      },
+      {
+        "ambiguity": "A2-presence-requires-coverage",
+        "exhaustiveWorldsChanged": 19152,
+        "firstDistinguishingWorld": {
+          "chosenReading": "supported",
+          "rejectedReading": "not_established",
+          "world": {
+            "claim": {
+              "proposition": "A target-class defect exists in the declared components.",
+              "type": "presence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "support"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "unavailable"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-521"
+          }
+        },
+        "fractionOfExhaustive": "0.1087",
+        "rejectedReading": "a presence claim must also have complete coverage",
+        "v110Status": "CLOSED by v1.1.0 conclusionFunction.presence, which states the presence rule with no coverage term. This implementation already read it that way; the count is the surface the closure removed."
+      },
+      {
+        "ambiguity": "A3-tie-and-minority-presence",
+        "exhaustiveWorldsChanged": 22440,
+        "firstDistinguishingWorld": {
+          "chosenReading": "not_established",
+          "rejectedReading": "supported",
+          "world": {
+            "claim": {
+              "proposition": "A target-class defect exists in the declared components.",
+              "type": "presence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r2",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r1",
+                  "side": "support"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-21"
+          }
+        },
+        "fractionOfExhaustive": "0.1274",
+        "rejectedReading": "presence is existential: any supporting root suffices regardless of opposition (the IND-20260807-1 reading)",
+        "v110Status": "CLOSED by v1.1.0 repair R1, an explicit OWNER DECISION. The default is now the owner's rule (supported iff support > oppose). The count below is this run's own measurement of the surface R1 decided, computed by evaluating every exhaustive world under both readings in this run rather than carried over from IND-20260807-1."
+      },
+      {
+        "ambiguity": "A4-margin-absolute",
+        "exhaustiveWorldsChanged": 38760,
+        "firstDistinguishingWorld": {
+          "chosenReading": "present",
+          "rejectedReading": "present",
+          "world": {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-4"
+          }
+        },
+        "fractionOfExhaustive": "0.2201",
+        "rejectedReading": "margin is |support - oppose| rather than signed",
+        "v110Status": "STILL OPEN per v1.1.0's own openFindings F5, and C11 was deliberately built with margin 0 to avoid deciding it. But canonicalForm.numbers decides it anyway by asserting receipts contain only non-negative integers. See finding G1."
+      }
+    ],
+    "note": "Each row is a place the v1.0.0 specification did not determine the answer. The count is how many of the 176,120 exhaustive worlds receive a different receipt under the alternative reading. v110Status records whether v1.1.0 closed it."
+  },
+  "status": "passed-except-c11-digest",
+  "totalWallClockSeconds": "97.16",
+  "uncertainty": {
+    "bonferroniAdjusted": "5.30e-6",
+    "note": "Valid only if the randomized phase recorded zero violations. Bounds a per-world rate; does not establish zero. Applies to receipt-producing and fail-closed worlds alike, since both are drawn from the same stream.",
+    "ruleOfThree95": "3.00e-6"
+  }
+}

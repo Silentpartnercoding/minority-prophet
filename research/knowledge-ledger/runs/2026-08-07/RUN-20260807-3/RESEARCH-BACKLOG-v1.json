@@ -1,0 +1,67 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-3",
+  "version": 1,
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-002..BL-012 (RUN-20260807-1) remain open. BL-013 (commission the v1.1.0 re-run) closed: IND-20260807-2 completed; superseded by BL-020. BL-019 (package hygiene) closed as a proposal by being proven necessary (LEAK-101) and upgraded into BL-020's registered requirements. BL-014..BL-018 (v1.2.0-era repair bundle) partially superseded: the receipt-object and margin-sign halves became v1.2.0's R5.1/R5.2; the remainder moves to BL-021.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-020",
+      "type": "missing-control",
+      "title": "Commission IND-20260807-3: independent re-run against v1.2.0, attempting the digests",
+      "hypothesis": "With every hashed byte registered (R5.1/R5.2), the independent implementation reproduces C11's and C12's contentDigest byte-for-byte -- the first cross-implementation digest agreement in the program.",
+      "discriminatingTest": "Byte comparison against the pinned digests; on a miss, the fixtures' canonical strings localise the first divergent byte. Conclusion distribution and zero-violation checks as before.",
+      "whyItMatters": "Closes the F10 -> R4 -> G2 -> R5.1 arc; makes I4/I6 cross-implementation properties; completes the substance of KL-011's two-implementation prerequisite; makes verified-independent claimable by owner promotion.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Pass: verified-independent promotion decision reaches the owner, KL-011 preregistration unblocks. Fail: byte offset localises the next repair.",
+      "cost": "repo-side: one package-preparation commit under the registered packaging requirements (see NEXT-RUN-PROPOSAL). Commission-side: implementer time; one-line fixture loader change plus the receipt-object adoption.",
+      "prerequisitesReady": true,
+      "safety": "none engaged",
+      "supersedes": "BL-013; incorporates BL-019 as registered requirements"
+    },
+    {
+      "rank": 2,
+      "id": "BL-021",
+      "type": "specification-repair",
+      "committedGate": "The I12 half of this item is a COMMITTED v1.3.0 gate (owner direction, RUN-20260807-3 close; evidence and exact pass condition in KL-000 STATUS.json committedGates), not an optional backlog idea. It appears here for sequencing only; dropping it would require an owner decision recorded as such.",
+      "title": "v1.3.0 bundle: I12 conclusion enforcement, world-referential I2/I5, baseline dedup + B6, stream registration",
+      "hypothesis": "Adding I12 (conclusion == conclusionFunction(world)) gives the checker power over the conclusion function (closing G4/SPEC-110, subsuming I2's and I5's conclusion clauses); restating I2/I5 world-referentially closes F1/F2; B2/B3 dedup plus a B6 that drops opposingRoots closes F3 and the I5 power gap; registering a draw schedule or worldStreamHash closes F11. None should move a reference number; same exact-equality discipline.",
+      "discriminatingTest": "The existential-reading ablation (this run's verified G4 probe) must be caught by I12 on 22,440 worlds with no fixture involved; B2 must fail registered I2 as literally read; B6 must be caught only by world-referential I5; two implementations must produce identical worldStreamHash values.",
+      "whyItMatters": "G4 is the structural defect that produced the original 22,440-world divergence, still intact; F1 is a registered must-fail baseline not failing its registered invariant. KL-011 inherits every one of these holes.",
+      "wouldChangeADecision": true,
+      "cost": "one registration + checker/I12 implementation + ~90s re-run",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "SEQUENCED AFTER BL-020 -- the commission target stays frozen while the implementer works (third application of the rule).",
+      "safety": "none engaged",
+      "absorbs": "BL-014, BL-015 (residual: F13 note correction, F14, NAM-101 vocabulary unification), BL-016, BL-017, BL-018"
+    },
+    {
+      "rank": 3,
+      "id": "BL-022",
+      "type": "provenance-check",
+      "title": "Commission packages carry their own digest manifest, and package preparation is a checklisted derivation",
+      "hypothesis": "A package manifest (file list + digests, prepared at delivery) plus a derivation checklist (delete prediction sections; screen every file, both number formats; verify registered paths resolve) prevents the LEAK-101 and G6 classes.",
+      "discriminatingTest": "Apply to the BL-020 package: the checklist must mechanically catch a planted prediction table in any shipped file and a planted non-resolving path, before delivery.",
+      "whyItMatters": "LEAK-101 was traceable only because the operator happened to preserve both package states; a manifest makes that guaranteed rather than lucky. Third instance of a screening check passing on the wrong scope (PROV-004, the v1.0.0 artifacts list, LEAK-101).",
+      "wouldChangeADecision": false,
+      "cost": "one checklist + one script; runs at package preparation",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 4,
+      "id": "BL-023",
+      "type": "provenance-check",
+      "title": "Harness-side prompt capture (PROV-004/008/009, three consecutive runs)",
+      "hypothesis": "The runtime harness writing delivered prompt bytes to disk before the agent starts eliminates the agent-transcription caveat that has marked every run manifest in this program.",
+      "discriminatingTest": "A run whose manifest carries promptCaptureMethod operator-file or harness-capture with a digest computed before the session.",
+      "whyItMatters": "Three runs, three unverified prompt digests. The fix is environmental and cannot be produced by any run for itself.",
+      "wouldChangeADecision": false,
+      "cost": "operator/harness configuration",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "requires operator action outside any run",
+      "safety": "none engaged"
+    }
+  ]
+}

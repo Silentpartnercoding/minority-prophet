@@ -1,0 +1,94 @@
+RUN-20260807-3 — R5: register the receipt object and fix the margin sign.
+
+Continue the master loop in the same repository and worktree, branch
+agent/knowledge-ledger-run-20260807-1. Same discipline: run directory,
+provenance, versioned closing packet, draft only, nothing pushed, nothing
+promoted.
+
+IND-20260807-2 has completed — the independent Rust implementation re-run
+against protocol v1.1.0. Its result is at
+/Users/james/Development/kl000-independent-spec/impl-rs/results/kl000-independent-result-v110.json
+and its report alongside it. Read them. Do NOT modify anything under
+kl000-independent-spec/.
+
+WHAT IT ESTABLISHED
+
+The conclusion function now agrees exactly. Two independent implementations,
+different languages, no shared code:
+
+  present                       41,820 = 41,820
+  supported                     19,380 = 19,380
+  not_established               49,480 = 49,480
+  absent_within_declared_scope     160 =    160
+  exhaustive worlds/violations/failClosed, randomized violations — all match
+
+The 22,440-world disagreement that motivated v1.1.0 is closed. R1 was the fix.
+That is genuine cross-implementation conformance on the evaluator and should be
+recorded as such.
+
+C11's pinned digest still does NOT reproduce. That is the remaining gap and it
+is not a codec defect: the implementation round-tripped its canonical output
+through the protocol's own stated realisation (python json.dumps with
+sort_keys=True, separators=(',',':'), ensure_ascii=False) and got byte-identical
+bytes. Verify that claim yourself rather than accept it.
+
+TWO REPAIRS
+
+R5.1 — REGISTER THE RECEIPT OBJECT (its finding G2, the decisive one).
+
+  R4 defined the canonical FORM (codec) and the digest SCOPE (which member is
+  removed). It never defined the receipt OBJECT. canonicalForm.digestScope
+  names covered members including `schema`, `reason` and `limits`, and the
+  value of none of them is stated anywhere in v1.1.0, nor is the receipt's
+  member list registered. A conforming codec cannot reproduce a digest when the
+  bytes it must hash are unspecified.
+
+  Concretely: the independent implementation's receipt carries `receiptVersion`;
+  I checked the reference's and its members are exactly
+  claim, conclusion, contentDigest, evidence, limits, reason, schema, search,
+  transactionId — no receiptVersion. Two conformant codecs, two member sets,
+  two digests.
+
+  Register the receipt object: the complete member list, the type of each
+  member, and for `schema`, `reason` and `limits` the exact value or the rule
+  that derives it. Anything a digest covers must be specified or excluded from
+  the digest — pick one deliberately and say which.
+
+R5.2 — DEFINE THE SIGN OF `margin` (its finding G1).
+
+  The reference computes margin as an absolute value: I verified zero negative
+  margins across all 110,840 receipts. The independent implementation computes
+  it signed: 38,760 receipts carry a negative margin and therefore have no
+  defined canonical form, because canonicalForm.numbers asserts receipts contain
+  only non-negative integers. That assertion is true under one reading and false
+  under the other, and v1.1.0 never says which.
+
+  This is an owner-style decision like the tie rule, so state it as a decision
+  rather than a derivation. Absolute is what the reference already does and
+  makes the numbers clause true with no other change; signed carries more
+  information (which side leads) and would require canonicalForm.numbers to
+  define negative-integer serialisation. Recommend one, record the rejected
+  reading, and note that the independent implementation chose signed and its
+  choice was defensible.
+
+THEN
+
+- Publish as PROTOCOL v1.2.0. Preserve v1.1.0 and v1.0.0 unmodified.
+- Re-pin C11's expected contentDigest against the newly registered receipt
+  object. The pinned value WILL change if the member set or margin sign
+  changes; that is expected, not a failure. Record the old and new digests and
+  why the bytes moved.
+- Re-run KL-000 in full against v1.2.0.
+- The counts and the conclusion distribution must remain identical:
+  exhaustive 176,120 / 110,840 / 65,280 / 0, randomized 1,000,000 / 0,
+  baselines 634,440 / 26,880 / 26,208 / 189,720, and
+  present 41,820, supported 19,380, not_established 49,480, absent 160.
+  A moved count means a repair changed evaluation rather than serialisation —
+  stop and report it.
+- KL-000's next gate after this is IND-20260807-3: the independent
+  implementation re-running against v1.2.0 and attempting C11 again. Separate
+  commission; do not attempt it and do not edit impl-rs.
+
+Record honestly what conformance has now been established (the evaluator and
+the conclusion function, by two independent implementations) and what has not
+(I4 and I6 remain untested across implementations until a digest reproduces).

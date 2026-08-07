@@ -1,0 +1,80 @@
+{
+  "control": "C02",
+  "requirement": "source-count",
+  "note": "Same six records as C01 but three roots. Distinguishes root counting from record counting.",
+  "input": {
+    "transactionId": "kl000-c02",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-4",
+          "rootId": "r2",
+          "side": "support"
+        },
+        {
+          "id": "rec-5",
+          "rootId": "r2",
+          "side": "support"
+        },
+        {
+          "id": "rec-6",
+          "rootId": "r3",
+          "side": "support"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "supported",
+    "search": {
+      "declared": 2,
+      "searched": 2,
+      "unavailable": 0,
+      "complete": true
+    },
+    "evidence": {
+      "records": 6,
+      "distinctRoots": 3,
+      "repeatedRecordsCollapsed": 3,
+      "supportingRoots": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "opposingRoots": [],
+      "margin": 3,
+      "conversionsToReverse": 2
+    }
+  }
+}

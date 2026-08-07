@@ -1,0 +1,16 @@
+G4 verification: evaluator inverting R1 (presence supported <-> not_established)
+receipt-producing worlds: 110840
+conclusions changed vs reference: 55420 (their claim: 22,440)
+invariant violations I1-I11: NONE (0)
+registered fixtures that catch it: [('C01', ['conclusion']), ('C02', ['conclusion']), ('C11', ['conclusion', 'contentDigest'])] (their claim: C11 only)
+
+G4 verification, corrected ablation: the existential (IND-20260807-1) reading of presence
+receipt-producing worlds: 110840
+conclusions changed vs reference: 22440 (their claim: 22,440)
+invariant violations I1-I11: NONE (0)
+registered fixtures that catch it: [('C11', ['conclusion', 'contentDigest'])] (their claim: C11 only)
+
+note: the first ablation above (blanket inversion) was this run's own error --
+it inverts C01/C02's majority worlds too, which the existential reading does not.
+Both ablations record ZERO invariant violations, which is the load-bearing half
+of G4 either way: conclusionFunction has no enforcing invariant.

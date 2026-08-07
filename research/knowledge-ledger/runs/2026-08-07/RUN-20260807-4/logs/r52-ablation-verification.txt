@@ -1,0 +1,6 @@
+R5.2-inverted ablation (signed margin), reference side:
+receipts: 110840 | receipts changed: 38760 (IND-3 claim: 38,760)
+invariant violations: NONE (0)
+registered fixtures that catch it: [('C12', ['margin', 'contentDigest'])] (IND-3 claim: C12 only)
+c11-canonical-digest.json | pinned string hashes to pinned digest: True | string is a fixed point of the stated realisation: True | bytes: 703
+c12-margin-sign.json | pinned string hashes to pinned digest: True | string is a fixed point of the stated realisation: True | bytes: 691

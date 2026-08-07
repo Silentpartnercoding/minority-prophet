@@ -1,0 +1,943 @@
+{
+  "diskOnlyIds": [],
+  "experiments": {
+    "KL-000": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-001": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-002": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-003": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-004": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-005": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-006": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-007": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-008": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-009": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-010": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    },
+    "KL-011": {
+      "emptyCollectionFields": [
+        "artifacts",
+        "baselines",
+        "secondaryEndpoints"
+      ],
+      "keyCount": 22,
+      "methodRequirementsUnpopulated": {
+        "10. success, failure, invalidation, and stop conditions": [
+          "successCondition",
+          "failureCondition",
+          "invalidationCondition"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "frozenSeedsOrSplits",
+          "protocolCommit",
+          "artifacts"
+        ],
+        "12. safety boundary and required human authorization": [
+          "safetyBoundary"
+        ],
+        "4. population or generated-world distribution": [
+          "population"
+        ],
+        "5. search-space definition and enumeration method": [
+          "searchSpace"
+        ],
+        "6. evidence-root and shared-dependency definition": [
+          "rootDefinition"
+        ],
+        "7. baselines and ablations": [
+          "baselines"
+        ],
+        "8. primary and secondary endpoints": [
+          "secondaryEndpoints"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "effectSize",
+          "uncertainty"
+        ]
+      },
+      "methodRequirementsWithNoSchemaKey": {
+        "1. identifier and immutable protocol version": [
+          "protocolVersion"
+        ],
+        "11. frozen seeds, splits, code commit, environment, artifact paths": [
+          "environment"
+        ],
+        "12. safety boundary and required human authorization": [
+          "humanAuthorization"
+        ],
+        "9. effect size, uncertainty interval, multiple-testing correction": [
+          "multipleTestingCorrection"
+        ]
+      },
+      "missingDirectoryEntries": [
+        "fixtures",
+        "src",
+        "tests",
+        "results",
+        "REPRODUCE.md"
+      ],
+      "nullFields": [
+        "effectSize",
+        "failureCondition",
+        "frozenSeedsOrSplits",
+        "invalidationCondition",
+        "population",
+        "protocolCommit",
+        "rootDefinition",
+        "safetyBoundary",
+        "searchSpace",
+        "successCondition",
+        "uncertainty"
+      ],
+      "status": "incomplete-seed",
+      "unpopulatedCount": 14
+    }
+  },
+  "registryOnlyIds": [],
+  "registryStatus": "seeded-not-executed"
+}

@@ -1,0 +1,74 @@
+RUN-20260807-5 — the I12 gate, then delivery. Reopening the program for its one
+committed gate, on owner direction.
+
+Same repository, worktree and branch. Same discipline: run directory,
+provenance, versioned closing packet. The program was closed at RUN-20260807-4;
+record that this run reopens it deliberately for the single committed gate and
+closes it again, rather than pretending it was never closed.
+
+THE GATE — already registered, do not redesign it
+
+STATUS.json committedGates[0], `v1.3.0-I12-decision-enforcement`:
+
+  Register and implement I12 as a hard invariant:
+    conclusion == conclusionFunction(world)
+    AND margin == abs(count(supportingRoots) - count(opposingRoots))
+  Subsumes I2's and I5's conclusion clauses.
+
+  Exact pass condition, as registered:
+  - the R1-inverting ablation is caught by I12 on exactly 22,440 exhaustive
+    worlds;
+  - the R5.2-inverting ablation on exactly 38,760;
+  - with NO fixture involved -- fixtures must not be what catches them;
+  - B5 records zero I12 violations;
+  - no other number moves.
+
+Those numbers are already measured on both sides (IND-20260807-3, and
+reproduced on the reference in RUN-20260807-3's g4 ablation log). If your
+implementation of I12 catches a different count, I12 is wrong -- not the
+measurement. Stop and report rather than adjust the expectation.
+
+WHAT ELSE MUST NOT MOVE
+
+Everything. This is an enforcement change, not a semantics change:
+  exhaustive 176,120 / 110,840 / 65,280 / 0
+  randomized 1,000,000 / 0
+  baselines  634,440 / 26,880 / 26,208 / 189,720
+  distribution 160 / 49,480 / 41,820 / 19,380
+  C11 sha256:84e63c21...33eafe   C12 sha256:61000a9b...aa3b6e
+A moved value means I12 changed evaluation rather than enforcing it.
+
+PUBLISH AS v1.3.0. Preserve v1.0.0, v1.1.0 and v1.2.0 unmodified. Re-run KL-000
+in full. Update FINAL-RECORD.md rather than replacing it -- append what changed
+and why the record now says something different, preserving the v1.2.0 text.
+
+WHAT REMAINS OPEN AND MUST STAY OPEN
+
+A1 (4 worlds) and A2 (19,152 worlds, ~17% of receipts) are recorded as
+undecided owner decisions. Do not decide them. They are known limits in the
+final record and their being open does not block delivery.
+
+DELIVERY -- prepare only, push nothing
+
+After the gate passes, rebuild `agent/kl-000-conformance` from the current tree
+onto `github/main` per HANDOFF-v1.md, cherry-picking as a range so it covers
+every commit including this run's own closing commits. Rebind PROTOCOL-COMMIT.
+
+Write the PR body. It must carry, in the body itself and not only by reference:
+  - what is established, by object and at its actual strength: the conclusion
+    function across the full 110,840-receipt enumeration; the canonical form
+    and digests for the two pinned receipts only;
+  - the LEAK-101 qualification -- the independent implementation saw the
+    expected counts, the digest result is unaffected, and the origin was the
+    registered protocol's own prediction table;
+  - I12's result: the two owner decisions are now enforced by an invariant
+    rather than by two fixtures, with the ablation numbers;
+  - A1 and A2 open, with world counts;
+  - that the first-transaction gate is NOT REACHED, and that eleven kernels
+    remain seeded.
+
+Leave the exact push command in HANDOFF. Do not run it. Publication is the
+owner's and requires his review of the exact public text.
+
+Close with the full versioned packet and state plainly whether the program is
+closed again.
