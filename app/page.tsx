@@ -40,6 +40,7 @@ export default function Home() {
         <div className="navlinks">
           <a href="#benchmark">Benchmark</a>
           <a href="#dashboard">Dashboard</a>
+          <a href="#boundary">Boundary</a>
           <a href="#principles">Principles</a>
           <a className="nav-cta" href="#run">Run v0.1 ↗</a>
         </div>
@@ -119,8 +120,22 @@ export default function Home() {
         <p className="demo-disclaimer">Demonstration data · No empirical leaderboard score is claimed until the first frozen evaluation run.</p>
       </section>
 
+      <section className="boundary" id="boundary">
+        <p className="section-index">03 / THE ARCHITECTURAL BOUNDARY</p>
+        <div className="boundary-heading">
+          <h2>Evidence is not<br /><em>authority.</em></h2>
+          <p>Decision-quality systems can produce useful behavioral scores and replay bundles. Minority Prophet does not turn those records into permission. It asks whether the evidence supporting a present claim is independently grounded or merely repeated.</p>
+        </div>
+        <div className="boundary-flow" aria-label="Decision quality evidence flows through Border, Minority Prophet, and Gate">
+          <article><span>01</span><h3>Behavioral evidence</h3><p>A decision trace, score, test result, or replay bundle records what happened.</p></article>
+          <article><span>02</span><h3>Border binds</h3><p>Identity, delegated authority, policy, evidence, and the exact proposed action are bound together.</p></article>
+          <article><span>03</span><h3>Prophet assesses</h3><p>Independent roots are distinguished from copies, correlated validators, and manufactured agreement.</p></article>
+          <article><span>04</span><h3>Gate enforces</h3><p>A separate policy proceeds, blocks, or escalates. Evidence assessment never grants authority.</p></article>
+        </div>
+      </section>
+
       <section className="principles" id="principles">
-        <p className="section-index">03 / NON-NEGOTIABLE PRINCIPLES</p>
+        <p className="section-index">04 / NON-NEGOTIABLE PRINCIPLES</p>
         <h2>Never confuse—</h2>
         <div className="principle-grid">
           {["Consensus / Truth", "Popularity / Evidence", "Confidence / Correctness", "Reputation / Competence", "Correlation / Independence", "Majority / Reality"].map((item, index) => {
@@ -131,7 +146,7 @@ export default function Home() {
       </section>
 
       <section className="run" id="run">
-        <div><p className="section-index">04 / REPRODUCIBLE V0.1</p><h2>Run the<br /><em>baselines.</em></h2></div>
+        <div><p className="section-index">05 / REPRODUCIBLE V0.1</p><h2>Run the<br /><em>baselines.</em></h2></div>
         <div className="terminal"><div><i /><i /><i /><span>minority-prophet / v0.1</span></div><pre><code><b>$</b> python -m benchmark --worlds 500 --seed 7{"\n\n"}<span>Generating synthetic worlds...</span>{"\n"}<span>Evaluating reproducible baselines...</span>{"\n"}<strong>Report ready.</strong></code></pre></div>
       </section>
 
