@@ -127,3 +127,63 @@ advanced, audited at close (RUN-20260807-4 `logs/kernel-audit.txt`).
 *A final report that records an unenforced decision and an undecided
 ambiguity is worth more than one that reads as completion. This is that
 report.*
+
+---
+
+# Addendum — RUN-20260807-5: the committed gate is paid
+
+Everything above is the record as written at RUN-20260807-4's close and is
+preserved unmodified. This addendum records what changed afterwards and why
+the record now says something different.
+
+## What happened
+
+The program was reopened deliberately, on owner direction, for exactly the
+one committed gate — `v1.3.0-I12-decision-enforcement` — and closed again.
+Protocol v1.3.0 registered and implemented **I12** as a hard invariant:
+`conclusion == conclusionFunction(world)` and
+`margin == abs(|supportingRoots| − |opposingRoots|)`, both computed from the
+world and never from receipt fields, at most one violation per world.
+
+The registered pass condition was met **exactly**:
+
+| Ablation | Caught by I12 on | Other invariants | Fixture involved |
+|---|---|---|---|
+| ABL-R1 (ties conclude `supported`) | **exactly 22,440** worlds | 0 | none |
+| ABL-R52 (margin signed) | **exactly 38,760** worlds | 0 | none |
+
+B5 recorded zero I12 violations in every phase, and nothing else moved — no
+count, no conclusion, no baseline preserved total, and neither pinned digest
+(the full run re-verified all of them). New reported-only information:
+baseline I12 counts (B1 57,120 / B2 13,440 / B3 13,108 / B4 57,120), beside
+the preserved I1–I11 totals, not folded in.
+
+## How this changes the mechanistic finding
+
+The headline of the close-out above — *"the program's enforcement of its own
+decisions rests on two pinned inputs, not on any property that holds across
+the enumeration"* — **was true through v1.2.0 and is now repaired.** Both
+owner decisions are enforced by an invariant with demonstrated power at the
+exact surfaces where the fixtures used to be the only defence. The finding
+is retained above as history because it explains why v1.3.0 exists and why
+the state never advanced on the strength of a passing reproduction alone.
+
+## What this does not change
+
+- **The state.** KL-000 remains `adversarial-passed`. `verified-independent`
+  is an owner promotion decision; the independent implementation's checker
+  is its own and has not run against v1.3.0. Its v1.2.0 conformance evidence
+  is undisturbed — I12 changed the checker, and nothing the evaluator does
+  moved — but enforcement on its side is its own choice to make.
+- **A1 and A2.** Still undecided owner decisions (4 and 19,152 worlds), by
+  explicit instruction. I12 enforces the registered text as written without
+  deciding them.
+- **The qualifications.** LEAK-101 travels with the conformance claim as
+  before; the canonical form is confirmed for two pinned receipts, not all
+  110,840; the randomized phase is a permanent replication (F11); the open
+  ledger above stands, minus G4/H2.
+- **The boundary.** The first-transaction gate is **NOT REACHED**. Eleven
+  kernels remain seeded with exact next gates. No promotion has occurred.
+
+The program is closed again, with no committed gate outstanding.
+
