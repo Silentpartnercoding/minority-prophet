@@ -1,0 +1,191 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-1",
+  "version": 1,
+  "note": "Written incrementally as constraints were discovered, not reconstructed at run end. Severity is the constraint's effect on what this program may claim, not on whether the run could finish.",
+  "constraints": [
+    {
+      "id": "PROV-004",
+      "category": "provenance",
+      "severity": "high",
+      "title": "Agent self-transcription is not an admissible capture method for the run prompt digest",
+      "statement": "A prompt digest computed over bytes the agent transcribed from its own context authenticates the transcription and nothing upstream of it. Run provenance requires an operator-side or harness-side artifact captured independently of the agent.",
+      "evidence": {
+        "authoritativeFile": "operator artifact RUN-20260807-1-PROMPT.txt, digest computed before the session began",
+        "authoritativeDigest": "sha256:729bfb70f39916e320f6bcb248febb273e4a1d832f6de9356b0e34940b2f5ccb",
+        "authoritativeBytes": 30015,
+        "agentTranscriptionDigest": "sha256:8478639c1e90dcecd0ca12cffbf3462503124e40967fbefc3cbaecc5a693024a",
+        "agentTranscriptionBytes": 30011,
+        "delta": "one hunk at line 457; U+201C/U+201D (e2 80 9c / e2 80 9d) normalised to U+0022 (0x22); 2 characters, 4 bytes",
+        "artifacts": [
+          "inputs/PROMPT.txt",
+          "inputs/PROMPT-TRANSCRIBED-SUPERSEDED.txt",
+          "inputs/PROMPT-TRANSCRIPTION-DELTA.diff",
+          "inputs/PROMPT-CAPTURE-NOTE.md"
+        ]
+      },
+      "whyItGeneralises": "The failure is not the four bytes. It is that the agent's transcription was internally consistent and self-digesting while being wrong, and no amount of re-reading it from inside the agent's own context could have revealed that. Detection required a second, causally independent capture with an earlier timestamp. This is the program's own thesis turned on its own provenance: self-consistency is not fidelity, agreement with oneself is not independence, and treating a transcription's digest as the original's digest is the provenance equivalent of counting a copy as an independent evidence root.",
+      "scope": "Applies to every agent-populated provenance field in every run of this program, not only to the prompt: model version, tool versions, timestamps, and any value the agent reports about its own execution context share the property that the agent cannot verify them from inside that context.",
+      "remediation": "run-manifest.json must carry promptCaptureMethod with value 'operator-file' or 'harness-capture'. The value 'agent-transcription' marks the digest as unverified and any run relying on it as provenance-incomplete. The durable fix is the runtime harness writing delivered prompt bytes to disk before the agent starts.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "No KL-000 conclusion derives from the prompt text. KL-000 is reproducible from the committed evaluator, generator, frozen seed, and declared bounds.",
+      "discoveredDuring": "orientation, via operator correction",
+      "status": "remediated-for-this-run-open-for-program"
+    },
+    {
+      "id": "PROV-001",
+      "category": "provenance",
+      "severity": "low",
+      "title": "Run prompt's stated repository starting conditions were out of date",
+      "statement": "The prompt asserted github/main carries 8 of 11 authoritative files and that neither main carries the program. Both were false at run time.",
+      "evidence": {
+        "githubMain": "335b34e carries 12/12 authoritative files plus the reference fixture",
+        "originMain": "88a3001 carries 4/12, not 0",
+        "staleRefExplanation": "the prompt's 8/11 figure matched 7a56663 (PR #12), this worktree's stale github/main tracking ref before git fetch github"
+      },
+      "remediation": "Verified rather than assumed, as the prompt itself instructed. Base selection was unaffected.",
+      "affectsConclusions": false,
+      "discoveredDuring": "orientation",
+      "status": "recorded"
+    },
+    {
+      "id": "PROV-002",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Base 887bd2f and github/main 335b34e have genuinely diverged in both directions",
+      "statement": "Both refs advanced two commits past merge-base 1d1491e. The reference-rendering work exists only on the base; the decision-quality clarification exists only on github/main. git diff --stat touches 10 files.",
+      "evidence": {
+        "command": "git rev-list --left-right --count 335b34e...887bd2f",
+        "output": "2\t2",
+        "mergeBase": "1d1491e",
+        "baseOnlyCommits": ["0a35fe1 Render the first transmission for human readers", "887bd2f Hold the human rendering to its own receipt"],
+        "mainOnlyCommits": ["c5497aa clarify decision-quality boundary", "335b34e merge of PR #16"]
+      },
+      "remediation": "Recorded, not rebased. Reconciling the divergence is a separate scientific question and therefore a separate PR under the one-question-per-PR rule. No rebase, squash, or history rewrite was performed against either side.",
+      "affectsConclusions": false,
+      "discoveredDuring": "orientation, confirmed by operator mid-run",
+      "status": "open-deferred-to-separate-pr"
+    },
+    {
+      "id": "PROV-003",
+      "category": "authorization",
+      "severity": "high",
+      "title": "The prescribed PR base branch is not published on the github remote",
+      "statement": "agent/first-transmission does not exist on the github remote, and base commit 887bd2f is not published there. A draft PR cannot target an unpublished base.",
+      "evidence": {
+        "command": "git ls-remote --heads github refs/heads/agent/first-transmission",
+        "output": "(empty)",
+        "secondCommand": "git ls-remote github | grep -c 887bd2f",
+        "secondOutput": "0"
+      },
+      "remediation": "Publishing a base branch to a public repository is an outward-facing act this run was not explicitly asked to perform. The decision is referred to the founder in HANDOFF-v1.md with exact commands rather than taken unilaterally.",
+      "affectsConclusions": false,
+      "affectsDeliverable": true,
+      "discoveredDuring": "orientation",
+      "status": "blocked-authorization"
+    },
+    {
+      "id": "SCH-001",
+      "category": "scientific",
+      "severity": "high",
+      "title": "preregistration.v0.1 cannot express four of RESEARCH-METHOD's twelve required fields",
+      "statement": "The schema has no key for protocolVersion, multipleTestingCorrection, environment, or humanAuthorization. A preregistration can therefore be schema-valid and fully populated while still violating RESEARCH-METHOD.md, whose completeness condition is consequently unsatisfiable under v0.1.",
+      "evidence": {
+        "tool": "scripts/audit_preregistrations.py",
+        "finding": "all 12 experiments report the same 4 missing schema keys",
+        "log": "logs/registry-audit.txt"
+      },
+      "remediation": "KL-000 preregistered under minority-prophet.preregistration.v0.2, a strict superset adding exactly these four keys. v0.1 files for KL-001..KL-011 left untouched; migration proposed as its own PR.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "remediated-for-KL-000-open-for-others"
+    },
+    {
+      "id": "ENG-001",
+      "category": "engineering",
+      "severity": "medium",
+      "title": "All twelve experiment directories lack five of eight required entries",
+      "statement": "Every KL-NNN directory is missing fixtures/, src/, tests/, results/, and REPRODUCE.md, holding only PROTOCOL.md, preregistration.json, and STATUS.json.",
+      "evidence": {"tool": "scripts/audit_preregistrations.py", "uniformAcross": 12},
+      "blocks": "program-success criterion 'every kernel has at least a complete preregistration, fixture, tests, status, and exact next gate'",
+      "remediation": "Closed for KL-000 by this run. KL-001..KL-011 remain at 3/8 and their STATUS.json files now name this in their next gate.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "open"
+    },
+    {
+      "id": "SCH-002",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "Registry field firstGate silently carries three different kinds of statement",
+      "statement": "firstGate is a stop condition for KL-000, a decision rule for KL-001/005/008, a safety boundary for KL-004/006/009, and a promotion rule for KL-011. RESEARCH-METHOD treats stop conditions and safety boundaries as separate required fields, so firstGate can be machine-checked against neither.",
+      "evidence": {"observedIn": "EXPERIMENT-REGISTRY.json", "consequence": "the KL-000 seed copied firstGate into stopCondition and left safetyBoundary null while appearing to transcribe the registry faithfully"},
+      "remediation": "Not repaired. Splitting firstGate into stopCondition, decisionRule, and safetyBoundary proposed in the backlog.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "open"
+    },
+    {
+      "id": "SCH-003",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "The ten controls RESEARCH-METHOD requires everywhere have no schema field anywhere",
+      "statement": "Neither EXPERIMENT-REGISTRY.json nor preregistration.v0.1 names controls. baselines is the nearest field and is empty in all twelve, but a baseline is a comparator method while a control is a world whose correct answer is known in advance. The ten mandatory controls are therefore unenforceable by machine check.",
+      "evidence": {"requirement": "RESEARCH-METHOD.md section 'Controls required everywhere'", "schemaFields": "none"},
+      "remediation": "All ten implemented as named KL-000 fixtures and declared in a new controls array in preregistration v0.2. Registry and v0.1 unchanged.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "remediated-for-KL-000-open-for-others"
+    },
+    {
+      "id": "SCH-004",
+      "category": "interoperability",
+      "severity": "low",
+      "title": "Evaluator search vocabulary is narrower than RESEARCH-DIRECTION.md's",
+      "statement": "RESEARCH-DIRECTION.md specifies locations recorded as searched, failed, unavailable, or not searched. The evaluator defines only searched and unavailable as terminal. Behaviour is safe — any other status blocks an absence conclusion — but such statuses are counted in neither the searched nor unavailable totals, so declared != searched + unavailable silently, and a reader reconciling the three numbers would judge the receipt malformed.",
+      "evidence": {"code": "knowledge_ledger/transaction.py TERMINAL_SEARCH_STATUSES"},
+      "remediation": "Preregistered as explicit KL-000 invariant I8 and tested rather than assumed. Not repaired.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "open"
+    },
+    {
+      "id": "SCH-005",
+      "category": "interoperability",
+      "severity": "medium",
+      "title": "Two fields RESEARCH-DIRECTION.md requires in the evidence ledger are absent from the receipt",
+      "statement": "The receipt emits conversionsToReverse and reason but has no flipBudget, no unattributed-evidence field, and no uncertainty field.",
+      "evidence": {"requirement": "RESEARCH-DIRECTION.md section 'Evidence ledger'", "emitted": "knowledge_ledger/transaction.py result dict"},
+      "consequence": "Low for KL-000, whose invariants do not depend on them. Medium for KL-011, whose acceptance gate requires protected fields to survive crossing systems: a field the reference receipt never emits cannot be shown to survive.",
+      "remediation": "Recorded as a KL-011 prerequisite in the backlog. Not repaired.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "open"
+    },
+    {
+      "id": "DOC-001",
+      "category": "knowledge",
+      "severity": "low",
+      "title": "Phase vocabulary in RESEARCH-METHOD does not match the kernel-state ladder",
+      "statement": "RESEARCH-METHOD lists eight execution phases; the run prompt's kernel ladder has nine states. seeded and preregistered have no counterpart in RESEARCH-METHOD, whose first phase 'specification' maps onto the transition between them. Every STATUS.json also records lastCompletedGate 'registry-entry', which appears in neither list.",
+      "evidence": {"documents": ["RESEARCH-METHOD.md", "STATUS.json x12"]},
+      "remediation": "This run uses the nine-state ladder, since STATUS.json already does. Not repaired.",
+      "affectsConclusions": false,
+      "discoveredDuring": "registry audit",
+      "status": "open"
+    },
+    {
+      "id": "ENV-001",
+      "category": "engineering",
+      "severity": "low",
+      "title": "Shell word-splitting produced a false negative during orientation",
+      "statement": "A zsh loop over an unquoted string variable did not word-split, so a file-presence check reported 0/12 authoritative files present on every ref including HEAD, contradicting a directory listing taken seconds earlier.",
+      "evidence": {"cause": "zsh does not word-split unquoted parameter expansions as bash does", "fix": "array assignment", "detectedBy": "the result contradicting an already-observed fact rather than by any check"},
+      "whyRecorded": "A tooling artifact that produces a uniform, plausible, wrong answer is indistinguishable from a real finding unless something independent contradicts it. The same class of error in a result-producing script would have been reported as evidence.",
+      "remediation": "All multi-item shell iteration in this run uses explicit arrays. Result-bearing computation is in committed Python, not shell.",
+      "affectsConclusions": false,
+      "discoveredDuring": "orientation",
+      "status": "resolved"
+    }
+  ]
+}

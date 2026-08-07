@@ -454,7 +454,7 @@ Print an ELI5 summary for the founder:
 > Five different machines passed a claim like a sealed evidence package. They
 > still agreed on where we looked, which reports were copies, what the independent
 > evidence was, and what we were allowed to conclude. When one location was
-> missing, the package said “we do not know.” When every declared location was
+> missing, the package said "we do not know." When every declared location was
 > searched, it allowed only the narrow conclusion for that finite space.
 
 ## Human gates

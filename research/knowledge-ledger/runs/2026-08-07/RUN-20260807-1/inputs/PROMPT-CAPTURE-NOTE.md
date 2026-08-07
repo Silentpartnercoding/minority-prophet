@@ -1,44 +1,91 @@
 # Prompt capture provenance
 
 `RESEARCH-METHOD.md` requires each run manifest to record the prompt digest.
-This note records **how** the accompanying `PROMPT.txt` was obtained, because the
-distinction matters to anyone auditing this run.
+This note records **which bytes** were digested and how they were obtained,
+because this run produced two different answers to that question and the
+difference is itself a finding.
 
-## What was captured
+## Final state
 
-`PROMPT.txt` is the operator instruction that initiated `RUN-20260807-1`,
-transcribed by the executing agent from its own run context, plus the
-mid-run operator message recorded separately in `PROMPT-ADDENDUM.txt`.
+| File | SHA-256 | Bytes | Status |
+|---|---|---|---|
+| `PROMPT.txt` | `729bfb70f39916e320f6bcb248febb273e4a1d832f6de9356b0e34940b2f5ccb` | 30,015 | **authoritative** |
+| `PROMPT-TRANSCRIBED-SUPERSEDED.txt` | `8478639c1e90dcecd0ca12cffbf3462503124e40967fbefc3cbaecc5a693024a` | 30,011 | superseded, retained |
+| `PROMPT-TRANSCRIPTION-DELTA.diff` | — | — | the exact difference |
 
-## The honest limitation
+`PROMPT.txt` now holds the operator's authoritative bytes, copied from
+`RUN-20260807-1-PROMPT.txt`. The operator computed
+`sha256:729bfb70…5ccb` **before this session began**, from the file the pasted
+prompt was generated out of. That is an independent capture, not a copy of the
+agent's transcription, so it is admissible as a check on it.
 
-The agent had no filesystem access to the original prompt bytes as they were
-delivered to the model runtime. It transcribed them from context. Therefore:
+The superseded transcription is retained rather than deleted, under governing
+principle 9 (preserve corrected results). Deleting it would erase the evidence
+that the correction was needed.
 
-- `PROMPT.txt` is an **agent transcription**, not a captured byte stream;
-- its SHA-256 digest authenticates *that transcription file*, and nothing more;
-- it does **not** prove the operator's original bytes were identical, because
-  invisible differences (trailing whitespace, line-ending convention, Unicode
-  normalisation) would not survive transcription and would change the digest
-  without being visible to the transcriber.
+## What went wrong, exactly
 
-This is exactly the distinction the program itself insists on: a digest
-authenticates a specific artifact, it does not establish that the artifact
-faithfully represents an upstream reality. Recording the digest of a
-transcription as though it were the digest of the original would be the
-provenance equivalent of counting a copy as an independent root.
+The agent's first `PROMPT.txt` was a transcription from its own run context, not
+a captured byte stream. It differed from the authoritative bytes on **exactly one
+line** — line 457, inside the ELI5 block — and nowhere else:
 
-## What would remove the limitation
+```
+457c457
+< > missing, the package said “we do not know.” When every declared location was   (authoritative)
+> > missing, the package said "we do not know." When every declared location was   (transcribed)
+```
+
+Verified at byte level rather than accepted on assertion:
+
+| | left quote | right quote |
+|---|---|---|
+| authoritative | `e2 80 9c` (U+201C) | `e2 80 9d` (U+201D) |
+| transcribed | `22` (U+0022) | `22` (U+0022) |
+
+Two curly quotation pairs were normalised to straight quotes. Each lost 2 bytes,
+for a total of 4: 30,015 − 30,011 = 4. One hunk, two changed characters, no
+other difference anywhere in the file.
+
+## Why this matters more than four bytes
+
+The superseded note filed under this same name predicted this failure mode in
+the abstract — it warned that "invisible differences (trailing whitespace,
+line-ending convention, **Unicode normalisation**) would not survive
+transcription and would change the digest without being visible to the
+transcriber." That prediction was correct, and the agent still had no way to
+detect the discrepancy from inside its own context. It took an **independent
+capture with an earlier timestamp** to surface it.
+
+That is the program's own thesis applied to its own provenance:
+
+- A digest authenticates a specific artifact. It does not establish that the
+  artifact faithfully represents an upstream reality.
+- The agent's transcription was internally consistent, self-digesting, and
+  wrong. Self-consistency is not fidelity.
+- Recording the digest of a transcription as if it were the digest of the
+  original is the provenance equivalent of **counting a copy as an independent
+  root** — the exact error KL-000 exists to make impossible.
+- The correction did not come from re-reading the copy more carefully. It came
+  from a second, causally independent capture. Agreement between the agent and
+  itself would never have found it.
+
+## Consequence for this run's conclusions
+
+None. No KL-000 conclusion depends on the prompt digest. The KL-000 result is
+reproducible from the committed evaluator, generator, frozen seed, and declared
+bounds, none of which derive from the prompt text. The prompt digest documents
+provenance of the **instruction**, not of the **evidence**.
+
+The finding is recorded as constraint `PROV-004`. The generalisation — that any
+agent-transcribed provenance field in this program is unverifiable from inside
+the agent's own context, and needs an independent capture — is recorded in
+`RESEARCH-BACKLOG-v1.json`, because it applies to every future run, not only
+this one.
+
+## What would prevent a recurrence
 
 The runtime harness writing the delivered prompt bytes to disk before the agent
 starts, and the agent digesting that file rather than its own transcription.
-Until then this field is `transcribed`, not `captured`, in
-`run-manifest.json`.
-
-## Consequence for this run
-
-None of `RUN-20260807-1`'s scientific conclusions depend on the prompt digest.
-The KL-000 result is reproducible from the committed evaluator, generator,
-frozen seed, and declared bounds, none of which are derived from the prompt
-text. The prompt digest documents provenance of the *instruction*, not of the
-*evidence*.
+`run-manifest.json` therefore carries `promptCaptureMethod: "operator-file"`
+for this run, and that field should read `operator-file` or `harness-capture` —
+never `agent-transcription` — in any run whose prompt digest is relied upon.
