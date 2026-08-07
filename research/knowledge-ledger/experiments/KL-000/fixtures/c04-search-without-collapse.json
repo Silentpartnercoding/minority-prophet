@@ -1,0 +1,92 @@
+{
+  "control": "C04",
+  "requirement": "search-without-collapse",
+  "note": "Complete coverage with eight records from one root. An evaluator counting records reports eight independent confirmations; margin must remain 1.",
+  "input": {
+    "transactionId": "kl000-c04",
+    "claim": {
+      "type": "absence",
+      "proposition": "No target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        },
+        {
+          "id": "loc-3",
+          "status": "searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-4",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-5",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-6",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-7",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-8",
+          "rootId": "r1",
+          "side": "support"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "absent_within_declared_scope",
+    "search": {
+      "declared": 3,
+      "searched": 3,
+      "unavailable": 0,
+      "complete": true
+    },
+    "evidence": {
+      "records": 8,
+      "distinctRoots": 1,
+      "repeatedRecordsCollapsed": 7,
+      "supportingRoots": [
+        "r1"
+      ],
+      "opposingRoots": [],
+      "margin": 1,
+      "conversionsToReverse": 1
+    }
+  }
+}

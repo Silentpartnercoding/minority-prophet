@@ -1,0 +1,70 @@
+{
+  "control": "C09",
+  "requirement": "counterexample-searched",
+  "note": "One counterexample under complete coverage. Two supporting roots do not outvote it.",
+  "input": {
+    "transactionId": "kl000-c09",
+    "claim": {
+      "type": "absence",
+      "proposition": "No target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        },
+        {
+          "id": "loc-3",
+          "status": "searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r2",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r3",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "present",
+    "search": {
+      "declared": 3,
+      "searched": 3,
+      "unavailable": 0,
+      "complete": true
+    },
+    "evidence": {
+      "records": 3,
+      "distinctRoots": 3,
+      "repeatedRecordsCollapsed": 0,
+      "supportingRoots": [
+        "r1",
+        "r2"
+      ],
+      "opposingRoots": [
+        "r3"
+      ],
+      "margin": 1,
+      "conversionsToReverse": 1
+    }
+  }
+}

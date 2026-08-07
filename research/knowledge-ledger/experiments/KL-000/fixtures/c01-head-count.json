@@ -1,0 +1,78 @@
+{
+  "control": "C01",
+  "requirement": "head-count",
+  "note": "Six records, one root. A head-counting evaluator reports six confirmations; the dual ledger must report one.",
+  "input": {
+    "transactionId": "kl000-c01",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-4",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-5",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-6",
+          "rootId": "r1",
+          "side": "support"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "supported",
+    "search": {
+      "declared": 2,
+      "searched": 2,
+      "unavailable": 0,
+      "complete": true
+    },
+    "evidence": {
+      "records": 6,
+      "distinctRoots": 1,
+      "repeatedRecordsCollapsed": 5,
+      "supportingRoots": [
+        "r1"
+      ],
+      "opposingRoots": [],
+      "margin": 1,
+      "conversionsToReverse": 1
+    }
+  }
+}
