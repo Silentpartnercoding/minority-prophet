@@ -7,6 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class EvidenceAlignmentTests(unittest.TestCase):
+    def test_foundations_require_verifier_independence(self):
+        foundations = (ROOT / "FOUNDATIONS.md").read_text()
+        self.assertIn("Verifier independence", foundations)
+        self.assertIn("not trusted merely because it is a\n   third party", foundations)
+        self.assertIn("unable to mint, alter, or promote the evidence it verifies", foundations)
+        self.assertIn("Unknown or overlapping provenance widens uncertainty", foundations)
+
     def test_active_paper_uses_canonical_exp007a_values(self):
         paper = (ROOT / "papers/minority-prophet-v1.0.2.md").read_text()
         self.assertIn("EXP007A", paper)
