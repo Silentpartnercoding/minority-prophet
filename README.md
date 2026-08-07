@@ -48,6 +48,7 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — authorship and independent-verification credit
 - [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md) — canonical record registry and promotion rules
 - [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md) — claim-to-record ledger, corrections, and remaining release blockers
+- [`RESEARCH-DIRECTION.md`](RESEARCH-DIRECTION.md) — proposed dual evidence/search ledger program and absence-claim boundary
 - [`RESEARCH-HYPOTHESES.md`](RESEARCH-HYPOTHESES.md) — falsifiable hypotheses using the required template
 - [`contracts/authority-evidence-v0.1/`](contracts/authority-evidence-v0.1/) — vendor-neutral authorization/evidence draft and semantic conformance rules
 - [`benchmark/`](benchmark/) — synthetic worlds, evaluation metrics, and CLI

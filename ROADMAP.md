@@ -22,6 +22,9 @@ reproduces seeded records offline.
 5. Test the neutral evidence contract against a real provider.
 6. Define and test root identity, shared dependencies, time, revocation, and
    key-compromise boundaries without treating identity as independence.
+7. Specify and preregister the dual evidence/search ledger program in
+   [`RESEARCH-DIRECTION.md`](RESEARCH-DIRECTION.md), including controls that
+   prevent incomplete coverage from becoming an absence claim.
 
 These are research tasks, not product claims. Current status is controlled by
 [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md) and
