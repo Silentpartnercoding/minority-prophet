@@ -1,7 +1,6 @@
 {
   "designLessonForFutureKernels": "Randomized bounds were chosen for structural variety, not for balance across the evaluator's branches, and the result is a heavily skewed exercise profile. A future revision should either sample side assignments per-root rather than per-record, which would make side conflicts rare and deliberate, or stratify the draw so each branch receives a declared share. Preregistering the intended exercise profile alongside the bounds would have surfaced this before execution rather than after.",
   "experimentId": "KL-000",
-  "failClosedCauseFinding": "100% of fail-closed refusals in both phases are the single expected cause, 'ValueError: One root cannot support opposing sides.' No unexpected cause appeared, so the refusals are demonstrably by design rather than latent defects. Before this was bucketed, a bare exception counter made those two possibilities indistinguishable.",
   "interpretation": "Both bounds are true and they answer different questions. 3 / drawn-worlds bounds the probability that a world sampled from the declared randomized distribution violates an invariant. 3 / receipt-producing-worlds bounds the probability that a world which actually yields a receipt violates one of the eight invariants that require a receipt to check. The second is the weaker and the more honest bound for those eight, and it is the one to quote when describing what the randomized phase established about them.",
   "note": "Secondary analysis, preregistered as secondary endpoint 'count of fail-closed rejections, by cause'. The primary endpoint and its preregistered statistic are unchanged in kl000-confirmatory.json; this addendum does not restate them differently, it reports what the headline count does and does not cover.",
   "phases": {
@@ -12,13 +11,9 @@
         "present": 41820,
         "supported": 19380
       },
-      "failClosedByCause": {
-        "ValueError: One root cannot support opposing sides.": 65280
-      },
       "failClosedCause": "a root recorded on both sides (I3); the evaluator raises and emits no receipt",
       "failClosedFraction": 0.370656,
       "failClosedRejections": 65280,
-      "failClosedUnexpectedCauses": {},
       "invariantsExercisedOnAllDrawnWorlds": [
         "I3",
         "I9"
@@ -46,13 +41,9 @@
         "present": 81792,
         "supported": 41269
       },
-      "failClosedByCause": {
-        "ValueError: One root cannot support opposing sides.": 756619
-      },
       "failClosedCause": "a root recorded on both sides (I3); the evaluator raises and emits no receipt",
       "failClosedFraction": 0.756619,
       "failClosedRejections": 756619,
-      "failClosedUnexpectedCauses": {},
       "invariantsExercisedOnAllDrawnWorlds": [
         "I3",
         "I9"

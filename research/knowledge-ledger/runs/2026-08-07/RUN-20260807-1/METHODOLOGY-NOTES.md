@@ -121,3 +121,48 @@ opposite error is loud and self-limiting.
 
 **Proposed for.** run-provenance guidance; timestamp environment observations so
 the two hypotheses are separable after the fact.
+
+## M6 — Preservation applies to results at least as strictly as to notes; committed artifacts are corrected, never amended
+
+**Practice.** A committed artifact that needs correcting gets a **follow-up
+commit** and, where the artifact is a result document, a retained copy of the
+superseded version under `results/superseded/` with its digest. Never
+`git commit --amend`, never a rewrite, regardless of whether anything has been
+pushed.
+
+**Why.** This run got it wrong once, and the way it got it wrong is the
+instructive part. It had already reasoned correctly about `ORIENTATION.md`:
+preserve the original, append the correction, because "rewriting it would
+destroy the evidence that a correction was needed." Three commits later it
+amended a **results** commit away — applying the weaker standard to the stronger
+artifact, and doing so without noticing the inconsistency, because "it is local
+and unpushed" felt like a sufficient licence.
+
+It is not, for two reasons.
+
+*The record is the deliverable.* An operator had already reviewed `3ac618f` and
+reported on it. A reviewed commit that no longer exists makes the review
+unanchored: the reviewer's findings refer to an object the log no longer
+contains.
+
+*The failure is self-concealing.* After an amend, the history is internally
+consistent and carries no marker that anything was corrected. A reconstruction
+cannot distinguish "was right the first time" from "was quietly fixed". This is
+the same shape as `PROV-004` (a transcription digested as the original) and
+`PROV-005` (a cache measured as the remote): a derived artifact standing in for
+its source, locally unfalsifiable.
+
+There is a sharper irony worth keeping. Amending is exactly the operation that
+makes a protocol's amendment log unfalsifiable — and **M2, which exists to
+prevent that, was written by this same run two commits earlier.** Articulating a
+principle is not the same as having internalised it, and the gap between the two
+is invisible from the inside. That is an argument for mechanical enforcement
+rather than for trying harder.
+
+**Cost.** The history is longer and shows its own mistakes. That is the point:
+a research log that only contains what turned out to be right is not a log, it
+is a summary written afterwards.
+
+**Proposed for.** `RESEARCH-METHOD.md` "Evidence package", alongside the
+existing prohibition on selective deletion, extended from derived output to
+commits. Ideally enforced by a pre-push hook rather than by intention.

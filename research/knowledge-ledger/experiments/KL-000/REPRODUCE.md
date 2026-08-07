@@ -38,6 +38,32 @@ there is no sampling, no timestamp, and no OS entropy in any of them.
 | `phases.randomized.failClosedRejections` | `756619` |
 | `phases.fixture.mismatchedControls` | `[]` |
 | every `phases.baselines.*.caught` | `true` |
+| every `phases.baselines.*.worldsChecked` | `176120` (full exhaustive set) |
+| `phases.exhaustive.receiptProducingWorlds` | `110840` |
+| `phases.randomized.receiptProducingWorlds` | `243381` |
+| `phases.*.failClosedUnexpectedCauses` | `{}` |
+| `phases.*.stopConditionTriggered` | `false` |
+
+Baseline violation counts on the full set:
+
+```
+B1-head-count                634440   (I1 520200, I10 114240)
+B2-source-count               26880   (I2)
+B3-evidence-without-coverage  26208   (I2)
+B4-search-without-collapse   189720   (I1)
+```
+
+Fail-closed refusals must decompose to exactly **one** cause in both phases:
+
+```
+exhaustive   65280  ValueError: One root cannot support opposing sides.
+randomized  756619  ValueError: One root cannot support opposing sides.
+```
+
+Any other cause appearing in `failClosedByCause` marks the run `incomplete`,
+not `failed`: an unrecognised refusal is an implementation defect, not a
+scientific outcome. Receipts plus refusals must reconcile exactly to worlds
+drawn (`110840 + 65280 = 176120`, `243381 + 756619 = 1000000`).
 
 Conclusion distributions must match exactly:
 

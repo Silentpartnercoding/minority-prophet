@@ -76,6 +76,13 @@ def run_world_phase(phase: str, evaluate, limit: int | None = None,
     conclusions: dict[str, int] = {}
     per_invariant: dict[str, int] = {}
     preserved: list[dict] = []
+    # A bare counter cannot tell a designed refusal from an implementation
+    # defect: a KeyError from an unhandled payload shape and a deliberate
+    # ValueError both just increment it. Bucket by cause and keep a bounded
+    # sample of each, so the distribution itself is the evidence that the
+    # refusals are by design.
+    fail_closed_by_cause: dict[str, int] = {}
+    fail_closed_samples: dict[str, list[dict]] = {}
 
     for world in stream:
         if limit is not None and checked >= limit:
@@ -87,44 +94,84 @@ def run_world_phase(phase: str, evaluate, limit: int | None = None,
         try:
             receipt = evaluate(world)
             conclusions[receipt["conclusion"]] = conclusions.get(receipt["conclusion"], 0) + 1
-        except Exception:  # noqa: BLE001
+        except Exception as exc:  # noqa: BLE001
             fail_closed += 1
+            cause = f"{type(exc).__name__}: {exc}"
+            fail_closed_by_cause[cause] = fail_closed_by_cause.get(cause, 0) + 1
+            bucket = fail_closed_samples.setdefault(cause, [])
+            if len(bucket) < 3:
+                bucket.append(world)
         for violation in check_world(evaluate, world):
             per_invariant[violation.invariant] = per_invariant.get(violation.invariant, 0) + 1
             if len(preserved) < 20:
                 preserved.append({"invariant": violation.invariant,
                                   "detail": violation.detail, "world": violation.world})
             if stop_on_first:
-                return {"phase": phase, "worldsChecked": checked,
-                        "outOfDeclaredBounds": out_of_bounds,
-                        "failClosedRejections": fail_closed,
-                        "conclusionDistribution": conclusions,
-                        "violationsByInvariant": per_invariant,
-                        "totalViolations": sum(per_invariant.values()),
-                        "preservedViolations": preserved,
-                        "haltedOnFirstViolation": True,
-                        "elapsedSeconds": round(time.monotonic() - started, 3),
-                        "passed": False}
+                return _phase_report(phase, checked, out_of_bounds, fail_closed,
+                                     fail_closed_by_cause, fail_closed_samples,
+                                     conclusions, per_invariant, preserved,
+                                     True, started)
 
+    return _phase_report(phase, checked, out_of_bounds, fail_closed,
+                         fail_closed_by_cause, fail_closed_samples,
+                         conclusions, per_invariant, preserved, False, started)
+
+
+# Refusals the protocol expects. Anything outside this set is a candidate
+# implementation defect and is surfaced rather than absorbed into a total.
+EXPECTED_FAIL_CLOSED_CAUSES = (
+    "ValueError: One root cannot support opposing sides.",
+)
+
+
+def _phase_report(phase, checked, out_of_bounds, fail_closed, by_cause,
+                  samples, conclusions, per_invariant, preserved,
+                  halted, started):
     total = sum(per_invariant.values())
-    return {"phase": phase, "worldsChecked": checked,
-            "outOfDeclaredBounds": out_of_bounds,
-            "failClosedRejections": fail_closed,
-            "conclusionDistribution": conclusions,
-            "violationsByInvariant": per_invariant,
-            "totalViolations": total,
-            "preservedViolations": preserved,
-            "haltedOnFirstViolation": False,
-            "elapsedSeconds": round(time.monotonic() - started, 3),
-            "passed": total == 0 and out_of_bounds == 0}
+    unexpected = {c: n for c, n in by_cause.items()
+                  if c not in EXPECTED_FAIL_CLOSED_CAUSES}
+    return {
+        "phase": phase,
+        "worldsChecked": checked,
+        "outOfDeclaredBounds": out_of_bounds,
+        "failClosedRejections": fail_closed,
+        "failClosedByCause": dict(sorted(by_cause.items(), key=lambda kv: -kv[1])),
+        "failClosedUnexpectedCauses": unexpected,
+        "failClosedSamples": {c: samples[c] for c in sorted(samples)},
+        "receiptProducingWorlds": sum(conclusions.values()),
+        "conclusionDistribution": conclusions,
+        "violationsByInvariant": per_invariant,
+        "totalViolations": total,
+        "preservedViolations": preserved,
+        "stopConditionArmed": True,
+        "stopConditionTriggered": halted,
+        "stopConditionNote": (
+            "Halted on the first hard violation."
+            if halted else
+            "Not triggered: no hard violation occurred. The stop condition was "
+            "armed throughout -- the run returns immediately on the first "
+            "violation -- and simply had no occasion to fire."
+        ),
+        "elapsedSeconds": round(time.monotonic() - started, 3),
+        # An unexpected refusal cause is an implementation defect, not a pass.
+        "passed": total == 0 and out_of_bounds == 0 and not unexpected,
+    }
 
 
-def run_baselines(sample: int) -> dict:
-    """Power of the test: every ablated baseline MUST be caught."""
+def run_baselines(sample: int | None) -> dict:
+    """Power of the test: every ablated baseline MUST be caught.
+
+    `sample=None` runs the full exhaustive set, which is what PROTOCOL.md means
+    by "the same worlds and the same checker". A subsample would still settle
+    the vacuity question, but "the same worlds" and "2% of them" are different
+    claims and the protocol only writes down one of them.
+    """
     out = {}
     for name, fn in BASELINES.items():
         report = run_world_phase("exhaustive", fn, limit=sample, stop_on_first=False)
         out[name] = {"worldsChecked": report["worldsChecked"],
+                     "coverage": "full exhaustive set" if sample is None
+                                 else f"first {sample} of {worlds.DECLARED_WORLD_COUNT}",
                      "totalViolations": report["totalViolations"],
                      "violationsByInvariant": report["violationsByInvariant"],
                      "caught": report["totalViolations"] > 0}
@@ -137,7 +184,8 @@ def main() -> None:
                         choices=["all", "fixture", "exhaustive", "randomized", "baselines"])
     parser.add_argument("--out", default=str(EXPERIMENT / "results"))
     parser.add_argument("--randomized-count", type=int, default=worlds.RANDOM_WORLD_COUNT)
-    parser.add_argument("--baseline-sample", type=int, default=20000)
+    parser.add_argument("--baseline-sample", type=int, default=None,
+                        help="worlds per baseline; default None = full exhaustive set")
     parser.add_argument("--label", default="confirmatory")
     args = parser.parse_args()
 
@@ -190,6 +238,17 @@ def main() -> None:
         if args.phase in ("all", "randomized"):
             document["phases"]["randomized"] = run_world_phase(
                 "randomized", evaluate_transaction, limit=args.randomized_count)
+
+    # An unrecognised refusal cause is an implementation defect surfacing as a
+    # count. Per the run protocol that is "incomplete", never negative or
+    # positive, so it belongs in invalidation rather than in the verdict.
+    for name in ("exhaustive", "randomized"):
+        phase = document["phases"].get(name)
+        if phase and phase.get("failClosedUnexpectedCauses"):
+            invalid.append(
+                f"{name} phase produced unexpected fail-closed causes: "
+                f"{phase['failClosedUnexpectedCauses']}"
+            )
 
     document["invalidationReasons"] = invalid
 

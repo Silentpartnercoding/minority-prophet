@@ -1,0 +1,168 @@
+{
+  "boundsDriftFromPreregistration": [],
+  "declaredExhaustiveCount": 176120,
+  "derivedExhaustiveCount": 176120,
+  "environment": {
+    "implementation": "CPython",
+    "platform": "macOS-26.4.1-arm64-arm-64bit-Mach-O",
+    "python": "3.14.6"
+  },
+  "evaluatorUnderTest": {
+    "matchesPreregistration": true,
+    "path": "knowledge_ledger/transaction.py",
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f"
+  },
+  "experimentId": "KL-000",
+  "invalidationReasons": [],
+  "label": "confirmatory",
+  "phases": {
+    "baselines": {
+      "B1-head-count": {
+        "caught": true,
+        "totalViolations": 71352,
+        "violationsByInvariant": {
+          "I1": 58392,
+          "I10": 12960
+        },
+        "worldsChecked": 20000
+      },
+      "B2-source-count": {
+        "caught": true,
+        "totalViolations": 5954,
+        "violationsByInvariant": {
+          "I2": 5954
+        },
+        "worldsChecked": 20000
+      },
+      "B3-evidence-without-coverage": {
+        "caught": true,
+        "totalViolations": 5804,
+        "violationsByInvariant": {
+          "I2": 5804
+        },
+        "worldsChecked": 20000
+      },
+      "B4-search-without-collapse": {
+        "caught": true,
+        "totalViolations": 20844,
+        "violationsByInvariant": {
+          "I1": 20844
+        },
+        "worldsChecked": 20000
+      }
+    },
+    "exhaustive": {
+      "conclusionDistribution": {
+        "absent_within_declared_scope": 160,
+        "not_established": 49480,
+        "present": 41820,
+        "supported": 19380
+      },
+      "elapsedSeconds": 10.295,
+      "failClosedRejections": 65280,
+      "haltedOnFirstViolation": false,
+      "outOfDeclaredBounds": 0,
+      "passed": true,
+      "phase": "exhaustive",
+      "preservedViolations": [],
+      "totalViolations": 0,
+      "violationsByInvariant": {},
+      "worldsChecked": 176120
+    },
+    "fixture": {
+      "controls": [
+        {
+          "control": "C01",
+          "differences": [],
+          "fixture": "c01-head-count.json",
+          "passed": true
+        },
+        {
+          "control": "C02",
+          "differences": [],
+          "fixture": "c02-source-count.json",
+          "passed": true
+        },
+        {
+          "control": "C03",
+          "differences": [],
+          "fixture": "c03-evidence-without-coverage.json",
+          "passed": true
+        },
+        {
+          "control": "C04",
+          "differences": [],
+          "fixture": "c04-search-without-collapse.json",
+          "passed": true
+        },
+        {
+          "control": "C05",
+          "differences": [],
+          "fixture": "c05-dual-ledger.json",
+          "passed": true
+        },
+        {
+          "control": "C06",
+          "differences": [],
+          "fixture": "c06-independent-evidence.json",
+          "passed": true
+        },
+        {
+          "control": "C07",
+          "differences": [],
+          "fixture": "c07-copied-source.json",
+          "passed": true
+        },
+        {
+          "control": "C08",
+          "differences": [],
+          "fixture": "c08-incomplete-coverage.json",
+          "passed": true
+        },
+        {
+          "control": "C09",
+          "differences": [],
+          "fixture": "c09-counterexample-searched.json",
+          "passed": true
+        },
+        {
+          "control": "C10",
+          "differences": [],
+          "fixture": "c10-counterexample-unsearched.json",
+          "passed": true
+        }
+      ],
+      "mismatchedControls": [],
+      "passed": true,
+      "phase": "fixture"
+    },
+    "randomized": {
+      "conclusionDistribution": {
+        "absent_within_declared_scope": 1092,
+        "not_established": 119228,
+        "present": 81792,
+        "supported": 41269
+      },
+      "elapsedSeconds": 44.261,
+      "failClosedRejections": 756619,
+      "haltedOnFirstViolation": false,
+      "outOfDeclaredBounds": 0,
+      "passed": true,
+      "phase": "randomized",
+      "preservedViolations": [],
+      "totalViolations": 0,
+      "violationsByInvariant": {},
+      "worldsChecked": 1000000
+    }
+  },
+  "protocolVersion": "1.0.0",
+  "result": "passed",
+  "schema": "minority-prophet.kl000-result.v0.1",
+  "uncertainty": {
+    "bonferroniAdjustedUpperBound": 5.3e-06,
+    "interpretation": "Bounds a per-world violation rate. Does not establish zero, and says nothing about worlds outside the declared bounds.",
+    "observedViolations": 0,
+    "randomizedWorlds": 1000000,
+    "ruleOfThreeUpperBound95": 3e-06
+  }
+}

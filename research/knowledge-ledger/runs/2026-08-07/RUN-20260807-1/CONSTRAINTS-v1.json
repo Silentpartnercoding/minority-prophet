@@ -55,6 +55,25 @@
       "status": "recorded-open-for-program"
     },
     {
+      "id": "PROV-007",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "A committed result was amended rather than corrected by a follow-up, applying a weaker preservation standard to results than to notes",
+      "statement": "On finding three reporting defects in the first confirmatory execution, the agent amended the results commit 3ac618f into 1b0ce02, removing the reviewed commit from the branch. Three commits earlier, facing the same situation in ORIENTATION.md, it had preserved the original text and appended a correction, reasoning that rewriting would destroy the evidence that a correction was needed. The stricter standard was applied to an orientation note and the weaker one to a result.",
+      "evidence": {
+        "amendedAway": "3ac618f, the commit an operator had reviewed and reported on",
+        "replacedBy": "1b0ce02",
+        "whatWouldHaveBeenLost": "that baselines ever ran at 20,000 worlds, and that PROTOCOL.md and the execution disagreed. The prose note in PROTOCOL.md would have survived but would read as a hypothetical rather than a record of something that happened.",
+        "detectedBy": "operator, mid-run, before any push"
+      },
+      "whyItMatters": "The failure mode is self-concealing in the same way as PROV-004 and PROV-005: after an amend, the corrected history is internally consistent and carries no marker that anything was corrected. A reconstruction from the log cannot distinguish 'was right the first time' from 'was fixed quietly'. Amending is also precisely the operation that makes a protocol's amendment log unfalsifiable, which methodology note M2 was written to prevent -- and M2 was written by this same run, two commits earlier.",
+      "remediation": "Reverted while still local and unpushed. 3ac618f is an ancestor of the branch again; the corrections live in the follow-up commit that added results/superseded/; and both result documents are preserved on disk with their digests, not only in git history. Recorded as methodology note M6: preservation applies to results at least as strictly as to notes, and no committed artifact is amended once anyone has reviewed it.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "Every scientific number is identical across the two executions. The verdict did not change; what changed is what the verdict is allowed to say.",
+      "discoveredDuring": "results commit; identified by operator",
+      "status": "resolved"
+    },
+    {
       "id": "PROV-001",
       "category": "provenance",
       "severity": "medium",
