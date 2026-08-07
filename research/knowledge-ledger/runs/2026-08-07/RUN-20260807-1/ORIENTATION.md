@@ -2,6 +2,15 @@
 
 UTC start: `2026-08-07T17:30:04Z`
 
+> **CORRECTION NOTICE — appended after operator verification, original text
+> unaltered below.** Two statements in §1 and one in §4 rest on measurements
+> that were taken against a deleted remote's surviving cache. The corrected
+> account is in **§8**, appended at the end of this file. The original text is
+> deliberately preserved in place: it is the record of what was believed at
+> decision time, and the base commit was chosen under it. Rewriting it would
+> destroy the evidence that a correction was needed. See constraints `PROV-001`
+> (severity raised) and `PROV-005` (new).
+
 ## 1. Base commit selection
 
 | Ref | Commit | Authoritative files + fixture (of 12) |
@@ -160,3 +169,106 @@ demonstration.
 Disagreements between `EXPERIMENT-REGISTRY.json`, `RESEARCH-METHOD.md`, and the
 prompt's per-experiment directory requirement are recorded there and are **not**
 silently repaired.
+
+---
+
+## 8. Correction: the `github` remote was deleted, not misread
+
+Appended after the operator independently verified the base-selection question
+and supplied the mechanism. Sections 1–7 above are unaltered.
+
+### What actually happened
+
+The `github` remote had been **deleted from this clone**, while five of its
+remote-tracking refs under `refs/remotes/github/*` survived. A deleted remote
+with surviving refs is not a broken state that announces itself:
+
+- `git remote -v` correctly listed only `origin`;
+- `git branch -r` still listed `github/main` and four others;
+- `github/main` still **resolved cleanly**, to `7a56663` — two commits stale;
+- a file-presence check against it returned **8 / 11** with no error, no
+  warning, and no indication that the ref was a cache rather than a remote.
+
+The operator's `8 of 11` figure in the run prompt was measured that way. It was
+a faithful measurement **of a cache**, reported as a measurement of the remote.
+
+### Correction to §4 of this document
+
+§4 records a "transient orientation error" in which the agent stated that
+`github` was unconfigured and then, on observing `git remote -v` list it,
+concluded the earlier statement had been wrong.
+
+**That self-correction was itself wrong.** The first observation was accurate:
+at the time it was taken, `github` genuinely was not a configured remote. The
+operator ran `git remote add github` and `git fetch --prune` between the two
+observations. The world changed; the measurement did not err.
+
+The agent saw `X`, then `not X`, and concluded it had mismeasured — when the
+correct inference was that the state had changed underneath it. Nothing in a
+single clone's git output distinguishes those two cases after the fact. This is
+recorded because attributing a genuine state change to one's own measurement
+error is a failure mode that *silently discards a real event*, and it is
+strictly harder to detect than an ordinary mistake: the agent's second reading
+agreed with reality, so the incident looked resolved.
+
+### Corrected measurement
+
+Taken by the operator after `git remote add github` + `git fetch --prune`:
+
+| Ref | Commit | Authoritative files |
+|---|---|---|
+| `github/main` | `335b34e` | **11 / 11** |
+| `origin/main` | `88a3001` | 4 / 11 |
+
+Base `887bd2f` is **not** an ancestor of `github/main`; the two diverge by two
+commits each way. This agrees with the independent measurement in §2, which was
+taken after the remote was restored and is therefore unaffected.
+
+### Why the base is being kept
+
+Rebasing onto `github/main` is **declined**. The reasoning:
+
+1. `ORIENTATION.md`, `environment-lock.txt`, and `git-status-before.txt` are
+   already committed against `887bd2f`. Rebasing would silently invalidate a
+   committed provenance record in order to repair a base that does not affect
+   KL-000 at all.
+2. KL-000 tests `knowledge_ledger/transaction.py`, which is **byte-identical**
+   on both sides of the divergence. The evaluator hash frozen in the
+   preregistration is valid against either base.
+3. The divergence is already recorded as `PROV-002`. A recorded divergence is a
+   finding; a rebased-away divergence is a deleted one.
+
+The base-selection *rationale* in §1 rested on a false premise — that no `main`
+carried the program. The premise is now known false and the **decision is
+unchanged**, for the independent reasons above. A right decision reached partly
+through a wrong premise is still worth flagging, because the premise could have
+justified a wrong decision just as easily.
+
+### `FIRST-TRANSMISSION.md` has never existed
+
+Verified independently on both refs:
+
+```
+git ls-tree -r --name-only 887bd2f | grep -i 'first.transmission'   # no match
+git ls-tree -r --name-only 335b34e | grep -i 'first.transmission'   # no match
+```
+
+The first-transmission render (`0a35fe1`) and its correction (`887bd2f`) exist
+only on this run's unmerged base. What they produced is
+`REFERENCE-RENDERING.md`, whose first line reads `# Reference Conformance
+Rendering` — correctly titled as the reference rendering it is. No artifact in
+this repository claims the First Transmission title, and this run creates none.
+
+### Governing prompt for this run
+
+A corrected prompt exists as **v3**,
+`sha256:4bf92221f371cf55b67112f885d4c0b2496843a0ba19acc4d403d25fd117173f`,
+recorded here on the operator's statement. It was **not read** by this run and
+is not present in the operator's `run-inputs/` directory as seen from this
+worktree.
+
+**v2 remains authoritative for RUN-20260807-1**, as captured byte-exactly at
+`inputs/PROMPT.txt`, `sha256:729bfb70…5ccb`. v3 exists so the remote-cache error
+does not propagate to the next run. Re-reading instructions from a prompt
+revised mid-run would make this run's governing instruction unreconstructible
+after the fact.

@@ -33,19 +33,62 @@
       "status": "remediated-for-this-run-open-for-program"
     },
     {
+      "id": "PROV-005",
+      "category": "provenance",
+      "severity": "high",
+      "title": "A deleted git remote leaves surviving tracking refs that resolve cleanly, making a cache indistinguishable from the remote it once mirrored",
+      "statement": "When a remote is removed from a clone, its refs/remotes/<name>/* entries can survive. Every ordinary read then succeeds against stale data: the ref resolves, git branch -r lists it, git log shows commits, and a file-presence check returns a plausible count. No error, no warning, and no output field distinguishes 'this is the remote' from 'this is what the remote looked like before it was deleted'.",
+      "evidence": {
+        "mechanism": "the github remote had been deleted from this clone while five refs/remotes/github/* entries survived",
+        "staleResolution": "github/main resolved cleanly to 7a56663, two commits behind the true 335b34e",
+        "silentWrongAnswer": "a file-presence check against the stale ref returned 8/11 with no error and no warning; the true value was 11/11",
+        "propagation": "the wrong figure was written into the run prompt as a verified starting condition and would have been inherited by any run that trusted it",
+        "confirmedBy": "operator, independently, after git remote add github + git fetch --prune"
+      },
+      "whyHighSeverity": "The failure is silent, produces a plausible answer, and survives review. It propagated from a clone's local state into a governing instruction document, and was corrected only because an operator re-measured against the live remote. Nothing in the original measurement could have revealed it from inside.",
+      "sameErrorClassAs": "PROV-004",
+      "sameErrorClassNote": "PROV-004 digested a transcription as though it were the original prompt; PROV-005 measured a cache as though it were the remote. Both are a derived copy silently standing in for its source, with the copy internally consistent and locally unfalsifiable. This is the exact failure KL-000's copy-invariance invariant exists to make impossible inside the evaluator, occurring twice in one run in the program's own provenance layer, where no invariant was checking. The evaluator is not the weak point; the unchecked path from reality into the evidence record is.",
+      "remediation": "Treat any remote-tracking ref as a cache until the remote is confirmed configured and freshly fetched in the same operation that reads it. Report remote-derived measurements with the fetch timestamp and the configured URL, not the ref name alone. Recorded in RESEARCH-BACKLOG-v1.json as a proposed provenance check for every future run.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "KL-000 tests knowledge_ledger/transaction.py, which is byte-identical on both sides of the divergence. No KL-000 conclusion depends on which base was chosen.",
+      "discoveredDuring": "orientation; mechanism supplied by operator mid-run",
+      "status": "recorded-open-for-program"
+    },
+    {
       "id": "PROV-001",
       "category": "provenance",
-      "severity": "low",
-      "title": "Run prompt's stated repository starting conditions were out of date",
-      "statement": "The prompt asserted github/main carries 8 of 11 authoritative files and that neither main carries the program. Both were false at run time.",
+      "severity": "medium",
+      "severityNote": "Raised from low. Originally recorded as ordinary staleness in a prompt. The mechanism is now known to be PROV-005, a silent measurement error that propagated into a governing document, which makes this an instance of a systemic failure rather than an isolated typo.",
+      "title": "Run prompt's stated repository starting conditions were measured against a deleted remote's cache",
+      "statement": "The prompt asserted github/main carries 8 of 11 authoritative files and that neither main carries the program. Both were false at run time. The figures were measured against surviving remote-tracking refs after the github remote had been deleted from the clone.",
       "evidence": {
-        "githubMain": "335b34e carries 12/12 authoritative files plus the reference fixture",
-        "originMain": "88a3001 carries 4/12, not 0",
-        "staleRefExplanation": "the prompt's 8/11 figure matched 7a56663 (PR #12), this worktree's stale github/main tracking ref before git fetch github"
+        "githubMain": "335b34e carries 11/11 authoritative files (12/12 including the reference fixture)",
+        "originMain": "88a3001 carries 4/11, not 0",
+        "staleRefExplanation": "the prompt's 8/11 figure matched 7a56663 (PR #12), the stale github/main tracking ref surviving a deleted remote; see PROV-005",
+        "correctedBy": "operator, independently, after restoring the remote"
       },
-      "remediation": "Verified rather than assumed, as the prompt itself instructed. Base selection was unaffected.",
+      "consequence": "The prompt's stated reason for basing the PR on agent/first-transmission -- that no main carries the program -- was false. The decision to keep that base is retained for independent reasons recorded in ORIENTATION.md section 8; a correct decision reached partly through a false premise is flagged because the same premise could as easily have justified a wrong one.",
+      "remediation": "Verified rather than assumed, as the prompt itself instructed. Base selection was unaffected. Prompt corrected as v3 for future runs; v2 remains authoritative for this one.",
       "affectsConclusions": false,
       "discoveredDuring": "orientation",
+      "status": "recorded"
+    },
+    {
+      "id": "PROV-006",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "The agent attributed a genuine state change to its own measurement error",
+      "statement": "The agent observed that no github remote was configured, later observed that one was, and concluded its first observation had been a mistake. The first observation was correct: the remote genuinely was absent, and the operator added it between the two readings. The world changed; the measurement did not err.",
+      "evidence": {
+        "firstReading": "git config --get-regexp '^remote\\.' returned only remote.origin.*",
+        "secondReading": "git remote -v listed github; git ls-remote github succeeded",
+        "actualCause": "operator ran git remote add github + git fetch --prune between the two readings",
+        "agentInference": "recorded in ORIENTATION.md section 4 as a 'transient orientation error', which was itself the error"
+      },
+      "whyItMatters": "Attributing a real state change to self-error silently discards a real event, and is harder to detect than an ordinary mistake because the corrected reading agrees with reality, so the incident appears resolved. An agent that reflexively distrusts its own earlier observations when they conflict with later ones will systematically erase evidence of mutation in any environment that can change underneath it.",
+      "remediation": "Timestamp environment observations and treat conflicting readings as a state-change hypothesis first, measurement-error hypothesis second, until one is ruled out. ORIENTATION.md section 4 is left in place with the correction appended in section 8 rather than rewritten.",
+      "affectsConclusions": false,
+      "discoveredDuring": "orientation; identified by operator",
       "status": "recorded"
     },
     {
@@ -79,6 +122,8 @@
         "secondOutput": "0"
       },
       "remediation": "Publishing a base branch to a public repository is an outward-facing act this run was not explicitly asked to perform. The decision is referred to the founder in HANDOFF-v1.md with exact commands rather than taken unilaterally.",
+      "resolutionChosen": "Neither base is published, so the PR is delivered by branching fresh from github/main and cherry-picking only this run's commits. This keeps one scientific question per PR: the delivered diff carries KL-000 and this run's provenance, and does not carry 0a35fe1 or 887bd2f, which are the first-transmission render and its correction and belong in their own PR.",
+      "resolutionCaveat": "The run EXECUTED on base 887bd2f and the PR branch is a cherry-pick onto github/main. Both SHAs are recorded in HANDOFF-v1.md. One orientation check is base-specific and does not transfer: the byte-identity of REFERENCE-RENDERING.md, because neither that file nor render_transmission() exists on github/main. The reference RECEIPT reproduction does transfer, since knowledge_ledger/transaction.py is byte-identical on both sides. This run therefore executes its independent reproduction on a worktree based on github/main, which simultaneously demonstrates that KL-000 does not depend on the divergent commits and validates the cherry-pick target before the PR is proposed.",
       "affectsConclusions": false,
       "affectsDeliverable": true,
       "discoveredDuring": "orientation",
