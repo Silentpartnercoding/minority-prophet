@@ -1,0 +1,24 @@
+{
+  "transactionId": "transaction-zero",
+  "claim": {
+    "type": "absence",
+    "proposition": "No target-class defect exists in the five declared components."
+  },
+  "searchLedger": {
+    "locations": [
+      {"id": "component-a", "status": "searched"},
+      {"id": "component-b", "status": "searched"},
+      {"id": "component-c", "status": "searched"},
+      {"id": "component-d", "status": "searched"},
+      {"id": "component-e", "status": "unavailable"}
+    ]
+  },
+  "evidenceLedger": {
+    "records": [
+      {"id": "report-1", "rootId": "scanner-family-1", "side": "support"},
+      {"id": "report-2", "rootId": "scanner-family-1", "side": "support"},
+      {"id": "report-3", "rootId": "scanner-family-1", "side": "support"},
+      {"id": "report-4", "rootId": "scanner-family-2", "side": "support"}
+    ]
+  }
+}

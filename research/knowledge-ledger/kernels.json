@@ -1,0 +1,115 @@
+{
+  "schema": "minority-prophet.kernel-registry.v0.1",
+  "status": "seeded-not-executed",
+  "sharedContract": "EXPERIMENT-CONTRACT.md",
+  "kernels": [
+    {
+      "id": "KL-000",
+      "realm": "dual-ledger conformance",
+      "question": "Can the evaluator prevent recorded copies from adding evidence and incomplete coverage from proving absence?",
+      "null": "At least one recorded copy changes evidential mass or one incomplete search yields absence.",
+      "target": "Zero violations in exhaustive small worlds and one million frozen randomized worlds.",
+      "primaryEndpoint": "invariant violations",
+      "firstGate": "One violation rejects the invariant and blocks every downstream kernel."
+    },
+    {
+      "id": "KL-001",
+      "realm": "software and cybersecurity",
+      "question": "Does the dual ledger reduce false-clean repository conclusions?",
+      "null": "False-clean rate is not lower than ordinary multi-scanner aggregation.",
+      "target": "Lower false-clean rate while preserving at least 95% of baseline true-positive recall.",
+      "primaryEndpoint": "false-clean rate on seeded finite repositories",
+      "firstGate": "No clean conclusion is permitted with incomplete mandatory file coverage."
+    },
+    {
+      "id": "KL-002",
+      "realm": "multi-agent AI",
+      "question": "Can agents avoid confidence inflation when many documents descend from one source?",
+      "null": "Root-aware aggregation does not improve calibration under source laundering.",
+      "target": "Lower confidently false answers without loss on genuinely independent evidence.",
+      "primaryEndpoint": "Brier score under copied-source consensus",
+      "firstGate": "Twenty paraphrases of one false source must remain one root."
+    },
+    {
+      "id": "KL-003",
+      "realm": "scientific research",
+      "question": "Do independent data-collection roots predict later replication better than publication counts?",
+      "null": "Root accounting adds no held-out replication calibration.",
+      "target": "Better preregistered out-of-sample calibration than paper, citation, and sample-size baselines.",
+      "primaryEndpoint": "calibration against later independent replication",
+      "firstGate": "Historical cutoffs and outcomes are frozen before model fitting."
+    },
+    {
+      "id": "KL-004",
+      "realm": "medicine",
+      "question": "Does collapsing overlapping cohorts reduce treatment-effect overconfidence?",
+      "null": "Cohort-root accounting does not improve calibration against later high-quality evidence.",
+      "target": "Smaller preregistered error across multiple conditions, not one selected example.",
+      "primaryEndpoint": "distance from later high-quality effect estimate",
+      "firstGate": "Retrospective research only; no patient recommendation or live decision."
+    },
+    {
+      "id": "KL-005",
+      "realm": "journalism",
+      "question": "Can original-reporting roots reduce false confirmation caused by syndication?",
+      "null": "Root collapse does not improve time-adjusted false-confirmation rate.",
+      "target": "Fewer false early confirmations without indefinite delay.",
+      "primaryEndpoint": "time-adjusted false-confirmation rate",
+      "firstGate": "Wire copies and circular citations cannot count as independent confirmation."
+    },
+    {
+      "id": "KL-006",
+      "realm": "courts and investigations",
+      "question": "Does dependency disclosure reduce false corroboration in controlled case files?",
+      "null": "Evidence labels do not improve calibration against known synthetic ground truth.",
+      "target": "Lower wrongful-confidence scenarios without suppressing independent exculpatory evidence.",
+      "primaryEndpoint": "calibration and false corroboration",
+      "firstGate": "Synthetic or closed historical cases only; never an automatic verdict."
+    },
+    {
+      "id": "KL-007",
+      "realm": "public policy",
+      "question": "Does a dual ledger improve blind reconstruction of a policy evidence packet?",
+      "null": "Independent teams reconstruct boundaries no better than from citations alone.",
+      "target": "Higher agreement on sources, exclusions, dependencies, and uncertainty without forcing policy agreement.",
+      "primaryEndpoint": "reconstruction agreement against frozen record",
+      "firstGate": "The experiment measures evidence accounting, not ideological convergence."
+    },
+    {
+      "id": "KL-008",
+      "realm": "climate and environmental sensing",
+      "question": "Does root-aware aggregation resist shared sensor or model failure?",
+      "null": "It offers no robustness advantage over ordinary ensembles.",
+      "target": "Lower confident error under common-mode failure with honest geographic coverage.",
+      "primaryEndpoint": "false-alarm and missed-event rates",
+      "firstGate": "Derived products sharing one instrument remain one dependency family."
+    },
+    {
+      "id": "KL-009",
+      "realm": "autonomous systems",
+      "question": "Does root-aware sensor fusion reduce catastrophic decisions under correlated failure?",
+      "null": "It does not outperform confidence-weighted fusion.",
+      "target": "Lower catastrophic action rate without exceeding the preregistered fallback ceiling.",
+      "primaryEndpoint": "catastrophic decisions in simulation",
+      "firstGate": "Simulation and shadow mode only; no live actuation authority."
+    },
+    {
+      "id": "KL-010",
+      "realm": "historical and archival knowledge",
+      "question": "Does manuscript-family collapse improve alignment with expert genealogies and later discoveries?",
+      "null": "Textual ancestry does not improve held-out adjudication.",
+      "target": "Better family reconstruction and calibrated claim strength while preserving disputes.",
+      "primaryEndpoint": "agreement with held-out expert source families",
+      "firstGate": "The output preserves competing interpretations and missing archives."
+    },
+    {
+      "id": "KL-011",
+      "realm": "cross-system interoperability",
+      "question": "Can a conclusion cross independent systems without losing roots, coverage, uncertainty, or authorization boundaries?",
+      "null": "At least one independent implementation changes or drops a protected field.",
+      "target": "Byte-verifiable semantic equivalence across two independent implementations and five processing stages.",
+      "primaryEndpoint": "protected-field preservation violations",
+      "firstGate": "This alone may be named the first knowledge transaction; transaction-zero may not."
+    }
+  ]
+}
