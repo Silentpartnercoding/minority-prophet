@@ -1,0 +1,218 @@
+{
+  "schema": "minority-prophet.kernel-status-snapshot.v0.1",
+  "runId": "RUN-20260807-2",
+  "version": 1,
+  "ladder": [
+    "seeded",
+    "preregistered",
+    "fixture-passed",
+    "exhaustive-passed",
+    "randomized-passed",
+    "adversarial-passed",
+    "retrospective-passed",
+    "shadow-passed",
+    "bounded-pilot-passed"
+  ],
+  "summary": {
+    "totalKernels": 12,
+    "advancedThisRun": 0,
+    "stillSeeded": 11,
+    "highestStateReached": "adversarial-passed (KL-000, now under protocol v1.0.0 AND v1.1.0; NOT verified-independent)",
+    "failedGates": "none",
+    "blockedSafety": "none blocked by safety this run; KL-004 and KL-009 remain capped at retrospective/simulation by design",
+    "firstTransactionGate": "NOT REACHED",
+    "thisRun": "KL-000 ladder state unchanged; substance advanced: independent reimplementation completed (exhaustive reproduced exactly, conclusions diverged on 22,440 worlds), protocol v1.1.0 registered and passed with every number identical to RUN-20260807-1."
+  },
+  "kernels": {
+    "KL-000": {
+      "state": "adversarial-passed",
+      "resultStatus": "confirmatory",
+      "lastCompletedGate": "specification repair v1.1.0 confirmatory re-run",
+      "nextGate": "the independent implementation re-runs against protocol v1.1.0. This is a separate commission by the owner; this repository's agents do not execute it and do not modify impl-rs. What it tests: whether the R1 conclusion function, the R4 canonical form (via C11's pinned contentDigest -- the first KL-000 value a second implementation can be wrong about rather than merely different from), and the R2/R3 admissibility rules close the 22,440-world divergence. Exact pass condition: identical conclusion distribution on all 110,840 receipt-producing exhaustive worlds AND a matching C11 digest. For a stronger independence claim the re-run should occur on a machine that does not hold the reference at all (operator's own remediation, OPERATOR-DISCLOSURE.md).",
+      "blockers": [],
+      "claimAllowed": "Within the declared bounds, the reference evaluator did not allow a recorded copy to change evidential mass, and did not allow an incomplete search to yield an absence conclusion; it conforms to protocol v1.1.0; and the four v1.1.0 repairs documented behaviour it already had (no number moved). An independent implementation written from the registered documents alone reproduced the exhaustive enumeration exactly and passed all ten v1.0.0 invariants over it.",
+      "gatesCompleted": [
+        "registry-entry",
+        "complete and commit preregistration",
+        "fixture",
+        "exhaustive-small",
+        "randomized",
+        "adversarial",
+        "independent reimplementation (v1.0.0)",
+        "specification repair v1.1.0"
+      ],
+      "gatesFailed": [],
+      "knownLimits": [
+        "ADV-001 high: an under-declared search space is undetectable, and the declaring party is the reporting party",
+        "ADV-002: one compromised issuer can mint unlimited roots",
+        "ADV-003: one appended conflicting record renders a whole transaction unevaluable",
+        "ADV-004: root identity is byte identity; no normalisation is specified",
+        "ADV-005: shared upstream dependency between roots is not representable",
+        "ADV-006: no issuer authentication; forged or replayed roots are indistinguishable",
+        "ADV-007: the claim proposition is free text and is never checked against the ledgers",
+        "F1/F2: I2 and I5 are stated receipt-internally and are vacuously satisfiable (open; v1.2.0 candidate)",
+        "F3: B2 and B3 may be one ablation counted twice (open)",
+        "F4/F5: conversionsToReverse undefined at the empty ledger; margin sign unpinned, 38,760 worlds' receipts differ between readings (open)",
+        "F11: the frozen seed freezes no cross-implementation stream; randomized comparisons are replications only (open)",
+        "F12: the adversarial phase is defined by reference to a test file, not by specification (open)",
+        "F13: C06's fixture note contradicts C04 and C07 (open)",
+        "F14: unavailable is reported and reconciled but no conclusion depends on it (open)"
+      ],
+      "quantitativeCaveat": "75.7% of randomized worlds fail closed and produce no receipt, so most invariants were exercised on 243,381 randomized worlds rather than 1,000,000; the 95% rule-of-three upper bound for those is 1.23e-5 per receipt-producing world. The independent implementation's randomized counts are not comparable quantities to the reference's (different world streams; finding F11).",
+      "stateNote": "adversarial-passed under BOTH protocol v1.0.0 (RUN-20260807-1) and protocol v1.1.0 (RUN-20260807-2). NOT verified-independent: the independent reimplementation agreed on all ten v1.0.0 invariants over an exactly-reproduced exhaustive enumeration but disagreed on the conclusion of 22,440 of 110,840 receipt-producing worlds, over a conclusion function v1.0.0 left open. v1.1.0 repair R1 has since decided that function; the independent implementation has not yet run against v1.1.0."
+    },
+    "KL-001": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-002": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Construct the source-laundering packets and preregister accuracy, Brier score, confident-error, abstention, root error, tokens, cost, and latency. The first falsifiable check needs no agent at all: 20 paraphrases of one false source must collapse to one root. KL-000 fixture C07 already demonstrates the evaluator does this for 20 identical rootIds; KL-002's real gate is whether an agent PIPELINE assigns the same rootId to 20 paraphrases, which is a root-ATTRIBUTION question the evaluator never sees.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "metered model calls may exceed the approved budget; requires founder authorization before any paid inference",
+        "constraint ADV-004: root identity is byte identity, so a paraphrase pipeline that emits inconsistent rootId strings splits one source into many roots without any adversary"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-003": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Identify a public replication corpus with historical cutoffs and later independent replication outcomes, and freeze outcomes from the fitting process before any model is fitted. The first falsifiable check is that the frozen holdout can be reconstructed byte-identically from the declared cutoff rule alone.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "depends on third-party replication datasets whose licences have not been reviewed",
+        "no public dataset has been selected; this is the binding prerequisite, not the analysis"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-004": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Retrospective only. Select conditions with documented cohort overlap and later higher-quality evidence, and preregister the distance-from-later-estimate endpoint. The first falsifiable check is a cohort-overlap collapse on published aggregate data with no patient-level records.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "SAFETY: never emits patient guidance; retrospective research only; no live decision authority",
+        "patient-level data would require explicit human authorization and is out of scope for this program",
+        "blocked-safety beyond retrospective stage regardless of result quality"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-005": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Assemble timestamped closed news events and preregister BOTH false early confirmation and delay to correct confirmation, so that permanent silence cannot score well. The first falsifiable check is that the metric penalises a system which never confirms anything.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "a single-endpoint design would let indefinite abstention win; the two-sided metric is the prerequisite, not a refinement"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-006": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Synthetic or closed case files with known dependency structure. Preregister false corroboration AND suppression of independent exculpatory evidence as joint endpoints. The first falsifiable check is that a known-dependent corroboration chain is collapsed to its true root count.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "SAFETY: never emits a real verdict or risk score",
+        "constraint ADV-005: shared upstream dependency is not representable in schema v0.1, and dependency structure is the entire subject of KL-006. This kernel cannot be run meaningfully until the schema carries dependency edges."
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-007": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Recruit blind reconstruction teams and preregister agreement on sources, exclusions, dependencies, and uncertainty -- explicitly NOT agreement on the policy choice. The first falsifiable check is an inter-rater protocol validated on a frozen packet before any team is engaged.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "contacting human participants requires explicit founder authorization",
+        "measures evidence accounting, not ideological convergence; an endpoint that rewards forced agreement would invalidate the design"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-008": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Simulation or archived ground truth with injected common-mode sensor/model failures, with geographic and temporal coverage stated explicitly. The first falsifiable check is that derived products sharing one instrument are collapsed into one dependency family.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "constraint ADV-005: one instrument feeding many derived products is exactly a shared-dependency structure, which schema v0.1 cannot represent"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-009": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Simulation only. Preregister the maximum unnecessary-fallback rate BEFORE measuring catastrophic-action reduction, so the tradeoff cannot be chosen after seeing results. The first falsifiable check is that the simulator refuses to expose any actuation interface.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "SAFETY: simulation and shadow mode only; never connected to live actuation",
+        "blocked-safety beyond shadow stage; no live authority is sought by this program"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-010": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Known textual genealogies with held-out expert source families. Preregister family-reconstruction agreement and require that competing interpretations and missing archives survive in the output. The first falsifiable check is that a text with two scholarly genealogies produces both, not a resolved single answer.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "an endpoint rewarding a single reconstruction would violate the requirement to preserve disputes"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-011": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "BLOCKED on KL-000's next gate, now sharpened: the independent implementation exists and has passed all ten v1.0.0 invariants over the exact exhaustive enumeration, but conclusions diverged on 22,440 worlds under v1.0.0 and its conformance to v1.1.0 (which decides the conclusion function) is untested. KL-011's two-implementation prerequisite is satisfied only when the v1.1.0 re-run (separate owner commission) passes. After that: five stages exchanging one bounded claim, with paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, and one unavailable location injected.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "blocked-prerequisite: independent implementation re-run against protocol v1.1.0 (implementation exists; v1.1.0 conformance untested; separate owner commission)",
+        "constraint SCH-005: flipBudget, unattributed evidence, and uncertainty are named as evidence-ledger fields in RESEARCH-DIRECTION.md but are never emitted by the receipt. A protected field the receipt does not carry cannot be shown to survive crossing systems.",
+        "constraint ADV-001: an under-declared search space is undetectable, so cross-system preservation of coverage is only as strong as the original declaration"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    }
+  },
+  "basedOn": "RUN-20260807-1 snapshot; KL-001..KL-010 unchanged by this run (verbatim carry-over), KL-000 and KL-011 updated"
+}

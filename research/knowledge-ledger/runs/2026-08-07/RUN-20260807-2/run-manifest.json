@@ -1,0 +1,94 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-2",
+  "startUtc": "2026-08-07T19:49:58Z",
+  "endUtc": "see END-UTC.txt (written with the closing commit)",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "cc1d494",
+    "headCommit": "the closing-packet commit carrying this file",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtStartNote": "git-status-before.txt holds exactly one entry: this run directory's own creation",
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "The agent reports its own model identity from its runtime context and cannot verify it independently. Per constraint PROV-004 this field is unverified."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "No operator-side prompt artifact existed for this run; the digest below authenticates the agent's transcription only and is UNVERIFIED provenance. See inputs/PROMPT-CAPTURE-NOTE.md and constraint PROV-008.",
+  "inputs": {
+    "prompt": "sha256:6a0e1945d9eb78ef8a24951a5eddc676ee384def60e99d645a17a11a881f08f7 (agent transcription, unverified)",
+    "promptV3FromRun1": "sha256:4bf92221f371cf55b67112f885d4c0b2496843a0ba19acc4d403d25fd117173f (operator-stated in RUN-20260807-1; never located, never read; superseded by this run's new instruction)",
+    "externalEvidence": {
+      "implRsFindings": "sha256:af6b38376e497c22028b53da21272a28e0271013dbc783e6443c352dffe699ad",
+      "implRsResult": "sha256:c271443fedee400b9db6d357a3d65f9f53b4591b7377f29ae90390f2ef7e2f4e",
+      "operatorDisclosure": "sha256:d304edd1528d9a44d438a39386d761a20b5f03bbd28d37ef8e446419ac58c71d",
+      "namingConvergence": "sha256:ccb3dfe80c7967d38c9ec889c5aeca00511f0053bd4f454c5c32895252aa44d3",
+      "packagedSpecNote": "the packaged PROTOCOL.md and preregistration.json are byte-identical to the registered v1.0.0 files (dea9649f..., 5204e640...)"
+    }
+  },
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "not used by any experiment",
+    "spend": 0
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "KL-000/preregistration-v1.1.0.json + PROTOCOL-v1.1.0.md + fixtures/v1.1.0/c11-canonical-digest.json",
+      "status": "canonical",
+      "digest": "sha256:e9458f71e6ae9f5f3cf4ea64afe2b225f650e526915bd5f5e54791b4c7570bbf (preregistration)",
+      "note": "canonical as a registered protocol, frozen at 1a8256f; v1.0.0 registration preserved unmodified and still governing its own results"
+    },
+    {
+      "artifact": "KL-000/results/kl000-confirmatory-v1.1.0.json",
+      "status": "confirmatory",
+      "digest": "sha256:cf39d579f06a48e71bbaba195d48223dc81699b66e7ab532a129a0faa2a1c048",
+      "note": "passed; every number identical to RUN-20260807-1, as the registration predicted (expectedIdenticalToRun1)"
+    },
+    {
+      "artifact": "KL-000/results/independent/ (FINDINGS.md, kl000-independent-result.json, PROVENANCE.md)",
+      "status": "confirmatory",
+      "note": "imported by copy from the independent implementer; exhaustive phase is a REPRODUCTION (exact), randomized phase is a REPLICATION (different stream), conclusions diverged on 22,440 worlds under v1.0.0. Independence QUALIFIED per PROVENANCE.md. Not produced by this repository's agents."
+    },
+    {
+      "artifact": "KL-000 conclusion function",
+      "status": "canonical",
+      "note": "registered for the first time in v1.1.0 (R1, owner decision, contrary reading preserved). Under v1.0.0 it was unconstrained, which is constraint SPEC-101."
+    },
+    {
+      "artifact": "KL-000 'verified' / 'verified-independent'",
+      "status": "incomplete",
+      "note": "NOT claimed and not claimable: implementations disagreed under v1.0.0; v1.1.0 agreement untested pending the owner-commissioned re-run (BL-013)"
+    },
+    {
+      "artifact": "KL-001..KL-011",
+      "status": "incomplete",
+      "note": "unchanged by this run except KL-011's blocker is sharpened to the v1.1.0 re-run"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; neither title claimed nor claimable by this run"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "74 passed",
+    "kl000Pytest": "68 passed",
+    "note": "KL-000 was 54 at run start; 14 permanent v1.1.0 tests added (test_kl000_v110.py). No v1.0.0 test was modified."
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "none during this run; the operator's inputs were the two pre-run disclosure notes, which this run verified rather than trusted (and found one to understate its own finding: five leaked paths, not three)"
+  ],
+  "firstTransactionGate": "NOT REACHED"
+}
