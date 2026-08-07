@@ -42,3 +42,28 @@ own, twice, in the two runs most confident the work was done.
 
 RUN-5's and RUN-6's closed records are not reopened, amended, or backdated;
 PR #17 (`650f9ee`) untouched; nothing pushed.
+
+## Correction, mid-run (owner) — the cause above is wrong
+
+The "habit decaying / no natural trigger" account in this document's plan
+(and in the brief it came from) was **speculation, and the owner corrected
+it with evidence mid-run**: the cause is **instruction decay**. Verified by
+grep before adopting: only RUN-1's brief names RESEARCH-BACKLOG (1
+occurrence); every later brief — including RUN-2's and RUN-3's, a refinement
+to the owner's own table — says only "the full versioned packet", a concept.
+RUN-2/3 produced backlogs on the enumeration still fresh in context as
+precedent; RUN-5/6, driven by concept-only briefs with the precedent aged
+out, never attempted the artifact — it appears in none of their files
+including their manifests. Output tracked instruction exactly.
+
+This is M24 — "concepts are not quantifiers" — one layer up, in the
+operator's briefs; the same run that wrote M24 was executing under an
+instruction with the M24 defect. The fix is therefore **two-sided**: the
+mechanical close check (side 1, as planned), and a **requirement on operator
+briefs** (side 2, not advice): a brief that requires a packet enumerates its
+members or cites the enumeration of record
+(`tests/test_closing_packets.py::REQUIRED`); a brief naming only the concept
+is defective, and a run receiving one says so before executing. The earlier
+sections of this document are preserved unrewritten; everything downstream
+of this correction (the backlogs' cause fields, the test's docstring, M26,
+the constraints) carries the evidenced cause.

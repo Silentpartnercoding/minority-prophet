@@ -1,0 +1,47 @@
+CORRECTION to RUN-20260807-7's brief — the cause I gave you was wrong.
+
+My brief said the backlog was missed because it "has no natural trigger."
+That was speculation and it is not what happened. The cause is now evidenced
+and it is mine.
+
+THE EVIDENCE
+
+RUN-20260807-1's instructions came from the master-loop prompt, which
+enumerates the closing packet by name: DRAFT-RUN-REPORT, CONSTRAINTS,
+RESEARCH-BACKLOG, KERNEL-STATUS-SNAPSHOT, NEXT-RUN-PROPOSAL, HANDOFF -- with
+what each must contain.
+
+RUN-4, RUN-5 and RUN-6 were driven by operator briefs I wrote. All three say
+only "Close with the full versioned packet." None of them names
+RESEARCH-BACKLOG anywhere. Grep them: the string does not appear.
+
+The outcome tracks the instruction exactly:
+  RUN-1..3  enumerated list in context   6 of 6 artifacts
+  RUN-4     concept only, list still in context   6 of 6
+  RUN-5     concept only                  backlog absent
+  RUN-6     concept only                  backlog absent
+
+Neither RUN-5 nor RUN-6 names RESEARCH-BACKLOG in any file, including their
+manifests. It was not attempted and dropped. It was never in their
+instructions, because I replaced an enumeration with a concept.
+
+WHY THIS MATTERS FOR YOUR OUTPUT
+
+This is M24 -- your own note from RUN-6: "an expectation over an object
+enumerates the members it covers; concepts are not quantifiers." I wrote "the
+full versioned packet" and meant six named files. The defect you diagnosed in
+your own failed E4 was, in the same run, present in the instructions you were
+given.
+
+Record the cause as this, not as a missing trigger. And the mechanical fix is
+two-sided, not one:
+
+  1. the close verifies every required artifact is present and fails if not
+     (as briefed);
+  2. a brief that requires a packet ENUMERATES it. An operator instruction
+     that names a concept where the protocol names members is the same defect
+     one layer up, and it is the layer that actually caused this.
+
+State (2) as a requirement on operator briefs, not as advice. If a future
+brief says "the full packet" without naming the members, that brief is
+defective and the run should say so before executing it.
