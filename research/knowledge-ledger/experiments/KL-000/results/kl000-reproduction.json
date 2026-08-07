@@ -14,7 +14,7 @@
   },
   "experimentId": "KL-000",
   "invalidationReasons": [],
-  "label": "confirmatory",
+  "label": "reproduction",
   "phases": {
     "baselines": {
       "B1-head-count": {
@@ -62,7 +62,7 @@
         "present": 41820,
         "supported": 19380
       },
-      "elapsedSeconds": 10.42,
+      "elapsedSeconds": 10.61,
       "failClosedByCause": {
         "ValueError: One root cannot support opposing sides.": 65280
       },
@@ -245,7 +245,7 @@
         "present": 81792,
         "supported": 41269
       },
-      "elapsedSeconds": 45.395,
+      "elapsedSeconds": 47.233,
       "failClosedByCause": {
         "ValueError: One root cannot support opposing sides.": 756619
       },

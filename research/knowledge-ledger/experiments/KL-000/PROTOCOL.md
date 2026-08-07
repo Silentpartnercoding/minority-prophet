@@ -175,10 +175,47 @@ applied silently.
 | # | When | Change | Experimental content affected |
 |---|---|---|---|
 | 1 | after registration commit `c977347`, **before** any confirmatory phase was executed | Added the section above, declaring the null-`protocolCommit` decision that was previously stated only in `preregistration.json`'s `protocolCommitNote`. Prompted by operator review. | **None.** No hypothesis, bound, seed, invariant, control, baseline, endpoint, or condition changed. |
+| 2 | after the first confirmatory execution, **before** its result was committed as final. Prompted by operator review. | Three instrumentation and reporting changes, detailed below. | **None to the experiment.** No hypothesis, bound, seed, invariant, control, baseline definition, endpoint, or condition changed. The world stream is identical and the evaluator is untouched. |
 
-The registered content of `preregistration.json` is unmodified. Confirmatory
-phases had not run when this amendment was made, so no outcome could have
-influenced it.
+### Amendment 2 detail
+
+**(a) Baselines now run the full exhaustive set.** The first execution ran each
+ablation over 20,000 worlds while this protocol said they are "run against the
+same worlds and the same checker". The vacuity conclusion survived easily at
+that sample — B1 alone produced 71,352 violations — but *"the same worlds"* and
+*"2% of them"* are different claims, and only one was written down. The
+subsample is removed rather than declared, because the full set costs about
+forty seconds and removing the discrepancy is cheaper than documenting it.
+
+**(b) Fail-closed refusals are bucketed by cause.** The first execution counted
+every refusal into one integer via a bare `except Exception`. 756,619 of
+1,000,000 randomized worlds took that path. A genuine implementation defect — a
+`KeyError` from an unhandled payload shape, a `TypeError` from the wider
+randomized bounds — was therefore **indistinguishable from a designed
+refusal**: both incremented the same counter. The run now records
+`failClosedByCause`, keeps up to three preserved worlds per distinct cause, and
+lists any cause outside `EXPECTED_FAIL_CLOSED_CAUSES` in
+`failClosedUnexpectedCauses`.
+
+An unexpected cause makes the run **`incomplete`**, not `failed`: an
+implementation defect is infrastructure failure, and the protocol requires that
+be marked incomplete rather than negative or positive.
+
+This matters for what the result may say. Until the distribution was recorded,
+"zero violations across 1,000,000 randomized worlds" could not be read as
+stated, because roughly three-quarters of those worlds errored for reasons the
+record did not contain.
+
+**(c) The stop condition reports its own status.** `haltedOnFirstViolation:
+false` is consistent with both "armed and never triggered" and "never armed".
+Phase reports now carry `stopConditionArmed`, `stopConditionTriggered`, and a
+note stating which case applies.
+
+The registered content of `preregistration.json` is unmodified by either
+amendment. Amendment 1 preceded all confirmatory execution. Amendment 2 followed
+the first execution but changed no experimental content, and the phase was
+re-executed from the same frozen seed afterwards, so every reported number comes
+from a single instrumented run rather than from a mixture.
 
 ## Safety boundary
 
