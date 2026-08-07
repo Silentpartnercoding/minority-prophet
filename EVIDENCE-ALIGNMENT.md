@@ -50,8 +50,8 @@ causal independence.
 
 ## Manuscript policy
 
-- `papers/minority-prophet-v1.0.1.md` is the active evidence-aligned draft.
-- v0.9 and v1.0 are historical drafts and explicitly defer to this ledger.
+- `papers/minority-prophet-v1.0.2.md` is the active evidence-aligned draft.
+- v0.9, v1.0, and v1.0.1 are preserved historical drafts and defer to this ledger.
 - EXP008's archived attack mixture is not EXP007A's selected attack.
 - All point estimates must name their record and scope.
 - Rejected, incomplete, and null results remain visible.
@@ -59,9 +59,9 @@ causal independence.
 ## Remaining release blockers
 
 1. E2 matched-coverage analysis and final H2c status.
-2. Completion or removal of outstanding Lean claims.
-3. Canonical head-to-head against released truth-discovery implementations for
+2. Canonical head-to-head against released truth-discovery implementations for
    E8/E8b comparative claims.
-4. Verbatim verification of every literature citation against primary sources.
-5. A vendor-neutral evidence contract and conformance suite tested against at
+3. Verbatim verification of every literature citation against primary sources.
+4. A vendor-neutral evidence contract and conformance suite tested against at
    least one real provider, without treating identity as proof of independence.
+5. Execution and preservation of EXP009 on its untouched confirmatory seeds.
