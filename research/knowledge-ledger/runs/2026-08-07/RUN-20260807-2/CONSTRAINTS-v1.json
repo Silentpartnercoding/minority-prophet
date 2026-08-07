@@ -1,0 +1,110 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-2",
+  "version": 1,
+  "note": "Written as constraints were discovered. Severity is the constraint's effect on what this program may claim. Numbering continues the program-wide series; SPEC-1xx/NAM-1xx/IND-1xx are new series opened by this run.",
+  "constraints": [
+    {
+      "id": "SPEC-101",
+      "category": "scientific",
+      "severity": "high",
+      "title": "An invariant suite can pass in two implementations that disagree on the primary output",
+      "statement": "No v1.0.0 invariant constrained the receipt's `conclusion` field. Two implementations passed all ten invariants over the identical 176,120-world enumeration while disagreeing on the conclusion of 22,440 receipt-producing worlds (20.2%). The divergence was invisible to fixtures, exhaustive enumeration, randomization, adversarial attacks, and all four baselines, in both implementations simultaneously.",
+      "evidence": {
+        "reference": "results/kl000-confirmatory.json exhaustive conclusionDistribution: supported 19380 / not_established 49480",
+        "independent": "results/independent/kl000-independent-result.json exhaustiveSmall conclusionDistribution: supported 41820 / not_established 27040",
+        "predictedInAdvance": "the independent implementer quantified exactly 22,440 as ambiguity A3 before any comparison existed",
+        "decomposition": "66 of 163 conflict-free evidence ledgers x 340 location ledgers; 16,320 ties + 6,120 strict minorities, verified by direct enumeration this run"
+      },
+      "whyItGeneralises": "A conformance suite certifies exactly the fields its invariants and fixtures constrain, and silently nothing else. Any output field a downstream consumer reads that lacks an invariant or a pinned fixture can diverge across implementations without a single test failing. For a program whose product IS the receipt, an unconstrained receipt field is an unspecified protocol wearing a specification's clothes.",
+      "remediation": "v1.1.0 R1 defines the conclusion function and registers it; fixture C11 pins the tie case. The general rule is methodology note M7: every receipt field is either invariant-constrained, fixture-pinned, or explicitly declared unspecified.",
+      "affectsConclusions": true,
+      "affectsConclusionsReason": "Retroactively bounds what RUN-20260807-1 was entitled to claim: its 'passed' certified the ten invariants, not the conclusion distribution, which was registration-silent. The v1.0.0 result stands as registered; the word 'verified' was never earned and is not used.",
+      "discoveredDuring": "reading the independent implementation's findings; verified by computation",
+      "status": "repaired-for-the-tie-surface-in-v1.1.0; general rule adopted as M7"
+    },
+    {
+      "id": "IND-101",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "The independence claim is qualified, and the operator's disclosure understates the leak",
+      "statement": "The specification package's preregistration.json disclosed five reference implementation paths (three src modules plus both test filenames), not the three the operator's disclosure note lists. The package therefore leaked the reference's language and module decomposition, including the existence and name of the adversarial test file. Separately, one reimplementation output field name (violationsByInvariant) matches the reference with no visible path from the specification.",
+      "evidence": {
+        "grep": "grep -n 'kl000_' kl000-independent-spec/preregistration.json -> lines 39, 183-185, 187-188",
+        "namingCheck": "of eight reference result-schema identifiers, only violationsByInvariant and spec-supplied conclusionDistribution appear in impl-rs/src/main.rs",
+        "schemaDisjointness": "the surrounding output schema is otherwise the implementer's own (operator note addendum), which weakens the contamination reading without eliminating it",
+        "unresolvable": "atime is disabled on the volume; reads are not observable after the fact"
+      },
+      "consequence": "The defensible claim, used everywhere in this run's record: independent given a package that disclosed the reference's language and module decomposition but not its logic, output field names, or any expected value. Not 'independent' unqualified, and not void either.",
+      "remediation": "For the v1.1.0 re-commission: record artifacts as roles rather than paths in any spec package, and run the implementer on a machine that does not hold the reference (the operator's own remediation, adopted into the next-run proposal).",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "The load-bearing agreement (invariants over an independently derived enumeration) is semantic, where the leaked structure gives no advantage; the leak bears on the strength of the independence adjective, which the record already qualifies.",
+      "discoveredDuring": "verification of the operator notes' checkable claims",
+      "status": "recorded; remediation folded into next-run proposal"
+    },
+    {
+      "id": "SPEC-102",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "The frozen seed freezes no cross-implementation world stream; randomized comparisons are replications only",
+      "statement": "The preregistration fixes seed 20260807 and names an RNG, but not the draw schedule or the distribution over declared ranges. Two independent implementations therefore cannot sample the same randomized worlds, and the invalidation clause 'seed does not reproduce an identical stream' is checkable only within one implementation.",
+      "evidence": {
+        "reference": "243,381 receipts / 756,619 fail-closed (Mersenne Twister)",
+        "independent": "244,091 / 755,909 (splitmix64-seeded xoshiro256**), both within one standard deviation of the closed-form 243,686",
+        "source": "independent finding F11"
+      },
+      "remediation": "Terminology discipline adopted throughout this run's record: exhaustive = reproduction, randomized = replication. Repair direction for v1.2.0: register a draw schedule, or adopt the independent implementation's worldStreamHash primitive so two runs can prove they enumerated the same worlds.",
+      "affectsConclusions": false,
+      "discoveredDuring": "reading FINDINGS.md; confirmed against both result documents",
+      "status": "recorded-open; backlog item"
+    },
+    {
+      "id": "SPEC-103",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "Registered invariants I2 and I5 are receipt-internal and vacuously satisfiable; the registered baseline B2 does not fail literal I2",
+      "statement": "I2 and I5 are stated over receipt fields. An evaluator that fabricates or omits those fields satisfies them vacuously. Measured consequence (independent findings F1/F2): B2-source-count, registered as MUST FAIL I2, records zero violations of I2's receipt-internal reading across all 176,120 worlds; it is caught by the world-referential reading and by I8. No preregistered baseline has power against the I5 analogue.",
+      "evidence": {
+        "measured": "results/independent/kl000-independent-result.json baselines: B2 I2a=0, I2b=13440, I8=110840",
+        "note": "the reference checker's I2 mixes receipt-internal and world-referential clauses, which is why the reference run catches B2 -- the catch depends on an unregistered reading"
+      },
+      "remediation": "Deliberately NOT repaired in v1.1.0 (outside the owner's four repairs). v1.2.0 candidates: state I2/I5 world-referentially or register both forms separately; add a fifth ablation that drops opposing roots from the receipt to give the suite power against the I5 hole.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "The reference evaluator reports honestly, so the vacuous path is not exercised by B5; the constraint is about test power against dishonest or broken evaluators.",
+      "discoveredDuring": "reading FINDINGS.md",
+      "status": "recorded-open; backlog item"
+    },
+    {
+      "id": "NAM-101",
+      "category": "engineering",
+      "severity": "low",
+      "title": "Registration ids and runner report keys are two spellings of the same baselines",
+      "statement": "The preregistrations register B3-evidence-ledger-without-coverage and B4-search-ledger-without-collapse; the runner reports B3-evidence-without-coverage and B4-search-without-collapse. v1.1.0's expectedIdenticalToRun1 table inherited the registration spelling, so this run's first comparison script crashed on the key mismatch before comparing a single number.",
+      "evidence": {
+        "crash": "KeyError: 'B3-evidence-ledger-without-coverage' in the first comparison attempt",
+        "resolution": "explicit id map in the committed comparison, logs/v110-vs-run1-comparison.txt"
+      },
+      "whyRecorded": "A vocabulary split between a registration and its report is exactly how a machine check silently compares the wrong thing or nothing at all. This one failed loudly; the next one might not.",
+      "remediation": "Not repaired in-place (the v1.1.0 registration is frozen). One vocabulary should win in v1.2.0, and the runner should emit the registered ids.",
+      "affectsConclusions": false,
+      "discoveredDuring": "result comparison",
+      "status": "recorded-open"
+    },
+    {
+      "id": "PROV-008",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription again; the PROV-004 remediation has no harness support yet",
+      "statement": "No operator-side prompt artifact existed for this run, so inputs/PROMPT.txt is a transcription from the agent's own context and its digest authenticates the transcription only. RUN-20260807-1 demonstrated this exact method producing a 4-byte silent divergence from the authoritative bytes.",
+      "evidence": {
+        "search": "no *prompt* file outside .git under /Users/james/Development at depth 2; operator-notes directory holds only the two disclosure notes",
+        "marking": "run-manifest.json promptCaptureMethod = agent-transcription; PROMPT-CAPTURE-NOTE.md states the digest is unverified"
+      },
+      "remediation": "Field marked unverified as PROV-004 prescribes. The durable fix remains harness-side capture of delivered prompt bytes, which no run can perform for itself.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "No scientific number derives from the prompt text; everything is reproducible from committed artifacts.",
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program"
+    }
+  ]
+}
