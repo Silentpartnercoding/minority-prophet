@@ -14,6 +14,17 @@ class EvidenceAlignmentTests(unittest.TestCase):
         self.assertIn("unable to mint, alter, or promote the evidence it verifies", foundations)
         self.assertIn("Unknown or overlapping provenance widens uncertainty", foundations)
 
+    def test_h2_is_falsifiable_and_does_not_overclaim_independence(self):
+        hypotheses = (ROOT / "RESEARCH-HYPOTHESES.md").read_text()
+        prose = " ".join(hypotheses.split())
+        self.assertIn("H2 — verifier independence under shared control", hypotheses)
+        self.assertIn("**Null hypothesis:**", hypotheses)
+        self.assertIn("**Failure condition:**", hypotheses)
+        self.assertIn("**Success condition:**", hypotheses)
+        self.assertIn("unknown control always abstains or escalates", prose)
+        self.assertIn("cannot discover undisclosed real-world common control", prose)
+        self.assertIn("does not itself grant authority", prose)
+
     def test_active_paper_uses_canonical_exp007a_values(self):
         paper = (ROOT / "papers/minority-prophet-v1.0.2.md").read_text()
         self.assertIn("EXP007A", paper)
