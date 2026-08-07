@@ -62,9 +62,10 @@ git log --oneline github/main..HEAD | wc -l          # expect 32
 PYTHONPATH=. python3 -m pytest -q                    # expect 63 passed
 PYTHONPATH=. python3 -m pytest research/knowledge-ledger/experiments/KL-000/tests -q   # expect 80 passed
 
-# The closing-packet commit(s) made after the rebuild are not yet on this
-# branch; bring them over first (they are provenance-only):
-git cherry-pick <packet-commit-SHAs from the run branch after 7629d37>
+# The closing-packet commits made after the rebuild are not yet on this
+# branch; bring them over first (provenance-only; the range form covers all
+# of them, including the handoff-finalisation commit):
+git cherry-pick 7629d37..agent/knowledge-ledger-run-20260807-1
 
 git push github agent/kl-000-conformance
 gh pr create --draft --repo Silentpartnercoding/minority-prophet \
