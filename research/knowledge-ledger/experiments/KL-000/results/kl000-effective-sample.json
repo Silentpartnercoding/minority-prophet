@@ -1,0 +1,70 @@
+{
+  "designLessonForFutureKernels": "Randomized bounds were chosen for structural variety, not for balance across the evaluator's branches, and the result is a heavily skewed exercise profile. A future revision should either sample side assignments per-root rather than per-record, which would make side conflicts rare and deliberate, or stratify the draw so each branch receives a declared share. Preregistering the intended exercise profile alongside the bounds would have surfaced this before execution rather than after.",
+  "experimentId": "KL-000",
+  "interpretation": "Both bounds are true and they answer different questions. 3 / drawn-worlds bounds the probability that a world sampled from the declared randomized distribution violates an invariant. 3 / receipt-producing-worlds bounds the probability that a world which actually yields a receipt violates one of the eight invariants that require a receipt to check. The second is the weaker and the more honest bound for those eight, and it is the one to quote when describing what the randomized phase established about them.",
+  "note": "Secondary analysis, preregistered as secondary endpoint 'count of fail-closed rejections, by cause'. The primary endpoint and its preregistered statistic are unchanged in kl000-confirmatory.json; this addendum does not restate them differently, it reports what the headline count does and does not cover.",
+  "phases": {
+    "exhaustive": {
+      "conclusionDistribution": {
+        "absent_within_declared_scope": 160,
+        "not_established": 49480,
+        "present": 41820,
+        "supported": 19380
+      },
+      "failClosedCause": "a root recorded on both sides (I3); the evaluator raises and emits no receipt",
+      "failClosedFraction": 0.370656,
+      "failClosedRejections": 65280,
+      "invariantsExercisedOnAllDrawnWorlds": [
+        "I3",
+        "I9"
+      ],
+      "invariantsRequiringAReceipt": [
+        "I1",
+        "I2",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "I8",
+        "I10"
+      ],
+      "receiptProducingFraction": 0.629344,
+      "receiptProducingWorlds": 110840,
+      "ruleOfThree95_perDrawnWorld": 1.7033840563252328e-05,
+      "ruleOfThree95_perReceiptProducingWorld": 2.7066041140382535e-05,
+      "worldsDrawn": 176120
+    },
+    "randomized": {
+      "conclusionDistribution": {
+        "absent_within_declared_scope": 1092,
+        "not_established": 119228,
+        "present": 81792,
+        "supported": 41269
+      },
+      "failClosedCause": "a root recorded on both sides (I3); the evaluator raises and emits no receipt",
+      "failClosedFraction": 0.756619,
+      "failClosedRejections": 756619,
+      "invariantsExercisedOnAllDrawnWorlds": [
+        "I3",
+        "I9"
+      ],
+      "invariantsRequiringAReceipt": [
+        "I1",
+        "I2",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "I8",
+        "I10"
+      ],
+      "receiptProducingFraction": 0.243381,
+      "receiptProducingWorlds": 243381,
+      "ruleOfThree95_perDrawnWorld": 3e-06,
+      "ruleOfThree95_perReceiptProducingWorld": 1.2326352509029054e-05,
+      "worldsDrawn": 1000000
+    }
+  },
+  "schema": "minority-prophet.kl000-effective-sample.v0.1",
+  "whyThisMatters": "Reporting '1,000,000 randomized worlds, zero violations' without this decomposition would overstate the randomized phase by roughly a factor of four for eight of the ten invariants. 75.7% of randomized worlds never produce a receipt: with eight roots and up to 24 records, almost every large draw puts some root on both sides, so the evaluator correctly refuses and those worlds test only fail-closed behaviour. The exhaustive phase is unaffected as a completeness claim -- it enumerates every world within its bounds, and 110,840 of its 176,120 worlds produce receipts -- but the randomized phase is not four times larger than the exhaustive one for most invariants. It is about twice as large."
+}

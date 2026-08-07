@@ -1,9 +1,51 @@
 {
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-000",
-  "state": "seeded",
-  "resultStatus": "none",
-  "lastCompletedGate": "registry-entry",
-  "nextGate": "complete and commit preregistration",
-  "claimAllowed": "This experiment is seeded and supports no result claim."
+  "state": "adversarial-passed",
+  "resultStatus": "confirmatory",
+  "protocolVersion": "1.0.0",
+  "protocolCommit": "c97734799a6e1d0fd074699db1e09aa82eb5f810",
+  "resultCommit": "recorded in the commit carrying results/kl000-confirmatory.json",
+  "runId": "RUN-20260807-1",
+
+  "gatesCompleted": [
+    {"gate": "registry-entry", "state": "seeded"},
+    {"gate": "complete and commit preregistration", "state": "preregistered", "evidence": "preregistration.json v0.2, protocol v1.0.0, frozen at c977347"},
+    {"gate": "fixture", "state": "fixture-passed", "evidence": "10/10 controls C01-C10 match hand-derived expected values"},
+    {"gate": "exhaustive-small", "state": "exhaustive-passed", "evidence": "176,120 worlds enumerated, 0 violations, 0 out of declared bounds"},
+    {"gate": "randomized", "state": "randomized-passed", "evidence": "1,000,000 worlds from frozen seed 20260807, 0 violations"},
+    {"gate": "adversarial", "state": "adversarial-passed", "evidence": "10 attacks A01-A10, 0 hard-invariant violations, 7 limits recorded as ADV-001..007"}
+  ],
+  "gatesFailed": [],
+  "lastCompletedGate": "adversarial",
+
+  "nextGate": "independent reimplementation. The confirmatory result was produced by an evaluator and a checker written in the same session; RESEARCH-METHOD.md requires that the implementation author not be the sole verifier. The exact falsifiable next step is: a second evaluator, written from the public schema by an author with no access to knowledge_ledger/transaction.py, must reproduce the same conclusion for all 176,120 exhaustive worlds. Any disagreement on any world rejects the shared assumption.",
+
+  "blockers": [],
+
+  "claimAllowed": "Within the declared bounds, the reference evaluator did not allow a recorded copy to change evidential mass, and did not allow an incomplete search to yield an absence conclusion. This is conformance behaviour in a frozen synthetic model.",
+  "claimNotAllowed": "That the dual ledger recovers truth, that declared roots are genuinely independent, that the invariants hold outside the declared bounds, that any real-world evidence process is improved, or that KL-000 constitutes a knowledge transaction, a cross-system result, or any part of a First Transmission.",
+
+  "quantitativeCaveat": "75.7% of randomized worlds fail closed and produce no receipt, so eight of the ten invariants were exercised on 243,381 randomized worlds rather than 1,000,000. See results/kl000-effective-sample.json. The 95% rule-of-three upper bound for those eight is 1.23e-5 per receipt-producing world, not 3.0e-6.",
+
+  "knownLimits": [
+    "ADV-001 high: an under-declared search space is undetectable, and the declaring party is the reporting party",
+    "ADV-002: one compromised issuer can mint unlimited roots",
+    "ADV-003: one appended conflicting record renders a whole transaction unevaluable",
+    "ADV-004: root identity is byte identity; no normalisation is specified",
+    "ADV-005: shared upstream dependency between roots is not representable",
+    "ADV-006: no issuer authentication; forged or replayed roots are indistinguishable",
+    "ADV-007: the claim proposition is free text and is never checked against the ledgers"
+  ],
+
+  "artifacts": {
+    "protocol": "PROTOCOL.md",
+    "preregistration": "preregistration.json",
+    "protocolCommitSidecar": "PROTOCOL-COMMIT.txt",
+    "fixtures": "fixtures/ (10 controls)",
+    "source": "src/ (worlds, invariants, baselines, runner)",
+    "tests": "tests/ (54 tests)",
+    "results": "results/kl000-confirmatory.json, results/kl000-effective-sample.json",
+    "reproduction": "REPRODUCE.md"
+  }
 }
