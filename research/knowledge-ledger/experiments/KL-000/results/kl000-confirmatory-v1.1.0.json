@@ -1,0 +1,569 @@
+{
+  "boundsDriftFromPreregistration": [],
+  "declaredExhaustiveCount": 176120,
+  "derivedExhaustiveCount": 176120,
+  "environment": {
+    "implementation": "CPython",
+    "platform": "macOS-26.4.1-arm64-arm-64bit-Mach-O",
+    "python": "3.14.6"
+  },
+  "evaluatorUnderTest": {
+    "matchesPreregistration": true,
+    "path": "knowledge_ledger/transaction.py",
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f"
+  },
+  "experimentId": "KL-000",
+  "invalidationReasons": [],
+  "label": "confirmatory-v1.1.0",
+  "phases": {
+    "baselines": {
+      "B1-head-count": {
+        "caught": true,
+        "coverage": "full exhaustive set",
+        "totalViolations": 634440,
+        "violationsByInvariant": {
+          "I1": 520200,
+          "I10": 114240
+        },
+        "worldsChecked": 176120
+      },
+      "B2-source-count": {
+        "caught": true,
+        "coverage": "full exhaustive set",
+        "totalViolations": 26880,
+        "violationsByInvariant": {
+          "I2": 26880
+        },
+        "worldsChecked": 176120
+      },
+      "B3-evidence-without-coverage": {
+        "caught": true,
+        "coverage": "full exhaustive set",
+        "totalViolations": 26208,
+        "violationsByInvariant": {
+          "I2": 26208
+        },
+        "worldsChecked": 176120
+      },
+      "B4-search-without-collapse": {
+        "caught": true,
+        "coverage": "full exhaustive set",
+        "totalViolations": 189720,
+        "violationsByInvariant": {
+          "I1": 189720
+        },
+        "worldsChecked": 176120
+      }
+    },
+    "exhaustive": {
+      "conclusionDistribution": {
+        "absent_within_declared_scope": 160,
+        "not_established": 49480,
+        "present": 41820,
+        "supported": 19380
+      },
+      "elapsedSeconds": 10.89,
+      "failClosedByCause": {
+        "ValueError: One root cannot support opposing sides.": 65280
+      },
+      "failClosedRejections": 65280,
+      "failClosedSamples": {
+        "ValueError: One root cannot support opposing sides.": [
+          {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r1",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-9"
+          },
+          {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r1",
+                  "side": "support"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-14"
+          },
+          {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r2",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r2",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-23"
+          }
+        ]
+      },
+      "failClosedUnexpectedCauses": {},
+      "outOfDeclaredBounds": 0,
+      "passed": true,
+      "phase": "exhaustive",
+      "preservedViolations": [],
+      "receiptProducingWorlds": 110840,
+      "stopConditionArmed": true,
+      "stopConditionNote": "Not triggered: no hard violation occurred. The stop condition was armed throughout -- the run returns immediately on the first violation -- and simply had no occasion to fire.",
+      "stopConditionTriggered": false,
+      "totalViolations": 0,
+      "violationsByInvariant": {},
+      "worldsChecked": 176120
+    },
+    "fixture": {
+      "controls": [
+        {
+          "control": "C01",
+          "differences": [],
+          "fixture": "c01-head-count.json",
+          "passed": true
+        },
+        {
+          "control": "C02",
+          "differences": [],
+          "fixture": "c02-source-count.json",
+          "passed": true
+        },
+        {
+          "control": "C03",
+          "differences": [],
+          "fixture": "c03-evidence-without-coverage.json",
+          "passed": true
+        },
+        {
+          "control": "C04",
+          "differences": [],
+          "fixture": "c04-search-without-collapse.json",
+          "passed": true
+        },
+        {
+          "control": "C05",
+          "differences": [],
+          "fixture": "c05-dual-ledger.json",
+          "passed": true
+        },
+        {
+          "control": "C06",
+          "differences": [],
+          "fixture": "c06-independent-evidence.json",
+          "passed": true
+        },
+        {
+          "control": "C07",
+          "differences": [],
+          "fixture": "c07-copied-source.json",
+          "passed": true
+        },
+        {
+          "control": "C08",
+          "differences": [],
+          "fixture": "c08-incomplete-coverage.json",
+          "passed": true
+        },
+        {
+          "control": "C09",
+          "differences": [],
+          "fixture": "c09-counterexample-searched.json",
+          "passed": true
+        },
+        {
+          "control": "C10",
+          "differences": [],
+          "fixture": "c10-counterexample-unsearched.json",
+          "passed": true
+        },
+        {
+          "control": "C11",
+          "differences": [],
+          "fixture": "c11-canonical-digest.json",
+          "passed": true
+        }
+      ],
+      "mismatchedControls": [],
+      "passed": true,
+      "phase": "fixture"
+    },
+    "randomized": {
+      "conclusionDistribution": {
+        "absent_within_declared_scope": 1092,
+        "not_established": 119228,
+        "present": 81792,
+        "supported": 41269
+      },
+      "elapsedSeconds": 46.912,
+      "failClosedByCause": {
+        "ValueError: One root cannot support opposing sides.": 756619
+      },
+      "failClosedRejections": 756619,
+      "failClosedSamples": {
+        "ValueError: One root cannot support opposing sides.": [
+          {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r6",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r1",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-3",
+                  "rootId": "r7",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-4",
+                  "rootId": "r5",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-5",
+                  "rootId": "r6",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-6",
+                  "rootId": "r2",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-7",
+                  "rootId": "r4",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-8",
+                  "rootId": "r2",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-9",
+                  "rootId": "r1",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-10",
+                  "rootId": "r1",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-11",
+                  "rootId": "r2",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-12",
+                  "rootId": "r3",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-13",
+                  "rootId": "r3",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-14",
+                  "rootId": "r8",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-15",
+                  "rootId": "r4",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-16",
+                  "rootId": "r4",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-17",
+                  "rootId": "r4",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-18",
+                  "rootId": "r6",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-19",
+                  "rootId": "r3",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-20",
+                  "rootId": "r1",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-21",
+                  "rootId": "r1",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-22",
+                  "rootId": "r6",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-23",
+                  "rootId": "r4",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-24",
+                  "rootId": "r7",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "failed"
+                }
+              ]
+            },
+            "transactionId": "kl000-rnd-1"
+          },
+          {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r4",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r1",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-3",
+                  "rootId": "r3",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-4",
+                  "rootId": "r5",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-5",
+                  "rootId": "r2",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-6",
+                  "rootId": "r5",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "not_searched"
+                },
+                {
+                  "id": "loc-2",
+                  "status": "not_searched"
+                },
+                {
+                  "id": "loc-3",
+                  "status": "failed"
+                },
+                {
+                  "id": "loc-4",
+                  "status": "failed"
+                },
+                {
+                  "id": "loc-5",
+                  "status": "unavailable"
+                }
+              ]
+            },
+            "transactionId": "kl000-rnd-2"
+          },
+          {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r6",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-3",
+                  "rootId": "r3",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-4",
+                  "rootId": "r4",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-5",
+                  "rootId": "r8",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-6",
+                  "rootId": "r2",
+                  "side": "support"
+                },
+                {
+                  "id": "rec-7",
+                  "rootId": "r8",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "unavailable"
+                },
+                {
+                  "id": "loc-2",
+                  "status": "unavailable"
+                },
+                {
+                  "id": "loc-3",
+                  "status": "not_searched"
+                },
+                {
+                  "id": "loc-4",
+                  "status": "unavailable"
+                },
+                {
+                  "id": "loc-5",
+                  "status": "unavailable"
+                },
+                {
+                  "id": "loc-6",
+                  "status": "not_searched"
+                },
+                {
+                  "id": "loc-7",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-rnd-3"
+          }
+        ]
+      },
+      "failClosedUnexpectedCauses": {},
+      "outOfDeclaredBounds": 0,
+      "passed": true,
+      "phase": "randomized",
+      "preservedViolations": [],
+      "receiptProducingWorlds": 243381,
+      "stopConditionArmed": true,
+      "stopConditionNote": "Not triggered: no hard violation occurred. The stop condition was armed throughout -- the run returns immediately on the first violation -- and simply had no occasion to fire.",
+      "stopConditionTriggered": false,
+      "totalViolations": 0,
+      "violationsByInvariant": {},
+      "worldsChecked": 1000000
+    }
+  },
+  "protocolVersion": "1.1.0",
+  "result": "passed",
+  "schema": "minority-prophet.kl000-result.v0.1",
+  "uncertainty": {
+    "bonferroniAdjustedUpperBound": 5.3e-06,
+    "interpretation": "Bounds a per-world violation rate. Does not establish zero, and says nothing about worlds outside the declared bounds.",
+    "observedViolations": 0,
+    "randomizedWorlds": 1000000,
+    "ruleOfThreeUpperBound95": 3e-06
+  }
+}
