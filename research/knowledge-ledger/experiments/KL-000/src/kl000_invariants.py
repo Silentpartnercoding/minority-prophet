@@ -51,6 +51,24 @@ def _distinct_declared_roots(world: dict[str, Any]) -> set[str]:
     return {r["rootId"] for r in world["evidenceLedger"]["records"]}
 
 
+def _inadmissibility(world: dict[str, Any]) -> str | None:
+    """v1.1.0 admissibility: the correct outcome for these worlds is refusal.
+
+    Returns the invariant a receipt would violate, or None for an admissible
+    world. Neither generator emits an inadmissible world (the declared bounds
+    require locationCount >= 1 and enumerate distinct location ids), so on the
+    enumerated and randomized phases this is exercised zero times and changes
+    no count; it is load-bearing only for adversarial input.
+    """
+    locations = world["searchLedger"]["locations"]
+    if not locations:
+        return "I8"  # R2: complete requires declared > 0; empty scope refuses
+    ids = [location["id"] for location in locations]
+    if len(ids) != len(set(ids)):
+        return "I11"  # R3: duplicate location ids refuse
+    return None
+
+
 def _has_root_on_both_sides(world: dict[str, Any]) -> bool:
     sides: dict[str, str] = {}
     for record in world["evidenceLedger"]["records"]:
@@ -69,15 +87,30 @@ def check_world(evaluate: Evaluator, world: dict[str, Any]) -> list[Violation]:
     """
     violations: list[Violation] = []
     expect_closed = _has_root_on_both_sides(world)
+    inadmissible_as = _inadmissibility(world)
 
-    # --- I3 side separation, and the fail-closed precondition ------------
+    # --- I3 side separation, admissibility, and the fail-closed path ------
     try:
         receipt = evaluate(copy.deepcopy(world))
     except Exception as exc:  # noqa: BLE001 - any refusal is fail-closed
-        if not expect_closed:
+        if not expect_closed and inadmissible_as is None:
             violations.append(
                 Violation("I9", f"unexpected refusal: {type(exc).__name__}: {exc}", world)
             )
+        return violations
+
+    if inadmissible_as is not None:
+        violations.append(
+            Violation(
+                inadmissible_as,
+                "inadmissible world (v1.1.0 "
+                + ("R2: empty declared scope" if inadmissible_as == "I8"
+                   else "R3/I11: duplicate location id")
+                + ") yet a receipt was produced: "
+                f"conclusion={receipt.get('conclusion')!r}",
+                world,
+            )
+        )
         return violations
 
     if expect_closed:
