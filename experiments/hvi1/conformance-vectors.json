@@ -1,0 +1,11 @@
+{
+  "schema": "minority-prophet.hvi1.conformance-vectors.v1",
+  "vectors": [
+    {"id": "genuine-three", "producerDomains": ["a", "b", "c"], "verifierDomains": ["v1", "v2", "v3"], "statuses": ["supported", "supported", "supported"], "expected": {"decision": "ASSESS", "rootMass": 3}},
+    {"id": "aliases-one-controller", "producerDomains": ["a", "a", "a"], "verifierDomains": ["v1", "v2", "v3"], "statuses": ["supported", "supported", "supported"], "expected": {"decision": "ASSESS", "rootMass": 1}},
+    {"id": "self-verified", "producerDomains": ["a"], "verifierDomains": ["a"], "statuses": ["supported"], "expected": {"decision": "ASSESS", "rootMass": 0}},
+    {"id": "unknown-control", "producerDomains": [null], "verifierDomains": ["v1"], "statuses": ["unknown"], "expected": {"decision": "ESCALATE", "rootMass": 0}},
+    {"id": "conflicting-control", "producerDomains": ["a"], "verifierDomains": ["v1"], "statuses": ["conflicting"], "expected": {"decision": "ESCALATE", "rootMass": 0}},
+    {"id": "key-rotation", "producerDomains": ["a", "a", "a", "a"], "verifierDomains": ["v1", "v2", "v3", "v4"], "statuses": ["supported", "supported", "supported", "supported"], "expected": {"decision": "ASSESS", "rootMass": 1}}
+  ]
+}
