@@ -44,7 +44,7 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
   — formal and verification tracks, not canonical experiments.
 
 - [`FOUNDATIONS.md`](FOUNDATIONS.md) — problem, philosophy, program, and mathematical framing
-- [`ROADMAP.md`](ROADMAP.md) — v0.1 acceptance criteria and immediate next steps
+- [`ROADMAP.md`](ROADMAP.md) — current public research sequence
 - [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — authorship and independent-verification credit
 - [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md) — canonical record registry and promotion rules
 - [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md) — claim-to-record ledger, corrections, and remaining release blockers
