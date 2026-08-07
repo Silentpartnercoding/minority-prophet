@@ -1,0 +1,76 @@
+registry status: seeded-not-executed
+ids in registry but not on disk: none
+ids on disk but not in registry: none
+
+KL-000: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-001: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-002: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-003: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-004: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-005: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-006: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-007: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-008: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-009: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-010: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
+KL-011: status=incomplete-seed unpopulated=14 of 22 keys (11 null + 3 empty)
+    missing dir entries: fixtures, src, tests, results, REPRODUCE.md
+    NO SCHEMA KEY for 1. identifier and immutable protocol version: protocolVersion
+    NO SCHEMA KEY for 11. frozen seeds, splits, code commit, environment, artifact paths: environment
+    NO SCHEMA KEY for 12. safety boundary and required human authorization: humanAuthorization
+    NO SCHEMA KEY for 9. effect size, uncertainty interval, multiple-testing correction: multipleTestingCorrection
