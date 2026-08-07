@@ -1,0 +1,101 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-4",
+  "runNote": "final run of the program",
+  "startUtc": "2026-08-07T22:19:15Z",
+  "endUtc": "see END-UTC.txt (written with the closing commit)",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "ecb2b45",
+    "headCommit": "the closing-packet commit carrying this file",
+    "prBranch": "agent/kl-000-conformance @ 11eb20481695a63cf7f833439e075bb33c32b01e, rebuilt this run from github/main 335b34e (32 commits), UNPUSHED; prior stale head cc9635e recoverable via reflog",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtStartNote": "git-status-before.txt holds exactly one entry: this run directory's own creation",
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per constraint PROV-004."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Fourth consecutive run with no operator-side prompt artifact (PROV-010). Digest unverified.",
+  "inputs": {
+    "prompt": "sha256:1966128a28108b74ae20144ad396bd4a42b89f9baf44f7afe5744b7c608c0e91 (agent transcription, unverified)",
+    "externalEvidence": {
+      "findingsV120": "sha256:521e60e21f678927c441f4f47132253469399c986db2e413313d649d74b7d01a",
+      "resultV120": "sha256:8f97a198155fceae03644c5ae53144e51e80b612d2cffe5d277708fb7f7be0dc (NOTE: header metadata stale from IND-2, ART-101; identity established from FINDINGS-v120.md and content re-verification)",
+      "packageV120Protocol": "sha256:4c98400735e6746074594274f4ab823a6e8d59b358d1521a90bc570b5ee6cda0",
+      "packageV120Preregistration": "sha256:c06590d0c9746100c0c0b9e0dcc6d87c8bb550414bd526e35d3b3731ae35c1a7",
+      "packageV120Brief": "sha256:e22092251b6af740bda2df4a7b09102184a813210ef81cdddf35baba701ab84f",
+      "packageV120Manifest": "sha256:7049530674dcd16e426f08745846049c3c4a727fd3fcc53538025e435c8db42e (verified 16/16 this run)"
+    }
+  },
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "git fetch of the github remote only (read-only, for the PR-branch rebuild); no experiment used the network",
+    "spend": 0,
+    "note": "identical to RUN-20260807-3 (lock copied, pip freeze verified identical)"
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "cross-implementation conformance: evaluator + conclusion function + canonical form",
+      "status": "confirmatory",
+      "note": "FINAL. Established by IND-20260807-1..3 across two implementations, different languages, no shared code. Canonical form confirmed for TWO PINNED RECEIPTS (C11 703 bytes, C12 691 bytes, byte-identical, digests equal), not for all 110,840. Qualified by LEAK-101 (counts seen; digest result unaffected -- a count gives no path to a hash). Capped by SPEC-112: both owner decisions enforced by zero invariants, two pinned inputs are the entire detection surface."
+    },
+    {
+      "artifact": "KL-000/FINAL-RECORD.md",
+      "status": "confirmatory",
+      "digest": "sha256:c85cc8e2c8b44be9a26561b2a3e54c74bef5d31fbc953510509346558478eb15",
+      "note": "the program's consolidated claim at strength"
+    },
+    {
+      "artifact": "KL-000 state",
+      "status": "confirmatory",
+      "note": "adversarial-passed, FINAL. Deliberately not verified-independent: a passing reproduction is not verification while the program's own decisions are unenforced. I12 is the committed gate that would change this, owner's to schedule."
+    },
+    {
+      "artifact": "A1 / A2 conclusion-function readings",
+      "status": "incomplete",
+      "note": "recorded UNDECIDED per owner instruction: A1 4 worlds, A2 19,152 worlds (17.3%). Owner decisions the program did not reach; both readings preserved in STATUS permanentLimits; not decided by this run"
+    },
+    {
+      "artifact": "PR branch agent/kl-000-conformance",
+      "status": "confirmatory",
+      "note": "rebuilt, tested (63 root + 80 KL-000 -- measured, not projected; TEST-101 corrects run-1's figure), all three sidecar chains verified; UNPUSHED, delivery commands in HANDOFF"
+    },
+    {
+      "artifact": "KL-001..KL-011",
+      "status": "incomplete",
+      "note": "audited this run: all eleven seeded with exact next gates, none silently advanced. KL-011's two-implementation prerequisite substantively met; everything else about it unexecuted"
+    },
+    {
+      "artifact": "EXPERIMENT-REGISTRY.json / CANONICAL-RECORDS.md / PUBLIC-CLAIMS.md / paper",
+      "status": "incomplete",
+      "note": "untouched by all four runs; promotion is a separate owner-reviewed commit that this program never performed"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; neither title claimed nor claimable. Stated as plainly as RUN-1 stated it."
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "74 passed (run branch); 63 passed (PR branch, main base -- 11 base-only render tests absent, TEST-101)",
+    "kl000Pytest": "80 passed (both branches)",
+    "note": "no test modified this run"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "none during this run; the owner's run instruction itself carried the close-out requirements (mechanistic finding stated at full strength, A2 left undecided, state held at adversarial-passed), which this run verified against the artifacts before recording"
+  ],
+  "firstTransactionGate": "NOT REACHED"
+}

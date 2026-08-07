@@ -1,0 +1,85 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-4",
+  "version": 1,
+  "note": "Final run. Numbering continues the program-wide series.",
+  "constraints": [
+    {
+      "id": "SPEC-112",
+      "category": "scientific",
+      "severity": "high",
+      "title": "Both owner decisions are enforced by zero invariants; the program's decision-enforcement is two pinned inputs (extends SPEC-110)",
+      "statement": "IND-20260807-3 corrupted each owner decision in isolation (R1: ties conclude supported; R5.2: margin signed) and ran the full checker over the complete enumeration: 22,440 and 38,760 receipts change respectively, with ZERO invariant violations across all thirteen tracked checks in both cases. Detection surface: C11+C12 for R1, C12 alone for R5.2. Reproduced exactly on the reference side (R1 in RUN-20260807-3, R5.2 this run).",
+      "evidence": {
+        "independent": "kl000-independent-result-v120.json repairR1TestSurface / repairR52TestSurface",
+        "referenceSide": "RUN-20260807-3 logs/g4-inverted-r1-ablation.txt; RUN-20260807-4 logs/r52-ablation-verification.txt -- 38,760 / 0 / C12-only, exact"
+      },
+      "whyItGeneralises": "A registered rule without a checker is prose. Every decision this program made about its conclusion function and receipt semantics is enforced only where a fixture happens to exercise it; the invariant set constrains everything about the receipt except the two things the owners decided. R3 is the counter-model: it made its rule invariant I11 so it would be checked. The general rule: for every registered decision, run its inversion as an ablation and require some invariant to catch it -- fixture-only detection is a coincidence of inputs, not enforcement.",
+      "remediation": "I12 is the committed v1.3.0 gate with both ablations as evidence and an exact pass condition (STATUS committedGates). This is why KL-000's final state is adversarial-passed and not verified-independent.",
+      "affectsConclusions": true,
+      "affectsConclusionsReason": "Caps the strength of the cross-implementation claim: what is demonstrated is that both implementations follow the same registered prose, not that any test would notice if one stopped.",
+      "discoveredDuring": "IND-20260807-3 (R5.2 half); doubles RUN-20260807-3's SPEC-110",
+      "status": "recorded; repair committed as the I12 gate, owner's to schedule"
+    },
+    {
+      "id": "ART-101",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "The decisive result artifact carries stale identity metadata from its predecessor",
+      "statement": "kl000-independent-result-v120.json has ten metadata sections byte-equal to the v1.1.0 result, including runId 'IND-20260807-2', protocolVersion '1.1.0', predecessor, runIdNote, and an implementationNote that still says 'across both versions'. repairR52TestSurface.finding prose is partially copied from the R1 surface. The substantive content is unambiguously v1.2.0 and internally consistent; FINDINGS-v120.md carries the correct identity.",
+      "evidence": {
+        "check": "section-by-section byte comparison against the v110 result, this run",
+        "verifiedDespiteDefect": "both digest verdicts recomputed against the registered pins; the R5.2 ablation reproduced exactly on the reference side"
+      },
+      "whyItMatters": "An artifact's self-description is a claim like any other, and updated-in-place workflows silently falsify it. This is the implementer's own finding-H1 pattern in the artifact that decides the program. Anyone consuming the result by its header would attribute it to the wrong run and the wrong protocol version.",
+      "remediation": "Recorded in the provenance record and here; the artifact is untouched per the standing rule. Consumers are directed to FINDINGS-v120.md for identity and to the re-verification for content. Methodology note M18.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "Every load-bearing value was re-verified from scratch on this side.",
+      "discoveredDuring": "run open, verification",
+      "status": "recorded"
+    },
+    {
+      "id": "LEAK-102",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "The v1.2.0 package screen held, and its exemption does not generalise (implementer finding H3)",
+      "statement": "Verified three ways this run: manifest 16/16 with nothing outside it; the eight screened values absent in bare and comma formats; but the exhaustive conclusion distribution (41,820 / 19,380 / 49,480 / 160) ships in PROTOCOL.md and BRIEF.md. Legitimate for the current implementer, who published those figures in IND-20260807-2 before the package existed; a live tuning target for any fresh implementer, whose agreement on those four numbers would then measure nothing.",
+      "remediation": "Recorded as a binding requirement on any future commission: withhold the conclusion distribution from the package, and screen PROTOCOL.md and BRIEF.md -- the two leaks in this program's history were both in a file the screen did not cover.",
+      "affectsConclusions": false,
+      "discoveredDuring": "IND-20260807-3 disclosure; re-verified this run",
+      "status": "recorded; forward-looking requirement"
+    },
+    {
+      "id": "DOC-102",
+      "category": "knowledge",
+      "severity": "low",
+      "title": "Fourth self-miscount of an enumeration; the pattern is the finding (implementer finding H1)",
+      "statement": "'All nine non-contentDigest members' (correct: eight) in three registered sites -- the sentence Amendment 1's correct 'nine' was propagated into. Prior instances: the operator's leak count (three, then five, then six paths) and Amendment 1's 'ten members'. Every instance was caught by counting from scratch, never by reading the previous count.",
+      "remediation": "Amendment 2 corrects the protocol site (provably inert: the machine-readable memberList and digestScope were always correct, and the digests reproduced). The preregistration's two sites stay as committed per the immutability rule. Rule adopted: counts in prose are re-derived at review, never carried forward.",
+      "affectsConclusions": false,
+      "discoveredDuring": "IND-20260807-3",
+      "status": "remediated-at-the-protocol-site; pattern recorded"
+    },
+    {
+      "id": "TEST-101",
+      "category": "engineering",
+      "severity": "low",
+      "title": "RUN-20260807-1's projected PR-branch test count was base-specific and wrong",
+      "statement": "Run-1's HANDOFF told the owner to expect 74 root tests on the cherry-picked branch; the correct count on a github/main base is 63, because eleven tests (test_reference_rendering.py and one program test) belong to the run branch's base 887bd2f and are not part of this program's commits. Verified by collecting and diffing test ids between the two worktrees -- after this run twice collected both sets from the same worktree and got a vacuous diff (recorded; the wrong first attempts are this run's own).",
+      "remediation": "HANDOFF-v1.md carries the correct expectations (63 root + 80 KL-000 on the PR branch; 74 + 80 on the run branch) with the explanation. Run-1's figure was a projection never executed on a main-based tree; PROV-003's own caveat ('one orientation check is base-specific and does not transfer') covered the class but was not applied to the test count.",
+      "affectsConclusions": false,
+      "discoveredDuring": "PR branch rebuild",
+      "status": "corrected-in-handoff"
+    },
+    {
+      "id": "PROV-010",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the fourth consecutive run",
+      "statement": "No operator-side prompt artifact existed for any run of this program. Every run manifest's prompt digest authenticates a transcription only. The durable fix (harness-side capture) remains outside any run's power and is recorded as the standing first item of provenance debt.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program; backlog BL-023"
+    }
+  ]
+}
