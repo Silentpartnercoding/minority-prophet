@@ -1,0 +1,81 @@
+{
+  "control": "C05",
+  "requirement": "dual-ledger",
+  "note": "Structural twin of reference-conformance-001. Both ledgers active at once.",
+  "input": {
+    "transactionId": "kl000-c05",
+    "claim": {
+      "type": "absence",
+      "proposition": "No target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        },
+        {
+          "id": "loc-3",
+          "status": "searched"
+        },
+        {
+          "id": "loc-4",
+          "status": "searched"
+        },
+        {
+          "id": "loc-5",
+          "status": "unavailable"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-4",
+          "rootId": "r2",
+          "side": "support"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "not_established",
+    "search": {
+      "declared": 5,
+      "searched": 4,
+      "unavailable": 1,
+      "complete": false
+    },
+    "evidence": {
+      "records": 4,
+      "distinctRoots": 2,
+      "repeatedRecordsCollapsed": 2,
+      "supportingRoots": [
+        "r1",
+        "r2"
+      ],
+      "opposingRoots": [],
+      "margin": 2,
+      "conversionsToReverse": 2
+    }
+  }
+}

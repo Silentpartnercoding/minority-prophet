@@ -1,0 +1,69 @@
+{
+  "control": "C03",
+  "requirement": "evidence-without-coverage",
+  "note": "Three genuinely independent supporting roots cannot repair one unsearched location. Catches any evaluator that ignores the search ledger.",
+  "input": {
+    "transactionId": "kl000-c03",
+    "claim": {
+      "type": "absence",
+      "proposition": "No target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        },
+        {
+          "id": "loc-3",
+          "status": "unavailable"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r2",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r3",
+          "side": "support"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "not_established",
+    "search": {
+      "declared": 3,
+      "searched": 2,
+      "unavailable": 1,
+      "complete": false
+    },
+    "evidence": {
+      "records": 3,
+      "distinctRoots": 3,
+      "repeatedRecordsCollapsed": 0,
+      "supportingRoots": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "opposingRoots": [],
+      "margin": 3,
+      "conversionsToReverse": 2
+    }
+  }
+}
