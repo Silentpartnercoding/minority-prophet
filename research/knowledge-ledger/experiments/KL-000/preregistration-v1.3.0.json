@@ -1,0 +1,216 @@
+{
+  "schema": "minority-prophet.preregistration.v0.2",
+  "experimentId": "KL-000",
+  "protocolVersion": "1.3.0",
+  "status": "preregistered",
+  "registrationNote": "New registration, not an edit. v1.0.0 (c977347), v1.1.0 (1a8256f) and v1.2.0 (7e9e55f + Amendments 1-2) are preserved byte-for-byte, each governing its own results. v1.3.0 exists to pay the single committed gate recorded at the program's close (STATUS committedGates: v1.3.0-I12-decision-enforcement, owner direction at RUN-20260807-3's close, evidence doubled at RUN-20260807-4): it registers I12, the invariant that makes the program's two owner decisions checkable instead of fixture-pinned. The program was closed at RUN-20260807-4 and is deliberately reopened for this gate only (RUN-20260807-5). The evaluator under test is bit-identical to v1.0.0's. This is an enforcement change, not a semantics change: every count, every conclusion, and both pinned digests must be unchanged.",
+
+  "question": "Do the registered owner decisions (R1 tie rule, R5.2 absolute margin) have an invariant with power against their inversion -- and does adding that invariant change nothing about what the evaluator does?",
+  "null": "I12 catches the R1-inverting ablation on other than exactly 22,440 exhaustive worlds, or the R5.2-inverting ablation on other than exactly 38,760, or B5 records any I12 violation, or any registered value moves.",
+  "target": "I12 catches the two inversions at exactly the registered counts with no fixture involved; B5 records zero I12 violations; every value in expectedIdenticalToRun1 including both pinned digests reproduced exactly.",
+
+  "repairs": [
+    {
+      "id": "R6",
+      "title": "I12: decision enforcement",
+      "resolves": "SPEC-110/SPEC-112 (findings G4/H2): both owner decisions were enforced by zero invariants; an evaluator inverting either passed all eleven invariants over the complete enumeration and was caught only by pinned fixtures (R1: C11+C12; R5.2: C12 alone).",
+      "statement": "See invariants[11] (I12). Hard invariant: for every receipt-producing world, conclusion equals conclusionFunction(world) computed from the WORLD (not the receipt), and margin equals abs(count of distinct supporting roots - count of distinct opposing roots), likewise from the world. Subsumes I2's and I5's conclusion clauses (their registered statements are carried verbatim; their receipt-internal defect F1/F2 remains open and separate).",
+      "decidedBy": "owner (committed gate, RUN-20260807-3 close; executed on owner direction, RUN-20260807-5)",
+      "ownerDecision": false,
+      "ownerDecisionNote": "The gate itself was an owner decision; I12's content is a derivation from the registered conclusionFunction and R5.2 -- there is nothing here that could defensibly have gone another way, which is what distinguishes it from R1/R5.2.",
+      "subDecisionsNote": "Stated per the G5 lesson. (1) I12 emits AT MOST ONE violation per world, its detail naming whether conclusion, margin, or both diverged -- so caught-counts equal world counts and the registered 22,440/38,760 are exact-match targets. (2) The decision-ablation phase contains no fixture comparison of any kind; the catch is the checker's alone, which is what the registered 'no fixture involved' requires. (3) Baseline continuity: B1-B4's registered totals are sums over I1-I11 and are preserved unchanged as the registered power metric; their I12 counts are reported SEPARATELY as i12Violations (new information beside the preserved metric -- folding them in would move every baseline total, since all four baselines' conclusion distributions differ from the reference's). I12's power is established by the two dedicated ablations at exact registered counts, not by B1-B4. (4) I12 is skipped where no receipt exists (fail-closed and inadmissible worlds), like every receipt-referential check.",
+      "expectedNumericChange": "none anywhere except the two new ablation measurements and the new reported-only i12Violations figures",
+      "verifiedExistingBehaviour": "B5's conformance to I12 is exactly what IND-20260807-2/-3 established (identical conclusion distribution) and what RUN-3/RUN-4's reference-side ablations measured from the other direction; the 22,440 and 38,760 counts are prior measurements from both implementations, registered here as pass conditions rather than predictions"
+    }
+  ],
+
+  "decisionAblations": {
+    "note": "The positive controls for I12, replacing fixture-coincidence with registered measurement. Each ablation is B5 with ONE owner decision inverted and nothing else, run over the complete exhaustive enumeration through the same checker that clears B5. No fixture is consulted anywhere in this phase.",
+    "ablations": [
+      {
+        "id": "ABL-R1",
+        "description": "ties and strict minorities on presence claims conclude supported (the IND-20260807-1 existential reading)",
+        "mustFail": "I12, on exactly 22440 worlds",
+        "expectedOtherInvariantViolations": 0,
+        "priorMeasurements": "IND-20260807-3 repairR1TestSurface; RUN-20260807-3 logs/g4-inverted-r1-ablation.txt"
+      },
+      {
+        "id": "ABL-R52",
+        "description": "margin is signed: count(supporting) - count(opposing) (the IND-20260807-1/-2 reading)",
+        "mustFail": "I12, on exactly 38760 worlds",
+        "expectedOtherInvariantViolations": 0,
+        "priorMeasurements": "IND-20260807-3 repairR52TestSurface; RUN-20260807-4 logs/r52-ablation-verification.txt"
+      }
+    ],
+    "invalidation": "A caught-count differing from the registered value in either direction invalidates the run and is the primary finding: I12 is then wrong, not the measurement. Any non-I12 violation by an ablation is likewise a finding (prior measurements recorded zero)."
+  },
+
+  "baselineReporting": {
+    "preservedMetric": "totalViolations = sum over I1-I11, byte-comparable to every prior version; MUST equal the registered values (B1 634440, B2 26880, B3 26208, B4 189720).",
+    "newInformation": "i12Violations reported per baseline, separately. Not registered as an expected value (never previously measured; registering a prediction would require pre-execution). Expected to be strictly positive for every baseline whose conclusion distribution differs from the reference's, which is all four; reported for information and for future registration.",
+    "caughtCriterion": "unchanged: caught == (I1-I11 total > 0)"
+  },
+
+  "conclusionFunction": {
+    "admissibility": "Input must parse and be well-formed (I9); the declared search space must be non-empty (R2); location ids must be pairwise distinct (I11); every evidence side must be 'support' or 'oppose'; no rootId may appear on both sides (I3). Inadmissible input refuses fail-closed: no receipt exists.",
+    "presence": "supported iff |distinct supporting roots| > |distinct opposing roots|, else not_established. Ties are not_established (R1, owner decision, v1.1.0).",
+    "absence": "present if any distinct opposing root exists (I5); else absent_within_declared_scope if search.complete (which requires every declared location searched and declared > 0); else not_established.",
+    "note": "Carried verbatim from v1.1.0/v1.2.0. NEW IN v1.3.0: this function is enforced by I12 rather than being prose with fixtures behind it. The A1 and A2 readings embedded in this text (absence gates on coverage alone; presence has no coverage term) remain UNDECIDED owner decisions recorded in STATUS permanentLimits -- I12 enforces the registered text as written without deciding them, and a future decision on either would be a new registration whose surface (4 and 19,152 worlds) is already measured."
+  },
+
+  "canonicalForm": {
+    "carriedFrom": "v1.2.0, verbatim and unmodified -- encoding, member order, whitespace, escaping, numbers, arrays, referenceRealisation, digestScope all unchanged. Both pinned digests must therefore be unchanged: C11 sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe, C12 sha256:61000a9b978222ce227601621167d8d66109ba2a0fea13f6431f7830b0aa3b6e."
+  },
+  "receiptObject": {
+    "carriedFrom": "v1.2.0, verbatim and unmodified (closed nine-member list; exact schema/reason/limits values; sorted root lists; margin per R5.2; conversionsToReverse formula). The v1.2.0 preregistration's two known inert prose miscounts ('ten top-level members', 'all nine non-contentDigest members') are documented in PROTOCOL-v1.2.0.md's amendment log and are not propagated here: the member list has nine entries, eight of which the digest covers."
+  },
+
+  "population": {"carriedFrom": "v1.0.0/v1.1.0/v1.2.0, verbatim: identical bounds, identical declaredWorldCount 176120, identical randomized bounds and worldCount 1000000. The generator module is untouched; verify_bounds_against_preregistration is satisfied by structural identity with the v1.2.0 registration.", "exhaustive": {"method": "complete cartesian enumeration within declared bounds", "locationCount": [1, 2, 3, 4], "locationStatuses": ["searched", "unavailable", "failed", "not_searched"], "recordCount": [0, 1, 2, 3], "rootIds": ["r1", "r2", "r3"], "sides": ["support", "oppose"], "claimTypes": ["absence", "presence"], "declaredWorldCount": 176120, "worldCountDerivation": "sum(4^L for L in 1..4) = 340 location ledgers; sum(6^R for R in 0..3) = 259 evidence ledgers; 340 * 259 * 2 claim types = 176120"}, "randomized": {"method": "frozen-seed sampling, seed declared below", "worldCount": 1000000, "locationCountRange": [1, 12], "recordCountRange": [0, 24], "rootIdPool": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"], "locationStatuses": ["searched", "unavailable", "failed", "not_searched"], "sides": ["support", "oppose"], "claimTypes": ["absence", "presence"]}},
+
+  "baselines": [
+    {"id": "B1-head-count", "description": "Concludes from record count alone.", "expectedOutcome": "MUST FAIL copy invariance (I1); preserved total 634440."},
+    {"id": "B2-source-count", "description": "Counts distinct roots, ignores the search ledger.", "expectedOutcome": "MUST FAIL bounded absence (I2); preserved total 26880. F1/F3 caveats stand."},
+    {"id": "B3-evidence-ledger-without-coverage", "description": "Full root collapse, no coverage requirement.", "expectedOutcome": "MUST FAIL bounded absence (I2); preserved total 26208."},
+    {"id": "B4-search-ledger-without-collapse", "description": "Full coverage, counts records not roots.", "expectedOutcome": "MUST FAIL copy invariance (I1); preserved total 189720."},
+    {"id": "B5-dual-ledger", "description": "The evaluator under test.", "expectedOutcome": "MUST PASS all twelve invariants, including zero I12 violations."}
+  ],
+  "baselineIdNote": "Runner report keys differ in spelling for B3/B4 (NAM-101); the mapping is as recorded in the v1.2.0 registration.",
+
+  "controls": [
+    {"id": "C01", "requirement": "head or record counting", "fixture": "fixtures/c01-head-count.json"},
+    {"id": "C02", "requirement": "source counting", "fixture": "fixtures/c02-source-count.json"},
+    {"id": "C03", "requirement": "evidence ledger without search coverage", "fixture": "fixtures/c03-evidence-without-coverage.json"},
+    {"id": "C04", "requirement": "search ledger without root collapse", "fixture": "fixtures/c04-search-without-collapse.json"},
+    {"id": "C05", "requirement": "dual ledger", "fixture": "fixtures/c05-dual-ledger.json"},
+    {"id": "C06", "requirement": "genuinely independent evidence", "fixture": "fixtures/c06-independent-evidence.json"},
+    {"id": "C07", "requirement": "copied or shared-dependency condition", "fixture": "fixtures/c07-copied-source.json"},
+    {"id": "C08", "requirement": "incomplete coverage", "fixture": "fixtures/c08-incomplete-coverage.json"},
+    {"id": "C09", "requirement": "counterexample in a searched location", "fixture": "fixtures/c09-counterexample-searched.json"},
+    {"id": "C10", "requirement": "counterexample in an unsearched location", "fixture": "fixtures/c10-counterexample-unsearched.json"},
+    {"id": "C11", "requirement": "canonical form, digest scope, receipt object; tie is not_established", "fixture": "fixtures/v1.2.0/c11-canonical-digest.json", "note": "unchanged from v1.2.0, digest unchanged"},
+    {"id": "C12", "requirement": "margin sign: absolute difference on a strict minority", "fixture": "fixtures/v1.2.0/c12-margin-sign.json", "note": "unchanged from v1.2.0, digest unchanged"}
+  ],
+  "controlsNote": "The fixture set is byte-identical to v1.2.0's. Under I12 the fixtures are redundant as enforcement (that is the point of the gate) and remain valuable as cross-implementation byte pins.",
+
+  "primaryEndpoint": "count of hard-invariant violations by B5 across twelve invariants, target exactly 0",
+  "secondaryEndpoints": [
+    "the two ablation catch-counts, which must equal 22440 and 38760 exactly",
+    "count of fail-closed rejections, by cause",
+    "conclusion distribution across enumerated worlds",
+    "baseline preserved totals (I1-I11), non-zero and unchanged; i12Violations reported beside them",
+    "equality of every value in expectedIdenticalToRun1 including both pinned digests",
+    "wall-clock and worlds-per-second"
+  ],
+
+  "expectedIdenticalToRun1": {
+    "statement": "I12 is an enforcement change, not a semantics change: everything the program has ever measured must be unchanged. Any moved value halts the run and is the primary finding -- it would mean I12 changed evaluation rather than enforcing it. PACKAGING: this block and the protocol's prediction table never ship in a commission package (LEAK-101/LEAK-102); any future package also withholds the conclusion distribution.",
+    "exhaustive": {"worldsChecked": 176120, "receiptProducingWorlds": 110840, "failClosedRejections": 65280, "totalViolations": 0, "conclusionDistribution": {"absent_within_declared_scope": 160, "not_established": 49480, "present": 41820, "supported": 19380}},
+    "randomized": {"worldsChecked": 1000000, "receiptProducingWorlds": 243381, "failClosedRejections": 756619, "totalViolations": 0, "conclusionDistribution": {"absent_within_declared_scope": 1092, "not_established": 119228, "present": 81792, "supported": 41269}},
+    "baselines": {"B1-head-count": 634440, "B2-source-count": 26880, "B3-evidence-ledger-without-coverage": 26208, "B4-search-ledger-without-collapse": 189720},
+    "baselinesMetricNote": "preserved I1-I11 sums; i12Violations reported separately and not constrained",
+    "failClosedCauses": ["ValueError: One root cannot support opposing sides."],
+    "c11ContentDigest": "sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe",
+    "c12ContentDigest": "sha256:61000a9b978222ce227601621167d8d66109ba2a0fea13f6431f7830b0aa3b6e",
+    "ablations": {"ABL-R1": {"i12Violations": 22440, "otherViolations": 0}, "ABL-R52": {"i12Violations": 38760, "otherViolations": 0}},
+    "fixture": "C01-C12 pass exactly as in RUN-20260807-3's confirmatory"
+  },
+
+  "invariants": [
+    {"id": "I1", "name": "copy invariance", "statement": "Appending a duplicate of any existing record (same rootId, same side) leaves conclusion, distinctRoots, supportingRoots, opposingRoots, margin, and conversionsToReverse unchanged, and increases records and repeatedRecordsCollapsed by exactly 1 each.", "hard": true},
+    {"id": "I2", "name": "bounded absence", "statement": "conclusion == 'absent_within_declared_scope' implies search.complete is true and opposingRoots is empty. Equivalently no absence conclusion is reachable while any location status is not 'searched'.", "hard": true, "carryNote": "Verbatim from v1.0.0 including the known-defective 'Equivalently' (F1, open). Its conclusion clause is now subsumed by I12."},
+    {"id": "I3", "name": "side separation", "statement": "If any rootId appears with both sides, evaluation raises and no receipt is produced.", "hard": true},
+    {"id": "I4", "name": "deterministic replay", "statement": "Evaluating the same world twice yields byte-identical canonical JSON and an equal contentDigest, per canonicalForm and receiptObject.", "hard": true},
+    {"id": "I5", "name": "counterexample dominance", "statement": "For absence claims, a non-empty opposingRoots implies conclusion == 'present', at any coverage level.", "hard": true, "carryNote": "Verbatim; receipt-internal defect F2 open; conclusion clause now subsumed by I12."},
+    {"id": "I6", "name": "digest integrity", "statement": "verify_content_digest holds for every emitted receipt, and fails for every single-field mutation of one.", "hard": true},
+    {"id": "I7", "name": "order invariance", "statement": "Permuting locations or records changes no evidential field, no conclusion, and no contentDigest.", "hard": true},
+    {"id": "I8", "name": "search arithmetic", "statement": "declared == len(locations), searched and unavailable equal their status counts, searched + unavailable <= declared, and complete == (searched == declared and declared > 0).", "hard": true},
+    {"id": "I9", "name": "fail-closed parsing", "statement": "Malformed input raises an exception and never returns a receipt.", "hard": true, "coverageNote": "Still exercised by zero non-adversarial worlds (reinstated ledger item)."},
+    {"id": "I10", "name": "copies never mint roots", "statement": "distinctRoots equals the number of distinct rootId values in the input, and appending any number of copies of existing roots leaves it unchanged.", "hard": true},
+    {"id": "I11", "name": "location identifier uniqueness", "statement": "The id values of searchLedger.locations must be pairwise distinct; duplicates refuse fail-closed with no receipt.", "hard": true},
+    {"id": "I12", "name": "decision enforcement", "statement": "For every receipt-producing world: conclusion equals conclusionFunction(world), computed from the world's evidence and search ledgers rather than from any receipt field; and margin equals abs(count of distinct supporting roots - count of distinct opposing roots), likewise computed from the world. At most one I12 violation is emitted per world; its detail states which of the two equalities failed, or both. Skipped where no receipt exists.", "hard": true, "v130Note": "New. This is the committed gate: the invariant with power against the inversion of either owner decision (R1, R5.2). Registered pass condition: catches ABL-R1 on exactly 22,440 worlds and ABL-R52 on exactly 38,760, with no fixture involved; B5 records zero."}
+  ],
+
+  "effectSize": {
+    "statement": "Enforcement kernel increment. The endpoint is exact: two previously measured divergence surfaces must be caught at their exact sizes, and nothing else may move.",
+    "powerOfTest": "For I1-I11: baselines B1-B4, preserved metric. For I12: the two registered decision ablations, each a must-fail positive control at an exact registered count."
+  },
+
+  "uncertainty": {"carriedFrom": "v1.2.0, with 'eleven' read as 'twelve': no sampling uncertainty in the exhaustive phase; randomized rule-of-three bounds unchanged; ten invariants exercised on receipt-producing worlds plus I12, I3 on all worlds, I9 on none outside the adversarial suite."},
+  "multipleTestingCorrection": {"method": "none applied to the primary endpoint", "justification": "Violation count with target zero; exact-match ablation counts; no significance test."},
+
+  "successCondition": "Zero hard-invariant violations by B5 across all twelve invariants and all phases; ABL-R1 caught by I12 on exactly 22,440 worlds and ABL-R52 on exactly 38,760, each with zero other-invariant violations and no fixture involved; baselines' preserved totals unchanged and non-zero; C11/C12 digests unchanged; every value in expectedIdenticalToRun1 equal to observation.",
+  "failureCondition": "Any hard-invariant violation by B5, including any I12 violation.",
+  "invalidationCondition": "Any prior-version invalidation condition; any expectedIdenticalToRun1 value differing from observation; either ablation caught at a count other than its registered value (in either direction -- I12 is then wrong, not the measurement; stop and report rather than adjust); any non-I12 violation by an ablation.",
+  "stopCondition": "One hard violation halts and preserves the world. One moved value or one wrong ablation count halts the run with that as the primary finding.",
+
+  "frozenSeedsOrSplits": {"randomizedSeed": 20260807, "rng": "Python stdlib random.Random, seeded per phase, no OS entropy", "rngScopeNote": "Freezes this implementation's stream only (F11, open, permanent unless a stream is registered).", "splitPolicy": "No train/test split applies."},
+
+  "protocolCommit": null,
+  "protocolCommitNote": "Assigned by git; recorded post-commit in PROTOCOL-COMMIT-v1.3.0.txt. This file is never edited after registration.",
+
+  "evaluatorUnderTest": {
+    "path": "knowledge_ledger/transaction.py",
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f",
+    "packageInit": "knowledge_ledger/__init__.py",
+    "packageInitSha256": "32f2b46d231e68e8c568cdabf84e9180e9acd244ca3642dd67cc299f81a786d7",
+    "note": "Bit-identical to every prior registration. I12 changes the CHECKER, not the evaluator; an unchanged evaluator hash plus unchanged numbers plus unchanged digests is what 'enforcement, not semantics' predicts."
+  },
+
+  "environment": {"python": "3.14.6", "interpreter": "/Users/james/Development/.mp-runner-venv/bin/python", "reproductionInterpreter": "any CPython 3.11+; standard library only", "thirdPartyRuntimeDependencies": "none", "network": "not used", "os": "macOS 26.4.1, Darwin 25.4.0, arm64", "determinismNote": "Results must be byte-identical across interpreters and platforms."},
+  "safetyBoundary": {"dataClass": "synthetic only", "decisionAuthority": "none", "network": "none", "spend": "zero", "actuation": "none"},
+  "humanAuthorization": {
+    "requiredForExecution": false,
+    "requiredForExecutionReason": "Offline, synthetic, zero-spend.",
+    "requiredFor": [
+      {"action": "pushing agent/kl-000-conformance and opening the draft PR", "status": "owner's, after review of the exact public text; commands prepared, nothing run"},
+      {"action": "deciding A1 (4 worlds) and A2 (19,152 worlds)", "status": "explicitly NOT decided by this run, per instruction; recorded open in STATUS permanentLimits"},
+      {"action": "promoting any claim into canonical records", "status": "not sought"},
+      {"action": "any future commission (fourth implementation, IND re-run under v1.3.0)", "status": "owner's; packaging rules LEAK-101/LEAK-102 binding"}
+    ]
+  },
+
+  "openFindings": {
+    "note": "Unchanged from the v1.2.0 close-out except G4/SPEC-112, which this registration repairs. A1/A2 remain in STATUS permanentLimits, undecided by instruction.",
+    "items": [
+      {"finding": "F1", "summary": "I2's two forms are not equivalent; B2 does not fail literal receipt-internal I2 (open since v1.0.0; I12 subsumes the conclusion clause but the receipt-internal defect stands)"},
+      {"finding": "F2", "summary": "I5 receipt-internal, vacuously satisfiable; no baseline has power against it (B6 remains future work)"},
+      {"finding": "F3", "summary": "B2 and B3 may be one ablation counted twice"},
+      {"finding": "F11", "summary": "frozen seed freezes no cross-implementation stream; randomized phase permanently replication-only unless a stream is registered"},
+      {"finding": "F12", "summary": "adversarial phase defined by reference to a test file"},
+      {"finding": "F13", "summary": "C06's note contradicts C04/C07; carried as registered"},
+      {"finding": "F14", "summary": "unavailable is inert"},
+      {"finding": "F15", "summary": "exhaustive phase exercises conclusion logic on 63% of what it enumerates; both numbers reported"},
+      {"finding": "I9-coverage", "summary": "I9 exercised by zero non-adversarial worlds in every run"},
+      {"finding": "margin-collision", "summary": "C01 and C12 carry identical margin/conversionsToReverse scalars (IND-3 section 3); rename or majoritySide is digest-moving future work"},
+      {"finding": "H1-sites", "summary": "two inert prose miscounts preserved in the v1.2.0 preregistration, documented in its amendment log"}
+    ]
+  },
+
+  "artifacts": [
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL.md",
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL-v1.1.0.md",
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL-v1.2.0.md",
+    "research/knowledge-ledger/experiments/KL-000/PROTOCOL-v1.3.0.md",
+    "research/knowledge-ledger/experiments/KL-000/preregistration.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.1.0.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.2.0.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.3.0.json",
+    "research/knowledge-ledger/experiments/KL-000/fixtures/",
+    "research/knowledge-ledger/experiments/KL-000/src/",
+    "research/knowledge-ledger/experiments/KL-000/tests/",
+    "research/knowledge-ledger/experiments/KL-000/results/",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE.md",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE-v1.1.0.md",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE-v1.2.0.md",
+    "research/knowledge-ledger/experiments/KL-000/REPRODUCE-v1.3.0.md",
+    "research/knowledge-ledger/experiments/KL-000/FINAL-RECORD.md",
+    "research/knowledge-ledger/experiments/KL-000/STATUS.json"
+  ],
+
+  "claimDiscipline": {
+    "strongestSupportedIfPassed": "Within the declared bounds, the reference evaluator conforms to protocol v1.3.0; the two owner decisions are enforced by invariant I12, whose power against each decision's inversion is demonstrated at the exact previously measured surface (22,440 and 38,760 worlds) with no fixture involved; and the enforcement change altered nothing the evaluator does -- no count, conclusion, or pinned digest moved.",
+    "establishedAlready": "Cross-implementation conformance per KL-000/FINAL-RECORD.md: evaluator and conclusion function across the full enumeration; canonical form and digests for the two pinned receipts; qualified by LEAK-101; both implementations at zero violations in every run.",
+    "notEstablished": "That the independent implementation conforms to v1.3.0 (it has not run against it; its checker choices are its own). 'Verified' in any form. A1/A2 (undecided, 4 and 19,152 worlds). The randomized phase across implementations. Anything outside the declared bounds. Any part of a knowledge transaction, cross-system result, or First Transmission -- the first-transaction gate is NOT REACHED.",
+    "ifFailed": "A wrong ablation count is the primary finding (I12 wrong, not the measurement). A moved value is worse (enforcement changed semantics). Either halts the run and is reported, never adjusted."
+  }
+}
