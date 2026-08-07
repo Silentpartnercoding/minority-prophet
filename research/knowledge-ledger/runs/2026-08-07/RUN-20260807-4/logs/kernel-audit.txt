@@ -1,0 +1,14 @@
+kernel  state                 nextGate?  lastGate
+KL-001  seeded                True       registry-entry
+KL-002  seeded                True       registry-entry
+KL-003  seeded                True       registry-entry
+KL-004  seeded                True       registry-entry
+KL-005  seeded                True       registry-entry
+KL-006  seeded                True       registry-entry
+KL-007  seeded                True       registry-entry
+KL-008  seeded                True       registry-entry
+KL-009  seeded                True       registry-entry
+KL-010  seeded                True       registry-entry
+KL-011  seeded                True       registry-entry
+
+all eleven still seeded with exact next gates: True
