@@ -31,6 +31,9 @@ that a deployment identified its roots correctly.
   and 9 one-root decisions. Six records from one observer still formed one root.
 - The reference registry authenticates and bounds root issuance. It limits
   forgery capacity; it does not prove truth or independence.
+- A preregistered selective hybrid recovered 1.98% of copied-minority cases in
+  its frozen attack model while losing 0.11 percentage points of accuracy and
+  remaining below its 1% false-reversal ceiling. This is a synthetic result.
 
 ## Open boundaries
 
@@ -40,7 +43,6 @@ that a deployment identified its roots correctly.
 - Synthetic and replay evidence does not establish real-world truth recovery.
 - Released-implementation comparisons, matched-coverage analysis, and primary-
   source citation verification remain incomplete.
-- EXP009's selective challenger is preregistered but has no confirmatory result.
 
 The detailed status is controlled by [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md),
 [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md), and

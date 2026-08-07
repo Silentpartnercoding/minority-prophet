@@ -24,6 +24,7 @@ true outside its stated experiment.
 | EXP007R | Canonical attempted replication: incomplete | `results/canonical-replications-v1/run-a/receipt.json` | Multi-seed section ran; the archived optimizer contains placeholders and produced no result. |
 | EXP008R | Canonical archived-implementation replication: reproduced | `results/canonical-replications-v1/run-a/receipt.json` | Complete shootout output was byte-identical across two isolated runs. |
 | EXP007A | Canonical repository-native adversary completion: supported | `results/exp007a-v1/result.json` | New preregistered search; it completes but does not rewrite EXP007R or validate the paper's previously reported optimum. |
+| EXP009 | Canonical selective-hybrid confirmation: supported | `results/exp009-v1/result.json` | Frozen synthetic policy preserved the preregistered tradeoff; inferred lineage remained weak and declared lineage is an oracle ceiling. |
 
 ## Promotion rule
 

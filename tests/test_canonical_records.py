@@ -27,6 +27,16 @@ class CanonicalRecordTests(unittest.TestCase):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertFalse(manifest["sourceBoundary"]["byteIdenticalSourceReplayClaimed"])
 
+    def test_exp009_receipt_binds_preserved_outputs(self):
+        receipt = json.loads(
+            (ROOT / "results" / "exp009-v1" / "receipt.json").read_text()
+        )
+        self.assertTrue(receipt["scientific_output_byte_identical"])
+        self.assertEqual(receipt["verdict"], "supported")
+        for name, artifact in receipt["outputs"].items():
+            content = (ROOT / "results" / "exp009-v1" / name).read_bytes()
+            self.assertEqual(hashlib.sha256(content).hexdigest(), artifact["sha256"])
+
 
 if __name__ == "__main__":
     unittest.main()
