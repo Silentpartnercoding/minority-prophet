@@ -1,0 +1,73 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-7",
+  "runNote": "packet-repair run: two missing backlogs completed as labelled reconstructions; cause corrected on owner evidence (BRF-101); packet-completeness enforcement added; program closed again",
+  "startUtc": "2026-08-07T23:39:01Z",
+  "endUtc": "see END-UTC.txt",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "9102cd9",
+    "headCommit": "the closing-packet commit carrying this file",
+    "prBranch": "agent/kl-000-conformance @ 650f9ee, draft PR #17 open -- untouched",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per PROV-004."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Seventh consecutive run (PROV-013). TWO inputs: the brief and the owner's mid-run cause correction, both transcribed. The opening commit briefly carried PROMPT.txt as an empty placeholder -- recorded in the capture note; the new packet test rejects that class.",
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "none",
+    "spend": 0,
+    "note": "identical to RUN-20260807-6"
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "RUN-5 and RUN-6 RESEARCH-BACKLOG-v1.json",
+      "status": "confirmatory",
+      "note": "written as labelled post-hoc reconstructions with causeCorrection fields; closed records not reopened, nothing backdated"
+    },
+    {
+      "artifact": "cause of the omission",
+      "status": "confirmatory",
+      "note": "BRF-101, owner-evidenced: instruction decay -- briefs named the packet concept, not its members; grep-verified including the RUN-2/3 refinement. The brief's 'no natural trigger' speculation corrected mid-run and preserved as superseded"
+    },
+    {
+      "artifact": "tests/test_closing_packets.py",
+      "status": "confirmatory",
+      "note": "permanent enforcement: closed run => every required artifact present and non-empty; validated this run's own close before commit"
+    },
+    {
+      "artifact": "kernel states / KL-000 / PR #17",
+      "status": "confirmatory",
+      "note": "all untouched"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; the first-transaction gate is NOT REACHED"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "81 passed (7 new packet-completeness tests)",
+    "kl000Pytest": "88 passed",
+    "note": "the packet test validates all seven closed run directories including this one"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "owner, mid-run: corrected the brief's own causal claim with evidence (instruction decay, not a missing trigger) and required the two-sided fix, including BRF-101 as a standing requirement on briefs -- adopted everywhere, speculation preserved as superseded"
+  ],
+  "firstTransactionGate": "NOT REACHED"
+}
