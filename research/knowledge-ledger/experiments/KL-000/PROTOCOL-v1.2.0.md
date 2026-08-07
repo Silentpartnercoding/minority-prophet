@@ -84,7 +84,7 @@ registered before). `margin` is a non-negative integer, defined in R5.2.
 
 **Digest coverage — the deliberate decision.** Everything a digest covers must
 be specified or excluded; v1.2.0 **specifies everything and excludes
-nothing**: the digest covers all nine non-`contentDigest` members, including
+nothing**: the digest covers all eight non-`contentDigest` members, including
 `schema`, `reason` and `limits`. The alternative — shrinking the digest scope
 to the five members v1.1.0 happened to pin — was rejected because it would
 leave the receipt's human-facing fields (`reason`, `limits`) tamperable
@@ -255,6 +255,7 @@ Unchanged from v1.0.0/v1.1.0.
 | # | When | Change | Experimental content affected |
 |---|---|---|---|
 | 1 | after registration commit `7e9e55fb`, **before** any confirmatory phase was executed; self-caught by the registering run while validating the commit | The member-count prose above read "ten top-level members" while the list beneath it — and the authoritative `receiptObject.memberList` in the preregistration — has **nine** (`schema`, `transactionId`, `claim`, `search`, `evidence`, `conclusion`, `reason`, `limits`, `contentDigest`). Corrected to "nine" here. The same miscount appears in `preregistration-v1.2.0.json`'s `repairs[0].statement` prose and in the registration commit message; **both are left as committed** — the preregistration is never edited after registration, and its machine-readable `memberList` (nine entries) is the registered authority the prose contradicts. Recorded rather than smoothed over. | **None.** No member was added or removed; the list itself was always nine in both documents. |
+| 2 | after the v1.2.0 confirmatory run and after IND-20260807-3, during the program close-out (RUN-20260807-4); found by the independent implementer (its finding **H1**) | The digest-coverage prose above said the digest covers "all **nine** non-`contentDigest` members"; there are **eight** (nine members minus `contentDigest`). Amendment 1's correct "nine" for the member list had been propagated into a sentence where it is a different error. Corrected here. The same phrase appears twice in `preregistration-v1.2.0.json` (`repairs[0].statement`, `receiptObject.digestCoverage`) and is **left as committed** per the standing rule. | **None, provably.** The machine-readable `memberList` and `digestScope` were always correct, both implementations hash eight members, and the digests reproduced across implementations — the reproduction itself is the proof the prose error was inert. Recorded because the program has now miscounted its own enumerations four times, each caught by counting from scratch (H1's own observation). |
 
 ## `protocolCommit` remains null
 
