@@ -69,4 +69,5 @@ The first finite Łoś-inspired pilot is complete. Under correct declared lineag
 
 This is an exploratory implementation check on constructed data—not evidence that real-world provenance can be recovered, not a literal ultraproduct, and not a general truth-discovery result.
 
-MIT licensed. See [`LICENSE`](LICENSE).
+Licensed under Apache License 2.0. See [`LICENSE`](LICENSE) and
+[`NOTICE`](NOTICE).
