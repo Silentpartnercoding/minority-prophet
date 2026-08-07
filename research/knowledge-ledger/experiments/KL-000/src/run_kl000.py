@@ -201,19 +201,68 @@ def run_baselines(sample: int | None) -> dict:
     out = {}
     for name, fn in BASELINES.items():
         report = run_world_phase("exhaustive", fn, limit=sample, stop_on_first=False)
+        by_invariant = report["violationsByInvariant"]
+        # v1.3.0: totalViolations stays the I1-I11 sum -- the registered,
+        # cross-version-comparable power metric. I12 counts are reported
+        # beside it, not folded in: every baseline's conclusion distribution
+        # differs from the reference's, so folding I12 in would move every
+        # registered total. I12's power is established by the registered
+        # decision ablations, not by B1-B4.
+        preserved = sum(v for k, v in by_invariant.items() if k != "I12")
         out[name] = {"worldsChecked": report["worldsChecked"],
                      "coverage": "full exhaustive set" if sample is None
                                  else f"first {sample} of {worlds.DECLARED_WORLD_COUNT}",
-                     "totalViolations": report["totalViolations"],
-                     "violationsByInvariant": report["violationsByInvariant"],
-                     "caught": report["totalViolations"] > 0}
+                     "totalViolations": preserved,
+                     "totalViolationsNote": "sum over I1-I11, the registered metric",
+                     "i12Violations": by_invariant.get("I12", 0),
+                     "violationsByInvariant": by_invariant,
+                     "caught": preserved > 0}
+    return out
+
+
+def run_decision_ablations(prereg: dict) -> dict:
+    """v1.3.0 positive controls for I12: each registered ablation is B5 with
+    one owner decision inverted, run over the full exhaustive enumeration
+    through the identical checker. No fixture is consulted in this phase;
+    the catch is check_world's alone. A caught-count differing from the
+    registered value in either direction means I12 is wrong, not the
+    measurement, and invalidates the run."""
+    from kl000_decision_ablations import ABLATIONS
+
+    expectations = prereg["expectedIdenticalToRun1"]["ablations"]
+    out = {"phase": "decisionAblations",
+           "note": prereg["decisionAblations"]["note"],
+           "ablations": {}, "passed": True}
+    for spec in prereg["decisionAblations"]["ablations"]:
+        report = run_world_phase("exhaustive", ABLATIONS[spec["id"]],
+                                 stop_on_first=False)
+        by_invariant = report["violationsByInvariant"]
+        i12 = by_invariant.get("I12", 0)
+        other = sum(v for k, v in by_invariant.items() if k != "I12")
+        expected = expectations[spec["id"]]
+        matches = (i12 == expected["i12Violations"]
+                   and other == expected["otherViolations"])
+        out["ablations"][spec["id"]] = {
+            "description": spec["description"],
+            "worldsChecked": report["worldsChecked"],
+            "i12Violations": i12,
+            "otherInvariantViolations": other,
+            "violationsByInvariant": by_invariant,
+            "registeredExpectation": expected,
+            "matchesRegisteredExpectation": matches,
+            "noFixtureInvolved": True,
+            "elapsedSeconds": report["elapsedSeconds"],
+        }
+        if not matches:
+            out["passed"] = False
     return out
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--phase", default="all",
-                        choices=["all", "fixture", "exhaustive", "randomized", "baselines"])
+                        choices=["all", "fixture", "exhaustive", "randomized",
+                                 "baselines", "ablations"])
     parser.add_argument("--out", default=str(EXPERIMENT / "results"))
     parser.add_argument("--randomized-count", type=int, default=worlds.RANDOM_WORLD_COUNT)
     parser.add_argument("--baseline-sample", type=int, default=None,
@@ -276,6 +325,18 @@ def main() -> None:
         if args.phase in ("all", "randomized"):
             document["phases"]["randomized"] = run_world_phase(
                 "randomized", evaluate_transaction, limit=args.randomized_count)
+        if args.phase in ("all", "ablations") and "decisionAblations" in prereg:
+            ablations = run_decision_ablations(prereg)
+            document["phases"]["decisionAblations"] = ablations
+            for abl_id, result in ablations["ablations"].items():
+                if not result["matchesRegisteredExpectation"]:
+                    invalid.append(
+                        f"decision ablation {abl_id} caught at "
+                        f"{result['i12Violations']} (other: "
+                        f"{result['otherInvariantViolations']}) instead of the "
+                        f"registered {result['registeredExpectation']} -- I12 is "
+                        "wrong, not the measurement"
+                    )
 
     # An unrecognised refusal cause is an implementation defect surfacing as a
     # count. Per the run protocol that is "incomplete", never negative or

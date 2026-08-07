@@ -69,6 +69,33 @@ def _inadmissibility(world: dict[str, Any]) -> str | None:
     return None
 
 
+def _expected_conclusion_and_margin(world: dict[str, Any]) -> tuple[str, int]:
+    """The registered conclusionFunction and R5.2 margin, computed from the
+    WORLD's ledgers and never from receipt fields (v1.3.0 I12).
+
+    Admissibility is not re-checked here: check_world only reaches I12 for
+    worlds whose receipt exists, and inadmissible worlds return earlier.
+    """
+    sides: dict[str, str] = {}
+    for record in world["evidenceLedger"]["records"]:
+        sides.setdefault(record["rootId"], record["side"])
+    supporting = sum(1 for side in sides.values() if side == "support")
+    opposing = len(sides) - supporting
+    margin = abs(supporting - opposing)
+    locations = world["searchLedger"]["locations"]
+    complete = bool(locations) and all(loc["status"] == "searched" for loc in locations)
+    if world["claim"]["type"] == "absence":
+        if opposing:
+            conclusion = "present"
+        elif complete:
+            conclusion = "absent_within_declared_scope"
+        else:
+            conclusion = "not_established"
+    else:
+        conclusion = "supported" if supporting > opposing else "not_established"
+    return conclusion, margin
+
+
 def _has_root_on_both_sides(world: dict[str, Any]) -> bool:
     sides: dict[str, str] = {}
     for record in world["evidenceLedger"]["records"]:
@@ -163,6 +190,22 @@ def check_world(evaluate: Evaluator, world: dict[str, Any]) -> list[Violation]:
             violations.append(
                 Violation("I2", f"absence concluded at coverage {searched}/{declared}", world)
             )
+
+    # --- I12 decision enforcement (v1.3.0) ---------------------------------
+    # World-referential: both quantities derive from the world, never the
+    # receipt. At most one violation per world, so caught-counts equal world
+    # counts and the registered ablation surfaces (22,440 / 38,760) are
+    # exact-match targets.
+    expected_conclusion, expected_margin = _expected_conclusion_and_margin(world)
+    i12_details = []
+    if receipt["conclusion"] != expected_conclusion:
+        i12_details.append(
+            f"conclusion {receipt['conclusion']!r} != {expected_conclusion!r}"
+        )
+    if evidence["margin"] != expected_margin:
+        i12_details.append(f"margin {evidence['margin']!r} != {expected_margin}")
+    if i12_details:
+        violations.append(Violation("I12", "; ".join(i12_details), world))
 
     # --- I5 counterexample dominance --------------------------------------
     if claim_type == "absence" and evidence["opposingRoots"]:
