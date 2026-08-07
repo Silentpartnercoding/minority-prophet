@@ -1,0 +1,33 @@
+{
+  "claim": {
+    "proposition": "No target-class defect exists in the five declared components.",
+    "type": "absence"
+  },
+  "conclusion": "not_established",
+  "contentDigest": "sha256:6288cafd3304282cb290ff524c27daca9a8dbcddf415d2d98e00b38ce692a9eb",
+  "evidence": {
+    "conversionsToReverse": 2,
+    "distinctRoots": 2,
+    "margin": 2,
+    "opposingRoots": [],
+    "records": 4,
+    "repeatedRecordsCollapsed": 2,
+    "supportingRoots": [
+      "scanner-family-1",
+      "scanner-family-2"
+    ]
+  },
+  "limits": [
+    "Root identity and independence are declared operationally, not proved semantically.",
+    "This result applies only to the declared search space."
+  ],
+  "reason": "The declared search space was not exhaustively searched.",
+  "schema": "minority-prophet.knowledge-transaction.v0.1",
+  "search": {
+    "complete": false,
+    "declared": 5,
+    "searched": 4,
+    "unavailable": 1
+  },
+  "transactionId": "transaction-zero"
+}
