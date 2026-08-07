@@ -1,0 +1,67 @@
+{
+  "control": "C11",
+  "requirement": "canonical form and digest scope pinned across implementations (v1.1.0 repair R4), on a tie world that also pins the R1 tie rule",
+  "protocolVersion": "1.1.0",
+  "note": "New in protocol v1.1.0; deliberately placed under fixtures/v1.1.0/ so the v1.0.0 fixture set (fixtures/*.json, C01-C10) is preserved exactly as registered. The expected contentDigest is computable by any implementation that follows the v1.1.0 canonicalisation definition: object keys sorted by Unicode code point, separators ',' and ':' with no whitespace, minimal JSON escaping with non-ASCII characters emitted as raw UTF-8, digest = sha256 over the canonical bytes of the receipt with the top-level contentDigest member removed. The proposition deliberately contains a non-ASCII letter, a typographic dash, a double quote, and a backslash so that the escaping rule is load-bearing, and the evidence ledger is a tie (one supporting root, one opposing root) so that the R1 tie rule is load-bearing in the same fixture: ties are not_established. The unsigned canonical form of the expected receipt is 703 bytes.",
+  "input": {
+    "transactionId": "kl000-c11",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the déclared \"components\" \\ set — canonicalisation pin."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "not_searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r2",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "not_established",
+    "search": {
+      "declared": 2,
+      "searched": 1,
+      "unavailable": 0,
+      "complete": false
+    },
+    "evidence": {
+      "records": 3,
+      "distinctRoots": 2,
+      "repeatedRecordsCollapsed": 1,
+      "supportingRoots": [
+        "r1"
+      ],
+      "opposingRoots": [
+        "r2"
+      ],
+      "margin": 0,
+      "conversionsToReverse": 1
+    },
+    "contentDigest": "sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe"
+  }
+}
