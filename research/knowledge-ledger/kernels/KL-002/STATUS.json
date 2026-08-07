@@ -1,9 +1,0 @@
-{
-  "schema": "minority-prophet.kernel-status.v0.1",
-  "kernelId": "KL-002",
-  "state": "seeded",
-  "resultStatus": "none",
-  "lastCompletedGate": "registry-entry",
-  "nextGate": "complete and commit preregistration",
-  "claimAllowed": "This kernel is seeded and supports no result claim."
-}
