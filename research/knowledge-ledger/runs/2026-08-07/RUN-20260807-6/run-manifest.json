@@ -1,0 +1,32 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-6",
+  "runNote": "deliberate reopening on owner direction for two bounded tasks (KL-011 correction; KL-001 narrow first check); the program is closed again with no committed gate outstanding",
+  "startUtc": "2026-08-07T23:23:11Z",
+  "endUtc": "see END-UTC.txt",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "9646626",
+    "headCommit": "the closing-packet commit carrying this file",
+    "prBranch": "agent/kl-000-conformance @ 650f9ee, pushed by the owner, draft PR #17 OPEN -- verified read-only, untouched by this run",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {"name": "Claude Fable 5", "id": "claude-fable-5", "reportedBy": "runtime environment description", "captureMethod": "agent-transcription", "captureCaveat": "Unverified per PROV-004."},
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Sixth consecutive run without an operator-side prompt artifact (PROV-012).",
+  "environment": {"lockFile": "environment-lock.txt", "pipFreeze": "pip-freeze.txt", "python": "3.14.6", "node": "v24.18.1", "npm": "11.16.0", "git": "2.50.1", "os": "macOS 26.4.1 arm64", "network": "git fetch (read-only) and one gh pr view (read-only) to verify PR #17; no experiment used the network", "spend": 0, "note": "identical to RUN-20260807-5"},
+  "claimStatusManifest": [
+    {"artifact": "KL-011/STATUS.json correction", "status": "confirmatory", "note": "blocker 'KL-000 independent reimplementation' DISCHARGED by IND-20260807-1/-2/-3, cited; superseded text preserved; state stays seeded; stale-self-description family instance recorded"},
+    {"artifact": "KL-001 first check FC1/FC1.1", "status": "confirmatory", "note": "verdict (a): the named check is KL-000's I2 restated -- name-free receipt identity with an enumerated world, divergence exactly the identifier strings. No new evaluator evidence; named first gate already paid by KL-000; real first gate (mapping pipeline + frozen corpus + endpoints + v0.2 prereg) named and costed, NOT committed. W3 demonstrates ADV-001 in repository costume on purpose"},
+    {"artifact": "FC1 expectation E4", "status": "failed", "note": "failed as registered -- this run's own drafting error (REG-101); preserved unmodified; corrected by the FC1.1 registration before re-execution"},
+    {"artifact": "KL-000", "status": "confirmatory", "note": "untouched: adversarial-passed at v1.3.0; 74 + 88 tests green"},
+    {"artifact": "KL-001 / KL-011 states", "status": "incomplete", "note": "both remain seeded; corrections only. Ten other kernels untouched"},
+    {"artifact": "First Transmission / Candidate First Transmission", "status": "incomplete", "note": "neither exists; the first-transaction gate is NOT REACHED"}
+  ],
+  "tests": {"repoRootPytest": "74 passed", "kl000Pytest": "88 passed", "note": "no permanent test modified; FC1/FC1.1 are scoped scripts under KL-001/first-check/"},
+  "humanGatesCrossed": "none",
+  "interventions": ["none during this run"],
+  "environmentObservations": ["new remote branch codex/exp009-confirmatory appeared since RUN-20260807-5's fetch (ENV-101): third-party work, untouched; the remote is not single-writer"],
+  "firstTransactionGate": "NOT REACHED"
+}
