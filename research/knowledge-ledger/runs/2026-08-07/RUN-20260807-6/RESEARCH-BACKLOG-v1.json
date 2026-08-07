@@ -1,0 +1,70 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-6",
+  "version": 1,
+  "postHocCompletion": {
+    "completedBy": "RUN-20260807-7",
+    "when": "2026-08-07, after RUN-20260807-6 had closed",
+    "whyMissing": "Never created -- the second consecutive omission of a required packet artifact, unnoticed at close. See RUN-20260807-7 constraint PKT-101 and methodology note M26.",
+    "sourceCaveat": "RECONSTRUCTED from RUN-20260807-6's committed artifacts (FINDING-FC1.md, the FC1/FC1.1 registrations and results, both STATUS corrections, constraints REG-101/ENV-101/PROV-012, the handoff) plus three items the operator identified at review, which existed nowhere else until this file. Weaker than live reasoning; read it as such."
+  },
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-023, BL-025..BL-030 open and unchanged. KL-001's real first gate (mapping pipeline + frozen corpus + endpoints + v0.2 preregistration, costed in KL-001/STATUS.json) is named and NOT committed; BL-031/BL-032 below are its sharpest components, listed so they cannot dissolve into the gate's prose.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-033",
+      "type": "schema-gap",
+      "title": "SCH-001 sits under ALL TWELVE kernels: the v0.1 preregistration schema cannot satisfy RESEARCH-METHOD.md, and every kernel's next step runs through the v0.2 migration",
+      "hypothesis": "A single bounded migration run (v0.1 -> v0.2 for KL-001..KL-011, following KL-000's precedent) removes the one blocker that appears in every kernel's blockers list and unblocks every future preregistration at once.",
+      "discriminatingTest": "audit_preregistrations.py reports zero schema-completeness failures across all twelve kernels.",
+      "whyItMatters": "OPERATOR-IDENTIFIED at RUN-6 review as the most consequential thing that run touched, and until this file it was a passing mention in blockers lists. Both of RUN-6's tasks ran into it: KL-011's genuine remainder starts with its v0.2 preregistration, and KL-001's real first gate ends with one. Eleven kernels cannot leave seeded without it. It has been open since RUN-20260807-1 (SCH-001) with a known fix and a known precedent.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Converts eleven kernels from schema-blocked to work-blocked -- the difference between 'cannot register properly' and 'has not done the work'.",
+      "cost": "one bounded run: eleven v0.2 documents populated to the standard KL-000 set; no code, no spend",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-031",
+      "type": "missing-control",
+      "title": "The mapping pipeline is KL-001's real risk surface, and no invariant covers it",
+      "hypothesis": "Everything KL-000 established is about ledgers already in hand. The translation INTO ledgers -- what counts as a mandatory file, what counts as searched, which scanner output becomes which root -- is where a repository result becomes right or wrong, and it currently has no registered rules, no invariants, and no ablations.",
+      "discriminatingTest": "For every registered mapping decision, an inversion ablation caught by a registered check (the M19 discipline applied one layer up); plus the FC1-W3 scenario -- under-declared scope -- caught at the mapping layer, which is the only layer that can catch it.",
+      "whyItMatters": "OPERATOR-IDENTIFIED. FC1 proved the evaluator sees structure only (verdict a); therefore every repository-specific failure mode lives in the mapping. Root-attribution honesty (ADV-004's near-identical-id class) and scope honesty (ADV-001) both land here. Building it without registered rules would reproduce, at KL-001, exactly the unenforced-decision defect KL-000 spent v1.3.0 repairing.",
+      "wouldChangeADecision": true,
+      "cost": "part of KL-001's real first gate (200-400 lines plus its mapping-rule registration); not committed",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 3,
+      "id": "BL-032",
+      "type": "counterexample",
+      "title": "The ADV-001 overlap demonstrated at FC1's E3: under-declared scope reaches a clean conclusion, in repository clothing",
+      "hypothesis": "BL-002's mechanism (a search-space digest fixed BEFORE evidence collection) applied at the mapping layer -- the pipeline emits and commits its mandatory-file declaration before any scanning -- makes W3's silent under-declaration detectable as a declaration/reality mismatch.",
+      "discriminatingTest": "FC1's W1/W3 pair re-run through a pipeline with prior scope commitment: W3's truncated declaration fails the commitment check instead of reaching absent_within_declared_scope.",
+      "whyItMatters": "OPERATOR-IDENTIFIED. E3 was demonstrated on purpose and is the cheapest attack on any KL-001 result: no forgery, only omission -- and a truncated file list is also what an honest partial checkout looks like. RUN-1's BL-002 predicted this abstractly; FC1 made it concrete at the exact layer KL-001 must build. The trust boundary moves to whoever fixes the declaration; it does not disappear -- carry BL-002's honest limit forward verbatim.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether KL-001's false-clean endpoint is meaningful against a lossy or adversarial repository presenter, or only an honest one.",
+      "cost": "one schema field + one pipeline commitment step + two fixtures, inside the KL-001 gate",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "with BL-031; meaningless before a mapping pipeline exists",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 4,
+      "id": "BL-034",
+      "type": "provenance-check",
+      "title": "The remote is no longer single-writer (ENV-101)",
+      "hypothesis": "A third party's branch (codex/exp009-confirmatory) appeared mid-program; future runs that fetch, rebuild, or compare against the remote should verify their target refs by SHA rather than by name freshness.",
+      "discriminatingTest": "Run procedures pin remote refs by SHA (as RUN-5's delivery record already did for the PR branch) and record any unexplained new refs at open, as RUN-6 did.",
+      "whyItMatters": "Small now; the class (PROV-005, a ref that is not what its name suggests) has bitten this program before.",
+      "wouldChangeADecision": false,
+      "cost": "procedure only",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}
