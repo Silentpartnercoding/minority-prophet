@@ -28,6 +28,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(HERE))
 
 from knowledge_ledger import evaluate_transaction  # noqa: E402
+from knowledge_ledger.transaction import canonical_bytes  # noqa: E402
 
 import kl000_worlds as worlds  # noqa: E402
 from kl000_baselines import BASELINES  # noqa: E402
@@ -65,6 +66,25 @@ def run_fixture_phase(prereg: dict) -> dict:
             diffs.append(
                 f"contentDigest {receipt['contentDigest']!r} != {expected['contentDigest']!r}"
             )
+        # v1.2.0 fixtures pin the full receipt-object surface: the constant and
+        # rule-derived members, and the complete canonical unsigned string so a
+        # digest mismatch localises to bytes rather than a bare hash inequality.
+        for key in ("schema", "reason", "limits"):
+            if key in expected and receipt[key] != expected[key]:
+                diffs.append(f"{key} {receipt[key]!r} != {expected[key]!r}")
+        if "canonicalUnsignedForm" in expected:
+            unsigned = {k: v for k, v in receipt.items() if k != "contentDigest"}
+            got_form = canonical_bytes(unsigned).decode("utf-8")
+            if got_form != expected["canonicalUnsignedForm"]:
+                want_form = expected["canonicalUnsignedForm"]
+                mismatch_at = next(
+                    (i for i, (a, b) in enumerate(zip(got_form, want_form)) if a != b),
+                    min(len(got_form), len(want_form)),
+                )
+                diffs.append(
+                    f"canonicalUnsignedForm differs at character {mismatch_at} "
+                    f"(got {len(got_form)} chars, expected {len(want_form)})"
+                )
         results.append({"control": doc["control"], "fixture": path.name,
                         "passed": not diffs, "differences": diffs})
         if diffs:
