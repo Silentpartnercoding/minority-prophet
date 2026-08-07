@@ -43,7 +43,7 @@ contradiction (finding G1) that v1.1.0 carried unresolved.
 
 A digest is a function of a codec and an object; v1.1.0 registered only the
 codec. v1.2.0 registers the object. The complete, closed member list — **a
-conforming receipt has exactly these ten top-level members and no others**
+conforming receipt has exactly these nine top-level members and no others**
 (a receipt carrying anything else, e.g. `receiptVersion`, does not conform):
 
 | member | type | value |
@@ -252,7 +252,9 @@ Unchanged from v1.0.0/v1.1.0.
 
 ## Amendment log
 
-None at registration.
+| # | When | Change | Experimental content affected |
+|---|---|---|---|
+| 1 | after registration commit `7e9e55fb`, **before** any confirmatory phase was executed; self-caught by the registering run while validating the commit | The member-count prose above read "ten top-level members" while the list beneath it — and the authoritative `receiptObject.memberList` in the preregistration — has **nine** (`schema`, `transactionId`, `claim`, `search`, `evidence`, `conclusion`, `reason`, `limits`, `contentDigest`). Corrected to "nine" here. The same miscount appears in `preregistration-v1.2.0.json`'s `repairs[0].statement` prose and in the registration commit message; **both are left as committed** — the preregistration is never edited after registration, and its machine-readable `memberList` (nine entries) is the registered authority the prose contradicts. Recorded rather than smoothed over. | **None.** No member was added or removed; the list itself was always nine in both documents. |
 
 ## `protocolCommit` remains null
 
