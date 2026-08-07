@@ -122,6 +122,64 @@ limit rather than silently counted as covered.
   B1–B4 passing. An invalidated run is `incomplete` — never negative, never
   positive.
 
+## Why `protocolCommit` is deliberately null
+
+`preregistration.json` carries `"protocolCommit": null`, and it stays null. This
+is a registration decision, not an unfilled field.
+
+A preregistration's entire value is that it existed, unchanged, before the
+result was known. Editing the registered document afterwards to insert its own
+commit hash requires modifying the very artifact whose immutability is the
+claim. The amended file then has a different hash from the one that was
+registered, and a reviewer must take on trust that only the hash field changed.
+That is a weaker guarantee than the one preregistration is supposed to provide,
+and it is weaker in exactly the direction that matters: it makes
+"registered first" unverifiable by inspection.
+
+So the binding runs the other way. Git assigns the commit; a **sidecar**,
+`PROTOCOL-COMMIT.txt`, records it afterwards. The preregistration is never
+touched after registration, and the chain is checkable in both directions:
+
+```bash
+P=research/knowledge-ledger/experiments/KL-000
+test "$(git log -1 --format=%H -- $P/preregistration.json)" \
+   = "$(cat $P/PROTOCOL-COMMIT.txt)" && echo "unedited since registration"
+```
+
+The **most recent** commit touching `preregistration.json` must equal the
+sidecar's contents, and that commit must precede every result commit. The two
+stay equal for exactly as long as the file is never edited again, so the
+equality *is* the immutability claim, mechanically checkable at any time.
+
+If they disagree, the registration is void — which is the property a mutable
+`protocolCommit` field cannot offer, because there is nothing left to disagree
+with.
+
+> A first version of this check used `git log --diff-filter=A`, asking for the
+> commit that **added** the file. That is wrong here and returns `2068c69`, the
+> original seed commit, because registration *modified* an existing seed rather
+> than creating a new file. The error is recorded rather than quietly fixed: a
+> verification procedure that reports the wrong commit while appearing to
+> succeed is worse than none, and this one would have been believed.
+
+The freeze that actually carries scientific weight is **inside** the
+preregistration and predates any result: `evaluatorUnderTest.sha256`, the
+declared bounds, and the frozen seed. `protocolCommit` is provenance metadata
+about the document, not about the experiment.
+
+## Amendment log
+
+Protocol version remains **1.0.0**. Amendments are listed here rather than
+applied silently.
+
+| # | When | Change | Experimental content affected |
+|---|---|---|---|
+| 1 | after registration commit `c977347`, **before** any confirmatory phase was executed | Added the section above, declaring the null-`protocolCommit` decision that was previously stated only in `preregistration.json`'s `protocolCommitNote`. Prompted by operator review. | **None.** No hypothesis, bound, seed, invariant, control, baseline, endpoint, or condition changed. |
+
+The registered content of `preregistration.json` is unmodified. Confirmatory
+phases had not run when this amendment was made, so no outcome could have
+influenced it.
+
 ## Safety boundary
 
 Synthetic worlds only. No personal, patient, sealed, classified, or restricted

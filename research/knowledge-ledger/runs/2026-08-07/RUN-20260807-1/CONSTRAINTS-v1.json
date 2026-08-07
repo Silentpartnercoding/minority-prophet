@@ -220,6 +220,101 @@
       "status": "open"
     },
     {
+      "id": "ADV-001",
+      "category": "scientific",
+      "severity": "high",
+      "title": "An under-declared search space is undetectable, and the declaring party is the reporting party",
+      "statement": "Absence is admissible only inside a declared finite scope, and that scope is declared by the same party reporting the evidence. An adversary who simply omits the location containing the counterexample obtains a clean absent_within_declared_scope. The receipt shows no trace: coverage reads 3/3 complete.",
+      "evidence": {
+        "test": "research/knowledge-ledger/experiments/KL-000/tests/test_kl000_adversarial.py::test_limit_a05b_an_under_declared_search_space_is_undetectable",
+        "honestLedger": "5 declared, 3 searched, 2 unavailable -> not_established",
+        "truncatedLedger": "3 declared, 3 searched, 0 unavailable, complete -> absent_within_declared_scope",
+        "observation": "both receipts are internally consistent, both verify their content digests, and nothing in either distinguishes them"
+      },
+      "doesNotViolate": "I2. The bounded-absence invariant holds: the conclusion genuinely is bounded by the declared scope. The attack is on the declaration, which sits upstream of anything the evaluator can observe.",
+      "whyHighSeverity": "This is the cheapest possible attack on the program's headline property. It requires no forgery, no copies, no compromised issuer -- only omission. It also arrives by accident whenever a ledger is partially delivered, since a truncated ledger and a dishonest one are byte-identical.",
+      "whatWouldMitigate": "An externally-fixed or independently-attested search space, declared and digested BEFORE evidence collection, with the receipt binding to that prior declaration. That moves the trust boundary from the reporter to whoever fixes the scope; it does not eliminate it. Recorded in RESEARCH-BACKLOG-v1.json.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "KL-000 measures whether the evaluator honours a declared scope, not whether the declaration is honest. The distinction is preregistered in PROTOCOL.md and stated in the claim-discipline block.",
+      "discoveredDuring": "red-team, attack A05",
+      "status": "recorded-open"
+    },
+    {
+      "id": "ADV-002",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "One compromised issuer can mint unlimited independent roots",
+      "statement": "Root identity is an unauthenticated declared string. A single compromised issuer emitting eight distinct rootIds yields eight independent supporting roots, margin 8, and conversionsToReverse 5. Copy invariance offers no protection because these are fabrications, not copies.",
+      "evidence": {
+        "test": "test_kl000_adversarial.py::test_limit_a08_one_issuer_can_mint_unlimited_roots",
+        "quantified": "8 minted rootIds -> distinctRoots 8, margin 8, conversionsToReverse 5"
+      },
+      "relationToPublicClaims": "This is the quantified cost of the boundary PUBLIC-CLAIMS.md already states: 'Root identity is operationally assigned, not semantically proved.' The red-team measures the size of that gap rather than restating it.",
+      "affectsConclusions": false,
+      "discoveredDuring": "red-team, attack A08",
+      "status": "recorded-open"
+    },
+    {
+      "id": "ADV-003",
+      "category": "engineering",
+      "severity": "medium",
+      "title": "Side-conflict rejection is a single-record denial-of-service surface",
+      "statement": "One appended record carrying an existing rootId with the opposite side makes the entire transaction unevaluable rather than isolating the contradiction. An adversary able to append one record can suppress an otherwise valid conclusion.",
+      "evidence": {"test": "test_kl000_adversarial.py::test_limit_a04b_side_conflict_is_a_denial_of_service_surface"},
+      "tradeoff": "Fail-closed is correct for truth: no wrong answer is produced. It is not free for availability, and silence can be the adversary's objective. Governing principle 8 says uncertainty causes abstention; this is an adversary manufacturing abstention on demand.",
+      "affectsConclusions": false,
+      "discoveredDuring": "red-team, attack A04",
+      "status": "recorded-open"
+    },
+    {
+      "id": "ADV-004",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "Root identity is byte identity; no normalisation is specified",
+      "statement": "Root ids differing by a trailing space, letter case, a fullwidth digit, or a zero-width space are distinct roots. What a human reader would call one source can be split into many without forgery.",
+      "evidence": {"test": "test_kl000_adversarial.py::test_limit_a09_near_identical_root_ids_are_distinct_roots", "cases": ["r1 vs 'r1 '", "r1 vs R1", "r1 vs r１", "scanner vs scanner​"]},
+      "note": "This is A08's attack made deniable: the same effect as minting roots, achievable by whitespace, and plausibly explained as a data-entry inconsistency.",
+      "affectsConclusions": false,
+      "discoveredDuring": "red-team, attack A09",
+      "status": "recorded-open"
+    },
+    {
+      "id": "ADV-005",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "Shared upstream dependency between distinct roots is not representable",
+      "statement": "Schema v0.1 has no dependency edge between roots. Two roots secretly derived from one upstream source count as two independent roots. Collapsing them is the transaction author's responsibility and nothing verifies that they did.",
+      "evidence": {"test": "test_kl000_adversarial.py::test_limit_a02_shared_upstream_source_is_not_representable"},
+      "consequence": "RESEARCH-METHOD.md requires a 'copied or shared-dependency condition' as a mandatory control. C07 covers the copied half. The shared-dependency half is untestable under v0.1 and is recorded as such rather than silently counted as covered.",
+      "affectsConclusions": false,
+      "discoveredDuring": "red-team, attack A02",
+      "status": "recorded-open"
+    },
+    {
+      "id": "ADV-006",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "No issuer authentication exists, so forged or replayed root receipts are indistinguishable from genuine ones",
+      "statement": "v0.1 has no signature, issuer, or attestation field. A replayed or invented root receipt evaluates identically to a genuine one.",
+      "evidence": {"test": "test_kl000_adversarial.py::test_limit_a03_no_issuer_authentication_exists"},
+      "note": "Adding identity would authenticate an issuer and still not prove causal independence, per governing principle 5. Authentication is a prerequisite for attributing a root, not a substitute for establishing that roots are independent.",
+      "affectsConclusions": false,
+      "discoveredDuring": "red-team, attack A03",
+      "status": "recorded-open"
+    },
+    {
+      "id": "ADV-007",
+      "category": "interoperability",
+      "severity": "low",
+      "title": "The claim proposition is free text and is never checked against the ledgers",
+      "statement": "A receipt may assert 'No defect exists anywhere in the world' while its search ledger declares one file. The evaluator binds its conclusion to the ledgers, not to the sentence a human will read.",
+      "evidence": {"test": "test_kl000_adversarial.py::test_limit_a10c_schema_valid_but_misleading_proposition", "observed": "declared 1, searched 1, complete -> absent_within_declared_scope under an unbounded-sounding proposition"},
+      "consequence": "Relevant to KL-011 presentation stage and to any human-readable rendering: the machine conclusion is correctly bounded while the prose beside it may not be. The reference rendering is generated from receipt values for exactly this reason.",
+      "affectsConclusions": false,
+      "discoveredDuring": "red-team, attack A10",
+      "status": "recorded-open"
+    },
+    {
       "id": "ENV-001",
       "category": "engineering",
       "severity": "low",
