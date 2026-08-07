@@ -10,6 +10,11 @@ UTC start: `2026-08-07T17:30:04Z`
 > decision time, and the base commit was chosen under it. Rewriting it would
 > destroy the evidence that a correction was needed. See constraints `PROV-001`
 > (severity raised) and `PROV-005` (new).
+>
+> Superseded claims carry an inline **ᶜ⁸** marker, so a quoted line or a link
+> landing mid-document arrives with its own correction attached rather than
+> relying on the reader having seen this notice. The marker is the only
+> addition to those lines; their wording is unchanged.
 
 ## 1. Base commit selection
 
@@ -18,10 +23,15 @@ UTC start: `2026-08-07T17:30:04Z`
 | `agent/knowledge-ledger-run-20260807-1` (HEAD, this run) | `887bd2f` | **12 / 12** |
 | `agent/first-transmission` | `887bd2f` | 12 / 12 |
 | `agent/master-loop-run-completion` | `d1e237d` | 12 / 12 |
-| `github/main` | `335b34e` | **12 / 12** |
+| `github/main` | `335b34e` | **12 / 12** ᶜ⁸ |
 | `origin/main` | `88a3001` | 4 / 12 |
 
-**Chosen base: `887bd2f`, tip of `agent/first-transmission`.**
+ᶜ⁸ This row was measured **after** the operator restored the deleted `github`
+remote, so the figure is correct — but every `github/*` measurement taken
+earlier in this run came from a surviving cache of a deleted remote and was
+silently two commits stale. See §8.
+
+**Chosen base: `887bd2f`, tip of `agent/first-transmission`.** ᶜ⁸
 
 Reason: it carries all eleven authoritative files plus
 `interoperability/reference-receipt.json`, and it is the branch this worktree
@@ -38,7 +48,12 @@ claims are now out of date. None of them changed the run's scientific plan.
 1. **"`github/main` carries 8 of the 11 authoritative files."** False as of this
    run. `github/main` has advanced to `335b34e` and carries **12 / 12**. The
    prompt's figure matched `7a56663` (PR #12), which was this worktree's stale
-   remote-tracking ref before `git fetch github`. Recorded as `PROV-001`.
+   remote-tracking ref before `git fetch github`. ᶜ⁸ Recorded as `PROV-001`.
+
+   ᶜ⁸ **The stated cause is wrong.** The ref was not merely unfetched — the
+   `github` remote had been **deleted** from the clone while its tracking refs
+   survived, so no fetch would have refreshed it and no error was raised. See
+   §8 and constraint `PROV-005`.
 2. **"`origin/main` carries none."** False. `origin/main` (`88a3001`) carries 4
    of 12: `README.md`, `CANONICAL-RECORDS.md`, `EVIDENCE-ALIGNMENT.md`,
    `PROVENANCE-REQUIREMENTS.md`. It is still not a viable base.
@@ -113,7 +128,13 @@ A transient orientation error is recorded here for completeness: an early
 `origin.*`, which led the agent to state that `github` was unconfigured. That
 statement was wrong and was corrected within the same phase by
 `git remote -v` and a successful `git ls-remote github`. No action was taken on
-the incorrect reading.
+the incorrect reading. ᶜ⁸
+
+> ᶜ⁸ **This entire paragraph is the error it claims to record.** The first
+> reading was *correct*: `github` genuinely was not configured at that moment.
+> The operator added the remote between the two observations. The agent saw a
+> real state change and misfiled it as its own measurement error. See §8 and
+> constraint `PROV-006`.
 
 ## 5. Canonical checks reproduced before any change
 

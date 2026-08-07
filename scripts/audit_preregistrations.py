@@ -101,9 +101,31 @@ def audit() -> dict:
                 unpopulated_reqs[requirement] = present_but_empty
 
         present_entries = {p.name for p in directory.iterdir()}
+
+        # A deliberate null and a forgotten one look identical in JSON. Under
+        # methodology note M1, protocolCommit stays null on purpose and the
+        # commit binding lives in a PROTOCOL-COMMIT.txt sidecar. Report the
+        # distinction rather than counting a declared decision as a gap.
+        sidecar = directory / "PROTOCOL-COMMIT.txt"
+        protocol_commit_binding = None
+        if prereg.get("protocolCommit") is None:
+            if sidecar.exists() and prereg.get("protocolCommitNote"):
+                protocol_commit_binding = {
+                    "style": "sidecar-declared",
+                    "commit": sidecar.read_text().strip(),
+                    "deliberate": True,
+                }
+            else:
+                protocol_commit_binding = {
+                    "style": "unbound",
+                    "commit": None,
+                    "deliberate": False,
+                }
+
         experiments[exp_id] = {
             "keyCount": len(prereg),
             "status": prereg.get("status"),
+            "protocolCommitBinding": protocol_commit_binding,
             "nullFields": nulls,
             "emptyCollectionFields": empties,
             "unpopulatedCount": len(nulls) + len(empties),
@@ -139,6 +161,12 @@ def main() -> None:
             f"({len(data['nullFields'])} null + "
             f"{len(data['emptyCollectionFields'])} empty)"
         )
+        binding = data.get("protocolCommitBinding")
+        if binding:
+            if binding["deliberate"]:
+                print(f"    protocolCommit: null by declaration (M1), bound via sidecar to {binding['commit'][:7]}")
+            else:
+                print("    protocolCommit: null and UNBOUND -- no sidecar, no declaration")
         if data["missingDirectoryEntries"]:
             print(f"    missing dir entries: {', '.join(data['missingDirectoryEntries'])}")
         for requirement, keys in sorted(data["methodRequirementsWithNoSchemaKey"].items()):
