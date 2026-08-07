@@ -1,0 +1,737 @@
+{
+  "adversarial": {
+    "allCaught": true,
+    "attacks": 10,
+    "note": "tests/test_kl000_adversarial.py is named by PROTOCOL.md but is NOT part of the specification package. These ten attacks are this implementation's own construction, derived from the ten invariants and the two declared limits. They are not the reference's ten attacks and should not be read as such.",
+    "phase": "adversarial",
+    "results": [
+      {
+        "attack": "same rootId on both sides",
+        "caught": true,
+        "id": "A01",
+        "note": "refusal with cause root_on_both_sides; no receipt",
+        "targets": "I3"
+      },
+      {
+        "attack": "truncated JSON document",
+        "caught": true,
+        "id": "A02",
+        "note": "parser rejects; evaluator is never reached",
+        "targets": "I9"
+      },
+      {
+        "attack": "location status outside the declared enum",
+        "caught": true,
+        "id": "A03",
+        "note": "refusal with cause bad_enum",
+        "targets": "I9"
+      },
+      {
+        "attack": "evidenceLedger removed entirely",
+        "caught": true,
+        "id": "A04",
+        "note": "refusal with cause missing_field; note the tempting failure mode is to read a missing ledger as an empty one and then conclude absence",
+        "targets": "I9"
+      },
+      {
+        "attack": "rootId is an integer, not a string",
+        "caught": true,
+        "id": "A05",
+        "note": "refusal with cause bad_type; a coercing evaluator would mint root \"1\" distinct from \"r1\"",
+        "targets": "I9"
+      },
+      {
+        "attack": "search ledger declaring zero locations",
+        "caught": true,
+        "id": "A06",
+        "note": "SPECIFICATION DEFECT. Under the literal text -- declared == len(locations), complete == (searched == declared) -- an empty ledger gives complete == true and I2's antecedent is satisfied vacuously, so 'absent_within_declared_scope' is issued for a world in which nothing was searched. This implementation refuses (declared bounds say locationCount >= 1). An implementation that follows the text literally will disagree here, and the disagreement is the finding.",
+        "targets": "I2 / specification defect"
+      },
+      {
+        "attack": "two location entries with the same id",
+        "caught": true,
+        "id": "A07",
+        "note": "SPECIFICATION GAP: uniqueness of location ids is never stated. If duplicates are permitted, `declared` counts entries rather than locations, so padding the ledger with copies of an already-searched location changes the coverage arithmetic. This implementation refuses; a permissive one emits a receipt.",
+        "targets": "I8 / specification gap"
+      },
+      {
+        "attack": "mutate each receipt field in turn and re-verify",
+        "caught": true,
+        "id": "A08",
+        "note": "the receipt self-verifies and all 15 single-field mutations, including a substituted contentDigest, fail verification",
+        "targets": "I6"
+      },
+      {
+        "attack": "one record copied to fifty, then permuted",
+        "caught": true,
+        "id": "A09",
+        "note": "records 1 -> 50, distinctRoots stays 1, margin stays 1, conclusion stays absent_within_declared_scope; the permuted flood has an identical contentDigest",
+        "targets": "I1, I7, I10"
+      },
+      {
+        "attack": "receipt asserts a location was unavailable while carrying evidence that could only have come from it",
+        "caught": true,
+        "id": "A10",
+        "note": "CONFIRMED UNDETECTABLE, as preregistered. Schema v0.1 has no record-to-location link, so the contradiction is invisible. The coverage gate still refuses absence, which bounds the damage but does not detect the lie. Reported whatever the result, per PROTOCOL.md.",
+        "targets": "declared blind spot"
+      }
+    ]
+  },
+  "baselines": {
+    "checkerHasPower": true,
+    "note": "Run against the full 176,120-world exhaustive set, not a subsample. Halting is disabled for baselines so that complete counts are obtained. B2p is not preregistered; it is B2 with an honest search block, and it exists to isolate the I2a/I2b split. FINDING: B2p is byte-identical to B3 on every world. The preregistration's B2 ('counts distinct roots but ignores the search ledger') and B3 ('full root collapse, no coverage requirement for absence') describe the SAME ablation unless B2 is additionally taken to fabricate its search block, which is the reading used for the registered B2 here.",
+    "results": [
+      {
+        "baseline": "B1-head-count",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 816000,
+            "I10": 297840,
+            "I2a": 13440,
+            "I2b": 13440,
+            "I3": 65280,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 1206000,
+          "worldsExercisingInvariant": {
+            "I1": 175440,
+            "I10": 176120,
+            "I2a": 176120,
+            "I2b": 176120,
+            "I3": 176120,
+            "I4": 176120,
+            "I5a": 88060,
+            "I5b": 88060,
+            "I6": 176120,
+            "I7": 176120,
+            "I8": 176120,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 13600,
+          "present": 74460,
+          "supported": 74460
+        },
+        "failClosed": 0,
+        "failClosedByCause": {},
+        "preregistered": true,
+        "receiptProducing": 176120,
+        "wallClockSeconds": "8.133",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B2-source-count",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 0,
+            "I10": 0,
+            "I2a": 0,
+            "I2b": 13440,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 110840,
+            "I9": 0
+          },
+          "violationsTotal": 124280,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 13600,
+          "present": 41820,
+          "supported": 41820
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": true,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.358",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B2p-source-count-honest-arithmetic",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 0,
+            "I10": 0,
+            "I2a": 13440,
+            "I2b": 13440,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 26880,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 13600,
+          "present": 41820,
+          "supported": 41820
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": false,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.348",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B3-evidence-ledger-without-coverage",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 0,
+            "I10": 0,
+            "I2a": 13440,
+            "I2b": 13440,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 26880,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 13600,
+          "not_established": 13600,
+          "present": 41820,
+          "supported": 41820
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": true,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.354",
+        "worlds": 176120
+      },
+      {
+        "baseline": "B4-search-ledger-without-collapse",
+        "caught": true,
+        "checker": {
+          "violationsByInvariant": {
+            "I1": 514080,
+            "I10": 167280,
+            "I2a": 0,
+            "I2b": 0,
+            "I3": 0,
+            "I4": 0,
+            "I5a": 0,
+            "I5b": 0,
+            "I6": 0,
+            "I7": 0,
+            "I8": 0,
+            "I9": 0
+          },
+          "violationsTotal": 681360,
+          "worldsExercisingInvariant": {
+            "I1": 110160,
+            "I10": 110840,
+            "I2a": 110840,
+            "I2b": 110840,
+            "I3": 176120,
+            "I4": 110840,
+            "I5a": 55420,
+            "I5b": 55420,
+            "I6": 110840,
+            "I7": 110840,
+            "I8": 110840,
+            "I9": 0
+          }
+        },
+        "conclusionDistribution": {
+          "absent_within_declared_scope": 160,
+          "not_established": 27040,
+          "present": 41820,
+          "supported": 41820
+        },
+        "failClosed": 65280,
+        "failClosedByCause": {
+          "root_on_both_sides": 65280
+        },
+        "preregistered": true,
+        "receiptProducing": 110840,
+        "wallClockSeconds": "5.458",
+        "worlds": 176120
+      }
+    ]
+  },
+  "derivedWorldCount": {
+    "agrees": true,
+    "claimTypes": 2,
+    "declared": 176120,
+    "derivation": "sum(4^L, L=1..4)=340; sum(6^R, R=0..3)=259; 340*259*2=176120. Derived independently before implementation; agrees with the declared figure.",
+    "derived": 176120,
+    "evidenceLedgers": 259,
+    "locationLedgers": 340
+  },
+  "exhaustiveSmall": {
+    "checker": {
+      "violationsByInvariant": {
+        "I1": 0,
+        "I10": 0,
+        "I2a": 0,
+        "I2b": 0,
+        "I3": 0,
+        "I4": 0,
+        "I5a": 0,
+        "I5b": 0,
+        "I6": 0,
+        "I7": 0,
+        "I8": 0,
+        "I9": 0
+      },
+      "violationsTotal": 0,
+      "worldsExercisingInvariant": {
+        "I1": 110160,
+        "I10": 110840,
+        "I2a": 110840,
+        "I2b": 110840,
+        "I3": 176120,
+        "I4": 110840,
+        "I5a": 55420,
+        "I5b": 55420,
+        "I6": 110840,
+        "I7": 110840,
+        "I8": 110840,
+        "I9": 0
+      }
+    },
+    "conclusionDistribution": {
+      "absent_within_declared_scope": 160,
+      "not_established": 27040,
+      "present": 41820,
+      "supported": 41820
+    },
+    "failClosed": 65280,
+    "failClosedByCause": {
+      "root_on_both_sides": 65280
+    },
+    "failClosedPreservedWorlds": {
+      "root_on_both_sides": [
+        "{\"claim\":{\"proposition\":\"No target-class defect exists in the declared components.\",\"type\":\"absence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r1\",\"side\":\"oppose\"},{\"id\":\"rec-2\",\"rootId\":\"r1\",\"side\":\"support\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-ex-16\"}",
+        "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components.\",\"type\":\"presence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r1\",\"side\":\"oppose\"},{\"id\":\"rec-2\",\"rootId\":\"r1\",\"side\":\"support\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-ex-17\"}",
+        "{\"claim\":{\"proposition\":\"No target-class defect exists in the declared components.\",\"type\":\"absence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r1\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r1\",\"side\":\"oppose\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-ex-26\"}"
+      ]
+    },
+    "failClosedUnexpectedCauses": [],
+    "firstViolation": null,
+    "phase": "exhaustive-small",
+    "receiptProducing": 110840,
+    "stopConditionArmed": true,
+    "stopConditionNote": "armed and never triggered: the halt path exists and was exercised by the ablated baselines, which do trigger it",
+    "stopConditionTriggered": false,
+    "wallClockSeconds": "12.190",
+    "worldStreamHash": "fnv1a64:bf6b3b722baa4bb1",
+    "worlds": 176120,
+    "worldsPerSecond": 14448
+  },
+  "experimentId": "KL-000",
+  "fixture": {
+    "allMatch": true,
+    "checker": {
+      "violationsByInvariant": {
+        "I1": 0,
+        "I10": 0,
+        "I2a": 0,
+        "I2b": 0,
+        "I3": 0,
+        "I4": 0,
+        "I5a": 0,
+        "I5b": 0,
+        "I6": 0,
+        "I7": 0,
+        "I8": 0,
+        "I9": 0
+      },
+      "violationsTotal": 0,
+      "worldsExercisingInvariant": {
+        "I1": 10,
+        "I10": 10,
+        "I2a": 10,
+        "I2b": 10,
+        "I3": 10,
+        "I4": 10,
+        "I5a": 8,
+        "I5b": 8,
+        "I6": 10,
+        "I7": 10,
+        "I8": 10,
+        "I9": 0
+      }
+    },
+    "controls": 10,
+    "digestNote": "Digests are this implementation's canonicalisation and are not expected to match any other implementation. Only their stability under replay and permutation is an invariant.",
+    "phase": "fixture",
+    "receiptDigests": {
+      "C01": "sha256:8efa245028afc6cbefa4388d5ebf9ad72780357fba565cdc70e7f2a3bf0503af",
+      "C02": "sha256:a3af580e0b544002fdacff07caceb6fd27f32ff7dbcba317886efacb51fae7a4",
+      "C03": "sha256:65fd0c6f1d274f71c45ea88af664028e5ff747a65e2b9b361c3457b4f56a88fe",
+      "C04": "sha256:76fc674e48e5af72b94bf47d614d6d372f17705c7d6fb87dfc2f92abb1f59398",
+      "C05": "sha256:dec9a5ffd9b4833214904224828c897808da0bebcdd1392cf7211793654944fe",
+      "C06": "sha256:7f0af22132d602c14b8a62d574fd5f836f8cfd5d76c404b275e78b9b77c1fbe4",
+      "C07": "sha256:36d36b848d8122a1534d6f9f95b1fecb873ff77bbac6ad4868535992f31aec00",
+      "C08": "sha256:7d0cf422a1c091997d2b0abf1fe99f4a9998d39272dddfff5ffb93871b9dd62c",
+      "C09": "sha256:e5d16c88fe80f5822404be2df35ab8b74b57813ae5c1606f9369cfeb5ed073bf",
+      "C10": "sha256:e8680f68560fee1b01a7e597735c9016eaa035e574c3ecdf2e28ae3301537d62"
+    },
+    "results": [
+      {
+        "control": "C01",
+        "fixture": "c01-head-count",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C02",
+        "fixture": "c02-source-count",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C03",
+        "fixture": "c03-evidence-without-coverage",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C04",
+        "fixture": "c04-search-without-collapse",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C05",
+        "fixture": "c05-dual-ledger",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C06",
+        "fixture": "c06-independent-evidence",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C07",
+        "fixture": "c07-copied-source",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C08",
+        "fixture": "c08-incomplete-coverage",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C09",
+        "fixture": "c09-counterexample-searched",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      },
+      {
+        "control": "C10",
+        "fixture": "c10-counterexample-unsearched",
+        "invariantViolations": [],
+        "matchesExpected": true,
+        "mismatches": []
+      }
+    ]
+  },
+  "implementation": "independent reimplementation, Rust 2021, zero dependencies",
+  "implementationNote": "Written from PROTOCOL.md, preregistration.json and fixtures/c01..c10 only. The reference implementation was neither read nor located. JSON, SHA-256 and the PRNG are hand-written so that no library is shared with it.",
+  "protocolVersion": "1.0.0",
+  "randomized": {
+    "checker": {
+      "violationsByInvariant": {
+        "I1": 0,
+        "I10": 0,
+        "I2a": 0,
+        "I2b": 0,
+        "I3": 0,
+        "I4": 0,
+        "I5a": 0,
+        "I5b": 0,
+        "I6": 0,
+        "I7": 0,
+        "I8": 0,
+        "I9": 0
+      },
+      "violationsTotal": 0,
+      "worldsExercisingInvariant": {
+        "I1": 203943,
+        "I10": 244091,
+        "I2a": 244091,
+        "I2b": 244091,
+        "I3": 1000000,
+        "I4": 244091,
+        "I5a": 121875,
+        "I5b": 121875,
+        "I6": 244091,
+        "I7": 244091,
+        "I8": 244091,
+        "I9": 0
+      }
+    },
+    "conclusionDistribution": {
+      "absent_within_declared_scope": 1070,
+      "not_established": 79032,
+      "present": 82077,
+      "supported": 81912
+    },
+    "crossImplementationComparability": "NOT comparable. The preregistration freezes the seed but not the draw schedule or the distribution over the declared ranges, so no two independent implementations sample the same worlds. Only the shape of these counts is comparable, never the counts themselves.",
+    "failClosed": 755909,
+    "failClosedByCause": {
+      "root_on_both_sides": 755909
+    },
+    "failClosedPreservedWorlds": {
+      "root_on_both_sides": [
+        "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components.\",\"type\":\"presence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r3\",\"side\":\"support\"},{\"id\":\"rec-3\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-4\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-5\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-6\",\"rootId\":\"r5\",\"side\":\"oppose\"},{\"id\":\"rec-7\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-8\",\"rootId\":\"r1\",\"side\":\"support\"},{\"id\":\"rec-9\",\"rootId\":\"r5\",\"side\":\"support\"},{\"id\":\"rec-10\",\"rootId\":\"r6\",\"side\":\"oppose\"},{\"id\":\"rec-11\",\"rootId\":\"r3\",\"side\":\"oppose\"},{\"id\":\"rec-12\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-13\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-14\",\"rootId\":\"r1\",\"side\":\"support\"},{\"id\":\"rec-15\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-16\",\"rootId\":\"r4\",\"side\":\"oppose\"},{\"id\":\"rec-17\",\"rootId\":\"r4\",\"side\":\"oppose\"},{\"id\":\"rec-18\",\"rootId\":\"r3\",\"side\":\"support\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"not_searched\"}]},\"transactionId\":\"kl000-rand-0\"}",
+        "{\"claim\":{\"proposition\":\"No target-class defect exists in the declared components.\",\"type\":\"absence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r7\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-3\",\"rootId\":\"r6\",\"side\":\"oppose\"},{\"id\":\"rec-4\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-5\",\"rootId\":\"r8\",\"side\":\"oppose\"},{\"id\":\"rec-6\",\"rootId\":\"r3\",\"side\":\"support\"},{\"id\":\"rec-7\",\"rootId\":\"r8\",\"side\":\"oppose\"},{\"id\":\"rec-8\",\"rootId\":\"r6\",\"side\":\"oppose\"},{\"id\":\"rec-9\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-10\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-11\",\"rootId\":\"r3\",\"side\":\"support\"},{\"id\":\"rec-12\",\"rootId\":\"r3\",\"side\":\"oppose\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"failed\"}]},\"transactionId\":\"kl000-rand-1\"}",
+        "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components.\",\"type\":\"presence\"},\"evidenceLedger\":{\"records\":[{\"id\":\"rec-1\",\"rootId\":\"r2\",\"side\":\"support\"},{\"id\":\"rec-2\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-3\",\"rootId\":\"r7\",\"side\":\"oppose\"},{\"id\":\"rec-4\",\"rootId\":\"r6\",\"side\":\"support\"},{\"id\":\"rec-5\",\"rootId\":\"r7\",\"side\":\"oppose\"},{\"id\":\"rec-6\",\"rootId\":\"r4\",\"side\":\"oppose\"},{\"id\":\"rec-7\",\"rootId\":\"r2\",\"side\":\"oppose\"},{\"id\":\"rec-8\",\"rootId\":\"r5\",\"side\":\"oppose\"}]},\"searchLedger\":{\"locations\":[{\"id\":\"loc-1\",\"status\":\"unavailable\"},{\"id\":\"loc-2\",\"status\":\"unavailable\"},{\"id\":\"loc-3\",\"status\":\"not_searched\"},{\"id\":\"loc-4\",\"status\":\"searched\"},{\"id\":\"loc-5\",\"status\":\"unavailable\"},{\"id\":\"loc-6\",\"status\":\"searched\"},{\"id\":\"loc-7\",\"status\":\"not_searched\"},{\"id\":\"loc-8\",\"status\":\"not_searched\"},{\"id\":\"loc-9\",\"status\":\"failed\"},{\"id\":\"loc-10\",\"status\":\"searched\"}]},\"transactionId\":\"kl000-rand-2\"}"
+      ]
+    },
+    "failClosedUnexpectedCauses": [],
+    "firstViolation": null,
+    "generatorWithinDeclaredBounds": true,
+    "phase": "randomized",
+    "receiptProducing": 244091,
+    "rng": "splitmix64-seeded xoshiro256**, rejection sampling for uniform ranges",
+    "seed": 20260807,
+    "seedReproducesIdenticalStream": true,
+    "stopConditionArmed": true,
+    "stopConditionNote": "armed and never triggered: the halt path exists and was exercised by the ablated baselines, which do trigger it",
+    "stopConditionTriggered": false,
+    "wallClockSeconds": "35.752",
+    "worldStreamHash": "fnv1a64:4dee7326f948b0fe",
+    "worlds": 1000000,
+    "worldsPerSecond": 27970
+  },
+  "specificationAmbiguities": {
+    "ambiguities": [
+      {
+        "ambiguity": "A1-absence-requires-support",
+        "exhaustiveWorldsChanged": 4,
+        "firstDistinguishingWorld": {
+          "chosenReading": "absent_within_declared_scope",
+          "rejectedReading": "not_established",
+          "world": {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": []
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-0"
+          }
+        },
+        "fractionOfExhaustive": "0.0000",
+        "rejectedReading": "absence needs >= 1 supporting root, not coverage alone"
+      },
+      {
+        "ambiguity": "A2-presence-requires-coverage",
+        "exhaustiveWorldsChanged": 41328,
+        "firstDistinguishingWorld": {
+          "chosenReading": "supported",
+          "rejectedReading": "not_established",
+          "world": {
+            "claim": {
+              "proposition": "A target-class defect exists in the declared components.",
+              "type": "presence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "support"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "unavailable"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-521"
+          }
+        },
+        "fractionOfExhaustive": "0.2347",
+        "rejectedReading": "a presence claim must also have complete coverage"
+      },
+      {
+        "ambiguity": "A3-opposition-defeats-presence",
+        "exhaustiveWorldsChanged": 22440,
+        "firstDistinguishingWorld": {
+          "chosenReading": "supported",
+          "rejectedReading": "not_established",
+          "world": {
+            "claim": {
+              "proposition": "A target-class defect exists in the declared components.",
+              "type": "presence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r2",
+                  "side": "oppose"
+                },
+                {
+                  "id": "rec-2",
+                  "rootId": "r1",
+                  "side": "support"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-21"
+          }
+        },
+        "fractionOfExhaustive": "0.1274",
+        "rejectedReading": "opposing roots >= supporting roots defeats a presence claim"
+      },
+      {
+        "ambiguity": "A4-margin-absolute",
+        "exhaustiveWorldsChanged": 38760,
+        "firstDistinguishingWorld": {
+          "chosenReading": "present",
+          "rejectedReading": "present",
+          "world": {
+            "claim": {
+              "proposition": "No target-class defect exists in the declared components.",
+              "type": "absence"
+            },
+            "evidenceLedger": {
+              "records": [
+                {
+                  "id": "rec-1",
+                  "rootId": "r1",
+                  "side": "oppose"
+                }
+              ]
+            },
+            "searchLedger": {
+              "locations": [
+                {
+                  "id": "loc-1",
+                  "status": "searched"
+                }
+              ]
+            },
+            "transactionId": "kl000-ex-4"
+          }
+        },
+        "fractionOfExhaustive": "0.2201",
+        "rejectedReading": "margin is |support - oppose| rather than signed"
+      }
+    ],
+    "note": "Each row is a place the specification does not determine the answer. The count is how many of the 176,120 exhaustive worlds would receive a different receipt under the reading this implementation rejected. A non-zero count means the specification, as written, does not pin the evaluator down."
+  },
+  "status": "passed",
+  "totalWallClockSeconds": "88.90",
+  "uncertainty": {
+    "bonferroniAdjusted": "5.30e-6",
+    "note": "Valid only if the randomized phase recorded zero violations. Bounds a per-world rate; does not establish zero. Applies to receipt-producing and fail-closed worlds alike, since both are drawn from the same stream.",
+    "ruleOfThree95": "3.00e-6"
+  }
+}
