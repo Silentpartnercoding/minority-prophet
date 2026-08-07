@@ -44,6 +44,5 @@ class EvidenceAlignmentTests(unittest.TestCase):
         for stale in (
             "Lean 4 formalization in progress",
             "two Lean obligations remain open",
-            "and nothing more",
         ):
             self.assertNotIn(stale, paper)

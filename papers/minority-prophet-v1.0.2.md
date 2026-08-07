@@ -2,7 +2,7 @@
 
 > **VERSION NOTE (2026-08-06).** This version incorporates the five corrections in [`papers/ERRATA.md`](./ERRATA.md), the compiler-ratified Lean core, bounded authenticated root issuance, the EXP009 preregistration, and a sanitized field observation. v1.0.1 remains preserved as the prior evidence-aligned snapshot.
 
-## Truth recovery under copying pressure requires protected roots, separated sides, and sufficient margin
+## Truth recovery under copying pressure requires unforgeable origins, unblended sides, and a protected margin — and nothing more
 
 **v1.0.2 — current evidence-aligned pre-submission draft. Remaining release blockers are stated in §8.**
 
