@@ -36,7 +36,7 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 
 ## Repository map
 
-- [`papers/minority-prophet-v1.0.2.md`](papers/minority-prophet-v1.0.2.md)
+- [`papers/minority-prophet-v1.0.3.md`](papers/minority-prophet-v1.0.3.md)
   — current evidence-aligned pre-submission paper; earlier versions remain preserved.
 - [`formal/PROOFS.md`](formal/PROOFS.md), [`formal/lean/`](formal/lean/) (pinned,
   compiling Lean 4 proofs), and
@@ -48,6 +48,8 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — authorship and independent-verification credit
 - [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md) — canonical record registry and promotion rules
 - [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md) — claim-to-record ledger, corrections, and remaining release blockers
+- [`RESEARCH-DIRECTION.md`](RESEARCH-DIRECTION.md) — proposed dual evidence/search ledger program and absence-claim boundary
+- [`research/knowledge-ledger/`](research/knowledge-ledger/) — public research method, experiment registry, interoperability fixtures, and results
 - [`RESEARCH-HYPOTHESES.md`](RESEARCH-HYPOTHESES.md) — falsifiable hypotheses using the required template
 - [`contracts/authority-evidence-v0.1/`](contracts/authority-evidence-v0.1/) — vendor-neutral authorization/evidence draft and semantic conformance rules
 - [`benchmark/`](benchmark/) — synthetic worlds, evaluation metrics, and CLI

@@ -1,0 +1,9 @@
+{
+  "schema": "minority-prophet.experiment-status.v0.1",
+  "experimentId": "KL-007",
+  "state": "seeded",
+  "resultStatus": "none",
+  "lastCompletedGate": "registry-entry",
+  "nextGate": "complete and commit preregistration",
+  "claimAllowed": "This experiment is seeded and supports no result claim."
+}
