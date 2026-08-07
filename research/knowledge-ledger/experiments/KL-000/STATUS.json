@@ -2,11 +2,15 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-000",
   "state": "adversarial-passed",
+  "stateNote": "adversarial-passed under BOTH protocol v1.0.0 (RUN-20260807-1) and protocol v1.1.0 (RUN-20260807-2). NOT verified-independent: the independent reimplementation agreed on all ten v1.0.0 invariants over an exactly-reproduced exhaustive enumeration but disagreed on the conclusion of 22,440 of 110,840 receipt-producing worlds, over a conclusion function v1.0.0 left open. v1.1.0 repair R1 has since decided that function; the independent implementation has not yet run against v1.1.0.",
   "resultStatus": "confirmatory",
-  "protocolVersion": "1.0.0",
+  "protocolVersion": "1.1.0",
+  "protocolVersionNote": "v1.1.0 is the current registration (four specification repairs, documentation-only, verified by identical numbers). v1.0.0 remains preserved and continues to govern the RUN-20260807-1 result and the independent implementation's v1.0.0 result.",
   "protocolCommit": "c97734799a6e1d0fd074699db1e09aa82eb5f810",
-  "resultCommit": "recorded in the commit carrying results/kl000-confirmatory.json",
-  "runId": "RUN-20260807-1",
+  "protocolCommitV110": "1a8256f51b41236b4aba18f5d0e7e379f06289e1",
+  "resultCommit": "recorded in the commits carrying results/kl000-confirmatory.json and results/kl000-confirmatory-v1.1.0.json",
+  "runId": "RUN-20260807-2",
+  "priorRunIds": ["RUN-20260807-1"],
 
   "gatesCompleted": [
     {"gate": "registry-entry", "state": "seeded"},
@@ -14,19 +18,21 @@
     {"gate": "fixture", "state": "fixture-passed", "evidence": "10/10 controls C01-C10 match hand-derived expected values"},
     {"gate": "exhaustive-small", "state": "exhaustive-passed", "evidence": "176,120 worlds enumerated, 0 violations, 0 out of declared bounds"},
     {"gate": "randomized", "state": "randomized-passed", "evidence": "1,000,000 worlds from frozen seed 20260807, 0 violations"},
-    {"gate": "adversarial", "state": "adversarial-passed", "evidence": "10 attacks A01-A10, 0 hard-invariant violations, 7 limits recorded as ADV-001..007"}
+    {"gate": "adversarial", "state": "adversarial-passed", "evidence": "10 attacks A01-A10, 0 hard-invariant violations, 7 limits recorded as ADV-001..007"},
+    {"gate": "independent reimplementation (v1.0.0)", "state": "completed-with-findings", "evidence": "Rust implementation from the registered spec package only (independence qualified per results/independent/PROVENANCE.md): exhaustive phase reproduced exactly (176,120/110,840/65,280/0), all ten invariants passed, randomized phase replicated (0 violations, equivalent fail-closed rate, different stream). Conclusion function diverged on 22,440 worlds, predicted in advance by the implementer (ambiguity A3). Fifteen findings F1-F15 recorded in results/independent/FINDINGS.md."},
+    {"gate": "specification repair v1.1.0", "state": "preregistered-and-passed", "evidence": "R1 (tie rule, owner decision), R2 (non-empty scope), R3 (I11 location-id uniqueness), R4 (canonical form + digest scope, fixture C11). Registration frozen at 1a8256f; confirmatory re-run passed with every number identical to RUN-20260807-1, as the registration predicted (expectedIdenticalToRun1)."}
   ],
   "gatesFailed": [],
-  "lastCompletedGate": "adversarial",
+  "lastCompletedGate": "specification repair v1.1.0 confirmatory re-run",
 
-  "nextGate": "independent reimplementation. The confirmatory result was produced by an evaluator and a checker written in the same session; RESEARCH-METHOD.md requires that the implementation author not be the sole verifier. The exact falsifiable next step is: a second evaluator, written from the public schema by an author with no access to knowledge_ledger/transaction.py, must reproduce the same conclusion for all 176,120 exhaustive worlds. Any disagreement on any world rejects the shared assumption.",
+  "nextGate": "the independent implementation re-runs against protocol v1.1.0. This is a separate commission by the owner; this repository's agents do not execute it and do not modify impl-rs. What it tests: whether the R1 conclusion function, the R4 canonical form (via C11's pinned contentDigest -- the first KL-000 value a second implementation can be wrong about rather than merely different from), and the R2/R3 admissibility rules close the 22,440-world divergence. Exact pass condition: identical conclusion distribution on all 110,840 receipt-producing exhaustive worlds AND a matching C11 digest. For a stronger independence claim the re-run should occur on a machine that does not hold the reference at all (operator's own remediation, OPERATOR-DISCLOSURE.md).",
 
   "blockers": [],
 
-  "claimAllowed": "Within the declared bounds, the reference evaluator did not allow a recorded copy to change evidential mass, and did not allow an incomplete search to yield an absence conclusion. This is conformance behaviour in a frozen synthetic model.",
-  "claimNotAllowed": "That the dual ledger recovers truth, that declared roots are genuinely independent, that the invariants hold outside the declared bounds, that any real-world evidence process is improved, or that KL-000 constitutes a knowledge transaction, a cross-system result, or any part of a First Transmission.",
+  "claimAllowed": "Within the declared bounds, the reference evaluator did not allow a recorded copy to change evidential mass, and did not allow an incomplete search to yield an absence conclusion; it conforms to protocol v1.1.0; and the four v1.1.0 repairs documented behaviour it already had (no number moved). An independent implementation written from the registered documents alone reproduced the exhaustive enumeration exactly and passed all ten v1.0.0 invariants over it.",
+  "claimNotAllowed": "That KL-000 is 'verified' or 'verified-independent' -- the two implementations demonstrably disagreed on 20.2% of receipt-producing conclusions under v1.0.0, and their agreement under v1.1.0 has not been tested. That the randomized phases were reproduced across implementations (they are replications on different streams). That the dual ledger recovers truth, that declared roots are genuinely independent, that the invariants hold outside the declared bounds, that any real-world evidence process is improved, or that KL-000 constitutes a knowledge transaction, a cross-system result, or any part of a First Transmission.",
 
-  "quantitativeCaveat": "75.7% of randomized worlds fail closed and produce no receipt, so eight of the ten invariants were exercised on 243,381 randomized worlds rather than 1,000,000. See results/kl000-effective-sample.json. The 95% rule-of-three upper bound for those eight is 1.23e-5 per receipt-producing world, not 3.0e-6.",
+  "quantitativeCaveat": "75.7% of randomized worlds fail closed and produce no receipt, so most invariants were exercised on 243,381 randomized worlds rather than 1,000,000; the 95% rule-of-three upper bound for those is 1.23e-5 per receipt-producing world. The independent implementation's randomized counts are not comparable quantities to the reference's (different world streams; finding F11).",
 
   "knownLimits": [
     "ADV-001 high: an under-declared search space is undetectable, and the declaring party is the reporting party",
@@ -35,17 +41,24 @@
     "ADV-004: root identity is byte identity; no normalisation is specified",
     "ADV-005: shared upstream dependency between roots is not representable",
     "ADV-006: no issuer authentication; forged or replayed roots are indistinguishable",
-    "ADV-007: the claim proposition is free text and is never checked against the ledgers"
+    "ADV-007: the claim proposition is free text and is never checked against the ledgers",
+    "F1/F2: I2 and I5 are stated receipt-internally and are vacuously satisfiable (open; v1.2.0 candidate)",
+    "F3: B2 and B3 may be one ablation counted twice (open)",
+    "F4/F5: conversionsToReverse undefined at the empty ledger; margin sign unpinned, 38,760 worlds' receipts differ between readings (open)",
+    "F11: the frozen seed freezes no cross-implementation stream; randomized comparisons are replications only (open)",
+    "F12: the adversarial phase is defined by reference to a test file, not by specification (open)",
+    "F13: C06's fixture note contradicts C04 and C07 (open)",
+    "F14: unavailable is reported and reconciled but no conclusion depends on it (open)"
   ],
 
   "artifacts": {
-    "protocol": "PROTOCOL.md",
-    "preregistration": "preregistration.json",
-    "protocolCommitSidecar": "PROTOCOL-COMMIT.txt",
-    "fixtures": "fixtures/ (10 controls)",
-    "source": "src/ (worlds, invariants, baselines, runner)",
-    "tests": "tests/ (54 tests)",
-    "results": "results/kl000-confirmatory.json, results/kl000-effective-sample.json",
-    "reproduction": "REPRODUCE.md"
+    "protocol": "PROTOCOL.md (v1.0.0, preserved), PROTOCOL-v1.1.0.md (current)",
+    "preregistration": "preregistration.json (v1.0.0, preserved), preregistration-v1.1.0.json (current)",
+    "protocolCommitSidecar": "PROTOCOL-COMMIT.txt (v1.0.0), PROTOCOL-COMMIT-v1.1.0.txt (v1.1.0)",
+    "fixtures": "fixtures/ (10 controls, v1.0.0) + fixtures/v1.1.0/ (C11, digest-pinned)",
+    "source": "src/ (worlds, invariants, baselines, runner; runner takes --preregistration)",
+    "tests": "tests/ (68 tests: 54 v1.0.0 + 14 v1.1.0)",
+    "results": "results/kl000-confirmatory.json (v1.0.0), results/kl000-confirmatory-v1.1.0.json, results/kl000-effective-sample.json, results/independent/ (imported evidence + provenance + comparison record)",
+    "reproduction": "REPRODUCE.md (v1.0.0), REPRODUCE-v1.1.0.md"
   }
 }
