@@ -1,0 +1,33 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-5",
+  "runNote": "the gate run: the program, closed at RUN-20260807-4, was deliberately reopened on owner direction for the single committed gate (I12) and is closed again",
+  "startUtc": "2026-08-07T22:45:21Z",
+  "endUtc": "see END-UTC.txt",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "ffbdb60",
+    "headCommit": "see DELIVERY-RECORD.md (the PR-branch rebuild follows the closing commits so the cherry-pick range covers them)",
+    "prBranch": "agent/kl-000-conformance, rebuilt after close; head and verification in DELIVERY-RECORD.md; UNPUSHED",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {"name": "Claude Fable 5", "id": "claude-fable-5", "reportedBy": "runtime environment description", "captureMethod": "agent-transcription", "captureCaveat": "Unverified per PROV-004."},
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Fifth consecutive run without an operator-side prompt artifact (PROV-011). Digest unverified.",
+  "inputs": {"prompt": "agent transcription; digest in HANDOFF artifact table computed at close"},
+  "environment": {"lockFile": "environment-lock.txt", "pipFreeze": "pip-freeze.txt", "python": "3.14.6", "node": "v24.18.1", "npm": "11.16.0", "git": "2.50.1", "os": "macOS 26.4.1 arm64", "network": "git fetch of the github remote only (PR-branch rebuild); no experiment used the network", "spend": 0, "note": "identical to RUN-20260807-4"},
+  "claimStatusManifest": [
+    {"artifact": "KL-000/preregistration-v1.3.0.json + PROTOCOL-v1.3.0.md", "status": "canonical", "note": "registered at 08f8703; the committed gate's registration; v1.0.0-v1.2.0 preserved"},
+    {"artifact": "KL-000/results/kl000-confirmatory-v1.3.0.json", "status": "confirmatory", "digest": "sha256:e84ad25973c5d7ad1cac17a57e0aba9982f3ba0c14dd3dce8f9bcce6d769c207", "note": "passed; ABL-R1 caught by I12 on exactly 22,440 worlds, ABL-R52 on exactly 38,760, no fixture involved, zero other violations; B5 zero I12 violations; nothing else moved including both pinned digests"},
+    {"artifact": "decision enforcement (SPEC-110/SPEC-112, the mechanistic finding)", "status": "confirmatory", "note": "REPAIRED: both owner decisions now enforced by invariant I12; the finding retained in FINAL-RECORD as history"},
+    {"artifact": "A1 / A2", "status": "incomplete", "note": "still undecided owner decisions (4 and 19,152 worlds), untouched by this run per explicit instruction"},
+    {"artifact": "KL-000 state", "status": "confirmatory", "note": "adversarial-passed, final; verified-independent remains an owner promotion decision; the independent implementation has not run against v1.3.0"},
+    {"artifact": "KL-001..KL-011", "status": "incomplete", "note": "eleven kernels seeded with exact next gates, unchanged"},
+    {"artifact": "First Transmission / Candidate First Transmission", "status": "incomplete", "note": "neither exists; the first-transaction gate is NOT REACHED"}
+  ],
+  "tests": {"repoRootPytest": "74 passed (run branch); 63 passed (PR branch)", "kl000Pytest": "88 passed (both)", "note": "8 permanent v1.3.0 tests added; no prior test modified"},
+  "humanGatesCrossed": "none",
+  "interventions": ["none during this run"],
+  "firstTransactionGate": "NOT REACHED"
+}
