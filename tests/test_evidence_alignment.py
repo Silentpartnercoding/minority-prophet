@@ -25,6 +25,17 @@ class EvidenceAlignmentTests(unittest.TestCase):
         self.assertIn("cannot discover undisclosed real-world common control", prose)
         self.assertIn("does not itself grant authority", prose)
 
+    def test_formal_ledger_matches_bounded_issuance_reference(self):
+        ledger = json.loads((ROOT / "formal/THEOREM-LEDGER.json").read_text())
+        entries = {entry["id"]: entry for entry in ledger["claims"]}
+        bounded = entries["LEDGER-H2"]
+        self.assertEqual(bounded["proof_status"], "tested_reference_implementation")
+        self.assertGreaterEqual(len(bounded["implementation_tests"]), 4)
+        self.assertIn("not evidence that a particular production path uses it",
+                      bounded["prohibited_overstatement"])
+        requirements = (ROOT / "PROVENANCE-REQUIREMENTS.md").read_text()
+        self.assertNotIn("new in v3, unimplemented", requirements)
+
     def test_active_paper_uses_canonical_exp007a_values(self):
         paper = (ROOT / "papers/minority-prophet-v1.0.3.md").read_text()
         self.assertIn("EXP007A", paper)

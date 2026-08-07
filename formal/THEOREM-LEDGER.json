@@ -286,7 +286,7 @@
       "remediation": "FIXED. .gitignore now negates results/*.manifest.json and results/resolved-weather-v0.1.json. Clean clone verified at 40 passed."
     },
     {
-      "id": "H1",
+      "id": "LEDGER-H1",
       "short": "R2 is enforced at ingest",
       "statement": "provenance.EvidenceGraph.add rejects cross-side and cross-proposition edges, making side consistency a checked implementation invariant rather than an unchecked hypothesis.",
       "definition_version": "core-v3-dag",
@@ -305,19 +305,24 @@
       "prohibited_overstatement": "Enforcement makes R2 checkable, not automatically satisfiable. CE-07 stands: in a DAG this rejects claims synthesised from both sides, and the false-rejection rate on real data has not been measured."
     },
     {
-      "id": "H2",
+      "id": "LEDGER-H2",
       "short": "Roots-per-attested-identity must be bounded",
       "statement": "R1 requires a sub-requirement bounding how many roots one attested identity can create per unit time; without it, margin is not a budget an attacker must pay.",
       "definition_version": "core-v3-dag",
       "assumptions": [],
-      "proof_status": "hypothesis",
+      "proof_status": "tested_reference_implementation",
       "lean_theorem": null,
       "known_counterexamples_outside_scope": [
         "CE-05 is the motivating witness."
       ],
-      "implementation_tests": [],
-      "security_interpretation": "This is the missing link between the compiled T5 and any operational immunity claim.",
-      "prohibited_overstatement": "No such bound exists in the current requirement stack."
+      "implementation_tests": [
+        "tests/test_root_registry.py::RootRegistryTests::test_quota_survives_restart_and_key_compromise_ce05",
+        "tests/test_root_registry.py::RootRegistryTests::test_concurrent_writers_cannot_exceed_quota",
+        "tests/test_root_registry.py::RootRegistryTests::test_registry_tampering_is_detected_before_next_issue",
+        "tests/test_root_registry.py::RootRegistryTests::test_tombstone_never_restores_capacity_or_orphans_ce04"
+      ],
+      "security_interpretation": "The reference RootRegistry demonstrates durable bounded issuance, tombstones, replay protection and cross-process quota serialization. A deployment must still supply a production identity verifier, protected integrity key and actual integration.",
+      "prohibited_overstatement": "Do not claim every deployment enforces the bound. The repository contains a tested reference implementation, not evidence that a particular production path uses it."
     },
     {
       "id": "U1",
@@ -389,7 +394,7 @@
     ],
     "deliberately_not_changed": [
       "aggregation/semantic.py -- its sha256 is bound by results/los-inspired-v0.1.manifest.json as canonical evidence for EXPERIMENT-001. Correcting it in place would falsify a canonical record, so the corrected aggregator lives in aggregation/root_vote.py and the defects CE-11/CE-12 are retained and documented.",
-      "R1.4 is specified but NOT enforced in code: no roots-per-identity limiter and no tombstone storage model exist yet. CE-04 and CE-05 remain reachable in a deployment.",
+      "R1.4 now has a tested reference RootRegistry with per-identity quotas, append-only tombstones, replay protection and serialized cross-process allocation. CE-04 and CE-05 remain reachable wherever a deployment bypasses that registry or fails to protect its identity verifier and integrity key.",
       "Root identity (U1) remains undefined. It is now explicitly declared part of the trusted base rather than silently assumed.",
       "CE-07 (side consistency forbids synthesis in a DAG) is a scope limit, not a bug. Edge polarity is the proposed repair and is not implemented."
     ]
