@@ -34,3 +34,8 @@ outputs, simulations, and failed runs are not results.
 searched locations out of five produce `not_established`, even when several
 reports agree. It is not the cross-system first transaction and is not evidence
 that the method improves real-world truth recovery.
+
+Every Claude run must close with a versioned draft report, constraint registry,
+research backlog, kernel snapshot, next-run proposal, and resumable handoff. Draft
+PRs remain unmerged until founder review; run completion never implies program
+success.

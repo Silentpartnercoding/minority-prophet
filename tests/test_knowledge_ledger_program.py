@@ -72,6 +72,19 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
             self.assertEqual(preregistration["status"], "incomplete-seed")
             self.assertTrue(status["nextGate"])
 
+    def test_master_loop_requires_draft_versioned_run_completion(self):
+        prompt = (PROGRAM / "MASTER-LOOP-PROMPT.md").read_text()
+        for required in (
+            "open every run PR as **draft**",
+            "DRAFT-RUN-REPORT-vN.md",
+            "CONSTRAINTS-vN.json",
+            "RESEARCH-BACKLOG-vN.json",
+            "NEXT-RUN-PROPOSAL-vN.md",
+            "Always complete the run",
+            "Never manufacture program success",
+        ):
+            self.assertIn(required, prompt)
+
 
 if __name__ == "__main__":
     unittest.main()
