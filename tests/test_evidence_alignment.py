@@ -65,7 +65,7 @@ class EvidenceAlignmentTests(unittest.TestCase):
 
         self.assertIn("RootRegistry", paper)
         self.assertIn("conversions_to_reverse", paper)
-        self.assertIn("EXP009 (preregistered; not executed)", paper)
+        self.assertIn("EXP009 (canonical selective-hybrid confirmation; SUPPORTED)", paper)
         self.assertIn("Field observation (noncanonical)", paper)
         self.assertIn("minority-prophet-v1.0.3.md", ledger)
         self.assertIn("minority-prophet-v1.0.3.md", readme)
