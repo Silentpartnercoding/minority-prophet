@@ -29,6 +29,22 @@
   "gatesFailed": [],
   "lastCompletedGate": "specification repair v1.2.0 confirmatory re-run",
 
+  "committedGates": [
+    {
+      "order": 1,
+      "gate": "IND-20260807-3",
+      "statement": "the independent implementation re-runs against protocol v1.2.0 and attempts C11/C12; see nextGate for the exact pass condition"
+    },
+    {
+      "order": 2,
+      "gate": "v1.3.0-I12-conclusion-enforcement",
+      "statement": "Register and implement I12: conclusion == conclusionFunction(world), as a hard invariant subsuming I2's and I5's conclusion clauses. COMMITTED GATE, not a candidate -- promoted by owner direction during RUN-20260807-3's close: RESEARCH-METHOD.md and the program's success definition require an exact next falsifiable gate, and G4 is the strongest open finding in the kernel; recording it as a candidate would let it lapse without anyone deciding to drop it.",
+      "evidence": "Verified this run against the full enumeration (logs/g4-inverted-r1-ablation.txt, RUN-20260807-3): an evaluator inverting R1 (the existential presence reading) changes 22,440 of 110,840 conclusions, violates ZERO of the eleven hard invariants, and is caught by fixture C11 alone -- one input out of 176,120. I12 would catch the same inversion on all 22,440 divergent worlds across the entire enumeration with no fixture involved.",
+      "exactPassCondition": "The existential-reading ablation is caught by I12 on exactly 22,440 exhaustive worlds; B5 records zero I12 violations; no other number moves.",
+      "sequencing": "Deferred behind IND-20260807-3 deliberately -- mixing a new invariant into the serialisation-only v1.2.0 repair would have destroyed the did-evaluation-move test that made v1.2.0 verifiable, and the commission target stays frozen while the implementer works. Deferred is not optional: this gate is committed and its lapse would itself be a recordable event.",
+      "registrationNote": "preregistration-v1.2.0.json's openFindings and PROTOCOL-v1.2.0.md say 'leading v1.3.0 candidate' -- frozen registered wording, superseded by this owner decision without editing the registered documents."
+    }
+  ],
   "nextGate": "IND-20260807-3: the independent implementation re-runs against protocol v1.2.0 and attempts C11 (and C12) again. Separate owner commission; this repository's agents do not execute it and do not modify impl-rs. What it tests: whether registering the receipt object (R5.1) and the margin sign (R5.2) makes contentDigest reproduce across implementations for the first time -- which would make I4 and I6 cross-implementation properties and complete the repair arc F10 -> R4 -> G2 -> R5.1. Exact pass condition: C11 digest sha256:84e63c21...33eafe and C12 digest sha256:61000a9b...aa3b6e reproduced byte-for-byte, conclusion distribution again identical, zero violations. PACKAGING (constraint LEAK-101): the package must derive from the registration by REMOVING the prediction table and expectedIdenticalToRun1; screening greps run against every shipped file in comma and comma-less formats; registered fixture paths must resolve as registered.",
 
   "blockers": [],
@@ -49,7 +65,7 @@
     "F14: unavailable is reported but inert",
     "F15: exhaustive phase exercises conclusion logic on 63% of what it enumerates (reinstated)",
     "I9-coverage: I9 exercised by zero non-adversarial worlds (reinstated)",
-    "G4: conclusion function has no enforcing invariant; I12 (conclusion == conclusionFunction(world)) is the leading v1.3.0 candidate",
+    "G4: conclusion function has no enforcing invariant; an R1-inverting evaluator changes 22,440 conclusions, violates zero invariants, and is caught by C11 alone (one input; I12 would catch all 22,440 across 176,120 worlds). I12 is a COMMITTED v1.3.0 gate (see committedGates), not a candidate",
     "LEAK-101: registration prediction tables and commission packages have conflicting requirements; v1.1.0's package leaked every screened value via PROTOCOL.md"
   ],
 
