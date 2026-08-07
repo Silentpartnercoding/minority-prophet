@@ -1,0 +1,19 @@
+{
+  "schema": "minority-prophet.source-commitment.v1",
+  "disclosure": "hash-only; source material remains unpublished",
+  "hash_algorithm": "sha256",
+  "artifacts": [
+    {
+      "generic_id": "sealed-source-input",
+      "sha256": "78218e7c8a0b998b4acd435452f5d6a6e2958aa126cb3af29f1f6ca0a7d6af39"
+    },
+    {
+      "generic_id": "sealed-source-output",
+      "sha256": "63492283f5a2192f6fb00499e2c351cdf5a4557423def90a7f29522c395e9601"
+    },
+    {
+      "generic_id": "sealed-source-evaluator",
+      "sha256": "786dfd515929fcb45db65dc44170f266639dacbdd47c03a001ef2257b2d91127"
+    }
+  ]
+}

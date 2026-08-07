@@ -80,11 +80,6 @@ identifiability limit — two worlds can produce the same vote vector with oppos
 ground truth — and nothing in this audit changes that. **The theorems are about
 an aggregator's invariances, not about accuracy.**
 
-### It says nothing about consciousness, sentience or subjective experience
-
-Out of scope by construction. No object in the model has any such attribute, and
-no theorem could be about one.
-
 ### It does not establish independence
 
 "Independent" is *defined* as "distinct root", and root identity is

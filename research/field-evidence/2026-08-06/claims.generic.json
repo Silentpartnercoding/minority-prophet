@@ -1,0 +1,39 @@
+{
+  "schema": "minority-prophet.field-fixture.v1",
+  "provenance": {
+    "source_class": "sanitized structural derivative of an internal system run",
+    "raw_source_published": false,
+    "transformation": "Private names and payloads were replaced with generic identifiers while preserving claim values, subject-observer relationships, and evidence-root multiplicity."
+  },
+  "claims": [
+    {"id":"claim-001","subject":"service-001","supports":[{"observer":"observer-primary","value":true}]},
+    {"id":"claim-002","subject":"service-002","supports":[{"observer":"observer-primary","value":true}]},
+    {"id":"claim-003","subject":"service-003","supports":[{"observer":"observer-primary","value":true}]},
+    {"id":"claim-004","subject":"service-004","supports":[{"observer":"observer-primary","value":true}]},
+    {"id":"claim-005","subject":"service-005","supports":[{"observer":"observer-primary","value":false}]},
+    {"id":"claim-006","subject":"service-006","supports":[{"observer":"observer-primary","value":true}]},
+    {"id":"claim-007","subject":"service-007","supports":[{"observer":"observer-primary","value":true}]},
+    {"id":"claim-008","subject":"service-008","supports":[{"observer":"observer-primary","value":false}]},
+    {"id":"claim-009","subject":"service-009","supports":[
+      {"observer":"observer-secondary","value":true},
+      {"observer":"observer-secondary","value":true},
+      {"observer":"observer-secondary","value":true},
+      {"observer":"observer-secondary","value":true},
+      {"observer":"observer-secondary","value":true},
+      {"observer":"observer-secondary","value":true}
+    ]},
+    {"id":"claim-010","subject":"observer-010","supports":[{"observer":"observer-010","value":true}]},
+    {"id":"claim-011","subject":"observer-011","supports":[{"observer":"observer-011","value":true}]},
+    {"id":"claim-012","subject":"observer-012","supports":[{"observer":"observer-012","value":true}]},
+    {"id":"claim-013","subject":"observer-013","supports":[{"observer":"observer-013","value":true}]},
+    {"id":"claim-014","subject":"observer-014","supports":[{"observer":"observer-014","value":true}]},
+    {"id":"claim-015","subject":"observer-015","supports":[{"observer":"observer-015","value":true}]},
+    {"id":"claim-016","subject":"observer-016","supports":[{"observer":"observer-016","value":true}]},
+    {"id":"claim-017","subject":"observer-017","supports":[{"observer":"observer-017","value":true}]}
+  ],
+  "correlation_probe": {
+    "observers": ["observer-primary", "observer-tertiary"],
+    "shared_dependencies": ["transport-relay", "control-plane"],
+    "question": "Should these observations count as one root, two roots, or a value between one and two?"
+  }
+}

@@ -1,28 +1,31 @@
-# Roadmap
+# Public research roadmap
 
-## v0.1 — foundational slice
+## Established
 
-- [x] Formal problem statement and explicit assumptions
-- [x] Deterministic synthetic binary worlds with hidden ground truth
-- [x] Majority and competence-weighted baselines
-- [x] Evidence-lineage data model and JSON Schema
-- [x] Truth accuracy, minority recovery, Brier score, abstention, and timing metrics
-- [x] Landing page and synthetic-world observatory
-- [x] Automated unit and server-render tests
-- [x] Freeze the first exploratory semantic-aggregation report
+- Formal assumptions, counterexamples, and compiler-ratified core proofs.
+- Canonical synthetic records, archived-implementation replays, and preserved
+  rejected or incomplete results.
+- Bounded authenticated root issuance and adversarial conformance tests.
+- A sanitized field observation of root identity and observer concentration.
+- A preregistered selective-challenger experiment (EXP009).
 
-Acceptance: a clean checkout runs all tests and reproduces a seeded report without network access.
+Repository acceptance remains simple: a clean checkout passes its tests and
+reproduces seeded records offline.
 
-## Immediate next experiment
+## Next
 
-Preregister a v0.2 ancestry-aware experiment before execution, adding hidden seeds, noisy observations, imperfect competence estimates, and external data. Retain these controls:
+1. Execute EXP009 once on its untouched confirmatory seeds and preserve every
+   outcome.
+2. Complete the market matched-coverage analysis.
+3. Compare against released truth-discovery implementations.
+4. Verify every paper citation against its primary source.
+5. Test the neutral evidence contract against a real provider.
+6. Define and test root identity, shared dependencies, time, revocation, and
+   key-compromise boundaries without treating identity as independence.
 
-1. an independently grounded majority;
-2. an ungrounded minority;
-3. corrupted lineage metadata.
+These are research tasks, not product claims. Current status is controlled by
+[`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md) and
+[`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md).
 
-The method succeeds only if it improves copied-majority recovery without systematically favoring minorities or failing the controls.
-
-## Out of scope for this release
-
-Persistent identity, shared memory, belief propagation, global world models, multi-civilization simulation, production inference, and claims about higher-order cognition are not part of v0.1.
+Confirmatory experiments retain grounded-majority, ungrounded-minority, and
+corrupted-lineage controls.
