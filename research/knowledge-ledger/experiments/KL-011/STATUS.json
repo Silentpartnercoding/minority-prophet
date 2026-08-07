@@ -1,9 +1,23 @@
 {
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-011",
+  "realm": "cross-system interoperability",
   "state": "seeded",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
-  "nextGate": "complete and commit preregistration",
-  "claimAllowed": "This experiment is seeded and supports no result claim."
+  "reviewedByRun": "RUN-20260807-1",
+  "nextGate": "BLOCKED on KL-000's next gate. KL-011 requires two independently written implementations; KL-000 has one implementation whose author also wrote its verifier. The independent reimplementation that KL-000 needs is the SAME artifact KL-011 needs, so it should be commissioned once. After that: five stages (discovery, collection, provenance, decision, presentation) exchanging one bounded claim, with paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, and one unavailable location injected.",
+  "blockers": [
+    "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+    "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+    "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+    "blocked-prerequisite: KL-000 independent reimplementation",
+    "constraint SCH-005: flipBudget, unattributed evidence, and uncertainty are named as evidence-ledger fields in RESEARCH-DIRECTION.md but are never emitted by the receipt. A protected field the receipt does not carry cannot be shown to survive crossing systems.",
+    "constraint ADV-001: an under-declared search space is undetectable, so cross-system preservation of coverage is only as strong as the original declaration"
+  ],
+  "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed.",
+  "dependsOn": [
+    "KL-000"
+  ],
+  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed in RUN-20260807-1, so this dependency is satisfied for fixture-stage work but NOT for any promotion: KL-000 itself awaits independent reimplementation."
 }
