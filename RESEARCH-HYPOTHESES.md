@@ -14,7 +14,7 @@
 
 The exploratory v0.1 pilot satisfied this criterion only in constructed worlds with declared correct lineage and failed under lineage corruption. It was not a blinded or fully preregistered confirmatory experiment. H1 therefore remains open for v0.2.
 
-## H2 — verifier independence under shared control
+## HVI-1 — verifier independence under shared control
 
 **Question:** Can explicit creator, verifier, and controller provenance prevent
 one controlling party from increasing evidential mass by splitting its work

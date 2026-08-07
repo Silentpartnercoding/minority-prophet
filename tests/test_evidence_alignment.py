@@ -14,10 +14,10 @@ class EvidenceAlignmentTests(unittest.TestCase):
         self.assertIn("unable to mint, alter, or promote the evidence it verifies", foundations)
         self.assertIn("Unknown or overlapping provenance widens uncertainty", foundations)
 
-    def test_h2_is_falsifiable_and_does_not_overclaim_independence(self):
+    def test_hvi_1_is_falsifiable_and_does_not_overclaim_independence(self):
         hypotheses = (ROOT / "RESEARCH-HYPOTHESES.md").read_text()
         prose = " ".join(hypotheses.split())
-        self.assertIn("H2 — verifier independence under shared control", hypotheses)
+        self.assertIn("HVI-1 — verifier independence under shared control", hypotheses)
         self.assertIn("**Null hypothesis:**", hypotheses)
         self.assertIn("**Failure condition:**", hypotheses)
         self.assertIn("**Success condition:**", hypotheses)
