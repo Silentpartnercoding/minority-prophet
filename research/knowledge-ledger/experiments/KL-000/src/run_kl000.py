@@ -38,10 +38,18 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def run_fixture_phase() -> dict:
-    """Control fixtures C01-C10 against their hand-derived expected values."""
+def run_fixture_phase(prereg: dict) -> dict:
+    """Registered control fixtures against their hand-derived expected values.
+
+    The fixture set is the preregistration's `controls` array, so each protocol
+    version runs exactly the controls it registered: v1.0.0 registered C01-C10
+    (`fixtures/*.json`), v1.1.0 additionally registered C11 under
+    `fixtures/v1.1.0/`, outside the v1.0.0 set. A fixture whose `expected`
+    block carries a `contentDigest` (v1.1.0 R4) has that digest compared too.
+    """
     results, mismatches = [], []
-    for path in sorted((EXPERIMENT / "fixtures").glob("*.json")):
+    for control in prereg["controls"]:
+        path = EXPERIMENT / control["fixture"]
         doc = json.loads(path.read_text())
         receipt = evaluate_transaction(doc["input"])
         expected = doc["expected"]
@@ -53,6 +61,10 @@ def run_fixture_phase() -> dict:
                 got = receipt[block][key]
                 if got != want:
                     diffs.append(f"{block}.{key} {got!r} != {want!r}")
+        if "contentDigest" in expected and receipt["contentDigest"] != expected["contentDigest"]:
+            diffs.append(
+                f"contentDigest {receipt['contentDigest']!r} != {expected['contentDigest']!r}"
+            )
         results.append({"control": doc["control"], "fixture": path.name,
                         "passed": not diffs, "differences": diffs})
         if diffs:
@@ -187,11 +199,17 @@ def main() -> None:
     parser.add_argument("--baseline-sample", type=int, default=None,
                         help="worlds per baseline; default None = full exhaustive set")
     parser.add_argument("--label", default="confirmatory")
+    parser.add_argument("--preregistration", default="preregistration.json",
+                        help="registration to run against, relative to the "
+                             "experiment directory; the default is the v1.0.0 "
+                             "registration, preregistration-v1.1.0.json selects "
+                             "protocol v1.1.0")
     args = parser.parse_args()
 
-    drifts = worlds.verify_bounds_against_preregistration()
+    prereg_path = EXPERIMENT / args.preregistration
+    drifts = worlds.verify_bounds_against_preregistration(prereg_path)
     evaluator_hash = sha256_file(REPO / "knowledge_ledger" / "transaction.py")
-    prereg = json.loads((EXPERIMENT / "preregistration.json").read_text())
+    prereg = json.loads(prereg_path.read_text())
     expected_hash = prereg["evaluatorUnderTest"]["sha256"]
 
     document = {
@@ -226,7 +244,7 @@ def main() -> None:
 
     if not invalid:
         if args.phase in ("all", "fixture"):
-            document["phases"]["fixture"] = run_fixture_phase()
+            document["phases"]["fixture"] = run_fixture_phase(prereg)
         if args.phase in ("all", "baselines"):
             baselines = run_baselines(args.baseline_sample)
             document["phases"]["baselines"] = baselines
