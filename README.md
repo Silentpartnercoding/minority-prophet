@@ -36,8 +36,8 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 
 ## Repository map
 
-- [`papers/minority-prophet-v1.0.1.md`](papers/minority-prophet-v1.0.1.md)
-  — corrected pre-canonical paper; it supersedes v1.0 without deleting it.
+- [`papers/minority-prophet-v1.0.2.md`](papers/minority-prophet-v1.0.2.md)
+  — current evidence-aligned pre-submission paper; earlier versions remain preserved.
 - [`formal/PROOFS.md`](formal/PROOFS.md), [`formal/lean/`](formal/lean/) (pinned,
   compiling Lean 4 proofs), and
   [`verification/r1_degradation_curve.py`](verification/r1_degradation_curve.py)
