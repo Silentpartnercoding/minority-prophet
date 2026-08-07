@@ -17,7 +17,7 @@ This file is the prose gate.
 | **Randomized experiment** | Sampled, not enumerated. Reports a rate, not a guarantee | `verification/r1_degradation_curve.py`; the Gate's `verify_multivalue` above 200 rewirings (F3) |
 | **Implementation invariant** | A property of shipped code, true until someone edits the code | `audit/test_counterexamples.py` CE-09…CE-12 |
 | **Security assumption** | Imported from a layer these theorems do not model. If it fails, the theorems become vacuous | R1 (root integrity), root identity (U1), acyclicity enforcement |
-| **Speculative extension** | Not implemented, not proved | `EXTENSION-SOCKETS.md`, ledger H1/H2 |
+| **Speculative extension** | Not implemented, not proved | `EXTENSION-SOCKETS.md`, ledger `LEDGER-H1`/`LEDGER-H2` |
 
 A statement never changes class by being repeated. In particular: **a Lean file
 that does not compile is not a proof**, and `formal/MinorityProphetV2.lean` does
@@ -104,7 +104,8 @@ ops error" is FALSE** (CE-04, CE-05). The theorem counts *units of root-set
 change*. One deleted claim record orphans all of its children at once; one
 compromised signing key mints unboundedly many roots. Converting the proved
 budget into an incident budget requires a bound on units-per-incident that does
-not currently exist anywhere in the requirement stack (ledger H2).
+now has a tested reference implementation but remains a deployment requirement
+(ledger `LEDGER-H2`).
 
 ### The attacker's budget is not the margin, in actions
 

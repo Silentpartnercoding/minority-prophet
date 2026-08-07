@@ -125,6 +125,7 @@ class RootRegistryTests(unittest.TestCase):
         workers = [ctx.Process(target=concurrent_issue, args=(str(self.path), f"obs-{i}", f"nonce-{i}", queue)) for i in range(2)]
         for worker in workers: worker.start()
         for worker in workers: worker.join(10)
+        self.assertTrue(all(worker.exitcode == 0 for worker in workers))
         self.assertEqual(sorted(queue.get(timeout=2) for _ in workers), ["issued", "limited"])
         self.assertTrue(self.registry(roots_per_window=1).verify_integrity())
 

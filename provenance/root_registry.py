@@ -147,7 +147,21 @@ class RootRegistry:
     def _connect(self) -> sqlite3.Connection:
         db = sqlite3.connect(self.path, timeout=10, isolation_level=None)
         db.row_factory = sqlite3.Row
-        db.execute("PRAGMA journal_mode=WAL")
+        # A fresh registry may be opened by several spawned processes at once.
+        # Install the busy handler before either process attempts the WAL-mode
+        # transition; otherwise PRAGMA journal_mode can fail immediately while
+        # the other process is creating the database.
+        db.execute("PRAGMA busy_timeout=10000")
+        deadline = time.monotonic() + 10
+        while True:
+            try:
+                db.execute("PRAGMA journal_mode=WAL")
+                break
+            except sqlite3.OperationalError as exc:
+                if "locked" not in str(exc).lower() or time.monotonic() >= deadline:
+                    db.close()
+                    raise
+                time.sleep(0.01)
         db.execute("PRAGMA synchronous=FULL")
         db.execute("PRAGMA foreign_keys=ON")
         return db

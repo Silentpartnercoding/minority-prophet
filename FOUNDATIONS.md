@@ -39,6 +39,12 @@ This is a distributional benchmark property, not a proof that minority views are
 5. **Abstention:** insufficient or contradictory evidence should permit no decision.
 6. **Revision:** new evidence can change beliefs without erasing the prior state.
 7. **Auditability:** an output must be traceable to claims, roots, weights, and transformations.
+8. **Verifier independence:** a verifier is not trusted merely because it is a
+   third party. Its rules must be transparent, it must remain independent of
+   the evidence producer, it must expose uncertainty through abstention, and
+   it must be unable to mint, alter, or promote the evidence it verifies. A
+   component that both manufactures and verifies an evidence root cannot make
+   that root independent by attesting to itself.
 
 These properties can conflict. For example, monotonicity can fail under newly discovered dependence, and competence estimates can encode feedback loops. Experiments must state which assumptions are active.
 
@@ -49,5 +55,11 @@ Version 0.1 formalizes the core objects, defines reproducible synthetic worlds, 
 ## Mathematical limits and open questions
 
 No deterministic aggregator can infer truth from votes alone when the observation process is unidentified: two worlds can yield the same vote vector with opposite ground truth. Recovery therefore depends on explicit assumptions about observation reliability, lineage accuracy, independence, adversarial power, or access to verification.
+
+Verifier independence is therefore an assumption that must be evidenced, not
+a label assigned by topology. Deployments must identify who can create roots,
+who can verify them, which rules each applies, and what happens when those
+roles overlap. Unknown or overlapping provenance widens uncertainty; it never
+creates permission.
 
 The immediate research task is to make those assumptions visible and test their failure boundaries. The next formal step is a machine-checked statement of copy invariance; the next experimental step is an ancestry-aware reference method evaluated against controls.

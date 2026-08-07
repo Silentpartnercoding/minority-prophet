@@ -7,6 +7,35 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class EvidenceAlignmentTests(unittest.TestCase):
+    def test_foundations_require_verifier_independence(self):
+        foundations = (ROOT / "FOUNDATIONS.md").read_text()
+        self.assertIn("Verifier independence", foundations)
+        self.assertIn("not trusted merely because it is a\n   third party", foundations)
+        self.assertIn("unable to mint, alter, or promote the evidence it verifies", foundations)
+        self.assertIn("Unknown or overlapping provenance widens uncertainty", foundations)
+
+    def test_hvi_1_is_falsifiable_and_does_not_overclaim_independence(self):
+        hypotheses = (ROOT / "RESEARCH-HYPOTHESES.md").read_text()
+        prose = " ".join(hypotheses.split())
+        self.assertIn("HVI-1 — verifier independence under shared control", hypotheses)
+        self.assertIn("**Null hypothesis:**", hypotheses)
+        self.assertIn("**Failure condition:**", hypotheses)
+        self.assertIn("**Success condition:**", hypotheses)
+        self.assertIn("unknown control always abstains or escalates", prose)
+        self.assertIn("cannot discover undisclosed real-world common control", prose)
+        self.assertIn("does not itself grant authority", prose)
+
+    def test_formal_ledger_matches_bounded_issuance_reference(self):
+        ledger = json.loads((ROOT / "formal/THEOREM-LEDGER.json").read_text())
+        entries = {entry["id"]: entry for entry in ledger["claims"]}
+        bounded = entries["LEDGER-H2"]
+        self.assertEqual(bounded["proof_status"], "tested_reference_implementation")
+        self.assertGreaterEqual(len(bounded["implementation_tests"]), 4)
+        self.assertIn("not evidence that a particular production path uses it",
+                      bounded["prohibited_overstatement"])
+        requirements = (ROOT / "PROVENANCE-REQUIREMENTS.md").read_text()
+        self.assertNotIn("new in v3, unimplemented", requirements)
+
     def test_active_paper_uses_canonical_exp007a_values(self):
         paper = (ROOT / "papers/minority-prophet-v1.0.3.md").read_text()
         self.assertIn("EXP007A", paper)

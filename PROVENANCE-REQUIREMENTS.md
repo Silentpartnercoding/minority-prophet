@@ -164,8 +164,8 @@ conversions_to_reverse     R3 gate, in adversary actions   (new in v3)
 abstention_reachable       parity flag, T6                 (new in v3)
 unattributed               claims with no recorded root    (new in v3)
 immunity_applicable        R2 precondition check; verdict output
-roots_per_identity_window  R1.4 gate                       (new in v3, unimplemented)
-orphans_per_delete         R1.4 gate, must be 0            (new in v3, unimplemented)
+roots_per_identity_window  R1.4 gate                       (reference implementation; deployment integration required)
+orphans_per_delete         R1.4 gate, must be 0            (reference implementation; deployment integration required)
 edge_confidence, inferred  lineage schema extensions, backward compatible
 ```
 
