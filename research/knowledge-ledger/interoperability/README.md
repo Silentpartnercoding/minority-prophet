@@ -15,11 +15,16 @@ Run:
 ```bash
 python3 scripts/run_knowledge_transaction.py \
   research/knowledge-ledger/interoperability/reference-input.json \
-  research/knowledge-ledger/interoperability/reference-receipt.json
+  research/knowledge-ledger/interoperability/reference-receipt.json \
+  research/knowledge-ledger/interoperability/FIRST-TRANSMISSION.md
 ```
 
 `reference-receipt.json` is an executable conformance artifact, not an
 experimental finding.
+
+[`FIRST-TRANSMISSION.md`](FIRST-TRANSMISSION.md) is its generated, human-readable
+companion. It gives the milestone a memorable voice while preserving the same
+limits and conclusion. The JSON receipt remains authoritative.
 
 ## Cross-system acceptance gate
 

@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from knowledge_ledger import evaluate_transaction, verify_content_digest
+from scripts.run_knowledge_transaction import render_transmission
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +39,14 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
         result = evaluate_transaction(self.load_reference_input())
         result["conclusion"] = "absent_within_declared_scope"
         self.assertFalse(verify_content_digest(result))
+
+    def test_human_transmission_preserves_claim_limits(self):
+        result = evaluate_transaction(self.load_reference_input())
+        transmission = render_transmission(result)
+        self.assertIn("Not established", transmission)
+        self.assertIn(result["contentDigest"], transmission)
+        self.assertIn("JSON receipt is authoritative", transmission)
+        self.assertNotIn("proved absent", transmission.lower())
 
     def test_complete_search_permits_only_bounded_absence(self):
         payload = self.load_reference_input()
