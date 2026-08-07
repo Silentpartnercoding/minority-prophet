@@ -65,3 +65,9 @@ control relationships affect aggregation. It cannot discover undisclosed
 real-world common control without trustworthy external evidence. A signature
 proves key use, not organizational independence; the resulting assessment does
 not itself grant authority.
+
+**Canonical result:** Supported in HVI-1 v1 across all six frozen hypotheses.
+Representation laundering and self-verification added zero control-aware roots,
+and unknown control always escalated. The matched separate-controller condition
+also demonstrated the boundary: organizational separation does not establish
+causal evidence independence or truth. See `results/hvi1-v1/`.
