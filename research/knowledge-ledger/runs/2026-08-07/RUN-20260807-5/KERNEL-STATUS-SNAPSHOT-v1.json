@@ -1,0 +1,244 @@
+{
+  "schema": "minority-prophet.kernel-status-snapshot.v0.1",
+  "runId": "RUN-20260807-5",
+  "version": 1,
+  "ladder": [
+    "seeded",
+    "preregistered",
+    "fixture-passed",
+    "exhaustive-passed",
+    "randomized-passed",
+    "adversarial-passed",
+    "retrospective-passed",
+    "shadow-passed",
+    "bounded-pilot-passed"
+  ],
+  "summary": {
+    "totalKernels": 12,
+    "advancedThisRun": 0,
+    "stillSeeded": 11,
+    "highestStateReached": "adversarial-passed (KL-000, final). The unenforced-decision reason for not advancing is REPAIRED (I12, demonstrated at exactly 22,440 and 38,760 worlds, no fixture involved, nothing else moved). The state still does not advance: verified-independent is an owner promotion decision, and the independent implementation -- whose checker is its own -- has not run against v1.3.0.",
+    "failedGates": "none",
+    "blockedSafety": "none blocked by safety this run; KL-004 and KL-009 remain capped at retrospective/simulation by design",
+    "firstTransactionGate": "NOT REACHED",
+    "thisRun": "Deliberate reopening for the single committed gate, on owner direction. v1.3.0 registered and passed at exact registered surfaces; FINAL-RECORD appended; A1/A2 remain undecided by instruction; PR branch rebuilt covering every commit; nothing pushed. Program closed again."
+  },
+  "kernels": {
+    "KL-000": {
+      "state": "adversarial-passed",
+      "resultStatus": "confirmatory",
+      "lastCompletedGate": "v1.3.0-I12-decision-enforcement (RUN-20260807-5, passed at exact registered surfaces)",
+      "nextGate": "NONE COMMITTED -- the I12 gate is paid and the program is closed again. Everything further is an owner decision: (1) push agent/kl-000-conformance and open the draft PR (prepared, tested, unpushed); (2) decide A2 (19,152 worlds) and A1 (4 worlds) -- see permanentLimits, still open by instruction; (3) whether verified-independent is promotable, noting the independent implementation has conformed to v1.2.0 but has not run against v1.3.0 (I12 is a checker-side change; the evaluator and all pinned bytes are identical, so its v1.2.0 conformance evidence is undisturbed -- but its own checker does not carry I12); (4) any future commission (IND v1.3.0 re-run, or the fourth implementation on a reference-free machine) under the binding packaging rules LEAK-101/LEAK-102; (5) the digest-moving bundle (margin rename / majoritySide, F4 empty-ledger value) if ever wanted.",
+      "blockers": [],
+      "claimAllowed": "FINAL (updated at v1.3.0). Within the declared bounds: the evaluator, the conclusion function, and the canonical form agree across two independent implementations in different languages with no shared code -- the conclusion function across the full 110,840-receipt enumeration, the canonical form and digests for the two pinned receipts C11 and C12 (byte-identical, 703 and 691 bytes), NOT for all 110,840. Zero violations of every registered hard invariant in every run of both implementations. Every specification change across four protocol versions altered nothing the evaluator does (no count, conclusion, or pinned digest ever moved, each time as a registered prediction). NEW: the two owner decisions are enforced by invariant I12, with power demonstrated at the exact previously measured inversion surfaces (22,440 and 38,760 worlds, no fixture involved). Qualified by LEAK-101: the implementer saw the expected counts in the v1.1.0 package; the digest result is unaffected -- a count gives no path to a hash and the receipt object was registered after the leaked package -- and the qualification travels with the claim.",
+      "gatesCompleted": [
+        "registry-entry",
+        "complete and commit preregistration",
+        "fixture",
+        "exhaustive-small",
+        "randomized",
+        "adversarial",
+        "independent reimplementation (v1.0.0)",
+        "specification repair v1.1.0",
+        "independent re-run against v1.1.0",
+        "specification repair v1.2.0",
+        "independent re-run against v1.2.0 (IND-20260807-3)",
+        "v1.3.0-I12-decision-enforcement (the committed gate, RUN-20260807-5)"
+      ],
+      "gatesFailed": [],
+      "knownLimits": [
+        "ADV-001 high: an under-declared search space is undetectable, and the declaring party is the reporting party",
+        "ADV-002..ADV-007: unchanged from RUN-20260807-1",
+        "F1/F2: I2 and I5 are receipt-internal and vacuously satisfiable; B2 does not fail literal I2 (measured in both implementations)",
+        "F3: B2 and B3 may be one ablation counted twice",
+        "F11: no cross-implementation randomized stream; candidate repair worldStreamHash",
+        "F12: adversarial phase defined by reference to a test file",
+        "F13: C06's note contradicts C04/C07; fixture carried as-registered with the error on record",
+        "F14: unavailable is reported but inert",
+        "F15: exhaustive phase exercises conclusion logic on 63% of what it enumerates (reinstated)",
+        "I9-coverage: I9 exercised by zero non-adversarial worlds (reinstated)",
+        "G4/H2 -- REPAIRED at v1.3.0 (RUN-20260807-5), retained for history: both owner decisions were enforced by zero invariants through v1.2.0 (R1 inverted: 22,440 receipts, caught by C11+C12 only; R5.2 inverted: 38,760, caught by C12 ALONE; 0 invariant violations in all four measurements). I12 now enforces both, demonstrated at those exact surfaces with no fixture involved. Residual: the independent implementation's checker does not carry I12 and it has not run against v1.3.0",
+        "A1/A2 (permanentLimits): two conclusion-function readings closed by registered text but never decided -- A1 (4 worlds), A2 (19,152 worlds, 17.3%, UNDECIDED owner decision)",
+        "margin-collision (IND-3 finding, section 3): absolute margin collides opposite worlds -- registered fixtures C01 (1 support, 0 oppose) and C12 (1 support, 2 oppose) carry identical margin=1 and conversionsToReverse=1; 38,760 receipts report a positive margin for a claim in the evidential minority; direction is recoverable from the root lists. Implementer's recommendation on record: do NOT reverse R5.2; consider a v1.3.0 rename (rootCountGap) or a majoritySide member, digest-moving and so deliberately versioned",
+        "H1: four self-miscounts across the program's documents (operator leak counts three/five/six; 'ten members'; 'all nine non-contentDigest members' where eight) -- each caught by counting from scratch; Amendment 2 corrects the protocol site, the preregistration's two sites stay as committed",
+        "LEAK-101: registration prediction tables and commission packages have conflicting requirements; v1.1.0's package leaked every screened value via PROTOCOL.md"
+      ],
+      "quantitativeCaveat": "75.7% of randomized worlds fail closed; invariants exercised on receipt-producing worlds see 243,381 draws (95% bound 1.23e-5), I3 sees all 1,000,000, I9 sees zero non-adversarial worlds in any run to date. Independent randomized counts are not comparable quantities (F11).",
+      "stateNote": "FINAL STATE (updated at RUN-20260807-5, which reopened the closed program for the single committed gate and closed it again): adversarial-passed under protocols v1.0.0 through v1.3.0. Established across two independent implementations in different languages with no shared code: the evaluator, the complete conclusion function (exhaustive distribution 160/49,480/41,820/19,380, identical), and the canonical form and digests for the two pinned receipts C11 (703 bytes) and C12 (691 bytes) -- byte-identical, NOT for all 110,840. Qualified by LEAK-101 (the implementer saw expected counts in the v1.1.0 package; the digest result is unaffected and the qualification travels with the claim). NEW at v1.3.0: the unenforced-decision finding that capped RUN-20260807-4's close is REPAIRED -- both owner decisions are now enforced by invariant I12, whose power was demonstrated at the exact previously measured surfaces (ABL-R1 caught on exactly 22,440 worlds, ABL-R52 on exactly 38,760, no fixture involved, zero other violations), with nothing else moving. The state remains adversarial-passed: verified-independent is an owner promotion decision, and the independent implementation -- whose checker is its own -- has not run against v1.3.0. A1 and A2 remain undecided owner decisions (4 and 19,152 worlds).",
+      "committedGates": [],
+      "permanentLimits": {
+        "note": "The two conclusion-function ambiguities the program closed by registered text but never brought to an explicit decision the way R1 and R5.2 were. Recorded per owner instruction at close-out as owner decisions the program did not reach. Both implementations currently follow the registered text; no invariant enforces either reading (the same mechanistic gap as R1/R5.2). Neither is decided here.",
+        "A1": {
+          "question": "Does an absence conclusion require at least one supporting root, or is complete coverage alone sufficient?",
+          "registeredTextImplies": "coverage alone: an absence claim with complete coverage and an EMPTY evidence ledger concludes absent_within_declared_scope (conclusionFunction.absence has no support term)",
+          "alternativeReading": "absence requires >= 1 supporting root; the empty-ledger worlds conclude not_established",
+          "worldsAffected": 4,
+          "consequence": "The 4 affected worlds are the epistemically loudest receipts the schema can emit: bounded absence asserted with no evidence in the ledger at all (the independent implementer's F7/A1, maintained through all three of its runs).",
+          "status": "owner decision not reached; closed by text without a listed repair (G5); recorded, not decided"
+        },
+        "A2": {
+          "question": "Does a presence conclusion require complete search coverage?",
+          "registeredTextImplies": "no: conclusionFunction.presence has no coverage term, so 'supported' is reachable with zero searched locations",
+          "alternativeReading": "presence also requires search.complete; the affected worlds conclude not_established",
+          "worldsAffected": 19152,
+          "consequence": "19,152 of 110,840 receipt-producing worlds (17.3%) change conclusion between the readings -- the largest undecided surface in the kernel. A third implementation reading it the other way would diverge on all of them while passing every invariant (the G5/G4 combination). UNDECIDED: the program records this as an owner decision it did not reach, with both readings preserved. The independent implementer chose the no-coverage reading in IND-1 on the argument that presence is existential; the registered text agrees; neither constitutes a decision of record.",
+          "status": "owner decision not reached; recorded, not decided"
+        }
+      },
+      "committedGatesNote": "Empty: the single committed gate (v1.3.0-I12-decision-enforcement) was paid by RUN-20260807-5 and moved to gatesCompleted with its evidence. No gate remains committed; everything further is an owner decision (see nextGate)."
+    },
+    "KL-001": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-002": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Construct the source-laundering packets and preregister accuracy, Brier score, confident-error, abstention, root error, tokens, cost, and latency. The first falsifiable check needs no agent at all: 20 paraphrases of one false source must collapse to one root. KL-000 fixture C07 already demonstrates the evaluator does this for 20 identical rootIds; KL-002's real gate is whether an agent PIPELINE assigns the same rootId to 20 paraphrases, which is a root-ATTRIBUTION question the evaluator never sees.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "metered model calls may exceed the approved budget; requires founder authorization before any paid inference",
+        "constraint ADV-004: root identity is byte identity, so a paraphrase pipeline that emits inconsistent rootId strings splits one source into many roots without any adversary"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-003": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Identify a public replication corpus with historical cutoffs and later independent replication outcomes, and freeze outcomes from the fitting process before any model is fitted. The first falsifiable check is that the frozen holdout can be reconstructed byte-identically from the declared cutoff rule alone.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "depends on third-party replication datasets whose licences have not been reviewed",
+        "no public dataset has been selected; this is the binding prerequisite, not the analysis"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-004": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Retrospective only. Select conditions with documented cohort overlap and later higher-quality evidence, and preregister the distance-from-later-estimate endpoint. The first falsifiable check is a cohort-overlap collapse on published aggregate data with no patient-level records.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "SAFETY: never emits patient guidance; retrospective research only; no live decision authority",
+        "patient-level data would require explicit human authorization and is out of scope for this program",
+        "blocked-safety beyond retrospective stage regardless of result quality"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-005": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Assemble timestamped closed news events and preregister BOTH false early confirmation and delay to correct confirmation, so that permanent silence cannot score well. The first falsifiable check is that the metric penalises a system which never confirms anything.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "a single-endpoint design would let indefinite abstention win; the two-sided metric is the prerequisite, not a refinement"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-006": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Synthetic or closed case files with known dependency structure. Preregister false corroboration AND suppression of independent exculpatory evidence as joint endpoints. The first falsifiable check is that a known-dependent corroboration chain is collapsed to its true root count.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "SAFETY: never emits a real verdict or risk score",
+        "constraint ADV-005: shared upstream dependency is not representable in schema v0.1, and dependency structure is the entire subject of KL-006. This kernel cannot be run meaningfully until the schema carries dependency edges."
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-007": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Recruit blind reconstruction teams and preregister agreement on sources, exclusions, dependencies, and uncertainty -- explicitly NOT agreement on the policy choice. The first falsifiable check is an inter-rater protocol validated on a frozen packet before any team is engaged.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "contacting human participants requires explicit founder authorization",
+        "measures evidence accounting, not ideological convergence; an endpoint that rewards forced agreement would invalidate the design"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-008": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Simulation or archived ground truth with injected common-mode sensor/model failures, with geographic and temporal coverage stated explicitly. The first falsifiable check is that derived products sharing one instrument are collapsed into one dependency family.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "constraint ADV-005: one instrument feeding many derived products is exactly a shared-dependency structure, which schema v0.1 cannot represent"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-009": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Simulation only. Preregister the maximum unnecessary-fallback rate BEFORE measuring catastrophic-action reduction, so the tradeoff cannot be chosen after seeing results. The first falsifiable check is that the simulator refuses to expose any actuation interface.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "SAFETY: simulation and shadow mode only; never connected to live actuation",
+        "blocked-safety beyond shadow stage; no live authority is sought by this program"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-010": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Known textual genealogies with held-out expert source families. Preregister family-reconstruction agreement and require that competing interpretations and missing archives survive in the output. The first falsifiable check is that a text with two scholarly genealogies produces both, not a resolved single answer.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "an endpoint rewarding a single reconstruction would violate the requirement to preserve disputes"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    },
+    "KL-011": {
+      "state": "seeded",
+      "resultStatus": "none",
+      "lastCompletedGate": "registry-entry",
+      "nextGate": "Unchanged in substance: KL-011's two-implementation prerequisite is substantively met and nothing about it is registered or executed. v1.3.0 improves its inheritance -- the conclusion function it would build on is now invariant-enforced on the reference side (I12) -- while A2's 19,152-world undecided surface still transfers to any transaction semantics. First falsifiable step: preregistration at schema v0.2, owner's to schedule.",
+      "blockers": [
+        "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+        "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+        "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+        "blocked-prerequisite: IND-20260807-3 -- cross-implementation digest agreement under v1.2.0 (evaluator and conclusion-function agreement already established; separate owner commission)",
+        "constraint SCH-005: flipBudget, unattributed evidence, and uncertainty are named as evidence-ledger fields in RESEARCH-DIRECTION.md but are never emitted by the receipt. A protected field the receipt does not carry cannot be shown to survive crossing systems.",
+        "constraint ADV-001: an under-declared search space is undetectable, so cross-system preservation of coverage is only as strong as the original declaration"
+      ],
+      "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed."
+    }
+  },
+  "basedOn": "RUN-20260807-4 final snapshot; KL-001..KL-010 unchanged; KL-000 updated for the paid I12 gate; KL-011 note updated. The program is closed again with no committed gate outstanding."
+}
