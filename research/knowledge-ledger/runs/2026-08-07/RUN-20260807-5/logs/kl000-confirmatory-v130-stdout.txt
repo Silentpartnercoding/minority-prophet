@@ -1,0 +1,12 @@
+{
+  "result": "passed",
+  "invalidationReasons": [],
+  "phases": {
+    "fixture": true,
+    "baselines": null,
+    "exhaustive": true,
+    "randomized": true,
+    "decisionAblations": true
+  }
+}
+written: results/kl000-confirmatory-v1.3.0.json
