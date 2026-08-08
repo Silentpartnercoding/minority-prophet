@@ -13,6 +13,10 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from experiments.hgd1.run_hgd1 import (
     EVENT_THRESHOLD,
     assess,
@@ -24,7 +28,6 @@ from experiments.hgd1.run_hgd1 import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[2]
 PROTOCOL = ROOT / "experiments" / "HGD-2-PREREGISTRATION.md"
 MANIFEST = ROOT / "experiments" / "hgd2" / "source-manifest.json"
 SOFTWARE = ROOT / "experiments" / "hgd2" / "software-detector-records.json"
