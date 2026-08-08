@@ -26,5 +26,5 @@
     "KL-000"
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 held adversarial-passed through protocol v1.3.0 with zero violations in every run of both implementations; the dependency is satisfied for fixture-stage work. Promotion of any KL-000 claim remains a separate owner decision.",
-  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (2 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
 }

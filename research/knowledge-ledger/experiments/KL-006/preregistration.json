@@ -5,7 +5,8 @@
     "status": "unanswered",
     "reason": "assigned at registration, when this kernel's protocol is written and frozen; the kernel is seeded and has no protocol yet"
   },
-  "status": "seeded-migrated-v0.2",
+  "status": "incomplete-seed",
+  "statusNote": "the registered vocabulary for a seeded kernel (enforced by test_no_experiment_claims_progress_without_the_evidence_for_it: a seeded experiment must not look preregistered). The v0.2 migration is recorded in migrationRecord, not in status.",
   "migrationRecord": {
     "migratedBy": "RUN-20260807-8",
     "from": "minority-prophet.preregistration.v0.1 (preserved in git history at this path)",
