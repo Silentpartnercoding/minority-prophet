@@ -72,6 +72,7 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`benchmark/`](benchmark/) — synthetic worlds, evaluation metrics, and CLI
 - [`aggregation/`](aggregation/) — public baseline algorithms
 - [`experiments/resolved_weather_v01.py`](experiments/resolved_weather_v01.py) — Experiment 002 acquisition and scoring runner
+- [`experiments/lir1/`](experiments/lir1/) — preregistered lineage-inference boundary track; no research result claimed
 - [`provenance/`](provenance/) — evidence graph implementation and JSON Schema
 - [`results/resolved-weather-v0.1.manifest.json`](results/resolved-weather-v0.1.manifest.json) — canonical derived-record hashes and reproducibility boundary
 - [`results/hes1-v1/`](results/hes1-v1/) — blind evidence-seeking result: strong coverage recovery with a material false-negative software limitation
