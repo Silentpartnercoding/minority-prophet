@@ -1,0 +1,5 @@
+host_os=Darwin 25.4.0
+python=3.14.6
+python_executable=$HOME/Development/.mp-runner-venv/bin/python
+git_head=d45f83fe9919ec330cbc7a86cc25c0ddb31dde68
+branch=agent/bl044-lin000-result

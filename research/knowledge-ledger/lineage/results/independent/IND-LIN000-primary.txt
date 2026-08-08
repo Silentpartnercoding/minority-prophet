@@ -1,0 +1,102 @@
+== primitive self-tests (published vectors, no CPython consulted) ==
+  [ok] SHA-256("")
+  [ok] SHA-256("abc")
+  [ok] SHA-256(FIPS 448-bit message)
+  [ok] MT19937 init_genrand(5489) first output == 3499211612
+  [ok] MT19937 init_genrand(5489) reference stream (first 10 words)
+  [ok] init_by_array + genrand_res53 vs Ruby 2.6 MT19937 (5 doubles)
+  [ok] init_genrand(20260808) == Ruby 2.6 Random.new(20260808) stream
+
+== exhaustive count, derived from count(k) = k! * 2^k ==
+  k=1  2
+  k=2  8
+  k=3  48
+  k=4  384
+  k=5  3840
+  k=6  46080
+  total 50362   (registration declares 50362: agrees)
+
+== exhaustive phase (primary reading: interleaved:parent-major null-first p-asc s-asc last-fast) ==
+  worlds enumerated : 50362 (matches derived count)
+  stream bytes      : 1189512
+  sha256            : a71c64ebd472db09ff7813a1a470d002c014a6a4d0cbd6b515aaad61ef3be711
+  target            : b56d1228b7c9765381d046069c2a25e60cb2a406baabeed018e859a445a8ccbe
+  verdict           : MISS
+
+  -- exhaustive counters --
+  worlds                                  50362
+  side-consistent worlds                  5912
+  side-inconsistent worlds                44450
+  verdict 1 / 0 / abstain                 15477 / 15477 / 19408
+  L1-positive  worlds checked             5912
+  L1-positive  VIOLATIONS (expect 0)      0
+  L1-negative  worlds S_a != roots (>0)   44450
+  L1-negative  scope-note root in both(>0) 44450
+  T1-positive  rewirings checked          23952
+  T1-positive  base worlds with >=1       5512
+  T1-positive  VIOLATIONS (expect 0)      0
+  T1-viol(i) orphan   rewirings           15890
+  T1-viol(i) orphan   S_a changed         15890
+  T1-viol(i) orphan   VERDICT changed(>0) 5244
+  T1-viol(i) attach   rewirings           15890
+  T1-viol(i) attach   S_a changed         15890
+  T1-viol(i) attach   VERDICT changed(>0) 5244
+  T1-viol(ii) cross-side rewirings        11976
+  T1-viol(ii) S_a changed (>0)            11976
+  T1-viol(ii) VERDICT changed (>0)        7272
+  ablation LB-shallow  caught by T1-pos   13152
+  ablation LB-shallow  caught by L1-pos   2904
+  ablation LB-claimcount caught by L1-pos 5786
+  side-consistent worlds with a non-root  5786
+  first L1-negative witness               -|0;0|1
+  first scope-note witness                -|0;0|1
+
+== randomized phase (primary reading: R3=draw@0 R2=randbelow20 R4=randbelow_i R5=randbelow2 R6=lt0.9-keep) ==
+  seed              : 20260808
+  worlds            : 100000
+  stream bytes      : 4241531
+  sha256            : 2870b954492fe52ff5cc46baee99bde855cbbcbe1bcd06ce8b3dd3ef99a1b40c
+  target            : f200184fd3f4d3c6ada4046ef4e751862d5ff70ce4ea0f6b1b8688d7dbdee2ca
+  verdict           : MISS
+  k histogram       : 1:4945 2:5122 3:4962 4:5032 5:4950 6:4988 7:4985 8:4916 9:5082 10:4997 11:4978 12:4910 13:5045 14:5044 15:4905 16:5083 17:4977 18:5107 19:5005 20:4967
+
+  -- randomized counters --
+  worlds                                  100000
+  side-consistent worlds                  54578
+  side-inconsistent worlds                45422
+  verdict 1 / 0 / abstain                 39281 / 39575 / 21144
+  L1-positive  worlds checked             54578
+  L1-positive  VIOLATIONS (expect 0)      0
+  L1-negative  worlds S_a != roots (>0)   45422
+  L1-negative  scope-note root in both(>0) 45422
+  T1-positive  rewirings checked          965315
+  T1-positive  base worlds with >=1       41688
+  T1-positive  VIOLATIONS (expect 0)      0
+  T1-viol(i) orphan   rewirings           263827
+  T1-viol(i) orphan   S_a changed         263827
+  T1-viol(i) orphan   VERDICT changed(>0) 76700
+  T1-viol(i) attach   rewirings           389375
+  T1-viol(i) attach   S_a changed         389375
+  T1-viol(i) attach   VERDICT changed(>0) 112344
+  T1-viol(ii) cross-side rewirings        398082
+  T1-viol(ii) S_a changed (>0)            398082
+  T1-viol(ii) VERDICT changed (>0)        162663
+  ablation LB-shallow  caught by T1-pos   553123
+  ablation LB-shallow  caught by L1-pos   34485
+  ablation LB-claimcount caught by L1-pos 47464
+  side-consistent worlds with a non-root  47464
+  first L1-negative witness               -|1;0|1;-|1;-|0;1|0;0|1;0|1;3|0;2|1;1|1;-|1;-|1;5|1;5|1;-|0;-|0;8|1;11|1
+  first scope-note witness                -|1;0|1;-|1;-|0;1|0;0|1;0|1;3|0;2|1;1|1;-|1;-|1;5|1;5|1;-|0;-|0;8|1;11|1
+
+== pinned minimal two-claim L1-negative witness ==
+  world             : -|0;0|1
+  side-consistent   : false
+  S_0               : [0]
+  S_1               : [0]
+  roots asserting 0 : [0]
+  roots asserting 1 : []
+  S_1 != roots(1)   : true
+  root 0 in S_0 & S_1: true
+  verdict           : -1 (abstain = -1)
+
+wrote out/exhaustive-sample.txt and out/randomized-sample.txt (first 40 worlds each)
