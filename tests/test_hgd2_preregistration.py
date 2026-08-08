@@ -28,6 +28,8 @@ class Hgd2PreregistrationTests(unittest.TestCase):
             "Structural-feasibility amendment",
             "paired union of suites 100 and 101",
             "423f20e8ead850bf64cd93cd4a73dc1161d7b5bb6036328e16fc32e27d09f0d1",
+            "Pair-split feasibility correction",
+            "20 confirmatory pairs",
         ):
             self.assertIn(required, protocol)
 

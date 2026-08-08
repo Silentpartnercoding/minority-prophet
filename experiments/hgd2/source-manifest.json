@@ -19,7 +19,10 @@
     "nistSard100": {
       "url": "https://samate.nist.gov/SARD/downloads/test-suites/2015-03-15-c-test-suite-for-source-code-analyzer-v2-vulnerable.zip",
       "sha256": "423f20e8ead850bf64cd93cd4a73dc1161d7b5bb6036328e16fc32e27d09f0d1",
-      "inspectionStatus": "frozen-before-acquisition"
+      "bytes": 418671,
+      "inventoryEntries": 827,
+      "inventorySha256": "bfd3bb88c1d39d48cc43c2c7aa5958ad7e41564e8af55b63be436aebb05eaac5",
+      "inspectionStatus": "acquired-and-structurally-inspected-before-detector-execution"
     }
   },
   "tools": {

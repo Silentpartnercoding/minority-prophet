@@ -166,5 +166,18 @@ NIST publishes SHA-256
 Only reciprocal pairs whose two manifests name each other and share a CWE are
 eligible. Both members must be accepted or candidate, unambiguous, and
 single-labeled. Development/confirmation splitting occurs by reciprocal pair,
-within CWE, so a good/bad pair can never cross the boundary. This amendment
+within CWE, so a good/bad pair can never cross the boundary. The development
+count is `ceil(0.20 * reciprocal_pairs_in_CWE)`; all remaining pairs are
+confirmatory. A CWE with only one eligible pair is development-only. This amendment
 changes no detector, failure, metric, threshold, or success rule.
+
+### Pair-split feasibility correction
+
+Before detector execution, reciprocal-pair enumeration found 26 eligible
+pairs but only nine confirmatory pairs under the per-CWE ceiling rule because
+many CWE strata contain one pair. That split is superseded before outcomes.
+Pairs sort by SHA-256 of `good_case_id|bad_case_id`, then CWE and IDs. The first
+`ceil(0.20 * all_eligible_pairs)` are development-only and all remaining pairs
+are confirmatory. Pair integrity is preserved; selection remains independent
+of source content and detector performance. For the frozen 26 eligible pairs,
+this yields six development and 20 confirmatory pairs.
