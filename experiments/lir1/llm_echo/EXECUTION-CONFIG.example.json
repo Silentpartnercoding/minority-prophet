@@ -8,11 +8,13 @@
   },
   "assignments": {
     "model-a": {
+      "adapter": "claude-cli",
       "provider": "replace-provider",
       "model": "replace-exact-model-id",
       "seedSupported": false
     },
     "model-b": {
+      "adapter": "codex-cli",
       "provider": "replace-provider",
       "model": "replace-exact-model-id",
       "seedSupported": false
