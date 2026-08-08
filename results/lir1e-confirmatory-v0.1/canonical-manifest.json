@@ -1,0 +1,40 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "LIR-1E",
+  "status": "canonical-constructed-record-root-recovery-supported-with-material-abstention",
+  "files": {
+    "experiments/lir1/PREREGISTRATION.md": "f7032c7453e847e91d5311de89f5ae4172c3b08ef0a716e53f5f7a63bd2463d0",
+    "experiments/lir1/llm_echo/PREREGISTRATION.md": "18c62689262324695923f6122e1279f822504ed002c3cfb58e3db0e734f1a49c",
+    "experiments/lir1/llm_echo/INVENTORY-COMMITMENTS.json": "3b4445fdd427dcd2210cc77f59cd6961a39ab38e9f929f70c34c38af41d114bd",
+    "experiments/lir1/llm_echo/PROMPT.txt": "e00000c92202e9513244a4ecc9f9d7d48427e422e76b117fef713af9fef6bb49",
+    "experiments/lir1/llm_echo/generate_cases.py": "19319830383435837949edc037daedf65d6f8bb60277f07f5b6b743715d6aab0",
+    "experiments/lir1/llm_echo/run_models.py": "f57a12c406679f1a5cce165d83f33d6209b1d47f4d605a037569dcabb243f758",
+    "experiments/lir1/llm_echo/EXECUTION-CONFIG.confirmatory.json": "f71e994e30f7374d45851da3942d727d669c33f5797ac924bc6bc5471cb9eae8",
+    "experiments/lir1/llm_echo/CONFIRMATORY-ANALYSIS.md": "cdb5d98d7607161b4746bade928ea26c01101f4878590855fd1f92698d3a50c3",
+    "experiments/lir1/llm_echo/CONFIRMATORY-RESPONSE-COMMITMENT.json": "0a8ffbf9fe9e63f7b4a53fb260a3fa05ce97175b9cda75ed51b20c3a24627c43",
+    "experiments/lir1/llm_echo/materialize.py": "5593016f9510b4197ad3ca41cefae6a3e9b92e134287206592223c3468df4edf",
+    "experiments/lir1/llm_echo/score_confirmatory.py": "5b13750b4a19e20046e7d90d3e7adb02f4b821f20e02820cf1c69906982ea2fe",
+    "experiments/lir1/infer.py": "35bd7b07960f1a21fa9ea959b2d262ae3b6277b185708e889eedba6db6248ef1",
+    "experiments/lir1/metrics.py": "e056da834e73c218c996817c8758dccd9f68d84aefba6227ca5781ddb8ed1f8d",
+    "experiments/lir1/model.py": "b5285a6dd4bbc4c528a6341db9f1fa3962e44a8808841e7270cbf1e71a9c501c",
+    "experiments/lir1/synthetic_fixture.py": "c80e2d10e11fe2f07025a534474a71aac3518a8bd47107598a33e6a2db247221",
+    "results/lir1e-development-v0.1/result.json": "25939bac4ffcb55bdafe6100d7802c496d6d0f34e9ca6013b98811695334080e",
+    "results/lir1e-confirmatory-v0.1/README.md": "7ecf73c4a1545f3a43f91ec01bfe9920af28a07eb85aee671baf22e08033fc0d",
+    "results/lir1e-confirmatory-v0.1/REPRODUCTION.md": "385d0469d9ad58018ba8f679c34b02051748526adba9b1671eea11b0efcb3445",
+    "results/lir1e-confirmatory-v0.1/result.json": "ab95001c69a337e6d5baa5c90a8927ec0b61c138bb3790f9dfb48a3e9a227f3d"
+  },
+  "privateInput": {
+    "requestsSha256": "d04b01b9ad848fbde1c6c338fb54f0e4cdc64563972a2348cc1168883bc9c3db",
+    "constructionLabelsSha256": "582b4a3a5e2e02968214e147808302765d33abb4ad819cae9445165989f20177",
+    "responsesSha256": "7fd4a8a1cc1399195eee2a99bc1145b868a13ecbb3f511087d3aa0216bcf1bd6",
+    "claimsSha256": "5ffff9f790b9849574ed3648ccb88674e0884e97a8432c7af34ec57c31e19084",
+    "transformationLogSha256": "28f02ff264129a935ddedce890f6160920630f543a410dfa8921261a887c216c",
+    "receiptNameAndHashListSha256": "60f1aee6ae123b3dba7662a7a2ba157859b7fcbdcbeb4622cffdeb15ed07eb3e"
+  },
+  "reproduction": {
+    "cleanMaterializations": 2,
+    "cleanScoringRuns": 2,
+    "byteIdentical": true,
+    "resultSha256": "ab95001c69a337e6d5baa5c90a8927ec0b61c138bb3790f9dfb48a3e9a227f3d"
+  }
+}

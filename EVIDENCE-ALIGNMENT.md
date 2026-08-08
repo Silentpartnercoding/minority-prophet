@@ -54,6 +54,7 @@ causal independence.
 | HGD-2 | Interval accounting improved safety and preserved control accuracy, but failed frozen coverage and usefulness criteria. | A generally useful steering mechanism or proof that abstention alone solves dependent evidence. |
 | HES-1 | Frozen evidence seeking recovered substantial environmental and software coverage after abstention; all seven hypotheses passed. | Universal source competence, especially for software false-negative claims, or authority to act. |
 | LIR-1/PHEME-R2 | At 40% hidden recorded edges, hidden-parent F1 was 0.1044 (case-bootstrap 95% interval 0.0846–0.1261), rejecting the greater-than-0.50 criterion; root-pair recall was 0.2256. | Causal evidence-independence inference, all social platforms, or proof that stronger methods must fail. |
+| LIR-1E | In the 36-case constructed echo holdout at 40% hiding, root-pair F1 was 0.8309 and declared-advantage survival was 0.84 (case-bootstrap 95% interval 0.6818–0.9615), supporting the frozen criterion; inferred collapse answered 25 cases and was correct on 21. | Causal evidence independence, full-coverage truth recovery, uncontrolled real-world performance, or treating textual difference as independent observation. |
 
 ## v1.0.5 manuscript alignment
 
