@@ -1,0 +1,25 @@
+{
+  "schema": "minority-prophet.hgd1.source-manifest.v1",
+  "retrievedAt": "2026-08-08T00:17:00Z",
+  "sourceUrl": "https://aqs.epa.gov/aqsweb/airdata/daily_88101_2025.zip",
+  "archiveName": "daily_88101_2025.zip",
+  "archiveBytes": 8647326,
+  "archiveSha256": "cc8cb80bcc0317705202d12a472918438b8bee60316f54777d6f748c58ac2661",
+  "memberName": "daily_88101_2025.csv",
+  "memberBytes": 292368360,
+  "valueInspectionBeganAfterPublicCommit": "350de0b",
+  "documentation": [
+    "https://aqs.epa.gov/aqsweb/documents/about_aqs_data.html",
+    "https://aqs.epa.gov/aqsweb/documents/AQS_Data_Dictionary.html",
+    "https://www.epa.gov/aqs/aqs-guidelines-reporting-collocated-pm25-and-lead-data"
+  ],
+  "observedColumns": [
+    "State Code", "County Code", "Site Num", "Parameter Code", "POC",
+    "Sample Duration", "Date Local", "Units of Measure", "Arithmetic Mean"
+  ],
+  "limitations": [
+    "The daily archive has no per-row qualifier column; no qualifier-based exclusion can be executed.",
+    "Collocation documents shared location, not a quantified causal dependence weight.",
+    "Injected shifts test a known counterfactual failure, not historical measurement truth."
+  ]
+}
