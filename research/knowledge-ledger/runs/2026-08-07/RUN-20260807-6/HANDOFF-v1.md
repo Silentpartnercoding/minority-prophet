@@ -7,7 +7,7 @@ and committing it is yours.
 ## Where the work is
 
 ```
-worktree  /Users/james/Development/minority-prophet-first-transmission
+worktree  $HOME/Development/minority-prophet-first-transmission
 branch    agent/knowledge-ledger-run-20260807-1
 base      9646626  (RUN-20260807-5's delivery record)
 head      the closing-packet commit carrying this file

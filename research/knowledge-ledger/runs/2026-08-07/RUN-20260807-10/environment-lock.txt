@@ -1,4 +1,4 @@
-python_executable=/Users/james/Development/.mp-runner-venv/bin/python
+python_executable=$HOME/Development/.mp-runner-venv/bin/python
 Python 3.14.6
 pytest=pytest 9.1.1
 node=v24.18.1
