@@ -5,6 +5,7 @@ from pathlib import Path
 
 from experiments.lir1.llm_echo.generate_cases import build
 from experiments.lir1.llm_echo.materialize import materialize
+from experiments.lir1.llm_echo.score_development import source_adherence
 from experiments.lir1.model import read_jsonl
 
 
@@ -31,6 +32,10 @@ class LIR1EMaterializeTests(unittest.TestCase):
             mutations = [row for row in claims if row.independence_label == "mutated_copy"]
             self.assertEqual((len(copies), len(mutations)), (12, 72))
             self.assertTrue(all(row.observed_parents for row in copies + mutations))
+            adherence = source_adherence(
+                root / "requests.jsonl", root / "responses.jsonl", root / "labels.jsonl"
+            )
+            self.assertEqual(adherence["overall"]["rate"], 1.0)
 
 
 if __name__ == "__main__":
