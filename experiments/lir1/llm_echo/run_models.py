@@ -215,7 +215,11 @@ def execute(requests: list[dict], config: dict, output: Path, answer_schema: Pat
                 receipt_path = receipts / f"{request['requestId']}-attempt-{attempt}.json"
                 receipt_path.write_bytes(receipt)
                 counts[response["status"]] += 1
-                if response["status"] == "valid" or response["status"] == "provider_error":
+                if response["status"] == "provider_error":
+                    raise RuntimeError(
+                        f"provider error on {request['requestId']}; stopping without substitution"
+                    )
+                if response["status"] == "valid":
                     break
     return counts
 
