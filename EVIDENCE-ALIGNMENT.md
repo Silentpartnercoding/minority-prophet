@@ -53,8 +53,10 @@ causal independence.
 
 ## Manuscript policy
 
-- `papers/minority-prophet-v1.0.3.md` is the active evidence-aligned draft.
-- v0.9, v1.0, v1.0.1, and v1.0.2 are preserved historical drafts and defer to this ledger.
+- `papers/minority-prophet-v1.0.4.md` is the active evidence-aligned draft, adopted
+  2026-08-08 (BL-045).
+- v0.9, v1.0, v1.0.1, v1.0.2, and v1.0.3 are preserved historical drafts and defer to
+  this ledger.
 - EXP008's archived attack mixture is not EXP007A's selected attack.
 - All point estimates must name their record and scope.
 - Rejected, incomplete, and null results remain visible.

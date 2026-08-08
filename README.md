@@ -52,8 +52,9 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 
 ## Repository map
 
-- [`papers/minority-prophet-v1.0.3.md`](papers/minority-prophet-v1.0.3.md)
-  — current evidence-aligned pre-submission paper; earlier versions remain preserved.
+- [`papers/minority-prophet-v1.0.4.md`](papers/minority-prophet-v1.0.4.md)
+  — current evidence-aligned pre-submission paper, adopted 2026-08-08 (errata E6–E8);
+  earlier versions including v1.0.3 remain preserved.
 - [`formal/PROOFS.md`](formal/PROOFS.md), [`formal/lean/`](formal/lean/) (pinned,
   compiling Lean 4 proofs), and
   [`verification/r1_degradation_curve.py`](verification/r1_degradation_curve.py)
