@@ -22,8 +22,8 @@ below asked whether the rule itself had the same defect.
 | artifact | verdict |
 |---|---|
 | `scripts/check_public_boundary.py` — secret-shape rules (private key, GitHub/AWS/Slack/Google tokens, bearer, assigned secret, credential URL, local path) | **fine.** Industry-standard signatures; every scanner has them. Publishing them reveals nothing. |
-| `scripts/check_public_boundary.py` — internal component rule | **leak.** Named an internal control-plane component in the clear. |
-| `scripts/check_public_boundary.py` — internal strategy rule | **leak.** Named six internal-strategy phrases in the clear. |
+| `scripts/check_public_boundary.py` — the component rule | **leak.** Named an internal control-plane component in the clear. |
+| `scripts/check_public_boundary.py` — the strategy-wording rule | **leak.** Named six business-vocabulary phrases in the clear. |
 | `tests/test_public_boundary.py` | **leak.** Reproduced one of those phrases in a natural sentence as a fixture. |
 | `.gitignore` | fine — generic build and env patterns only. |
 | redaction markers across the repository | fine — no marker describes the content it removed. |
@@ -82,3 +82,21 @@ Nothing here addresses publishing *answers* rather than *secrets* — the M27
 class, where ordinary integers in a results table retire a live commission's
 pass condition. That remains **BL-048**, unbuilt, with `LIVE-COMMISSIONS.json`
 as its declaration half.
+
+## Follow-on: the inherited list contains generic English
+
+Demonstrated by this document. An earlier draft of the audit table used a
+two-word phrase descriptively, in ordinary prose about governance, and the new
+digest matcher blocked it. The phrase is plain English, not proprietary.
+
+Three of the six inherited business-vocabulary phrases are of that kind. They
+carry two costs: they false-positive on any document that discusses strategy in
+the abstract, and hashing buys them nothing, since a two-word English phrase
+falls to a wordlist immediately. The genuinely distinctive terms -- a coined
+component name, an internal tooling name -- are the ones the digest set protects
+usefully.
+
+**Not changed here.** Removing terms narrows a control another author added, and
+narrowing it to suit the convenience of the document that tripped it is exactly
+the wrong reason. Recorded as **BL-052** for an owner call on which vocabulary
+belongs in a boundary rule at all, versus which belongs in review.
