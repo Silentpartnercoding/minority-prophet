@@ -16,6 +16,22 @@ This holds only when evidence roots cannot be freely forged, claims do not cross
 between opposing roots, and the surviving root margin is large enough. See
 [`PUBLIC-CLAIMS.md`](PUBLIC-CLAIMS.md) for the shortest supported claim set.
 
+## Decision-quality boundary
+
+Decision-quality and reputation systems ask whether an agent's recorded
+behavior supports more or less future authority. Minority Prophet asks a
+different question: whether the evidence supporting a present claim is
+independently grounded or merely repeated. A behavioral score or replay bundle
+may be an evidence input; it does not become authority or an independent root
+by itself.
+
+In the wider neutral architecture, Border binds identity, delegated authority,
+declaration, policy, and evidence to one exact proposed action. Minority Prophet
+assesses the structure and strength of evidence only when deterministic policy
+cannot resolve an evidence-sensitive question. Gate separately interprets that
+assessment as proceed, block, or escalate, and the runtime enforces the exact
+effect. Evidence assessment never grants authority.
+
 The repository contains the benchmark, formal model, canonical record registry,
 root-issuance reference, neutral evidence contract, tests, and dashboard.
 

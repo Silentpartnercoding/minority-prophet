@@ -31,16 +31,26 @@ that a deployment identified its roots correctly.
   and 9 one-root decisions. Six records from one observer still formed one root.
 - The reference registry authenticates and bounds root issuance. It limits
   forgery capacity; it does not prove truth or independence.
+- A preregistered selective hybrid recovered 1.98% of copied-minority cases in
+  its frozen attack model while losing 0.11 percentage points of accuracy and
+  remaining below its 1% false-reversal ceiling. This is a synthetic result.
+- A preregistered shared-control experiment prevented names, keys, services,
+  labels, and self-verification from adding roots when supported controller
+  provenance was available. Unknown control always escalated.
+- A preregistered evidence-origin experiment prevented supported copies,
+  paraphrases, translations, summaries, and model transformations from adding
+  roots. Unknown and forged origin claims always escalated.
 
 ## Open boundaries
 
 - Root identity is operationally assigned, not semantically proved.
 - Partial dependence between roots is not represented.
+- Separate supported controllers do not prove causally independent evidence:
+  matched separate controllers carrying one adverse claim remained separate.
 - Expiry, revocation, and key compromise sit outside the counting theorems.
 - Synthetic and replay evidence does not establish real-world truth recovery.
 - Released-implementation comparisons, matched-coverage analysis, and primary-
   source citation verification remain incomplete.
-- EXP009's selective challenger is preregistered but has no confirmatory result.
 
 The detailed status is controlled by [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md),
 [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md), and

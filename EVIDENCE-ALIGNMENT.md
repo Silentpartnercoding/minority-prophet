@@ -47,6 +47,9 @@ causal independence.
 | EXP007R | Archived multi-seed section ran; optimizer was incomplete. | Any optimizer optimum. |
 | EXP007A | New synthetic optimizer and holdout result are canonical. | Real-world exploitability or provider validation. |
 | EXP008R | Archived runner and output table replayed deterministically. | Canonical comparison against released third-party implementations. |
+| EXP009 | Frozen selective hybrid recovered 1.98% of majority-wrong cases at a 0.64% false-reversal rate and 0.11-point accuracy cost in the attack regime. | External validity, reliable deployed lineage inference, or authority to act. |
+| HVI-1 | Control-domain aggregation admitted zero additional roots from aliases, key rotation, service splitting, or self-verification and escalated all unknown-control cases. | Discovery of hidden common control, causal evidence independence, truth, or authorization. |
+| HEO-1 | Evidence-origin aggregation admitted zero additional roots from supported copies and transformations; unknown and forged origins always escalated. | Discovery of undisclosed common sources, truth of root observations, or authorization. |
 
 ## Manuscript policy
 
@@ -64,4 +67,3 @@ causal independence.
 3. Verbatim verification of every literature citation against primary sources.
 4. A vendor-neutral evidence contract and conformance suite tested against at
    least one real provider, without treating identity as proof of independence.
-5. Execution and preservation of EXP009 on its untouched confirmatory seeds.

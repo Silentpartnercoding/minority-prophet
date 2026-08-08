@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silentpartnercoding.github.io/minority-prophet/schemas/independence-receipt-v1.json",
+  "title": "Minority Prophet independence receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "receiptId", "claim", "evidence", "producer", "verifier", "controllerAssertions"],
+  "properties": {
+    "schema": {"const": "minority-prophet.independence-receipt.v1"},
+    "receiptId": {"type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,160}$"},
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["propositionId", "value"],
+      "properties": {
+        "propositionId": {"type": "string", "minLength": 1, "maxLength": 160},
+        "value": {"enum": [0, 1]}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest", "producerSubject"],
+      "properties": {
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "producerSubject": {"type": "string", "minLength": 1, "maxLength": 160}
+      }
+    },
+    "producer": {"$ref": "#/$defs/party"},
+    "verifier": {"$ref": "#/$defs/party"},
+    "controllerAssertions": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/controllerAssertion"}
+    }
+  },
+  "$defs": {
+    "party": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjectId", "keyId", "serviceId"],
+      "properties": {
+        "subjectId": {"type": "string", "minLength": 1, "maxLength": 160},
+        "keyId": {"type": "string", "minLength": 1, "maxLength": 160},
+        "serviceId": {"type": "string", "minLength": 1, "maxLength": 160}
+      }
+    },
+    "controllerAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjectId", "controlDomainId", "status", "supportDigest"],
+      "properties": {
+        "subjectId": {"type": "string", "minLength": 1, "maxLength": 160},
+        "controlDomainId": {"type": ["string", "null"], "maxLength": 160},
+        "status": {"enum": ["supported", "unknown", "conflicting", "revoked"]},
+        "supportDigest": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

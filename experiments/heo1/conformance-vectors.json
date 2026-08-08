@@ -1,0 +1,10 @@
+{
+  "schema": "minority-prophet.heo1.conformance-vectors.v1",
+  "vectors": [
+    {"id": "one-origin-eight-controllers", "origins": ["r1", "r1", "r1", "r1", "r1", "r1", "r1", "r1"], "statuses": ["supported", "supported", "supported", "supported", "supported", "supported", "supported", "supported"], "expected": {"state": "ASSESS", "rootMass": 1}},
+    {"id": "eight-genuine-origins", "origins": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"], "statuses": ["supported", "supported", "supported", "supported", "supported", "supported", "supported", "supported"], "expected": {"state": "ASSESS", "rootMass": 8}},
+    {"id": "unknown-origin", "origins": [null], "statuses": ["unknown"], "expected": {"state": "ESCALATE", "rootMass": 0}},
+    {"id": "forged-parent", "origins": ["unbound-r1"], "statuses": ["conflicting"], "expected": {"state": "ESCALATE", "rootMass": 0}},
+    {"id": "self-cycle", "origins": ["r1"], "parents": ["r1"], "statuses": ["supported"], "expected": {"state": "ESCALATE", "rootMass": 0}}
+  ]
+}

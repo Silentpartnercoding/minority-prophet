@@ -34,6 +34,12 @@ shared control, and (e) unknown control relationships. Compare head count,
 signature-only validation, identity-distinct counting, and control-domain
 collapse under identical evidence and abstention budgets.
 
+**Baselines:** Head count; signature-only validation; identity-distinct
+counting; scalar validator-score mean and median; median with outlier clipping;
+and control-domain-aware evidence-root aggregation. The score baselines test
+whether robust aggregation alone can resist correlated or commonly controlled
+validators without independently supported control provenance.
+
 **Metrics:** False-independent-root acceptance rate, retention of supported
 independent roots, decision error, abstention rate, and the change in root mass
 caused solely by renaming identities or rotating keys.
@@ -59,3 +65,9 @@ control relationships affect aggregation. It cannot discover undisclosed
 real-world common control without trustworthy external evidence. A signature
 proves key use, not organizational independence; the resulting assessment does
 not itself grant authority.
+
+**Canonical result:** Supported in HVI-1 v1 across all six frozen hypotheses.
+Representation laundering and self-verification added zero control-aware roots,
+and unknown control always escalated. The matched separate-controller condition
+also demonstrated the boundary: organizational separation does not establish
+causal evidence independence or truth. See `results/hvi1-v1/`.
