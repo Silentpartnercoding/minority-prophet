@@ -29,6 +29,7 @@ def main() -> None:
     if hashlib.sha256(ARCHIVE.read_bytes()).hexdigest() != manifest["archiveSha256"]:
         raise RuntimeError("EPA archive hash mismatch")
     available = defaultdict(set)
+    context_sites = defaultdict(set)
     coordinates = {}
     with zipfile.ZipFile(ARCHIVE) as archive, archive.open(manifest["memberName"]) as raw:
         reader = csv.DictReader(io.TextIOWrapper(raw, encoding="utf-8-sig", newline=""))
@@ -46,14 +47,14 @@ def main() -> None:
             site = (row["State Code"], row["County Code"], row["Site Num"])
             context = (row["Date Local"], row["Sample Duration"], row["Units of Measure"])
             available[(context, site)].add(str(row["POC"]))
+            context_sites[context].add(site)
             coordinates[site] = (latitude, longitude)
 
     collocated = sorted({site for (_, site), pocs in available.items() if len(pocs) >= 2})
     development_site = collocated[0]
     selections = []
-    contexts = sorted({context for context, _ in available})
-    for context in contexts:
-        sites = sorted(site for candidate_context, site in available if candidate_context == context)
+    for context, context_site_set in sorted(context_sites.items()):
+        sites = sorted(context_site_set)
         for site in sites:
             if site == development_site or len(available[(context, site)]) < 2:
                 continue
