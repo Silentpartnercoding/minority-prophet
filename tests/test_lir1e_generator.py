@@ -1,4 +1,5 @@
 import json
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -63,6 +64,31 @@ class LIR1EGeneratorTests(unittest.TestCase):
             build(self.seed, "development", count=11)
         with self.assertRaisesRegex(ValueError, "at least 32"):
             build(b"short", "development")
+
+    def test_public_commitments_bind_code_protocol_prompt_and_local_seals(self):
+        root = Path(__file__).resolve().parents[1]
+        study = root / "experiments/lir1/llm_echo"
+        commitments = json.loads((study / "INVENTORY-COMMITMENTS.json").read_text())
+        expected = commitments["sharedArtifacts"]
+        for key, path in (
+            ("protocolSha256", study / "PREREGISTRATION.md"),
+            ("generatorSha256", study / "generate_cases.py"),
+            ("promptSha256", study / "PROMPT.txt"),
+        ):
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), expected[key])
+
+        private = root / commitments["privateLocation"]
+        if private.is_dir():
+            for split in ("development", "confirmatory"):
+                record = commitments[split]
+                self.assertEqual(
+                    hashlib.sha256((private / split / "requests.jsonl").read_bytes()).hexdigest(),
+                    record["requestsSha256"],
+                )
+                self.assertEqual(
+                    hashlib.sha256((private / split / "construction-labels.jsonl").read_bytes()).hexdigest(),
+                    record["constructionLabelsSha256"],
+                )
 
 
 if __name__ == "__main__":

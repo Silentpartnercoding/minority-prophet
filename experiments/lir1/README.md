@@ -29,5 +29,6 @@ the Git-ignored `artifacts/lir1/llm_echo/` boundary.
 ## Status
 
 PHEME-R2 has a canonical boundary result under `results/lir1-pheme-r2-v0.1/`.
-The controlled LLM echo study is preregistered but has not generated cases or
-called models.
+The controlled LLM echo study is preregistered. Its 12 development and 36
+confirmatory cases have been generated and sealed; public hash commitments are
+in `llm_echo/INVENTORY-COMMITMENTS.json`. No model has been called.
