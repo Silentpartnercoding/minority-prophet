@@ -59,6 +59,7 @@ class LIR1Tests(unittest.TestCase):
         for manifest_path in (
             "results/lir1-mechanics-v0.1/manifest.json",
             "results/lir1-pheme-development-v0.1/manifest.json",
+            "results/lir1-pheme-development-v0.2/manifest.json",
         ):
             manifest = json.loads((root / manifest_path).read_text())
             for relative, expected in manifest["files"].items():
