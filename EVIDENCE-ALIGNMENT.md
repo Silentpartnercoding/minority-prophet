@@ -53,6 +53,7 @@ causal independence.
 | HGD-1 | Interval accounting reduced false-confident error, but its primary claim was rejected after missing the frozen absolute-effect threshold. | Proof that collocation establishes dependence, historical measurements were wrong, or the mechanism may grant authority. |
 | HGD-2 | Interval accounting improved safety and preserved control accuracy, but failed frozen coverage and usefulness criteria. | A generally useful steering mechanism or proof that abstention alone solves dependent evidence. |
 | HES-1 | Frozen evidence seeking recovered substantial environmental and software coverage after abstention; all seven hypotheses passed. | Universal source competence, especially for software false-negative claims, or authority to act. |
+| LIR-1/PHEME-R2 | At 40% hidden recorded edges, hidden-parent F1 was 0.1044 (case-bootstrap 95% interval 0.0846–0.1261), rejecting the greater-than-0.50 criterion; root-pair recall was 0.2256. | Causal evidence-independence inference, all social platforms, or proof that stronger methods must fail. |
 
 ## v1.0.5 manuscript alignment
 

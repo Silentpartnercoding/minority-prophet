@@ -1,0 +1,25 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "LIR-1/PHEME-R2",
+  "status": "canonical-recorded-lineage-recovery-rejected",
+  "files": {
+    "experiments/lir1/PHEME-R2-PREREGISTRATION.md": "9ec566a4bfc25c5bd917686eecd5662d8b12bcc2832e7129d5676c7c50fb4177",
+    "experiments/lir1/infer.py": "35bd7b07960f1a21fa9ea959b2d262ae3b6277b185708e889eedba6db6248ef1",
+    "experiments/lir1/metrics.py": "e056da834e73c218c996817c8758dccd9f68d84aefba6227ca5781ddb8ed1f8d",
+    "experiments/lir1/run_pheme_confirmatory.py": "6409378ae69b745cfbab7a6adb096a1977187fef7d5b4bb0731dc7d4b6473004",
+    "results/lir1-pheme-development-v0.2/threshold.json": "b5397d15c2bbdfdec0fc4cbf86e0a38c680a182a52e2a1464fd0f48582cad25b",
+    "results/lir1-pheme-r2-v0.1/README.md": "02d27dba2ea4665186fd13800e00c90c896be4abd25d7812fd7d9aa17d7c15ad",
+    "results/lir1-pheme-r2-v0.1/REPRODUCTION.md": "2a509fc639c52567f3381145ca58ec5eecebfa6ab04051ae6292f3495e214ba7",
+    "results/lir1-pheme-r2-v0.1/inventory.json": "443c03386f2ddc37350f9c0fadc96fc5fcf686f625954fd38e1f8578a291e14d",
+    "results/lir1-pheme-r2-v0.1/result.json": "a92595ab69b1a2247ab1ae2dcca2e9629744374a9e5791890d92120073221800"
+  },
+  "privateInput": {
+    "rawArchiveSha256": "079f6ffdbc0b367399262f101774372e5d19dd8278c33d6c97a84461a9bc58dd",
+    "normalizedJsonlSha256": "1c3e9e08149021cdb81da02b96750d75e0f0dce1dd7432bf5f7613fb206a2266"
+  },
+  "reproduction": {
+    "commit": "6c19013f73429cfd506caa994a2e58252c5854a7",
+    "cleanDetachedRuns": 2,
+    "byteIdentical": true
+  }
+}

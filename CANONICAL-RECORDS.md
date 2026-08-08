@@ -30,6 +30,7 @@ true outside its stated experiment.
 | HGD-1 | Canonical graded-dependence experiment: rejected | `results/hgd1-v1/result.json` | Six of seven hypotheses passed, but the primary absolute-effect threshold failed; collocation does not prove causal dependence, truth, or authority. |
 | HGD-2 | Canonical graded-dependence replication: rejected | `results/hgd2-v1/result.json` | Safety improved, but control coverage and attacked usefulness failed; much of the gain came through abstention. |
 | HES-1 | Canonical evidence-seeking experiment: supported with material subgroup limitation | `results/hes1-v1/result.json` | Blind acquisition restored substantial coverage, but software false-negative accuracy was inadequate; independence alone does not establish claim-specific competence. |
+| LIR-1/PHEME-R2 | Canonical recorded-lineage recovery experiment: rejected | `results/lir1-pheme-r2-v0.1/canonical-manifest.json` | Hidden-parent recovery failed on a disjoint PHEME holdout; reply-tree roots are recorded platform lineage, not causal evidence independence. |
 
 ## Promotion rule
 
