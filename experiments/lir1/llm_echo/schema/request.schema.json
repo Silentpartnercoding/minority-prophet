@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.example/schemas/lir1e-request-v1.json",
+  "title": "LIR-1E public model request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "caseId", "split", "roleId", "requestId", "assignmentCell",
+    "modelSlot", "sourceId", "sourceSha256", "question", "sourcePacket",
+    "prompt", "parameters"
+  ],
+  "properties": {
+    "schema": {"const": "minority-prophet.lir1e-request.v1"},
+    "caseId": {"type": "string"},
+    "split": {"enum": ["development", "confirmatory"]},
+    "roleId": {"type": "string"},
+    "requestId": {"type": "string"},
+    "assignmentCell": {
+      "enum": ["same_model_disjoint", "different_family_disjoint", "same_model_same_source"]
+    },
+    "modelSlot": {"enum": ["model-a", "model-b"]},
+    "sourceId": {"type": "string"},
+    "sourceSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "question": {"type": "string"},
+    "sourcePacket": {"type": "string"},
+    "prompt": {"type": "string"},
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["temperature", "tools", "web", "memory"],
+      "properties": {
+        "temperature": {"const": 0},
+        "tools": {"const": false},
+        "web": {"const": false},
+        "memory": {"const": false}
+      }
+    }
+  }
+}
