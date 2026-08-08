@@ -197,12 +197,12 @@
     {
       "claim": "Lemma 1: side-locality over claim chains",
       "status": "not-tested-by-KL-000",
-      "whyNot": "Schema v0.1 has no parent edges; every claim is a root, so chain side-locality is vacuous in this model."
+      "whyNot": "Schema v0.1 has no parent edges; every claim is a root, so chain side-locality is vacuous in this model. NOW TESTED OUTSIDE KL-000: LIN-000 (research/knowledge-ledger/lineage/, RUN-20260807-10) tests it end-to-end in a lineage-bearing schema -- zero violations on 60,460 side-consistent worlds, with side-inconsistent negative witnesses. KL-000's own status is unchanged."
     },
     {
       "claim": "Theorem 1: immunity to root-preserving, side-consistent rewiring",
       "status": "not-tested-by-KL-000",
-      "whyNot": "No parent edges representable; I7's permutation invariance is a strictly weaker shadow, declared as such in its rule entry. Testing T1 requires a lineage-bearing schema."
+      "whyNot": "No parent edges representable; I7's permutation invariance is a strictly weaker shadow, declared as such in its rule entry. Testing T1 requires a lineage-bearing schema. NOW TESTED OUTSIDE KL-000: LIN-000 tests it end-to-end -- zero violations across 999,734 valid rewirings, and its protection shown NOT to extend past either precondition. KL-000's own status is unchanged; I7 remains the declared shadow."
     },
     {
       "claim": "Theorem 2: recorded-copy invariance",
