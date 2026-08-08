@@ -37,7 +37,7 @@ class EvidenceAlignmentTests(unittest.TestCase):
         self.assertNotIn("new in v3, unimplemented", requirements)
 
     def test_active_paper_uses_canonical_exp007a_values(self):
-        paper = (ROOT / "papers/minority-prophet-v1.0.4.md").read_text()
+        paper = (ROOT / "papers/minority-prophet-v1.0.5.md").read_text()
         self.assertIn("EXP007A", paper)
         self.assertIn("(0.701175, 1.0, 0.0, 0.0)", paper)
         self.assertIn("Welch t = 25.1144", paper)
@@ -54,12 +54,12 @@ class EvidenceAlignmentTests(unittest.TestCase):
 
     def test_exp008_is_not_presented_as_exp007a_attack(self):
         source = (ROOT / "experiments/exp008_shootout.py").read_text()
-        active_paper = (ROOT / "papers/minority-prophet-v1.0.4.md").read_text()
+        active_paper = (ROOT / "papers/minority-prophet-v1.0.5.md").read_text()
         self.assertIn("it is not EXP007A's selected attack", source)
         self.assertIn("historical exploratory mixture", active_paper)
 
     def test_active_paper_tracks_current_research_boundaries(self):
-        paper = (ROOT / "papers/minority-prophet-v1.0.4.md").read_text()
+        paper = (ROOT / "papers/minority-prophet-v1.0.5.md").read_text()
         ledger = (ROOT / "EVIDENCE-ALIGNMENT.md").read_text()
         readme = (ROOT / "README.md").read_text()
 
@@ -67,14 +67,29 @@ class EvidenceAlignmentTests(unittest.TestCase):
         self.assertIn("conversions_to_reverse", paper)
         self.assertIn("EXP009 (canonical selective-hybrid confirmation; SUPPORTED)", paper)
         self.assertIn("Field observation (noncanonical)", paper)
-        self.assertIn("minority-prophet-v1.0.4.md", ledger)
-        self.assertIn("minority-prophet-v1.0.4.md", readme)
+        self.assertIn("minority-prophet-v1.0.5.md", ledger)
+        self.assertIn("papers/00-CURRENT-PAPER.md", readme)
         self.assertIn("evidence ledger", paper)
         self.assertIn("search ledger", paper)
         self.assertIn("not established", paper)
+        self.assertIn("HGD-1 (canonical graded-dependence experiment; REJECTED)", paper)
+        self.assertIn("HGD-2 (canonical graded-dependence replication; REJECTED)", paper)
+        self.assertIn("HES-1 (canonical evidence-seeking experiment; SUPPORTED WITH MATERIAL SUBGROUP LIMITATION)", paper)
+
+        current_pointer = (ROOT / "papers/00-CURRENT-PAPER.md").read_text()
+        papers_index = (ROOT / "papers/README.md").read_text()
+        self.assertIn("minority-prophet-v1.0.5.md", current_pointer)
+        self.assertIn("minority-prophet-v1.0.5.md", papers_index)
 
         for stale in (
             "Lean 4 formalization in progress",
             "two Lean obligations remain open",
+            "121,944 rewirings",
+            "partial parent function",
+            "root(c) is c's unique root ancestor",
         ):
             self.assertNotIn(stale, paper)
+
+        self.assertIn("116,032 root-preserving rewirings", paper)
+        self.assertIn("1,992 root-preserving rewirings", paper)
+        self.assertIn("parents(c) ⊆ C", paper)
