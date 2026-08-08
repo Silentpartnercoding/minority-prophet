@@ -70,13 +70,35 @@ ancestor of the published branch, and the blob at HEAD equals the blob at the
 pin. That survives merges, duplicated history and rebases, and it is what a
 reader must verify to trust a preregistration.
 
-## Disposition
+## Disposition — BL-049 closed 2026-08-08
 
-Recorded, not repaired. Changing the check is a monitoring change and touches
-nothing frozen, but it should be made deliberately rather than folded into a
-logging run: **BL-049**. Until then the chain alert should be read as "verify
-the substantive property by hand", not as "the registrations are broken" —
-they are not.
+Repaired. `scripts/check_registration_chain.py` implements the substantive
+property and runs in CI beside the two boundary checks:
+
+1. the pinned commit exists;
+2. it is an ancestor of the branch being published;
+3. the preregistration at HEAD is byte-identical to the preregistration at that
+   pinned commit.
+
+It reports **4 bindings verified** against both `HEAD` and `github/main` — the
+same repository the proxy calls broken.
+
+Before this existed the check lived only inside a run monitor's inline script.
+There was no repository-level control at all: the thing everyone treated as the
+registration guarantee was an unversioned string in a watch command, and it was
+wrong.
+
+Seven tests, built on throwaway git repositories so detection is demonstrated
+rather than asserted. The load-bearing pair:
+
+- **content tampering is caught** — an edited preregistration reports
+  `CONTENT CHANGED` with both blob ids, the failure the proxy could not see at
+  all;
+- **the proxy and the property are shown disagreeing** — after a stray edit and
+  a restore, the file's last-touching commit is no longer the pin, so the proxy
+  reports the chain broken while the bytes are provably unchanged. The test
+  asserts both verdicts in the same function, so the distinction cannot quietly
+  regress.
 
 The duplicate history is left in place. Removing it would mean rewriting
 published history, which is a far worse remedy than an untidy graph, and the
