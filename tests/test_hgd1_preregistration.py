@@ -19,6 +19,10 @@ class Hgd1PreregistrationTests(unittest.TestCase):
             "HGD-1g",
             "cannot discover an undisclosed common cause",
             "field is three raw sensor streams",
+            "Structural-feasibility amendment",
+            "within `100 km`",
+            "threshold is fixed at `35.0`",
+            "requires at\nleast `25%` answered coverage",
         ):
             self.assertIn(required, protocol)
 

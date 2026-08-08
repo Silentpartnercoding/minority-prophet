@@ -141,3 +141,36 @@ adverse, incomplete, and contradictory outcomes remain reportable.
 - Two detached-worktree runs must produce byte-identical scientific JSON.
 - Timings remain separate observational output.
 
+## Structural-feasibility amendment — before outcome analysis
+
+After the first public commit, acquisition inspected the archive header, two
+leading records, and structural counts only. No outcome distribution, method
+comparison, injected result, or hypothesis result was computed. That inspection
+showed two underspecified points that would make Track B non-falsifiable or
+non-reproducible:
+
+1. the daily archive has no qualifier column; and
+2. a collocated family by itself supplies no outside reference against a
+   site-wide common-mode shift.
+
+This amendment restarts Track B before outcome analysis. The missing qualifier
+is recorded as unavailable; rows are instead required to have a numeric daily
+mean and positive observation count. Duplicate rows for one frozen group and
+POC are collapsed deterministically by lexicographic full-row order.
+
+Each collocated site-day is paired with the geographically nearest different
+site having the same date, sample duration, units, and at least one valid POC.
+Distance is Haversine distance over the archive coordinates; ties resolve by
+state, county, site, then POC. The separate site must be within `100 km` or the
+case is excluded. The collocated site is one declared full-dependence family;
+the separate site is a second family. The pre-injection median across the two
+families is the counterfactual target. Only the collocated family receives the
+frozen shift.
+
+The binary event threshold is fixed at `35.0` micrograms per cubic meter. A
+method may answer only with effective lower mass of at least `2.0`; otherwise
+it abstains. Track B reports results separately by sample duration and pooled,
+and it must report coverage alongside error. HGD-1g additionally requires at
+least `25%` answered coverage for interval accounting at every shift. These
+rules supersede only the underspecified Track B mechanics above; Track A and
+all other frozen hypotheses remain unchanged.
