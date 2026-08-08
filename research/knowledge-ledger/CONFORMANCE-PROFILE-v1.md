@@ -114,3 +114,118 @@ scientific standing is exactly their TRC-101 entries: specification-local,
 with reasons, tested at the stated counts. A future lineage-bearing schema
 (paper v1.0.4 [E8]; backlog BL-041) would supersede P3's shadow status by
 making Theorem 1 testable directly.
+
+---
+
+## Test vectors — the pinned receipts, in full
+
+A profile without pinned vectors is self-referential in exactly the way
+I4/I6 were before v1.2.0 (finding G2): it asserts agreement without
+giving an implementer anything to be wrong about. These two vectors are
+generated verbatim from the registered fixtures (never re-typed): the
+canonical input, the expected canonical unsigned string (703 and 691
+bytes; hash it yourself), and the expected `contentDigest`. Both have
+reproduced byte-for-byte across two independent implementations
+(IND-20260807-3). An implementation that matches these two vectors and
+the registered object rules has met P5; one that matches every value but
+the digest should diff its canonical string against the expected form —
+the divergence localises to a byte.
+
+### Vector C11 (`experiments/KL-000/fixtures/v1.2.0/c11-canonical-digest.json`)
+
+```json
+{
+  "input": {
+    "transactionId": "kl000-c11",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the déclared \"components\" \\ set — canonicalisation pin."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "not_searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r2",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expectedCanonicalUnsignedForm": "{\"claim\":{\"proposition\":\"A target-class defect exists in the déclared \\\"components\\\" \\\\ set — canonicalisation pin.\",\"type\":\"presence\"},\"conclusion\":\"not_established\",\"evidence\":{\"conversionsToReverse\":1,\"distinctRoots\":2,\"margin\":0,\"opposingRoots\":[\"r2\"],\"records\":3,\"repeatedRecordsCollapsed\":1,\"supportingRoots\":[\"r1\"]},\"limits\":[\"Root identity and independence are declared operationally, not proved semantically.\",\"This result applies only to the declared search space.\"],\"reason\":\"The conclusion follows only from the declared root counts.\",\"schema\":\"minority-prophet.knowledge-transaction.v0.1\",\"search\":{\"complete\":false,\"declared\":2,\"searched\":1,\"unavailable\":0},\"transactionId\":\"kl000-c11\"}",
+  "expectedContentDigest": "sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe"
+}
+```
+
+### Vector C12 (`experiments/KL-000/fixtures/v1.2.0/c12-margin-sign.json`)
+
+```json
+{
+  "input": {
+    "transactionId": "kl000-c12",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the declared components — margin-sign pin."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "unavailable"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r2",
+          "side": "oppose"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r3",
+          "side": "oppose"
+        },
+        {
+          "id": "rec-4",
+          "rootId": "r3",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expectedCanonicalUnsignedForm": "{\"claim\":{\"proposition\":\"A target-class defect exists in the declared components — margin-sign pin.\",\"type\":\"presence\"},\"conclusion\":\"not_established\",\"evidence\":{\"conversionsToReverse\":1,\"distinctRoots\":3,\"margin\":1,\"opposingRoots\":[\"r2\",\"r3\"],\"records\":4,\"repeatedRecordsCollapsed\":1,\"supportingRoots\":[\"r1\"]},\"limits\":[\"Root identity and independence are declared operationally, not proved semantically.\",\"This result applies only to the declared search space.\"],\"reason\":\"The conclusion follows only from the declared root counts.\",\"schema\":\"minority-prophet.knowledge-transaction.v0.1\",\"search\":{\"complete\":false,\"declared\":2,\"searched\":1,\"unavailable\":1},\"transactionId\":\"kl000-c12\"}",
+  "expectedContentDigest": "sha256:61000a9b978222ce227601621167d8d66109ba2a0fea13f6431f7830b0aa3b6e"
+}
+```
