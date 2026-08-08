@@ -16,10 +16,10 @@ from .run_boundary import FRACTIONS
 from .synthetic_fixture import hide_edges
 
 
-THRESHOLD: float | None = None
+THRESHOLD: float | None = 0.40
 BOOTSTRAP_SEED = 20260808
 BOOTSTRAP_SAMPLES = 10_000
-THRESHOLD_COMMIT: str | None = None
+THRESHOLD_COMMIT: str | None = "225c253361f8d9a48ff821d882888cf76dacb275"
 
 
 def f1_from_counts(tp: int, fp: int, fn: int) -> float:

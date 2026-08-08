@@ -1,0 +1,16 @@
+{
+  "schema": "minority-prophet.lir1-pheme-r2-inventory-manifest.v1",
+  "status": "holdout-frozen-before-inference",
+  "files": {
+    "experiments/lir1/PHEME-R2-PREREGISTRATION.md": "9ec566a4bfc25c5bd917686eecd5662d8b12bcc2832e7129d5676c7c50fb4177",
+    "experiments/lir1/infer.py": "35bd7b07960f1a21fa9ea959b2d262ae3b6277b185708e889eedba6db6248ef1",
+    "experiments/lir1/metrics.py": "e056da834e73c218c996817c8758dccd9f68d84aefba6227ca5781ddb8ed1f8d",
+    "experiments/lir1/pheme_r2.py": "c807b8ee6a93c4a2bbc7cf9e0d1a2f0d2542baacc7cd4c1598d6e7c1a6d3164a",
+    "experiments/lir1/run_pheme_confirmatory.py": "6409378ae69b745cfbab7a6adb096a1977187fef7d5b4bb0731dc7d4b6473004",
+    "results/lir1-pheme-development-v0.2/threshold.json": "b5397d15c2bbdfdec0fc4cbf86e0a38c680a182a52e2a1464fd0f48582cad25b",
+    "results/lir1-pheme-r2-v0.1/inventory.json": "443c03386f2ddc37350f9c0fadc96fc5fcf686f625954fd38e1f8578a291e14d"
+  },
+  "privateInput": {
+    "normalizedJsonlSha256": "1c3e9e08149021cdb81da02b96750d75e0f0dce1dd7432bf5f7613fb206a2266"
+  }
+}
