@@ -43,3 +43,11 @@ thread paths, reporting 2,411 available rumor threads and nine invalid paths.
 The normalized claims were unaffected because those paths were skipped. The
 inventory selector now admits directories only; the superseded inventory was
 regenerated before commit. This changes no registered claim.
+
+## 2026-08-08 — first R2 inventory admitted an incomplete thread
+
+The first unscored R2 inventory reported one missing tweet file. The R2
+preregistration requires complete cases, so that in-memory selection was not
+accepted or committed. The selector now excludes the entire affected thread
+and records the exclusion count before filling the cap from the next eligible
+case. No R2 inference outcome had been run and no registered claim changed.

@@ -26,7 +26,7 @@ def normalize_disjoint(
         key=lambda path: str(path),
     )
     selected: list[ClaimInstance] = []
-    skipped_for_cap = missing_tweets = invalid_threads = 0
+    skipped_for_cap = invalid_threads = threads_excluded_missing_tweets = 0
     truth_counts = {"true": 0, "false": 0, "unresolved": 0}
     for thread in threads:
         case_id = f"pheme:{thread.name}"
@@ -36,12 +36,14 @@ def normalize_disjoint(
             invalid_threads += 1
             continue
         claims, missing = parse_thread(thread)
+        if missing:
+            threads_excluded_missing_tweets += 1
+            continue
         claims = [replace(claim, split="confirmatory") for claim in claims]
         if len(selected) + len(claims) > cap:
             skipped_for_cap += 1
             continue
         selected.extend(claims)
-        missing_tweets += missing
         truth_counts[claims[0].content_truth] += 1
 
     selected_case_ids = {claim.case_id for claim in selected}
@@ -65,7 +67,8 @@ def normalize_disjoint(
         "selectedClaims": len(selected),
         "recordedEdges": sum(bool(claim.observed_parents) for claim in selected),
         "recordedRoots": len({claim.true_root_id for claim in selected}),
-        "missingTweetFiles": missing_tweets,
+        "missingTweetFiles": 0,
+        "threadsExcludedMissingTweets": threads_excluded_missing_tweets,
         "invalidThreads": invalid_threads,
         "threadsSkippedForCap": skipped_for_cap,
         "selectedCaseTruth": truth_counts,
