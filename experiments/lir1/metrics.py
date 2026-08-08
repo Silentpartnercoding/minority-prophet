@@ -17,7 +17,10 @@ def _prf(tp: int, fp: int, fn: int) -> dict[str, float]:
 
 
 def parent_metrics(
-    claims: Iterable[ClaimInstance], predictions: dict[str, str | None]
+    claims: Iterable[ClaimInstance],
+    predictions: dict[str, str | None],
+    *,
+    evaluate_claim_ids: set[str] | None = None,
 ) -> dict[str, float | int]:
     exact = {claim.claim_id: claim.observed_parents[0] if claim.observed_parents else None for claim in claims}
     evaluable = {
@@ -26,6 +29,8 @@ def parent_metrics(
         if claim.label_basis in {"constructed_exact", "explicit_edge", "adjudicated_lineage"}
         and claim.label_scope in {"direct_parent", "record_root"}
     }
+    if evaluate_claim_ids is not None:
+        evaluable &= evaluate_claim_ids
     predicted_edges = {(child, parent) for child, parent in predictions.items() if child in evaluable and parent}
     true_edges = {(child, parent) for child, parent in exact.items() if child in evaluable and parent}
     values = _prf(len(predicted_edges & true_edges), len(predicted_edges - true_edges), len(true_edges - predicted_edges))

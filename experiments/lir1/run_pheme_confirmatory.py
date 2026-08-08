@@ -16,10 +16,10 @@ from .run_boundary import FRACTIONS
 from .synthetic_fixture import hide_edges
 
 
-THRESHOLD = 0.80
+THRESHOLD: float | None = None
 BOOTSTRAP_SEED = 20260808
 BOOTSTRAP_SAMPLES = 10_000
-THRESHOLD_COMMIT = "7e49622304d1e0c6cdaea45047de80397ccbceb6"
+THRESHOLD_COMMIT: str | None = None
 
 
 def f1_from_counts(tp: int, fp: int, fn: int) -> float:
@@ -80,20 +80,31 @@ def bootstrap_parent_f1(counts: list[tuple[int, int, int]]) -> dict[str, float |
 
 
 def run(source: Path) -> dict[str, object]:
+    if THRESHOLD is None or THRESHOLD_COMMIT is None:
+        raise RuntimeError("corrected hidden-edge threshold is not frozen")
     claims = [claim for claim in read_jsonl(source) if claim.split == "confirmatory"]
     rows: list[dict[str, object]] = []
     for fraction in FRACTIONS:
         observed = hide_edges(claims, fraction)
+        hidden_claim_ids = {
+            truth.claim_id
+            for truth, visible in zip(claims, observed, strict=True)
+            if truth.observed_parents and not visible.observed_parents
+        }
         parents = infer_parents(
             (claim.feature_view() for claim in observed), threshold=THRESHOLD
         )
         roots = roots_from_parents(parents)
-        parent = parent_metrics(claims, parents)
+        parent = parent_metrics(
+            claims, parents, evaluate_claim_ids=hidden_claim_ids
+        )
         rows.append({
             "hiddenFraction": fraction,
             "parent": parent,
             "parentF1CaseBootstrap95": bootstrap_parent_f1(
-                parent_counts_by_case(claims, parents)
+                parent_counts_by_case(
+                    [claim for claim in claims if claim.claim_id in hidden_claim_ids], parents
+                )
             ),
             "rootPair": root_pair_metrics(claims, roots),
             "rootCount": root_count_metrics(claims, roots),

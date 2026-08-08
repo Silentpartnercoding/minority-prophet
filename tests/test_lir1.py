@@ -5,7 +5,12 @@ import unittest
 from pathlib import Path
 
 from experiments.lir1.infer import infer_parents, roots_from_parents
-from experiments.lir1.metrics import aggregation_accuracy, root_count_metrics, root_pair_metrics
+from experiments.lir1.metrics import (
+    aggregation_accuracy,
+    parent_metrics,
+    root_count_metrics,
+    root_pair_metrics,
+)
 from experiments.lir1.model import ClaimInstance, read_jsonl, write_jsonl
 from experiments.lir1.pheme import flatten_tree, truth_label
 from experiments.lir1.synthetic_fixture import build_fixture, hide_edges
@@ -54,7 +59,6 @@ class LIR1Tests(unittest.TestCase):
         for manifest_path in (
             "results/lir1-mechanics-v0.1/manifest.json",
             "results/lir1-pheme-development-v0.1/manifest.json",
-            "results/lir1-pheme-development-v0.1/threshold-manifest.json",
         ):
             manifest = json.loads((root / manifest_path).read_text())
             for relative, expected in manifest["files"].items():
@@ -100,6 +104,18 @@ class LIR1Tests(unittest.TestCase):
         self.assertEqual(aggregation["majority_accuracy"], 0.0)
         self.assertEqual(aggregation["declared_accuracy"], 1.0)
         self.assertEqual(aggregation["inferred_accuracy"], 1.0)
+
+    def test_parent_metric_can_be_restricted_to_hidden_claims(self):
+        truth = build_fixture(2)
+        observed = hide_edges(truth, 0.40)
+        hidden = {
+            original.claim_id
+            for original, visible in zip(truth, observed, strict=True)
+            if original.observed_parents and not visible.observed_parents
+        }
+        parents = infer_parents(claim.feature_view() for claim in observed)
+        restricted = parent_metrics(truth, parents, evaluate_claim_ids=hidden)
+        self.assertEqual(restricted["evaluable"], len(hidden))
 
 
 if __name__ == "__main__":

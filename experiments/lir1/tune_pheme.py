@@ -27,11 +27,16 @@ def run(source: Path) -> dict[str, object]:
     all_claims = read_jsonl(source)
     claims = [claim for claim in all_claims if claim.split == "development"]
     observed = hide_edges(claims, 0.40)
+    hidden_claim_ids = {
+        truth.claim_id
+        for truth, visible in zip(claims, observed, strict=True)
+        if truth.observed_parents and not visible.observed_parents
+    }
     rows: list[dict[str, object]] = []
     for threshold in THRESHOLDS:
         parents = infer_parents((claim.feature_view() for claim in observed), threshold=threshold)
         roots = roots_from_parents(parents)
-        parent = parent_metrics(claims, parents)
+        parent = parent_metrics(claims, parents, evaluate_claim_ids=hidden_claim_ids)
         rows.append({
             "threshold": threshold,
             "parentF1": parent["f1"],
@@ -44,11 +49,12 @@ def run(source: Path) -> dict[str, object]:
     return {
         "schema": "minority-prophet.lir1-pheme-threshold.v1",
         "status": "development-only",
-        "claimBoundary": "Threshold selection on development cases; no confirmatory cases scored.",
+        "claimBoundary": "Threshold selection on hidden edges in development cases; no confirmatory cases scored.",
         "normalizedInputSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "hiddenFraction": 0.40,
         "developmentCases": len({claim.case_id for claim in claims}),
         "developmentClaims": len(claims),
+        "hiddenDevelopmentEdges": len(hidden_claim_ids),
         "thresholds": list(THRESHOLDS),
         "selectionRule": "maximum exact-parent F1; ties select higher threshold",
         "selectedThreshold": selected,

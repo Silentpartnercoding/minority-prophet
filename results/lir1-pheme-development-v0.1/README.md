@@ -10,3 +10,6 @@ inventory exposes source hashes, counts, exclusions, and the normalized-file
 hash without redistributing tweet text.
 
 See `experiments/lir1/PHEME-PILOT-PROTOCOL.md` for the frozen next step.
+
+The first threshold receipt is retained under `superseded/` because it scored
+all edges instead of the hidden-edge subset. It is void; see deviation D1.
