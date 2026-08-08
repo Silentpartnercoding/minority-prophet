@@ -1,0 +1,54 @@
+{
+  "check": "KL-001 FC1.1",
+  "preregistration": "PREREGISTRATION-FC1.1.md, committed before this script existed",
+  "worldsSource": "FC1's committed result (byte-fixed); re-evaluated fresh",
+  "evaluatorUnderTest": {
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f",
+    "matchesRegistration": true
+  },
+  "E4prime_nameFreeStructuralIdentity": true,
+  "nameFreeComparison": {
+    "W1": {
+      "conclusion": "not_established",
+      "reason": "The declared search space was not exhaustively searched.",
+      "search": {
+        "declared": 4,
+        "searched": 2,
+        "unavailable": 1,
+        "complete": false
+      },
+      "evidence": {
+        "records": 3,
+        "distinctRoots": 2,
+        "repeatedRecordsCollapsed": 1,
+        "margin": 2,
+        "conversionsToReverse": 2
+      }
+    },
+    "W4": {
+      "conclusion": "not_established",
+      "reason": "The declared search space was not exhaustively searched.",
+      "search": {
+        "declared": 4,
+        "searched": 2,
+        "unavailable": 1,
+        "complete": false
+      },
+      "evidence": {
+        "records": 3,
+        "distinctRoots": 2,
+        "repeatedRecordsCollapsed": 1,
+        "margin": 2,
+        "conversionsToReverse": 2
+      }
+    }
+  },
+  "E5prime_divergenceIsExactlyTheNames": true,
+  "divergingMembers": [
+    "claim.proposition",
+    "contentDigest",
+    "evidence.supportingRoots"
+  ],
+  "verdict": "a",
+  "verdictStatement": "(a) confirmed under the corrected registration: the evaluator sees structure only; every name-free field is identical between the repository world and its enumerated twin, and the receipts diverge exactly on the echoed identifier strings and the digest they induce. FC1's check is I2 restated; KL-001's named first gate was already paid by KL-000. FC1's E4 failure stands in the record as a mis-registration."
+}

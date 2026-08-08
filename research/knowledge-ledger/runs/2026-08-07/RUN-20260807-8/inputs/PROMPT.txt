@@ -1,0 +1,86 @@
+RUN-20260807-8 — the v0.2 preregistration schema migration (SCH-001), plus two
+small owner items. This is the highest-leverage open work: eleven of twelve
+kernels cite SCH-001 as a blocker.
+
+Same repository and worktree, branch agent/knowledge-ledger-run-20260807-1.
+The base is already correct: PR #17 is merged, and github/main has been merged
+back into this branch at 485b172. The branch is 57 ahead of main and 0 behind.
+Do NOT re-branch or rebase -- the sync is done.
+
+What that merge brought in, so you are not surprised by it: Codex's EXP009
+confirmatory run and a verifier-independence experiment, both from main, plus
+their tests. The suite is 102 passing, not 82. Six conflicts were resolved
+toward this branch (KL-001 and KL-011 STATUS.json, which carry RUN-6's
+corrections, and the four KL-000 PROTOCOL-COMMIT sidecars, whose original
+bindings are correct on this history). All four registration chains were
+re-verified after the merge and hold. CANONICAL-RECORDS, EVIDENCE-ALIGNMENT
+and PUBLIC-CLAIMS are byte-identical to main -- the merge took main's
+promotions and added none.
+
+OWNER DECISIONS TO RECORD FIRST
+
+A1 is decided by the owner: complete coverage with an empty evidence ledger
+yields `absent_within_declared_scope`. Silence across a fully searched declared
+scope is the finding. The rejected reading -- that an empty ledger is
+indistinguishable from a search never run -- is preserved with its reasoning,
+as R1 and R5.2 were. Record it as an owner decision, not a derivation. Four
+exhaustive worlds are affected; confirm that count rather than trust it.
+
+BL-035 is authorised: audit the brief layer against BRF-101 before executing
+anything else. My briefs for RUN-4, RUN-5 and RUN-6 said "the full versioned
+packet" without enumerating members, which is what caused two runs to omit
+RESEARCH-BACKLOG-v1.json. Audit all operator briefs captured in the run
+records, list which are defective under BRF-101, and record the finding. This
+brief is itself subject to that audit -- if it fails BRF-101, say so.
+
+THE MIGRATION
+
+SCH-001: `minority-prophet.preregistration.v0.1` cannot satisfy
+RESEARCH-METHOD.md. Every kernel's preregistration carries 14 of 22 keys
+unpopulated (11 null + 3 empty collections) because the schema has no place
+for what the method requires.
+
+Design and register `minority-prophet.preregistration.v0.2` so that a
+conforming document CAN satisfy the method. Then migrate the twelve kernels.
+
+Constraints on the migration:
+
+  - KL-000's registered v0.1/v1.1.0/v1.2.0/v1.3.0 preregistrations are frozen
+    research records. Do NOT rewrite them. If KL-000 needs a v0.2 document,
+    it is a new registration alongside, and the registration chains
+    (PROTOCOL-COMMIT-*.txt) must still verify afterwards.
+  - Migrating a seeded kernel's preregistration to v0.2 does NOT advance its
+    state. Eleven kernels stay `seeded`. A schema with more fields is not
+    evidence.
+  - Where v0.2 requires a field a kernel genuinely cannot answer yet, the
+    document records it as unanswered WITH the reason, not as null. "Not yet
+    determined because X" is information; null is not.
+  - Add a test in the spirit of tests/test_closing_packets.py: a v0.2
+    document that omits a required field, or leaves one null without a stated
+    reason, fails the suite. Enforcement, not prose.
+
+WHAT MUST NOT MOVE
+
+KL-000 stays `adversarial-passed` at protocol v1.3.0. All 102 existing tests
+keep passing. No canonical record, paper, or PUBLIC-CLAIMS edit. Nothing
+pushed to main without the owner -- PR #17 is merged, further delivery is a
+separate decision.
+
+CLOSE
+
+Write the full closing packet. Its required members are exactly, by name:
+
+  DRAFT-RUN-REPORT-v1.md
+  CONSTRAINTS-v1.json
+  RESEARCH-BACKLOG-v1.json
+  KERNEL-STATUS-SNAPSHOT-v1.json
+  NEXT-RUN-PROPOSAL-v1.md
+  HANDOFF-v1.md
+  END-UTC.txt
+
+and tests/test_closing_packets.py::REQUIRED is the authority if this list and
+that list ever disagree. Validate the packet with that test BEFORE the close
+commit, as RUN-20260807-7 did.
+
+State plainly whether eleven kernels are now able to preregister, or whether
+v0.2 still cannot carry something the method demands.

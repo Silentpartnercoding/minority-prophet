@@ -1,0 +1,76 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-10",
+  "runNote": "four bounded pieces, all completed: flip_budget presentation, paper v1.0.4, conformance profile, LIN-000",
+  "startUtc": "2026-08-08T01:26:05Z",
+  "endUtc": "see END-UTC.txt",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "a77fa38",
+    "headCommit": "the closing-packet commit carrying this file",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per PROV-004."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Tenth consecutive run (PROV-016).",
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "none",
+    "spend": 0
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "knowledge_ledger/presentation.py + KL-000/FLIP-BUDGET-PRESENTATION.md + CE-03",
+      "status": "confirmatory",
+      "note": "piece 1 COMPLETED: flip_budget = margin as registered derived presentation; receipt untouched; C11/C12 byte-identical proven; RCP-101 closed"
+    },
+    {
+      "artifact": "papers/minority-prophet-v1.0.4.md + ERRATA E6-E8",
+      "status": "confirmatory",
+      "note": "piece 2 COMPLETED: tau=0 scope condition, search-ledger uniqueness gap closed, T1 shadow-tested footnote; v1.0.3 preserved; no theorem/proof/result changed; adoption is the owner's (BL-045)"
+    },
+    {
+      "artifact": "research/knowledge-ledger/CONFORMANCE-PROFILE-v1.md",
+      "status": "confirmatory",
+      "note": "piece 3 COMPLETED: P1-P5 with evidence; a cross-reference to internal tooling, since removed pre-publication (ce07daf)"
+    },
+    {
+      "artifact": "research/knowledge-ledger/lineage/ (LIN-000)",
+      "status": "confirmatory",
+      "note": "piece 4 COMPLETED and PASSED: T1 and L1 end-to-end tested for the first time; 50,362 + 100,000 worlds; zero positive violations; all negatives present; both ablations caught; registered before implementation; draw schedule registered (F11 lesson). Advances no kernel."
+    },
+    {
+      "artifact": "KL-000 / kernels / chains / canonical records / v1.0.3",
+      "status": "confirmatory",
+      "note": "all untouched and verifying; nothing pushed"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; the first-transaction gate is NOT REACHED"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "187 passed, 7 skipped (6 flip_budget + 6 lineage tests new; traceability recount)",
+    "kl000Pytest": "88 passed",
+    "note": "one first-run test failure this run (public-surface check tripped on a typing import) fixed before commit; all verification with pipefail"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "none during this run"
+  ],
+  "firstTransactionGate": "NOT REACHED"
+}

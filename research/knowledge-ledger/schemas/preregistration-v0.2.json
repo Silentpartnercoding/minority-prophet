@@ -1,0 +1,65 @@
+{
+  "schemaId": "minority-prophet.preregistration.v0.2",
+  "registeredBy": "RUN-20260807-8 (SCH-001 repair). First instantiated by KL-000's registrations (RUN-20260807-1 onward), which are the working precedent; this document makes the schema a registered definition rather than a practice.",
+  "purpose": "A conforming v0.2 document CAN satisfy every item of RESEARCH-METHOD.md's required preregistration -- which v0.1 structurally could not (SCH-001: no field existed for protocolVersion, multipleTestingCorrection, environment, humanAuthorization, or controls).",
+
+  "unansweredConvention": {
+    "rule": "A required field whose answer genuinely does not exist yet is recorded as the object {\"status\": \"unanswered\", \"reason\": \"<non-empty explanation of what determines it and why it cannot be answered yet>\"}. 'Not yet determined because X' is information; null is not.",
+    "nullPolicy": "Bare null is forbidden everywhere EXCEPT the field protocolCommit, whose null is a registered design decision (the sidecar discipline: git assigns the commit, PROTOCOL-COMMIT sidecars record it, the registered file is never edited) and which MUST be accompanied by a non-empty protocolCommitNote.",
+    "emptyCollectionPolicy": "Empty arrays/objects are forbidden for required fields; a collection with no known members yet is recorded via the unanswered convention instead."
+  },
+
+  "requiredFields": [
+    {"field": "schema", "methodItem": null, "note": "constant: minority-prophet.preregistration.v0.2"},
+    {"field": "experimentId", "methodItem": 1},
+    {"field": "protocolVersion", "methodItem": 1, "note": "immutable protocol version; new in v0.2"},
+    {"field": "status", "methodItem": null, "note": "document lifecycle state (e.g. seeded-migrated, preregistered)"},
+    {"field": "question", "methodItem": 2},
+    {"field": "null", "methodItem": 3},
+    {"field": "target", "methodItem": 3},
+    {"field": "population", "methodItem": 4},
+    {"field": "searchSpace", "methodItem": 5},
+    {"field": "rootDefinition", "methodItem": 6},
+    {"field": "baselines", "methodItem": 7},
+    {"field": "controls", "methodItem": 7, "note": "the ten mandatory controls of RESEARCH-METHOD.md 'Controls required everywhere'; new in v0.2 (SCH-003)"},
+    {"field": "primaryEndpoint", "methodItem": 8},
+    {"field": "secondaryEndpoints", "methodItem": 8},
+    {"field": "effectSize", "methodItem": 9},
+    {"field": "uncertainty", "methodItem": 9},
+    {"field": "multipleTestingCorrection", "methodItem": 9, "note": "new in v0.2"},
+    {"field": "successCondition", "methodItem": 10},
+    {"field": "failureCondition", "methodItem": 10},
+    {"field": "invalidationCondition", "methodItem": 10},
+    {"field": "stopCondition", "methodItem": 10},
+    {"field": "frozenSeedsOrSplits", "methodItem": 11},
+    {"field": "protocolCommit", "methodItem": 11, "note": "null-by-design before registration; bound post-commit by sidecar; requires protocolCommitNote"},
+    {"field": "protocolCommitNote", "methodItem": 11},
+    {"field": "environment", "methodItem": 11, "note": "new in v0.2"},
+    {"field": "artifacts", "methodItem": 11},
+    {"field": "safetyBoundary", "methodItem": 12},
+    {"field": "humanAuthorization", "methodItem": 12, "note": "new in v0.2"}
+  ],
+
+  "methodCoverage": {
+    "statement": "Every one of RESEARCH-METHOD.md's twelve required-preregistration items has at least one dedicated field above; KL-000's four registrations demonstrate the schema carrying a complete confirmatory program end to end. A v0.2 document can therefore satisfy the method; whether a given document DOES is content, not schema.",
+    "items": {
+      "1": ["experimentId", "protocolVersion"],
+      "2": ["question"],
+      "3": ["null", "target"],
+      "4": ["population"],
+      "5": ["searchSpace"],
+      "6": ["rootDefinition"],
+      "7": ["baselines", "controls"],
+      "8": ["primaryEndpoint", "secondaryEndpoints"],
+      "9": ["effectSize", "uncertainty", "multipleTestingCorrection"],
+      "10": ["successCondition", "failureCondition", "invalidationCondition", "stopCondition"],
+      "11": ["frozenSeedsOrSplits", "protocolCommit", "protocolCommitNote", "environment", "artifacts"],
+      "12": ["safetyBoundary", "humanAuthorization"]
+    }
+  },
+
+  "scope": {
+    "validatedFiles": "each kernel's base preregistration.json (twelve files). KL-000's version-specific registration documents (preregistration-v1.1.0/v1.2.0/v1.3.0.json) are FROZEN research records registered under their own protocol versions before this definition existed; they are exempt from field-list validation by this schema and remain governed by their own registration chains.",
+    "enforcement": "tests/test_preregistrations.py -- a v0.2 document missing a required field, carrying a bare null (outside the protocolCommit design), an empty required collection, or an unanswered object without a non-empty reason FAILS the suite. Enforcement, not prose (M26/I12 discipline)."
+  }
+}

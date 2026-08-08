@@ -1,0 +1,27 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-10",
+  "version": 1,
+  "constraints": [
+    {
+      "id": "CE-03",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "flip_budget alone overstates attacker cost ~2x; it is reported beside conversionsToReverse, never instead",
+      "statement": "One side-conversion action moves a root off one side and onto the other -- two units of net per-side gain -- so flip_budget (= margin, flow units) read as an action count overstates cost ~2x. conversionsToReverse (floor(margin/2)+1, Theorem 4 [E2]) is the action-denominated cost. Registered in KL-000/FLIP-BUDGET-PRESENTATION.md; enforced structurally (the presentation API has no lone-flip_budget variant, tested).",
+      "affectsConclusions": false,
+      "discoveredDuring": "piece 1, from Theorem 4's own unit distinction",
+      "status": "registered-and-enforced"
+    },
+    {
+      "id": "PROV-016",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the tenth consecutive run",
+      "statement": "Unchanged class (PROV-004..015; backlog BL-023, the program's oldest open debt).",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-9",
+  "version": 1,
+  "note": "Written live at close, presence machine-checked.",
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-023 (ninth unverified prompt), BL-026, BL-027, BL-028, BL-029, BL-030, BL-031, BL-032, BL-034, BL-036, BL-037, BL-038, BL-039 open and unchanged. BL-026's margin-rename question is now sharper: the paper DEFINES margin absolute, so any rename is a deviation-from-paper decision, not a free naming choice.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-040",
+      "type": "schema-gap",
+      "title": "Surface flip_budget with every verdict, as the paper's R3 promises (RCP-101)",
+      "hypothesis": "Adding flip_budget (net per-side root-change units, per Theorem 4) to the receipt closes the one place the receipt contradicts the paper, and completes R3's metric pair that conversions_to_reverse half-implements.",
+      "discriminatingTest": "Receipt carries both metrics; I12 extended to enforce flip_budget's formula world-referentially; every pin re-registered; both-implementation reproduction of the new digests.",
+      "whyItMatters": "The paper promises it 'with every verdict'; SCH-005 flagged the absence for KL-011's protected-field survival; the map made the contradiction explicit. Digest-moving -- belongs in the deliberately-versioned family (with BL-026 margin rename and/or BL-037 dependency edges), never in a nothing-moves registration.",
+      "wouldChangeADecision": true,
+      "cost": "evaluator change + protocol v1.4/v2 + full re-registration discipline; small next to BL-037, and combinable with it",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "owner decision on the digest-moving bundle's composition",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-041",
+      "type": "missing-control",
+      "title": "The paper's untested structural claims (Lemma 1, Theorem 1) need a lineage-bearing schema to test at all",
+      "hypothesis": "A schema carrying parent edges (the paper's actual world model) would let a KL kernel test side-locality and rewiring-immunity directly, instead of I7's declared weaker shadow.",
+      "discriminatingTest": "T1's own statement: rewire parent edges preserving roots and side-consistency; verdict must not move. The map marks both claims not-tested with this reason.",
+      "whyItMatters": "Two of the paper's four theorems are untestable in schema v0.1. This overlaps BL-037 (dependency edges) -- one schema generation could carry both -- and KL-011's transport semantics would inherit whichever model wins.",
+      "wouldChangeADecision": false,
+      "cost": "inside the BL-037 schema generation; not a separate build",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "with BL-037",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 3,
+      "id": "BL-042",
+      "type": "process",
+      "title": "TRC-101 applies to every future registration at registration time, not retroactively",
+      "hypothesis": "Extending the preregistration conformance test to require a traceability map (or explicit TRC-101 declaration section) for any kernel that registers a protocol prevents the BRK-101 class from recurring in KL-001..KL-011's registrations.",
+      "discriminatingTest": "A registration without citations or declarations for its normative rules fails the suite before its confirmatory run can execute.",
+      "whyItMatters": "The break survived eight runs in the flagship kernel; eleven kernels are about to write specifications. Catching it at registration costs a map; catching it at IND-style review costs three protocol versions.",
+      "wouldChangeADecision": false,
+      "cost": "~30 lines of test + a TRC section in the registration template",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 4,
+      "id": "BL-043",
+      "type": "owner-decision",
+      "title": "Paper findings for the owner: PPR-101 (|margin| notation) and the A2 evidence",
+      "hypothesis": "None -- two owner items: fix or leave Theorem 4's redundant bars; and decide A2, now with the recorded paper evidence that the registered reading matches section 3 + section 8 and the alternative has no paper basis.",
+      "discriminatingTest": "n/a (decisions)",
+      "whyItMatters": "A2 is the last undecided conclusion-function decision and gates KL-011's transported semantics; the paper evidence lowers its cost.",
+      "wouldChangeADecision": true,
+      "cost": "decisions only",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}

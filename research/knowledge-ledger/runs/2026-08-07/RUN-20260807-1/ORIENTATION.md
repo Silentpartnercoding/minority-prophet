@@ -117,7 +117,7 @@ its *reason* has expired.
 
 ```
 github  https://github.com/Silentpartnercoding/minority-prophet.git   (public GitHub)
-origin  james@100.101.32.77:/Users/james/.../minority-prophet         (working copy over SSH)
+origin  james@100.101.32.77:$HOME/.../minority-prophet         (working copy over SSH)
 ```
 
 Both are reachable. They are **not** interchangeable and every push command
@@ -143,7 +143,7 @@ behaviour was modified.
 
 - `reference-conformance-001`: regenerated from committed inputs; receipt
   **byte-identical** to the committed `reference-receipt.json` under both
-  `/Users/james/Development/.mp-runner-venv/bin/python` (3.14.6) and system
+  `$HOME/Development/.mp-runner-venv/bin/python` (3.14.6) and system
   `python3`; `REFERENCE-RENDERING.md` byte-identical.
 - Committed receipt digest **verified in place**, not recomputed-and-compared:
   `verify_content_digest(committed) -> True`, and an independent recomputation

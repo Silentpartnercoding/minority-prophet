@@ -1,0 +1,53 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-8",
+  "version": 1,
+  "constraints": [
+    {
+      "id": "VER-102",
+      "category": "engineering",
+      "severity": "medium",
+      "title": "A commit landed on a red suite because the verification pipeline masked pytest's exit code",
+      "statement": "The migration's first commit ran 'pytest -q 2>&1 | tail -1' inside an && chain; the pipeline's exit status is tail's, so '1 failed, 122 passed' printed while the chain continued to git commit. The failing test was the program's own standing guard doing exactly its job (see VOC-101). The brief's 'all 102 existing tests keep passing' was violated for one commit.",
+      "evidence": {"redCommit": "6e286b9", "fixCommit": "88cb850", "failing": "test_no_experiment_claims_progress_without_the_evidence_for_it"},
+      "whyItGeneralises": "A check whose failure cannot stop the action it guards is decoration. The suite fired and the pipeline muzzled it -- the same shape as PKT-101's unnoticed omissions, one layer down: enforcement existed, the wiring defeated it.",
+      "remediation": "Immediate follow-up commit fixed the defect and re-ran green; every subsequent verification in this run, including the close validation, runs with pipefail armed. Standing rule: verification commands gate on their own exit status, never on a downstream filter's.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "The red state existed for one commit on a provenance branch; no scientific number was produced or consumed under it.",
+      "discoveredDuring": "the migration commit's own output, read after the fact",
+      "status": "resolved; rule standing"
+    },
+    {
+      "id": "VOC-101",
+      "category": "engineering",
+      "severity": "low",
+      "title": "The migration invented a status vocabulary the standing guard correctly rejected",
+      "statement": "'seeded-migrated-v0.2' was written where the registered vocabulary 'incomplete-seed' is enforced by test_no_experiment_claims_progress_without_the_evidence_for_it (a seeded experiment must not look preregistered). The NAM-101 one-vocabulary lesson relearned at the schema layer: the migration fact belongs in migrationRecord, not in a novel status string.",
+      "remediation": "Status conformed to the guard; the guard unchanged (it was right). The v0.2 migration fact lives in each document's migrationRecord.",
+      "affectsConclusions": false,
+      "discoveredDuring": "suite run after the migration commit",
+      "status": "resolved"
+    },
+    {
+      "id": "BRF-102",
+      "category": "knowledge",
+      "severity": "low",
+      "title": "This run's brief passed BRF-101 via its citation clause while its inline enumeration was wrong",
+      "statement": "The brief's packet list said 'exactly, by name' and named 7 of REQUIRED's 15 members; its own precedence rule ('REQUIRED is the authority if this list and that list ever disagree') activated on first use. Full audit in BL-035-BRIEF-AUDIT.md: 7 of 9 packet-requiring briefs defective under BRF-101, defect tracking loss exactly as the rule predicts.",
+      "remediation": "Standing recommendation added to BRF-101's requirement: briefs SHOULD cite tests/test_closing_packets.py::REQUIRED rather than re-type the list, and MUST carry the precedence rule if they re-type -- an authoritative-sounding partial enumeration is more dangerous than a bare concept.",
+      "affectsConclusions": false,
+      "discoveredDuring": "BL-035 audit, run first as authorised",
+      "status": "recorded; recommendation standing"
+    },
+    {
+      "id": "PROV-014",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the eighth consecutive run",
+      "statement": "Two brief versions were received (an interrupted initial and the operative reissue); only the operative version is transcribed, with the interruption recorded in the capture note. Every verifiable claim in the brief (HEAD, ahead/behind, chains, canonical-file identity, suite count) was verified before acting -- the brief-trust discipline that PROV-004 established, applied to a brief describing a merge this agent did not perform.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program; backlog BL-023"
+    }
+  ]
+}

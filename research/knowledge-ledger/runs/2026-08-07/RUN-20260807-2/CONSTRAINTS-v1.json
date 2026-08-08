@@ -97,7 +97,7 @@
       "title": "Prompt capture is agent-transcription again; the PROV-004 remediation has no harness support yet",
       "statement": "No operator-side prompt artifact existed for this run, so inputs/PROMPT.txt is a transcription from the agent's own context and its digest authenticates the transcription only. RUN-20260807-1 demonstrated this exact method producing a 4-byte silent divergence from the authoritative bytes.",
       "evidence": {
-        "search": "no *prompt* file outside .git under /Users/james/Development at depth 2; operator-notes directory holds only the two disclosure notes",
+        "search": "no *prompt* file outside .git under $HOME/Development at depth 2; operator-notes directory holds only the two disclosure notes",
         "marking": "run-manifest.json promptCaptureMethod = agent-transcription; PROMPT-CAPTURE-NOTE.md states the digest is unverified"
       },
       "remediation": "Field marked unverified as PROV-004 prescribes. The durable fix remains harness-side capture of delivered prompt bytes, which no run can perform for itself.",
