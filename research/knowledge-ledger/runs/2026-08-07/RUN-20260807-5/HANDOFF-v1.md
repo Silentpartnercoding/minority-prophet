@@ -7,7 +7,7 @@ outstanding.**
 ## Where the work is
 
 ```
-worktree   /Users/james/Development/minority-prophet-first-transmission
+worktree   $HOME/Development/minority-prophet-first-transmission
 branch     agent/knowledge-ledger-run-20260807-1
 base       ffbdb60  (RUN-20260807-4's final commit)
 head       see DELIVERY-RECORD.md (post-close addendum; the closing sequence
@@ -57,7 +57,7 @@ and tests run (verification in DELIVERY-RECORD.md). What remains is
 exactly:
 
 ```bash
-cd /Users/james/Development/minority-prophet-kl000-pr
+cd $HOME/Development/minority-prophet-kl000-pr
 git push github agent/kl-000-conformance
 gh pr create --draft --repo Silentpartnercoding/minority-prophet \
   --base main --head agent/kl-000-conformance \

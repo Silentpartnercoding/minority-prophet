@@ -1,0 +1,23 @@
+Owner instruction, 2026-08-08, verbatim:
+
+    I want you to move through all of these: Concretely: a short run that (a)
+    records tonight's cross-repo alignment check as a finding with its evidence,
+    (b) adds the placement pointers to the conformance profile, and (c) opens a
+    backlog item for the three unchecked shared quantities. Then commission
+    LIN-000.
+
+Origin of (a)-(c): the owner asked, earlier the same session, "cross check gate,
+border and research all align". That check ran outside the run system -- RUN-10
+had already closed -- so its result existed only as merged pull requests in two
+product repositories and in no research record. This run exists to correct that.
+
+Prior owner instruction in the same session, discharged before this run opened:
+"OK make them public todays research work" -- RUN-6..10 and the rest of the
+2026-08-07 work were merged to the public repository as PR #24 (merge commit
+f3a8f2ce8).
+
+Scope note carried into this run: the cross-repository check compared three
+quantities only (flip_budget / margin, conversions_to_reverse, and the
+conversion-parity flag). Three further quantities are shared across the same
+three implementations and were NOT compared. Item (c) exists so that gap is
+recorded as work rather than remembered as a caveat.

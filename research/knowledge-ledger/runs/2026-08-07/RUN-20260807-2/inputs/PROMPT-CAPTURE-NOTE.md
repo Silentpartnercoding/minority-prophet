@@ -2,7 +2,7 @@
 
 `PROMPT.txt` is an **agent transcription** from the run context. No
 operator-side prompt artifact was found for this run: the search covered
-`/Users/james/Development/` (depth 2) for any `*prompt*` file outside `.git`,
+`$HOME/Development/` (depth 2) for any `*prompt*` file outside `.git`,
 and the two operator-notes files named by the prompt. Nothing matched.
 
 Per constraint `PROV-004` (RUN-20260807-1), an agent transcription

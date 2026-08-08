@@ -1,24 +1,153 @@
 {
-  "schema": "minority-prophet.preregistration.v0.1",
+  "schema": "minority-prophet.preregistration.v0.2",
   "experimentId": "KL-011",
+  "protocolVersion": {
+    "status": "unanswered",
+    "reason": "assigned at registration, when this kernel's protocol is written and frozen; the kernel is seeded and has no protocol yet"
+  },
   "status": "incomplete-seed",
+  "statusNote": "the registered vocabulary for a seeded kernel (enforced by test_no_experiment_claims_progress_without_the_evidence_for_it: a seeded experiment must not look preregistered). The v0.2 migration is recorded in migrationRecord, not in status.",
+  "migrationRecord": {
+    "migratedBy": "RUN-20260807-8",
+    "from": "minority-prophet.preregistration.v0.1 (preserved in git history at this path)",
+    "stateEffect": "NONE. Migration does not advance the kernel: it remains seeded. A schema with more fields is not evidence (SCH-001 repair only)."
+  },
   "question": "Can a conclusion cross independent systems without losing roots, coverage, uncertainty, or authorization boundaries?",
   "null": "At least one independent implementation changes or drops a protected field.",
   "target": "Byte-verifiable semantic equivalence across two independent implementations and five processing stages.",
-  "population": null,
-  "searchSpace": null,
-  "rootDefinition": null,
-  "baselines": [],
+  "population": {
+    "status": "unanswered",
+    "reason": "requires the concrete corpus/world-generator this kernel's next gate builds; determined by this kernel's next gate (STATUS.json): Its own work, no longer anyone else's: (1) preregistration at schema v0.2 (the v0.1 document cannot satisfy RESEARCH-METHOD.md -- SCH-001); (2) the five-stage pipeline itself (discovery, collection, provenance, decision,..."
+  },
+  "searchSpace": {
+    "status": "unanswered",
+    "reason": "defined with the population at registration; the bounded-absence discipline requires declared bounds that do not exist until the generator or corpus exists; determined by this kernel's next gate (STATUS.json): Its own work, no longer anyone else's: (1) preregistration at schema v0.2 (the v0.1 document cannot satisfy RESEARCH-METHOD.md -- SCH-001); (2) the five-stage pipeline itself (discovery, collection, provenance, decision,..."
+  },
+  "rootDefinition": {
+    "status": "unanswered",
+    "reason": "the operational root definition (what counts as one evidence root in this kernel's domain, and what counts as a copy) is fixed at registration; KL-000's rootDefinition is the precedent form"
+  },
+  "baselines": {
+    "status": "unanswered",
+    "reason": "the ablated comparators are designed with the pipeline at registration; KL-000's B1-B5 with registered must-fail expectations are the precedent form, including the lesson that each baseline's expected failure must be checkable as registered (KL-000 finding F1)"
+  },
+  "controls": [
+    {
+      "requirement": "head or record counting",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "source counting",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "evidence ledger without search coverage",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "search ledger without root collapse",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "dual ledger",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a genuinely independent-evidence condition",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a copied or shared-dependency condition",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "an incomplete-coverage condition",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a counterexample in a searched location",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a counterexample in an unsearched location",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    }
+  ],
   "primaryEndpoint": "protected-field preservation violations",
-  "secondaryEndpoints": [],
-  "effectSize": null,
-  "uncertainty": null,
-  "successCondition": null,
-  "failureCondition": null,
-  "invalidationCondition": null,
+  "secondaryEndpoints": {
+    "status": "unanswered",
+    "reason": "chosen at registration with the endpoints' measurement plan; must include enough reporting granularity that a fail-closed path cannot hide an implementation defect (KL-000 amendment 2(b) precedent)"
+  },
+  "effectSize": {
+    "status": "unanswered",
+    "reason": "requires the registered endpoint and its measurement scale; for conformance-style kernels the KL-000 precedent (exact-zero target, power via must-fail baselines) may apply instead of a minimum detectable effect -- decided at registration"
+  },
+  "uncertainty": {
+    "status": "unanswered",
+    "reason": "stated at registration for the registered endpoints (KL-000 precedent: rule-of-three bounds with fail-closed effective-sample caveats)"
+  },
+  "multipleTestingCorrection": {
+    "status": "unanswered",
+    "reason": "stated at registration once the endpoint family is fixed (KL-000 precedent: none on an exact-zero primary endpoint; Bonferroni on secondary rate bounds)"
+  },
+  "successCondition": {
+    "status": "unanswered",
+    "reason": "fixed at registration with the endpoints; determined by this kernel's next gate (STATUS.json): Its own work, no longer anyone else's: (1) preregistration at schema v0.2 (the v0.1 document cannot satisfy RESEARCH-METHOD.md -- SCH-001); (2) the five-stage pipeline itself (discovery, collection, provenance, decision,..."
+  },
+  "failureCondition": {
+    "status": "unanswered",
+    "reason": "fixed at registration with the endpoints"
+  },
+  "invalidationCondition": {
+    "status": "unanswered",
+    "reason": "fixed at registration; KL-000 precedent: generator/corpus drift, count mismatches, hash mismatches, unexpected fail-closed causes, and any passing must-fail baseline all invalidate rather than fail"
+  },
   "stopCondition": "Only independently reproduced cross-system preservation may be reported as interoperability evidence; the local reference receipt may not.",
-  "frozenSeedsOrSplits": null,
+  "frozenSeedsOrSplits": {
+    "status": "unanswered",
+    "reason": "seeds/splits are frozen at registration, immediately before the confirmatory run -- freezing them now, with no generator or corpus to consume them, would freeze nothing (KL-000 finding F11: a frozen seed without a registered draw schedule does not even freeze a stream)"
+  },
   "protocolCommit": null,
-  "safetyBoundary": null,
-  "artifacts": []
+  "protocolCommitNote": "Null by design, per the registered sidecar discipline (KL-000 PROTOCOL.md, 'Why protocolCommit is deliberately null'): git assigns the registration commit; a PROTOCOL-COMMIT sidecar records it afterwards; the registered file is never edited. Bound when this kernel registers.",
+  "environment": {
+    "status": "unanswered",
+    "reason": "pinned at registration time (interpreter, platform, dependency policy); recording today's environment for an experiment that will not run in it would be provenance theatre"
+  },
+  "artifacts": {
+    "status": "unanswered",
+    "reason": "paths are declared when the kernel's directory is scaffolded (fixtures/, src/, tests/, results/, REPRODUCE.md -- constraint ENG-001, still open). Lesson carried from LEAK-101/IND reviews: artifact lists in registration documents leak structure into commission packages; record roles rather than paths in any package derived from this document"
+  },
+  "safetyBoundary": "Synthetic bounded claims only; five stages (discovery, collection, provenance, decision, presentation) with the registered injection set: paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, one unavailable location. No cross-system claim is promoted by any run.",
+  "humanAuthorization": "Requires two independently written implementations (met in substance -- see STATUS correctionRecord) and owner commissioning for any cross-system execution. Publication and promotion require the owner.",
+  "kernelSpecificConstraint": "Inherited design constraints from KL-000's close: A2 undecided (19,152 worlds of conclusion semantics any transaction transports); SCH-005 (protected fields the receipt never emits cannot be shown to survive crossing systems); ADV-001; F11."
 }

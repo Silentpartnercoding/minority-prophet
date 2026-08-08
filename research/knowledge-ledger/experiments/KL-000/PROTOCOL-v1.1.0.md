@@ -276,6 +276,10 @@ process is improved.
 None at registration. Amendments, if any, will be listed here rather than
 applied silently, following the v1.0.0 discipline.
 
+| # | When | Change | Experimental content affected |
+|---|---|---|---|
+| 1 | RUN-20260807-9, after the program's close-outs; a **provenance correction, not a rule change** | R1's characterisation above — "a decision, not a derivation; could defensibly have gone the other way" — is **corrected: the rule was derivable from the published paper, and the specification lost the connection.** `papers/minority-prophet-v1.0.3.md` §3 (line 53) defines the evidence-root aggregator: *"returns 1 if \|S₁\| > \|S₀\|, 0 if reversed, **abstaining on ties** (optionally below a margin threshold)"*. Ties abstain; strict minorities take the opposing verdict; the existential reading contradicts the published aggregator on all 22,440 divergent worlds. The 22,440-world divergence was therefore not two defensible readings of an underspecified rule — it was one implementation contradicting a published definition **because no KL-000 document cited the paper** (zero citations, grep-verified, RUN-20260807-9). The registered text is preserved above unrewritten; the independent implementer's reading remains defensible *given the package it received*, which is exactly the point: the package severed a derivation chain that existed. The owner's choice happened to match the paper. R1's behaviour is unchanged. | **None.** Behaviour identical; provenance only. |
+
 ## `protocolCommit` remains null
 
 Same registration mechanics as v1.0.0, same reasoning (see `PROTOCOL.md`,

@@ -5,7 +5,7 @@ Everything needed to review, reproduce, or resume. No hidden state.
 ## Where the work is
 
 ```
-worktree  /Users/james/Development/minority-prophet-first-transmission
+worktree  $HOME/Development/minority-prophet-first-transmission
 branch    agent/knowledge-ledger-run-20260807-1
 base      887bd2f  (agent/first-transmission)
 head      8d1bc31
@@ -53,7 +53,7 @@ Already validated: KL-000 was reproduced from base `github/main` `335b34e` with
 an exact match, so the cherry-pick target is known good.
 
 ```bash
-cd /Users/james/Development/minority-prophet-first-transmission
+cd $HOME/Development/minority-prophet-first-transmission
 git fetch github --prune
 git worktree add /tmp/kl000-pr -b agent/kl-000-conformance github/main
 cd /tmp/kl000-pr
