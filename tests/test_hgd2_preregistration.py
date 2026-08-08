@@ -25,6 +25,9 @@ class Hgd2PreregistrationTests(unittest.TestCase):
             "`10,000` resamples",
             "HGD-2a",
             "HGD-2g",
+            "Structural-feasibility amendment",
+            "paired union of suites 100 and 101",
+            "423f20e8ead850bf64cd93cd4a73dc1161d7b5bb6036328e16fc32e27d09f0d1",
         ):
             self.assertIn(required, protocol)
 

@@ -15,6 +15,11 @@
       "bytes": 482232,
       "inventoryEntries": 840,
       "inventorySha256": "ecabc974298f8760fab26b48eed9abbfc58ca1da275db7b402bb11982f93cdca"
+    },
+    "nistSard100": {
+      "url": "https://samate.nist.gov/SARD/downloads/test-suites/2015-03-15-c-test-suite-for-source-code-analyzer-v2-vulnerable.zip",
+      "sha256": "423f20e8ead850bf64cd93cd4a73dc1161d7b5bb6036328e16fc32e27d09f0d1",
+      "inspectionStatus": "frozen-before-acquisition"
     }
   },
   "tools": {
@@ -27,10 +32,12 @@
       "HTTP headers",
       "archive hash and byte length",
       "archive path inventory",
+      "suite 101 manifest labels and reciprocal-pair metadata",
       "tool installation and versions"
     ],
     "notPerformedBeforeThisCommit": [
       "source-content inspection",
+      "suite 100 acquisition or inspection",
       "manifest-label extraction",
       "detector execution",
       "outcome comparison"

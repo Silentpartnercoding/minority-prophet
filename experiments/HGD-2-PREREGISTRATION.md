@@ -147,3 +147,24 @@ results fail the affected hypothesis and remain public.
 - Two detached-worktree executions must produce byte-identical scientific
   JSON; timings remain separate.
 
+## Structural-feasibility amendment — paired NIST source
+
+After the initial public source commitment, archive inventory and manifest
+labels were inspected without reading source content, running a detector, or
+comparing any outcome. That inspection established that suite 101 contains
+only the 102 `good` cases. Its NIST-published companion is suite 100, “C Test
+Suite for Source Code Analyzer v2 — Vulnerable,” containing the corresponding
+102 `bad` cases and explicit pair metadata.
+
+Domain B therefore uses the paired union of suites 100 and 101. Suite 100 is
+frozen at:
+
+`https://samate.nist.gov/SARD/downloads/test-suites/2015-03-15-c-test-suite-for-source-code-analyzer-v2-vulnerable.zip`
+
+NIST publishes SHA-256
+`423f20e8ead850bf64cd93cd4a73dc1161d7b5bb6036328e16fc32e27d09f0d1`.
+Only reciprocal pairs whose two manifests name each other and share a CWE are
+eligible. Both members must be accepted or candidate, unambiguous, and
+single-labeled. Development/confirmation splitting occurs by reciprocal pair,
+within CWE, so a good/bad pair can never cross the boundary. This amendment
+changes no detector, failure, metric, threshold, or success rule.
