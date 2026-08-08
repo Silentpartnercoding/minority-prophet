@@ -598,13 +598,13 @@ that receipt.
 These are facts about this machine, not part of the protocol. Verify them; if any
 is wrong, record the discrepancy rather than working around it silently.
 
-- Worktree: `/Users/james/Development/minority-prophet-first-transmission`
+- Worktree: `$HOME/Development/minority-prophet-first-transmission`
 - Branch: `agent/knowledge-ledger-run-20260807-1`, created from `887bd2f` on
   `agent/first-transmission`. That base carries all eleven authoritative files
   and the reference fixture; neither `main` does.
-- Python: use `/Users/james/Development/.mp-runner-venv/bin/python` (3.14.6,
+- Python: use `$HOME/Development/.mp-runner-venv/bin/python` (3.14.6,
   pytest installed). System `python3` has no pytest. Run tests with
-  `PYTHONPATH=. /Users/james/Development/.mp-runner-venv/bin/python -m pytest -q`.
+  `PYTHONPATH=. $HOME/Development/.mp-runner-venv/bin/python -m pytest -q`.
   Last verified state: 73 passed.
 - Node: run `npm ci` before `npm test`. `vinext` is a declared dependency that is
   not installed by default, and without it `npm test` fails with a bare

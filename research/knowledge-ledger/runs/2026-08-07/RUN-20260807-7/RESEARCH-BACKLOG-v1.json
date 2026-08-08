@@ -1,0 +1,37 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-7",
+  "version": 1,
+  "note": "Written live, at close, by the run itself -- the first backlog whose presence is verified by machine (tests/test_closing_packets.py) rather than by memory.",
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-023 (harness prompt capture -- SEVENTH consecutive unverified prompt, now with a mid-run correction message also unverified; the single oldest piece of provenance debt in the program), BL-025..BL-034 all open and unchanged. BL-033 (SCH-001 migration) remains the highest-leverage open item in the program.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-035",
+      "type": "provenance-check",
+      "title": "Audit the operator-brief layer against BRF-101 before the next run executes anything",
+      "hypothesis": "The instruction layer has carried at least one more concept-where-members-belong defect than the packet enumeration -- BRF-101's class predicts recurrence anywhere a brief compresses a protocol list ('same discipline', 'as before', 'per HANDOFF').",
+      "discriminatingTest": "For each recurring brief phrase that compresses a list, locate the enumeration of record it stands for and verify it exists as a committed, citable artifact; any phrase with no enumeration behind it is a BRF-101 instance. 'Same discipline' is the obvious first candidate: it currently expands only via precedent in context, exactly the mechanism that decayed.",
+      "whyItMatters": "The evidenced cause of the only silent artifact loss in the program was a brief, not a run. Checking the runs while leaving the briefs unchecked repairs the symptom layer only.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether future briefs are executable as received or flagged defective before execution, per the standing BRF-101 requirement.",
+      "cost": "one short audit; enumerations-of-record for any naked concepts found (the packet's already exists: tests/test_closing_packets.py REQUIRED)",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-036",
+      "type": "engineering",
+      "title": "Extend the packet check to content-shape, not only presence",
+      "hypothesis": "The current test verifies presence and non-emptiness; a run could still ship a structurally hollow required artifact (valid JSON, no items; a report of one line). Schema-level checks (backlog has items or an explicit empty-with-reason field; manifest has the required keys) close the next-cheapest evasion of the enumeration.",
+      "discriminatingTest": "A deliberately hollow artifact planted in a scratch run directory fails the extended check; all seven real closed runs pass it.",
+      "whyItMatters": "PKT-101's own history: this run's opening commit shipped an empty PROMPT.txt placeholder -- the presence check alone would have blessed it before the non-empty clause was added. Shape is the next rung of the same ladder.",
+      "wouldChangeADecision": false,
+      "cost": "~40 lines of test",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}

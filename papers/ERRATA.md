@@ -169,3 +169,43 @@ non-roots. Root-set integrity is load-bearing.**
   them.
 - **A refuted audit hypothesis, kept:** the audit predicted the forest/DAG
   mismatch would break Theorems 1, 2 and 5. It did not. All three survive.
+
+
+---
+
+# Additions — 2026-08-08 (KL-000 conformance program, RUN-20260807-10)
+
+Issued from the specification-to-paper traceability audit (TRC-101,
+`research/knowledge-ledger/experiments/KL-000/TRACEABILITY-v1.3.0.json`).
+Applied inline to **v1.0.4** only, each marked `[E6]`…`[E8]`. These are
+scope declarations and one gap closure, not corrections of false statements;
+no theorem, proof, or result changes. v1.0.3 and earlier are preserved.
+
+## [E6] Section 3 — the abstention threshold was an undeclared scope condition
+
+Section 3 permits abstention "optionally below a margin threshold". Every
+experimental result in the paper and its conformance program was produced at
+**τ = 0** (abstention on exact ties only), and no document declared that
+until TRC-101's audit (rule CF-threshold, RUN-20260807-9). v1.0.4 states the
+evaluated configuration. Scope condition on all published results; no claim
+changes.
+
+## [E7] Section 9 — search-ledger identifier uniqueness was a gap in the paper's own thesis
+
+The theorems prove copies do not multiply evidence on the **evidence**
+ledger. The identical attack on the **search** ledger — padding with
+duplicate entries for an already-searched location to inflate coverage — had
+no paper coverage; section 9 was silent. Both independently written
+implementations refused duplicate identifiers unprompted (neither was told
+to by any document), and KL-000 registered the rule as hard invariant I11
+(protocol v1.1.0, repair R3). v1.0.4 closes the gap with a MUST.
+
+## [E8] Theorem 1 — proved, but only shadow-tested in the evaluated schema
+
+Immunity to root-preserving, side-consistent rewiring is proved and
+compiler-ratified. The schema the conformance program evaluates (v0.1)
+carries no parent edges, so the theorem's structure does not exist in the
+tested model; KL-000's I7 (permutation invariance) is a strictly weaker
+shadow, declared as such in the traceability map. v1.0.4 records this where
+a reader of the theorem will find it. An end-to-end test requires a
+lineage-bearing schema.

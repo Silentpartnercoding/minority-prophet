@@ -7,7 +7,7 @@ promoted.
 
 IND-20260807-2 has completed — the independent Rust implementation re-run
 against protocol v1.1.0. Its result is at
-/Users/james/Development/kl000-independent-spec/impl-rs/results/kl000-independent-result-v110.json
+$HOME/Development/kl000-independent-spec/impl-rs/results/kl000-independent-result-v110.json
 and its report alongside it. Read them. Do NOT modify anything under
 kl000-independent-spec/.
 

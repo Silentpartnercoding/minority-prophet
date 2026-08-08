@@ -1,0 +1,59 @@
+{
+  "schema": "minority-prophet.lin000-result.v0.1",
+  "experiment": "LIN-000",
+  "registration": "REGISTRATION.md (committed before implementation)",
+  "declaredExhaustiveCount": 50362,
+  "seed": 20260808,
+  "seedReproducesIdenticalStream": true,
+  "phases": {
+    "exhaustive": {
+      "phase": "exhaustive",
+      "worlds": 50362,
+      "sideConsistentWorlds": 5912,
+      "sideInconsistentWorlds": 44450,
+      "l1PositiveViolations": 0,
+      "t1PositiveViolations": 0,
+      "t1Rewirings": 23952,
+      "t1RootSetBreakChangesVerdictWorlds": 3194,
+      "t1SideBreakChangesWorlds": 3576,
+      "l1NegativeWitnessWorlds": 44450,
+      "rootOnBothSidesWorlds": 44450,
+      "lbShallowCaughtWorlds": 4658,
+      "lbClaimcountCaughtWorlds": 5786,
+      "elapsedSeconds": 0.312,
+      "declaredCount": 50362,
+      "countMatchesDeclared": true
+    },
+    "randomized": {
+      "phase": "randomized",
+      "worlds": 100000,
+      "sideConsistentWorlds": 54548,
+      "sideInconsistentWorlds": 45452,
+      "l1PositiveViolations": 0,
+      "t1PositiveViolations": 0,
+      "t1Rewirings": 975782,
+      "t1RootSetBreakChangesVerdictWorlds": 20789,
+      "t1SideBreakChangesWorlds": 27491,
+      "l1NegativeWitnessWorlds": 45452,
+      "rootOnBothSidesWorlds": 45452,
+      "lbShallowCaughtWorlds": 40452,
+      "lbClaimcountCaughtWorlds": 47460,
+      "elapsedSeconds": 6.527
+    }
+  },
+  "invalidationReasons": [],
+  "result": "passed",
+  "minimalL1NegativeWitness": {
+    "world": [
+      {
+        "parentIndex": null,
+        "side": 0
+      },
+      {
+        "parentIndex": 0,
+        "side": 1
+      }
+    ],
+    "note": "root asserts 0; its cross-side child places the SAME root in S_1 -- the paper's section 3 scope-note phenomenon (one root on both sides of the literal S_a) in the smallest possible world"
+  }
+}

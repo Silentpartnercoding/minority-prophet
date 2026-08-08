@@ -1,0 +1,30 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260808-1",
+  "startUtc": "2026-08-08T09:13:48Z",
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per PROV-004."
+  },
+  "artifacts": [
+    "CONSTRAINTS-v1.json",
+    "KERNEL-STATUS-SNAPSHOT-v1.json",
+    "METHODOLOGY-NOTES.md",
+    "RESEARCH-BACKLOG-v1.json",
+    "START-UTC.txt",
+    "environment-lock.txt",
+    "git-status-before.txt",
+    "inputs/PROMPT.txt",
+    "logs/xrp101-evidence.txt",
+    "pip-freeze.txt"
+  ],
+  "commission": {
+    "backlogItem": "BL-044",
+    "package": "$HOME/Development/lin000-spec",
+    "manifest": "43f2c4c63398925cf5c95be3c7585da9dc18b43d1ecaf34df7ee9be3c8389a20",
+    "passCondition": "world-stream digests, not counter equality (see METHODOLOGY-NOTES M27)"
+  }
+}

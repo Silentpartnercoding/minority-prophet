@@ -1,0 +1,16 @@
+XRP-101 evidence -- three implementations, identical inputs
+gate commit: 70f7d3424
+
+configurations:                         77
+flip_budget   research=ledger=gate:     77/77
+conversions   research=ledger=gate:     77/77
+parity flag   research=gate:            77/77
+mismatches:                             []
+
+The divergence as it stood before the repair, on 5 supporting vs 2 opposing:
+  flip_budget (forgery price)  = 3.0  -> 4 forgeries reverse
+  conversions_to_reverse       = 2  -> 2 compromises reverse
+
+Parity walk under conversion (Gate aggregator):
+  start margin 2 (even): 2 -> 0* -> 2 -> 4 -> 6   abstention reached=True  (* = abstain)
+  start margin 3 (odd): 3 -> 1 -> 1 -> 3 -> 5   abstention reached=False  (* = abstain)

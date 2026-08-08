@@ -1,7 +1,7 @@
 RUN-20260807-2 — specification repair and re-run of KL-000.
 
 Continue the master loop in the same repository and worktree
-(/Users/james/Development/minority-prophet-first-transmission, branch
+($HOME/Development/minority-prophet-first-transmission, branch
 agent/knowledge-ledger-run-20260807-1). Same discipline as RUN-20260807-1:
 run directory, provenance, versioned closing packet, draft PR only, no
 promotion, nothing pushed.
@@ -9,14 +9,14 @@ promotion, nothing pushed.
 An independent reimplementation of KL-000 was commissioned and has completed.
 It was written in Rust from PROTOCOL.md, preregistration.json and the ten
 fixtures only, with hand-written SHA-256, JSON codec and PRNG. Its report is at
-/Users/james/Development/kl000-independent-spec/impl-rs/FINDINGS.md and its
+$HOME/Development/kl000-independent-spec/impl-rs/FINDINGS.md and its
 result at .../impl-rs/results/kl000-independent-result.json. You may read both.
 Do NOT modify anything under kl000-independent-spec/ — its independence is the
 evidence, and editing it destroys that.
 
 Two operator notes must be read and treated as part of the record:
-/Users/james/Development/kl000-operator-notes/OPERATOR-DISCLOSURE.md
-/Users/james/Development/kl000-operator-notes/NAMING-CONVERGENCE.md
+$HOME/Development/kl000-operator-notes/OPERATOR-DISCLOSURE.md
+$HOME/Development/kl000-operator-notes/NAMING-CONVERGENCE.md
 
 WHAT THE REPRODUCTION ESTABLISHED
 

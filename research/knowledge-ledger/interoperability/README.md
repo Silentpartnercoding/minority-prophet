@@ -15,11 +15,24 @@ Run:
 ```bash
 python3 scripts/run_knowledge_transaction.py \
   research/knowledge-ledger/interoperability/reference-input.json \
-  research/knowledge-ledger/interoperability/reference-receipt.json
+  research/knowledge-ledger/interoperability/reference-receipt.json \
+  research/knowledge-ledger/interoperability/REFERENCE-RENDERING.md
 ```
 
 `reference-receipt.json` is an executable conformance artifact, not an
 experimental finding.
+
+[`REFERENCE-RENDERING.md`](REFERENCE-RENDERING.md) is its generated,
+human-readable companion. Every sentence in it is derived from the receipt's own
+values, so the two cannot drift apart. The JSON receipt remains authoritative.
+
+It is not a milestone and must not be described as one. Two lines above, this
+file states that the receipt is a conformance artifact rather than an
+experimental finding; calling its rendering a milestone contradicted that in the
+same document. The title **First Transmission** is reserved for a passed KL-011
+cross-system transaction carrying a durable-history receipt, and **Candidate
+First Transmission** for one that passed the scientific gates without that
+receipt. Rendering a fixture in human language does not promote it.
 
 ## Cross-system acceptance gate
 

@@ -1,0 +1,330 @@
+{
+  "check": "KL-001 FC1",
+  "preregistration": "PREREGISTRATION-FC1.md, committed before this script existed",
+  "evaluatorUnderTest": {
+    "path": "knowledge_ledger/transaction.py",
+    "sha256": "15dfd50051ef5da3db13d8e591f58537325ee50aa4e3573914f86e4ff3a3e21f",
+    "matchesRegistration": true
+  },
+  "worlds": {
+    "W1": {
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No hardcoded credential exists in the mandatory files of repository example-svc."
+      },
+      "searchLedger": {
+        "locations": [
+          {
+            "id": "src/config.py",
+            "status": "searched"
+          },
+          {
+            "id": "README.md",
+            "status": "searched"
+          },
+          {
+            "id": ".env.example",
+            "status": "not_searched"
+          },
+          {
+            "id": "deploy/secrets.tpl",
+            "status": "unavailable"
+          }
+        ]
+      },
+      "evidenceLedger": {
+        "records": [
+          {
+            "id": "finding-1",
+            "rootId": "scanner-A",
+            "side": "support"
+          },
+          {
+            "id": "finding-2",
+            "rootId": "scanner-A",
+            "side": "support"
+          },
+          {
+            "id": "finding-3",
+            "rootId": "scanner-B",
+            "side": "support"
+          }
+        ]
+      }
+    },
+    "W2": {
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No hardcoded credential exists in the mandatory files of repository example-svc."
+      },
+      "searchLedger": {
+        "locations": [
+          {
+            "id": "src/config.py",
+            "status": "searched"
+          },
+          {
+            "id": "README.md",
+            "status": "searched"
+          },
+          {
+            "id": ".env.example",
+            "status": "searched"
+          },
+          {
+            "id": "deploy/secrets.tpl",
+            "status": "searched"
+          }
+        ]
+      },
+      "evidenceLedger": {
+        "records": [
+          {
+            "id": "finding-1",
+            "rootId": "scanner-A",
+            "side": "support"
+          },
+          {
+            "id": "finding-2",
+            "rootId": "scanner-A",
+            "side": "support"
+          },
+          {
+            "id": "finding-3",
+            "rootId": "scanner-B",
+            "side": "support"
+          }
+        ]
+      }
+    },
+    "W3": {
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No hardcoded credential exists in the mandatory files of repository example-svc."
+      },
+      "searchLedger": {
+        "locations": [
+          {
+            "id": "src/config.py",
+            "status": "searched"
+          },
+          {
+            "id": "README.md",
+            "status": "searched"
+          }
+        ]
+      },
+      "evidenceLedger": {
+        "records": [
+          {
+            "id": "finding-1",
+            "rootId": "scanner-A",
+            "side": "support"
+          },
+          {
+            "id": "finding-2",
+            "rootId": "scanner-A",
+            "side": "support"
+          },
+          {
+            "id": "finding-3",
+            "rootId": "scanner-B",
+            "side": "support"
+          }
+        ]
+      }
+    },
+    "W4": {
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No target-class defect exists in the declared components."
+      },
+      "searchLedger": {
+        "locations": [
+          {
+            "id": "loc-1",
+            "status": "searched"
+          },
+          {
+            "id": "loc-2",
+            "status": "searched"
+          },
+          {
+            "id": "loc-3",
+            "status": "not_searched"
+          },
+          {
+            "id": "loc-4",
+            "status": "unavailable"
+          }
+        ]
+      },
+      "evidenceLedger": {
+        "records": [
+          {
+            "id": "rec-1",
+            "rootId": "r1",
+            "side": "support"
+          },
+          {
+            "id": "rec-2",
+            "rootId": "r1",
+            "side": "support"
+          },
+          {
+            "id": "rec-3",
+            "rootId": "r2",
+            "side": "support"
+          }
+        ]
+      }
+    }
+  },
+  "receipts": {
+    "W1": {
+      "schema": "minority-prophet.knowledge-transaction.v0.1",
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No hardcoded credential exists in the mandatory files of repository example-svc."
+      },
+      "search": {
+        "declared": 4,
+        "searched": 2,
+        "unavailable": 1,
+        "complete": false
+      },
+      "evidence": {
+        "records": 3,
+        "distinctRoots": 2,
+        "repeatedRecordsCollapsed": 1,
+        "supportingRoots": [
+          "scanner-A",
+          "scanner-B"
+        ],
+        "opposingRoots": [],
+        "margin": 2,
+        "conversionsToReverse": 2
+      },
+      "conclusion": "not_established",
+      "reason": "The declared search space was not exhaustively searched.",
+      "limits": [
+        "Root identity and independence are declared operationally, not proved semantically.",
+        "This result applies only to the declared search space."
+      ],
+      "contentDigest": "sha256:1f67c59ee5d35a9586a530c4f4a1d5ace566371cd86a5dcfa0fe5606cffbdd63"
+    },
+    "W2": {
+      "schema": "minority-prophet.knowledge-transaction.v0.1",
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No hardcoded credential exists in the mandatory files of repository example-svc."
+      },
+      "search": {
+        "declared": 4,
+        "searched": 4,
+        "unavailable": 0,
+        "complete": true
+      },
+      "evidence": {
+        "records": 3,
+        "distinctRoots": 2,
+        "repeatedRecordsCollapsed": 1,
+        "supportingRoots": [
+          "scanner-A",
+          "scanner-B"
+        ],
+        "opposingRoots": [],
+        "margin": 2,
+        "conversionsToReverse": 2
+      },
+      "conclusion": "absent_within_declared_scope",
+      "reason": "Every declared location was searched and no counterexample root was recorded.",
+      "limits": [
+        "Root identity and independence are declared operationally, not proved semantically.",
+        "This result applies only to the declared search space."
+      ],
+      "contentDigest": "sha256:cef23670e3b0f53cda04e6a31e33ab6b738734c920bd963775f9ee558608e778"
+    },
+    "W3": {
+      "schema": "minority-prophet.knowledge-transaction.v0.1",
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No hardcoded credential exists in the mandatory files of repository example-svc."
+      },
+      "search": {
+        "declared": 2,
+        "searched": 2,
+        "unavailable": 0,
+        "complete": true
+      },
+      "evidence": {
+        "records": 3,
+        "distinctRoots": 2,
+        "repeatedRecordsCollapsed": 1,
+        "supportingRoots": [
+          "scanner-A",
+          "scanner-B"
+        ],
+        "opposingRoots": [],
+        "margin": 2,
+        "conversionsToReverse": 2
+      },
+      "conclusion": "absent_within_declared_scope",
+      "reason": "Every declared location was searched and no counterexample root was recorded.",
+      "limits": [
+        "Root identity and independence are declared operationally, not proved semantically.",
+        "This result applies only to the declared search space."
+      ],
+      "contentDigest": "sha256:688434ef92387af8be90f45c02592b4adc80929d5811c9e75c4b14016aa1591c"
+    },
+    "W4": {
+      "schema": "minority-prophet.knowledge-transaction.v0.1",
+      "transactionId": "kl001-fc1",
+      "claim": {
+        "type": "absence",
+        "proposition": "No target-class defect exists in the declared components."
+      },
+      "search": {
+        "declared": 4,
+        "searched": 2,
+        "unavailable": 1,
+        "complete": false
+      },
+      "evidence": {
+        "records": 3,
+        "distinctRoots": 2,
+        "repeatedRecordsCollapsed": 1,
+        "supportingRoots": [
+          "r1",
+          "r2"
+        ],
+        "opposingRoots": [],
+        "margin": 2,
+        "conversionsToReverse": 2
+      },
+      "conclusion": "not_established",
+      "reason": "The declared search space was not exhaustively searched.",
+      "limits": [
+        "Root identity and independence are declared operationally, not proved semantically.",
+        "This result applies only to the declared search space."
+      ],
+      "contentDigest": "sha256:3c4ca83b860ba958d5ef28ba2bf17cca9cc15126b2c9bd1781681d282a0e685b"
+    }
+  },
+  "w4InsideKl000Bounds": true,
+  "expectations": {
+    "E1": true,
+    "E2": true,
+    "E3": true,
+    "E4": false
+  },
+  "verdict": "b-or-invalid",
+  "verdictStatement": "One or more expectations failed; the divergence is the finding (verdict b) or the run is invalid (hash/bounds)."
+}

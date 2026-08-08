@@ -1,0 +1,62 @@
+RUN-20260807-7 — complete two missing closing-packet artifacts. Small, bounded,
+and the last of today.
+
+Same repository, worktree and branch. Same discipline. Nothing pushed. PR #17
+(agent/kl-000-conformance @ 650f9ee) is published and must not be touched.
+
+THE DEFECT
+
+RESEARCH-BACKLOG-v1.json is required by the closing-packet definition and is
+ABSENT from two runs:
+
+  RUN-20260807-5   absent
+  RUN-20260807-6   absent
+
+Neither was ever written -- `git log --all` on both paths returns nothing. Not
+deleted; never created. Both runs committed their packet and declared a clean
+final tree with the artifact missing, and nobody noticed at the time, including
+the operator, who verified RUN-5's packet and reported it complete.
+
+Sizes across the program: RUN-1 13,684 bytes, RUN-2 8,714, RUN-3 6,180,
+RUN-4 6,876, RUN-5 0, RUN-6 0. That is a habit decaying once the program felt
+closed, not a single slip.
+
+WHAT TO DO
+
+Write both files. Do NOT reopen or amend RUN-5's or RUN-6's closed records, and
+do not backdate. Each file states in its own header that it was completed by
+RUN-20260807-7 after its run had closed, why it was missing, and that its
+content is reconstructed from that run's committed artifacts rather than from
+the run's live reasoning -- which is a weaker source and must be labelled as
+one.
+
+RUN-5's backlog should cover what the I12 gate run generated. RUN-6's should
+cover at least these, which the operator identified and which currently exist
+nowhere else:
+
+  - the MAPPING PIPELINE as KL-001's real risk surface: what counts as a
+    mandatory file, what counts as searched, which scanner output becomes which
+    root. Everything KL-000 established is about ledgers; this is the
+    translation into them and no invariant covers it.
+  - the ADV-001 overlap found at FC1's E3 -- under-declared scope reaching a
+    clean conclusion, in repository clothing.
+  - SCH-001: the v0.1 preregistration schema cannot satisfy RESEARCH-METHOD.md,
+    and it sits under ALL TWELVE kernels. This is the most consequential thing
+    RUN-6 found and it is currently a passing mention.
+
+Add anything else those runs' artifacts support. Do not invent items to fill
+the file; an honest short backlog beats a padded one.
+
+THEN
+
+Add a methodology note: the backlog is the only packet artifact with no natural
+trigger. The report summarises, constraints record blockers, the handoff says
+how to resume, the snapshot dumps state -- each has an obvious moment. The
+backlog asks "what did we learn that we are not acting on", which has no moment,
+and a run that feels finished has no reason to ask it. State what mechanically
+prevents recurrence rather than an intention to remember: a closing-packet
+completeness check that fails the close if any required artifact is absent, in
+the same spirit as I12 -- enforcement, not prose.
+
+Close with your own full packet, backlog included. If your own close would omit
+it, that is the defect reproducing itself and you should say so.

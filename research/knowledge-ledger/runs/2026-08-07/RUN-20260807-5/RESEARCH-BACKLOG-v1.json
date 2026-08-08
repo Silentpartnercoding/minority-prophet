@@ -1,0 +1,43 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-5",
+  "version": 1,
+  "postHocCompletion": {
+    "completedBy": "RUN-20260807-7",
+    "when": "2026-08-07, after RUN-20260807-5 had closed",
+    "whyMissing": "Never created. EVIDENCED CAUSE (owner correction during RUN-20260807-7, replacing the brief's initial 'no natural trigger' speculation which this file briefly carried): instruction decay. Only RUN-1's brief enumerated the closing packet's members; RUN-4/5/6's briefs said only 'Close with the full versioned packet' and never name RESEARCH-BACKLOG (verified by grep). RUN-2/3 produced backlogs on the precedent still fresh in context; RUN-5/6 did not -- the artifact was never attempted, never named in any of their files including their manifests. Output tracked instruction exactly. This is the M24 defect -- a concept written where members belong -- one layer up, in the operator brief. See RUN-20260807-7 constraints PKT-101/BRF-101 and methodology note M26.",
+    "sourceCaveat": "RECONSTRUCTED from RUN-20260807-5's committed artifacts (its report, constraints, STATUS edits, delivery record, and next-run proposal), not from the run's live reasoning. A live backlog can carry judgements the artifacts never absorbed; this one cannot. It is a weaker source and should be read as one.",
+    "causeCorrection": "This file was first written citing the RUN-7 brief's speculated cause ('the backlog has no natural trigger'); the owner corrected the cause with evidence mid-run and this field was updated before the run closed. The speculation is preserved in this note rather than silently replaced."
+  },
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-024 (the I12 gate) CLOSED: paid by this run at exact registered surfaces. BL-025 (decide A1/A2), BL-026 (digest-moving bundle), BL-027 (textual repair bundle), BL-028 (fourth implementation on a reference-free machine), and BL-023 (harness prompt capture -- fifth consecutive unverified prompt, PROV-011) all remain open and unchanged from RUN-20260807-4's backlog.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-029",
+      "type": "missing-control",
+      "title": "The enforcement asymmetry I12 created: the reference checker enforces the decisions, the independent implementation's checker does not",
+      "hypothesis": "An IND re-run against v1.3.0 (adopting an I12-equivalent check in its own checker) would restore symmetry: both implementations enforcing, not merely following, the registered decisions.",
+      "discriminatingTest": "The independent implementation's own inversion ablations caught by its own I12-equivalent at 22,440 / 38,760, matching the reference-side measurements it already published.",
+      "whyItMatters": "Grounded in this run's own claim discipline: 'the independent implementation -- whose checker is its own -- has not run against v1.3.0.' Until then, cross-implementation agreement is agreement of two evaluators but enforcement exists on one side only. Optional, owner's commission, packaging rules LEAK-101/LEAK-102 binding.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Strengthens (or is a precondition some owners would set for) the verified-independent promotion.",
+      "cost": "one commission; the implementer's checker change is small (its ablations already exist)",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-030",
+      "type": "engineering",
+      "title": "Retire or version-guard the stale whole-document reproduction check (VER-101)",
+      "hypothesis": "A version-aware comparator (or an explicit retirement note in the v1.0.0 REPRODUCE.md pointing at the versioned documents) removes the one known-stale verification path left by I12's permanent presence in the checker.",
+      "discriminatingTest": "A fresh reproduction of any registration passes its documented comparison without consulting tribal knowledge.",
+      "whyItMatters": "VER-101, recorded by this run: the checker now carries I12 and baseline reports carry two new fields, so REPRODUCE.md's original one-liner fails against fresh reproductions for reasons that are not defects. A stale check that fails honestly is better than one that passes wrongly, but both erode trust in checks.",
+      "wouldChangeADecision": false,
+      "cost": "documentation plus ~20 lines, but note the v1.0.0 REPRODUCE.md is a registered artifact -- the fix is a pointer file or the versioned documents, not an edit",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ Everything needed to review, reproduce, or resume. No hidden state.
 ## Where the work is
 
 ```
-worktree  /Users/james/Development/minority-prophet-first-transmission
+worktree  $HOME/Development/minority-prophet-first-transmission
 branch    agent/knowledge-ledger-run-20260807-1   (continued from RUN-20260807-1)
 base      cc1d494  (RUN-20260807-1's closing commit)
 head      the closing-packet commit carrying this file
@@ -95,7 +95,7 @@ Nothing in `EXPERIMENT-REGISTRY.json`, `CANONICAL-RECORDS.md`,
    are deterministic and re-running to search for a preferred answer is
    forbidden.
 3. Do **not** execute the independent implementation or modify anything under
-   `/Users/james/Development/kl000-independent-spec/` — its untouched state
+   `$HOME/Development/kl000-independent-spec/` — its untouched state
    is the evidence. In-repo copies with digests live in
    `KL-000/results/independent/`.
 4. Do **not** claim "verified", "verified-independent", First Transmission,

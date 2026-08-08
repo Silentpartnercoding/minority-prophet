@@ -6,12 +6,12 @@ hidden state.
 ## Where the work is
 
 ```
-worktree   /Users/james/Development/minority-prophet-first-transmission
+worktree   $HOME/Development/minority-prophet-first-transmission
 branch     agent/knowledge-ledger-run-20260807-1
 base       ecb2b45  (RUN-20260807-3 close + R5.2 ratification)
 head       the closing-packet commit carrying this file
 PR branch  agent/kl-000-conformance @ 11eb204  (rebuilt this run; worktree
-           /Users/james/Development/minority-prophet-kl000-pr; UNPUSHED)
+           $HOME/Development/minority-prophet-kl000-pr; UNPUSHED)
 window     2026-08-07T22:19:15Z -> END-UTC.txt
 ```
 
@@ -57,7 +57,7 @@ that projection was wrong (TEST-101). 63 is correct and was executed.
 ## To deliver the PR — owner's commands, nothing run
 
 ```bash
-cd /Users/james/Development/minority-prophet-kl000-pr
+cd $HOME/Development/minority-prophet-kl000-pr
 git log --oneline github/main..HEAD | wc -l          # expect 32
 PYTHONPATH=. python3 -m pytest -q                    # expect 63 passed
 PYTHONPATH=. python3 -m pytest research/knowledge-ledger/experiments/KL-000/tests -q   # expect 80 passed

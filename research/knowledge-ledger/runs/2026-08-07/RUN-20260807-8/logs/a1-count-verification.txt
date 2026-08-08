@@ -1,0 +1,4 @@
+A1 worlds (absence claim, empty evidence ledger, all locations searched): 4
+their conclusions under the registered function: {'absent_within_declared_scope': 4}
+expected: 4 worlds (one all-searched location ledger per length 1..4), all absent_within_declared_scope
+MATCH
