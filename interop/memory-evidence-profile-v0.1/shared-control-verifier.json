@@ -1,13 +1,13 @@
 {
   "profile": "memory-evidence-profile-v0.1",
   "proposition": "record R matches source S",
-  "claims": [
-    {"id": "record-r", "value": true, "source": "source-s", "derived_from": []}
-  ],
+  "claims": [{"id": "record-r", "value": true, "source": "source-s", "derived_from": [], "claim_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555", "root_authentication": {"status": "authenticated", "issuer": "source-operator", "key_id": "key-1", "method": "external-receipt"}}],
   "search": {"scope": "record R", "coverage": "complete", "queried": 1, "total_known": 1},
   "verifiers": [
-    {"id": "verifier-a", "controller": "operator-1"},
-    {"id": "verifier-b", "controller": "operator-1"}
+    {"id": "verifier-a", "controller": "operator-1", "controller_basis": "deployment ownership record"},
+    {"id": "verifier-b", "controller": "operator-1", "controller_basis": "deployment ownership record"}
   ],
-  "conclusion": {"kind": "support", "strength": 0.5, "uncertainty": "Two verifier processes have one independent controller."}
+  "binding": {"proposition_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "memory_object_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "request_digest": null, "action_digest": null},
+  "lifecycle": {"observed_at": "2026-08-08T10:00:00Z", "expires_at": "2026-08-09T10:00:00Z", "nonce": "control-example-01", "revocation_status": "active"},
+  "conclusion": {"kind": "support", "strength": 0.5, "uncertainty": "Two verifier processes have one recorded controller; the controller assertion remains externally supplied.", "method": "recorded-controller-collapse-v0.1", "input_claims": ["record-r"]}
 }

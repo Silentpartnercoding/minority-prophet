@@ -5,11 +5,14 @@ Recommendation, Working Draft, or Community Group report. It is intended to
 invite interoperable implementation feedback without selecting a storage,
 identity, attestation, or verification vendor.
 
-The profile transports evidence boundaries; it does not establish truth. A
-consumer must preserve recorded root ancestry, search coverage, common control,
-and stated uncertainty. Local policies may demand stronger evidence, but must
-not turn copies into independent roots, partial search into proof of absence,
-or commonly controlled checks into independent verification.
+The profile transports evidence boundaries; it does not establish truth,
+identity, controller independence, memory integrity, or authority. A consumer
+must preserve recorded root ancestry, authentication status, exact bindings,
+freshness, revocation state, search coverage, recorded common control, and
+stated uncertainty. Local policies may demand stronger evidence, but must not
+turn a parentless declaration into an authenticated root, copies into
+independent roots, partial search into proof of absence, or commonly controlled
+checks into independent verification.
 
 ## Draft public mailing-list note (do not send)
 
@@ -19,10 +22,13 @@ Hello,
 
 We have prepared a small, vendor-neutral, optional JSON evidence profile for
 systems that exchange opaque memory records. It carries derivation roots,
-search scope and coverage, verifier control, and bounded conclusions with
-uncertainty. Executable examples demonstrate that copied claims do not increase
-independent roots, incomplete search cannot establish absence, and multiple
-verifiers under common control do not establish verifier independence.
+external authentication status, exact bindings, freshness and revocation
+state, search coverage, recorded verifier control, and bounded conclusions
+with uncertainty. Executable examples and adversarial fixtures demonstrate
+that a parentless declaration is not automatically authenticated, copied
+claims do not increase roots, incomplete search cannot establish absence,
+replayed or revoked evidence cannot support a conclusion, and multiple
+verifiers under common recorded control do not establish independence.
 
 This is an independent experimental proposal and is not represented as W3C
 work or status. We would welcome implementation feedback on the field model and
