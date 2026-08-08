@@ -5,7 +5,7 @@
   "state": "seeded",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
-  "reviewedByRun": "RUN-20260807-6",
+  "reviewedByRun": "RUN-20260807-8",
   "correctionRecord": {
     "correctedBy": "RUN-20260807-6",
     "what": "The named narrow first check was executed (first-check/FC1 + FC1.1, preregistered before each execution) and found to be KL-000's I2 restated -- verdict (a) of the registered decision rule. The superseded nextGate text below is preserved verbatim. The kernel does NOT advance: a check discharged by a prerequisite advances nothing.",
@@ -15,9 +15,9 @@
   "nextGate": "The REAL first gate, now that the named narrow check is discharged: (1) the mapping pipeline that turns a repository into ledgers -- what counts as a mandatory file, what counts as searched, which scanner outputs become which roots -- with its mapping rules registered (this is where ADV-001 and root-attribution honesty live; FC1's W3 demonstrates the exposure); (2) the frozen corpus: seeded generation of repositories with machine-checkable planted defects and clean controls, digest-manifested BEFORE any evaluation; (3) registered endpoints: the false-clean rate, and baseline true-positive recall measured BEFORE the dual ledger is applied (without which the 95%-preservation target is unfalsifiable); (4) the v0.2 preregistration carrying all of it. Estimated cost: roughly one focused run (generator 300-500 lines, pipeline 200-400 lines, registration + fixtures + tests); zero spend unless a metered model sits in the pipeline, which requires founder authorization first. NOT COMMITTED -- committing it is the owner's act.",
   "supersededNextGate": "SUPERSEDED at RUN-20260807-6, preserved verbatim (written at RUN-20260807-1): 'Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.' -- The narrow check was run and passed, and was found to be already paid by KL-000 (I2); the corpus clause is now the operative gate, restated above with the mapping pipeline made explicit.",
   "blockers": [
-    "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+    "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "directory lacks fixtures/, src/, tests/, results/ at the kernel level (first-check/ is scoped to FC1 and is not kernel scaffolding); see run constraint ENG-001",
-    "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields; migration to v0.2 required first",
+    "DISCHARGED at RUN-20260807-8, retained for the record: 'schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields; migration to v0.2 required first' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable",
     "the mapping layer (repository -> ledgers) does not exist, and its declaration rules are the kernel's actual risk surface (ADV-001, demonstrated by first-check W3)"
   ],
@@ -25,5 +25,6 @@
   "dependsOn": [
     "KL-000"
   ],
-  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 held adversarial-passed through protocol v1.3.0 with zero violations in every run of both implementations; the dependency is satisfied for fixture-stage work. Promotion of any KL-000 claim remains a separate owner decision."
+  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 held adversarial-passed through protocol v1.3.0 with zero violations in every run of both implementations; the dependency is satisfied for fixture-stage work. Promotion of any KL-000 claim remains a separate owner decision.",
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (2 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
 }

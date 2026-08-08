@@ -5,7 +5,7 @@
   "state": "seeded",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
-  "reviewedByRun": "RUN-20260807-6",
+  "reviewedByRun": "RUN-20260807-8",
   "correctionRecord": {
     "correctedBy": "RUN-20260807-6",
     "what": "The named blocker -- 'KL-000 independent reimplementation' -- was discharged by evidence this record predates, and the record did not know it. The blocker text below is preserved verbatim as superseded, not rewritten.",
@@ -15,9 +15,9 @@
   "nextGate": "Its own work, no longer anyone else's: (1) preregistration at schema v0.2 (the v0.1 document cannot satisfy RESEARCH-METHOD.md -- SCH-001); (2) the five-stage pipeline itself (discovery, collection, provenance, decision, presentation) exchanging one bounded claim, with the registered injection set: paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, one unavailable location; (3) its fixtures, tests, and results directories (ENG-001). The two-implementation prerequisite is met in substance; what KL-011 inherits from KL-000's close must be carried into its design: A2 undecided (19,152 worlds of conclusion semantics any transaction would transport), SCH-005 (protected fields the receipt never emits cannot be shown to survive crossing systems), ADV-001 (coverage preservation is only as strong as the original declaration), and F11 (no cross-implementation randomized stream). First falsifiable step: the v0.2 preregistration, owner's to schedule.",
   "supersededNextGate": "SUPERSEDED at RUN-20260807-6, preserved verbatim (written at RUN-20260807-1, when no independent implementation existed): 'BLOCKED on KL-000's next gate. KL-011 requires two independently written implementations; KL-000 has one implementation whose author also wrote its verifier. The independent reimplementation that KL-000 needs is the SAME artifact KL-011 needs, so it should be commissioned once. After that: five stages (discovery, collection, provenance, decision, presentation) exchanging one bounded claim, with paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, and one unavailable location injected.'",
   "blockers": [
-    "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+    "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
-    "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+    "DISCHARGED at RUN-20260807-8, retained for the record: 'schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "DISCHARGED at RUN-20260807-6, retained for the record: 'blocked-prerequisite: KL-000 independent reimplementation' -- discharged by IND-20260807-1/-2/-3; see correctionRecord",
     "constraint SCH-005: flipBudget, unattributed evidence, and uncertainty are named as evidence-ledger fields in RESEARCH-DIRECTION.md but are never emitted by the receipt. A protected field the receipt does not carry cannot be shown to survive crossing systems.",
     "constraint ADV-001: an under-declared search space is undetectable, so cross-system preservation of coverage is only as strong as the original declaration",
@@ -27,5 +27,6 @@
   "dependsOn": [
     "KL-000"
   ],
-  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed and held it through protocol v1.3.0 with zero violations in every run of both implementations. SUPERSEDED CLAUSE preserved: this note previously ended 'KL-000 itself awaits independent reimplementation' (true at RUN-20260807-1; discharged since -- see correctionRecord). Promotion of any KL-000 claim remains a separate owner decision, and KL-011 work beyond fixtures still waits on its own preregistration, not on KL-000."
+  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed and held it through protocol v1.3.0 with zero violations in every run of both implementations. SUPERSEDED CLAUSE preserved: this note previously ended 'KL-000 itself awaits independent reimplementation' (true at RUN-20260807-1; discharged since -- see correctionRecord). Promotion of any KL-000 claim remains a separate owner decision, and KL-011 work beyond fixtures still waits on its own preregistration, not on KL-000.",
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (2 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
 }
