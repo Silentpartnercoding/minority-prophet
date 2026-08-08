@@ -8,6 +8,7 @@ import hashlib
 import io
 import json
 import platform
+import random
 import statistics
 import subprocess
 import sys
@@ -33,6 +34,8 @@ HGD2_SOFTWARE = ROOT / "experiments" / "hgd2" / "software-detector-records.json"
 SOURCE = Path(__file__).resolve()
 PROTOCOL_COMMIT = "29e9cca"
 EVIDENCE_COMMIT = "93d6ee3"
+BOOTSTRAP_SEED = 20260811
+BOOTSTRAP_RESAMPLES = 10_000
 
 
 def sha(path: Path) -> str:
@@ -49,11 +52,33 @@ def outcome_name(state: str, answer: int | None, truth: int) -> str:
     return "escalate" if state == "ESCALATE" else "still_abstain"
 
 
-def metrics(rows: list[dict]) -> dict:
+def percentile(values: list[float], fraction: float) -> float:
+    ordered = sorted(values); position = (len(ordered) - 1) * fraction
+    lower = int(position); upper = min(lower + 1, len(ordered) - 1); weight = position - lower
+    return ordered[lower] * (1 - weight) + ordered[upper] * weight
+
+
+def bootstrap_intervals(rows: list[dict], seed_offset: int) -> dict:
+    if not rows:
+        return {"recovery_coverage_95ci": None, "recovered_false_confident_error_95ci": None}
+    grouped = defaultdict(list)
+    for index, row in enumerate(rows):
+        grouped[str(row.get("case", index))].append(row)
+    clusters = sorted(grouped); rng = random.Random(BOOTSTRAP_SEED + seed_offset)
+    recovery = []; errors = []
+    for _ in range(BOOTSTRAP_RESAMPLES):
+        sample = [item for _ in clusters for item in grouped[clusters[rng.randrange(len(clusters))]]]
+        recovery.append(sum(row["outcome"].startswith("recovered_") for row in sample) / len(sample))
+        errors.append(sum(row["outcome"] == "recovered_wrong" for row in sample) / len(sample))
+    return {"recovery_coverage_95ci": [percentile(recovery, 0.025), percentile(recovery, 0.975)],
+            "recovered_false_confident_error_95ci": [percentile(errors, 0.025), percentile(errors, 0.975)]}
+
+
+def metrics(rows: list[dict], seed_offset: int = 0) -> dict:
     total = len(rows)
     answered = sum(row["outcome"].startswith("recovered_") for row in rows)
     wrong = sum(row["outcome"] == "recovered_wrong" for row in rows)
-    return {
+    result = {
         "initial_unresolved": total,
         "candidates_available": sum(row["candidate_available"] for row in rows),
         "queries": sum(row["queried"] for row in rows),
@@ -63,6 +88,8 @@ def metrics(rows: list[dict]) -> dict:
         "still_abstain": sum(row["outcome"] == "still_abstain" for row in rows),
         "escalate": sum(row["outcome"] == "escalate" for row in rows),
     }
+    result.update(bootstrap_intervals(rows, seed_offset))
+    return result
 
 
 def load_epa_values() -> dict:
@@ -125,7 +152,7 @@ def run_epa() -> dict:
                 "queried": queried, "outcome": outcome_name(final["state"], final["answer"], truth),
                 "head_wrong": head_answer != truth,
             })
-    return {"directions": {name: metrics(rows) for name, rows in directions.items()},
+    return {"directions": {name: metrics(rows, index) for index, (name, rows) in enumerate(directions.items())},
             "dependent_null_violations": null_violations,
             "restraint_violations": restraint_violations,
             "selection_count": len(selected)}
@@ -190,11 +217,11 @@ def run_software() -> dict:
                              "outcome": outcome_name(final["state"], final["answer"], truth),
                              "head_wrong": head["answer"] != truth})
             previous[family] = [item["detectors"][name]["vote"] for name in names]
-    return {"pooled": metrics(rows), "dependent_null_violations": null_violations,
+    return {"pooled": metrics(rows, 10), "dependent_null_violations": null_violations,
             "restraint_violations": restraint_violations,
             "cppcheck_records": len(cpp),
-            "by_attack": {attack: metrics([row for row in rows if row["attack"] == attack])
-                          for attack in ("false_negative", "false_positive", "stale_replay")}}
+            "by_attack": {attack: metrics([row for row in rows if row["attack"] == attack], 20 + index)
+                          for index, attack in enumerate(("false_negative", "false_positive", "stale_replay"))}}
 
 
 def run() -> tuple[dict, dict]:
@@ -225,6 +252,8 @@ def run() -> tuple[dict, dict]:
         "schema": "minority-prophet.hes1.scientific-result.v1", "experiment": "HES-1",
         "protocol_commit": PROTOCOL_COMMIT, "evidence_commit": EVIDENCE_COMMIT,
         "implementation_commit": git_head(),
+        "configuration": {"bootstrap_seed": BOOTSTRAP_SEED,
+                          "bootstrap_resamples": BOOTSTRAP_RESAMPLES},
         "hashes": {"protocol": sha(PROTOCOL), "epa_selection": sha(EPA_SELECTION),
                    "cppcheck_evidence": sha(CPPCHECK), "hgd2_software": sha(HGD2_SOFTWARE),
                    "runner": sha(SOURCE)},
