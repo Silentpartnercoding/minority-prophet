@@ -107,19 +107,6 @@ of the values it carries.
 
 ---
 
-## Relation to the trust-lockpick toolbox (factual note)
-
-Three of these profile rules correspond to lockpicks the owner's
-trust-lockpick toolbox already probes for: **effect-prevention** (P4 —
-malformed or inadmissible input must not produce effects), **semantic-action
--collision** (P3 and P5 — two encodings of the same semantics must not
-diverge, and two semantics must not share an encoding), and
-**frozen-verification-material** (P2 — the verification material is bound to
-the content it verifies and mutations are caught). This profile is the
-evidence side of those questions for this codebase: what is asserted, where
-it is registered, and the counts under which it has held. It sells nothing;
-the probes decide what they probe.
-
 ## What this profile is not
 
 Not a paper claim, not a kernel state, not a promotion. The five rules'
