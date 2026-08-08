@@ -45,6 +45,17 @@ class Hgd1PreregistrationTests(unittest.TestCase):
         })
         self.assertEqual(vectors["unknown-component"]["expected"]["state"], "ESCALATE")
 
+    def test_source_manifest_preserves_frozen_archive_and_limit(self):
+        manifest = json.loads(
+            (ROOT / "experiments" / "hgd1" / "source-manifest.json").read_text()
+        )
+        self.assertEqual(
+            manifest["archiveSha256"],
+            "cc8cb80bcc0317705202d12a472918438b8bee60316f54777d6f748c58ac2661",
+        )
+        self.assertEqual(manifest["valueInspectionBeganAfterPublicCommit"], "350de0b")
+        self.assertTrue(any("no per-row qualifier" in item for item in manifest["limitations"]))
+
 
 if __name__ == "__main__":
     unittest.main()
