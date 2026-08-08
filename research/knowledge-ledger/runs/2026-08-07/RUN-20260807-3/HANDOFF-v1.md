@@ -5,7 +5,7 @@ Everything needed to review, reproduce, or resume. No hidden state.
 ## Where the work is
 
 ```
-worktree  /Users/james/Development/minority-prophet-first-transmission
+worktree  $HOME/Development/minority-prophet-first-transmission
 branch    agent/knowledge-ledger-run-20260807-1   (continued)
 base      0b6614f  (RUN-20260807-2's closing commit)
 head      the closing-packet commit carrying this file

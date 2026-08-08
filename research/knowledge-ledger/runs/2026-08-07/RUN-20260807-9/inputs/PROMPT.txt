@@ -1,0 +1,86 @@
+RUN-20260807-9 — specification-to-paper traceability. The program has a
+provenance break inside itself.
+
+Same repository, worktree and branch (agent/knowledge-ledger-run-20260807-1),
+already synced with main at 485b172 and carrying RUN-8. Same discipline. Draft
+only, nothing pushed, nothing promoted.
+
+THE FINDING, VERIFY IT FIRST
+
+`papers/minority-prophet-v1.0.3.md` line 53 states the evidence-root
+aggregator: "returns 1 if |S1| > |S0|, 0 if reversed, abstaining on ties
+(optionally below a margin threshold...)". Theorem 4 states "the verdict is a
+threshold function of the side-count margin."
+
+KL-000's specifications cite the paper ZERO times. Not PROTOCOL-v1.1.0.md, not
+preregistration-v1.1.0.json. Grep them: "paper", "aggregator", "abstain" do not
+appear.
+
+Verify both facts before acting. If either is wrong, stop and report.
+
+WHAT IT IMPLIES, AND THE RECORD CORRECTION IT FORCES
+
+R1 (v1.1.0) is recorded as an owner decision that "could have gone the other
+way", with the independent implementation's existential reading preserved as
+defensible. If the paper already fixes ties as abstention, that characterisation
+is FALSE: the rule was derivable, the specification lost it, and the owner
+happened to choose what the paper says. The 22,440-world divergence was not two
+readings of an underspecified rule -- it was one implementation contradicting a
+published theorem because nothing connected the documents.
+
+Determine, for R1 and separately for R5.2 (margin absolute):
+  - does the paper settle it, partially settle it, or leave it open?
+  - state the exact line or theorem, quoted.
+Then correct the record where the characterisation is wrong. Append; do not
+rewrite the registered documents. Preserve the "owner decision" text with the
+correction beside it, as every prior correction in this program has been made.
+
+Do NOT change any behaviour. R1 and R5.2 stay as implemented; only their
+provenance is being corrected.
+
+THE REQUIREMENT TO BUILD
+
+Establish and register a traceability rule (name it; TRC-101 is available):
+every normative rule in a KL specification either
+  (a) cites the paper section or theorem it implements, or
+  (b) declares itself specification-local with a reason.
+
+Then apply it to KL-000 v1.3.0 -- the current protocol -- and produce the
+answer to a question nobody in this program can currently answer:
+
+  WHICH OF THE PAPER'S CLAIMS DOES KL-000 ACTUALLY TEST?
+
+Produce that as an explicit map: paper claim -> the invariant or fixture that
+exercises it, or "not tested by KL-000". Both directions matter. A paper claim
+with no test is an untested claim; a KL-000 rule with no paper basis is either
+a specification-local choice or an invention, and the map must say which.
+
+Enforce it with a test in the family of tests/test_closing_packets.py and
+tests/test_preregistrations.py: a normative rule with neither a citation nor a
+specification-local declaration fails the suite. Enforcement, not prose.
+
+WHAT MUST NOT MOVE
+
+KL-000 stays `adversarial-passed` at v1.3.0. Eleven kernels stay `seeded`. All
+124 existing tests keep passing. All four registration chains keep verifying.
+No canonical record, PUBLIC-CLAIMS, or paper edit -- if the audit finds the
+paper itself is wrong or unclear, that is a finding for the record and an owner
+decision, not something this run repairs.
+
+CLOSE
+
+Write the full closing packet. Its required members are exactly, by name:
+
+  DRAFT-RUN-REPORT-v1.md
+  CONSTRAINTS-v1.json
+  RESEARCH-BACKLOG-v1.json
+  KERNEL-STATUS-SNAPSHOT-v1.json
+  NEXT-RUN-PROPOSAL-v1.md
+  HANDOFF-v1.md
+  END-UTC.txt
+
+and tests/test_closing_packets.py::REQUIRED is the authority if this list and
+that list disagree. Validate with that test before the close commit.
+
+State plainly how many of the paper's claims KL-000 tests, and how many of
+KL-000's rules have no paper basis.

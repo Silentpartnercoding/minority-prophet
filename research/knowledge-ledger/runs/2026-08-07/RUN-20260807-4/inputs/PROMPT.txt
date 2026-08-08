@@ -5,7 +5,7 @@ provenance, versioned closing packet, draft only, nothing pushed, nothing
 promoted without the owner.
 
 IND-20260807-3 has completed and PASSED. Its result is at
-/Users/james/Development/kl000-independent-spec/impl-rs/results/kl000-independent-result-v120.json
+$HOME/Development/kl000-independent-spec/impl-rs/results/kl000-independent-result-v120.json
 Read it. Do not modify anything under kl000-independent-spec/. Import it by
 copy with provenance, as you did for IND-2.
 

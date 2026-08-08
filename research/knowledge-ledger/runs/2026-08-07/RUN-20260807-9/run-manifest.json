@@ -1,0 +1,76 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-9",
+  "runNote": "specification-to-paper traceability: break verified, provenance corrected by amendment, TRC-101 registered and enforced",
+  "startUtc": "2026-08-08T00:59:38Z",
+  "endUtc": "see END-UTC.txt",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "eacc2f6",
+    "headCommit": "the closing-packet commit carrying this file",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per PROV-004."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Ninth consecutive run (PROV-015).",
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "none",
+    "spend": 0
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "BRK-101 provenance corrections (v1.1.0 Amendment 1, v1.2.0 Amendment 3, v1.3.0 Amendment 1, FINAL-RECORD addendum, STATUS)",
+      "status": "confirmatory",
+      "note": "R1 and R5.2 were derivable from the paper's section 3; F4 is Theorem 4 [E2] for decisive worlds. Registered text preserved; zero behaviour change; A1's characterisation survives; A2 stays open with paper evidence recorded."
+    },
+    {
+      "artifact": "TRC-101 + KL-000/TRACEABILITY-v1.3.0.json + tests/test_traceability.py",
+      "status": "confirmatory",
+      "note": "Two-direction map, verbatim quotes byte-checked (caught two of this run's own paraphrases on first execution), counts recomputed by test. 14 in-scope paper claims: 6 tested / 4 partial / 4 untested. 19 rules: 6 paper / 6 partial / 7 specification-local."
+    },
+    {
+      "artifact": "RCP-101 (flip_budget)",
+      "status": "incomplete",
+      "note": "the receipt contradicts the paper's R3 promise; digest-moving repair recorded as BL-040, owner's"
+    },
+    {
+      "artifact": "PPR-101 (paper |margin| notation)",
+      "status": "incomplete",
+      "note": "paper-internal finding for the owner; not repaired per the brief"
+    },
+    {
+      "artifact": "KL-000 / eleven kernels / chains / canonical records",
+      "status": "confirmatory",
+      "note": "adversarial-passed at v1.3.0 unchanged; all seeded unchanged; four chains verify; no canonical, PUBLIC-CLAIMS, or paper edit; nothing pushed"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; the first-transaction gate is NOT REACHED"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "172 passed, 7 skipped (48 new traceability checks; skips are the quote-checker passing over specification-local entries by design)",
+    "kl000Pytest": "88 passed",
+    "note": "the quote-verbatim check failed twice on first execution against this run's own map and was satisfied by correcting the quotes to the paper's bytes -- the enforcement working as designed, recorded in the report"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "none during this run"
+  ],
+  "firstTransactionGate": "NOT REACHED"
+}

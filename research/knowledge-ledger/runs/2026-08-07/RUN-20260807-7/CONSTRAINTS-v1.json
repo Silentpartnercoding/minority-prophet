@@ -1,0 +1,44 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-7",
+  "version": 1,
+  "constraints": [
+    {
+      "id": "PKT-101",
+      "category": "knowledge",
+      "severity": "medium",
+      "title": "A required closing-packet artifact went unwritten in two consecutive runs, unnoticed by runs and operator alike",
+      "statement": "RESEARCH-BACKLOG-v1.json absent from RUN-20260807-5 and RUN-20260807-6: never created (git log --all: zero commits touch either path), never named in any of their files. Sizes across the program: 13,684 / 8,714 / 6,180 / 6,876 / 0 / 0 bytes. Both runs declared clean final trees; the operator's verification of RUN-5's packet also missed it. Completed by this run as labelled post-hoc reconstructions from committed artifacts -- a weaker source than live reasoning, said so in each file.",
+      "evidence": {"verification": "this run's opening commit: presence/size table and git-log-all counts, matching the owner's figures exactly"},
+      "cause": "See BRF-101 -- instruction decay, evidenced, not the 'no natural trigger' speculation this run's brief initially carried.",
+      "remediation": "Both files written with postHocCompletion headers and causeCorrection fields; tests/test_closing_packets.py permanently fails any close missing or emptying a required artifact (side 1 of the M26 fix). It also rejects EMPTY required artifacts: this run's own opening commit briefly carried PROMPT.txt as an empty placeholder -- the defect class's smallest specimen, caught and recorded in the capture note.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "The backlog carries forward learning; no scientific number lived in the missing files. What was at risk was un-acted-on knowledge (the SCH-001 elevation, the mapping-pipeline surface) existing nowhere.",
+      "discoveredDuring": "operator review after RUN-20260807-6",
+      "status": "remediated; enforcement permanent"
+    },
+    {
+      "id": "BRF-101",
+      "category": "knowledge",
+      "severity": "high",
+      "title": "The evidenced cause: operator briefs replaced the packet enumeration with a concept, and output tracked instruction exactly (owner's own finding)",
+      "statement": "Only RUN-1's brief enumerates the closing packet by member name. RUN-4/5/6's briefs say only 'Close with the full versioned packet'; the string RESEARCH-BACKLOG appears in none of them (verified by grep, with one refinement to the owner's table: RUN-2/3's briefs also never name it -- those runs produced backlogs from the enumeration still fresh in context as precedent). RUN-5/6, concept-only briefs with the precedent aged out, never attempted the artifact. The M24 defect -- concepts are not quantifiers -- one layer up, in the instruction layer, identified and evidenced by the owner against the owner's own briefs.",
+      "evidence": {"grep": "RESEARCH-BACKLOG occurrences per brief: RUN-1: 1; RUN-2..6: 0. 'full [versioned] packet' present in RUN-2/4/5/6 briefs", "outcome": "artifact present 4/4 while enumeration or fresh precedent was in context; absent 2/2 once neither was"},
+      "requirement": "STATED AS A REQUIREMENT ON OPERATOR BRIEFS, per owner instruction, not as advice: a brief that requires a packet ENUMERATES its members or cites the enumeration of record (tests/test_closing_packets.py::REQUIRED) by path. A future brief that says 'the full packet' without naming the members is DEFECTIVE, and the run receiving it says so before executing -- the same standing a defective registration has.",
+      "whyItGeneralises": "Three layers in one day named a concept where members belonged and failed at the unnamed members: an expectation (REG-101's E4), a specification (SPEC-108's unregistered receipt object), an instruction (this). The instruction layer is the one that actually caused this loss, and the only one that had no check until now.",
+      "affectsConclusions": false,
+      "discoveredDuring": "owner correction, mid-RUN-20260807-7; verified by grep before adoption",
+      "status": "recorded; requirement standing; enforcement side in tests/test_closing_packets.py"
+    },
+    {
+      "id": "PROV-013",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the seventh consecutive run; this run adds a mid-run correction message as a second transcribed input",
+      "statement": "PROMPT.txt and PROMPT-CORRECTION.txt both agent-transcribed, unverified (PROV-004..012 line). Additionally the opening commit carried PROMPT.txt as an empty placeholder, corrected in the same run and recorded in the capture note.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program; backlog BL-023"
+    }
+  ]
+}

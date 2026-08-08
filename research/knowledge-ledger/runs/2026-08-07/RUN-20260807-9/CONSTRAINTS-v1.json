@@ -1,0 +1,53 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-9",
+  "version": 1,
+  "constraints": [
+    {
+      "id": "BRK-101",
+      "category": "provenance",
+      "severity": "high",
+      "title": "The program carried a provenance break inside itself: specifications derived nothing from the paper they operationalise",
+      "statement": "Zero paper citations across every KL-000 specification of every version. Two rules recorded as open owner decisions (R1 tie rule, R5.2 absolute margin) were derivable from the paper's section 3, and F4's 'reverse-engineered' formula is Theorem 4 [E2], published. The 22,440-world cross-implementation divergence was one implementation contradicting a published definition through a package that had severed the derivation chain -- not two defensible readings of an underspecified rule.",
+      "evidence": {"paper": "section 3 line 53 (aggregator, margin), Theorem 4 [E2] line 67 (conversions formula)", "grep": "'paper', 'aggregator', 'abstain': zero occurrences in PROTOCOL-v1.1.0/-v1.2.0/-v1.3.0.md and preregistration-v1.1.0/-v1.3.0.json", "surviving": "A1's owner-decision characterisation survives (paper silent); A2 stays open with paper evidence recorded"},
+      "whyItGeneralises": "Every document layer of this program has now exhibited the same defect once: expectation (REG-101), specification (SPEC-108), instruction (BRF-101), and derivation (this). In each case a connection existed and nothing carried it, so downstream work re-decided or contradicted what upstream had fixed. The repair is the same shape each time: the connection becomes an artifact (quote, enumeration, member list) checked by machine.",
+      "remediation": "Provenance corrected by amendment (v1.1.0 Amendment 1, v1.2.0 Amendment 3, v1.3.0 Amendment 1; FINAL-RECORD addendum; STATUS) with registered text preserved and zero behaviour change. TRC-101 registered; TRACEABILITY-v1.3.0.json produced both directions; tests/test_traceability.py enforces citation-or-declaration, verbatim quotes, invariant completeness, and recomputed counts.",
+      "affectsConclusions": true,
+      "affectsConclusionsReason": "Re-grades the divergence narrative of RUN-2/RUN-3's records (corrected by amendment, originals preserved) and strengthens the conformance claim: both implementations now demonstrably agree with the PUBLISHED definitions, not merely with each other.",
+      "discoveredDuring": "owner finding, verified first per the brief",
+      "status": "corrected-and-enforced"
+    },
+    {
+      "id": "RCP-101",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "The receipt contradicts the paper on flip_budget (SCH-005's paper root)",
+      "statement": "Section 6 R3: 'Metrics: flip_budget in units of net per-side root change and conversions_to_reverse in side-conversion actions; both are surfaced with every verdict.' KL-000's receipt has never carried flip_budget. SCH-005 recorded the absence against RESEARCH-DIRECTION.md; the traceability map shows the promise is the paper's own.",
+      "remediation": "Not repaired (digest-moving; every pin re-registers; owner's decision). Recorded as BL-040, in the deliberately-versioned family with BL-026 (margin rename) and BL-037 (dependency edges).",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "KL-000's registered claims never asserted flip_budget; the contradiction is between paper and receipt schema, now visible instead of latent.",
+      "discoveredDuring": "building the map",
+      "status": "recorded-open; owner decision"
+    },
+    {
+      "id": "PPR-101",
+      "category": "knowledge",
+      "severity": "low",
+      "title": "Paper-internal notation finding: Theorem 4's T5-correction writes |margin| on an already-absolute quantity",
+      "statement": "Section 3 defines margin = ||S1| - |S0|| (absolute); Theorem 4's T5-correction then writes '|margin| > k' and '|margin| >= k'. Redundant bars at best, a residue of a signed-margin draft at worst. Per the brief, a paper finding is an owner decision, not something this run repairs.",
+      "affectsConclusions": false,
+      "discoveredDuring": "determining whether the paper settles R5.2",
+      "status": "recorded-for-owner"
+    },
+    {
+      "id": "PROV-015",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the ninth consecutive run",
+      "statement": "Unchanged class (PROV-004..014). Both verification-gated facts in the brief were checked before acting and held; the run additionally found the break wider than briefed (margin definition, conversions formula).",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program; backlog BL-023"
+    }
+  ]
+}

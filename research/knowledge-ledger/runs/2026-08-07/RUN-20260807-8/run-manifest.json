@@ -1,0 +1,77 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260807-8",
+  "runNote": "SCH-001 migration run on the owner-merged base; A1 decided; BL-035 audit executed first",
+  "startUtc": "2026-08-08T00:25:27Z",
+  "endUtc": "see END-UTC.txt",
+  "repository": {
+    "branch": "agent/knowledge-ledger-run-20260807-1",
+    "baseCommit": "485b172 (owner's merge of github/main after PR #17 merged)",
+    "headCommit": "the closing-packet commit carrying this file",
+    "worktreeCleanAtStart": true,
+    "worktreeCleanAtEnd": true
+  },
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per PROV-004."
+  },
+  "promptCaptureMethod": "agent-transcription",
+  "promptCaptureNote": "Eighth consecutive run (PROV-014). Interrupted initial brief superseded by the operative reissue; only the operative version transcribed, interruption recorded in the capture note.",
+  "environment": {
+    "lockFile": "environment-lock.txt",
+    "pipFreeze": "pip-freeze.txt",
+    "python": "3.14.6",
+    "node": "v24.18.1",
+    "npm": "11.16.0",
+    "git": "2.50.1",
+    "os": "macOS 26.4.1 arm64",
+    "network": "none this run (the merge that brought main in was the owner's, pre-run)",
+    "spend": 0
+  },
+  "claimStatusManifest": [
+    {
+      "artifact": "A1 (KL-000 permanentLimits)",
+      "status": "confirmatory",
+      "note": "DECIDED by owner: coverage alone suffices; 4 worlds, count re-verified by enumeration; zero numeric effect; rejected reading preserved. A2 remains undecided."
+    },
+    {
+      "artifact": "BL-035-BRIEF-AUDIT.md",
+      "status": "confirmatory",
+      "note": "7 of 9 packet-requiring briefs defective under BRF-101 (all pre-rule); defect tracked loss exactly as predicted; this run's brief passes via citation clause with its 7-of-15 enumeration defect noted as instructed"
+    },
+    {
+      "artifact": "schemas/preregistration-v0.2.json + eleven migrated preregistrations + tests/test_preregistrations.py",
+      "status": "confirmatory",
+      "note": "SCH-001 repaired. Eleven kernels ARE NOW ABLE to preregister: every RESEARCH-METHOD item has a field (test-checked), KL-000's registrations are the end-to-end precedent and validate unchanged. States all stay seeded. Caveat stated: KL-006/KL-008 also need the receipt-schema dependency extension (BL-003/BL-037), a different schema."
+    },
+    {
+      "artifact": "commit 6e286b9",
+      "status": "failed",
+      "note": "landed on a red suite (VER-102: pytest piped to tail masked the exit; the failing test was the standing seeded-vocabulary guard, correct both times). Fixed at 88cb850; retained, not amended, per M6."
+    },
+    {
+      "artifact": "KL-000",
+      "status": "confirmatory",
+      "note": "untouched: adversarial-passed at v1.3.0; four chains verify; 88 tests green"
+    },
+    {
+      "artifact": "First Transmission / Candidate First Transmission",
+      "status": "incomplete",
+      "note": "neither exists; the first-transaction gate is NOT REACHED"
+    }
+  ],
+  "tests": {
+    "repoRootPytest": "123 passed (21 new preregistration-conformance tests; includes the merged third-party EXP009/HVI-1 tests, unreviewed and untouched)",
+    "kl000Pytest": "88 passed",
+    "note": "one intermediate commit was red (VER-102); close validated with pipefail armed"
+  },
+  "humanGatesCrossed": "none",
+  "interventions": [
+    "owner, pre-run: merged github/main into the branch and resolved six conflicts (described in the brief; every described outcome verified at open)",
+    "owner, mid-turn: superseded the initial brief with the operative reissue before this run acted on the stale merge description"
+  ],
+  "firstTransactionGate": "NOT REACHED"
+}

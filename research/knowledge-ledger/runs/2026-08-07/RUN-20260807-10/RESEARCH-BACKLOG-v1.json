@@ -1,0 +1,37 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-10",
+  "version": 1,
+  "note": "Written live at close, presence machine-checked.",
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-040 CLOSED (flip_budget surfaced at the presentation layer, receipt untouched). BL-041 CLOSED in substance (LIN-000 tests T1/L1 end-to-end in its own schema; the merge of lineage into a future knowledge-transaction schema remains inside BL-037). BL-023 (tenth unverified prompt -- the program's oldest open debt), BL-026 (margin rename, now explicitly a deviation-from-paper decision), BL-027, BL-028, BL-029, BL-030, BL-031, BL-032, BL-034, BL-036, BL-037, BL-038, BL-039, BL-042 (TRC-101 at registration time -- now urgent before any kernel registers), BL-043 (A2 + PPR-101, owner) all open.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-044",
+      "type": "missing-control",
+      "title": "Cross-implementation reproduction of LIN-000",
+      "hypothesis": "The independent implementer (or a fourth implementation) reproduces LIN-000's counts from REGISTRATION.md alone -- the draw schedule is registered in prose this time, so unlike KL-000's randomized phase (F11), the randomized counts SHOULD be reproducible cross-implementation, which would be the program's first cross-implementation randomized reproduction.",
+      "discriminatingTest": "Identical exhaustive counters (50,362-world partition) and identical randomized counters from seed 20260808 under the registered schedule.",
+      "whyItMatters": "Tests whether registering a draw schedule actually buys cross-implementation randomized reproducibility (the F11 repair hypothesis) on a small, fresh experiment before committing KL-000 to it.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether BL-016/F11's repair direction (register schedules) is adopted program-wide.",
+      "cost": "one commission under LEAK-101/LEAK-102 packaging rules",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-045",
+      "type": "owner-decision",
+      "title": "Paper v1.0.4 review and adoption; PPR-101 disposition",
+      "hypothesis": "None -- owner items: review E6/E7/E8 as published in v1.0.4; decide whether v1.0.4 becomes the cited version in CANONICAL-RECORDS/EVIDENCE-ALIGNMENT (promotion, never performed by runs); fix or leave PPR-101's |margin| bars.",
+      "discriminatingTest": "n/a (decisions)",
+      "whyItMatters": "v1.0.4 exists as a draft artifact on this branch; nothing references it until the owner adopts it.",
+      "wouldChangeADecision": true,
+      "cost": "review only",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}

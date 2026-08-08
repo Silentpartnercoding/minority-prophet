@@ -120,6 +120,10 @@ kernels remain seeded.
 
 None at registration.
 
+| # | When | Change | Experimental content affected |
+|---|---|---|---|
+| 1 | RUN-20260807-9; a **provenance correction, not a rule change** | The two owner decisions I12 enforces are now known to be **paper-derived, not open choices**: §3 of `papers/minority-prophet-v1.0.3.md` defines the aggregator (abstain on ties; verdict on strict majority) and margin (absolute), and Theorem 4 [E2] publishes the `conversionsToReverse` formula for decisive worlds. See the v1.1.0 Amendment 1 and v1.2.0 Amendment 3 corrections, `KL-000/TRACEABILITY-v1.3.0.json` (the full rule↔paper map, TRC-101), and FINAL-RECORD.md's appendix. I12's content, pass conditions, and every number are unchanged — what changed is that "decision enforcement" is now traceable to the published definitions it enforces. | **None.** Provenance only. |
+
 ## `protocolCommit` remains null
 
 Sidecar `PROTOCOL-COMMIT-v1.3.0.txt`, same mechanics and check as every

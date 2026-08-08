@@ -1,0 +1,74 @@
+RUN-20260807-6 — correct KL-011's stale blocker, then open KL-001 with its
+narrow first check. Reopening the program on owner direction.
+
+Same repository, worktree and branch. Same discipline: run directory,
+provenance, versioned closing packet, draft only, nothing pushed, nothing
+promoted. The program was closed at RUN-20260807-5; record that this run
+reopens it deliberately and why.
+
+TASK 1 — KL-011's blocker is discharged and its record does not know it
+
+KL-011/STATUS.json reads:
+
+  "BLOCKED on KL-000's next gate. KL-011 requires two independently written
+   implementations; KL-000 has one implementation whose author also wrote its
+   verifier. The independent reimplementation that KL-000 needs is the SAME
+   artifact KL-011 needs, so it should be commissioned once."
+
+That artifact exists. IND-20260807-1/-2/-3 built it: zero-dependency Rust,
+hand-written JSON/SHA-256/PRNG, agreeing with the reference on the evaluator,
+the full conclusion function, and the canonical form for two pinned receipts.
+It was commissioned once, exactly as the record said it should be.
+
+Update KL-011: the named blocker is discharged, cite the evidence, and state
+what genuinely remains (its own five-stage pipeline, its preregistration, its
+fixtures). Do NOT advance its state -- it is still `seeded`. Record the
+correction as a correction, with the superseded text preserved, not rewritten.
+This is the same stale-self-description defect the program has now hit four
+times; note it as such.
+
+TASK 2 — KL-001's first falsifiable check, using what exists
+
+KL-001/STATUS.json already names a check that needs no corpus:
+
+  "construct one repository whose mandatory file coverage is incomplete and
+   show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's
+   first gate fails."
+
+Do that, with the existing evaluator. Preregister before running, as always.
+
+THE EPISTEMIC QUESTION YOU MUST ANSWER HONESTLY
+
+This check may be nothing more than I2 (bounded absence) wearing a
+software-repository costume. If the existing evaluator refuses it for exactly
+the reason it refuses any incomplete-coverage world, then KL-001's first gate is
+already discharged by KL-000 and no new evidence was produced.
+
+Decide which it is and say so plainly:
+
+  (a) It is I2 restated. Then KL-001's first gate was already met by KL-000,
+      the kernel's record should say that, and the REAL first gate for KL-001
+      is the next one -- the planted-defect corpus with frozen generation and
+      the false-clean endpoint. Say what that costs.
+
+  (b) It is genuinely more. Then state exactly what the repository framing adds
+      that the abstract world does not: what "mandatory file coverage" means
+      that "declared locations" did not, and what a defect corpus can falsify
+      that 176,120 enumerated worlds could not.
+
+Answering (a) is not a failure. A kernel discovering that its first gate was
+already paid by a prerequisite is a real result and cheaper than a corpus.
+Answering (b) with a hand-wave is the failure.
+
+WHAT MUST NOT MOVE
+
+KL-000 stays `adversarial-passed` at v1.3.0. Nothing about the published PR
+branch changes -- agent/kl-000-conformance is pushed and open as draft PR #17.
+Do not amend, force-push, or rebuild it. If this run produces anything that
+belongs in that PR, say so in HANDOFF and leave it to the owner.
+
+Eleven kernels stay seeded unless this run genuinely advances KL-001, in which
+case advance only KL-001 and only to the state its evidence supports.
+
+Close with the full versioned packet and state whether the program is closed
+again or whether KL-001 now carries a committed gate.

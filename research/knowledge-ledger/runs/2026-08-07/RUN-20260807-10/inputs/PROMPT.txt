@@ -1,0 +1,125 @@
+RUN-20260807-10 — four bounded pieces, in this order. The last one is the
+largest and is scoped so the first three land even if it does not.
+
+Same repository, worktree and branch. Same discipline. Draft only, nothing
+pushed, nothing promoted without the owner.
+
+1. SUPPLEMENT flip_budget WITHOUT TOUCHING THE RECEIPT
+
+Section 6 R3 promises flip_budget is "surfaced with every verdict". No receipt
+has ever carried it (TRC-101's one contradiction).
+
+Do NOT add a tenth receipt member. That changes the hashed bytes, breaks the
+C11/C12 pins, and puts the cross-implementation agreement back in question over
+a value derivable from a field already present.
+
+Surface it as a DERIVED presentation value computed from `margin`, outside the
+nine-member receipt object, with the derivation registered. Verify C11 and C12
+still reproduce byte-for-byte afterwards -- that is the pass condition.
+
+Report it BESIDE conversionsToReverse, never instead of it, and register that
+constraint: flip_budget alone overstates attacker cost ~2x (CE-03), which is
+why conversionsToReverse exists.
+
+2. PAPER v1.0.4 -- two additions and one footnote
+
+Publish as v1.0.4. Preserve v1.0.3 unmodified. Add ERRATA entries per the
+repository's existing convention.
+
+  (a) The abstention threshold. Section 3 permits "optionally below a margin
+      threshold". Every result in this program was produced at tau = 0, and
+      that was an UNDECLARED simplification until TRC-101 rule 14. State the
+      value the experiments used. This is a scope condition on all published
+      results, not a change of claim.
+
+  (b) Search-ledger identifier uniqueness. The paper proves copies do not
+      multiply evidence for the EVIDENCE ledger. The identical attack on the
+      SEARCH ledger -- padding with duplicates of an already-searched location
+      to inflate coverage -- has no paper coverage; section 9 is silent. Both
+      implementations independently refused it and neither was told to. This is
+      the paper's own thesis with a gap in it; close the gap.
+
+  (c) Footnote on Theorem 1: immunity is PROVED but only shadow-tested. I7's
+      permutation invariance is the schema-v0.1 shadow; no parent edges are
+      representable, so the theorem's structure does not exist in the tested
+      model. One line, in the paper, where a reader will find it.
+
+Do NOT change any theorem, proof, or result. If (a) or (b) implies a theorem
+needs restating, that is a finding and an owner decision, not this run's repair.
+
+3. CONFORMANCE PROFILE for the seven specification-local rules
+
+Five of them are engineering, not science: I4 deterministic replay, I6 digest
+integrity, I7 order invariance, I9 fail-closed parsing, and rule 18's receipt
+serialisation. They do not belong in the paper and they do belong somewhere a
+third-party implementer can build against.
+
+Write that document -- name it as you see fit, e.g.
+`research/knowledge-ledger/CONFORMANCE-PROFILE-v1.md`. For each rule: the
+normative statement, why it is specification-local, and the KL-000 evidence
+that it holds (invariant, fixture, world counts, both implementations).
+
+[REDACTED BEFORE PUBLICATION. One paragraph of this operator brief named an
+internal tool of the owner's and asked for it to be cross-referenced inside a
+public conformance document. The instruction was an error in the brief; the run
+carried it out correctly and the resulting section was removed in ce07daf, with
+its descriptions scrubbed in b26e27c. Redacted here because this repository is
+public and the name is the disclosure. The unredacted original is held by the
+operator outside the repository; its sha256 is
+7ecb3a3c15370d5a9034b13d9622a56fce6d85e678fd52158167dbca2daea755
+so this redaction is verifiable as a redaction rather than a rewrite.]
+
+4. LINEAGE-BEARING SCHEMA, AND END-TO-END TESTS FOR THEOREM 1 AND LEMMA 1
+
+Theorem 1 (immunity to root-preserving, side-consistent rewiring) and Lemma 1
+(side-locality over claim chains) are untested because schema v0.1 records carry
+only {id, rootId, side}. There are no parent edges, so every claim is its own
+root and both claims are vacuous in the model.
+
+Design the minimal extension that makes them testable: records carrying a
+parent edge, with root() derived by walking to the chain head. Register it as
+its own schema version; do NOT modify schema v0.1 or any KL-000 registration.
+
+Then build tests that could actually fail:
+
+  - Theorem 1: generate a world, apply a rewiring that preserves the root set
+    and side-consistency, assert S0, S1 and the verdict are unchanged. Include
+    rewirings that VIOLATE each precondition separately and assert the theorem's
+    protection does not extend to them -- a test that only exercises the
+    satisfied case cannot fail.
+  - Lemma 1: assert S_a is exactly the set of a-asserting roots in a
+    side-consistent world, and construct a side-INCONSISTENT world where it
+    does not hold.
+
+Exhaustive over a declared small bound plus a frozen randomized phase, in the
+KL-000 style: declared count asserted before evaluation, seeds frozen,
+must-fail baselines. If you cannot reach a million worlds cheaply, declare the
+bound you did reach rather than quietly shrinking.
+
+This is new experimental work. It does NOT advance any kernel state, and
+KL-000 stays adversarial-passed at v1.3.0. If it becomes clear this piece needs
+its own run, stop, record exactly what is designed and what remains, and close
+-- pieces 1-3 standing on their own is a good run.
+
+WHAT MUST NOT MOVE
+
+KL-000 adversarial-passed at v1.3.0. Eleven kernels seeded. All 173 tests keep
+passing. Four registration chains keep verifying. C11 and C12 keep reproducing.
+No canonical record or PUBLIC-CLAIMS edit.
+
+CLOSE
+
+Write the full closing packet. Its required members are exactly, by name:
+
+  DRAFT-RUN-REPORT-v1.md
+  CONSTRAINTS-v1.json
+  RESEARCH-BACKLOG-v1.json
+  KERNEL-STATUS-SNAPSHOT-v1.json
+  NEXT-RUN-PROPOSAL-v1.md
+  HANDOFF-v1.md
+  END-UTC.txt
+
+and tests/test_closing_packets.py::REQUIRED is the authority if the two lists
+disagree. Validate with that test before the close commit.
+
+State plainly which of the four pieces completed and which did not.

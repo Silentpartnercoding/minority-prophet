@@ -1,0 +1,42 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260807-6",
+  "version": 1,
+  "constraints": [
+    {
+      "id": "REG-101",
+      "category": "scientific",
+      "severity": "medium",
+      "title": "A preregistered expectation quantified over a concept instead of the fields it names, and failed on execution (FC1's E4)",
+      "statement": "E4 registered 'identical in every structural field (conclusion, all of search, all of evidence)' for a pair of worlds related by renaming -- but evidence.supportingRoots/opposingRoots echo declared rootId strings by the registered receipt object, so 'all of evidence' can never be identical under renaming. The expectation was unsatisfiable as written, which execution revealed on the first run.",
+      "evidence": {"failed": "first-check/results/fc1-result.json (E4 false)", "corrected": "PREREGISTRATION-FC1.1.md, registered before re-execution; verdict (a) confirmed with the divergence pinned to exactly the name-carrying members"},
+      "whyItGeneralises": "The M15/H1 family: a check written by reading a concept ('structural') rather than enumerating the fields it quantifies over. The registration discipline caught it -- the failure was loud, preserved, and corrected by new registration rather than reinterpretation -- but a subtler instance could have passed vacuously instead of failing loudly. Methodology note M24.",
+      "remediation": "FC1 result preserved with its failure; FC1.1 is the correction of record. Rule adopted (M24): an expectation over an object enumerates the members it covers, and any member excluded is excluded by name with the reason.",
+      "affectsConclusions": false,
+      "affectsConclusionsReason": "E1-E3 (the substance of the named check) passed under the original registration; the corrected E4'/E5' confirmed the renaming claim with the same worlds.",
+      "discoveredDuring": "FC1 execution",
+      "status": "resolved-by-FC1.1; rule adopted"
+    },
+    {
+      "id": "ENV-101",
+      "category": "provenance",
+      "severity": "low",
+      "title": "A third party's branch appeared on the remote mid-program",
+      "statement": "git fetch surfaced codex/exp009-confirmatory, not present at RUN-20260807-5's fetch. Per M5 this is recorded as a state change, not a measurement error; it is someone else's work, out of this program's scope, and untouched.",
+      "remediation": "Recorded only. Future runs should not assume the remote is single-writer.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open fetch",
+      "status": "recorded"
+    },
+    {
+      "id": "PROV-012",
+      "category": "provenance",
+      "severity": "medium",
+      "title": "Prompt capture is agent-transcription for the sixth consecutive run",
+      "statement": "Unchanged class (PROV-004/008/009/010/011). Both tasks were grounded in committed records and imported evidence, verified before acting.",
+      "affectsConclusions": false,
+      "discoveredDuring": "run open",
+      "status": "recorded-open-for-program; backlog BL-023"
+    }
+  ]
+}
