@@ -187,3 +187,44 @@ the state never advanced on the strength of a passing reproduction alone.
 
 The program is closed again, with no committed gate outstanding.
 
+---
+
+# Addendum — RUN-20260807-9: the paper settles what the record called open
+
+Everything above is preserved unmodified. This addendum corrects the
+*provenance* of two decisions and one formula; no behaviour, number, or
+digest changes.
+
+**The break:** no KL-000 specification of any version cites
+`papers/minority-prophet-v1.0.3.md` (zero occurrences of "paper",
+"aggregator", or "abstain" — grep-verified). The specifications were written
+as if the conclusion rules were free choices. They were not:
+
+- **R1 (tie rule) was derivable.** Paper §3: *"returns 1 if |S₁| > |S₀|, 0
+  if reversed, abstaining on ties."* The 22,440-world divergence was one
+  implementation contradicting a published definition, not two defensible
+  readings — the specification package had severed the derivation chain.
+  The "owner decision that could have gone the other way" characterisation
+  is corrected in PROTOCOL-v1.1.0.md Amendment 1; the owner's choice
+  happened to match the paper.
+- **R5.2 (margin absolute) was derivable.** Paper §3: *"The **margin** is
+  ||S₁| − |S₀||."* Corrected in PROTOCOL-v1.2.0.md Amendment 3.
+- **F4's formula was published all along.** Theorem 4 [E2]: *"reversal
+  costs ⌊margin/2⌋+1"* — settled for decisive worlds; the margin-0/empty-
+  ledger edge stays outside the theorem and the implementer's objection
+  stands exactly there.
+- **A1 was genuinely open** (the paper is silent); the RUN-8 owner decision
+  stands as characterised. **A2 remains an owner decision**, now with paper
+  evidence recorded beside it: §3's verdict function has no coverage input
+  and §8 imposes coverage on absence only, which matches the registered
+  reading; the alternative has no paper basis.
+
+**What now exists:** TRC-101 (registered traceability rule: every normative
+rule cites the paper or declares itself specification-local with a reason),
+the full two-direction map `TRACEABILITY-v1.3.0.json`, and suite
+enforcement (`tests/test_traceability.py`). The map's counts and the
+untested-paper-claims list are in the map itself and RUN-20260807-9's
+report — including the finding that the paper's own R3 promises
+`flip_budget` "surfaced with every verdict" and KL-000's receipt has never
+carried it (SCH-005, now traced to its paper root).
+

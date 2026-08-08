@@ -67,9 +67,11 @@
       "alternativeReading": "presence also requires search.complete; the affected worlds conclude not_established",
       "worldsAffected": 19152,
       "consequence": "19,152 of 110,840 receipt-producing worlds (17.3%) change conclusion between the readings -- the largest undecided surface in the kernel. A third implementation reading it the other way would diverge on all of them while passing every invariant (the G5/G4 combination). UNDECIDED: the program records this as an owner decision it did not reach, with both readings preserved. The independent implementer chose the no-coverage reading in IND-1 on the argument that presence is existential; the registered text agrees; neither constitutes a decision of record.",
-      "status": "owner decision not reached; recorded, not decided"
+      "status": "owner decision not reached; recorded, not decided",
+      "paperEvidence": "RUN-20260807-9 traceability audit: the paper's aggregator (section 3) has no coverage input and section 8 imposes coverage on absence claims only -- the registered no-coverage-for-presence reading matches the paper and the alternative reading has no paper basis. Recorded as evidence; the decision remains the owner's and remains open."
     }
   },
+  "provenanceCorrection": "RUN-20260807-9: R1 and R5.2 were DERIVABLE from papers/minority-prophet-v1.0.3.md section 3 (aggregator abstains on ties; margin defined as ||S1|-|S0||, absolute), and conversionsToReverse's formula is Theorem 4 [E2] (decisive worlds; the margin-0 edge stays outside it). The 'owner decision that could have gone the other way' characterisations are corrected in the protocol amendment logs (v1.1.0 Amendment 1, v1.2.0 Amendment 3, v1.3.0 Amendment 1) with registered text preserved. No KL-000 specification cited the paper -- the break TRC-101 and TRACEABILITY-v1.3.0.json now close. Behaviour unchanged everywhere.",
 
   "blockers": [],
 
