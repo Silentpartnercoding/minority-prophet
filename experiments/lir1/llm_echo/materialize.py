@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -164,3 +165,18 @@ def materialize(
         "transformationLogSha256": hashlib.sha256(log_path.read_bytes()).hexdigest(),
     }
 
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--requests", required=True, type=Path)
+    parser.add_argument("--responses", required=True, type=Path)
+    parser.add_argument("--labels", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    args = parser.parse_args()
+    print(json.dumps(materialize(
+        args.requests, args.responses, args.labels, args.output
+    ), sort_keys=True, indent=2))
+
+
+if __name__ == "__main__":
+    main()
