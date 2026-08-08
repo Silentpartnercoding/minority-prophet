@@ -54,11 +54,12 @@
     "note": "The two conclusion-function ambiguities the program closed by registered text but never brought to an explicit decision the way R1 and R5.2 were. Recorded per owner instruction at close-out as owner decisions the program did not reach. Both implementations currently follow the registered text; no invariant enforces either reading (the same mechanistic gap as R1/R5.2). Neither is decided here.",
     "A1": {
       "question": "Does an absence conclusion require at least one supporting root, or is complete coverage alone sufficient?",
-      "registeredTextImplies": "coverage alone: an absence claim with complete coverage and an EMPTY evidence ledger concludes absent_within_declared_scope (conclusionFunction.absence has no support term)",
-      "alternativeReading": "absence requires >= 1 supporting root; the empty-ledger worlds conclude not_established",
+      "DECISION": "DECIDED BY THE OWNER at RUN-20260807-8: complete coverage with an empty evidence ledger yields absent_within_declared_scope. Silence across a fully searched declared scope IS the finding. A decision, not a derivation.",
+      "rejectedReading": "PRESERVED with its reasoning, per the R1/R5.2 discipline: absence requires >= 1 supporting root, on the argument that an empty ledger is indistinguishable from a search never run -- a receipt asserting bounded absence while containing no evidence at all is the loudest thing the schema can emit (the independent implementer's F7/A1, maintained through all three of its runs). Defensible, and rejected: the search ledger, not the evidence ledger, is the record that the search ran -- coverage is attested per location, and I8/I2/I11/I12 police it; requiring a supporting root would make 'we looked everywhere and found nothing' inexpressible, which is the exact conclusion the protocol exists to bound.",
       "worldsAffected": 4,
-      "consequence": "The 4 affected worlds are the epistemically loudest receipts the schema can emit: bounded absence asserted with no evidence in the ledger at all (the independent implementer's F7/A1, maintained through all three of its runs).",
-      "status": "owner decision not reached; closed by text without a listed repair (G5); recorded, not decided"
+      "worldsAffectedVerification": "confirmed by enumeration at decision time, not trusted: exactly 4 exhaustive worlds (one all-searched location ledger per length 1..4, empty evidence ledger, absence claim), all already concluding absent_within_declared_scope under the registered function (RUN-20260807-8 logs/a1-count-verification.txt)",
+      "numericEffect": "none -- the registered conclusionFunction text already implements the decided reading and I12 already enforces it; the decision closes the ambiguity without any registration change, like the R5.2 ratification",
+      "status": "DECIDED (owner, RUN-20260807-8); rejected reading preserved above"
     },
     "A2": {
       "question": "Does a presence conclusion require complete search coverage?",
@@ -89,7 +90,7 @@
     "F15: exhaustive phase exercises conclusion logic on 63% of what it enumerates (reinstated)",
     "I9-coverage: I9 exercised by zero non-adversarial worlds (reinstated)",
     "G4/H2 -- REPAIRED at v1.3.0 (RUN-20260807-5), retained for history: both owner decisions were enforced by zero invariants through v1.2.0 (R1 inverted: 22,440 receipts, caught by C11+C12 only; R5.2 inverted: 38,760, caught by C12 ALONE; 0 invariant violations in all four measurements). I12 now enforces both, demonstrated at those exact surfaces with no fixture involved. Residual: the independent implementation's checker does not carry I12 and it has not run against v1.3.0",
-    "A1/A2 (permanentLimits): two conclusion-function readings closed by registered text but never decided -- A1 (4 worlds), A2 (19,152 worlds, 17.3%, UNDECIDED owner decision)",
+    "A1 DECIDED by owner at RUN-20260807-8 (4 worlds, count re-verified; coverage alone suffices; rejected reading preserved in permanentLimits). A2 REMAINS UNDECIDED (19,152 worlds, 17.3%) -- the last open conclusion-function decision",
     "margin-collision (IND-3 finding, section 3): absolute margin collides opposite worlds -- registered fixtures C01 (1 support, 0 oppose) and C12 (1 support, 2 oppose) carry identical margin=1 and conversionsToReverse=1; 38,760 receipts report a positive margin for a claim in the evidential minority; direction is recoverable from the root lists. Implementer's recommendation on record: do NOT reverse R5.2; consider a v1.3.0 rename (rootCountGap) or a majoritySide member, digest-moving and so deliberately versioned",
     "H1: four self-miscounts across the program's documents (operator leak counts three/five/six; 'ten members'; 'all nine non-contentDigest members' where eight) -- each caught by counting from scratch; Amendment 2 corrects the protocol site, the preregistration's two sites stay as committed",
     "LEAK-101: registration prediction tables and commission packages have conflicting requirements; v1.1.0's package leaked every screened value via PROTOCOL.md"
