@@ -51,6 +51,15 @@ class CanonicalRecordTests(unittest.TestCase):
             content = (ROOT / "results" / "hvi1-v1" / name).read_bytes()
             self.assertEqual(hashlib.sha256(content).hexdigest(), artifact["sha256"])
 
+    def test_heo1_receipt_binds_preserved_outputs(self):
+        receipt = json.loads((ROOT / "results" / "heo1-v1" / "receipt.json").read_text())
+        result = json.loads((ROOT / "results" / "heo1-v1" / "result.json").read_text())
+        self.assertTrue(receipt["scientific_output_byte_identical"])
+        self.assertTrue(result["hypotheses"]["primary_claim"])
+        for name, artifact in receipt["outputs"].items():
+            content = (ROOT / "results" / "heo1-v1" / name).read_bytes()
+            self.assertEqual(hashlib.sha256(content).hexdigest(), artifact["sha256"])
+
 
 if __name__ == "__main__":
     unittest.main()
