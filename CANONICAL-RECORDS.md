@@ -27,6 +27,9 @@ true outside its stated experiment.
 | EXP009 | Canonical selective-hybrid confirmation: supported | `results/exp009-v1/result.json` | Frozen synthetic policy preserved the preregistered tradeoff; inferred lineage remained weak and declared lineage is an oracle ceiling. |
 | HVI-1 | Canonical shared-control confirmation: supported | `results/hvi1-v1/result.json` | Supported control provenance blocks representation laundering; it does not prove causal independence, hidden ownership, truth, or authority. |
 | HEO-1 | Canonical evidence-origin confirmation: supported | `results/heo1-v1/result.json` | Supported derivation lineage blocks transformation laundering; it does not discover hidden sources, prove truth, or grant authority. |
+| HGD-1 | Canonical graded-dependence experiment: rejected | `results/hgd1-v1/result.json` | Six of seven hypotheses passed, but the primary absolute-effect threshold failed; collocation does not prove causal dependence, truth, or authority. |
+| HGD-2 | Canonical graded-dependence replication: rejected | `results/hgd2-v1/result.json` | Safety improved, but control coverage and attacked usefulness failed; much of the gain came through abstention. |
+| HES-1 | Canonical evidence-seeking experiment: supported with material subgroup limitation | `results/hes1-v1/result.json` | Blind acquisition restored substantial coverage, but software false-negative accuracy was inadequate; independence alone does not establish claim-specific competence. |
 
 ## Promotion rule
 

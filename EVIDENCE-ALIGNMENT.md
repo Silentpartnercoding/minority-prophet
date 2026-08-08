@@ -50,12 +50,28 @@ causal independence.
 | EXP009 | Frozen selective hybrid recovered 1.98% of majority-wrong cases at a 0.64% false-reversal rate and 0.11-point accuracy cost in the attack regime. | External validity, reliable deployed lineage inference, or authority to act. |
 | HVI-1 | Control-domain aggregation admitted zero additional roots from aliases, key rotation, service splitting, or self-verification and escalated all unknown-control cases. | Discovery of hidden common control, causal evidence independence, truth, or authorization. |
 | HEO-1 | Evidence-origin aggregation admitted zero additional roots from supported copies and transformations; unknown and forged origins always escalated. | Discovery of undisclosed common sources, truth of root observations, or authorization. |
+| HGD-1 | Interval accounting reduced false-confident error, but its primary claim was rejected after missing the frozen absolute-effect threshold. | Proof that collocation establishes dependence, historical measurements were wrong, or the mechanism may grant authority. |
+| HGD-2 | Interval accounting improved safety and preserved control accuracy, but failed frozen coverage and usefulness criteria. | A generally useful steering mechanism or proof that abstention alone solves dependent evidence. |
+| HES-1 | Frozen evidence seeking recovered substantial environmental and software coverage after abstention; all seven hypotheses passed. | Universal source competence, especially for software false-negative claims, or authority to act. |
+
+## v1.0.5 manuscript alignment
+
+The active manuscript corrects two inherited presentation defects without
+altering earlier snapshots:
+
+- Earlier papers reported `121,944 rewirings`. The independent audit records
+  `5,912` side-consistent forest worlds and `116,032` root-preserving forest
+  rewirings; `121,944` was their sum, not a rewiring count.
+- Earlier prose used a singular parent function while calling the structure a
+  DAG. The compiler-ratified model is a multi-parent DAG. v1.0.5 now uses a
+  parent relation and a set of root ancestors, matching `formal/PROOFS.md` and
+  `formal/lean/`.
 
 ## Manuscript policy
 
-- `papers/minority-prophet-v1.0.4.md` is the active evidence-aligned draft, adopted
-  2026-08-08 (BL-045).
-- v0.9, v1.0, v1.0.1, v1.0.2, and v1.0.3 are preserved historical drafts and defer to
+- `papers/minority-prophet-v1.0.5.md` is the active evidence-aligned draft, adopted
+  2026-08-08.
+- v0.9, v1.0, v1.0.1, v1.0.2, v1.0.3, and v1.0.4 are preserved historical drafts and defer to
   this ledger.
 - EXP008's archived attack mixture is not EXP007A's selected attack.
 - All point estimates must name their record and scope.

@@ -214,8 +214,8 @@ lineage-bearing schema.
 
 ## Owner dispositions, 2026-08-08 (BL-043, BL-045)
 
-**Paper v1.0.4 adopted** as the active evidence-aligned draft. `README.md` and
-`EVIDENCE-ALIGNMENT.md` now point at it; v1.0.3 and earlier are preserved.
+**Paper v1.0.4 was adopted** as the active evidence-aligned draft at this
+checkpoint. It is now a preserved prior snapshot; v1.0.5 is current.
 
 **A2 — does presence need complete coverage? Ratified as registered: no.**
 
@@ -240,3 +240,22 @@ The bars are redundant, since §3 already defines margin as absolute. Redundant
 is not wrong, and spending a paper version to delete two characters buys less
 than it costs in preserved-version churn. Recorded so the observation is not
 rediscovered as a defect. Reversible at the next substantive revision.
+
+---
+
+## Additions — 2026-08-08 (paper v1.0.5)
+
+v1.0.5 is the active evidence-aligned draft. It incorporates HGD-1, HGD-2,
+and HES-1 without promoting rejected primary claims or hiding the HES-1
+claim-direction limitation.
+
+It also corrects two inherited presentation defects:
+
+- `121,944` was the sum of `5,912` forest worlds and `116,032` forest
+  rewirings, not a rewiring count; the separate multi-parent DAG audit covered
+  252 worlds and 1,992 rewirings.
+- The prose definition now uses the compiler-ratified multi-parent DAG rather
+  than a singular parent function labelled as a DAG.
+
+PPR-101's redundant `|margin|` notation was removed in this substantive
+revision. The quantity remains the same because margin is already absolute.
