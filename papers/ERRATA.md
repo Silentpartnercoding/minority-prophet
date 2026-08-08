@@ -209,3 +209,34 @@ tested model; KL-000's I7 (permutation invariance) is a strictly weaker
 shadow, declared as such in the traceability map. v1.0.4 records this where
 a reader of the theorem will find it. An end-to-end test requires a
 lineage-bearing schema.
+
+---
+
+## Owner dispositions, 2026-08-08 (BL-043, BL-045)
+
+**Paper v1.0.4 adopted** as the active evidence-aligned draft. `README.md` and
+`EVIDENCE-ALIGNMENT.md` now point at it; v1.0.3 and earlier are preserved.
+
+**A2 — does presence need complete coverage? Ratified as registered: no.**
+
+A2 was the largest open owner decision in the program: 19,152 worlds, 17.3% of
+receipts. It is now decided on paper evidence rather than preference. §3's
+verdict function takes no coverage input, and §8 imposes coverage on absence
+only. Both point the same way, and the alternative reading has no basis in the
+paper at all — it was defensible only while nobody had checked what the paper
+said.
+
+The registered reading therefore stands, and the alternative is closed rather
+than left preserved-and-undecided. A third implementation reading it the other
+way is now non-conforming rather than merely divergent, which is the point of
+deciding: the ambiguity was costing conformance its meaning.
+
+This changes no count, no conclusion, and no digest. It removes an ambiguity
+that would have changed 19,152 of them under the other reading.
+
+**PPR-101 — `|margin|` notation in Theorem 4's T5-correction: left as written.**
+
+The bars are redundant, since §3 already defines margin as absolute. Redundant
+is not wrong, and spending a paper version to delete two characters buys less
+than it costs in preserved-version churn. Recorded so the observation is not
+rediscovered as a defect. Reversible at the next substantive revision.
