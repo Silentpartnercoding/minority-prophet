@@ -1,0 +1,38 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260808-1",
+  "version": 1,
+  "note": "Written live at close, presence machine-checked. This run recorded XRP-101 and opened BL-046 from its unchecked remainder.",
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-044 remains rank 1 for the next RUN and is commissioned by this run (LIN-000 cross-implementation reproduction). BL-045 (paper v1.0.4 adoption; PPR-101) and BL-043 (A2 + PPR-101, owner) remain owner-queued. BL-042 (TRC-101 at registration time) remains urgent before any kernel registers. Delivery of RUN-6..10 to main: CLOSED -- merged as PR #24 (f3a8f2ce8), which also published paper v1.0.4, the conformance profile, KL-001's first check and LIN-000's registration. BL-023, BL-026, BL-027, BL-028, BL-029, BL-030, BL-031, BL-032, BL-034, BL-036, BL-037, BL-038, BL-039 all remain open, unchanged by this run.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-046",
+      "type": "missing-control",
+      "title": "The three shared quantities XRP-101 did not compare",
+      "hypothesis": "immunity_applicable, the T5 floor, and unbound_root_weight are each implemented in more than one of {research aggregator, knowledge-ledger evaluator, Gate} and their agreement has never been measured. XRP-101 found one of three compared quantities diverging (conversions_to_reverse absent from Gate, pricing the central threat at ~2x); the base rate for the unmeasured three is not obviously better.",
+      "discriminatingTest": "Same method as XRP-101: enumerate configurations, evaluate each quantity in every repository that implements it on identical inputs, and require exact agreement -- or a recorded, reasoned divergence. immunity_applicable is the sharpest of the three because T1's precondition depends on it, so a disagreement there is a disagreement about when the immunity theorem applies at all.",
+      "whyItMatters": "XRP-101 established that a quantity named by the paper and implemented in several repositories is verified by no single repository's suite. That rule is general; the audit that produced it was not. Three quantities remain in exactly the state Gate's conversions_to_reverse was in the day before it was checked.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether the products' published safety claims are sound, and whether cross-repository agreement needs enforcing in CI rather than by periodic audit.",
+      "cost": "small -- one focused run; the XRP-101 harness generalises",
+      "prerequisitesReady": true,
+      "safety": "none engaged; findings may require public corrections in Gate/Border as XRP-101 did, which is owner-gated"
+    },
+    {
+      "rank": 1,
+      "id": "BL-044",
+      "type": "missing-control",
+      "title": "Cross-implementation reproduction of LIN-000",
+      "hypothesis": "The independent implementer (or a fourth implementation) reproduces LIN-000's counts from REGISTRATION.md alone -- the draw schedule is registered in prose this time, so unlike KL-000's randomized phase (F11), the randomized counts SHOULD be reproducible cross-implementation, which would be the program's first cross-implementation randomized reproduction.",
+      "discriminatingTest": "Identical exhaustive counters (50,362-world partition) and identical randomized counters from seed 20260808 under the registered schedule.",
+      "whyItMatters": "Tests whether registering a draw schedule actually buys cross-implementation randomized reproducibility (the F11 repair hypothesis) on a small, fresh experiment before committing KL-000 to it.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether BL-016/F11's repair direction (register schedules) is adopted program-wide.",
+      "cost": "one commission under LEAK-101/LEAK-102 packaging rules",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}

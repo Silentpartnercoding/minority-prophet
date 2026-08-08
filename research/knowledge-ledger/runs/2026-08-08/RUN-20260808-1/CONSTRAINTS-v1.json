@@ -1,0 +1,11 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260808-1",
+  "constraints": [
+    "No kernel state advanced. No preregistration created, edited, or registered.",
+    "Frozen registration artifacts untouched: the four KL-000 preregistrations bound by PROTOCOL-COMMIT sidecars, REPRODUCTION-RECEIPT.md, independent/PROVENANCE.md.",
+    "lineage/REGISTRATION.md NOT edited. The stream-digest pass condition is added in the commission brief, not retrofitted into the registration.",
+    "Receipt bytes untouched; C11/C12 pins unaffected.",
+    "Commission package screened against every withheld counter in bare and comma-separated form before shipping (LEAK-101/LEAK-102)."
+  ]
+}
