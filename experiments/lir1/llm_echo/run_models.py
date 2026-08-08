@@ -35,12 +35,17 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
         return [json.loads(line) for line in handle if line.strip()]
 
 
-def load_config(path: Path, request_count: int) -> dict[str, Any]:
+def load_config(path: Path, request_count: int, requests_sha256: str | None = None) -> dict[str, Any]:
     config = json.loads(path.read_text(encoding="utf-8"))
     if config.get("schema") != "minority-prophet.lir1e-execution-config.v1":
         raise ValueError("unexpected execution config schema")
     if config.get("status") != "registered":
         raise ValueError("execution config must have status 'registered'")
+    frozen_requests = config.get("frozenRequestsSha256")
+    if not isinstance(frozen_requests, str) or len(frozen_requests) != 64:
+        raise ValueError("execution config must bind frozenRequestsSha256")
+    if requests_sha256 is not None and frozen_requests != requests_sha256:
+        raise ValueError("request inventory does not match frozenRequestsSha256")
     assignments = config.get("assignments", {})
     if set(assignments) != {"model-a", "model-b"}:
         raise ValueError("execution config must define exactly model-a and model-b")
@@ -53,8 +58,11 @@ def load_config(path: Path, request_count: int) -> dict[str, Any]:
     if not isinstance(limits.get("maximumCalls"), int) or limits["maximumCalls"] < request_count:
         raise ValueError("maximumCalls is below the request count")
     maximum_usd = limits.get("maximumUsd")
-    if not isinstance(maximum_usd, (int, float)) or maximum_usd <= 0:
-        raise ValueError("maximumUsd must be a positive number")
+    if not isinstance(maximum_usd, (int, float)) or maximum_usd < 0:
+        raise ValueError("maximumUsd must be a non-negative number")
+    billing_modes = {assignment.get("billingMode") for assignment in assignments.values()}
+    if maximum_usd == 0 and billing_modes != {"subscription"}:
+        raise ValueError("zero maximumUsd requires subscription billing for every model")
     if config.get("parameters", {}).get("temperature") != 0:
         raise ValueError("temperature must remain frozen at zero")
     return config
@@ -132,9 +140,13 @@ def parse_cli_output(adapter: str, stdout: str) -> tuple[dict[str, Any] | None, 
 def run_one(request: dict[str, Any], config: dict[str, Any], answer_schema: Path, attempt: int) -> tuple[dict, bytes]:
     assignment = config["assignments"][request["modelSlot"]]
     prompt = render_input(request)
-    command, stdin = command_for(assignment["adapter"], assignment["model"], answer_schema, prompt)
     requested_at = _timestamp()
     with tempfile.TemporaryDirectory(prefix="lir1e-isolated-") as directory:
+        local_schema = Path(directory) / "answer.schema.json"
+        local_schema.write_bytes(answer_schema.read_bytes())
+        command, stdin = command_for(
+            assignment["adapter"], assignment["model"], local_schema, prompt
+        )
         completed = subprocess.run(
             command, input=stdin, text=True, cwd=directory, capture_output=True, check=False,
         )
@@ -216,11 +228,12 @@ def main() -> None:
     parser.add_argument("--execute", action="store_true")
     args = parser.parse_args()
     requests = read_jsonl(args.requests)
-    config = load_config(args.config, len(requests))
+    requests_sha256 = hashlib.sha256(args.requests.read_bytes()).hexdigest()
+    config = load_config(args.config, len(requests), requests_sha256)
     answer_schema = Path(__file__).with_name("schema") / "answer.schema.json"
     plan = {
         "requestCount": len(requests),
-        "requestsSha256": hashlib.sha256(args.requests.read_bytes()).hexdigest(),
+        "requestsSha256": requests_sha256,
         "configSha256": hashlib.sha256(args.config.read_bytes()).hexdigest(),
         "modelSlots": sorted({row["modelSlot"] for row in requests}),
         "execute": args.execute,

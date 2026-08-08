@@ -1,6 +1,7 @@
 {
   "schema": "minority-prophet.lir1e-execution-config.v1",
   "status": "example-only-not-registered",
+  "frozenRequestsSha256": "replace-with-requests-jsonl-sha256",
   "runnerIdentity": "replace-with-non-secret-runner-id",
   "executionWindowUtc": {
     "notBefore": "YYYY-MM-DDTHH:MM:SSZ",
@@ -11,13 +12,15 @@
       "adapter": "claude-cli",
       "provider": "replace-provider",
       "model": "replace-exact-model-id",
-      "seedSupported": false
+      "seedSupported": false,
+      "billingMode": "subscription"
     },
     "model-b": {
       "adapter": "codex-cli",
       "provider": "replace-provider",
       "model": "replace-exact-model-id",
-      "seedSupported": false
+      "seedSupported": false,
+      "billingMode": "subscription"
     }
   },
   "parameters": {
@@ -31,7 +34,7 @@
     "maximumCalls": 250,
     "maximumInputTokens": 250000,
     "maximumOutputTokens": 75000,
-    "maximumUsd": "replace-with-approved-limit"
+    "maximumUsd": 0
   },
   "redistribution": "replace-with-provider-policy",
   "clockSource": "replace-with-clock-source"

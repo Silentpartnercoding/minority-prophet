@@ -16,9 +16,10 @@ class LIR1ERunnerTests(unittest.TestCase):
         return {
             "schema": "minority-prophet.lir1e-execution-config.v1",
             "status": status,
+            "frozenRequestsSha256": "a" * 64,
             "assignments": {
-                "model-a": {"adapter": "claude-cli", "provider": "a", "model": "a-1"},
-                "model-b": {"adapter": "codex-cli", "provider": "b", "model": "b-1"},
+                "model-a": {"adapter": "claude-cli", "provider": "a", "model": "a-1", "billingMode": "subscription"},
+                "model-b": {"adapter": "codex-cli", "provider": "b", "model": "b-1", "billingMode": "subscription"},
             },
             "parameters": {"temperature": 0},
             "limits": {"maximumCalls": 5, "maximumUsd": maximum_usd},
@@ -31,8 +32,16 @@ class LIR1ERunnerTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "status 'registered'"):
                 load_config(path, 5)
             path.write_text(json.dumps(self._config(maximum_usd="replace-me")))
-            with self.assertRaisesRegex(ValueError, "positive number"):
+            with self.assertRaisesRegex(ValueError, "non-negative number"):
                 load_config(path, 5)
+
+    def test_config_binds_the_request_inventory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.json"
+            path.write_text(json.dumps(self._config()))
+            self.assertEqual(load_config(path, 5, "a" * 64)["status"], "registered")
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                load_config(path, 5, "b" * 64)
 
     def test_prompt_contains_only_fixed_request_material(self):
         request = {"prompt": "P", "question": "Q", "sourcePacket": "S"}
