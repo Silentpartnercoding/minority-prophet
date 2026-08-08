@@ -37,6 +37,9 @@ that a deployment identified its roots correctly.
 - A preregistered shared-control experiment prevented names, keys, services,
   labels, and self-verification from adding roots when supported controller
   provenance was available. Unknown control always escalated.
+- A preregistered evidence-origin experiment prevented supported copies,
+  paraphrases, translations, summaries, and model transformations from adding
+  roots. Unknown and forged origin claims always escalated.
 
 ## Open boundaries
 

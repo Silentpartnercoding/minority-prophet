@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silentpartnercoding.github.io/minority-prophet/schemas/derivation-receipt-v1.json",
+  "title": "Minority Prophet derivation receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "artifactDigest", "producerControlDomain", "relationship", "originDigest", "support"],
+  "properties": {
+    "schema": {"const": "minority-prophet.derivation-receipt.v1"},
+    "artifactDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "producerControlDomain": {"type": "string", "minLength": 1, "maxLength": 160},
+    "relationship": {"enum": ["origin", "copy", "paraphrase", "translation", "summary", "model_transform", "format_conversion"]},
+    "originDigest": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+    "parentDigest": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+    "support": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "receiptDigest"],
+      "properties": {
+        "status": {"enum": ["supported", "unknown", "conflicting", "revoked"]},
+        "receiptDigest": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}
