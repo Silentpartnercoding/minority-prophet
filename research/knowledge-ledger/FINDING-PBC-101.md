@@ -30,18 +30,28 @@ in the repository is the one that slips through.
 
 **Fix:** allow any non-path delimiter before the path, not an enumerated set.
 
+**Confirmed in production while recording this finding.** The two missed forms
+above appear literally in this document, as evidence. CI's public-boundary job
+inspected them as newly added lines and **passed them** — while correctly
+blocking a different line in this same file. The gap is not hypothetical; it is
+demonstrated by the check's own output on the commit that documents it.
+
 ## Gap 2 — the term the owner named is not on the list
 
-The "internal strategy wording" rule blocks phrases such as *shadow lane*,
-*master plan*, *our moat*. It does not block **`lockpick`** — the one internal
-term the owner has explicitly said must never appear in public, and the term
-that had to be redacted from a run brief on 2026-08-07 before publication.
+The rule carries a short list of internal-strategy phrases. It does not include
+the internal tooling term the owner has explicitly said must never appear in
+public — the term that had to be redacted from a run brief on 2026-08-07 before
+publication. A sentence naming that toolbox was measured as **allowed**.
 
-Measured:
+The phrases the rule *does* carry are deliberately not quoted here; see
+`scripts/check_public_boundary.py`. Reproducing a blocklist inside a public
+document publishes the vocabulary the list exists to keep out of public
+documents — an earlier draft of this section did exactly that and CI blocked it,
+which is the rule working correctly.
 
-    "cross-reference the trust-lockpick toolbox before closing"  ->  allowed
-
-**Fix:** add the internal-tooling vocabulary to the rule.
+**Fix:** add the internal-tooling vocabulary to the rule. This needs an owner
+call, because the blocklist is itself public and every addition names one more
+thing worth hiding.
 
 ## Not a gap — the class it cannot cover
 
