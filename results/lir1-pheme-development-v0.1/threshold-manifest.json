@@ -1,0 +1,15 @@
+{
+  "schema": "minority-prophet.lir1-pheme-threshold-manifest.v1",
+  "status": "development-only-threshold-frozen",
+  "selectedThreshold": 0.8,
+  "files": {
+    "experiments/lir1/PHEME-PILOT-PROTOCOL.md": "beeba6ec6427068b54095aa7de2e62b9ba6ff9d60d87a7b133d5436f62c5e98a",
+    "experiments/lir1/infer.py": "35bd7b07960f1a21fa9ea959b2d262ae3b6277b185708e889eedba6db6248ef1",
+    "experiments/lir1/metrics.py": "1b33c6077b60617fc1c31d5b743e169bffa94cfbeb472de9206e1f63a22c8b22",
+    "experiments/lir1/tune_pheme.py": "ad99e9f306f5bf531bfe8d3198f43d0b9d133e758cadfac250aa6e0af85bff12",
+    "results/lir1-pheme-development-v0.1/threshold.json": "fd87131a5999671531d07c8e37ec5eb648d85bfd582431a0e884440dc8765e57"
+  },
+  "privateInput": {
+    "normalizedJsonlSha256": "63d34d7e7f2cfbbcbc87d71f37b95b770f12ffde820a8b88a25ab73da6d5658f"
+  }
+}
