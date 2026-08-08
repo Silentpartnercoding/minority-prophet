@@ -80,8 +80,20 @@ now in the digest set, and was measurably allowed before.
 
 Nothing here addresses publishing *answers* rather than *secrets* — the M27
 class, where ordinary integers in a results table retire a live commission's
-pass condition. That remains **BL-048**, unbuilt, with `LIVE-COMMISSIONS.json`
-as its declaration half.
+pass condition. **BL-048 is now built** — `scripts/check_withheld_leak.py`, wired into CI
+beside the boundary check. It reads `LIVE-COMMISSIONS.json`, derives each live
+commission's withheld set from its results file minus declared bounds, and
+rejects additions containing those values in bare or comma-grouped form.
+
+Values below 100 are excluded: a blocked set containing 2 or 7 makes every
+document a violation and the control is switched off within a day. A live
+commission whose results file is missing fails closed rather than passing
+silently. Closing a commission unblocks its values, because the answer is then
+legitimately publishable — that is what closing means.
+
+The decisive test replays the actual regression: given LIN-000 declared live,
+RUN-20260807-10's draft run report is rejected. The check catches the leak that
+motivated it.
 
 ## Follow-on: the inherited list contains generic English
 
@@ -96,7 +108,12 @@ falls to a wordlist immediately. The genuinely distinctive terms -- a coined
 component name, an internal tooling name -- are the ones the digest set protects
 usefully.
 
-**Not changed here.** Removing terms narrows a control another author added, and
-narrowing it to suit the convenience of the document that tripped it is exactly
-the wrong reason. Recorded as **BL-052** for an owner call on which vocabulary
-belongs in a boundary rule at all, versus which belongs in review.
+**BL-052 — owner decision, 2026-08-08: "generic english does not belong".**
+Five inherited entries were ordinary business English and are removed. Two more
+were hyphenated variants the matcher can never reach — it tokenises on word
+characters, so the one-word digest already covered them; they were dead weight
+that made the list look larger than its coverage.
+
+Three digests remain, all coined or internal names. Generic vocabulary is a
+review question, not a boundary rule: it blocks honest writing and protects
+nothing, since a two-word English phrase falls to a wordlist immediately.

@@ -45,17 +45,19 @@ RULES = (
 # single common words. It is obscurity, not secrecy. For vocabulary that must
 # genuinely not be recoverable, set MP_BOUNDARY_TERMS in CI (newline-separated)
 # from a repository secret; those terms never enter the tree in any form.
+#
+# SCOPE (BL-052, owner decision 2026-08-08): coined and internal names only.
+# Five inherited entries were ordinary business English. They failed twice over:
+# they blocked any document discussing governance in the abstract -- the audit
+# that found this defect tripped on one, used descriptively -- and hashing
+# protected them from nobody, since a two-word English phrase falls to a wordlist
+# immediately. Two further entries were hyphenated variants that this matcher can
+# never reach: it tokenises on word characters, so the one-word digest already
+# covers them. Generic vocabulary is a review question, not a boundary rule.
 _TERM_DIGESTS = frozenset({
     "f1a26a13024dcb651eb674d989704a1e07185a601424008649ac476ba8527012",
-    "a49fab080e87b7ecc297981107119f8959f1d7069e1be7fdf99214ca6f2130a1",
-    "12361854c309ea67db7e9e6eaac270f29cf9eb92088e3e9d695181ba45aa1b0a",
-    "7774fe4ff2c001270377d168b8f9c62e96f212b0c6d1d35f3c94e252ac5db0ed",
-    "09217164a3fadb29780b37296a2efa4394457eee490f3b98429306f08c30392d",
-    "016d86ec45a881f3547c2c0651d34472f4251352a9503b2ba05aaafb19ebd1af",
     "96a4bc2602655473120fcc571ee3d8cfe5f8801f8038ccc06323d305e323331c",
     "2e0f266b14026f17bd89bb2dcb1fb5187f6d7b1917ab91fc2d583904f2d8cefb",
-    "6d6012c886e4595c0039d536cc6878f8e9e367027e1974128725d36696048d7c",
-    "938cd7f5c584a1b25f0c24facb9ac61dc6b5ddd584b48041bc5c64bb887b268b",
 })
 _MAX_TERM_WORDS = 3
 _VOCAB_GUIDANCE = ("internal vocabulary: describe the interface or rationale in "
