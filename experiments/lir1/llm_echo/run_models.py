@@ -78,7 +78,12 @@ def render_input(request: dict[str, Any]) -> str:
 
 def command_for(adapter: str, model: str, answer_schema: Path, prompt: str) -> tuple[list[str], str | None]:
     if adapter == "claude-cli":
-        schema = json.dumps(json.loads(answer_schema.read_text()), separators=(",", ":"))
+        schema_value = json.loads(answer_schema.read_text())
+        # Claude Code accepts the validation body but rejects draft metadata
+        # such as `$schema` before any provider request is made.
+        schema_value.pop("$schema", None)
+        schema_value.pop("$id", None)
+        schema = json.dumps(schema_value, separators=(",", ":"))
         return ([
             "claude", "--print", "--safe-mode", "--tools", "",
             "--no-session-persistence", "--model", model,

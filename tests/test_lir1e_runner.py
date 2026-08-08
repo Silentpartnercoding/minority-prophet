@@ -53,6 +53,7 @@ class LIR1ERunnerTests(unittest.TestCase):
         codex, codex_stdin = command_for("codex-cli", "gpt-x", schema, "prompt")
         self.assertIn("--safe-mode", claude)
         self.assertIn("--no-session-persistence", claude)
+        self.assertNotIn("$schema", claude[claude.index("--json-schema") + 1])
         self.assertIsNone(claude_stdin)
         self.assertIn("--ephemeral", codex)
         self.assertIn("read-only", codex)
