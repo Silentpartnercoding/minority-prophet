@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.invalid/interop/memory-evidence-profile-v0.1/schema.json",
+  "title": "Optional Memory Evidence Profile v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile", "proposition", "claims", "search", "verifiers", "conclusion"],
+  "properties": {
+    "profile": { "const": "memory-evidence-profile-v0.1" },
+    "proposition": { "type": "string", "minLength": 1 },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "value", "source", "derived_from"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "value": {},
+          "source": { "type": "string", "minLength": 1 },
+          "derived_from": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        }
+      }
+    },
+    "search": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "coverage", "queried", "total_known"],
+      "properties": {
+        "scope": { "type": "string", "minLength": 1 },
+        "coverage": { "enum": ["complete", "partial", "unknown"] },
+        "queried": { "type": "integer", "minimum": 0 },
+        "total_known": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "verifiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "controller"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "controller": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "conclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "strength", "uncertainty"],
+      "properties": {
+        "kind": { "enum": ["support", "contradict", "absence", "inconclusive"] },
+        "strength": { "type": "number", "minimum": 0, "maximum": 1 },
+        "uncertainty": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

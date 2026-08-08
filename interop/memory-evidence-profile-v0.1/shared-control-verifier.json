@@ -1,0 +1,13 @@
+{
+  "profile": "memory-evidence-profile-v0.1",
+  "proposition": "record R matches source S",
+  "claims": [
+    {"id": "record-r", "value": true, "source": "source-s", "derived_from": []}
+  ],
+  "search": {"scope": "record R", "coverage": "complete", "queried": 1, "total_known": 1},
+  "verifiers": [
+    {"id": "verifier-a", "controller": "operator-1"},
+    {"id": "verifier-b", "controller": "operator-1"}
+  ],
+  "conclusion": {"kind": "support", "strength": 0.5, "uncertainty": "Two verifier processes have one independent controller."}
+}

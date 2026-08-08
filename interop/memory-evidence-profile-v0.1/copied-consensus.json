@@ -1,0 +1,12 @@
+{
+  "profile": "memory-evidence-profile-v0.1",
+  "proposition": "artifact A has property P",
+  "claims": [
+    {"id": "observation-1", "value": true, "source": "sensor-alpha", "derived_from": []},
+    {"id": "copy-1", "value": true, "source": "cache-beta", "derived_from": ["observation-1"]},
+    {"id": "copy-2", "value": true, "source": "index-gamma", "derived_from": ["copy-1"]}
+  ],
+  "search": {"scope": "three named records", "coverage": "complete", "queried": 3, "total_known": 3},
+  "verifiers": [],
+  "conclusion": {"kind": "support", "strength": 0.4, "uncertainty": "Three agreeing claims collapse to one independent recorded root."}
+}

@@ -1,0 +1,10 @@
+{
+  "profile": "memory-evidence-profile-v0.1",
+  "proposition": "scope contains a contradictory record",
+  "claims": [
+    {"id": "result-1", "value": false, "source": "partition-a", "derived_from": []}
+  ],
+  "search": {"scope": "partitions a through z", "coverage": "partial", "queried": 1, "total_known": 26},
+  "verifiers": [],
+  "conclusion": {"kind": "inconclusive", "strength": 0.0, "uncertainty": "Unqueried partitions prevent an absence conclusion."}
+}

@@ -1,0 +1,16 @@
+{
+  "cell_id": "urn:example:opaque-cell:7",
+  "media_type": "application/octet-stream",
+  "payload_digest": "sha256:8f68b61d6be51bb4e95f2f5f79d8ef7918db763977ae3d771e72a1ad4e0cfeaf",
+  "evidence_profile": {
+    "profile": "memory-evidence-profile-v0.1",
+    "proposition": "opaque cell 7 was derived from source record 4",
+    "claims": [
+      {"id": "receipt-4", "value": true, "source": "source-record-4", "derived_from": []},
+      {"id": "cell-7-write", "value": true, "source": "memory-writer", "derived_from": ["receipt-4"]}
+    ],
+    "search": {"scope": "cell 7 lineage receipts", "coverage": "complete", "queried": 2, "total_known": 2},
+    "verifiers": [{"id": "audit-service", "controller": "audit-operator"}],
+    "conclusion": {"kind": "support", "strength": 0.7, "uncertainty": "The payload remains opaque; only its recorded lineage was evaluated."}
+  }
+}
