@@ -1,8 +1,7 @@
 # Memory Evidence Interoperability Profile v0.1
 
-Status: optional, vendor-neutral interoperability profile. This directory is
-not a W3C specification and does not change the Minority Prophet research
-claims.
+Status: optional, vendor-neutral interoperability profile. This directory does
+not change the Minority Prophet research claims.
 
 The profile carries bounded evidence through otherwise opaque memory systems.
 It is an exchange contract and executable set of invariants, not a proof that

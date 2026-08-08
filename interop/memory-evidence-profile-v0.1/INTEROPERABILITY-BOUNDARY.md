@@ -1,9 +1,7 @@
-# Standards note
+# Interoperability boundary
 
-This is an experimental, optional interchange profile, not a W3C standard,
-Recommendation, Working Draft, or Community Group report. It is intended to
-invite interoperable implementation feedback without selecting a storage,
-identity, attestation, or verification vendor.
+This is an experimental, optional interchange profile. It does not select a
+storage, identity, attestation, or verification vendor.
 
 The profile transports evidence boundaries; it does not establish truth,
 identity, controller independence, memory integrity, or authority. A consumer
