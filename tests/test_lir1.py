@@ -9,9 +9,24 @@ from experiments.lir1.metrics import aggregation_accuracy, root_count_metrics, r
 from experiments.lir1.model import ClaimInstance, read_jsonl, write_jsonl
 from experiments.lir1.pheme import flatten_tree, truth_label
 from experiments.lir1.synthetic_fixture import build_fixture, hide_edges
+from experiments.lir1.tune_pheme import THRESHOLDS, select_threshold
 
 
 class LIR1Tests(unittest.TestCase):
+    def test_pheme_threshold_grid_and_tie_rule_are_frozen(self):
+        self.assertEqual(
+            THRESHOLDS,
+            (0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85),
+        )
+        self.assertEqual(
+            select_threshold([
+                {"threshold": 0.4, "parentF1": 0.7},
+                {"threshold": 0.6, "parentF1": 0.7},
+                {"threshold": 0.8, "parentF1": 0.6},
+            ]),
+            0.6,
+        )
+
     def test_pheme_tree_flattening_preserves_direct_parents(self):
         tree = {"root": {"a": {"b": []}, "c": {}}}
         self.assertEqual(
