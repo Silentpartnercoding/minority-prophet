@@ -212,9 +212,15 @@ def execute(requests: list[dict], config: dict, output: Path, answer_schema: Pat
                 response, receipt = run_one(request, config, answer_schema, attempt)
                 attempts_used += 1
                 handle.write(_canonical(response))
+                handle.flush()
                 receipt_path = receipts / f"{request['requestId']}-attempt-{attempt}.json"
                 receipt_path.write_bytes(receipt)
                 counts[response["status"]] += 1
+                print(json.dumps({
+                    "attemptsUsed": attempts_used,
+                    "requestId": request["requestId"],
+                    "status": response["status"],
+                }, sort_keys=True), flush=True)
                 if response["status"] == "provider_error":
                     raise RuntimeError(
                         f"provider error on {request['requestId']}; stopping without substitution"
