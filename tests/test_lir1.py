@@ -13,12 +13,17 @@ from experiments.lir1.metrics import (
 )
 from experiments.lir1.model import ClaimInstance, read_jsonl, write_jsonl
 from experiments.lir1.pheme import flatten_tree, truth_label
+from experiments.lir1.pheme_r2 import case_set_digest
 from experiments.lir1.synthetic_fixture import build_fixture, hide_edges
 from experiments.lir1.tune_pheme import THRESHOLDS, select_threshold
 from experiments.lir1.run_pheme_confirmatory import f1_from_counts, percentile
 
 
 class LIR1Tests(unittest.TestCase):
+    def test_case_set_digest_is_sorted_and_newline_terminated(self):
+        expected = hashlib.sha256(b"a\nb\n").hexdigest()
+        self.assertEqual(case_set_digest({"b", "a"}), expected)
+
     def test_confirmatory_metric_helpers_are_deterministic(self):
         self.assertEqual(f1_from_counts(3, 1, 1), 0.75)
         self.assertEqual(percentile([0.0, 0.25, 0.5, 0.75, 1.0], 0.5), 0.5)
