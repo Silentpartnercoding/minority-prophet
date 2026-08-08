@@ -1,0 +1,11 @@
+{
+  "schema": "minority-prophet.run-constraints.v0.1",
+  "runId": "RUN-20260808-2",
+  "constraints": [
+    "Logging run. No kernel state advanced, no preregistration created or edited.",
+    "Independent artifacts imported verbatim and unedited; screened clean of operator paths, internal tooling terms and credentials before import.",
+    "Three findings recorded, none repaired: BL-048 (withheld-set checker), BL-049 (registration chain check tests a proxy), BL-050 (two public-boundary gaps).",
+    "lineage/REGISTRATION.md not edited. Its defects are recorded in FINDING-BL044.md; amending a registration after its commission answered it would destroy the evidence.",
+    "Duplicate registration history left in place: rewriting published history is a worse remedy than an untidy graph."
+  ]
+}

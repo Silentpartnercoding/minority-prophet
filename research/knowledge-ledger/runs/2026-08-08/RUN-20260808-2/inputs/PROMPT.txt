@@ -1,0 +1,12 @@
+Owner instruction, 2026-08-08, verbatim: "OK and did you log these findings to github"
+
+Answer at the time: no. The BL-044 result existed only in $HOME/Development/lin000-spec
+and in an owner conversation. `BL-044` appeared in eight files on github/main, all of
+them the commission -- the backlog entry and run proposals -- and none the answer.
+
+Also unlogged and folded into this run: the duplicate registration history discovered
+when the chain check went red, two gaps in the public-boundary check added by PR #26,
+and the M27 enforcement started but never committed.
+
+Prior context: the owner asked to monitor the LIN-000 commission while it ran
+("ok its running if you want to monitor").
