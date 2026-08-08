@@ -59,11 +59,15 @@ Write that document -- name it as you see fit, e.g.
 normative statement, why it is specification-local, and the KL-000 evidence
 that it holds (invariant, fixture, world counts, both implementations).
 
-Note in it, factually and without selling: three of these correspond to
-lockpicks the owner's trust-lockpick toolbox already probes for --
-effect-prevention (I9), semantic-action-collision (I7 and rule 18),
-frozen-verification-material (I6). The profile is the evidence side of those
-questions.
+[REDACTED BEFORE PUBLICATION. One paragraph of this operator brief named an
+internal tool of the owner's and asked for it to be cross-referenced inside a
+public conformance document. The instruction was an error in the brief; the run
+carried it out correctly and the resulting section was removed in ce07daf, with
+its descriptions scrubbed in b26e27c. Redacted here because this repository is
+public and the name is the disclosure. The unredacted original is held by the
+operator outside the repository; its sha256 is
+7ecb3a3c15370d5a9034b13d9622a56fce6d85e678fd52158167dbca2daea755
+so this redaction is verifiable as a redaction rather than a rewrite.]
 
 4. LINEAGE-BEARING SCHEMA, AND END-TO-END TESTS FOR THEOREM 1 AND LEMMA 1
 
