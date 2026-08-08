@@ -1,0 +1,12 @@
+{
+  "schema": "minority-prophet.hgd1.conformance-vectors.v1",
+  "vectors": [
+    {"id": "one-origin-eight-records", "originCount": 1, "components": [], "expected": {"state": "ASSESS", "massLower": 1, "massUpper": 1}},
+    {"id": "eight-independent-origins", "originCount": 8, "components": [], "expected": {"state": "ASSESS", "massLower": 8, "massUpper": 8}},
+    {"id": "eight-one-shared-family", "originCount": 8, "components": [{"members": 8, "lower": 1, "upper": 1}], "expected": {"state": "ASSESS", "massLower": 1, "massUpper": 1}},
+    {"id": "eight-half-shared", "originCount": 8, "components": [{"members": 8, "lower": 0.4, "upper": 0.6}], "expected": {"state": "ASSESS", "massLower": 3.8, "massUpper": 5.2}},
+    {"id": "unknown-component", "originCount": 8, "components": [], "support": "unknown", "expected": {"state": "ESCALATE"}},
+    {"id": "conflicting-component", "originCount": 8, "components": [], "support": "conflicting", "expected": {"state": "ESCALATE"}}
+  ]
+}
+

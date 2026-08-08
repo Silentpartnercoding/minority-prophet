@@ -74,6 +74,7 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`experiments/resolved_weather_v01.py`](experiments/resolved_weather_v01.py) — Experiment 002 acquisition and scoring runner
 - [`provenance/`](provenance/) — evidence graph implementation and JSON Schema
 - [`results/resolved-weather-v0.1.manifest.json`](results/resolved-weather-v0.1.manifest.json) — canonical derived-record hashes and reproducibility boundary
+- [`results/hes1-v1/`](results/hes1-v1/) — blind evidence-seeking result: strong coverage recovery with a material false-negative software limitation
 - [`research/field-evidence/2026-08-06/`](research/field-evidence/2026-08-06/) — sanitized field observation showing why root identity and dependency matter
 - [Minority Prophet Gate](https://github.com/Silentpartnercoding/minority-prophet-gate) — reference implementation of evidence-root aggregation
 - [`website/`](website/) and [`app/`](app/) — dashboard specification and implementation

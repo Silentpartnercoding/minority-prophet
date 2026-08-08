@@ -9,6 +9,27 @@ permissions:
   contents: read
 
 jobs:
+  public-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Select trusted comparison base
+        id: comparison
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Check newly added public material
+        run: python scripts/check_public_boundary.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+
   python:
     runs-on: ubuntu-latest
     strategy:

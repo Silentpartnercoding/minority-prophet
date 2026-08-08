@@ -1,0 +1,743 @@
+{
+  "records": [
+    {
+      "case": "149047-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "f9ce7ebaee4ca733e358fa253a2fce1fc02962a4efe0bf7f128d51f599db4652",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149047-v3.0.0/src/fmt-bad.c ...\n"
+    },
+    {
+      "case": "149048-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "afa6f9abc85fefad2f060854ae7ebb15d161b1320b9629dbc5e4861e61c19be7",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149048-v2.0.0/src/fmt-good.c ...\n"
+    },
+    {
+      "case": "149051-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "404c3bf01cf7ac9a867baf6a32c4fb654483aa0706f308df390bb0d122258759",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149051-v2.0.0/src/race-bad.c ...\n"
+    },
+    {
+      "case": "149052-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "e7d71d6de7324b84c5bb522cfbc65de833d97702cb90119ba26be70d68883d51",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149052-v1.0.0/src/race-good.c ...\n"
+    },
+    {
+      "case": "149053-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "68cded6cdb2be5e80f9551f1d6003d5732dd3bcb38d18b032dc9b94d6df787d1",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149053-v2.0.0/src/tain-bad.c ...\n"
+    },
+    {
+      "case": "149054-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "7140a7c053de5bd8a98a798549df489eb046fe902eb5adaf6aac4b310c15379b",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149054-v2.0.0/src/tain-good.c ...\n"
+    },
+    {
+      "case": "149063-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "4fde6212b5310f79d22bce88775ab589d13afb4f1fdaf026035ae15a5e805488",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149063-v1.0.0/src/fmt5-bad.c ...\n"
+    },
+    {
+      "case": "149064-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "a5ef73d1a334cf2bb86cf9c6eccf4624eb0062cf104e50df61f48f4e9434c85f",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149064-v2.0.0/src/fmt5-good.c ...\n"
+    },
+    {
+      "case": "149067-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "a489680362da9f7620a41b0c8e54b49f3c85424090da667583fcba9d195b88cb",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"bufferAccessOutOfBounds\" severity=\"error\" msg=\"Buffer is accessed out of bounds: buf\" verbose=\"Buffer is accessed out of bounds: buf\" cwe=\"788\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149067-v2.0.0/src/gets2-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149067-v2.0.0/src/gets2-bad.c\" line=\"37\" column=\"11\" info=\"Buffer overrun\"/>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149067-v2.0.0/src/gets2-bad.c ...\n"
+    },
+    {
+      "case": "149068-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "66e4a27ed0af43ccdadf4b56faafe7e191c60e01d98848e5c4eae5f8d75721cf",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149068-v2.0.0/src/gets2-good.c ...\n"
+    },
+    {
+      "case": "149077-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "0ab3156c0785db143afaa402fcdc4dc62b05492dae7c942c6e95fffb5b0f0e3a",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149077-v2.0.0/src/scpy2-bad.c ...\n"
+    },
+    {
+      "case": "149078-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "3e864036b97b4c2f7240c9f0d96a1aeaca4cfee66e6187a70f89c3b47b9eec48",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149078-v2.0.0/src/scpy2-good.c ...\n"
+    },
+    {
+      "case": "149079-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "019792e63ebd01e3453f4b955eb8b76cbd989e4710433992619d86379ada29e1",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149079-v2.0.0/src/scpy7-bad.c ...\n"
+    },
+    {
+      "case": "149080-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "130e7dab22514cf69e8a625c159f007d969e28d413828741407882747e9520bc",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149080-v1.0.0/src/scpy7-good.c ...\n"
+    },
+    {
+      "case": "149081-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "3f5d904aa402f99f6ae9cf09e14f9eb86cd958247fdcaf2f2ff09834cef937ac",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"bufferAccessOutOfBounds\" severity=\"error\" msg=\"Buffer is accessed out of bounds: buf\" verbose=\"Buffer is accessed out of bounds: buf\" cwe=\"788\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149081-v2.0.0/src/scpy8-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149081-v2.0.0/src/scpy8-bad.c\" line=\"41\" column=\"10\" info=\"Buffer overrun\"/>\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149081-v2.0.0/src/scpy8-bad.c\" line=\"39\" column=\"5\" info=\"Assuming condition is false\"/>\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149081-v2.0.0/src/scpy8-bad.c\" line=\"38\" column=\"6\" info=\"Assign buf, buffer with size 40\"/>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149081-v2.0.0/src/scpy8-bad.c ...\n"
+    },
+    {
+      "case": "149082-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "300984b0f694ea5391cfc3001b0273db387cfb6f8e20e2ed651fa2a5e55e4894",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149082-v2.0.0/src/scpy8-good.c ...\n"
+    },
+    {
+      "case": "149089-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "d23028f4895d38a9a9caae72294f457dde8b62071e23ab9127487b212cd4950c",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"uninitvar\" severity=\"error\" msg=\"Uninitialized variable: k\" verbose=\"Uninitialized variable: k\" cwe=\"457\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149089-v2.0.0/src/uninitialized_variable-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149089-v2.0.0/src/uninitialized_variable-bad.c\" line=\"16\" column=\"28\"/>\n            <symbol>k</symbol>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149089-v2.0.0/src/uninitialized_variable-bad.c ...\n"
+    },
+    {
+      "case": "149090-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "ebfd0a7eeb47be05cc45ee599499df79cab5089bde25703babbcf72d9c79c536",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149090-v1.0.0/src/uninitialized_variable-good.c ...\n"
+    },
+    {
+      "case": "149091-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "561b952d3ffd6f171374857fd838942c18704e1438754292d474235113c00b9b",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149091-v3.0.0/src/Unintentional_pointer_scaling-bad.c ...\n"
+    },
+    {
+      "case": "149092-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "7358f4b16832d57d724d886b1bcb309e0c8cfd4cee0e7679ddd707538d815251",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149092-v1.0.0/src/Unintentional_pointer_scaling-good.c ...\n"
+    },
+    {
+      "case": "149117-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "61f1b99f3543ea9c12d4d2f3728dda2233d6968b129bc1b1965389d53e442a76",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149117-v2.0.0/src/hardcoded_pass_container-bad.c ...\n"
+    },
+    {
+      "case": "149118-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "a70654a115d2756ccbb7c138aaf4f1651579eddd3e5597b5a416bdfefdf2f756",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149118-v3.0.0/src/hardcoded_pass_container-good.c ...\n"
+    },
+    {
+      "case": "149129-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "1168cb87b90a41f2c1a43555f7dc985842d725858297e4e82a8101622b25d15e",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149129-v2.0.0/src/improper_null_term_basic_@alias-bad.c ...\n"
+    },
+    {
+      "case": "149130-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "fd8768c296b47cda1fe47c129deabc46d6294254b225588c0ef62f3eef607a9e",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149130-v2.0.0/src/improper_null_term_basic_@alias-good.c ...\n"
+    },
+    {
+      "case": "149135-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "f6a38ac226b03fc5fa8733b771f8efeb32d15f140fca8044aa4943a6f9d04f64",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149135-v2.0.0/src/leftover_debug-bad.c ...\n"
+    },
+    {
+      "case": "149136-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "f8032046fc27bd0cfad46311cb7c4d43f7a52fe9d82b6c1b63b2349e2a24a2a7",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149136-v2.0.0/src/leftover_debug-good.c ...\nChecking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149136-v2.0.0/src/leftover_debug-good.c: DEBUG=DEBUG...\n"
+    },
+    {
+      "case": "149147-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "ddf293d4ded5f75ad8b647cc9c1e4e98b1d92055843992679ac0439fd8961656",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149147-v2.0.0/src/null_deref_@alias-bad.c ...\n"
+    },
+    {
+      "case": "149148-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "43fe6314635a8a7d5bcfcc2cf7ef37827b9f1ee19ff45f22b0dd9a8a7b2c2166",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149148-v2.0.0/src/null_deref_@alias-good.c ...\n"
+    },
+    {
+      "case": "149161-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "0ef55bf2409bad3ab17c449007deebc89562a2721508080545d80dacbca97fd0",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149161-v2.0.0/src/resource_injection_container-bad.c ...\n"
+    },
+    {
+      "case": "149162-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "c1126dd83d1e351cae537c039f8dc3f19be8c78c1199ce8dba6a1eb2304aade0",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149162-v2.0.0/src/resource_injection_container-good.c ...\n"
+    },
+    {
+      "case": "149163-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "8728cf7caeef9d5fab936a7682e62008f842a9e4eac31771d658bd4452f054ac",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149163-v2.0.0/src/resource_injection_scope-bad.c ...\n"
+    },
+    {
+      "case": "149164-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "b77210b6140c44d7bcd420da1bfaacc8f1e65f0233371006cf0d5f8006d5ac5c",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149164-v2.0.0/src/resource_injection_scope-good.c ...\n"
+    },
+    {
+      "case": "149179-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "865894d6ebe6b98509affd6709fe9cecf40c54a014ec2a68fb8422ae5db6189d",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149179-v1.0.0/src/memory_leak_container-bad.c ...\n"
+    },
+    {
+      "case": "149180-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "9b67e68f972d0c0df1e77915d1b1c6691d0c1304ebf12d56c6b2d39bfd8a1506",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149180-v2.0.0/src/memory_leak_container-good.c ...\n"
+    },
+    {
+      "case": "149189-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "ca57611fe6032f16becc0c0c4983f63451a3e9e5a2794438cf3c4b5d3898422b",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"memleak\" severity=\"error\" msg=\"Memory leak: buff\" verbose=\"Memory leak: buff\" cwe=\"401\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149189-v1.0.0/src/memory_leak_basic-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149189-v1.0.0/src/memory_leak_basic-bad.c\" line=\"26\" column=\"2\"/>\n            <symbol>buff</symbol>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149189-v1.0.0/src/memory_leak_basic-bad.c ...\n"
+    },
+    {
+      "case": "149190-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "abe782f9c1e3cd5f60a3abb496b76bf07bca2ff7cf04194a9c848f673747a522",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149190-v2.0.0/src/memory_leak_basic-good.c ...\n"
+    },
+    {
+      "case": "149217-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "dc2d0591678f5a9d5fda64641eee772aef0d3089b5b1b163a5a3c703a1439360",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"doubleFree\" severity=\"error\" msg=\"Memory pointed to by &apos;x&apos; is freed twice.\" verbose=\"Memory pointed to by &apos;x&apos; is freed twice.\" cwe=\"415\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149217-v3.0.0/src/double_free-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149217-v3.0.0/src/double_free-bad.c\" line=\"16\" column=\"5\"/>\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149217-v3.0.0/src/double_free-bad.c\" line=\"15\" column=\"5\"/>\n            <symbol>x</symbol>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149217-v3.0.0/src/double_free-bad.c ...\n"
+    },
+    {
+      "case": "149218-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "86b2f69ed5b6fb22effa2b058a89d85b057410231378928b1773faeea1279ec6",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149218-v1.0.0/src/double_free-good.c ...\n"
+    },
+    {
+      "case": "149223-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "caa0fe046bd9bb50eae5b5eca72eae6721d311dfd5ced23bca5e9b57d32ba1a6",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"deallocuse\" severity=\"error\" msg=\"Dereferencing &apos;b&apos; after it is deallocated / released\" verbose=\"Dereferencing &apos;b&apos; after it is deallocated / released\" cwe=\"416\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149223-v3.0.0/src/use_after_free_container-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149223-v3.0.0/src/use_after_free_container-bad.c\" line=\"38\" column=\"18\"/>\n            <symbol>b</symbol>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149223-v3.0.0/src/use_after_free_container-bad.c ...\n"
+    },
+    {
+      "case": "149224-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "3b253e6141935f6027922947f97da221395b0f379384deb7dc38f74012bd275a",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149224-v1.0.0/src/use_after_free_container-good.c ...\n"
+    },
+    {
+      "case": "149225-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "a883866bac0ed8cf68e9a2510e4db70caedeab1cda580a54ee54b6dcc2c3e6b9",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149225-v3.0.0/src/use_after_free_@buffer-bad.c ...\n"
+    },
+    {
+      "case": "149226-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "a07948d2ebfb8959cc7493d1989bfb45e3c10c753893a58a7f7550784d58ae10",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149226-v1.0.0/src/use_after_free_@buffer-good.c ...\n"
+    },
+    {
+      "case": "149229-v1.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "a18aca8ed658f9de3bf84b9ddc0aff8f843f6de854750e87f8b8fd494a0f32b3",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n        <error id=\"doubleFree\" severity=\"error\" msg=\"Memory pointed to by &apos;shellcode_location&apos; is freed twice.\" verbose=\"Memory pointed to by &apos;shellcode_location&apos; is freed twice.\" cwe=\"415\" file0=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149229-v1.0.0/src/double_free-bad.c\">\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149229-v1.0.0/src/double_free-bad.c\" line=\"31\" column=\"2\"/>\n            <location file=\"/Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149229-v1.0.0/src/double_free-bad.c\" line=\"30\" column=\"2\"/>\n            <symbol>shellcode_location</symbol>\n        </error>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149229-v1.0.0/src/double_free-bad.c ...\n"
+    },
+    {
+      "case": "149230-v3.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "03c6412cf0c76a21b46b3c28cef66d651380e9f0e19b9b144a07e5e27af038e6",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149230-v3.0.0/src/double_free-good.c ...\n"
+    },
+    {
+      "case": "149233-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "8d5c09b340e080a3b45d6f58865ff50dcec0e2d5cff5e083f3d3839a3a8a65c9",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted100/149233-v2.0.0/src/race_stat_fctptr-bad.c ...\n"
+    },
+    {
+      "case": "149234-v2.0.0",
+      "command": [
+        "cppcheck",
+        "--xml",
+        "--xml-version=2",
+        "--enable=warning,performance",
+        "--inconclusive",
+        "--force",
+        "<frozen-source>"
+      ],
+      "exit": 0,
+      "sourceSha256": "832ce5ba8ac04f43418527edb1b6999639d2fe6e41b118dc02efa4cee0cc06c5",
+      "stderr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<results version=\"2\">\n    <cppcheck version=\"2.21.0\"/>\n    <errors>\n    </errors>\n</results>\n",
+      "stdout": "Checking /Users/james/Documents/Instagram and Youtube Automation/minority-prophet/artifacts/hgd2-source/extracted/149234-v2.0.0/src/race_stat_fctptr-good.c ...\n"
+    }
+  ],
+  "schema": "minority-prophet.hes1.cppcheck-evidence.v1",
+  "tool": "Cppcheck",
+  "version": "Cppcheck 2.21.0"
+}
