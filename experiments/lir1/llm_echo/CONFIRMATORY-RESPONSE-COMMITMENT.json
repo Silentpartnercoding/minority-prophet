@@ -1,0 +1,16 @@
+{
+  "schema": "minority-prophet.lir1e-response-commitment.v1",
+  "status": "responses-closed-before-label-opening",
+  "requestCount": 180,
+  "validResponseCount": 180,
+  "retryCount": 0,
+  "providerErrorCount": 0,
+  "responsesSha256": "7fd4a8a1cc1399195eee2a99bc1145b868a13ecbb3f511087d3aa0216bcf1bd6",
+  "receiptCount": 180,
+  "receiptNameAndHashListSha256": "60f1aee6ae123b3dba7662a7a2ba157859b7fcbdcbeb4622cffdeb15ed07eb3e",
+  "models": {
+    "claude-fable-5": 144,
+    "gpt-5.6-sol": 36
+  },
+  "inspectionBoundary": "Only wrapper status, attempt number, assigned model, counts, and file hashes were inspected before this commitment. Answer content and construction labels remained unopened."
+}
