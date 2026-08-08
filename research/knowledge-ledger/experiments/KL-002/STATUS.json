@@ -1,9 +1,22 @@
 {
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-002",
+  "realm": "multi-agent AI",
   "state": "seeded",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
-  "nextGate": "complete and commit preregistration",
-  "claimAllowed": "This experiment is seeded and supports no result claim."
+  "reviewedByRun": "RUN-20260807-1",
+  "nextGate": "Construct the source-laundering packets and preregister accuracy, Brier score, confident-error, abstention, root error, tokens, cost, and latency. The first falsifiable check needs no agent at all: 20 paraphrases of one false source must collapse to one root. KL-000 fixture C07 already demonstrates the evaluator does this for 20 identical rootIds; KL-002's real gate is whether an agent PIPELINE assigns the same rootId to 20 paraphrases, which is a root-ATTRIBUTION question the evaluator never sees.",
+  "blockers": [
+    "preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001",
+    "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
+    "schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first",
+    "metered model calls may exceed the approved budget; requires founder authorization before any paid inference",
+    "constraint ADV-004: root identity is byte identity, so a paraphrase pipeline that emits inconsistent rootId strings splits one source into many roots without any adversary"
+  ],
+  "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed.",
+  "dependsOn": [
+    "KL-000"
+  ],
+  "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed in RUN-20260807-1, so this dependency is satisfied for fixture-stage work but NOT for any promotion: KL-000 itself awaits independent reimplementation."
 }

@@ -1,0 +1,74 @@
+{
+  "control": "C11",
+  "requirement": "canonical form, digest scope, and (new in v1.2.0) the registered receipt object pinned across implementations; tie concludes not_established (R1)",
+  "protocolVersion": "1.2.0",
+  "note": "Input byte-identical to the v1.1.0 registration's C11. New in v1.2.0: expected carries the values of schema, reason and limits (the 279 bytes finding G2 showed were hashed but never registered), and the complete canonical unsigned form, so a digest mismatch is now localisable to specific bytes rather than a bare hash inequality. The contentDigest is UNCHANGED from the v1.1.0 pin -- registered prediction: the v1.2.0 receipt object is exactly what the reference already emitted, so no byte moves. The margin here is 0 and sign-agnostic; the margin sign (R5.2) is pinned by C12.",
+  "input": {
+    "transactionId": "kl000-c11",
+    "claim": {
+      "type": "presence",
+      "proposition": "A target-class defect exists in the déclared \"components\" \\ set — canonicalisation pin."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "not_searched"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r2",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "not_established",
+    "search": {
+      "declared": 2,
+      "searched": 1,
+      "unavailable": 0,
+      "complete": false
+    },
+    "evidence": {
+      "records": 3,
+      "distinctRoots": 2,
+      "repeatedRecordsCollapsed": 1,
+      "supportingRoots": [
+        "r1"
+      ],
+      "opposingRoots": [
+        "r2"
+      ],
+      "margin": 0,
+      "conversionsToReverse": 1
+    },
+    "reason": "The conclusion follows only from the declared root counts.",
+    "schema": "minority-prophet.knowledge-transaction.v0.1",
+    "limits": [
+      "Root identity and independence are declared operationally, not proved semantically.",
+      "This result applies only to the declared search space."
+    ],
+    "canonicalUnsignedForm": "{\"claim\":{\"proposition\":\"A target-class defect exists in the déclared \\\"components\\\" \\\\ set — canonicalisation pin.\",\"type\":\"presence\"},\"conclusion\":\"not_established\",\"evidence\":{\"conversionsToReverse\":1,\"distinctRoots\":2,\"margin\":0,\"opposingRoots\":[\"r2\"],\"records\":3,\"repeatedRecordsCollapsed\":1,\"supportingRoots\":[\"r1\"]},\"limits\":[\"Root identity and independence are declared operationally, not proved semantically.\",\"This result applies only to the declared search space.\"],\"reason\":\"The conclusion follows only from the declared root counts.\",\"schema\":\"minority-prophet.knowledge-transaction.v0.1\",\"search\":{\"complete\":false,\"declared\":2,\"searched\":1,\"unavailable\":0},\"transactionId\":\"kl000-c11\"}",
+    "contentDigest": "sha256:84e63c21271a19c3bfbb1d42c5ce61e60288456a48c33829a66ae916bc33eafe"
+  }
+}

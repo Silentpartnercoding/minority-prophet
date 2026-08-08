@@ -1,0 +1,11 @@
+fixture controls: 12 passed: True mismatched: []
+C11: {'control': 'C11', 'differences': [], 'fixture': 'c11-canonical-digest.json', 'passed': True}
+C12: {'control': 'C12', 'differences': [], 'fixture': 'c12-margin-sign.json', 'passed': True}
+C11 digest registered: sha256:84e63c21271a19c3b... == v1.1.0 pin: True
+result: passed | invalidation: [] | version: 1.2.0 | evaluator matches: True
+exhaustive: {'worldsChecked': 176120, 'receiptProducingWorlds': 110840, 'failClosedRejections': 65280, 'totalViolations': 0}
+  conclusions: {'absent_within_declared_scope': 160, 'not_established': 49480, 'present': 41820, 'supported': 19380}
+randomized: {'worldsChecked': 1000000, 'receiptProducingWorlds': 243381, 'failClosedRejections': 756619, 'totalViolations': 0}
+baselines: {'B1-head-count': 634440, 'B2-source-count': 26880, 'B3-evidence-without-coverage': 26208, 'B4-search-without-collapse': 189720}
+
+IDENTICAL -- every count, conclusion, baseline, cause, and pinned digest as registered

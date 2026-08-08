@@ -67,14 +67,67 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             evaluate_transaction(payload)
 
-    def test_materialized_experiment_seeds_are_explicitly_incomplete(self):
+    # The kernel-state ladder. A state outside this list is a typo or an
+    # invented stage, and either way must not pass silently.
+    LADDER = (
+        "seeded", "preregistered", "fixture-passed", "exhaustive-passed",
+        "randomized-passed", "adversarial-passed", "retrospective-passed",
+        "shadow-passed", "bounded-pilot-passed", "failed", "incomplete",
+        "blocked-safety",
+    )
+
+    def test_no_experiment_claims_progress_without_the_evidence_for_it(self):
+        """Every experiment's declared state must be backed by artifacts.
+
+        This replaces an earlier assertion that all twelve experiments were
+        literally `seeded`. That version encoded a snapshot rather than an
+        invariant: it passed because nothing had advanced, and it would have
+        failed the moment anything did -- including a legitimate advance. It
+        could not distinguish "KL-000 advanced with a confirmatory result" from
+        "someone edited a status field", which is the thing actually worth
+        protecting against.
+        """
         for index in range(12):
             directory = PROGRAM / "experiments" / f"KL-{index:03d}"
             status = json.loads((directory / "STATUS.json").read_text())
             preregistration = json.loads((directory / "preregistration.json").read_text())
-            self.assertEqual(status["state"], "seeded")
-            self.assertEqual(preregistration["status"], "incomplete-seed")
-            self.assertTrue(status["nextGate"])
+
+            self.assertIn(status["state"], self.LADDER, directory.name)
+            self.assertTrue(status["nextGate"], f"{directory.name} has no next gate")
+            self.assertTrue(status.get("claimAllowed"), directory.name)
+
+            if status["state"] == "seeded":
+                # A seeded experiment must not look preregistered.
+                self.assertEqual(preregistration["status"], "incomplete-seed", directory.name)
+                self.assertFalse(
+                    (directory / "results").exists() and any((directory / "results").iterdir()),
+                    f"{directory.name} is seeded but carries results",
+                )
+            else:
+                # Anything past seeded owes a frozen protocol and real output.
+                self.assertEqual(preregistration["status"], "preregistered", directory.name)
+                self.assertTrue(
+                    (directory / "PROTOCOL-COMMIT.txt").is_file(),
+                    f"{directory.name} advanced past seeded without a frozen protocol commit",
+                )
+                self.assertTrue(
+                    (directory / "results").is_dir() and any((directory / "results").iterdir()),
+                    f"{directory.name} advanced past seeded with no results",
+                )
+                self.assertIsNone(
+                    preregistration["protocolCommit"],
+                    f"{directory.name} preregistration was edited after registration; "
+                    "the commit binding belongs in PROTOCOL-COMMIT.txt",
+                )
+
+    def test_every_experiment_still_declares_a_falsifiable_next_gate(self):
+        for index in range(12):
+            directory = PROGRAM / "experiments" / f"KL-{index:03d}"
+            status = json.loads((directory / "STATUS.json").read_text())
+            self.assertGreater(
+                len(status["nextGate"]), 40,
+                f"{directory.name} next gate is too vague to falsify",
+            )
 
 
 if __name__ == "__main__":

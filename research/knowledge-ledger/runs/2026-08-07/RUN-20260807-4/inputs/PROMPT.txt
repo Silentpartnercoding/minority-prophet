@@ -1,0 +1,87 @@
+RUN-20260807-4 — close out KL-000. This is the final run of the program.
+
+Same repository, worktree and branch. Same discipline: run directory,
+provenance, versioned closing packet, draft only, nothing pushed, nothing
+promoted without the owner.
+
+IND-20260807-3 has completed and PASSED. Its result is at
+/Users/james/Development/kl000-independent-spec/impl-rs/results/kl000-independent-result-v120.json
+Read it. Do not modify anything under kl000-independent-spec/. Import it by
+copy with provenance, as you did for IND-2.
+
+WHAT IT ESTABLISHED
+
+C11 and C12 both reproduce byte-for-byte:
+  C11 sha256:84e63c21...33eafe   digestMatches true, firstDifferingByteOffset -1
+  C12 sha256:61000a9b...aa3b6e   digestMatches true, firstDifferingByteOffset -1
+  canonicalUnsignedFormMatches true on both -- the canonical forms are identical,
+  not merely the hashes.
+
+Conclusion distribution 160 / 49,480 / 41,820 / 19,380. Thirteen invariants,
+zero violations. Twelve fixture controls, all match.
+
+I4 and I6 were the only invariants never tested across implementations. They are
+tested now. R5.1 -- registering the receipt object -- is what closed them, which
+is exactly what the implementer diagnosed in IND-2.
+
+THE MECHANISTIC FINDING -- this is the headline of the close-out
+
+IND-3 ran two ablations against v1.2.0, each corrupting one owner decision and
+nothing else:
+
+  R1 inverted (ties conclude `supported`)   22,440 receipts change
+  R5.2 inverted (margin signed)             38,760 receipts change
+
+  invariantViolationsDetected: 0 in BOTH. All thirteen silent.
+  fixturesThatCatchIt: C11 and C12 only.
+
+Both owner decisions are enforced by zero invariants. They survive only because
+two fixtures happen to pin receipts that exercise them. This is the same
+structure as G4 and it is now measured on both decisions rather than one.
+
+State it plainly in the report, at this strength: the program's enforcement of
+its own decisions rests on two pinned inputs, not on any property that holds
+across the enumeration. That is the honest headline, and it sits beside a
+passing result rather than behind it.
+
+WHAT TO DO
+
+1. Record I12 (conclusion == conclusionFunction(world)) with BOTH ablations as
+   its evidence, not just R1's. It is already a committed v1.3.0 gate; attach
+   the 22,440 / 38,760 / 0 / 0 numbers and the exact pass condition.
+
+2. Record A1 and A2 as permanent known limits with their world counts:
+     A1  absence requires supporting evidence, or coverage alone   4 worlds
+     A2  presence requires complete coverage                  19,152 worlds
+   A2 is roughly 17% of receipt-producing worlds and is undecided. Do not decide
+   it yourself -- record it as an owner decision the program did not reach, with
+   both readings and their consequences.
+
+3. Produce the final KL-000 record. State what is established and at what
+   strength:
+   - the evaluator, the conclusion function, and the canonical form agree
+     across two independent implementations in different languages with no
+     shared code;
+   - confirmed for two pinned receipts, not for all 110,840;
+   - qualified by LEAK-101: the independent implementation saw the expected
+     counts in the v1.1.0 package. The digest result is unaffected -- a count
+     gives no path to a hash -- and the qualification still belongs in the claim;
+   - the conclusion function has no invariant enforcing it (above).
+
+4. KERNEL-STATUS-SNAPSHOT: KL-000 stays `adversarial-passed`. A passing
+   cross-implementation reproduction is not `verified-independent` while its
+   own decisions are unenforced. Say why the state did not advance.
+
+5. Rebuild the PR branch. `agent/kl-000-conformance` is stale at v1.0.0 and
+   unpushed. Rebuild from the current tree onto github/main, cherry-picking only
+   this program's commits, and rebind PROTOCOL-COMMIT as before. The PR body
+   must carry the LEAK-101 qualification and the unenforced-decision finding --
+   not only the run record. Do not push; leave exact commands in HANDOFF.
+
+6. Eleven kernels remain seeded with exact next gates. Confirm that is still
+   true and that none silently advanced.
+
+Close with the full versioned packet. The first-transaction gate is still NOT
+REACHED and the report must say so as plainly as RUN-1 did. A final report that
+records an unenforced decision and an undecided ambiguity is worth more than one
+that reads as completion.

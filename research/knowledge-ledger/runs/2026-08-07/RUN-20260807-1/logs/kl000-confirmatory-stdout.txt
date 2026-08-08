@@ -1,0 +1,11 @@
+{
+  "result": "passed",
+  "invalidationReasons": [],
+  "phases": {
+    "fixture": true,
+    "baselines": null,
+    "exhaustive": true,
+    "randomized": true
+  }
+}
+written: results/kl000-confirmatory.json

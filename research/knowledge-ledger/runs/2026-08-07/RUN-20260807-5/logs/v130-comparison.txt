@@ -1,0 +1,12 @@
+result: passed | invalidation: [] | version: 1.3.0
+fixtures: 12 all passed: True
+exhaustive: {'worldsChecked': 176120, 'receiptProducingWorlds': 110840, 'failClosedRejections': 65280, 'totalViolations': 0}
+  conclusions: {'absent_within_declared_scope': 160, 'not_established': 49480, 'present': 41820, 'supported': 19380}
+  violationsByInvariant: {}
+randomized violations: 0
+baselines preserved: {'B1-head-count': 634440, 'B2-source-count': 26880, 'B3-evidence-without-coverage': 26208, 'B4-search-without-collapse': 189720}
+baselines i12 (reported only): {'B1-head-count': 57120, 'B2-source-count': 13440, 'B3-evidence-without-coverage': 13108, 'B4-search-without-collapse': 57120}
+ABL-R1: i12=22440 other=0 matches=True noFixture=True
+ABL-R52: i12=38760 other=0 matches=True noFixture=True
+
+GATE PASSED -- every value identical, both ablations caught at their exact registered surfaces

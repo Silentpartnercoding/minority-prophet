@@ -1,0 +1,92 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-4",
+  "version": 1,
+  "note": "Final backlog of the program. Nothing here is scheduled; everything here is owned. Ranks express what the evidence says matters most, for whoever picks the work up.",
+  "carriedOver": "BL-020 (commission IND-3) closed: completed and passed. BL-022 (package manifest + derivation checklist) closed: implemented for the v1.2.0 package and verified 16/16 by both sides. BL-021 restated as BL-024 with the doubled evidence. BL-023 (harness prompt capture) open, unchanged, now four runs deep.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-024",
+      "type": "committed-gate",
+      "title": "v1.3.0 with I12: make the program's decisions checkable (COMMITTED GATE, not backlog-optional)",
+      "hypothesis": "I12 (conclusion == conclusionFunction(world); margin == abs(|S|-|O|)) catches the R1-inversion on exactly 22,440 worlds and the R5.2-inversion on exactly 38,760, with no fixture involved, while B5 records zero I12 violations and no other number moves.",
+      "discriminatingTest": "The two inversion ablations, already built and measured on both sides, re-run under v1.3.0.",
+      "whyItMatters": "SPEC-112: both owner decisions are currently enforced by two pinned inputs and zero invariants. This is the recorded reason KL-000's final state is adversarial-passed rather than verified-independent, and the single highest-value change available (the implementer's own §7 item 1).",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Unlocks the verified-independent promotion question; makes KL-011's inherited conclusion semantics checkable.",
+      "cost": "one registration + checker addition + ~90s re-run",
+      "prerequisitesReady": true,
+      "safety": "none engaged",
+      "supersedes": "BL-021 (I12 half)"
+    },
+    {
+      "rank": 2,
+      "id": "BL-025",
+      "type": "owner-decision",
+      "title": "Decide A2 (presence and coverage, 19,152 worlds) and A1 (absence with empty evidence, 4 worlds)",
+      "hypothesis": "None -- these are decisions, not derivations. Both readings and consequences are recorded in STATUS permanentLimits.",
+      "discriminatingTest": "After deciding: the chosen reading enters conclusionFunction under I12 enforcement; the rejected reading is preserved as R1's was; an inversion ablation measures the decided surface exactly (19,152 / 4).",
+      "whyItMatters": "A2 is the largest undecided surface in the kernel (17.3% of receipts). A third implementation reading it the other way passes every current invariant while diverging on all of it.",
+      "wouldChangeADecision": true,
+      "cost": "a decision plus its registration under BL-024",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 3,
+      "id": "BL-026",
+      "type": "specification-repair",
+      "title": "The digest-moving bundle, together or not at all: margin rename/majoritySide (IND-3 section 3), conversionsToReverse at the empty ledger (F4)",
+      "hypothesis": "Renaming margin (or adding majoritySide) removes the C01/C12 collision (identical scalars for unopposed support vs outnumbered two-to-one) without reversing R5.2; deciding F4's empty-ledger value removes the last contested receipt semantic. Every digest re-pins.",
+      "discriminatingTest": "C01 and C12 receipts become distinguishable by scalar; new pins registered; both implementations reproduce them.",
+      "whyItMatters": "38,760 receipts report a positive margin for a claim in the evidential minority, in a document whose purpose is stopping evidence being read as stronger than it is. The implementer's recommendation (do not reverse R5.2; rename deliberately) is on record.",
+      "wouldChangeADecision": false,
+      "cost": "one version, all digests move -- deliberately",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "with or after BL-024; never mixed into a nothing-moves registration",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 4,
+      "id": "BL-027",
+      "type": "specification-repair",
+      "title": "The standing textual bundle: world-referential I2/I5 + B6 (F1/F2), baseline dedup (F3), F12 adversarial specification, F11 stream registration, F13 note, NAM-101 vocabulary, F15/I9 reporting",
+      "hypothesis": "Closes every open textual finding without moving a number, under the same exact-equality discipline as v1.1.0/v1.2.0.",
+      "discriminatingTest": "B2 fails registered I2 as literally read; B6 is caught only by world-referential I5; two implementations produce identical worldStreamHash values (or the claim discipline permanently declares the randomized phase replication-only); a clean-room reader reconstructs the adversarial phase from the registration.",
+      "whyItMatters": "KL-011 inherits every one of these holes; F1 is a registered must-fail baseline not failing its registered invariant, measured in both implementations since IND-1.",
+      "wouldChangeADecision": false,
+      "cost": "one registration + re-run",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "with BL-024",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 5,
+      "id": "BL-028",
+      "type": "missing-control",
+      "title": "Fourth implementation on a machine that does not hold the reference",
+      "hypothesis": "With enforced (not reported) isolation, package requirements LEAK-102-complete (distribution withheld), and the v1.3.0 registration, a fresh implementation reproduces the pinned digests -- upgrading the independence claim from 'self-reported abstention, three times' to 'enforced abstention, once'.",
+      "discriminatingTest": "Pinned digest reproduction from a package that contains no expected value of any kind.",
+      "whyItMatters": "The implementer's own closing item: every independence claim in this program rests on its word that it did not open a file it could see, and no artifact can distinguish that from the alternative.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether verified-independent, once I12 exists, rests on enforced or reported isolation.",
+      "cost": "one commission, one clean machine",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "after BL-024; package rules from LEAK-101/LEAK-102 are binding",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 6,
+      "id": "BL-023",
+      "type": "provenance-check",
+      "title": "Harness-side prompt capture (carried, fourth run)",
+      "hypothesis": "Unchanged from RUN-20260807-3.",
+      "whyItMatters": "Four runs, four unverified prompt digests (PROV-004/008/009/010). Cannot be fixed from inside any run.",
+      "wouldChangeADecision": false,
+      "cost": "operator/harness configuration",
+      "prerequisitesReady": false,
+      "safety": "none engaged"
+    }
+  ]
+}

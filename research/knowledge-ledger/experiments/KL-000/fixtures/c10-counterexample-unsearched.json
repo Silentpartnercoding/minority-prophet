@@ -1,0 +1,70 @@
+{
+  "control": "C10",
+  "requirement": "counterexample-unsearched",
+  "note": "PREREGISTERED AS INDISTINGUISHABLE FROM C09. Schema v0.1 has no record-to-location link, so the evaluator cannot know where the counterexample came from. Identical conclusion is the expected and permitted outcome, not a violation: one counterexample refutes absence wherever it was found. The real blind spot is that a receipt could assert a location was unavailable while carrying evidence from it, and this evaluator could not detect the contradiction.",
+  "input": {
+    "transactionId": "kl000-c10",
+    "claim": {
+      "type": "absence",
+      "proposition": "No target-class defect exists in the declared components."
+    },
+    "searchLedger": {
+      "locations": [
+        {
+          "id": "loc-1",
+          "status": "searched"
+        },
+        {
+          "id": "loc-2",
+          "status": "searched"
+        },
+        {
+          "id": "loc-3",
+          "status": "unavailable"
+        }
+      ]
+    },
+    "evidenceLedger": {
+      "records": [
+        {
+          "id": "rec-1",
+          "rootId": "r1",
+          "side": "support"
+        },
+        {
+          "id": "rec-2",
+          "rootId": "r2",
+          "side": "support"
+        },
+        {
+          "id": "rec-3",
+          "rootId": "r3",
+          "side": "oppose"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "conclusion": "present",
+    "search": {
+      "declared": 3,
+      "searched": 2,
+      "unavailable": 1,
+      "complete": false
+    },
+    "evidence": {
+      "records": 3,
+      "distinctRoots": 3,
+      "repeatedRecordsCollapsed": 0,
+      "supportingRoots": [
+        "r1",
+        "r2"
+      ],
+      "opposingRoots": [
+        "r3"
+      ],
+      "margin": 1,
+      "conversionsToReverse": 1
+    }
+  }
+}
