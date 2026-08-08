@@ -1,0 +1,50 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260807-8",
+  "version": 1,
+  "note": "Written live at close, presence machine-checked.",
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-033 (SCH-001 migration) CLOSED by this run. BL-035 (brief-layer audit) CLOSED by this run -- executed as authorised, findings in BL-035-BRIEF-AUDIT.md, recommendation folded into BRF-101. BL-025 partially closed: A1 decided; A2 remains. BL-023 (harness prompt capture, eighth unverified prompt), BL-026, BL-027, BL-028, BL-029, BL-030, BL-031, BL-032, BL-034, BL-036 all open and unchanged. BL-003 (receipt-schema dependency edges, RUN-1) regains prominence below as the last schema-layer blocker.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-037",
+      "type": "schema-gap",
+      "title": "The receipt-schema dependency extension (BL-003/ADV-005) is now the last schema-layer blocker in the program",
+      "hypothesis": "With the preregistration schema repaired, the only remaining structural blocker is the knowledge-transaction receipt schema's inability to represent shared upstream dependency between roots -- the entire subject of KL-006 and the core structure of KL-008, and RESEARCH-METHOD's mandatory shared-dependency control (only the copied half is testable today, C07).",
+      "discriminatingTest": "Two roots declared with a dependency edge must not yield margin 2 (BL-003's original test). Any change reopens KL-000: the evaluator hash unfreezes, every digest moves, and the full re-registration discipline (exact-equality where nothing should move, inversion ablations for every new rule, I12 extension for any new receipt field) applies.",
+      "whyItMatters": "KL-006 and KL-008 cannot register meaningful protocols without it; their new v0.2 preregistrations say so in their kernelSpecificConstraint fields. It is the single most consequential remaining design decision and it is digest-moving, so it belongs in one deliberately versioned change (with the margin-rename bundle BL-026, or alone) -- never mixed into a nothing-moves registration.",
+      "wouldChangeADecision": true,
+      "cost": "evaluator change + protocol v2.x + full KL-000 re-registration and re-run + both-implementation coordination; the largest single item in the program",
+      "prerequisitesReady": false,
+      "prerequisitesNote": "owner decision on scope (which of BL-003/BL-026/F4-empty-ledger travel together); the v1.3.0 disciplines make it executable safely",
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-038",
+      "type": "engineering",
+      "title": "Verification commands gate on their own exit status (VER-102 mechanization)",
+      "hypothesis": "A close-procedure script (or documented invocation set) that runs the suite with pipefail and refuses to reach git commit on nonzero exit removes the class that put commit 6e286b9 on a red suite.",
+      "discriminatingTest": "A deliberately failing test inserted in a scratch branch cannot be committed past the procedure.",
+      "whyItMatters": "The suite fired and the pipeline muzzled it. Enforcement that can be silently bypassed by wiring is PKT-101 one layer down.",
+      "wouldChangeADecision": false,
+      "cost": "one small script or a documented two-command discipline; this run already practises the discipline manually",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 3,
+      "id": "BL-039",
+      "type": "owner-decision",
+      "title": "Registration scheduling for the eleven now-schema-ready kernels, and the A2 decision that gates KL-011's semantics",
+      "hypothesis": "None -- a queue, owner's to order. Each kernel's own preregistration now states, as reasons rather than nulls, exactly what its registration must supply; KL-001's real first gate (BL-031/BL-032 inside it) and KL-011's v0.2 registration are the two with the most groundwork done. A2 (19,152 worlds) is the one open decision that any KL-011 registration would transport.",
+      "discriminatingTest": "A kernel registers: its preregistration's unanswered fields become answers, its protocol freezes, its sidecar binds, and the conformance test keeps passing on the populated document.",
+      "whyItMatters": "The program's next scientific step is now purely a scheduling decision; nothing structural stands in front of nine of eleven kernels (KL-006/KL-008 wait on BL-037).",
+      "wouldChangeADecision": true,
+      "cost": "per kernel, as costed in each STATUS",
+      "prerequisitesReady": true,
+      "safety": "per-kernel boundaries now recorded in each preregistration"
+    }
+  ]
+}
