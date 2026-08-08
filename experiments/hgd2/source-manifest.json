@@ -30,6 +30,13 @@
     "flawfinder": "2.0.20",
     "python": "3.14"
   },
+  "acquiredEvidence": {
+    "path": "experiments/hgd2/software-detector-records.json",
+    "sha256": "096a3a04adb7b4eac2b53fb1b6df5243247b1a5f8b5291a63f83a9711b7c694c",
+    "records": 46,
+    "confirmatoryRecords": 36,
+    "developmentRecords": 10
+  },
   "inspectionBoundary": {
     "performed": [
       "HTTP headers",
