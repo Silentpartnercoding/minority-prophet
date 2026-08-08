@@ -21,7 +21,13 @@ source feasibility and the permitted role of each dataset. Per-source
 acquisition and labeling rules live under `data/`. No acquired raw data is
 committed unless its license permits redistribution.
 
+The controlled LLM echo sub-study is registered separately at
+`llm_echo/PREREGISTRATION.md`. Its protocol and future public code live in that
+directory; private seeds, labels, receipts, and raw model responses live under
+the Git-ignored `artifacts/lir1/llm_echo/` boundary.
+
 ## Status
 
-Protocol and schema design. No LIR-1 result is canonical or claimed here.
-
+PHEME-R2 has a canonical boundary result under `results/lir1-pheme-r2-v0.1/`.
+The controlled LLM echo study is preregistered but has not generated cases or
+called models.
