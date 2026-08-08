@@ -15,6 +15,27 @@ Authority for exact statements: `experiments/KL-000/preregistration-v1.3.0.json`
 (invariants) and `preregistration-v1.2.0.json` (`receiptObject`,
 `canonicalForm`). This profile restates; the registrations govern.
 
+## Where these rules are published
+
+All five have been extracted verbatim into the repositories that implement
+them, each carrying its own coverage note including where the evidence is thin.
+This profile remains the source; the extracts restate it.
+
+| rules | repository | path | landed |
+|---|---|---|---|
+| P1, P2, P3, P5 | `minority-prophet-border` | `conformance/knowledge-transaction-record-contract.md` | border#7 (`187755dc`) |
+| P4 | `minority-prophet-gate` | `conformance/knowledge-transaction-fail-closed.md` | gate#6 (`4e44bbb5`) |
+
+Both extracts were cut from this file at commit `754354d0` and state so in their
+headers. An edit here does **not** propagate — the extracts are copies, and
+XRP-101 (`FINDING-XRP-101.md`) is what happens when a correction is published in
+one repository and assumed to have reached the others. Changing a rule below
+means re-cutting both extracts.
+
+P4's placement is asymmetric on purpose: Border already had a `conformance/`
+directory, Gate did not and one was created, because `RELEASE-GATES.md` is a
+release-blocker checklist rather than a conformance specification.
+
 ---
 
 ## P1 — Deterministic replay (KL-000 invariant I4)
