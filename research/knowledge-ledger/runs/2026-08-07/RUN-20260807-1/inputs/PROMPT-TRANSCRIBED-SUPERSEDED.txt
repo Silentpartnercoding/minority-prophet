@@ -618,7 +618,6 @@ is wrong, record the discrepancy rather than working around it silently.
 - Open the draft PR against `agent/first-transmission`, not `main`. The
   knowledge-ledger tree is not on `main`, so a PR based there would carry roughly
   twenty unrelated files and break the one-question-per-PR rule.
-- You have no production secrets and must not go looking for any. `~/.openclaw`
-  holds control-plane state and relay keys; it is out of scope for this run.
+- You have no production secrets and must not go looking for any. [REDACTED 2026-08-08: one sentence naming an internal control-plane directory and stating that it holds keys. Removed as a public-boundary defect (BLK-101); the run's instruction was that the directory is out of scope, and that instruction stands unchanged.]
 
 Begin.
