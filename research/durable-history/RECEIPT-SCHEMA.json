@@ -1,0 +1,25 @@
+{
+  "schema": "minority-prophet.durable-history-receipt.v0.1-draft",
+  "status": "proposed-not-validated",
+  "recordId": null,
+  "manifestDigest": null,
+  "merkleRoot": null,
+  "evidenceStatus": null,
+  "reproductionReceipts": [],
+  "signatures": [],
+  "anchor": {
+    "method": null,
+    "network": null,
+    "chainId": null,
+    "transactionHash": null,
+    "contractAddress": null,
+    "commitment": null,
+    "includedAt": null,
+    "finalityEvidence": null,
+    "publicVerificationInstructions": null
+  },
+  "limits": [
+    "Anchoring establishes historical commitment, not truth.",
+    "This draft schema has not passed the proposed experiments."
+  ]
+}
