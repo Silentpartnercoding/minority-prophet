@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silentpartnercoding.github.io/minority-prophet/schemas/dependency-receipt-v1.json",
+  "title": "Minority Prophet dependency receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "originDigest", "components", "support"],
+  "properties": {
+    "schema": {"const": "minority-prophet.dependency-receipt.v1"},
+    "originDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["componentId", "kind", "sharedWeightLower", "sharedWeightUpper"],
+        "properties": {
+          "componentId": {"type": "string", "minLength": 1, "maxLength": 160},
+          "kind": {"enum": ["instrument", "station", "calibration", "operator", "model", "dataset", "other"]},
+          "sharedWeightLower": {"type": "number", "minimum": 0, "maximum": 1},
+          "sharedWeightUpper": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "support": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "receiptDigest"],
+      "properties": {
+        "status": {"enum": ["supported", "unknown", "conflicting", "revoked"]},
+        "receiptDigest": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}
+
