@@ -1,0 +1,39 @@
+{
+  "schema": "minority-prophet.hgd2.source-manifest.v1",
+  "retrievedAt": "2026-08-08T01:00:00Z",
+  "protocolCommit": "90a496f",
+  "sources": {
+    "epa": {
+      "url": "https://aqs.epa.gov/aqsweb/airdata/daily_88101_2025.zip",
+      "sha256": "cc8cb80bcc0317705202d12a472918438b8bee60316f54777d6f748c58ac2661",
+      "bytes": 8647326,
+      "commitment": "experiments/hgd1/source-manifest.json"
+    },
+    "nistSard101": {
+      "url": "https://samate.nist.gov/SARD/downloads/test-suites/2015-03-15-c-test-suite-for-source-code-analyzer-secure-vv2.zip",
+      "sha256": "19b7059d067c093d078c6b34d1ec669ccd648aa5b8507ca3fb49d58324bb802b",
+      "bytes": 482232,
+      "inventoryEntries": 840,
+      "inventorySha256": "ecabc974298f8760fab26b48eed9abbfc58ca1da275db7b402bb11982f93cdca"
+    }
+  },
+  "tools": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "flawfinder": "2.0.20",
+    "python": "3.14"
+  },
+  "inspectionBoundary": {
+    "performed": [
+      "HTTP headers",
+      "archive hash and byte length",
+      "archive path inventory",
+      "tool installation and versions"
+    ],
+    "notPerformedBeforeThisCommit": [
+      "source-content inspection",
+      "manifest-label extraction",
+      "detector execution",
+      "outcome comparison"
+    ]
+  }
+}

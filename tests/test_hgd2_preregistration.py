@@ -1,3 +1,4 @@
+import json
 import unittest
 from pathlib import Path
 
@@ -31,6 +32,17 @@ class Hgd2PreregistrationTests(unittest.TestCase):
         protocol = (ROOT / "experiments" / "HGD-2-PREREGISTRATION.md").read_text()
         self.assertIn("untouched controls prevent abstention-only success", protocol)
         self.assertIn("answers at least 50%", protocol)
+
+    def test_source_commitment_precedes_content_inspection(self):
+        manifest = json.loads(
+            (ROOT / "experiments" / "hgd2" / "source-manifest.json").read_text()
+        )
+        sard = manifest["sources"]["nistSard101"]
+        self.assertEqual(
+            sard["sha256"],
+            "19b7059d067c093d078c6b34d1ec669ccd648aa5b8507ca3fb49d58324bb802b",
+        )
+        self.assertIn("detector execution", manifest["inspectionBoundary"]["notPerformedBeforeThisCommit"])
 
 
 if __name__ == "__main__":
