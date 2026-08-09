@@ -1,0 +1,89 @@
+{
+  "schema": "minority-prophet.traceability.v0.1",
+  "rule": "TRC-101",
+  "protocolVersion": "LIN-000 v0.4",
+  "paper": "papers/minority-prophet-v1.0.4.md",
+  "producedBy": "RUN-20260809-2, at registration time (BL-042)",
+  "note": "v0.3's traceability was left carrying a figure its own erratum had superseded. Every figure here is stated once, in the registration, and referenced rather than restated.",
+  "rules": [
+    {
+      "id": "T1-NEC",
+      "rule": "with side-consistency not required of W, verdict changes MUST be > 0",
+      "basis": "paper",
+      "citation": {
+        "location": "Theorem 1 (Immunity), clause (ii), line 63",
+        "quote": "**Theorem 1 (Immunity).** Any rewiring of parent edges that (i) preserves the root set and (ii) preserves side-consistency leaves S\u2080, S\u2081, and the verdict exactly unchanged. *Both worlds reduce via Lemma 1 to the same roo"
+      },
+      "note": "Carries Theorem 1's entire evidential load: the only registered test whose outcome is not forced by another."
+    },
+    {
+      "id": "L1-POS",
+      "rule": "on side-consistent worlds S_a equals the roots asserting a; violations MUST be 0",
+      "basis": "paper",
+      "citation": {
+        "location": "Lemma 1 (side-locality)",
+        "quote": "see formal/PROOFS.md L1"
+      },
+      "note": "The lemma that makes T1-POS a corollary."
+    },
+    {
+      "id": "L1-DISC",
+      "rule": "the symmetric-difference histogram over side-inconsistent worlds MUST differ from every ablation's",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Replaces L1-NEG, which fired on 44,450 of 44,450 and measured the population rather than the checker."
+    },
+    {
+      "id": "T1-POS",
+      "rule": "root-set-preserving side-consistent rewiring leaves the verdict unchanged",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "DELIBERATELY NOT cited as Theorem 1 evidence: a corollary of L1-POS, it cannot go red while L1-POS is green. Retained as a consistency check."
+    },
+    {
+      "id": "T1-ID",
+      "rule": "root(c)-preserving rewiring leaves the verdict unchanged",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "An identity. Excluded from every paper claim."
+    },
+    {
+      "id": "ABL-SHALLOW",
+      "rule": "depth-one attribution must be caught",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Checker power. Construction and catch criterion in the registration."
+    },
+    {
+      "id": "ABL-CLAIMCOUNT",
+      "rule": "claim-count aggregation must be caught",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Checker power. Construction and catch criterion in the registration."
+    },
+    {
+      "id": "GEN-CONF",
+      "rule": "the rejection rule must be exercised and pinned",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Rejection rates are stated once, in the registration section 6. Not restated here, so no erratum can leave the two disagreeing."
+    }
+  ],
+  "paperClaims": {
+    "Theorem 1": [
+      "T1-NEC"
+    ],
+    "Lemma 1": [
+      "L1-POS"
+    ],
+    "deliberatelyUncited": [
+      "T1-POS",
+      "T1-ID",
+      "L1-DISC",
+      "ABL-SHALLOW",
+      "ABL-CLAIMCOUNT",
+      "GEN-CONF"
+    ],
+    "note": "Theorem 1 rests on T1-NEC alone. T1-POS was cited by v0.3 and is withdrawn."
+  }
+}
