@@ -34,8 +34,9 @@ def t1_readings(world: list[dict], counters: dict) -> None:
     T1-NEC differs from v0.3's reference: v0.3 said side-consistency was
     "removed" from W, which this implementation read as the complement and an
     independent one read as unrestricted. v0.4 registers UNRESTRICTED, so the
-    population is T1-POS's plus the complement's -- 194,112 rather than 78,080
-    at the full bound.
+    population is T1-POS's plus the complement's. The counts are withheld while
+    BL-057 is live and are in the results file, which is not committed for the
+    same reason.
     """
     base_consistent = is_side_consistent(world)
     base_verdict = verdict(world)
