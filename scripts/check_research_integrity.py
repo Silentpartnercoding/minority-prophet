@@ -57,6 +57,41 @@ def validate_agent_instruction_bridge(root: pathlib.Path) -> list[str]:
     return []
 
 
+def remediation_for(problem: str) -> str:
+    """Return a short, concrete next action for a validation failure."""
+    if "CLAUDE.md" in problem:
+        return "restore CLAUDE.md to exactly '# Claude Code instructions', a blank line, and '@AGENTS.md'"
+    if "policy changed" in problem:
+        return f"add or update {INTEGRITY_TEST} to preserve the changed policy boundary"
+    if "candidate requires a frozen protocol" in problem:
+        return "commit the protocol, then run new_research_record.py candidate with --protocol"
+    if "candidate cannot contain confirmation" in problem:
+        return "remove result fields or promote the committed candidate through the canonical command"
+    if "cannot grant an authority effect" in problem:
+        return "set authorityEffect to 'none'; obtain authorization outside the evidence record"
+    if "independent requires external-control witness" in problem:
+        return "declare unknown/dependent, or bind an externally controlled witness with provenance"
+    if "independent requires a content-bound witness" in problem:
+        return "add a witness artifact with path and sha256, or withdraw the independence assessment"
+    if "closed records are immutable" in problem or "closed record class cannot change" in problem:
+        return "preserve the closed record and create a new versioned record for correction or remediation"
+    if "lifecycle stage cannot move backward" in problem:
+        return "restore the prior stage; create a new record instead of downgrading history"
+    if "protocol commit must strictly precede result commit" in problem:
+        return "commit the protocol and candidate before producing or committing confirmatory results"
+    if "requires a matching candidate record before result commit" in problem:
+        return "commit the candidate record, then run confirmation in a later commit"
+    if "new result directory" in problem and "lacks" in problem:
+        return "create a canonical/imported lifecycle record binding that result directory"
+    if "adds" in problem and "without research/records" in problem:
+        return "create the lifecycle record before adding the canonical index row"
+    if "claims changed without EVIDENCE-ALIGNMENT.md" in problem:
+        return "update EVIDENCE-ALIGNMENT.md in the same change with the claim's exact support and limits"
+    if "differs from its pinned commit" in problem:
+        return "restore the pinned bytes or create a new version; never move an existing evidence pin"
+    return "see CONTRIBUTOR-QUICKSTART.md and research/integrity/README.md; ask before changing frozen evidence"
+
+
 def _git(root: pathlib.Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ("git",) + args,
@@ -414,6 +449,7 @@ def main() -> int:
         print("Research-integrity check FAILED:", file=sys.stderr)
         for problem in problems:
             print(f"  - {problem}", file=sys.stderr)
+            print(f"    Fix: {remediation_for(problem)}", file=sys.stderr)
         return 1
     print("Research-integrity check passed: graduated lifecycle and promotion boundaries hold.")
     return 0

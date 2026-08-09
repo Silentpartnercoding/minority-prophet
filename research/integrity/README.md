@@ -22,5 +22,11 @@ control.
 See `research-record.schema.json` and run:
 
 ```text
-python scripts/check_research_integrity.py --base <trusted-base> --head HEAD
+make verify
 ```
+
+Create records with `python scripts/new_research_record.py --help`; the command
+computes hashes, resolves commits, refuses unsafe overwrites, and requires a
+candidate to predate its canonical result. Validation failures print a `Fix:`
+line with the narrow remediation. The checker never edits evidence on behalf of
+the contributor.

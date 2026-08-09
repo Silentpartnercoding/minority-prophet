@@ -28,13 +28,13 @@ jobs:
             echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Check newly added public material
-        run: python scripts/check_public_boundary.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+        run: make check-public-boundary BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Check no live commission's withheld values are published
-        run: python scripts/check_withheld_leak.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+        run: make check-withheld-leak BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Verify preregistrations still match their pinned commits
-        run: python scripts/check_registration_chain.py --ref "${{ github.sha }}"
+        run: make check-registration-chain HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Check graduated research integrity
-        run: python scripts/check_research_integrity.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+        run: make check-research-integrity BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
 
   python:
     runs-on: ubuntu-latest
@@ -49,9 +49,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install --upgrade pip
       - run: python -m pip install pytest
-      - run: python -m pytest -q
-        env:
-          PYTHONPATH: .
+      - run: make verify-python PYTHON=python
 
   site:
     runs-on: ubuntu-latest
@@ -62,5 +60,4 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run lint
-      - run: npm test
+      - run: make verify-site

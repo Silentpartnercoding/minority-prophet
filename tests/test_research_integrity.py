@@ -5,6 +5,7 @@ import subprocess
 
 from scripts.check_research_integrity import (
     check,
+    remediation_for,
     validate_agent_instruction_bridge,
     validate_record,
 )
@@ -277,3 +278,24 @@ def test_rejects_claude_bridge_that_duplicates_or_drifts(tmp_path):
     _write(root / "CLAUDE.md", "Copied rules that can drift.\n")
     problems = validate_agent_instruction_bridge(root)
     assert any("do not duplicate or fork" in problem for problem in problems)
+
+
+def test_remediation_explains_how_to_register_candidate_before_results():
+    fix = remediation_for(
+        "research/records/EX-1.json: canonical result requires a matching candidate "
+        "record before result commit"
+    )
+    assert "commit the candidate record" in fix
+    assert "later commit" in fix
+
+
+def test_remediation_does_not_turn_evidence_into_authority():
+    fix = remediation_for("research/records/EX-1.json: research records cannot grant an authority effect")
+    assert "authorityEffect to 'none'" in fix
+    assert "authorization outside" in fix
+
+
+def test_remediation_preserves_closed_negative_result():
+    fix = remediation_for("research/records/EX-1.json: closed records are immutable; create a new version")
+    assert "preserve the closed record" in fix
+    assert "new versioned record" in fix

@@ -4,6 +4,9 @@ Counterexamples, reproducibility failures, adversarial tests, and narrowly
 scoped corrections are welcome. Open an issue before a large change so its
 claim, boundary, and required evidence can be agreed first.
 
+New contributors can start with `CONTRIBUTOR-QUICKSTART.md`. It provides one
+command for validation and copyable examples for every contribution lane.
+
 Every contribution must:
 
 - distinguish a hypothesis, model result, implementation result, and
@@ -32,12 +35,10 @@ cross-review is useful internal replication, not independent validation.
 Before opening a pull request, run:
 
 ```text
-PYTHONPATH=. python -m pytest -q
-python scripts/check_research_integrity.py --base <trusted-base> --head HEAD
-npm ci
-npm run lint
-npm test
+make verify
 ```
+
+Run `make setup` once when local development dependencies are absent.
 
 Use public issues only for non-sensitive material. Report vulnerabilities
 through GitHub's private security-advisory interface.

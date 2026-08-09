@@ -52,6 +52,9 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 
 ## Repository map
 
+- [`CONTRIBUTOR-QUICKSTART.md`](CONTRIBUTOR-QUICKSTART.md) and
+  [`CONTRIBUTING.md`](CONTRIBUTING.md) — the shortest path to choosing a lane,
+  creating a research record, and running the same checks as CI.
 - [`papers/00-CURRENT-PAPER.md`](papers/00-CURRENT-PAPER.md)
   — stable entry point to the current evidence-aligned pre-submission paper;
   earlier versions remain preserved.

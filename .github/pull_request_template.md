@@ -1,5 +1,8 @@
 ## Lane
 
+See `CONTRIBUTOR-QUICKSTART.md` for examples. Choose the lightest lane that
+honestly describes this contribution.
+
 - [ ] Routine
 - [ ] Exploratory
 - [ ] Candidate

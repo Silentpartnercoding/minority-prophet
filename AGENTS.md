@@ -13,6 +13,7 @@ instruction files.
 Read `CONTRIBUTING.md` and `PUBLIC-CLAIMS.md`. For experiments or results, also
 read `CANONICAL-RECORDS.md` and
 `research/knowledge-ledger/RESEARCH-METHOD.md`.
+Use `CONTRIBUTOR-QUICKSTART.md` for lane examples and record commands.
 
 Choose and report one lane:
 
@@ -69,13 +70,10 @@ unresolved uncertainty.
 Run:
 
 ```text
-PYTHONPATH=. python -m pytest -q
-python scripts/check_public_boundary.py --base <trusted-base> --head HEAD
-python scripts/check_research_integrity.py --base <trusted-base> --head HEAD
-npm ci
-npm run lint
-npm test
+make verify
 ```
+
+Run `make setup` once when local development dependencies are absent.
 
 Stop and request maintainer direction before consequential deployment, live
 authority, undocumented canonical promotion, or sensitive publication.
