@@ -1,6 +1,12 @@
 import hashlib
+import pathlib
+import sys
+import tempfile
+import unittest
 
 from scripts.check_public_boundary import violations, sensitive_vocabulary_hit
+
+SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "scripts/check_public_boundary.py"
 
 
 def test_rejects_new_local_paths():
@@ -62,3 +68,47 @@ def test_allows_public_technical_language():
         ("docs/config.md", 9, "Set API_KEY=YOUR_API_KEY before running the example."),
     ]
     assert violations(lines) == []
+
+
+SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "scripts/check_public_boundary.py"
+
+
+class TestEmptyDiffIsRefusedNotPassed(unittest.TestCase):
+    """A vacuous run must not report success.
+
+    Running the check with --head HEAD before committing makes base and head the
+    same commit. The diff is empty, nothing is inspected, and the old behaviour
+    was to print "passed". Three publications in this programme were cleared by
+    exactly that, including the leak FINDING-PBC-101 records.
+    """
+
+    def _repo(self, tmp):
+        import subprocess as sp
+        g = lambda *a: sp.run(("git",) + a, cwd=tmp, capture_output=True, check=True)
+        g("init", "-q", "-b", "main")
+        g("config", "user.email", "t@t"); g("config", "user.name", "t")
+        (tmp / "a.txt").write_text("clean\n")
+        g("add", "-A"); g("commit", "-qm", "base")
+        return g
+
+    def _run(self, tmp):
+        import subprocess as sp
+        return sp.run((sys.executable, str(SCRIPT), "--base", "HEAD", "--head", "HEAD"),
+                      cwd=tmp, capture_output=True, text=True)
+
+    def test_empty_diff_with_a_dirty_tree_is_refused(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d); self._repo(tmp)
+            (tmp / "a.txt").write_text("uncommitted change\n")   # the real situation
+            r = self._run(tmp)
+            self.assertEqual(r.returncode, 1, f"must not pass:\n{r.stdout}{r.stderr}")
+            self.assertIn("REFUSED", r.stderr)
+
+    def test_empty_diff_with_a_clean_tree_still_passes(self):
+        """The guard must not break the legitimate no-op case: a branch with
+        nothing added is genuinely clean, and blocking it would make the check
+        impossible to run in CI on an unchanged tree."""
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d); self._repo(tmp)
+            r = self._run(tmp)
+            self.assertEqual(r.returncode, 0, f"{r.stdout}{r.stderr}")

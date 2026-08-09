@@ -21,8 +21,8 @@ or `(`. Replayed against the 37 real leaked lines that RUN-20260808-1 removed:
 
 Missed forms, both of which are the *most common* shapes in the run records:
 
-    python_executable=/Users/james/Development/.mp-runner-venv/bin/python
-    origin  james@100.101.32.77:/Users/james/.../minority-prophet
+    python_executable=$HOME/Development/.venv/bin/python
+    origin  <user>@<host>:$HOME/.../minority-prophet
 
 An `=` or a `:` before the path defeats it. Every per-run `environment-lock.txt`
 writes the interpreter path in the first form, so the highest-frequency instance
@@ -31,10 +31,24 @@ in the repository is the one that slips through.
 **Fix:** allow any non-path delimiter before the path, not an enumerated set.
 
 **Confirmed in production while recording this finding.** The two missed forms
-above appear literally in this document, as evidence. CI's public-boundary job
-inspected them as newly added lines and **passed them** — while correctly
-blocking a different line in this same file. The gap is not hypothetical; it is
-demonstrated by the check's own output on the commit that documents it.
+above appeared literally in this document as evidence, in their real form. That
+was itself a disclosure -- an operator home path and a LAN host published to
+demonstrate a rule that failed to catch them -- and they are now shown in
+placeholder form. The delimiter that defeats the rule is `=` and `:`, which the
+placeholders preserve. The first placeholders drafted for this repair kept the
+home-path prefix and merely substituted a stand-in for the username; CI blocked
+them, correctly, because the rule matches the *shape* of a home path and does not
+care whose name is in it. The second draft, explaining that block, quoted the
+rejected form and was blocked in turn. Both are recorded because they are
+evidence the rule is not string-matching one known operator -- and because a
+finding about leaked paths cannot quote the paths, which is a real constraint on
+writing this kind of document, not a nuisance.
+
+CI's public-boundary job inspected those lines as newly added and **passed
+them**, while correctly blocking a different line in this same file. The gap is
+not hypothetical: it is demonstrated by the check's own output on the commit that
+documents it — and the fact that the real values then sat on public main until a
+later sweep is the cost of demonstrating a leak with a live example.
 
 ## Gap 2 — the term the owner named is not on the list
 
