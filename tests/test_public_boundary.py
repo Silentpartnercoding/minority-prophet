@@ -156,3 +156,58 @@ class TestSweepMode(unittest.TestCase):
             r = self._sweep(tmp)
             self.assertEqual(r.returncode, 0, f"{r.stdout}{r.stderr}")
             self.assertIn("sweep clean", r.stdout)
+
+
+def test_digests_can_be_supplied_without_the_term(monkeypatch):
+    """The term must be able to stay out of every artefact.
+
+    MP_BOUNDARY_TERMS requires the plaintext to reach CI, which means typing it
+    somewhere that logs. MP_BOUNDARY_DIGESTS takes the hash instead, computed on
+    the owner's machine, so the word exists in no file, no history and no
+    transcript -- and the digest is in a secret rather than in this public file,
+    so it cannot be wordlisted either.
+    """
+    import hashlib as _h
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS",
+                       _h.sha256(b"invented lane marker").hexdigest())
+    assert sensitive_vocabulary_hit("ship it through the invented lane marker")
+    assert not sensitive_vocabulary_hit("ship it through the ordinary channel")
+
+
+def test_multiple_digests_may_be_separated_by_whitespace_or_commas(monkeypatch):
+    import hashlib as _h
+    a = _h.sha256(b"alpha widget").hexdigest()
+    b = _h.sha256(b"beta widget").hexdigest()
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", f"{a}, {b}")
+    assert sensitive_vocabulary_hit("the alpha widget")
+    assert sensitive_vocabulary_hit("the beta widget")
+
+
+def test_malformed_digest_entries_are_ignored_not_crashed_on(monkeypatch):
+    """A secret with a stray quote or a truncated value must not take CI down;
+    it must simply not match. A boundary check that crashes is a boundary check
+    that gets disabled."""
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", "not-a-digest, deadbeef, ''")
+    assert not sensitive_vocabulary_hit("any ordinary sentence at all")
+
+
+def test_the_helper_refuses_a_term_on_the_command_line():
+    """A term in argv is in the shell history and the process list before the
+    program starts, which defeats the purpose of the tool."""
+    import subprocess as sp
+    script = pathlib.Path(__file__).resolve().parents[1] / "scripts/add_boundary_term.py"
+    r = sp.run([sys.executable, str(script), "some-term"], capture_output=True, text=True)
+    assert r.returncode == 2
+    assert "shell history" in r.stderr
+
+
+def test_the_helper_digest_matches_what_the_checker_looks_for(monkeypatch):
+    """The tool is useless if its digest is not the one the matcher tests."""
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
+    from add_boundary_term import digest
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", digest("Some Invented Phrase"))
+    assert sensitive_vocabulary_hit("we mention some invented phrase here")

@@ -64,10 +64,36 @@ _VOCAB_GUIDANCE = ("internal vocabulary: describe the interface or rationale in 
                    "public terms instead of naming the internal component")
 
 
+_HEX = re.compile(r"^[0-9a-f]{64}$")
+
+
 def _extra_digests() -> frozenset:
+    """Blocked terms supplied at runtime, by digest or by plaintext.
+
+    MP_BOUNDARY_DIGESTS is the preferred form and the only one that keeps a term
+    out of every artefact. The owner hashes the word locally -- see
+    scripts/add_boundary_term.py, which reads it without echo and never writes it
+    anywhere -- and stores only the 64 hex characters in a repository secret.
+
+    Then the word exists in no file, no git history, no CI configuration, no shell
+    history and no transcript. And because the digest is in a secret rather than
+    in this public file, it cannot be attacked with a wordlist either: an attacker
+    who cannot see the digest cannot test guesses against it. That closes the
+    honest limit documented above for the shipped list, for the terms that need it.
+
+    MP_BOUNDARY_TERMS remains for plaintext, which is convenient for testing with
+    invented words. Anything genuinely sensitive should use the digest form,
+    because putting a real term into a secret still requires typing it somewhere
+    that logs.
+    """
+    digests = {value.strip().lower()
+               for value in re.split(r"[\s,]+",
+                                     os.environ.get("MP_BOUNDARY_DIGESTS", ""))
+               if _HEX.match(value.strip().lower())}
     raw = os.environ.get("MP_BOUNDARY_TERMS", "")
-    return frozenset(hashlib.sha256(term.strip().lower().encode()).hexdigest()
-                     for term in raw.splitlines() if term.strip())
+    digests |= {hashlib.sha256(term.strip().lower().encode()).hexdigest()
+                for term in raw.splitlines() if term.strip()}
+    return frozenset(digests)
 
 
 def sensitive_vocabulary_hit(line: str) -> bool:
