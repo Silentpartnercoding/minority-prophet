@@ -39,8 +39,11 @@ condition). Prefix digests: 50 and 100 respectively. The two totals and all 150
 prefixes are deliberately shipped in the commission package — they are the pass
 condition.
 
-**Theorems held.** Zero L1-positive violations and zero T1-positive violations in
-both phases. Negative controls fired in both, so the tests can detect failure.
+**Theorems held — with one claim since withdrawn.** Zero L1-positive violations
+and zero T1-positive violations in both phases; negative controls fired in both.
+**The T1-positive zero was later shown to be a definitional identity rather than
+a test** (see the closing section below); the informative results are L1-positive,
+L1-negative, T1-negative and the two ablations.
 The exhaustive structural counts are identical to v0.1, which is the expected
 cross-check: those are properties of the world *set*, which v0.2 does not change,
 not of its order or its generator.
@@ -107,3 +110,113 @@ zero and the pre-declared reading misses, "define the generator, register draws
 as primitives, specify the orders" is insufficient too, and the honest conclusion
 becomes that prose cannot specify a stream at all — that a registration must ship
 executable reference vectors, not sentences.
+
+---
+
+# Closed 2026-08-09 — the repair works, and the test it enabled does not
+
+Independent reimplementation delivered. Artifacts imported verbatim to
+`lineage/results/independent-v2/`.
+
+## The commissioned question: answered, yes
+
+Both digests reproduced **on the pre-declared reading, with no sweep**, in **two
+languages** — Rust with a hand-written SHA-256 and JavaScript on Node with
+`node:crypto`, written separately and required to agree with each other on 57
+fields before either was compared with the pinned file.
+
+All **150 prefix digests** matched as well as the two totals; `firstDivergentBlock`
+is null in both phases. The implementer's `DECISIONS.md` is SHA-256 pinned and the
+hash still verifies, and they emitted machine-readable
+`sweptOrTuned: false` and `readingAmendedAfterComparison: false`.
+
+The ambiguity space, measured after the hit rather than searched before it:
+
+| | v0.1 | v0.2 |
+|---|---|---|
+| exhaustive readings admitting a distinct digest | 96 | **8** |
+| randomized readings admitting a distinct digest | 72 | **12** |
+| correct one | found by sweep | **the frozen baseline, both phases** |
+
+**F11's repair is sufficient in the v0.2 shape** — define the generator in the
+document, register draws as primitives with their word costs, state every order.
+Not in the v0.1 shape, which named a language's generator and left orders unsaid.
+That distinction is the deliverable.
+
+## T1-positive is an identity, and this programme said otherwise
+
+`S_a` is defined as `{root(c) : side(c) = a}`, so it is a function of the multiset
+of `(root(c), side(c))` pairs alone. A rewiring that preserves every `root(c)` and
+touches no side leaves that multiset identical — therefore `S_0`, `S_1` and the
+verdict are identical **by construction**.
+
+T1-positive cannot fail. Its zero is not evidence about the schema; it is evidence
+that the implementer's `S_a` matches the registered one, which the digests already
+established. It sits under the registration's heading *"Tests that can fail"*.
+
+**FINDING-BL044 and the body of this finding both claimed Theorem 1 was "no longer
+shadow-tested".** For T1-positive that was wrong, and it was wrong in the same way
+twice, in this programme's own records. Both are corrected in place. The results
+that do carry information — and all passed — are L1-positive, L1-negative,
+T1-negative (17.5M verdict changes, so the positive case is not vacuous by
+absence), and the two ablations.
+
+## And under a defensible reading, the registration's claim is false
+
+"Rewiring", "root-preserving", and the scope of "side-consistent" are all
+undefined. Four readings survive; the implementer tested all four:
+
+| reading | root-preserving means | original must be side-consistent | rewirings | violations |
+|---|---|---|---|---|
+| A (their pre-declared) | `root(c)` preserved ∀c | yes | 57,240 | 0 |
+| B | only the *set* of root claims | yes | 121,944 | 0 |
+| C | `root(c)` preserved ∀c | no | 57,240 | 0 |
+| **D** | only the *set* of root claims | no | 200,024 | **47,224** |
+
+Under reading D the registration's *"Violations MUST be 0"* is false 47,224 times.
+Verified independently here, at k = 3:
+
+    original :  -|0 ; -|1 ; 0|1    side-inconsistent   S1={0,1}   verdict 1
+    rewired  :  -|0 ; -|1 ; 1|1    side-consistent     S1={1}     verdict abstain
+
+The set of root claims is preserved, no side moves, and only `root(2)` shifts from
+0 to 1. So **v0.2 does not determine T1's truth value.** One sentence would.
+
+The implementer also filed a correction against their own pre-declaration: `R23`
+predicted the weak root-preservation reading alone would break T1-positive, and it
+does not — reading B holds, because side-consistency plus Lemma 1 forces `S_a` to
+equal the root set. The failure needs both loosenings. *"My prediction identified
+the right term and the wrong boundary."*
+
+## A coverage gap neither party set out to find
+
+The registered rejection rule — the acceptance test v0.2 added specifically to
+remove v0.1's "uniform in 1..20" ambiguity — was exercised **zero times**:
+
+    2,759,273 words consumed    0 rejections    66,427 uniform_below(1) calls
+
+It cannot be exercised by accident. `uniform_below(20)` rejects 16 of 2^32 values,
+`uniform_below(10)` rejects 6, and `uniform_below(2)` and `(1)` never reject. Two
+implementations could disagree entirely about the rejection rule and still match
+every digest. This is the same shape as I9 in the conformance profile: a rule
+whose evidence is structurally absent rather than merely thin. The degenerate case
+is genuinely covered, at 66,427 calls.
+
+## v0.3, and it is a different kind of work
+
+The stream problem is solved. What remains is what the theorems are tested *over*:
+
+1. **Define "rewiring", "root-preserving", and the scope of "side-consistent"** —
+   and decide reading A–D deliberately, since D makes the registered claim false.
+2. **Replace T1-positive with something that can fail**, or relabel it as the
+   consistency check it is. A definitional identity under "Tests that can fail" is
+   the vacuity this programme exists to catch.
+3. **Define the two ablations.** Named, not specified; the reference and the
+   independent implementation caught different counts because they built different
+   ablations.
+4. **Force the rejection path** with a seed or phase that triggers it.
+5. **Bind or remove `id`** — present in the schema, never generated, never in the
+   canonical form.
+6. **State L1-negative's population.**
+
+BL-051 closes. Items 1–6 open as **BL-053**.

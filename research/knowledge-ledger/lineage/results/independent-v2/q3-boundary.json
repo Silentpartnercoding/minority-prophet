@@ -1,0 +1,27 @@
+{
+  "readingA_strongRP_baseConsistent": {
+    "checked": 57240,
+    "violations": 0
+  },
+  "readingB_weakRP_baseConsistent": {
+    "checked": 121944,
+    "violations": 0
+  },
+  "readingC_strongRP_baseAny": {
+    "checked": 57240,
+    "violations": 0
+  },
+  "readingD_weakRP_baseAny": {
+    "checked": 200024,
+    "violations": 47224,
+    "example": {
+      "k": 3,
+      "original": "-|0;-|1;0|1",
+      "originalSideConsistent": false,
+      "originalVerdict": "1",
+      "rewired": "-|0;-|1;1|1",
+      "rewiredSideConsistent": true,
+      "rewiredVerdict": "abstain"
+    }
+  }
+}

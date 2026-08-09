@@ -67,6 +67,16 @@ phases, including 975,782 randomized rewirings, with negative controls firing as
 required (cross-side rewiring changed the verdict 164,456 times, so the tests can
 detect failure). Both ablations were caught. No invalidation condition triggered.
 
+**[Corrected 2026-08-09 by BL-051.] The T1-positive half of that claim was
+overstated, here and in FINDING-BL051.** In this schema `S_a` is defined as
+`{root(c) : side(c) = a}`, so it is a function of the multiset of
+`(root(c), side(c))` pairs alone. A rewiring that preserves every `root(c)` and
+touches no side leaves that multiset identical, hence the verdict identical —
+**by construction**. T1-positive cannot fail under the intended reading, so its
+zero is not evidence about the schema. What does carry information, and did pass:
+L1-positive, L1-negative, T1-negative, and both ablations. See
+`FINDING-BL051.md` §"T1-positive is an identity".
+
 ## The M27 leak did less damage than feared
 
 The implementer did not read the reference, and did not consult the public

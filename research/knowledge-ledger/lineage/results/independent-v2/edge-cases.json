@@ -1,0 +1,141 @@
+{
+  "Q1": {
+    "drawCensus": [
+      {
+        "n": 1,
+        "calls": 66427,
+        "rejectableWords": 0,
+        "pReject": 0
+      },
+      {
+        "n": 2,
+        "calls": 447483,
+        "rejectableWords": 0,
+        "pReject": 0
+      },
+      {
+        "n": 3,
+        "calls": 59578,
+        "rejectableWords": 1,
+        "pReject": 2.3283064365386963e-10
+      },
+      {
+        "n": 4,
+        "calls": 55854,
+        "rejectableWords": 0,
+        "pReject": 0
+      },
+      {
+        "n": 5,
+        "calls": 52639,
+        "rejectableWords": 1,
+        "pReject": 2.3283064365386963e-10
+      },
+      {
+        "n": 6,
+        "calls": 48710,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 7,
+        "calls": 45307,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 8,
+        "calls": 41878,
+        "rejectableWords": 0,
+        "pReject": 0
+      },
+      {
+        "n": 9,
+        "calls": 38169,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 10,
+        "calls": 1646283,
+        "rejectableWords": 6,
+        "pReject": 1.3969838619232178e-9
+      },
+      {
+        "n": 11,
+        "calls": 31548,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 12,
+        "calls": 27808,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 13,
+        "calls": 24477,
+        "rejectableWords": 9,
+        "pReject": 2.0954757928848267e-9
+      },
+      {
+        "n": 14,
+        "calls": 20803,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 15,
+        "calls": 17494,
+        "rejectableWords": 1,
+        "pReject": 2.3283064365386963e-10
+      },
+      {
+        "n": 16,
+        "calls": 13866,
+        "rejectableWords": 0,
+        "pReject": 0
+      },
+      {
+        "n": 17,
+        "calls": 10367,
+        "rejectableWords": 1,
+        "pReject": 2.3283064365386963e-10
+      },
+      {
+        "n": 18,
+        "calls": 7064,
+        "rejectableWords": 4,
+        "pReject": 9.313225746154785e-10
+      },
+      {
+        "n": 19,
+        "calls": 3518,
+        "rejectableWords": 6,
+        "pReject": 1.3969838619232178e-9
+      },
+      {
+        "n": 20,
+        "calls": 100000,
+        "rejectableWords": 16,
+        "pReject": 3.725290298461914e-9
+      }
+    ],
+    "totalDraws": 2759273,
+    "observedRejections": 0,
+    "expectedRejections": 0.002965520373801825,
+    "probabilityOfAtLeastOneRejection": 0.0029611275616556743
+  },
+  "Q2": {
+    "strong": {
+      "checked": 57240,
+      "violations": 0
+    },
+    "weak": {
+      "checked": 121944,
+      "violations": 0,
+      "example": null
+    }
+  }
+}
