@@ -42,9 +42,20 @@ RULES = (
 # HONEST LIMIT: a digest of a short, guessable phrase is recoverable by anyone
 # willing to hash a wordlist. This raises the cost from "read the file" to "run
 # a dictionary" -- a real improvement for multi-word phrases, a weak one for
-# single common words. It is obscurity, not secrecy. For vocabulary that must
-# genuinely not be recoverable, set MP_BOUNDARY_TERMS in CI (newline-separated)
-# from a repository secret; those terms never enter the tree in any form.
+# single common words. It is obscurity, not secrecy.
+#
+# For vocabulary that must genuinely not be recoverable, set MP_BOUNDARY_DIGESTS
+# from a repository secret: the owner hashes the term locally with
+# scripts/add_boundary_term.py and only the digest travels. The term then enters
+# no file, no history and no transcript, and the digest is not published either,
+# so a wordlist has nothing to attack. MP_BOUNDARY_TERMS takes plaintext and is
+# for testing with invented words -- a real term put there has still been typed
+# somewhere that logs.
+#
+# The cost of a secret input is that this check stops being reproducible by a
+# third party: a fork runs without it and can pass where main would fail. That is
+# disclosed in the success line, which reports how many runtime rules were active
+# without reporting what they were.
 #
 # SCOPE (BL-052, owner decision 2026-08-08): coined and internal names only.
 # Five inherited entries were ordinary business English. They failed twice over:
@@ -64,10 +75,36 @@ _VOCAB_GUIDANCE = ("internal vocabulary: describe the interface or rationale in 
                    "public terms instead of naming the internal component")
 
 
+_HEX = re.compile(r"^[0-9a-f]{64}$")
+
+
 def _extra_digests() -> frozenset:
+    """Blocked terms supplied at runtime, by digest or by plaintext.
+
+    MP_BOUNDARY_DIGESTS is the preferred form and the only one that keeps a term
+    out of every artefact. The owner hashes the word locally -- see
+    scripts/add_boundary_term.py, which reads it without echo and never writes it
+    anywhere -- and stores only the 64 hex characters in a repository secret.
+
+    Then the word exists in no file, no git history, no CI configuration, no shell
+    history and no transcript. And because the digest is in a secret rather than
+    in this public file, it cannot be attacked with a wordlist either: an attacker
+    who cannot see the digest cannot test guesses against it. That closes the
+    honest limit documented above for the shipped list, for the terms that need it.
+
+    MP_BOUNDARY_TERMS remains for plaintext, which is convenient for testing with
+    invented words. Anything genuinely sensitive should use the digest form,
+    because putting a real term into a secret still requires typing it somewhere
+    that logs.
+    """
+    digests = {value.strip().lower()
+               for value in re.split(r"[\s,]+",
+                                     os.environ.get("MP_BOUNDARY_DIGESTS", ""))
+               if _HEX.match(value.strip().lower())}
     raw = os.environ.get("MP_BOUNDARY_TERMS", "")
-    return frozenset(hashlib.sha256(term.strip().lower().encode()).hexdigest()
-                     for term in raw.splitlines() if term.strip())
+    digests |= {hashlib.sha256(term.strip().lower().encode()).hexdigest()
+                for term in raw.splitlines() if term.strip()}
+    return frozenset(digests)
 
 
 def sensitive_vocabulary_hit(line: str) -> bool:
@@ -181,6 +218,28 @@ def tracked_lines(ref: str) -> list[tuple[str, int, str]]:
     return out
 
 
+def provenance() -> str:
+    """State how many rules were active, without stating what they were.
+
+    A secret input makes this check unreproducible by a third party: a fork runs
+    it without the secret and can go green where main would go red. That is a real
+    cost, and the mitigation is not to pretend it is absent but to make the
+    divergence visible. Reporting the count discloses that N hidden terms were in
+    force -- enough for a reader to know an unaudited input existed and to ask for
+    it -- while disclosing none of them.
+
+    The count is deliberately not zero-padded or bucketed. Rounding it would be a
+    second, quieter piece of obscurity, and this line exists to reduce obscurity.
+    """
+    shipped = len(_TERM_DIGESTS)
+    extra = len(_extra_digests() - _TERM_DIGESTS)
+    note = f"{shipped} shipped vocabulary rule(s)"
+    if extra:
+        note += (f" + {extra} supplied at runtime and not present in this "
+                 f"repository, so this result is not reproducible without them")
+    return note
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", help="trusted base commit (diff mode)")
@@ -200,7 +259,7 @@ def main() -> int:
                 print(f"  - {problem}", file=sys.stderr)
             return 1
         print(f"Public-boundary sweep clean: {len(lines)} tracked lines inspected, "
-              f"{len(ACCEPTED)} accepted exception(s) skipped.")
+              f"{len(ACCEPTED)} accepted exception(s) skipped. {provenance()}.")
         return 0
 
     if not args.base:
@@ -228,7 +287,8 @@ def main() -> int:
         for problem in problems:
             print(f"  - {problem}", file=sys.stderr)
         return 1
-    print("Public-boundary check passed: no prohibited additions detected.")
+    print(f"Public-boundary check passed: no prohibited additions detected. "
+          f"{provenance()}.")
     return 0
 
 
