@@ -13,17 +13,39 @@ and those are listed in §B.
 
 ## A. Claims
 
-### A1. Theorem 1 (immunity) holds for the reference implementation
+### A1. Theorem 1 (immunity) — machine-checked, and stated with all its hypotheses
 
-Verdicts are invariant under rewirings that preserve the root set, given
-side-consistency on both sides.
+If two worlds are side-consistent, **have the same assertion function**, and have
+the same root set, the verdict is identical. No constraint at all is placed on how
+the non-root lineage differs.
 
-**Evidence.** Exhaustive enumeration to `MAX_CLAIMS_EXHAUSTIVE = 6`: **116,032
-eligible (world, rewiring) pairs, zero violations**, under both the parent-local
-and root-based readings. `lineage/reference_mutant_audit.py`, row `correct`.
+**Evidence.** `proof_status: proved_compiled` — a Lean proof at
+`formal/lean/MinorityProphetCore/Immunity.lean`, theorem
+`MinorityProphet.immunity`. Finite verification recorded in
+`formal/THEOREM-LEDGER.json`: 116,032 root-preserving forest rewirings and 1,992
+root-preserving DAG rewirings, zero violations.
+`lineage/reference_mutant_audit.py` **reproduces** the 116,032 figure; it does not
+add to it.
 
-**Breaks if.** You exhibit one eligible pair where the verdict changes. The unit
-and eligibility rule are stated in that file; you do not have to guess them.
+**Drift is tracked, not hidden.** The ledger flags T1 `generalized_from_repository:
+true` — it is broader than the paper's statement, which restricted which rewirings
+counted. Two of the six theorems are flagged narrowed and two generalized, each
+with its reason. T5 was narrowed by *adding* the same-assertion hypothesis, which a
+counterexample proves necessary.
+
+**A correction to an earlier draft of this file, kept visible.** A1 previously
+omitted the same-assertion hypothesis and cited only the finite verification. Our
+rewirings preserve sides by construction, so no measurement was affected — but
+dropping a hypothesis from a claim statement is exactly the defect the ledger
+records against the repository's original T5. The document meant to prevent that
+error committed it.
+
+**Not verified here.** No Lean toolchain was available in this session, so
+`proved_compiled` is taken from the ledger rather than rebuilt. Rebuilding it is a
+cheap and worthwhile attack.
+
+**Breaks if.** The Lean proof does not compile, or you exhibit two worlds meeting
+all three hypotheses with different verdicts.
 
 ### A2. The immunity ablation is not a test of `root_of`
 
@@ -172,7 +194,15 @@ result is not reproducible without them. It discloses none of their contents. No
 finding depends on this check — it is a publication guard, not an instrument —
 but the divergence is real.
 
-**C6. Redaction did not remove anything from history.** Three items redacted on
+**C6. Gate cites a proof document that does not exist.**
+`minority_prophet/__init__.py` says "properties are proven (see FORMAL.md)". There
+is no `FORMAL.md` in the gate repository. The proofs are real and live in this
+repository under `formal/`, including the Lean development — so this is a dangling
+citation rather than a missing proof, but a reader checking gate's central claim
+follows a pointer to nothing. Not fixed here because it is a change to another
+repository.
+
+**C7. Redaction did not remove anything from history.** Three items redacted on
 2026-08-09 remain fetchable from earlier commits on the public branch. Removing
 them means rewriting 292 of 333 commits and breaking all six registration pins,
 which was judged a worse trade than the exposure (owner decision). The `--sweep`
