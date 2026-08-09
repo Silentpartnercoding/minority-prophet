@@ -74,9 +74,44 @@ Gate proceeds.
 
 ## Disposition
 
-`immunity_applicable` divergence: repair proposed to Gate, escalating rather
-than proceeding when the flag is false. It is a behaviour change to a published
-product and therefore owner-gated; it is not merged by this finding.
+`immunity_applicable` divergence: **repaired and merged**, gate#9
+(`8520c35e`), owner-approved 2026-08-09. Two layers, and the second was not
+anticipated by this finding.
+
+**The backstop**, as proposed here: `decide()` escalates rather than proceeding
+when the flag is false. Escalate, not block — the reviewer still sees the
+verdict and the root counts.
+
+**The cause**, found while measuring whether the backstop was safe to ship. The
+adapter admitted a derived claim asserting the *opposite* of the claim it
+derives from — a sentence that says "I am an echo of X" and "X is wrong" at
+once. Measured before the fix: `quarantined = 0`, `immunity_applicable = False`.
+It is now rejected at the boundary and counted as
+`exclusions["side_contradiction"]`, with its descendants rejected too. That
+cascade is load-bearing: without it a grandchild is promoted to its own evidence
+root, so the contradiction *earns* an attacker a root instead of costing one.
+
+**Blast radius, measured rather than asserted**, because "it changes published
+behaviour" is a reason to measure, not a reason to stall:
+
+| contradiction rate in traffic | decisions that change |
+|---|---|
+| never | 0.0% |
+| 1 in 1,000 | 0.3% |
+| 1 in 100 | 2.6% |
+| 1 in 20 | 11.6% |
+
+If echoes echo honestly the change is free. An earlier figure of 80% was
+computed over all combinatorial small worlds, where a claim's side is
+independent of its parent's; that is noise rather than traffic and was discarded
+as the wrong number to decide on.
+
+The escalation branch is now unreachable through the adapter, and was kept
+anyway. A different transport, a future adapter, or a caller using `aggregate()`
+directly can each reintroduce the shape, and a guarantee that relies on nobody
+upstream erring is not a guarantee. Three tests written for the envelope route
+were rewritten to assert what is now true rather than deleted, and the branch is
+exercised directly.
 
 T5 floor and `unbound_root_weight`: closed as not comparable. If Gate's T5 floor
 is intended to implement the paper's T5, that correspondence is undocumented in
