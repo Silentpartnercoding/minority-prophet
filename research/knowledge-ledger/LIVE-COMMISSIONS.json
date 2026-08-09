@@ -6,7 +6,7 @@
     {
       "id": "BL-051",
       "experiment": "LIN-000 v0.2",
-      "status": "live",
+      "status": "closed",
       "commissionedBy": "RUN-20260808-3",
       "package": "$HOME/Development/lin000-v2-spec",
       "resultsFile": "research/knowledge-ledger/lineage/results/lin000-v2-result.json",
@@ -19,7 +19,8 @@
       "declaredBoundsNote": "Derivable from count(k) = k! * 2^k, the registered seed, the registered world count, and the registered prefix interval. Inputs, not outcomes.",
       "passCondition": "both stream digests from PINNED-DIGESTS.json, no sweep",
       "deliberatelyShipped": "The two total digests and all 150 prefix digests. Prefixes localise a miss to a 1,000-world block; they leak no more than the total already does.",
-      "question": "Does a pre-declared reading of v0.2 hit both digests with no sweep? v0.1 needed a 96-way and a 72-way sweep."
+      "closedBy": "RUN-20260808-3 close-out, 2026-08-09",
+      "result": "FINDING-BL051.md \u2014 repair CONFIRMED: both digests and all 150 prefixes reproduced on the pre-declared reading, no sweep, in two languages. Ambiguity space 96->8 and 72->12. Separately: T1-positive shown to be a definitional identity, and under a defensible reading of 'rewiring' the registration's MUST-be-0 is false 47,224 times."
     },
     {
       "id": "BL-044",

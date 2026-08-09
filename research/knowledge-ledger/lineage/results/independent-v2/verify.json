@@ -1,0 +1,75 @@
+{
+  "crossCheck": {
+    "exhaustive.worldCount": "agree",
+    "exhaustive.streamDigest": "agree",
+    "exhaustive.prefixDigests": "agree",
+    "exhaustive.first10Worlds": "agree",
+    "exhaustive.sideConsistent": "agree",
+    "exhaustive.sideInconsistent": "agree",
+    "exhaustive.verdicts": "agree",
+    "exhaustive.L1positiveViolations": "agree",
+    "exhaustive.L1negativeHits": "agree",
+    "exhaustive.ablationShallowCaught": "agree",
+    "exhaustive.ablationClaimCountCaught": "agree",
+    "T1": "agree",
+    "randomized.worldCount": "agree",
+    "randomized.wordsConsumed": "agree",
+    "randomized.streamDigest": "agree",
+    "randomized.prefixDigests": "agree",
+    "randomized.kHistogram": "agree",
+    "randomized.L1positiveViolations": "agree",
+    "randomized.L1negativeHits": "agree",
+    "randomized.ablationShallowCaught": "agree",
+    "randomized.ablationClaimCountCaught": "agree",
+    "allAgree": true
+  },
+  "invalidation": {
+    "exhaustiveCountIs50362": true,
+    "exhaustiveRegenMatches": true,
+    "randomizedRegenMatches": true,
+    "expectedNonzeroObserved": {
+      "L1negativeExhaustive": 44450,
+      "T1negativeHits": 17460812,
+      "ablationShallowCaught": 24984,
+      "ablationClaimCountCaught": 21440
+    },
+    "anyExpectedNonzeroIsZero": false,
+    "mustBeZeroObserved": {
+      "L1positiveViolationsExhaustive": 0,
+      "L1positiveViolationsRandomized": 0,
+      "T1positiveViolations": 0,
+      "T1rootPreservingOnlyViolations": 0
+    },
+    "anyMustBeZeroNonzero": false
+  },
+  "comparison": {
+    "exhaustive": {
+      "totalMine": "a71c64ebd472db09ff7813a1a470d002c014a6a4d0cbd6b515aaad61ef3be711",
+      "totalPinned": "a71c64ebd472db09ff7813a1a470d002c014a6a4d0cbd6b515aaad61ef3be711",
+      "totalMatch": true,
+      "prefixCountMine": 50,
+      "prefixCountPinned": 50,
+      "prefixesMatched": 50,
+      "prefixesCompared": 50,
+      "allPrefixesMatch": true,
+      "firstDivergentBlock": null
+    },
+    "randomized": {
+      "totalMine": "e69fc115e77f8020700a681ceab4459972873bcccecb679b597c0641b32a2a3e",
+      "totalPinned": "e69fc115e77f8020700a681ceab4459972873bcccecb679b597c0641b32a2a3e",
+      "totalMatch": true,
+      "prefixCountMine": 100,
+      "prefixCountPinned": 100,
+      "prefixesMatched": 100,
+      "prefixesCompared": 100,
+      "allPrefixesMatch": true,
+      "firstDivergentBlock": null
+    }
+  },
+  "passCondition": {
+    "bothTotalsReproduced": true,
+    "allPrefixesReproduced": true,
+    "sweptOrTuned": false,
+    "readingAmendedAfterComparison": false
+  }
+}
