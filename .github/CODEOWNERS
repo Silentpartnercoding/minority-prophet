@@ -1,0 +1,12 @@
+# Advisory routing. Required code-owner review is intentionally not enabled
+# until a second dependable human reviewer exists.
+/CANONICAL-RECORDS.md @Silentpartnercoding
+/EVIDENCE-ALIGNMENT.md @Silentpartnercoding
+/PUBLIC-CLAIMS.md @Silentpartnercoding
+/papers/ @Silentpartnercoding
+/research/records/ @Silentpartnercoding
+/research/integrity/ @Silentpartnercoding
+/provenance/ @Silentpartnercoding
+/contracts/ @Silentpartnercoding
+/conformance/ @Silentpartnercoding
+/.github/workflows/ @Silentpartnercoding

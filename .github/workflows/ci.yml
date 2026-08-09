@@ -33,6 +33,8 @@ jobs:
         run: python scripts/check_withheld_leak.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
       - name: Verify preregistrations still match their pinned commits
         run: python scripts/check_registration_chain.py --ref "${{ github.sha }}"
+      - name: Check graduated research integrity
+        run: python scripts/check_research_integrity.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
 
   python:
     runs-on: ubuntu-latest

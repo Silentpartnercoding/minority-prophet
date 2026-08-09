@@ -59,8 +59,17 @@ repository commit, dirty-worktree state, environment lock, start/end timestamps,
 inputs, outputs, stdout/stderr, tests, hashes, and every human intervention.
 Secrets and private data are referenced by opaque identifiers and never committed.
 
-## Independent verification
+## Reproduction and independent verification
 
-The implementation author may not be the sole verifier. At minimum, a clean
-environment must reproduce the artifact from the public protocol. A cross-system
-interoperability result requires two independently written implementations.
+The implementation author may not be the sole checker. At minimum, a clean
+environment must reproduce the artifact from the public protocol. That
+establishes reproducibility, not independent control or evidence-root
+independence.
+
+Different models, prompts, keys, processes, branches, services, machines, or
+separately written implementations may test portability and interoperability.
+When they share an operator, orchestrator, evidence producer, or controlling
+party, they remain one control domain and their agreement is internal
+replication. A claim of independent verification requires supported external
+provenance showing that the verifier cannot manufacture or promote the evidence
+it verifies. Hidden common control remains outside what the record can prove.
