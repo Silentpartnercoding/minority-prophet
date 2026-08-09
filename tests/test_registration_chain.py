@@ -17,7 +17,7 @@ import subprocess
 import tempfile
 import unittest
 
-from scripts.check_registration_chain import check, pairs
+from scripts.check_registration_chain import UNMATCHED, check, pairs
 
 PREREG = "research/knowledge-ledger/experiments/KL-TEST/preregistration.json"
 SIDECAR = "research/knowledge-ledger/experiments/KL-TEST/PROTOCOL-COMMIT.txt"
@@ -115,6 +115,35 @@ class TestRegistrationChain(unittest.TestCase):
         problems = check(self.root, "HEAD")
         self.assertTrue(problems)
         self.assertIn("no commit id", problems[0])
+
+
+class TestSidecarDiscovery(unittest.TestCase):
+    """A sidecar the pattern does not match is invisible, and invisible is worse
+    than broken. PROTOCOL-COMMIT-v0.3.txt was skipped for having two version
+    components instead of three, leaving KL-001's newest registration unpinned
+    while the check reported everything verified."""
+
+    def test_two_and_three_component_versions_are_both_discovered(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            exp = root / "research/knowledge-ledger/experiments/KL-X"
+            exp.mkdir(parents=True)
+            for name in ("PROTOCOL-COMMIT.txt", "PROTOCOL-COMMIT-v0.3.txt",
+                         "PROTOCOL-COMMIT-v1.3.0.txt"):
+                (exp / name).write_text("0" * 40 + "\n")
+            found = {s.name for s, _ in pairs(root)}
+            self.assertEqual(len(found), 3, f"all three must be discovered: {found}")
+
+    def test_a_sidecar_that_matches_nothing_is_reported_not_ignored(self):
+        UNMATCHED.clear()
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            exp = root / "research/knowledge-ledger/experiments/KL-X"
+            exp.mkdir(parents=True)
+            (exp / "PROTOCOL-COMMIT-draft.txt").write_text("0" * 40 + "\n")
+            pairs(root)
+            self.assertTrue(any("PROTOCOL-COMMIT-draft.txt" in u for u in UNMATCHED),
+                            "an unmatched sidecar must be reported")
 
 
 if __name__ == "__main__":
