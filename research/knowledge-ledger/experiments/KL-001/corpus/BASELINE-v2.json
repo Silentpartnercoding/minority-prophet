@@ -10,13 +10,13 @@
   "cleanRepos": 13,
   "falsePositiveReposAmongClean": 0,
   "perClass": {
-    "unchecked-return": {
-      "planted": 35,
-      "found": 35
-    },
     "bare-except": {
       "planted": 29,
       "found": 29
+    },
+    "unchecked-return": {
+      "planted": 35,
+      "found": 35
     },
     "missing-timeout": {
       "planted": 28,

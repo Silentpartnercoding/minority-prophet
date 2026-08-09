@@ -1,0 +1,462 @@
+{
+  "schema": "minority-prophet.kl001-dualledger.v0.1",
+  "corpusManifestDigest": "a8b364838f33606312e0a67c9ec3a70d17fb80b38e929d9cb97cfa07a7c8f428",
+  "arm": "dual ledger (mapping pipeline + KL-000 evaluator)",
+  "scanner": "identical to the baseline arm",
+  "plantedDefects": 135,
+  "truePositives": 107,
+  "falseNegatives": 28,
+  "recall": 0.7926,
+  "falseCleanRate": 0.0213,
+  "defectiveRepos": 47,
+  "falseCleans": 1,
+  "perClass": {
+    "bare-except": {
+      "planted": 29,
+      "found": 29
+    },
+    "unchecked-return": {
+      "planted": 35,
+      "found": 35
+    },
+    "missing-timeout": {
+      "planted": 28,
+      "found": 0
+    },
+    "shell-injection": {
+      "planted": 16,
+      "found": 16
+    },
+    "hardcoded-credential": {
+      "planted": 27,
+      "found": 27
+    }
+  },
+  "conclusionCounts": {
+    "absent_within_declared_scope": 11,
+    "not_established": 4,
+    "present": 45
+  },
+  "perRepo": [
+    {
+      "repo": "repo-000",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-001",
+      "conclusion": "absent_within_declared_scope",
+      "defective": true,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-002",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-003",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-004",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 4
+    },
+    {
+      "repo": "repo-005",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-006",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-007",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-008",
+      "conclusion": "not_established",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-009",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-010",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-011",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-012",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-013",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-014",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-015",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 4
+    },
+    {
+      "repo": "repo-016",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-017",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-018",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-019",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-020",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-021",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-022",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-023",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-024",
+      "conclusion": "not_established",
+      "defective": true,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-025",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-026",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-027",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-028",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 4
+    },
+    {
+      "repo": "repo-029",
+      "conclusion": "not_established",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-030",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-031",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-032",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-033",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-034",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-035",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-036",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-037",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-038",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-039",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-040",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-041",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 6
+    },
+    {
+      "repo": "repo-042",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-043",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 4
+    },
+    {
+      "repo": "repo-044",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-045",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-046",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    },
+    {
+      "repo": "repo-047",
+      "conclusion": "not_established",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-048",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 4
+    },
+    {
+      "repo": "repo-049",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-050",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 5
+    },
+    {
+      "repo": "repo-051",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-052",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 3
+    },
+    {
+      "repo": "repo-053",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 6
+    },
+    {
+      "repo": "repo-054",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 5
+    },
+    {
+      "repo": "repo-055",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-056",
+      "conclusion": "absent_within_declared_scope",
+      "defective": false,
+      "roots": 0,
+      "findings": 0
+    },
+    {
+      "repo": "repo-057",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 1
+    },
+    {
+      "repo": "repo-058",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 4
+    },
+    {
+      "repo": "repo-059",
+      "conclusion": "present",
+      "defective": true,
+      "roots": 1,
+      "findings": 2
+    }
+  ]
+}
