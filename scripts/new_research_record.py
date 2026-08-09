@@ -210,6 +210,8 @@ def create_imported(
 ) -> pathlib.Path:
     if not SOURCE_COMMIT.fullmatch(source_commit):
         raise RecordError("source commit must be 7-64 lowercase hexadecimal characters")
+    if not source_repository.strip():
+        raise RecordError("source repository must identify where the imported packet originated")
     path = _record_path(root, identifier)
     document = _base_record(identifier, "imported")
     document["origin"] = {

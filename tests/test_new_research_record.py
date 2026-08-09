@@ -147,6 +147,25 @@ def test_imported_record_declares_source_and_unknown_control(tmp_path):
     assert document["protocol"]["commit"] is None
 
 
+def test_imported_record_requires_source_repository(tmp_path):
+    root = _repo(tmp_path)
+    _write(root / "imports/EX-108/protocol.md", "protocol\n")
+    _write(root / "imports/EX-108/result.json", "{}\n")
+    _write(root / "imports/EX-108/manifest.json", "{}\n")
+    with pytest.raises(RecordError, match="source repository must identify"):
+        create_imported(
+            root,
+            "EX-108",
+            "imports/EX-108/protocol.md",
+            "imports/EX-108/result.json",
+            "imports/EX-108/manifest.json",
+            "incomplete",
+            "",
+            "a" * 40,
+            "unknown",
+        )
+
+
 def test_refuses_to_overwrite_existing_record(tmp_path):
     root = _repo(tmp_path)
     create_exploratory(root, "EX-107")
