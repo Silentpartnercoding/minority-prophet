@@ -70,14 +70,14 @@ def trap_closure(package: pathlib.Path, registrations: list[pathlib.Path]) -> Tr
             name = pathlib.PurePath(ref).name
             if name in present or name in declared_absent or name == reg.name:
                 continue
-            # Only flag references the text leans on normatively.
-            for line in text.splitlines():
-                if ref in line and re.search(
-                        r"unchanged|carried|per |as (?:defined|specified|registered)|see ",
-                        line, re.I):
-                    t.fail(f"{reg.name} relies on `{ref}`, which is not in the package "
-                           f"and is not declared NOT SHIPPED")
-                    break
+            # Every backticked filename that is absent is reported. An earlier
+            # version only flagged lines containing "unchanged|carried|per|see",
+            # and missed two dangling references in a package it had passed --
+            # a whitelist of verbs is a guess about how someone will phrase a
+            # dependency. Absent and undeclared is the property; the phrasing is
+            # not.
+            t.fail(f"{reg.name} references `{ref}`, which is not in the package "
+                   f"and is not declared NOT SHIPPED")
     return t
 
 
