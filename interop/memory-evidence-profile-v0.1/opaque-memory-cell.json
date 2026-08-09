@@ -1,0 +1,18 @@
+{
+  "cell_id": "urn:example:opaque-cell:7",
+  "media_type": "application/octet-stream",
+  "payload_digest": "sha256:8f68b61d6be51bb4e95f2f5f79d8ef7918db763977ae3d771e72a1ad4e0cfeaf",
+  "evidence_profile": {
+    "profile": "memory-evidence-profile-v0.1",
+    "proposition": "opaque cell 7 was derived from source record 4",
+    "claims": [
+      {"id": "receipt-4", "value": true, "source": "source-record-4", "derived_from": [], "claim_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666", "root_authentication": {"status": "authenticated", "issuer": "source-operator", "key_id": "key-4", "method": "external-receipt"}},
+      {"id": "cell-7-write", "value": true, "source": "memory-writer", "derived_from": ["receipt-4"], "claim_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777", "root_authentication": {"status": "declared", "issuer": null, "key_id": null, "method": null}}
+    ],
+    "search": {"scope": "cell 7 lineage receipts", "coverage": "complete", "queried": 2, "total_known": 2},
+    "verifiers": [{"id": "audit-service", "controller": "audit-operator", "controller_basis": "signed deployment inventory"}],
+    "binding": {"proposition_digest": "sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", "memory_object_digest": "sha256:8f68b61d6be51bb4e95f2f5f79d8ef7918db763977ae3d771e72a1ad4e0cfeaf", "request_digest": null, "action_digest": null},
+    "lifecycle": {"observed_at": "2026-08-08T10:00:00Z", "expires_at": "2026-08-09T10:00:00Z", "nonce": "opaque-example-01", "revocation_status": "active"},
+    "conclusion": {"kind": "support", "strength": 0.7, "uncertainty": "The payload remains opaque; only its recorded lineage was evaluated.", "method": "recorded-lineage-v0.1", "input_claims": ["receipt-4", "cell-7-write"]}
+  }
+}

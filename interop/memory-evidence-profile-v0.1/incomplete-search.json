@@ -1,0 +1,10 @@
+{
+  "profile": "memory-evidence-profile-v0.1",
+  "proposition": "scope contains a contradictory record",
+  "claims": [{"id": "result-1", "value": false, "source": "partition-a", "derived_from": [], "claim_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444", "root_authentication": {"status": "authenticated", "issuer": "partition-index", "key_id": "key-1", "method": "external-receipt"}}],
+  "search": {"scope": "partitions a through z", "coverage": "partial", "queried": 1, "total_known": 26},
+  "verifiers": [],
+  "binding": {"proposition_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "memory_object_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "request_digest": null, "action_digest": null},
+  "lifecycle": {"observed_at": "2026-08-08T10:00:00Z", "expires_at": "2026-08-09T10:00:00Z", "nonce": "search-example-001", "revocation_status": "active"},
+  "conclusion": {"kind": "inconclusive", "strength": 0.0, "uncertainty": "Unqueried partitions prevent an absence conclusion.", "method": "bounded-search-v0.1", "input_claims": ["result-1"]}
+}

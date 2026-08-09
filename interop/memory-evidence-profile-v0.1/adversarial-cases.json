@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {"id": "fabricated-parentless-root", "base_document": 0, "mutation": {"path": "claims.0.root_authentication.status", "value": "declared"}},
+    {"id": "revoked-evidence-support", "base_document": 0, "mutation": {"path": "lifecycle.revocation_status", "value": "revoked"}},
+    {"id": "unknown-revocation-support", "base_document": 0, "mutation": {"path": "lifecycle.revocation_status", "value": "unknown"}},
+    {"id": "partial-search-claims-absence", "base_document": 1, "mutation": {"path": "conclusion.kind", "value": "absence"}},
+    {"id": "derived-claim-mints-root", "base_document": 0, "mutation": {"path": "claims.1.root_authentication.status", "value": "authenticated"}},
+    {"id": "unknown-conclusion-input", "base_document": 0, "mutation": {"path": "conclusion.input_claims.0", "value": "invented-claim"}},
+    {"id": "malformed-binding", "base_document": 0, "mutation": {"path": "binding.memory_object_digest", "value": "not-a-digest"}},
+    {"id": "invalid-lifetime", "base_document": 0, "mutation": {"path": "lifecycle.expires_at", "value": "2026-08-07T10:00:00Z"}}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "profile": "memory-evidence-profile-v0.1",
+  "proposition": "artifact A has property P",
+  "claims": [
+    {"id": "observation-1", "value": true, "source": "sensor-alpha", "derived_from": [], "claim_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "root_authentication": {"status": "authenticated", "issuer": "sensor-operator", "key_id": "key-1", "method": "external-receipt"}},
+    {"id": "copy-1", "value": true, "source": "cache-beta", "derived_from": ["observation-1"], "claim_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "root_authentication": {"status": "declared", "issuer": null, "key_id": null, "method": null}},
+    {"id": "copy-2", "value": true, "source": "index-gamma", "derived_from": ["copy-1"], "claim_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "root_authentication": {"status": "declared", "issuer": null, "key_id": null, "method": null}}
+  ],
+  "search": {"scope": "three named records", "coverage": "complete", "queried": 3, "total_known": 3},
+  "verifiers": [],
+  "binding": {"proposition_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "memory_object_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "request_digest": null, "action_digest": null},
+  "lifecycle": {"observed_at": "2026-08-08T10:00:00Z", "expires_at": "2026-08-09T10:00:00Z", "nonce": "copy-example-0001", "revocation_status": "active"},
+  "conclusion": {"kind": "support", "strength": 0.4, "uncertainty": "Three agreeing claims collapse to one authenticated recorded root.", "method": "authenticated-root-ratio-v0.1", "input_claims": ["observation-1", "copy-1", "copy-2"]}
+}
