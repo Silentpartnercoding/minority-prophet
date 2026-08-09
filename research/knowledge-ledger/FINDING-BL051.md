@@ -31,23 +31,25 @@ is decided in the text: no draw is consumed.
 
 ## Reference results
 
-    exhaustive   50,362 worlds   1,189,512 bytes   sha256:a71c64eb…3be711
-    randomized  100,000 worlds   4,230,583 bytes   sha256:e69fc115…32a2a3e
+    exhaustive   50,362 worlds   sha256:a71c64eb…3be711
+    randomized  100,000 worlds   sha256:e69fc115…32a2a3e
 
 Both regenerate identically within the run (a registered invalidation
-condition). Prefix digests: 50 and 100 respectively.
+condition). Prefix digests: 50 and 100 respectively. The two totals and all 150
+prefixes are deliberately shipped in the commission package — they are the pass
+condition.
 
 **Theorems held.** Zero L1-positive violations and zero T1-positive violations in
-both phases, across 11,976 exhaustive and 567,497 randomized root-preserving
-side-consistent rewirings. Negative controls fired: 44,450 and 45,253
-L1-negative witnesses, 79,496 and 497,603 verdict changes under cross-side
-rewiring, so the tests can detect failure.
+both phases. Negative controls fired in both, so the tests can detect failure.
+The exhaustive structural counts are identical to v0.1, which is the expected
+cross-check: those are properties of the world *set*, which v0.2 does not change,
+not of its order or its generator.
 
-The structural counts — 5,912 side-consistent and 44,450 side-inconsistent in the
-exhaustive phase — are **identical to v0.1**. They should be: those are properties
-of the world *set*, which v0.2 does not change, not of its order or its
-generator. That agreement is a cross-check on the new enumeration, not a new
-result.
+**Every count above is stated qualitatively on purpose.** BL-051 is a live
+commission, and its withheld set is exactly these figures — stream byte lengths,
+rewiring totals, witness counts, per-phase partitions. Publishing them here would
+retire the counter evidence of the commission this document creates. They are in
+`results/lin000-v2-result.json`, and they become publishable when BL-051 closes.
 
 ## The disclosure this finding exists to make
 
@@ -81,6 +83,14 @@ and its digest matches nothing from v0.1.
 Packaged at `$HOME/Development/lin000-v2-spec`: the registration, 150 prefix
 digests plus two totals, the governing method, and a manifest. Screened clean
 against all 13 withheld counters in bare and comma-grouped form.
+
+An earlier draft of this finding published those counters in its results
+section. `scripts/check_withheld_leak.py` rejected it in CI — the control
+catching the M27 defect inside the pull request that declares the commission it
+protects. It was not caught locally because the guards were run before the files
+were committed, so the diff they inspected was empty: the fourth vacuous
+verification of this session, and the first one a control saved rather than a
+reviewer.
 
 Declared **live** in `LIVE-COMMISSIONS.json`, which makes BL-051 the first
 commission `scripts/check_withheld_leak.py` protects while outstanding — the
