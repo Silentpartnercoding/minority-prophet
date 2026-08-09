@@ -2,9 +2,9 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-001",
   "realm": "software and cybersecurity",
-  "state": "results-reported",
+  "state": "fixture-passed",
   "resultStatus": "v0.3 complete; primary endpoint met as registered, and narrowed by the finding",
-  "lastCompletedGate": "dual-ledger run against frozen-v2, reported against the v0.3 endpoints",
+  "lastCompletedGate": "fixture \u2014 dual-ledger run against frozen-v2, reported against the v0.3 endpoints",
   "reviewedByRun": "RUN-20260807-8",
   "correctionRecord": {
     "correctedBy": "RUN-20260807-6",
@@ -28,7 +28,7 @@
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 held adversarial-passed through protocol v1.3.0 with zero violations in every run of both implementations; the dependency is satisfied for fixture-stage work. Promotion of any KL-000 claim remains a separate owner decision.",
   "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence.",
-  "stateNote": "v0.3 registered against frozen-v2. v0.2's failure on frozen-v1 stands and is recorded in priorOutcomes; this is a new registration, not a retry.",
+  "stateNote": "Advanced seeded->preregistered->fixture-passed. The fixture gate was passed AS REGISTERED: the v0.3 primary endpoint was met at 0.0213 against a bar of strictly-below-0.0426. The registration was afterwards found defective -- the endpoint is one-sided (BL-061) and every rate over an authored corpus is a generator setting read back (DESIGN-v0.4.md). The rung records which gate was passed; claimAllowed records what may be concluded, and it forbids the practical claim. An earlier edit of this file invented a rung, 'results-reported', that is not in the ladder; the program test caught it. v0.3 registered against frozen-v2. v0.2's failure on frozen-v1 stands and is recorded in priorOutcomes; this is a new registration, not a retry.",
   "protocolVersion": "v0.3 (complete); v0.4 exists as a design note, not a registration",
   "priorOutcomes": [
     {
