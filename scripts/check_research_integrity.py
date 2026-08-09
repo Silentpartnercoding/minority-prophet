@@ -28,8 +28,10 @@ STAGES = {"exploratory", "candidate", "canonical", "imported"}
 VERDICTS = {"supported", "rejected", "incomplete", "invalidated"}
 CONTROL_RELATIONSHIPS = {"same-control-domain", "external-control", "unknown"}
 ASSESSMENTS = {"dependent", "partially-dependent", "unknown", "independent"}
+CLAUDE_BRIDGE = "# Claude Code instructions\n\n@AGENTS.md\n"
 POLICY_PATHS = {
     "AGENTS.md",
+    "CLAUDE.md",
     "CONTRIBUTING.md",
     "research/integrity/research-record.schema.json",
     "research/integrity/README.md",
@@ -37,6 +39,22 @@ POLICY_PATHS = {
     ".github/workflows/ci.yml",
 }
 INTEGRITY_TEST = "tests/test_research_integrity.py"
+
+
+def validate_agent_instruction_bridge(root: pathlib.Path) -> list[str]:
+    """Keep Claude and Codex on one repository instruction source."""
+    agents = root / "AGENTS.md"
+    claude = root / "CLAUDE.md"
+    if not agents.is_file():
+        return []
+    if not claude.is_file():
+        return ["CLAUDE.md must import the canonical AGENTS.md instructions"]
+    if claude.read_text() != CLAUDE_BRIDGE:
+        return [
+            "CLAUDE.md must contain only the canonical @AGENTS.md import; "
+            "do not duplicate or fork agent instructions"
+        ]
+    return []
 
 
 def _git(root: pathlib.Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -332,6 +350,7 @@ def check(root: pathlib.Path, base: str, head: str) -> list[str]:
     changes = changed_paths(root, base, head)
     changed = {path for _, path in changes}
     problems: list[str] = []
+    problems.extend(validate_agent_instruction_bridge(root))
 
     records: dict[str, dict[str, Any]] = {}
     record_root = root / RECORDS

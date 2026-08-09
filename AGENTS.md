@@ -6,6 +6,10 @@ interfaces.
 
 ## Start here
 
+This file is the single source of repository instructions for coding agents.
+`CLAUDE.md` imports it directly; do not duplicate these rules in agent-specific
+instruction files.
+
 Read `CONTRIBUTING.md` and `PUBLIC-CLAIMS.md`. For experiments or results, also
 read `CANONICAL-RECORDS.md` and
 `research/knowledge-ledger/RESEARCH-METHOD.md`.

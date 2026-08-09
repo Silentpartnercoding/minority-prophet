@@ -3,7 +3,11 @@ import json
 import pathlib
 import subprocess
 
-from scripts.check_research_integrity import check, validate_record
+from scripts.check_research_integrity import (
+    check,
+    validate_agent_instruction_bridge,
+    validate_record,
+)
 
 
 def _git(root: pathlib.Path, *args: str) -> str:
@@ -258,3 +262,18 @@ def test_policy_change_requires_integrity_test_change(tmp_path):
     head = _commit(root, "change policy without tests")
     problems = check(root, base, head)
     assert any("policy changed" in problem for problem in problems)
+
+
+def test_accepts_claude_bridge_that_imports_agents(tmp_path):
+    root, _ = _repo(tmp_path)
+    _write(root / "AGENTS.md", "canonical instructions\n")
+    _write(root / "CLAUDE.md", "# Claude Code instructions\n\n@AGENTS.md\n")
+    assert validate_agent_instruction_bridge(root) == []
+
+
+def test_rejects_claude_bridge_that_duplicates_or_drifts(tmp_path):
+    root, _ = _repo(tmp_path)
+    _write(root / "AGENTS.md", "canonical instructions\n")
+    _write(root / "CLAUDE.md", "Copied rules that can drift.\n")
+    problems = validate_agent_instruction_bridge(root)
+    assert any("do not duplicate or fork" in problem for problem in problems)
