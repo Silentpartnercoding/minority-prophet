@@ -2,7 +2,7 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-001",
   "realm": "software and cybersecurity",
-  "state": "seeded",
+  "state": "preregistered",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
   "reviewedByRun": "RUN-20260807-8",
@@ -12,7 +12,7 @@
     "evidence": "first-check/FINDING-FC1.md with results/fc1-result.json and results/fc11-result.json: the incomplete-coverage repository world cannot obtain a clean conclusion (not_established, coverage reason); its re-labelled twin sits inside KL-000's 176,120-world enumeration and produces an identical receipt in every name-free field, diverging on exactly the echoed identifier strings and the digest. 'Mandatory file' maps to 'declared location' by renaming; no new evidence about the evaluator was produced. Also demonstrated on purpose: the under-declaration twin (W3) obtains a clean conclusion by omitting files from the declaration -- ADV-001 in repository costume, locating KL-001's real risk in the not-yet-existing mapping layer.",
     "registrationDefect": "FC1's expectation E4 failed as registered (it quantified over name-carrying receipt fields); preserved as-is and corrected by the FC1.1 registration. The drafting error is RUN-20260807-6's own, recorded in FINDING-FC1.md."
   },
-  "nextGate": "The REAL first gate, now that the named narrow check is discharged: (1) the mapping pipeline that turns a repository into ledgers -- what counts as a mandatory file, what counts as searched, which scanner outputs become which roots -- with its mapping rules registered (this is where ADV-001 and root-attribution honesty live; FC1's W3 demonstrates the exposure); (2) the frozen corpus: seeded generation of repositories with machine-checkable planted defects and clean controls, digest-manifested BEFORE any evaluation; (3) registered endpoints: the false-clean rate, and baseline true-positive recall measured BEFORE the dual ledger is applied (without which the 95%-preservation target is unfalsifiable); (4) the v0.2 preregistration carrying all of it. Estimated cost: roughly one focused run (generator 300-500 lines, pipeline 200-400 lines, registration + fixtures + tests); zero spend unless a metered model sits in the pipeline, which requires founder authorization first. NOT COMMITTED -- committing it is the owner's act.",
+  "nextGate": "Run the dual ledger over corpus/frozen-v1 through pipeline/map_repository.py and compare against the registered endpoints: false-clean rate below 0.1224, absolute recall at or above 0.7761, and no per-class regression. The defect-class taxonomy is still unregistered and must be fixed before that run, because deciding what counts as the same finding after seeing results would be fitting the taxonomy to the outcome.",
   "supersededNextGate": "SUPERSEDED at RUN-20260807-6, preserved verbatim (written at RUN-20260807-1): 'Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.' -- The narrow check was run and passed, and was found to be already paid by KL-000 (I2); the corpus clause is now the operative gate, restated above with the mapping pipeline made explicit.",
   "blockers": [
     "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
@@ -21,7 +21,7 @@
     "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable",
     "the mapping layer (repository -> ledgers) does not exist, and its declaration rules are the kernel's actual risk surface (ADV-001, demonstrated by first-check W3)"
   ],
-  "claimAllowed": "This experiment is seeded and supports no result claim. Its named narrow first check was discharged by prerequisite: within KL-000's declared bounds, the evaluator refuses a clean conclusion for any incomplete-coverage world, repository-framed or not (FC1/FC1.1). That is a claim about KL-000's evaluator, already established there; it says nothing about real repositories, real scanners, or the unbuilt mapping pipeline.",
+  "claimAllowed": "Endpoints and baseline are registered; no comparative claim is permitted until the dual ledger has been run against them.",
   "dependsOn": [
     "KL-000"
   ],
