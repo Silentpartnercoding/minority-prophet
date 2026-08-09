@@ -112,3 +112,47 @@ class TestEmptyDiffIsRefusedNotPassed(unittest.TestCase):
             tmp = pathlib.Path(d); self._repo(tmp)
             r = self._run(tmp)
             self.assertEqual(r.returncode, 0, f"{r.stdout}{r.stderr}")
+
+
+class TestSweepMode(unittest.TestCase):
+    """The diff mode cannot see what was already published. A term added to the
+    blocklist today is never applied to yesterday's commits, which is how an
+    owner-designated never-public term outlived the rule that blocks it."""
+
+    def _repo(self, tmp, content):
+        import subprocess as sp
+        g = lambda *a: sp.run(("git",) + a, cwd=tmp, capture_output=True, check=True)
+        g("init", "-q", "-b", "main")
+        g("config", "user.email", "t@t"); g("config", "user.name", "t")
+        (tmp / "old.md").write_text(content)
+        g("add", "-A"); g("commit", "-qm", "already published")
+        return g
+
+    def _sweep(self, tmp):
+        import subprocess as sp
+        return sp.run((sys.executable, str(SCRIPT), "--sweep", "--head", "HEAD"),
+                      cwd=tmp, capture_output=True, text=True)
+
+    def test_sweep_finds_a_pre_existing_violation_the_diff_mode_cannot(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            self._repo(tmp, "note: /Users/someone/secret/path/file.txt\n")
+
+            import subprocess as sp
+            diff = sp.run((sys.executable, str(SCRIPT), "--base", "HEAD", "--head", "HEAD"),
+                          cwd=tmp, capture_output=True, text=True)
+            self.assertEqual(diff.returncode, 0,
+                             "precondition: the diff mode sees nothing to inspect")
+
+            swept = self._sweep(tmp)
+            self.assertEqual(swept.returncode, 1, f"{swept.stdout}{swept.stderr}")
+            self.assertIn("SWEEP failed", swept.stderr)
+            self.assertIn("old.md", swept.stderr)
+
+    def test_sweep_is_clean_on_a_tree_with_nothing_to_find(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            self._repo(tmp, "an ordinary sentence about verification.\n")
+            r = self._sweep(tmp)
+            self.assertEqual(r.returncode, 0, f"{r.stdout}{r.stderr}")
+            self.assertIn("sweep clean", r.stdout)

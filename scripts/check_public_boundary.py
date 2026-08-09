@@ -82,8 +82,16 @@ def sensitive_vocabulary_hit(line: str) -> bool:
     return False
 
 
-# The checker and its regression tests necessarily contain the signatures above.
-SELF_EXEMPT = {"scripts/check_public_boundary.py", "tests/test_public_boundary.py"}
+# Files that must contain the signatures above in order to test them. The first
+# two are this checker and its own regression tests. The third asserts that a
+# portability transform strips a home path, so it necessarily embeds one -- a
+# synthetic fixture, not a disclosure. Exempting a test that proves a path is
+# removed is not a hole; refusing to exempt it would delete the test.
+SELF_EXEMPT = {
+    "scripts/check_public_boundary.py",
+    "tests/test_public_boundary.py",
+    "tests/test_canonical_replication_v1.py",
+}
 
 
 def added_lines(base: str, head: str) -> list[tuple[str, int, str]]:
@@ -120,11 +128,83 @@ def violations(lines: list[tuple[str, int, str]]) -> list[str]:
     return output
 
 
+# Occurrences already published and deliberately retained. --sweep reports every
+# other match in the tree; these are listed so the sweep has a zero baseline and a
+# NEW pre-existing match stands out instead of drowning in known noise.
+#
+# The six KL-000 registration artifacts are frozen: their bytes are pinned by
+# PROTOCOL-COMMIT sidecars and rewriting them would break the chain that proves
+# each protocol predates its results. That trade is recorded in FINDING-CHAIN-101
+# and FINDING-BLK-101 -- preregistration immutability outranks tidying a string.
+# The two experiment evidence files belong to another author's pull requests and
+# disclose the same operator username those frozen artifacts already publish, so
+# editing them would lower no exposure.
+ACCEPTED = {
+    "research/knowledge-ledger/experiments/KL-000/preregistration.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.1.0.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.2.0.json",
+    "research/knowledge-ledger/experiments/KL-000/preregistration-v1.3.0.json",
+    "research/knowledge-ledger/experiments/KL-000/results/REPRODUCTION-RECEIPT.md",
+    "research/knowledge-ledger/experiments/KL-000/results/independent/PROVENANCE.md",
+    "experiments/hes1/cppcheck-evidence.json",
+    "experiments/hgd2/software-detector-records.json",
+}
+
+
+def tracked_lines(ref: str) -> list[tuple[str, int, str]]:
+    """Every line of every tracked text file at `ref`.
+
+    The diff mode cannot see a violation that was already published: it inspects
+    additions only. So a term added to the blocklist today is never applied to
+    anything committed yesterday, and that gap is permanent and silent. It is how
+    an owner-designated never-public term sat on the public branch after the rule
+    that blocks it had shipped. --sweep is the rescan the diff mode structurally
+    cannot perform, and it is why the blocklist and the published tree can now be
+    reconciled at all.
+    """
+    listing = subprocess.run(("git", "ls-files", "-z", "--with-tree", ref),
+                             capture_output=True, text=True, check=True)
+    out: list[tuple[str, int, str]] = []
+    for path in filter(None, listing.stdout.split("\0")):
+        if path in ACCEPTED or path in SELF_EXEMPT:
+            continue
+        blob = subprocess.run(("git", "show", f"{ref}:{path}"),
+                              capture_output=True, check=False)
+        if blob.returncode != 0 or b"\0" in blob.stdout[:8000]:
+            continue                                    # missing or binary
+        try:
+            text = blob.stdout.decode()
+        except UnicodeDecodeError:
+            continue
+        for i, line in enumerate(text.splitlines(), 1):
+            out.append((path, i, line))
+    return out
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base", required=True, help="trusted base commit")
+    parser.add_argument("--base", help="trusted base commit (diff mode)")
     parser.add_argument("--head", default="HEAD", help="commit to inspect")
+    parser.add_argument("--sweep", action="store_true",
+                        help="scan every tracked line at --head, not just additions")
     args = parser.parse_args()
+
+    if args.sweep:
+        lines = tracked_lines(args.head)
+        problems = violations(lines)
+        if problems:
+            print(f"Public-boundary SWEEP failed: {len(problems)} pre-existing "
+                  f"match(es) across {len({p for p, _, _ in lines})} tracked files.",
+                  file=sys.stderr)
+            for problem in problems:
+                print(f"  - {problem}", file=sys.stderr)
+            return 1
+        print(f"Public-boundary sweep clean: {len(lines)} tracked lines inspected, "
+              f"{len(ACCEPTED)} accepted exception(s) skipped.")
+        return 0
+
+    if not args.base:
+        parser.error("--base is required unless --sweep is given")
 
     added = added_lines(args.base, args.head)
 
