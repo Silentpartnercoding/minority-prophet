@@ -1,0 +1,14 @@
+{
+  "schema": "minority-prophet.lir4-holdout-commitment.v1",
+  "status": "frozen-before-scoring",
+  "protocolCommit": "e90105d",
+  "normalizedInputSha256": "974df303ea8c489060b281260abde10e7b59f6525fcd2943e8c7138c99ddfe15",
+  "caseSetSha256": "f36868482c6fdf729876886c1ab0251dc998d5adec02762f4669b808eecabfbe",
+  "cases": 400,
+  "claims": 5000,
+  "multiRootCases": 1,
+  "selectedConfiguration": "author-0.00-margin-0.00-fallback-none",
+  "exactEdgeHiddenFraction": 0.4,
+  "bootstrapSeed": 20260809,
+  "bootstrapSamples": 10000
+}

@@ -1,0 +1,22 @@
+{
+  "availableRemainingThreadDirectories": 953,
+  "cap": 5000,
+  "excludedPriorCaseSetSha256": "b05959815576e9e731785322ca663018b2d3d2e5c8b3b3429a414cf7da0aa6d1",
+  "excludedPriorCases": 1449,
+  "invalidThreads": 0,
+  "labelBoundary": "Recorded PHEME reply-tree roots; not causal evidence independence.",
+  "multiRootCases": 1,
+  "normalizedJsonlSha256": "974df303ea8c489060b281260abde10e7b59f6525fcd2943e8c7138c99ddfe15",
+  "rawArchiveSha256": "079f6ffdbc0b367399262f101774372e5d19dd8278c33d6c97a84461a9bc58dd",
+  "recordedEdges": 4599,
+  "recordedRoots": 401,
+  "redistribution": "Tweet text, author identifiers, and normalized rows remain local.",
+  "schema": "minority-prophet.lir4-pheme-inventory.v1",
+  "selectedCaseSetSha256": "f36868482c6fdf729876886c1ab0251dc998d5adec02762f4669b808eecabfbe",
+  "selectedCases": 400,
+  "selectedClaims": 5000,
+  "selectionSaltSha256": "af5e9a85ab73c2a3fc98eed498b16d43202f5c96b104674977dc9e85b000d12f",
+  "status": "sealed-final-unused-holdout",
+  "threadsExcludedMissingTweets": 1,
+  "threadsSkippedForCap": 552
+}

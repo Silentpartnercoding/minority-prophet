@@ -7,9 +7,21 @@ from experiments.lir4.attacks import (
     remove_reply_identity,
     visible_edges,
 )
+from experiments.lir4.score_confirmatory import (
+    BOOTSTRAP_SAMPLES,
+    COLLISION_BUCKETS,
+    INPUT_SHA256,
+    MISSING_FRACTIONS,
+)
 
 
 class LIR4Tests(unittest.TestCase):
+    def test_holdout_and_attack_grid_are_frozen(self):
+        self.assertEqual(len(INPUT_SHA256), 64)
+        self.assertEqual(MISSING_FRACTIONS, (0.00, 0.25, 0.50, 0.75, 1.00))
+        self.assertEqual(COLLISION_BUCKETS, (32, 16, 8, 4, 2, 1))
+        self.assertEqual(BOOTSTRAP_SAMPLES, 10_000)
+
     def test_missingness_is_nested_and_only_changes_hidden_edges(self):
         original = build_fixture(10)
         visible = visible_edges(original)
