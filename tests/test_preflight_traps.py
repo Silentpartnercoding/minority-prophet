@@ -19,7 +19,8 @@ import tempfile
 import unittest
 
 from scripts.preflight_commission import (
-    trap_closure, trap_reachability, trap_self_valid, trap_vacuity,
+    trap_amendment, trap_closure, trap_reachability, trap_self_valid,
+    trap_terms, trap_vacuity,
 )
 
 GOOD_TEST = {
@@ -119,6 +120,47 @@ class TestPreflightIsNotVacuous(unittest.TestCase):
         t = trap_self_valid({"invalidationReasons": [], "valid": True},
                             {"clauses": {"C1": ["M1"], "C2": ["M2"]}})
         self.assertEqual(t.failures, [])
+
+    def test_M10_a_saturated_must_be_positive_control_is_caught(self):
+        """The dual of M3/M4, and the one T4 originally missed. LIN-000 v0.3's
+        L1-NEG fires on 44,450 of 44,450 eligible worlds -- provably all of them --
+        so it measures the population, not the checker."""
+        t = trap_vacuity({"tests": [{"id": "L1-NEG", "mustBe": ">0", "saturates": True,
+                                     "saturationNote": "44,450 of 44,450"}]})
+        self.assertTrue(t.failures)
+        self.assertIn("fixed by construction", t.failures[0])
+
+    def test_M10b_a_must_be_positive_control_that_declares_nothing_is_caught(self):
+        t = trap_vacuity({"tests": [{"id": "ABL-X", "mustBe": ">0"}]})
+        self.assertTrue(t.failures)
+        self.assertIn("does not declare", t.failures[0])
+
+    def test_M11_a_term_no_document_defines_is_caught(self):
+        """LIN-000 v0.3 states four tests in terms of 'the verdict' and defines it
+        nowhere. Document closure (T1) cannot see this: every file was present."""
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            (tmp / "REG.md").write_text("T1-POS: the verdict MUST NOT change.\n")
+            t = trap_terms(tmp, {"termsUsedByTests": ["the verdict"]})
+            self.assertTrue(t.failures)
+
+    def test_M11_control_a_defined_term_passes(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            (tmp / "REG.md").write_text("**the verdict** is 1 if |S1| > |S0|.\n"
+                                        "T1-POS: the verdict MUST NOT change.\n")
+            self.assertEqual(trap_terms(tmp, {"termsUsedByTests": ["the verdict"]}).failures, [])
+
+    def test_M12_an_erratum_that_misses_an_artifact_is_caught(self):
+        """v0.3.1 corrected 33-40% to 19.6-40.0% and declared the traceability
+        unchanged. The traceability still carries the superseded figure."""
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            (tmp / "TRACE.json").write_text('{"note": "Moduli chosen so 33-40% reject"}')
+            t = trap_amendment(tmp, {"corrections": [
+                {"supersededText": "33-40%", "correctedText": "19.6-40.0%", "by": "E1"}]})
+            self.assertTrue(t.failures)
+            self.assertIn("TRACE.json", t.failures[0])
 
     def test_control_a_well_formed_claims_file_passes(self):
         """The traps must still admit a good package, or they are merely noisy."""
