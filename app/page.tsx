@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 
 type ClaimKind = "independent" | "copied" | "contradiction";
 
+const paperUrl = "https://github.com/Silentpartnercoding/minority-prophet/blob/main/papers/minority-prophet-v1.0.7.md";
+
 const claims: { id: string; agent: string; belief: string; confidence: number; kind: ClaimKind; source: string }[] = [
   { id: "C-003", agent: "Observer 03", belief: "TRUE", confidence: 98, kind: "independent", source: "Instrument C" },
   { id: "C-002", agent: "Observer 02", belief: "TRUE", confidence: 96, kind: "independent", source: "Instrument B" },
@@ -38,6 +40,7 @@ export default function Home() {
           <span>MINORITY PROPHET <small>RESEARCH PROGRAM</small></span>
         </a>
         <div className="navlinks">
+          <a href={paperUrl}>Paper</a>
           <a href="#benchmark">Benchmark</a>
           <a href="#dashboard">Dashboard</a>
           <a href="#boundary">Boundary</a>
@@ -53,7 +56,7 @@ export default function Home() {
           <p className="lede">A focused benchmark testing whether aggregation methods can recover independently grounded truth under overwhelming copying pressure.</p>
           <div className="hero-actions">
             <a className="button primary" href="#dashboard">Explore the test <span>↓</span></a>
-            <a className="button secondary" href="#foundations">Read foundations <span>→</span></a>
+            <a className="button secondary" href={paperUrl}>Read the paper <span>→</span></a>
           </div>
         </div>
         <div className="hero-visual" aria-label="Three independent true observations opposed by ninety-five copied false claims">
