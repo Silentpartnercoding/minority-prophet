@@ -245,9 +245,16 @@ v0.3 registers three distinct things where v0.2 had one:
 
 | | condition | requirement | reference result |
 |---|---|---|---|
-| **T1-POS** | root **set** preserved, both worlds side-consistent — the paper | MUST be 0 | 116,032 checked, **0** |
-| **T1-NEC** | clause (ii) dropped from the original | MUST be **> 0** | 78,080 checked, **47,224 changes** |
-| **T1-ID** | `root(c)` preserved ∀c — the old condition | identity, excluded from evidence | 1,225,776 checked, 0 |
+| **T1-POS** | root **set** preserved, both worlds side-consistent — the paper | MUST be 0 | 116,032 checked, **0 violations** |
+| **T1-NEC** | clause (ii) dropped from the original | MUST be **> 0** | non-zero, and equal to the independent v0.2 measurement |
+| **T1-ID** | `root(c)` preserved ∀c — the old condition | identity, excluded from evidence | zero violations, as an identity requires |
+
+Checked-counts for T1-NEC and T1-ID are withheld while BL-053 is live: they are
+outcomes of the commission this section creates, and publishing them would retire
+its counter evidence before it is answered. They are in
+`results/lin000-v3-result.json` and become publishable when BL-053 closes.
+T1-POS's 116,032 is stated because it is already public and is needed for the
+identity-rewiring arithmetic below.
 
 T1-POS is 116,032 where the paper counts 121,944; the difference is exactly
 5,912, one identity rewiring per side-consistent world, which v0.3's definition
@@ -296,6 +303,18 @@ Both were already public — the first in the paper, the second in a merged find
 — and the registration must ship them to explain why v0.3 exists. **A value
 already published cannot be withheld, and pretending otherwise is theatre.**
 Recorded in `LIVE-COMMISSIONS.json` rather than worked around.
+
+## Recorded: the same defect, twice, two hours apart
+
+The first draft of this section published T1-NEC's and T1-ID's checked counts —
+withheld outcomes of the commission the same section declares live. That is the
+M27 defect, and it is **the second time in this session** that a finding
+published its own commission's answers; the first was BL-051's write-up.
+
+Both times `scripts/check_withheld_leak.py` rejected it in CI. Neither time did
+the author notice. A control that catches the same author making the same mistake
+twice in two hours is doing more work than the author's attention is, and that is
+the argument for building it rather than resolving to be careful.
 
 **The question:** BL-051 closed the stream. BL-053 asks whether the *semantics*
 are specified — whether T1-POS is a test rather than an identity, and how many
