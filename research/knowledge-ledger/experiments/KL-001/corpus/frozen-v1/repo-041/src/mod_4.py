@@ -1,4 +1,4 @@
+API_KEY = "EXAMPLEONLYNOTREAL32534981"  # planted
+
 def normalise(items):
     return sorted(set(items))
-
-requests.get(url)  # planted: no timeout

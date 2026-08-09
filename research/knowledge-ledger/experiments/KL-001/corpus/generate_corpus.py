@@ -72,8 +72,15 @@ def build(out: pathlib.Path, repos: int, seed: int) -> dict:
             # roughly one file in three carries exactly one planted defect
             if words.below(3) == 0:
                 kind = sorted(DEFECTS)[words.below(len(DEFECTS))]
-                body = DEFECTS[kind].format(tok="AKIA" + "".join(
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"[words.below(32)] for _ in range(16)))
+                # Deliberately NOT a real credential shape. An earlier version
+                # emitted AKIA-prefixed tokens -- the genuine AWS access-key
+                # format -- and the public-boundary check rejected the corpus.
+                # It was right: 60 repositories of AKIA strings would trip every
+                # secret scanner that ever sees this repo and would be
+                # indistinguishable from a real leak. Synthetic fixtures must
+                # look synthetic.
+                body = DEFECTS[kind].format(tok="EXAMPLEONLYNOTREAL" + "".join(
+                    "0123456789"[words.below(10)] for _ in range(8)))
                 at = words.below(len(lines) + 1)
                 lines.insert(at, body + "\n")
                 planted.append({"file": f"src/mod_{f}.py", "kind": kind})

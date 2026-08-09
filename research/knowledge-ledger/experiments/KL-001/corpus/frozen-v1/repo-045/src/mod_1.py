@@ -1,10 +1,4 @@
-def add(a, b):
-    return a + b
-
-try:
-    step()
-except:  # planted: bare except
-    pass
+API_KEY = "EXAMPLEONLYNOTREAL71396375"  # planted
 
 def add(a, b):
     return a + b
