@@ -15,13 +15,13 @@ moves that step before the shipping instead of after.
     T5 REACHABILITY a figure cited as validation must be reachable from the
                     registration's own definitions
     T6 LEAKAGE      no live commission's withheld values in the package
+    T7 TERMS        every term a test is stated in must be defined in the package
+    T8 AMENDMENT    an erratum's corrected figure must reach every artifact
 
-KNOWN RESIDUAL GAP, stated rather than hidden. T2 reads the reference's own
-reported invalidationReasons, so a registration whose invalidation clauses are
-weak enough to catch nothing passes it. Closing that needs a mutation harness --
-deliberately corrupt the reference and require the clauses to fire -- which is
-not automated here. Until it is, T2 detects a clause that is WRONG and not a
-clause that is ABSENT. Recorded as BL-055.
+T2 requires a mutation report from scripts/mutation_harness.py (BL-055): every
+registered invalidation clause must be shown to fire under a deliberate defect,
+or it is decorative. Without the report T2 fails, because a trap that is optional
+is a trap that will be omitted on the day it matters.
 
 Usage:
     python3 scripts/preflight_commission.py --package DIR --results FILE \
@@ -83,7 +83,7 @@ def trap_closure(package: pathlib.Path, registrations: list[pathlib.Path]) -> Tr
 
 # --- T2 -----------------------------------------------------------------------
 
-def trap_self_valid(results: dict) -> Trap:
+def trap_self_valid(results: dict, mutation_report: dict | None = None) -> Trap:
     """The reference run must pass the registration's own invalidation clauses.
 
     v0.3's clause invalidated a run for observing zero rejections at a modulus
@@ -98,6 +98,20 @@ def trap_self_valid(results: dict) -> Trap:
             t.fail(f"the reference run is invalid under its own registration: {r}")
     if results.get("valid") is False and not reasons:
         t.fail("results declare valid=false with no reason given")
+
+    # BL-055. Reading the reference's own reasons detects a clause that is WRONG,
+    # never one that is ABSENT: a registration whose clauses catch nothing passed
+    # this trap. The mutation report closes that -- every clause must be shown to
+    # fire under a deliberate defect, or it is decorative.
+    if mutation_report is None:
+        t.fail("no mutation report supplied; clause STRENGTH is unverified and a "
+               "registration with decorative clauses would pass (BL-055)")
+        return t
+    for cid, fired in mutation_report.get("clauses", {}).items():
+        if not fired:
+            text = mutation_report.get("clauseText", {}).get(cid, "")
+            t.fail(f"invalidation clause {cid} is decorative: no mutation triggers it "
+                   f"-- {text}")
     return t
 
 
@@ -168,6 +182,25 @@ def trap_vacuity(claims: dict | None) -> Trap:
             t.fail(f"{test['id']} is implied by {test['impliedBy']} and therefore "
                    f"carries no independent evidential load for "
                    f"{test['citesPaperClaim']}")
+    # The dual defect. A MUST-be->0 control whose outcome is fixed by construction
+    # is as vacuous as a MUST-be-0 one that cannot fail, and T4 audited only the
+    # latter. LIN-000 v0.3's L1-NEG fires on 44,450 of 44,450 side-inconsistent
+    # worlds -- provably all of them -- so any implementation computing root() and
+    # S_a passes it. Filed as checker power; measures population, not power.
+    for test in claims.get("tests", []):
+        if test.get("mustBe") != ">0":
+            continue
+        if test.get("saturates") is True:
+            t.fail(f"{test['id']} is a MUST-be->0 control that fires on every "
+                   f"eligible input ({test.get('saturationNote','saturated')}). Its "
+                   f"outcome is fixed by construction, so it measures the population "
+                   f"and not the checker. State a discriminating statistic or stop "
+                   f"filing it as checker power.")
+        elif "saturates" not in test:
+            t.fail(f"{test['id']} is a MUST-be->0 control but does not declare "
+                   f"whether it saturates. Report hits and eligible inputs; a "
+                   f"control that fires on all of them is not a control.")
+
     # Silence is not compliance: a paper claim with no test behind it is a gap.
     cited = {x.get("citesPaperClaim") for x in claims.get("tests", [])}
     for claim in claims.get("paperClaimsAsserted", []):
@@ -217,6 +250,59 @@ def trap_reachability(claims: dict | None, results: dict) -> Trap:
     return t
 
 
+# --- T7 -----------------------------------------------------------------------
+
+def trap_terms(package: pathlib.Path, claims: dict | None) -> Trap:
+    """Every term a registered test is stated in must be defined in the package.
+
+    LIN-000 v0.3 states T1-POS, T1-NEC, T1-ID and ABL-CLAIMCOUNT in terms of "the
+    verdict", and defines the verdict function nowhere -- not in v0.3, not in
+    v0.3.1, not in the traceability file. The implementer had to invent it, then
+    prove the choice could not affect any reported number. Harmless there;
+    load-bearing in principle, and invisible to a closure check that only looks
+    at document names.
+    """
+    t = Trap("T7", "terms — every term a test is stated in is defined")
+    if claims is None:
+        t.note("no claims file supplied; term closure not checked")
+        return t
+    corpus = "\n".join(f.read_text(errors="ignore") for f in package.rglob("*")
+                        if f.is_file() and f.suffix in {".md", ".json"})
+    for term in claims.get("termsUsedByTests", []):
+        name = term["term"] if isinstance(term, dict) else term
+        patterns = [rf"\*\*{re.escape(name)}\*\*", rf"^###?.*{re.escape(name)}",
+                    rf"{re.escape(name)}\s*(?:=|:=|is defined as|means)"]
+        if not any(re.search(pat, corpus, re.I | re.M) for pat in patterns):
+            t.fail(f"tests are stated in terms of {name!r}, which the package "
+                   f"never defines -- an implementer must invent it")
+    return t
+
+
+# --- T8 -----------------------------------------------------------------------
+
+def trap_amendment(package: pathlib.Path, claims: dict | None) -> Trap:
+    """A corrected figure must reach every artifact that states it.
+
+    v0.3.1 corrected the third modulus from "roughly 33%" to roughly 20%, and
+    declared the traceability file unchanged. TRACEABILITY-v0.3.json still reads
+    "Moduli chosen so 33-40% of draws reject" -- the superseded figure, standing
+    in the artifact TRC-101 exists to make authoritative.
+    """
+    t = Trap("T8", "amendment — corrected figures reach every artifact")
+    if claims is None:
+        t.note("no claims file supplied; amendment propagation not checked")
+        return t
+    files = {f.name: f.read_text(errors="ignore") for f in package.rglob("*")
+             if f.is_file() and f.suffix in {".md", ".json"}}
+    for corr in claims.get("corrections", []):
+        stale, fresh = corr["supersededText"], corr["correctedText"]
+        for name, body in files.items():
+            if stale in body and fresh not in body:
+                t.fail(f"{name} still states {stale!r}, superseded by {fresh!r} "
+                       f"in {corr.get('by','an amendment')}")
+    return t
+
+
 # --- T6 -----------------------------------------------------------------------
 
 def trap_leakage(package: pathlib.Path, repo: pathlib.Path) -> Trap:
@@ -250,6 +336,7 @@ def main() -> int:
     ap.add_argument("--claims-json")
     ap.add_argument("--repo", default=".")
     ap.add_argument("--allow", default="", help="comma-separated numbers exempt from T3")
+    ap.add_argument("--mutation-report", help="output of scripts/mutation_harness.py")
     args = ap.parse_args()
 
     package = pathlib.Path(args.package)
@@ -264,9 +351,12 @@ def main() -> int:
         claims["_registrationTexts"] = [r.read_text() for r in regs]
     allow = {int(x) for x in args.allow.split(",") if x.strip()}
 
-    traps = [trap_closure(package, regs), trap_self_valid(results),
+    mutation = (json.loads(pathlib.Path(args.mutation_report).read_text())
+                if args.mutation_report else None)
+    traps = [trap_closure(package, regs), trap_self_valid(results, mutation),
              trap_arithmetic(regs, results, allow), trap_vacuity(claims),
-             trap_reachability(claims, results), trap_leakage(package, repo)]
+             trap_reachability(claims, results), trap_leakage(package, repo),
+             trap_terms(package, claims), trap_amendment(package, claims)]
 
     failed = 0
     for t in traps:
