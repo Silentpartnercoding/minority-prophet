@@ -34,6 +34,8 @@ true outside its stated experiment.
 | LIR-1E | Canonical constructed record-root recovery experiment: supported with material abstention | `results/lir1e-confirmatory-v0.1/canonical-manifest.json` | The frozen method recovered useful constructed roots and truth advantage, answering 25 of 36 cases; it does not establish causal evidence independence or uncontrolled real-world performance. |
 | LIR-2 | Canonical precision-constrained root-coverage experiment: supported | `results/lir2-confirmatory-v0.1/canonical-manifest.json` | Direct root grouping answered 34 of 36 constructed cases correctly with zero false root merges; the synthetic generator and model pair remain a narrow boundary. |
 | LIR-2/PHEME | Canonical fixed-method recorded-lineage transfer: rejected | `results/lir2-pheme-transfer-v0.1/canonical-manifest.json` | The constructed-corpus root grouper did not transfer to PHEME reply-tree coverage; precision remained 1.0 but recall was 0.2020. |
+| LIR-3/PHEME | Canonical observable-provenance bridge: supported | `results/lir3-confirmatory-v0.1/canonical-manifest.json` | Reply-target author identity recovered recorded PHEME reply components when exact parent IDs were hidden; this does not establish causal evidence ancestry, independence, authentication, or truth. |
+| LIR-4/PHEME | Canonical provenance graceful-degradation experiment: rejected | `results/lir4-confirmatory-v0.1/canonical-manifest.json` | Substantial reply-identity missingness fragmented recorded roots; the false-identity safety diagnostic was underpowered because only one holdout case had multiple roots. |
 
 ## Promotion rule
 
