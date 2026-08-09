@@ -53,9 +53,3 @@ next-env.d.ts
 /outputs/
 /work/
 /artifacts/
-
-# A live commission's reference results must not be published: the withheld set
-# is computed FROM this file, so committing it publishes exactly what the
-# commission withholds. Committed when BL-057 closes, as BL-044's and BL-051's
-# were. Kept locally so scripts/check_withheld_leak.py can derive the set.
-research/knowledge-ledger/lineage/results/lin000-v4-result.json
