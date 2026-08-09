@@ -77,7 +77,10 @@ def tune(paths: list[Path]) -> dict[str, Any]:
         "selectionRule": "eligible precision=1 and zero false reversals; maximize coverage, root recall, all-case yield, then threshold",
         "candidates": rows,
         "selected": selected,
-        "inputs": {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},
+        "inputs": {
+            "lir1eDevelopmentClaimsSha256": hashlib.sha256(paths[0].read_bytes()).hexdigest(),
+            "lir1eConfirmatoryClaimsSha256": hashlib.sha256(paths[1].read_bytes()).hexdigest(),
+        },
     }
 
 
