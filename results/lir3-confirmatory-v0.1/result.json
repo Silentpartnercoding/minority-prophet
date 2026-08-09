@@ -1,0 +1,96 @@
+{
+  "bootstrap": {
+    "intervals95": {
+      "f1GainOverLir2": {
+        "lower": 0.5361415669677075,
+        "upper": 0.6491842021542518
+      },
+      "recallGainOverLir2": {
+        "lower": 0.6980366634125177,
+        "upper": 0.7872791908948108
+      },
+      "rootCountMae": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "rootF1": {
+        "lower": 1.0,
+        "upper": 1.0
+      },
+      "rootPrecision": {
+        "lower": 1.0,
+        "upper": 1.0
+      },
+      "rootRecall": {
+        "lower": 1.0,
+        "upper": 1.0
+      }
+    },
+    "samples": 10000,
+    "seed": 20260809
+  },
+  "caseCount": 425,
+  "claimCount": 5000,
+  "configuration": {
+    "authorMargin": 0.0,
+    "authorMinScore": 0.0,
+    "fallback": "none",
+    "id": "author-0.00-margin-0.00-fallback-none"
+  },
+  "criterion": {
+    "supported": true,
+    "tests": {
+      "minimumF1GainOverLir2": true,
+      "minimumRecallGainOverLir2": true,
+      "minimumRootF1": true,
+      "minimumRootPrecision": true,
+      "minimumRootRecall": true,
+      "strictMaximumRootCountMae": true
+    },
+    "thresholds": {
+      "minimumF1GainOverLir2": 0.15,
+      "minimumRecallGainOverLir2": 0.15,
+      "minimumRootF1": 0.6,
+      "minimumRootPrecision": 0.99,
+      "minimumRootRecall": 0.45,
+      "strictMaximumRootCountMae": 4.0
+    }
+  },
+  "gainsOverLir2": {
+    "rootF1": 0.595714265085989,
+    "rootRecall": 0.7466427769935209
+  },
+  "hiddenFraction": 0.4,
+  "inputs": {
+    "developmentResultSha256": "dec0f4d5c64ff0966920ec14a7d16f649d3e6778cf57dc7be29a6d7bf17322ba",
+    "normalizedConfirmatorySha256": "4a66b3bd48865c8a05d6167417d283ef3ad6ea46aef44aa18436a9ea2db5e1c0"
+  },
+  "interpretationBoundary": "Previously unused cases from a previously studied corpus; not independent-dataset generalization, causal ancestry, evidence independence, or truth recovery.",
+  "labelBoundary": "Recorded PHEME reply-tree roots; not causal evidence independence.",
+  "lir2SameCaseComparator": {
+    "rootCount": {
+      "cases": 425,
+      "maxAbsoluteError": 37,
+      "meanAbsoluteError": 3.971764705882353
+    },
+    "rootPair": {
+      "f1": 0.404285734914011,
+      "pairs": 55433,
+      "precision": 1.0,
+      "recall": 0.25335722300647917
+    }
+  },
+  "rootCount": {
+    "cases": 425,
+    "maxAbsoluteError": 0,
+    "meanAbsoluteError": 0.0
+  },
+  "rootPair": {
+    "f1": 1.0,
+    "pairs": 55433,
+    "precision": 1.0,
+    "recall": 1.0
+  },
+  "schema": "minority-prophet.lir3-confirmatory-result.v1",
+  "status": "confirmatory-complete"
+}

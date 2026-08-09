@@ -1,0 +1,28 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "LIR-3/PHEME",
+  "status": "canonical-recorded-lineage-provenance-bridge-supported",
+  "files": {
+    "experiments/lir3/PREREGISTRATION.md": "b5f256d281ebb3178125682de9e6dee7432cff06836ca3c4b5ff409024cd8950",
+    "experiments/lir3/HOLDOUT-COMMITMENT.json": "5b43c2a9d189d1be457b1fb4705ec58804fb9117f3b244f0859e6c792df4d10f",
+    "experiments/lir3/pheme_provenance.py": "abebc4346e8e09617ae4a92d6c501375027dec84c654f97bec2a519f694bc341",
+    "experiments/lir3/provenance_parent.py": "2b2ed89981ff062b373ac92479ab53643fa14617fcc723a49b90f4338261ce54",
+    "experiments/lir3/tune.py": "b7f2e4c8b6c168aaf8796ea6dac66f0c3437300be3c57cb70c8afcde20135207",
+    "experiments/lir3/score_confirmatory.py": "ddb78beb844c03b9ca60568f69572a07c2edcac87475b24f9a327b3112e17c87",
+    "results/lir3-pheme-v0.1/inventory.json": "5d977bb4d4eb3dcd969ee034712f5089b5f31ddec8a77d0ca3b3bc7fc527366d",
+    "results/lir3-development-v0.1/result.json": "dec0f4d5c64ff0966920ec14a7d16f649d3e6778cf57dc7be29a6d7bf17322ba",
+    "results/lir3-confirmatory-v0.1/README.md": "b4d5a55051912c496a9f67ccabe67b026a96e5ab4a033d6f96e4c86f7e2e906d",
+    "results/lir3-confirmatory-v0.1/REPRODUCTION.md": "7cee2d0069b355067a406160b74b8bd2cdf94ab770bd4e28aae86b249b7805ac",
+    "results/lir3-confirmatory-v0.1/result.json": "358fb278c139b55dcb8ee40c6f1370504627a0a0ff3504844223f595cbd7a10f"
+  },
+  "privateInput": {
+    "normalizedConfirmatorySha256": "4a66b3bd48865c8a05d6167417d283ef3ad6ea46aef44aa18436a9ea2db5e1c0",
+    "confirmatoryCaseSetSha256": "d03ac90910866ba5ad65b95c54dc8edac0789e55b62fd1293b50e2470a1ab2eb"
+  },
+  "reproduction": {
+    "cleanRuns": 2,
+    "byteIdentical": true,
+    "resultSha256": "358fb278c139b55dcb8ee40c6f1370504627a0a0ff3504844223f595cbd7a10f"
+  },
+  "claimBoundary": "Recorded PHEME reply-tree roots only; not causal evidence independence or truth."
+}

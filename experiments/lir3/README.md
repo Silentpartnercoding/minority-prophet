@@ -6,3 +6,8 @@ mentions, URL domains, and hashtags can restore recorded-lineage coverage while
 preserving high precision.
 
 See `PREREGISTRATION.md`. Tweet content and normalized records remain local.
+
+The sealed 425-case confirmatory result supported all six registered conditions.
+See `results/lir3-confirmatory-v0.1/`. The result establishes recovery of
+recorded reply-tree components under the registered perturbation, not causal
+evidence ancestry, independence, or truth.
