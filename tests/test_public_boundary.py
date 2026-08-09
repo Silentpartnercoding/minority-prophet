@@ -211,3 +211,25 @@ def test_the_helper_digest_matches_what_the_checker_looks_for(monkeypatch):
     monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
     monkeypatch.setenv("MP_BOUNDARY_DIGESTS", digest("Some Invented Phrase"))
     assert sensitive_vocabulary_hit("we mention some invented phrase here")
+
+
+def test_a_run_with_hidden_rules_says_so_without_saying_what(monkeypatch, capsys):
+    """A secret input makes this check unreproducible by a third party: a fork
+    runs it without the secret and can pass where main would fail. The mitigation
+    is not to hide that, but to disclose the count. Enough for a reader to know an
+    unaudited input existed; nothing about what it was."""
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
+    import importlib, hashlib as _h
+    import scripts.check_public_boundary as m
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", "")
+    assert "supplied at runtime" not in m.provenance()
+
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS",
+                       f"{_h.sha256(b'x').hexdigest()} {_h.sha256(b'y').hexdigest()}")
+    note = m.provenance()
+    assert "2 supplied at runtime" in note
+    assert "not reproducible without them" in note
+    # and it discloses no digest
+    assert _h.sha256(b"x").hexdigest() not in note
