@@ -79,8 +79,14 @@ def build(out: pathlib.Path, repos: int, seed: int) -> dict:
                 # secret scanner that ever sees this repo and would be
                 # indistinguishable from a real leak. Synthetic fixtures must
                 # look synthetic.
-                body = DEFECTS[kind].format(tok="EXAMPLEONLYNOTREAL" + "".join(
-                    "0123456789"[words.below(10)] for _ in range(8)))
+                # 16 characters: long enough for the baseline scanner's 12+ rule,
+                # short enough that the boundary check's assigned-secret rule
+                # (24+) does not fire. A synthetic credential has to sit in that
+                # window or it is either undetectable or indistinguishable from a
+                # real one -- the second attempt was 26 characters and was
+                # rejected for exactly that.
+                body = DEFECTS[kind].format(tok="EXAMPLEONLY" + "".join(
+                    "0123456789"[words.below(10)] for _ in range(5)))
                 at = words.below(len(lines) + 1)
                 lines.insert(at, body + "\n")
                 planted.append({"file": f"src/mod_{f}.py", "kind": kind})

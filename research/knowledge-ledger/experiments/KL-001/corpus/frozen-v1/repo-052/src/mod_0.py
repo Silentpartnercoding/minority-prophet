@@ -1,4 +1,4 @@
-def normalise(items):
-    return sorted(set(items))
+os.system("rm -rf " + user_input)  # planted
 
-requests.get(url)  # planted: no timeout
+def add(a, b):
+    return a + b

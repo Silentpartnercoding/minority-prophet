@@ -1,34 +1,34 @@
 {
   "schema": "minority-prophet.kl001-baseline.v0.1",
-  "corpusManifestDigest": "4dd1a554c5462423d4bb8bb4b99e7ee78cd13aa13832333f3d2802322bb2b4b2",
-  "plantedDefects": 63,
-  "truePositives": 47,
-  "falseNegatives": 16,
+  "corpusManifestDigest": "3f029aea56765bd89099ce0c3aaa1e52524dd86010063f99b9f5f0c58e77dca9",
+  "plantedDefects": 71,
+  "truePositives": 58,
+  "falseNegatives": 13,
   "falsePositives": 0,
-  "baselineRecall": 0.746,
-  "falseCleanRate": 0.2558,
-  "cleanRepos": 17,
+  "baselineRecall": 0.8169,
+  "falseCleanRate": 0.1224,
+  "cleanRepos": 11,
   "falsePositiveReposAmongClean": 0,
   "perClass": {
-    "hardcoded-credential": {
-      "planted": 9,
-      "found": 9
-    },
     "shell-injection": {
-      "planted": 13,
-      "found": 13
-    },
-    "bare-except": {
-      "planted": 14,
-      "found": 14
-    },
-    "unchecked-return": {
-      "planted": 11,
-      "found": 11
+      "planted": 17,
+      "found": 17
     },
     "missing-timeout": {
-      "planted": 16,
+      "planted": 13,
       "found": 0
+    },
+    "bare-except": {
+      "planted": 16,
+      "found": 16
+    },
+    "hardcoded-credential": {
+      "planted": 12,
+      "found": 12
+    },
+    "unchecked-return": {
+      "planted": 13,
+      "found": 13
     }
   },
   "note": "Baseline for a plain pattern scanner with no dual ledger. This is the denominator the registered 95%-preservation target is a percentage of. Deliberately unimpressive: a cleverer baseline would lower the bar the dual ledger must clear."

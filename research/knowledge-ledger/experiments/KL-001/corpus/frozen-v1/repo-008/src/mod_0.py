@@ -1,10 +1,4 @@
-def normalise(items):
-    return sorted(set(items))
-
 def add(a, b):
     return a + b
 
-def normalise(items):
-    return sorted(set(items))
-
-API_KEY = "EXAMPLEONLYNOTREAL88340053"  # planted
+result = risky_call()  # planted: return value never checked
