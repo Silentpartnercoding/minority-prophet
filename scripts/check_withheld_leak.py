@@ -39,6 +39,15 @@ SELF_EXEMPT = {
 # Values small enough to appear coincidentally in unrelated prose. A blocked set
 # containing 2 or 7 would make every document a violation.
 MIN_INTERESTING = 100
+# Above MIN_INTERESTING but below this, a value collides with ordinary code
+# constants -- slice lengths, buffer sizes, thresholds -- often enough that
+# enforcing it produces noise rather than protection. BL-057's L1-DISC histogram
+# contains 120, which matched `stderr.strip()[:120]` in an unrelated script.
+#
+# Such values are reported as UNPROTECTABLE rather than enforced or dropped. A
+# control that quietly stops covering something is worse than one that says so:
+# the declaration then has to decide whether the experiment can tolerate it.
+COLLISION_FLOOR = 1000
 
 
 # Structurally derivable metadata, not outcomes. prefixDigestCount is
@@ -83,8 +92,14 @@ def withheld_sets(root: pathlib.Path) -> dict[str, set[int]]:
         bounds = set(entry.get("declaredBounds", []))
         values = {v for v in _integers(json.loads(results.read_text()))
                   if v not in bounds and abs(v) >= MIN_INTERESTING}
-        blocked[entry["id"]] = values
+        unprotectable = {v for v in values if abs(v) < COLLISION_FLOOR}
+        blocked[entry["id"]] = values - unprotectable
+        if unprotectable:
+            UNPROTECTABLE[entry["id"]] = sorted(unprotectable)
     return blocked
+
+
+UNPROTECTABLE: dict[str, list[int]] = {}
 
 
 def _spellings(value: int) -> list[str]:
@@ -151,6 +166,11 @@ def main() -> int:
     total = sum(len(v) for v in blocked.values())
     print(f"Withheld-leak check passed: {total} withheld value(s) across "
           f"{len(blocked)} live commission(s), none published.")
+    for cid, vals in UNPROTECTABLE.items():
+        print(f"  UNPROTECTED in {cid}: {vals} -- below the collision floor, so "
+              f"enforcing them would flag ordinary code constants. They are NOT "
+              f"covered by this check; the commission must tolerate their exposure "
+              f"or the experiment must not depend on them.")
     return 0
 
 

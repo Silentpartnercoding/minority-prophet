@@ -88,13 +88,30 @@ class TestWithheldLeak(unittest.TestCase):
                 withheld_sets(root)
 
     def test_underscore_separated_literals_are_not_false_positives(self):
-        """`RANDOMIZED_WORLDS = 100_000` does not contain the value 100. Caught
-        when the checker blocked the constant declaring its own world count."""
+        """`WORLDS = 44_450` does not contain the value 44450. Uses a value above
+        the collision floor, since values below it are reported unprotectable
+        rather than enforced."""
         with tempfile.TemporaryDirectory() as d:
-            root = _fixture(pathlib.Path(d), status="live", values={"n": 100}, bounds=[])
+            root = _fixture(pathlib.Path(d), status="live", values={"n": 44450}, bounds=[])
             blocked = withheld_sets(root)
-            self.assertEqual(violations([("m.py", 1, "WORLDS = 100_000")], blocked), [])
-            self.assertTrue(violations([("m.py", 2, "count is 100 exactly")], blocked))
+            self.assertEqual(violations([("m.py", 1, "WORLDS = 44_450")], blocked), [])
+            self.assertTrue(violations([("m.py", 2, "count is 44450 exactly")], blocked))
+
+    def test_values_below_the_collision_floor_are_reported_not_silently_dropped(self):
+        """BL-057's L1-DISC histogram contains 120, which matched
+        `stderr.strip()[:120]` in an unrelated script. Enforcing such values is
+        noise; dropping them silently is a control quietly ceasing to cover
+        something. It must say so."""
+        from scripts.check_withheld_leak import UNPROTECTABLE
+        UNPROTECTABLE.clear()
+        with tempfile.TemporaryDirectory() as d:
+            root = _fixture(pathlib.Path(d), status="live",
+                            values={"small": 120, "large": 44450}, bounds=[])
+            blocked = withheld_sets(root)["BL-TEST"]
+            self.assertNotIn(120, blocked, "a colliding value must not be enforced")
+            self.assertIn(44450, blocked)
+            self.assertIn(120, UNPROTECTABLE.get("BL-TEST", []),
+                          "and it must be reported as uncovered")
 
     def test_derivable_metadata_is_not_withheld(self):
         """prefixDigestCount is worlds // interval by definition. Blocking it

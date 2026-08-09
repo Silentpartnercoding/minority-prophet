@@ -60,6 +60,13 @@ def battery(L2, L3, max_claims: int) -> dict:
     return {
         "worlds": len(worlds),
         "streamDigest": digest.hexdigest(),
+        # The registration requires checked counts to be REPORTED, not merely the
+        # violations. Omitting them here let M-rewire-identity -- which violates
+        # RW-001 by admitting the identity -- evade the battery entirely: 192
+        # rewirings became 344 and no reported value moved.
+        "t1PosChecked": counters["t1PosChecked"],
+        "t1NecChecked": counters["t1NecChecked"],
+        "t1IdChecked": counters["t1IdChecked"],
         "t1PosViolations": counters["t1PosViolations"],
         "t1IdViolations": counters["t1IdViolations"],
         "t1NecVerdictChanges": counters["t1NecVerdictChanges"],
@@ -76,6 +83,10 @@ def battery(L2, L3, max_claims: int) -> dict:
             f"{sorted(L3.s_sets(w)[0])}{sorted(L3.s_sets(w)[1])}"
             f"{L3.verdict(w)}{L3.is_side_consistent(w)}"
             f"{[L3.root_of(w, i) for i in range(len(w))]}"
+            # the rewiring population is part of observable behaviour: without
+            # it, a mutant that changes the population and nothing else was
+            # mislabelled an equivalent mutant rather than reported as a gap
+            f"{sum(1 for _ in L3.rewirings(w))}"
             for w in worlds).encode()).hexdigest(),
     }
 
@@ -87,7 +98,7 @@ def mutants(L2, L3):
     off-by-one, a swapped side, a shallow walk, a comparison flipped -- rather
     than defects this programme has already recorded.
     """
-    real = {"root_of": L3.root_of, "s_sets": L3.s_sets, "verdict": L3.verdict,
+    real = {"rewirings": L3.rewirings, "root_of": L3.root_of, "s_sets": L3.s_sets, "verdict": L3.verdict,
             "is_side_consistent": L3.is_side_consistent,
             "root_set": L3.root_set, "l1_status": L3.l1_status,
             "v2_s_sets": L2.s_sets, "v2_verdict": L2.verdict,
@@ -143,6 +154,63 @@ def mutants(L2, L3):
                       if c["side"] == 0 and c["parentIndex"] is not None),
             frozenset(real["root_of"](w, i) for i, c in enumerate(w)
                       if c["side"] == 1 and c["parentIndex"] is not None)))
+    real_rewirings = real["rewirings"]
+    yield "M-root-secondlast: root() stops one short of the chain head", \
+        lambda: set_all("root_of", lambda w, i: (
+            i if w[i]["parentIndex"] is None else
+            (w[i]["parentIndex"] if w[w[i]["parentIndex"]]["parentIndex"] is None
+             else real["root_of"](w, w[i]["parentIndex"]))))
+    yield "M-sa-roots-only: S_a built from roots only, not all claims", \
+        lambda: set_all("s_sets", lambda w: (
+            frozenset(i for i, c in enumerate(w) if c["parentIndex"] is None and c["side"] == 0),
+            frozenset(i for i, c in enumerate(w) if c["parentIndex"] is None and c["side"] == 1)))
+    yield "M-sa-multiset: S_a keeps duplicates (list, not set)", \
+        lambda: set_all("s_sets", lambda w: (
+            frozenset(real["root_of"](w, i) for i, c in enumerate(w) if c["side"] == 0),
+            frozenset(real["root_of"](w, i) for i, c in enumerate(w) if c["side"] == 1)) )
+    yield "M-verdict-neverabstain: ties resolve to 0", \
+        lambda: set_all("verdict", lambda w: (
+            "1" if len(real["s_sets"](w)[1]) > len(real["s_sets"](w)[0]) else "0"))
+    yield "M-verdict-constant: every world returns abstain", \
+        lambda: set_all("verdict", lambda w: "abstain")
+    yield "M-consistency-firstonly: only claim 1's edge checked", \
+        lambda: set_all("is_side_consistent", lambda w: (
+            len(w) < 2 or w[1]["parentIndex"] is None or
+            w[w[1]["parentIndex"]]["side"] == w[1]["side"]))
+    yield "M-consistency-never: no world declared side-consistent", \
+        lambda: set_all("is_side_consistent", lambda w: False)
+    yield "M-rootset-empty: root set always empty", \
+        lambda: setattr(L3, "root_set", lambda w: frozenset())
+    yield "M-rootset-all: every claim counted as a root", \
+        lambda: setattr(L3, "root_set", lambda w: frozenset(range(len(w))))
+    yield "M-l1-inverted: L1 reports the opposite match", \
+        lambda: setattr(L3, "l1_status", lambda w: (
+            real["is_side_consistent"](w), not real["l1_status"](w)[1]))
+    yield "M-l1-always-ok: L1 always reports a match", \
+        lambda: setattr(L3, "l1_status", lambda w: (real["is_side_consistent"](w), True))
+    yield "M-abl-shallow-never: the shallow ablation never catches", \
+        lambda: setattr(L3, "ablation_shallow_catches", lambda w: False)
+    yield "M-abl-shallow-always: the shallow ablation always catches", \
+        lambda: setattr(L3, "ablation_shallow_catches", lambda w: True)
+    yield "M-abl-count-never: the claim-count ablation never catches", \
+        lambda: setattr(L3, "ablation_claimcount_catches", lambda w: False)
+    yield "M-abl-count-always: the claim-count ablation always catches", \
+        lambda: setattr(L3, "ablation_claimcount_catches", lambda w: True)
+    yield "M-rewire-identity: rewirings include the identity (RW-001 violated)", \
+        lambda: setattr(L3, "rewirings", lambda w: __import__("itertools").chain(
+            [[dict(c) for c in w]], real_rewirings(w)))
+    yield "M-rewire-sides: rewirings also permute sides", \
+        lambda: setattr(L3, "rewirings", lambda w: (
+            [{"parentIndex": c["parentIndex"], "side": 1 - c["side"]} for c in r]
+            for r in real_rewirings(w)))
+    yield "M-rewire-none: no rewirings enumerated at all", \
+        lambda: setattr(L3, "rewirings", lambda w: iter(()))
+    yield "M-canon-separator: canonical form joins with comma, not semicolon", \
+        lambda: setattr(L2, "canonical_world", lambda w: ",".join(
+            f"{'-' if c['parentIndex'] is None else c['parentIndex']}|{c['side']}" for c in w))
+    yield "M-canon-rootmark: canonical form writes 'n' for a root, not '-'", \
+        lambda: setattr(L2, "canonical_world", lambda w: ";".join(
+            f"{'n' if c['parentIndex'] is None else c['parentIndex']}|{c['side']}" for c in w))
     return restore
 
 
@@ -150,6 +218,26 @@ MUTANT_IDS = [
     "root-shallow", "root-identity", "sides-swapped", "verdict-strict",
     "verdict-inverted", "consistency-vs-root", "consistency-always",
     "rootset-count", "l1-lenient", "selfroot",
+    "root-secondlast",
+    "sa-roots-only",
+    "sa-multiset",
+    "verdict-neverabstain",
+    "verdict-constant",
+    "consistency-firstonly",
+    "consistency-never",
+    "rootset-empty",
+    "rootset-all",
+    "l1-inverted",
+    "l1-always-ok",
+    "abl-shallow-never",
+    "abl-shallow-always",
+    "abl-count-never",
+    "abl-count-always",
+    "rewire-identity",
+    "rewire-sides",
+    "rewire-none",
+    "canon-separator",
+    "canon-rootmark",
 ]
 
 
