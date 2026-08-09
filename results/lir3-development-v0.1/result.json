@@ -1,0 +1,764 @@
+{
+  "candidates": [
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.0,
+        "fallback": "none",
+        "id": "author-0.00-margin-0.00-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 0.9975386397364896,
+        "pairs": 56035,
+        "precision": 0.9997097979468205,
+        "recall": 0.9953768916820168
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.0,
+        "fallback": "mention",
+        "id": "author-0.00-margin-0.00-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 0.9975386397364896,
+        "pairs": 56035,
+        "precision": 0.9997097979468205,
+        "recall": 0.9953768916820168
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.0,
+        "fallback": "mention-text",
+        "id": "author-0.00-margin-0.00-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 0.9975386397364896,
+        "pairs": 56035,
+        "precision": 0.9997097979468205,
+        "recall": 0.9953768916820168
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.0,
+        "fallback": "none",
+        "id": "author-0.00-margin-0.10-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 26,
+        "meanAbsoluteError": 0.9568345323741008
+      },
+      "rootPair": {
+        "f1": 0.7627718878822072,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.6165167768266696
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.0,
+        "fallback": "mention",
+        "id": "author-0.00-margin-0.10-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 26,
+        "meanAbsoluteError": 0.9544364508393285
+      },
+      "rootPair": {
+        "f1": 0.7627857094979555,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.6165348358435366
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.0,
+        "fallback": "mention-text",
+        "id": "author-0.00-margin-0.10-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 26,
+        "meanAbsoluteError": 0.947242206235012
+      },
+      "rootPair": {
+        "f1": 0.7634625905786988,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.6174197276700256
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.0,
+        "fallback": "none",
+        "id": "author-0.00-margin-0.20-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 28,
+        "meanAbsoluteError": 1.9112709832134294
+      },
+      "rootPair": {
+        "f1": 0.6491510538641686,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.48055043883410986
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.0,
+        "fallback": "mention",
+        "id": "author-0.00-margin-0.20-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 28,
+        "meanAbsoluteError": 1.908872901678657
+      },
+      "rootPair": {
+        "f1": 0.6491675306458499,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.480568497850977
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.0,
+        "fallback": "mention-text",
+        "id": "author-0.00-margin-0.20-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 28,
+        "meanAbsoluteError": 1.8920863309352518
+      },
+      "rootPair": {
+        "f1": 0.6509939582927304,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.4825730487232275
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.25,
+        "fallback": "none",
+        "id": "author-0.25-margin-0.00-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 11,
+        "meanAbsoluteError": 2.2422062350119902
+      },
+      "rootPair": {
+        "f1": 0.6697726917950505,
+        "pairs": 56035,
+        "precision": 0.9994266260526787,
+        "recall": 0.5036479214071586
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.25,
+        "fallback": "mention",
+        "id": "author-0.25-margin-0.00-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 11,
+        "meanAbsoluteError": 2.2422062350119902
+      },
+      "rootPair": {
+        "f1": 0.6697726917950505,
+        "pairs": 56035,
+        "precision": 0.9994266260526787,
+        "recall": 0.5036479214071586
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.25,
+        "fallback": "mention-text",
+        "id": "author-0.25-margin-0.00-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 11,
+        "meanAbsoluteError": 2.2182254196642686
+      },
+      "rootPair": {
+        "f1": 0.6722916691635606,
+        "pairs": 56035,
+        "precision": 0.9994298542564943,
+        "recall": 0.5065012460721638
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.25,
+        "fallback": "none",
+        "id": "author-0.25-margin-0.10-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 31,
+        "meanAbsoluteError": 2.7985611510791366
+      },
+      "rootPair": {
+        "f1": 0.5345172089822815,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.36473796366525807
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.25,
+        "fallback": "mention",
+        "id": "author-0.25-margin-0.10-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 31,
+        "meanAbsoluteError": 2.7961630695443644
+      },
+      "rootPair": {
+        "f1": 0.5345366008574605,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.3647560226821252
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.25,
+        "fallback": "mention-text",
+        "id": "author-0.25-margin-0.10-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 31,
+        "meanAbsoluteError": 2.7793764988009593
+      },
+      "rootPair": {
+        "f1": 0.5360669389697426,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.3661826850146278
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.25,
+        "fallback": "none",
+        "id": "author-0.25-margin-0.20-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 32,
+        "meanAbsoluteError": 2.841726618705036
+      },
+      "rootPair": {
+        "f1": 0.5306674803974899,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.36116227832556796
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.25,
+        "fallback": "mention",
+        "id": "author-0.25-margin-0.20-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 32,
+        "meanAbsoluteError": 2.839328537170264
+      },
+      "rootPair": {
+        "f1": 0.5306869742882161,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.3611803373424351
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.25,
+        "fallback": "mention-text",
+        "id": "author-0.25-margin-0.20-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 32,
+        "meanAbsoluteError": 2.8225419664268587
+      },
+      "rootPair": {
+        "f1": 0.5322059057413985,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.36258894065807057
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.45,
+        "fallback": "none",
+        "id": "author-0.45-margin-0.00-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 33,
+        "meanAbsoluteError": 3.6019184652278176
+      },
+      "rootPair": {
+        "f1": 0.4504050707299668,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.29065987647632463
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.45,
+        "fallback": "mention",
+        "id": "author-0.45-margin-0.00-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 33,
+        "meanAbsoluteError": 3.5995203836930454
+      },
+      "rootPair": {
+        "f1": 0.4504267524835595,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.29067793549319176
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.45,
+        "fallback": "mention-text",
+        "id": "author-0.45-margin-0.00-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 33,
+        "meanAbsoluteError": 3.565947242206235
+      },
+      "rootPair": {
+        "f1": 0.45332662979721805,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.29309784375338604
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.45,
+        "fallback": "none",
+        "id": "author-0.45-margin-0.10-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.606714628297362
+      },
+      "rootPair": {
+        "f1": 0.45029665286018133,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.290569581391989
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.45,
+        "fallback": "mention",
+        "id": "author-0.45-margin-0.10-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.6043165467625897
+      },
+      "rootPair": {
+        "f1": 0.45031833764779966,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.29058764040885615
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.45,
+        "fallback": "mention-text",
+        "id": "author-0.45-margin-0.10-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.58273381294964
+      },
+      "rootPair": {
+        "f1": 0.4517049029065134,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2917434174883519
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.45,
+        "fallback": "none",
+        "id": "author-0.45-margin-0.20-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.616306954436451
+      },
+      "rootPair": {
+        "f1": 0.44968923231983876,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2900639289197096
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.45,
+        "fallback": "mention",
+        "id": "author-0.45-margin-0.20-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.613908872901679
+      },
+      "rootPair": {
+        "f1": 0.44971093410977503,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.29008198793657675
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.45,
+        "fallback": "mention-text",
+        "id": "author-0.45-margin-0.20-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.594724220623501
+      },
+      "rootPair": {
+        "f1": 0.45107692307692304,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2912197059992054
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.65,
+        "fallback": "none",
+        "id": "author-0.65-margin-0.00-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 36,
+        "meanAbsoluteError": 3.695443645083933
+      },
+      "rootPair": {
+        "f1": 0.4401031029480119,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.28213602051504316
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.65,
+        "fallback": "mention",
+        "id": "author-0.65-margin-0.00-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.6043165467625897
+      },
+      "rootPair": {
+        "f1": 0.4502099076406381,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.29049734532452054
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.0,
+        "authorMinScore": 0.65,
+        "fallback": "mention-text",
+        "id": "author-0.65-margin-0.00-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.5707434052757794
+      },
+      "rootPair": {
+        "f1": 0.4531105958599882,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2929172535847148
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.65,
+        "fallback": "none",
+        "id": "author-0.65-margin-0.10-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 36,
+        "meanAbsoluteError": 3.695443645083933
+      },
+      "rootPair": {
+        "f1": 0.4401031029480119,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.28213602051504316
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.65,
+        "fallback": "mention",
+        "id": "author-0.65-margin-0.10-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.606714628297362
+      },
+      "rootPair": {
+        "f1": 0.4501665313890677,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2904612272907863
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.1,
+        "authorMinScore": 0.65,
+        "fallback": "mention-text",
+        "id": "author-0.65-margin-0.10-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.5851318944844124
+      },
+      "rootPair": {
+        "f1": 0.4515533681944017,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2916170043702821
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.65,
+        "fallback": "none",
+        "id": "author-0.65-margin-0.20-fallback-none"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 36,
+        "meanAbsoluteError": 3.695443645083933
+      },
+      "rootPair": {
+        "f1": 0.4401031029480119,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.28213602051504316
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.65,
+        "fallback": "mention",
+        "id": "author-0.65-margin-0.20-fallback-mention"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.618705035971223
+      },
+      "rootPair": {
+        "f1": 0.44877720816875366,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2893054502112905
+      }
+    },
+    {
+      "configuration": {
+        "authorMargin": 0.2,
+        "authorMinScore": 0.65,
+        "fallback": "mention-text",
+        "id": "author-0.65-margin-0.20-fallback-mention-text"
+      },
+      "eligible": true,
+      "rootCount": {
+        "cases": 417,
+        "maxAbsoluteError": 34,
+        "meanAbsoluteError": 3.5995203836930454
+      },
+      "rootPair": {
+        "f1": 0.4501448423527436,
+        "pairs": 56035,
+        "precision": 1.0,
+        "recall": 0.2904431682739192
+      }
+    }
+  ],
+  "caseCount": 417,
+  "claimCount": 5000,
+  "hiddenFraction": 0.4,
+  "lir2SameCaseComparator": {
+    "rootCount": {
+      "cases": 417,
+      "maxAbsoluteError": 35,
+      "meanAbsoluteError": 3.7434052757793763
+    },
+    "rootPair": {
+      "f1": 0.4333286179091809,
+      "pairs": 56035,
+      "precision": 1.0,
+      "recall": 0.2765919023368368
+    }
+  },
+  "normalizedInputSha256": "312fd273d83efdefa7931785ab00deabd0f3fa73168654ee15e375681cb38d1a",
+  "schema": "minority-prophet.lir3-development-selection.v1",
+  "selected": {
+    "configuration": {
+      "authorMargin": 0.0,
+      "authorMinScore": 0.0,
+      "fallback": "none",
+      "id": "author-0.00-margin-0.00-fallback-none"
+    },
+    "eligible": true,
+    "rootCount": {
+      "cases": 417,
+      "maxAbsoluteError": 0,
+      "meanAbsoluteError": 0.0
+    },
+    "rootPair": {
+      "f1": 0.9975386397364896,
+      "pairs": 56035,
+      "precision": 0.9997097979468205,
+      "recall": 0.9953768916820168
+    }
+  },
+  "selectionRule": "require root precision >=0.99; maximize recall, F1, minimize root-count MAE, then prefer stricter score, margin, and lexical configuration id",
+  "status": "selected"
+}

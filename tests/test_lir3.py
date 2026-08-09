@@ -8,12 +8,22 @@ from experiments.lir3.provenance_parent import (
     infer_parents,
     provenance_score,
 )
+from experiments.lir3.score_confirmatory import (
+    BOOTSTRAP_SAMPLES,
+    CONFIGURATION,
+    INPUT_SHA256,
+)
 
 
 class LIR3Tests(unittest.TestCase):
     def test_candidate_grid_is_frozen(self):
         self.assertEqual(len(CONFIGURATIONS), 36)
         self.assertEqual(len({row.identifier for row in CONFIGURATIONS}), 36)
+
+    def test_holdout_commitment_is_frozen(self):
+        self.assertEqual(len(INPUT_SHA256), 64)
+        self.assertEqual(CONFIGURATION.identifier, "author-0.00-margin-0.00-fallback-none")
+        self.assertEqual(BOOTSTRAP_SAMPLES, 10_000)
 
     def test_split_is_deterministic(self):
         self.assertEqual(split_for_case("pheme:example"), split_for_case("pheme:example"))
