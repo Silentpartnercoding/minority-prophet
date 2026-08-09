@@ -12,7 +12,7 @@
     "evidence": "first-check/FINDING-FC1.md with results/fc1-result.json and results/fc11-result.json: the incomplete-coverage repository world cannot obtain a clean conclusion (not_established, coverage reason); its re-labelled twin sits inside KL-000's 176,120-world enumeration and produces an identical receipt in every name-free field, diverging on exactly the echoed identifier strings and the digest. 'Mandatory file' maps to 'declared location' by renaming; no new evidence about the evaluator was produced. Also demonstrated on purpose: the under-declaration twin (W3) obtains a clean conclusion by omitting files from the declaration -- ADV-001 in repository costume, locating KL-001's real risk in the not-yet-existing mapping layer.",
     "registrationDefect": "FC1's expectation E4 failed as registered (it quantified over name-carrying receipt fields); preserved as-is and corrected by the FC1.1 registration. The drafting error is RUN-20260807-6's own, recorded in FINDING-FC1.md."
   },
-  "nextGate": "Run the dual ledger over corpus/frozen-v1 through pipeline/map_repository.py and compare against the registered endpoints: false-clean rate below 0.1224, absolute recall at or above 0.7761, and no per-class regression. The defect-class taxonomy is still unregistered and must be fixed before that run, because deciding what counts as the same finding after seeing results would be fitting the taxonomy to the outcome.",
+  "nextGate": "Run the dual-ledger arm against frozen-v2 and report against the v0.3 endpoints. The endpoints are registered before that run and are not adjusted after it.",
   "supersededNextGate": "SUPERSEDED at RUN-20260807-6, preserved verbatim (written at RUN-20260807-1): 'Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.' -- The narrow check was run and passed, and was found to be already paid by KL-000 (I2); the corpus clause is now the operative gate, restated above with the mapping pipeline made explicit.",
   "blockers": [
     "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
@@ -21,10 +21,19 @@
     "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable",
     "the mapping layer (repository -> ledgers) does not exist, and its declaration rules are the kernel's actual risk surface (ADV-001, demonstrated by first-check W3)"
   ],
-  "claimAllowed": "Endpoints and baseline are registered; no comparative claim is permitted until the dual ledger has been run against them.",
+  "claimAllowed": "No claim that the dual ledger reduces false-clean conclusions. The registered comparison was run and did not show it, on a corpus that could not have shown it.",
   "dependsOn": [
     "KL-000"
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 held adversarial-passed through protocol v1.3.0 with zero violations in every run of both implementations; the dependency is satisfied for fixture-stage work. Promotion of any KL-000 claim remains a separate owner decision.",
-  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence.",
+  "stateNote": "v0.3 registered against frozen-v2. v0.2's failure on frozen-v1 stands and is recorded in priorOutcomes; this is a new registration, not a retry.",
+  "protocolVersion": "v0.3",
+  "priorOutcomes": [
+    {
+      "protocol": "v0.2",
+      "state": "failed",
+      "finding": "FINDING-KL001-v0.2.md"
+    }
+  ]
 }

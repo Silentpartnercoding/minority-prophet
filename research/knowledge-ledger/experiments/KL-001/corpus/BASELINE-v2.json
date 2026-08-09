@@ -1,0 +1,35 @@
+{
+  "schema": "minority-prophet.kl001-baseline.v0.1",
+  "corpusManifestDigest": "a8b364838f33606312e0a67c9ec3a70d17fb80b38e929d9cb97cfa07a7c8f428",
+  "plantedDefects": 135,
+  "truePositives": 107,
+  "falseNegatives": 28,
+  "falsePositives": 0,
+  "baselineRecall": 0.7926,
+  "falseCleanRate": 0.0426,
+  "cleanRepos": 13,
+  "falsePositiveReposAmongClean": 0,
+  "perClass": {
+    "unchecked-return": {
+      "planted": 35,
+      "found": 35
+    },
+    "bare-except": {
+      "planted": 29,
+      "found": 29
+    },
+    "missing-timeout": {
+      "planted": 28,
+      "found": 0
+    },
+    "shell-injection": {
+      "planted": 16,
+      "found": 16
+    },
+    "hardcoded-credential": {
+      "planted": 27,
+      "found": 27
+    }
+  },
+  "note": "Baseline for a plain pattern scanner with no dual ledger. This is the denominator the registered 95%-preservation target is a percentage of. Deliberately unimpressive: a cleverer baseline would lower the bar the dual ledger must clear."
+}

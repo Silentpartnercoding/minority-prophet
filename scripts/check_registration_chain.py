@@ -38,7 +38,14 @@ import subprocess
 import sys
 
 EXPERIMENTS = pathlib.Path("research/knowledge-ledger/experiments")
-SIDECAR = re.compile(r"^PROTOCOL-COMMIT(?:-(v\d+\.\d+\.\d+))?\.txt$")
+UNMATCHED: list[str] = []
+# Two components or three: v0.3 and v1.3.0 are both real version strings in this
+# programme, and the three-component form silently skipped PROTOCOL-COMMIT-v0.3.txt
+# -- leaving KL-001's newest registration unpinned as far as this check was
+# concerned. A sidecar that does not match is now reported, not ignored: a control
+# that quietly stops covering something is the defect it exists to prevent.
+SIDECAR = re.compile(r"^PROTOCOL-COMMIT(?:-(v\d+(?:\.\d+){1,2}))?\.txt$")
+UNMATCHED_SIDECAR = re.compile(r"^PROTOCOL-COMMIT.*\.txt$")
 
 
 def _git(*args: str) -> subprocess.CompletedProcess:
@@ -55,6 +62,8 @@ def pairs(root: pathlib.Path) -> list[tuple[pathlib.Path, pathlib.Path]]:
         for entry in sorted(directory.iterdir()):
             match = SIDECAR.match(entry.name)
             if not match:
+                if UNMATCHED_SIDECAR.match(entry.name):
+                    UNMATCHED.append(f"{directory.name}/{entry.name}")
                 continue
             version = match.group(1)
             prereg = directory / (f"preregistration-{version}.json" if version
@@ -107,6 +116,9 @@ def main() -> int:
         return 0
 
     problems = check(root, args.ref)
+    for name in UNMATCHED:
+        problems.append(f"{name}: looks like a sidecar but does not match the naming "
+                        f"pattern, so nothing it pins is being verified")
     if problems:
         print("Registration chain check FAILED:", file=sys.stderr)
         for problem in problems:
