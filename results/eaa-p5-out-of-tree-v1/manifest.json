@@ -1,0 +1,23 @@
+{
+  "schema": "minority-prophet.imported-result-manifest.v1",
+  "record": "EAA-P5",
+  "status": "imported-out-of-tree-validation-rejected",
+  "files": {
+    "experiments/eaa-p5/PROTOCOL.md": "9a34ebf0b277647c8ca99a5f7a1d8a202f7acca2be972afdb34316bf6720eec8",
+    "results/eaa-p5-out-of-tree-v1/README.md": "84e2ca2b81fef2527a39e908fc4210f6ec627834d505eea96600ed79a0ae18af",
+    "results/eaa-p5-out-of-tree-v1/REPRODUCTION.md": "2993b86d4f6885bf9c40810e47d10ac2874b77f55a31584e506099bcf22193ae",
+    "results/eaa-p5-out-of-tree-v1/result.json": "27df7b529d1b7acd1a3acd889d84de8436e04e2d569e180411924e79bed9d9af",
+    "tests/test_eaa_p5_out_of_tree.py": "a373f3f980fd27fc0704dc8098543c78e906343e43a4dcc2e3d0e301139c985a"
+  },
+  "source": {
+    "repository": "Silentpartnercoding/minority-prophet",
+    "commit": "4776da971b786ba9da9743532e0dcb29b24a5ed3"
+  },
+  "outOfTreeEvidence": {
+    "runId": "c8b39974-4ed0-48e4-a55c-8bbc83d004e3",
+    "candidateSha256": "311b4e3720c75bcd581b7ef3e836993c3e7b40b96b797b81559fca9478bc8260",
+    "confirmationPacketSha256": "004613e491b2cd4c1d928d3b9c3d489d2a27034508b76df6679437e39d53b7ae",
+    "scientificResultSha256": "6037ede03f6b279065be85132a105581a57143349b124fbae030e0073264a957"
+  },
+  "claimBoundary": "Content-bound imported result only; not a public computational replication, repository-native canonical rerun, third-party validation, truth proof, independence certificate, or authority decision."
+}
