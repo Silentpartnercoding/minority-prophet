@@ -1,0 +1,291 @@
+{
+  "caseCount": 400,
+  "claimCount": 5000,
+  "collisionCurve": [
+    {
+      "identityBuckets": 32,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "identityBuckets": 16,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "identityBuckets": 8,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "identityBuckets": 4,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "identityBuckets": 2,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "identityBuckets": 1,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    }
+  ],
+  "configuration": "author-0.00-margin-0.00-fallback-none",
+  "criterion": {
+    "supported": false,
+    "tests": {
+      "completeRemovalMinimumRecallLoss": true,
+      "intactMinimumPrecision": true,
+      "intactMinimumRecall": true,
+      "primaryMaximumRootCountMae": true,
+      "primaryMinimumF1": false,
+      "primaryMinimumPrecision": true,
+      "primaryMinimumRecall": false
+    }
+  },
+  "hiddenExactEdges": 1846,
+  "interpretationBoundary": "Identity degradation within PHEME only; the cross-root safety diagnostic is underpowered unless its preregistered sample floors are met.",
+  "labelBoundary": "Recorded PHEME reply-tree roots; not causal evidence independence.",
+  "missingnessCurve": [
+    {
+      "attackedRecords": 0,
+      "missingFraction": 0.0,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "attackedRecords": 465,
+      "missingFraction": 0.25,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 8,
+        "meanAbsoluteError": 1.1625
+      },
+      "rootPair": {
+        "f1": 0.8069409002755945,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 0.6763628897026112
+      }
+    },
+    {
+      "attackedRecords": 962,
+      "missingFraction": 0.5,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 18,
+        "meanAbsoluteError": 2.405
+      },
+      "rootPair": {
+        "f1": 0.6042701566679404,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 0.43294206221552994
+      }
+    },
+    {
+      "attackedRecords": 1419,
+      "missingFraction": 0.75,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 23,
+        "meanAbsoluteError": 3.5475
+      },
+      "rootPair": {
+        "f1": 0.45272828360382306,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 0.2925977892611478
+      }
+    },
+    {
+      "attackedRecords": 1846,
+      "missingFraction": 1.0,
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 36,
+        "meanAbsoluteError": 4.615
+      },
+      "rootPair": {
+        "f1": 0.34657386974480847,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 0.20960952739468192
+      }
+    }
+  ],
+  "normalizedInputSha256": "974df303ea8c489060b281260abde10e7b59f6525fcd2943e8c7138c99ddfe15",
+  "primary": {
+    "attackedRecords": 962,
+    "missingFraction": 0.5,
+    "rootCount": {
+      "cases": 400,
+      "maxAbsoluteError": 18,
+      "meanAbsoluteError": 2.405
+    },
+    "rootPair": {
+      "f1": 0.6042701566679404,
+      "pairs": 58464,
+      "precision": 1.0,
+      "recall": 0.43294206221552994
+    }
+  },
+  "primaryBootstrap": {
+    "intervals95": {
+      "f1ChangeFromIntact": {
+        "lower": -0.4435565329685083,
+        "upper": -0.3460755214225819
+      },
+      "recallChangeFromIntact": {
+        "lower": -0.6145329577863988,
+        "upper": -0.5141992643278093
+      },
+      "rootCountMae": {
+        "lower": 2.135,
+        "upper": 2.6925
+      },
+      "rootF1": {
+        "lower": 0.5564434670314917,
+        "upper": 0.6539244785774181
+      },
+      "rootPrecision": {
+        "lower": 1.0,
+        "upper": 1.0
+      },
+      "rootRecall": {
+        "lower": 0.3854670422136012,
+        "upper": 0.4858007356721908
+      }
+    },
+    "samples": 10000,
+    "seed": 20260809
+  },
+  "safetyDiagnostic": {
+    "eligibleMisbindings": 1,
+    "intact": {
+      "rootCount": {
+        "cases": 1,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 253,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    "minimumCasesForClaim": 20,
+    "minimumEligibleMisbindingsForClaim": 20,
+    "multiRootCases": 1,
+    "oneBucketCollision": {
+      "rootCount": {
+        "cases": 1,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 253,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    "powered": false,
+    "safeResistanceSupported": false,
+    "whiteBoxMisbindingAllCases": {
+      "rootCount": {
+        "cases": 400,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 58464,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    "whiteBoxMisbindingMultiRootCases": {
+      "rootCount": {
+        "cases": 1,
+        "maxAbsoluteError": 0,
+        "meanAbsoluteError": 0.0
+      },
+      "rootPair": {
+        "f1": 1.0,
+        "pairs": 253,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    }
+  },
+  "schema": "minority-prophet.lir4-confirmatory-result.v1",
+  "status": "confirmatory-complete"
+}
