@@ -194,13 +194,30 @@ result is not reproducible without them. It discloses none of their contents. No
 finding depends on this check — it is a publication guard, not an instrument —
 but the divergence is real.
 
-**C6. Gate cites a proof document that does not exist.**
-`minority_prophet/__init__.py` says "properties are proven (see FORMAL.md)". There
-is no `FORMAL.md` in the gate repository. The proofs are real and live in this
-repository under `formal/`, including the Lean development — so this is a dangling
-citation rather than a missing proof, but a reader checking gate's central claim
-follows a pointer to nothing. Not fixed here because it is a change to another
-repository.
+**C6. Dropped hypotheses are this programme's characteristic defect — three
+instances, all found rather than prevented.** A theorem is restated somewhere
+other than where it is proved, one hypothesis is left out, and the restatement is
+strictly stronger than the thing that was proved.
+
+1. The research repository's original **T5** omitted the same-assertion
+   hypothesis. A counterexample proves it necessary. Found by the formal audit;
+   the ledger records the narrowing.
+2. **Gate's README** stated T1 as invariance under *"arbitrary corruption of
+   who-copied-whom"*, omitting root-set preservation. Orphaning a claim creates a
+   new origin and T1 says nothing about the result. The implementation was
+   correct throughout — `aggregator.py` says "side-preserving, root-preserving" —
+   so only the public headline claim was wrong. Fixed in
+   minority-prophet-gate#12, which also adds the `FORMAL.md` that the package
+   docstring had cited without it existing.
+3. **This file**, section A1, omitted the same-assertion hypothesis of T1. The
+   document written to prevent the defect committed it.
+
+Three for three, in a programme whose central discipline is not overclaiming. The
+common cause is restating a theorem away from its proof, so `FORMAL.md` now
+refuses to restate and points at the ledger instead. That is a mitigation, not a
+fix: nothing prevents the next restatement, and no check detects one. **If you
+find a fourth, the interesting question is not the instance but why three rounds
+of review did not make the pattern visible before the third.**
 
 **C7. Redaction did not remove anything from history.** Three items redacted on
 2026-08-09 remain fetchable from earlier commits on the public branch. Removing
