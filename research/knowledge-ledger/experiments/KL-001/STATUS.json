@@ -2,9 +2,9 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-001",
   "realm": "software and cybersecurity",
-  "state": "preregistered",
-  "resultStatus": "none",
-  "lastCompletedGate": "registry-entry",
+  "state": "results-reported",
+  "resultStatus": "v0.3 complete; primary endpoint met as registered, and narrowed by the finding",
+  "lastCompletedGate": "dual-ledger run against frozen-v2, reported against the v0.3 endpoints",
   "reviewedByRun": "RUN-20260807-8",
   "correctionRecord": {
     "correctedBy": "RUN-20260807-6",
@@ -12,28 +12,50 @@
     "evidence": "first-check/FINDING-FC1.md with results/fc1-result.json and results/fc11-result.json: the incomplete-coverage repository world cannot obtain a clean conclusion (not_established, coverage reason); its re-labelled twin sits inside KL-000's 176,120-world enumeration and produces an identical receipt in every name-free field, diverging on exactly the echoed identifier strings and the digest. 'Mandatory file' maps to 'declared location' by renaming; no new evidence about the evaluator was produced. Also demonstrated on purpose: the under-declaration twin (W3) obtains a clean conclusion by omitting files from the declaration -- ADV-001 in repository costume, locating KL-001's real risk in the not-yet-existing mapping layer.",
     "registrationDefect": "FC1's expectation E4 failed as registered (it quantified over name-carrying receipt fields); preserved as-is and corrected by the FC1.1 registration. The drafting error is RUN-20260807-6's own, recorded in FINDING-FC1.md."
   },
-  "nextGate": "Run the dual-ledger arm against frozen-v2 and report against the v0.3 endpoints. The endpoints are registered before that run and are not adjusted after it.",
+  "nextGate": "None on a synthetic corpus. DESIGN-v0.4.md cancels frozen-v3: the verdict is a total function of two bits, so every rate over an authored population is a generator setting read back. Any further KL-001 work is a real-repository run, which needs defect ground truth for real repositories -- unsolved, and not solved by anything in this experiment.",
   "supersededNextGate": "SUPERSEDED at RUN-20260807-6, preserved verbatim (written at RUN-20260807-1): 'Build a finite repository corpus with machine-checkable planted defects and clean controls, freeze generation before any evaluation, and preregister the false-clean endpoint. The first falsifiable check is narrower and can be run before any corpus exists: construct one repository whose mandatory file coverage is incomplete and show the pipeline cannot emit a clean conclusion for it. If it can, KL-001's first gate fails immediately.' -- The narrow check was run and passed, and was found to be already paid by KL-000 (I2); the corpus clause is now the operative gate, restated above with the mapping pipeline made explicit.",
   "blockers": [
     "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "directory lacks fixtures/, src/, tests/, results/ at the kernel level (first-check/ is scoped to FC1 and is not kernel scaffolding); see run constraint ENG-001",
     "DISCHARGED at RUN-20260807-8, retained for the record: 'schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields; migration to v0.2 required first' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
-    "baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable",
-    "the mapping layer (repository -> ledgers) does not exist, and its declaration rules are the kernel's actual risk surface (ADV-001, demonstrated by first-check W3)"
+    "DISCHARGED, then RETIRED: the baseline was measured (BASELINE-v1/v2.json), and the target was then found unfalsifiable for a different reason -- identical scanners make recall equal by construction. Re-scoped to an invariant assertion by BL-062.",
+    "DISCHARGED: the mapping layer exists (pipeline/map_repository.py with MAPPING-RULES.md M1-M4; M1 derives scope rather than accepting it, which is the ADV-001 surface). Its declaration rules remain the kernel's real risk surface.",
+    "OPEN and not solvable within this experiment: a real-repository run needs defect ground truth for real repositories."
   ],
-  "claimAllowed": "No claim that the dual ledger reduces false-clean conclusions. The registered comparison was run and did not show it, on a corpus that could not have shown it.",
+  "claimAllowed": "The mechanism is established and the benefit is not. ESTABLISHED, by exhaustive enumeration rather than sampling: the absence verdict is a total function of (opposing evidence present, coverage complete), all 4 cells verified, each input shown load-bearing. NOT ESTABLISHED: that the dual ledger reduces false cleans in practice. v0.3 met its registered primary endpoint, but the effect is one repository and both rates are fixed by corpus composition on any authored population. No practical-benefit claim may be made until a real-repository run.",
   "dependsOn": [
     "KL-000"
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 held adversarial-passed through protocol v1.3.0 with zero violations in every run of both implementations; the dependency is satisfied for fixture-stage work. Promotion of any KL-000 claim remains a separate owner decision.",
   "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence.",
   "stateNote": "v0.3 registered against frozen-v2. v0.2's failure on frozen-v1 stands and is recorded in priorOutcomes; this is a new registration, not a retry.",
-  "protocolVersion": "v0.3",
+  "protocolVersion": "v0.3 (complete); v0.4 exists as a design note, not a registration",
   "priorOutcomes": [
     {
       "protocol": "v0.2",
       "state": "failed",
       "finding": "FINDING-KL001-v0.2.md"
+    },
+    {
+      "protocol": "v0.3",
+      "state": "complete",
+      "finding": "FINDING-KL001-v0.3.md",
+      "note": "Primary endpoint met. Design note DESIGN-v0.4.md retires both rate endpoints for synthetic populations and carries a 15% cleanRefusalRate ceiling (owner decision) forward to a real-repository run."
     }
-  ]
+  ],
+  "v03Outcome": {
+    "primaryEndpoint": {
+      "name": "false-clean rate",
+      "registered": "strictly below 0.0426",
+      "observed": 0.0213,
+      "verdict": "MET"
+    },
+    "secondaryRecall": {
+      "registered": "at least 0.753",
+      "observed": 0.7926,
+      "verdict": "MET, but it could not have failed -- both arms run the identical scanner, so recall is equal by construction (BL-062)"
+    },
+    "whatTheNumberIsWorth": "Two false cleans became one. n=1. Reported as one repository rather than as a 50% reduction, in FINDING-KL001-v0.3.md.",
+    "unbookedCost": "Of 4 repositories moved to not_established, 1 was defective (the rescue) and 3 were clean. The registered endpoint counts only defective repositories and is structurally blind to the 3 refusals (BL-061)."
+  }
 }
