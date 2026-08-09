@@ -61,7 +61,7 @@ causal independence.
 | LIR-3/PHEME | With 40% of exact parent-status IDs hidden but reply-target author retained, the frozen author-only rule achieved recorded-root precision, recall, and F1 of 1.0 with zero root-count error on 425 sealed cases. | Causal copying, evidence independence, author authentication, content truth, cross-platform generalization, or general provenance recovery. |
 | LIR-4/PHEME | At 50% missing reply-target identity among hidden-edge records, precision remained 1.0 but recall fell to 0.4329, F1 to 0.6043, and root-count MAE rose to 2.405, rejecting graceful degradation. | General resistance to false identity or cross-root misbinding; only one final-holdout case had multiple roots, so the safety diagnostic was underpowered. |
 
-## v1.0.6 manuscript alignment
+## v1.0.7 manuscript alignment
 
 The active manuscript corrects two inherited presentation defects without
 altering earlier snapshots:
@@ -77,12 +77,15 @@ altering earlier snapshots:
   supported typed-provenance bridge and the rejected degradation claim, while
   preserving the distinction between recorded platform roots and causal
   evidence independence.
+- v1.0.7 adds a reader-first abstract, example, visual, boundary table, results
+  map, glossary, and selected primary-source links. It changes no theorem,
+  canonical status, result, limitation, or release blocker.
 
 ## Manuscript policy
 
-- `papers/minority-prophet-v1.0.6.md` is the active evidence-aligned draft, adopted
-  2026-08-08.
-- v0.9, v1.0, v1.0.1, v1.0.2, v1.0.3, v1.0.4, and v1.0.5 are preserved historical drafts and defer to
+- `papers/minority-prophet-v1.0.7.md` is the active evidence-aligned draft, adopted
+  2026-08-09.
+- v0.9, v1.0, v1.0.1, v1.0.2, v1.0.3, v1.0.4, v1.0.5, and v1.0.6 are preserved historical drafts and defer to
   this ledger.
 - EXP008's archived attack mixture is not EXP007A's selected attack.
 - All point estimates must name their record and scope.
