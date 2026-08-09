@@ -16,12 +16,10 @@ moves that step before the shipping instead of after.
                     registration's own definitions
     T6 LEAKAGE      no live commission's withheld values in the package
 
-KNOWN RESIDUAL GAP, stated rather than hidden. T2 reads the reference's own
-reported invalidationReasons, so a registration whose invalidation clauses are
-weak enough to catch nothing passes it. Closing that needs a mutation harness --
-deliberately corrupt the reference and require the clauses to fire -- which is
-not automated here. Until it is, T2 detects a clause that is WRONG and not a
-clause that is ABSENT. Recorded as BL-055.
+T2 requires a mutation report from scripts/mutation_harness.py (BL-055): every
+registered invalidation clause must be shown to fire under a deliberate defect,
+or it is decorative. Without the report T2 fails, because a trap that is optional
+is a trap that will be omitted on the day it matters.
 
 Usage:
     python3 scripts/preflight_commission.py --package DIR --results FILE \
@@ -83,7 +81,7 @@ def trap_closure(package: pathlib.Path, registrations: list[pathlib.Path]) -> Tr
 
 # --- T2 -----------------------------------------------------------------------
 
-def trap_self_valid(results: dict) -> Trap:
+def trap_self_valid(results: dict, mutation_report: dict | None = None) -> Trap:
     """The reference run must pass the registration's own invalidation clauses.
 
     v0.3's clause invalidated a run for observing zero rejections at a modulus
@@ -98,6 +96,20 @@ def trap_self_valid(results: dict) -> Trap:
             t.fail(f"the reference run is invalid under its own registration: {r}")
     if results.get("valid") is False and not reasons:
         t.fail("results declare valid=false with no reason given")
+
+    # BL-055. Reading the reference's own reasons detects a clause that is WRONG,
+    # never one that is ABSENT: a registration whose clauses catch nothing passed
+    # this trap. The mutation report closes that -- every clause must be shown to
+    # fire under a deliberate defect, or it is decorative.
+    if mutation_report is None:
+        t.fail("no mutation report supplied; clause STRENGTH is unverified and a "
+               "registration with decorative clauses would pass (BL-055)")
+        return t
+    for cid, fired in mutation_report.get("clauses", {}).items():
+        if not fired:
+            text = mutation_report.get("clauseText", {}).get(cid, "")
+            t.fail(f"invalidation clause {cid} is decorative: no mutation triggers it "
+                   f"-- {text}")
     return t
 
 
@@ -250,6 +262,7 @@ def main() -> int:
     ap.add_argument("--claims-json")
     ap.add_argument("--repo", default=".")
     ap.add_argument("--allow", default="", help="comma-separated numbers exempt from T3")
+    ap.add_argument("--mutation-report", help="output of scripts/mutation_harness.py")
     args = ap.parse_args()
 
     package = pathlib.Path(args.package)
@@ -264,7 +277,9 @@ def main() -> int:
         claims["_registrationTexts"] = [r.read_text() for r in regs]
     allow = {int(x) for x in args.allow.split(",") if x.strip()}
 
-    traps = [trap_closure(package, regs), trap_self_valid(results),
+    mutation = (json.loads(pathlib.Path(args.mutation_report).read_text())
+                if args.mutation_report else None)
+    traps = [trap_closure(package, regs), trap_self_valid(results, mutation),
              trap_arithmetic(regs, results, allow), trap_vacuity(claims),
              trap_reachability(claims, results), trap_leakage(package, repo)]
 

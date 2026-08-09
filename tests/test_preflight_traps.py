@@ -99,6 +99,27 @@ class TestPreflightIsNotVacuous(unittest.TestCase):
         t = trap_vacuity({"tests": [], "paperClaimsAsserted": ["Theorem 1"]})
         self.assertTrue(t.failures)
 
+    def test_M7_a_decorative_invalidation_clause_is_caught(self):
+        """BL-055. A clause nothing can trigger passed the first T2, because T2
+        read the reference's own reasons and a weak clause reports nothing."""
+        t = trap_self_valid({"invalidationReasons": [], "valid": True},
+                            {"clauses": {"C1": ["M1 fires it"], "C2": []},
+                             "clauseText": {"C2": "a clause with no teeth"}})
+        self.assertTrue(t.failures)
+        self.assertIn("decorative", t.failures[0])
+
+    def test_M8_omitting_the_mutation_report_is_itself_a_failure(self):
+        """A trap that is optional is a trap that will be omitted on the day it
+        matters."""
+        t = trap_self_valid({"invalidationReasons": [], "valid": True}, None)
+        self.assertTrue(t.failures)
+        self.assertIn("BL-055", t.failures[0])
+
+    def test_M9_clause_strength_control_a_fully_triggerable_set_passes(self):
+        t = trap_self_valid({"invalidationReasons": [], "valid": True},
+                            {"clauses": {"C1": ["M1"], "C2": ["M2"]}})
+        self.assertEqual(t.failures, [])
+
     def test_control_a_well_formed_claims_file_passes(self):
         """The traps must still admit a good package, or they are merely noisy."""
         claims = {"tests": [GOOD_TEST], "paperClaimsAsserted": ["Theorem 9"],
