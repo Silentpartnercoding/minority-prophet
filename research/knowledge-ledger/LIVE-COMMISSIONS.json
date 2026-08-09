@@ -39,7 +39,9 @@
       ],
       "declaredBoundsNote": "Registered inputs, the deliberately shipped conformance vectors, and figures already public before this commission. A published value cannot be withheld.",
       "passCondition": "two stream digests, 150 prefixes, seven conformance vectors incl. word counts",
-      "question": "First registration to pass the pre-flight before shipping. Does a pre-declared reading hit everything with no sweep, and how many ambiguities remain?"
+      "question": "First registration to pass the pre-flight before shipping. Does a pre-declared reading hit everything with no sweep, and how many ambiguities remain?",
+      "resultsWithheldFromRepo": true,
+      "resultsWithheldNote": "The withheld set is computed from this file, so committing it publishes exactly what the commission withholds. Kept local; committed when BL-057 closes, as BL-044's and BL-051's were. Consequence, stated rather than hidden: CI cannot enforce BL-057's withheld set. Enforcement is local, by running the checker before pushing."
     },
     {
       "id": "BL-053",

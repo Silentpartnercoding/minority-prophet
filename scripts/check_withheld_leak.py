@@ -83,11 +83,24 @@ def withheld_sets(root: pathlib.Path) -> dict[str, set[int]]:
             continue
         results = root / entry["resultsFile"]
         if not results.is_file():
-            # A live commission whose results are missing cannot be enforced.
-            # Fail closed and say so, rather than passing silently.
+            # Two safety rules of this programme collided here, and both are
+            # right. "A live commission's results must not be committed" --
+            # publishing them defeats the commission. "A live commission with
+            # missing results fails closed" -- otherwise a forgotten file
+            # silently disables the control.
+            #
+            # They are only distinguishable if the declaration says which case it
+            # is. An absent file that is DECLARED absent is the first; an absent
+            # file that is not is the second, and still fails closed.
+            if entry.get("resultsWithheldFromRepo"):
+                UNENFORCEABLE.append(
+                    f"{entry['id']}: results deliberately unpublished, so its "
+                    f"withheld set cannot be computed here. Enforcement of this "
+                    f"commission is LOCAL ONLY -- CI cannot protect it.")
+                continue
             raise SystemExit(
-                f"{entry['id']}: declared live but {entry['resultsFile']} is absent; "
-                "cannot compute its withheld set"
+                f"{entry['id']}: declared live but {entry['resultsFile']} is absent "
+                f"and not declared withheld; cannot compute its withheld set"
             )
         bounds = set(entry.get("declaredBounds", []))
         values = {v for v in _integers(json.loads(results.read_text()))
@@ -100,6 +113,7 @@ def withheld_sets(root: pathlib.Path) -> dict[str, set[int]]:
 
 
 UNPROTECTABLE: dict[str, list[int]] = {}
+UNENFORCEABLE: list[str] = []
 
 
 def _spellings(value: int) -> list[str]:
@@ -153,7 +167,9 @@ def main() -> int:
     root = pathlib.Path(args.root)
     blocked = withheld_sets(root)
     if not blocked:
-        print("Withheld-leak check: no live commissions declared; nothing to enforce.")
+        for msg in UNENFORCEABLE:
+            print(f"  NOT ENFORCED HERE: {msg}")
+        print("Withheld-leak check: nothing enforceable in this checkout.")
         return 0
 
     problems = violations(added_lines(args.base, args.head), blocked)
@@ -166,6 +182,8 @@ def main() -> int:
     total = sum(len(v) for v in blocked.values())
     print(f"Withheld-leak check passed: {total} withheld value(s) across "
           f"{len(blocked)} live commission(s), none published.")
+    for msg in UNENFORCEABLE:
+        print(f"  NOT ENFORCED HERE: {msg}")
     for cid, vals in UNPROTECTABLE.items():
         print(f"  UNPROTECTED in {cid}: {vals} -- below the collision floor, so "
               f"enforcing them would flag ordinary code constants. They are NOT "

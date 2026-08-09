@@ -81,11 +81,32 @@ class TestWithheldLeak(unittest.TestCase):
             self.assertTrue(violations([("doc.md", 2, "44450 worlds")], blocked))
 
     def test_a_live_commission_with_missing_results_fails_closed(self):
+        """Absent and NOT declared absent: someone forgot, and the control must
+        not disable itself quietly."""
         with tempfile.TemporaryDirectory() as d:
             root = _fixture(pathlib.Path(d), status="live", values={"x": 44450}, bounds=[])
             (root / "exp" / "result.json").unlink()
             with self.assertRaises(SystemExit):
                 withheld_sets(root)
+
+    def test_deliberately_unpublished_results_are_unenforceable_not_fatal(self):
+        """Two of this programme's own rules collided: a live commission's
+        results must not be committed, and a live commission with missing
+        results fails closed. They are only distinguishable if the declaration
+        says which case it is."""
+        import json as _json
+        from scripts.check_withheld_leak import UNENFORCEABLE
+        UNENFORCEABLE.clear()
+        with tempfile.TemporaryDirectory() as d:
+            root = _fixture(pathlib.Path(d), status="live", values={"x": 44450}, bounds=[])
+            decl = root / "research" / "knowledge-ledger" / "LIVE-COMMISSIONS.json"
+            doc = _json.loads(decl.read_text())
+            doc["commissions"][0]["resultsWithheldFromRepo"] = True
+            decl.write_text(_json.dumps(doc))
+            (root / "exp" / "result.json").unlink()
+            self.assertEqual(withheld_sets(root), {}, "must not raise")
+            self.assertTrue(any("BL-TEST" in m for m in UNENFORCEABLE),
+                            "and must say it is not enforcing it")
 
     def test_underscore_separated_literals_are_not_false_positives(self):
         """`WORLDS = 44_450` does not contain the value 44450. Uses a value above
