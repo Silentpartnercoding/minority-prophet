@@ -1,0 +1,666 @@
+{
+  "schema": "minority-prophet.kl001-corpus.v0.1",
+  "seed": 20260809,
+  "repos": 60,
+  "defectClasses": [
+    "bare-except",
+    "hardcoded-credential",
+    "missing-timeout",
+    "shell-injection",
+    "unchecked-return"
+  ],
+  "groundTruth": [
+    {
+      "repo": "repo-000",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-001",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_4.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-002",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "missing-timeout"
+        },
+        {
+          "file": "src/mod_1.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-003",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_2.py",
+          "kind": "missing-timeout"
+        },
+        {
+          "file": "src/mod_3.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_4.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-004",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-005",
+      "files": 3,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-006",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-007",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-008",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-009",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "unchecked-return"
+        },
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-010",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "shell-injection"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-011",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-012",
+      "files": 5,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-013",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "unchecked-return"
+        },
+        {
+          "file": "src/mod_3.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-014",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-015",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-016",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        },
+        {
+          "file": "src/mod_3.py",
+          "kind": "hardcoded-credential"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-017",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-018",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-019",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-020",
+      "files": 4,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-021",
+      "files": 3,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-022",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-023",
+      "files": 5,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-024",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-025",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_3.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-026",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-027",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_2.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-028",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-029",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-030",
+      "files": 3,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "unchecked-return"
+        },
+        {
+          "file": "src/mod_1.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "hardcoded-credential"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-031",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_3.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-032",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "missing-timeout"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "unchecked-return"
+        },
+        {
+          "file": "src/mod_3.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-033",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-034",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-035",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        },
+        {
+          "file": "src/mod_4.py",
+          "kind": "hardcoded-credential"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-036",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-037",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-038",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-039",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_2.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-040",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-041",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-042",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "hardcoded-credential"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-043",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-044",
+      "files": 3,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "unchecked-return"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-045",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-046",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_4.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-047",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_3.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-048",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-049",
+      "files": 3,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "hardcoded-credential"
+        },
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-050",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_0.py",
+          "kind": "shell-injection"
+        },
+        {
+          "file": "src/mod_2.py",
+          "kind": "missing-timeout"
+        },
+        {
+          "file": "src/mod_3.py",
+          "kind": "hardcoded-credential"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-051",
+      "files": 2,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-052",
+      "files": 5,
+      "defects": [
+        {
+          "file": "src/mod_2.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-053",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-054",
+      "files": 2,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "bare-except"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-055",
+      "files": 3,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-056",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_2.py",
+          "kind": "missing-timeout"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-057",
+      "files": 5,
+      "defects": [],
+      "clean": true
+    },
+    {
+      "repo": "repo-058",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_1.py",
+          "kind": "shell-injection"
+        }
+      ],
+      "clean": false
+    },
+    {
+      "repo": "repo-059",
+      "files": 4,
+      "defects": [
+        {
+          "file": "src/mod_2.py",
+          "kind": "hardcoded-credential"
+        }
+      ],
+      "clean": false
+    }
+  ],
+  "totalDefects": 62,
+  "cleanRepos": 19,
+  "manifestDigest": "c39bec80553ce375594c5821651135d3bfb6ae0867b541e2a2568cf0108149be"
+}
