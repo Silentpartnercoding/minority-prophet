@@ -1,0 +1,95 @@
+{
+  "schema": "minority-prophet.traceability.v0.1",
+  "rule": "TRC-101 (research/knowledge-ledger/schemas/traceability-TRC-101.md)",
+  "protocolVersion": "LIN-000 v0.3",
+  "paper": "papers/minority-prophet-v1.0.4.md",
+  "producedBy": "RUN-20260809-1, at registration time (BL-042)",
+  "note": "Applied AT REGISTRATION, not retroactively -- BL-042's whole content. Every normative test below either cites the paper or is declared specification-local. A test that cites nothing is the defect TRC-101 exists to catch.",
+  "rules": [
+    {
+      "id": "T1-POS",
+      "rule": "root-set-preserving side-consistent rewiring leaves the verdict unchanged; violations MUST be 0",
+      "basis": "paper",
+      "citation": {
+        "location": "Theorem 1 (Immunity), line 63",
+        "quote": "**Theorem 1 (Immunity).** Any rewiring of parent edges that (i) preserves the root set and (ii) preserves side-consistency leaves S\u2080, S\u2081, and the verdict exactly unchanged. *Both worlds reduce via Lemma 1 to the same root filter.* **Attribu"
+      },
+      "note": "v0.1 and v0.2 tested a STRONGER condition -- root(c) preserved for every c -- which is an identity under this schema's S_a and therefore could not fail. The paper preserves the ROOT SET. Reading the paper literally is what makes this a test."
+    },
+    {
+      "id": "T1-NEC",
+      "rule": "with clause (ii) removed, verdict changes MUST be > 0",
+      "basis": "paper",
+      "citation": {
+        "location": "Theorem 1 (Immunity), clause (ii), line 63",
+        "quote": "**Theorem 1 (Immunity).** Any rewiring of parent edges that (i) preserves the root set and (ii) preserves side-consistency leaves S\u2080, S\u2081, and the verdict exactly unchanged. *Both worlds reduce via Lemma 1 to the same root filter.* **Attribu"
+      },
+      "note": "Negative control for the precondition. BL-051 measured 47,224 violations under this reading. Registered as a REQUIRED failure so the precondition cannot silently become decorative."
+    },
+    {
+      "id": "T1-ID",
+      "rule": "root(c)-preserving rewiring leaves the verdict unchanged",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Declared an identity, not a test. S_a is a function of the multiset {(root(c), side(c))}, so this cannot fail by construction. Retained as a consistency check on the implementation's S_a and explicitly excluded from the evidence for Theorem 1."
+    },
+    {
+      "id": "L1-POS",
+      "rule": "on side-consistent worlds S_a equals the roots asserting a; violations MUST be 0",
+      "basis": "paper",
+      "citation": {
+        "location": "Lemma 1 (side-locality)",
+        "quote": "see formal/PROOFS.md L1"
+      },
+      "note": "The lemma T1-POS's non-triviality depends on: it is what forces S_a to equal the root set."
+    },
+    {
+      "id": "L1-NEG",
+      "rule": "side-inconsistent worlds where S_a differs MUST exist, per phase",
+      "basis": "paper",
+      "citation": {
+        "location": "Assumption boundaries, CE06_root_supports_both_sides",
+        "quote": "the literal S_a places some root in both side sets"
+      },
+      "note": "Population stated per phase in v0.3; v0.2 left it unstated (D9)."
+    },
+    {
+      "id": "ABL-SHALLOW",
+      "rule": "depth-one attribution must be caught; caught MUST be > 0",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Checker-power control. Construction and catch criterion defined in v0.3; v0.2 named it only (D6)."
+    },
+    {
+      "id": "ABL-CLAIMCOUNT",
+      "rule": "claim-count aggregation must be caught; caught MUST be > 0",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "Checker-power control. Construction and catch criterion defined in v0.3; v0.2 named it only (D6)."
+    },
+    {
+      "id": "GEN-CONF",
+      "rule": "uniform_below's rejection rule must be exercised and pinned",
+      "basis": "specification-local",
+      "citation": null,
+      "note": "v0.2's rejection rule ran zero times in 2,759,273 words and could not run by chance. Moduli chosen so 33-40% of draws reject; word count is the observable (D7)."
+    }
+  ],
+  "paperClaims": {
+    "Theorem 1": [
+      "T1-POS",
+      "T1-NEC"
+    ],
+    "Lemma 1": [
+      "L1-POS",
+      "L1-NEG"
+    ],
+    "not tested here": [
+      "Theorem 2",
+      "Theorem 3",
+      "Theorem 4",
+      "T5",
+      "T6"
+    ]
+  }
+}

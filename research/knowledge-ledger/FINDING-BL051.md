@@ -220,3 +220,102 @@ The stream problem is solved. What remains is what the theorems are tested *over
 6. **State L1-negative's population.**
 
 BL-051 closes. Items 1–6 open as **BL-053**.
+
+---
+
+# BL-053 opened and commissioned — v0.3, with BL-042 discharged
+
+RUN-20260809-1. Registration `lineage/REGISTRATION-v0.3.md` committed at
+`d3422c2` with no v0.3 implementation present; amendment `v0.3.1` at `8db92b4`.
+
+## The correction that drove it: v0.2 tested a statement stronger than the theorem
+
+Paper v1.0.4, Theorem 1, line 63 preserves the **root set** — the set of claims
+that are roots. v0.1 and v0.2 asked for `root(c)` preserved for *every* `c`,
+which is strictly stronger, and under this schema's `S_a` is an identity. That is
+why it could not fail.
+
+The independent implementer measured the paper's reading blind and got **121,944
+rewirings, 0 violations** — matching the paper's own published exhaustive check,
+*"5,912 worlds; 121,944 rewirings"*, a figure absent from their package. **Theorem
+1 was tested after all**, by someone measuring a reading the registration had not
+asked for.
+
+v0.3 registers three distinct things where v0.2 had one:
+
+| | condition | requirement | reference result |
+|---|---|---|---|
+| **T1-POS** | root **set** preserved, both worlds side-consistent — the paper | MUST be 0 | 116,032 checked, **0 violations** |
+| **T1-NEC** | clause (ii) dropped from the original | MUST be **> 0** | non-zero, and equal to the independent v0.2 measurement |
+| **T1-ID** | `root(c)` preserved ∀c — the old condition | identity, excluded from evidence | zero violations, as an identity requires |
+
+Checked-counts for T1-NEC and T1-ID are withheld while BL-053 is live: they are
+outcomes of the commission this section creates, and publishing them would retire
+its counter evidence before it is answered. They are in
+`results/lin000-v3-result.json` and become publishable when BL-053 closes.
+T1-POS's 116,032 is stated because it is already public and is needed for the
+identity-rewiring arithmetic below.
+
+T1-POS is 116,032 where the paper counts 121,944; the difference is exactly
+5,912, one identity rewiring per side-consistent world, which v0.3's definition
+excludes and the paper's count includes. Recorded so the two figures are not
+later mistaken for a disagreement.
+
+Also closed: both ablations now have constructions and catch criteria (v0.2 named
+them, and the two implementations built different ones); L1-negative's population
+is stated per phase; `id` is removed from the schema; and a generator-conformance
+phase forces the rejection rule, which now fires at 19.6–40.0% where it had fired
+**zero times in 2,759,273 words**.
+
+**BL-042 discharged.** `TRACEABILITY-v0.3.json` was written at registration time,
+not retroactively — eight rules, four citing the paper with location and quote,
+four declared specification-local, none uncited.
+
+## Two defects in v0.3, found by running v0.3
+
+Within the hour, by executing the reference against the registration. Neither was
+found by review, which is the argument for having a reference.
+
+**E1.** Two of three stated rejection regions were wrong arithmetic. The moduli
+are right and the clause's purpose is met, but `1,717,986,164` should be
+`1,717,986,918` and `1,431,655,763` should be `858,993,458` — making the third
+modulus reject at ~20%, not the stated ~33%.
+
+**E2, the worse one.** v0.3's invalidation condition fires on *correct*
+behaviour: `uniform_below(20)` rejects with probability 3.7 × 10⁻⁹, so zero
+rejections in 1,000 draws is the right answer, and the condition invalidated the
+run for it. **This is the defect BL-049 repaired in the registration chain — a
+control red on a correct system — committed by the same author hours later.**
+
+The v0.3 reference run is therefore reported **invalid as registered**, and
+re-run under v0.3.1. The registration governs even when it is wrong;
+reinterpreting a MUST clause to fit a result is the failure this programme exists
+to refuse.
+
+## Commissioned
+
+`$HOME/Development/lin000-v3-spec` — both registrations, the traceability, two
+stream digests, 150 prefixes, seven conformance vectors, method, manifest.
+Screened clean: the four genuinely-new v0.3 counters appear nowhere in it.
+
+The three screen hits were `5,912` and `47,224` inside the registration itself.
+Both were already public — the first in the paper, the second in a merged finding
+— and the registration must ship them to explain why v0.3 exists. **A value
+already published cannot be withheld, and pretending otherwise is theatre.**
+Recorded in `LIVE-COMMISSIONS.json` rather than worked around.
+
+## Recorded: the same defect, twice, two hours apart
+
+The first draft of this section published T1-NEC's and T1-ID's checked counts —
+withheld outcomes of the commission the same section declares live. That is the
+M27 defect, and it is **the second time in this session** that a finding
+published its own commission's answers; the first was BL-051's write-up.
+
+Both times `scripts/check_withheld_leak.py` rejected it in CI. Neither time did
+the author notice. A control that catches the same author making the same mistake
+twice in two hours is doing more work than the author's attention is, and that is
+the argument for building it rather than resolving to be careful.
+
+**The question:** BL-051 closed the stream. BL-053 asks whether the *semantics*
+are specified — whether T1-POS is a test rather than an identity, and how many
+ambiguities a fresh implementer still has to resolve.
