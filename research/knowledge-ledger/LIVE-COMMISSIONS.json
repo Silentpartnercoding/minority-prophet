@@ -46,7 +46,7 @@
     {
       "id": "BL-053",
       "experiment": "LIN-000 v0.3",
-      "status": "live",
+      "status": "closed",
       "commissionedBy": "RUN-20260809-1",
       "package": "$HOME/Development/lin000-v3-spec",
       "resultsFile": "research/knowledge-ledger/lineage/results/lin000-v3-result.json",
@@ -82,7 +82,8 @@
       ],
       "declaredBoundsNote": "Two groups. (a) Registered inputs and the deliberately shipped conformance vectors -- moduli, word counts, rejection counts and regions -- which ARE the new pass condition. (b) Values already public before this commission: 5,912 in the paper, and the BL-051 figures in a merged finding. A value already published cannot be withheld, and the v0.3 registration must ship 5,912 and 47,224 to explain why v0.3 exists. Withholding what is already public would be theatre.",
       "passCondition": "v0.2 stream digests reproduced, plus the seven conformance vectors incl. word counts",
-      "question": "Are the SEMANTICS now specified? BL-051 closed the stream question. v0.3 asks whether T1-POS is a test rather than an identity, and how many ambiguities a fresh implementer still has to resolve."
+      "closedBy": "RUN-20260809-2",
+      "result": "Answered: both stream digests unreachable because v0.3 shipped its pass condition by reference to documents it did not contain; conformance 7/7 pre-declared; theorem tests all pass. Four findings, three against the registration. Superseded by v0.4 / BL-057."
     },
     {
       "id": "BL-051",
