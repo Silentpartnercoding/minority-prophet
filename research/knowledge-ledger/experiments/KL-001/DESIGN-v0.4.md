@@ -1,110 +1,123 @@
 # KL-001 v0.4 — design notes, resolving BL-061 and BL-062
 
-Not a registration. A registration is frozen and pinned before results exist, and
-this document explains why v0.4's cannot be written against the corpora we have.
+Not a registration. It explains why v0.4's registration cannot be written against
+the corpora we have, and why the corpus we were about to build would not have
+helped either.
 
-## The integrity problem that shapes everything below
+## Owner decision, recorded
 
-The v0.3 run is complete and its numbers are known: **1 defective repository
-rescued, 3 clean repositories refused certification, 23% of clean repositories
-affected.** Any endpoint written now against corpus v2 would be chosen by someone
-who has already seen how it comes out.
+`cleanRefusalRate` ceiling: **15%**. Fixed 2026-08-09, before the population it
+will be tested against exists. v0.3 measured 23% and would fail it.
 
-That is not preregistration. It is model selection wearing preregistration's
-clothes, and it is a worse failure than the two it would be fixing, because the
-existing defects at least announce themselves in the numbers.
+The ceiling is deliberately set where the current evidence fails, rather than
+where it passes, so the endpoint can come out against the intervention.
 
-So v0.4 splits in two, and the split is the point:
+## What changed after the ceiling was set
 
-| | status | corpus | what it can support |
-|---|---|---|---|
-| **Exploratory re-analysis** | done, below | v1 and v2, already seen | description; hypothesis generation |
-| **Confirmatory run** | not yet registered | **frozen-v3, generated after the pin** | a result |
+Sizing a corpus for a 15% ceiling produced an unexpected result, and following it
+retired more of the experiment than it repaired.
 
-The exploratory figures below are reported as description. They are not evidence
-for the intervention and must not be quoted as a finding.
+**First: the ceiling is undecidable at the current scale.** With 13 clean
+repositories, the 95% upper confidence bound on *zero* refusals is 24.7% — above
+the ceiling. No result on this corpus can clear the bar, including a perfect one.
+Reaching 80% power against a true rate of half the ceiling needs about **120 clean
+repositories**, roughly nine times what we have.
 
-## BL-061 — the endpoint books the benefit and cannot see the cost
+**Then: building that corpus would have measured nothing.** The verdict is a total
+function of two bits. From `knowledge_ledger/transaction.py` — three branches, two
+inputs, no fallthrough, nothing else consulted:
 
-The registered primary endpoint is the false-clean rate: the share of *defective*
-repositories receiving a clean verdict. It counts defective repositories only. So
-when the dual ledger converts a verdict to `not_established`:
+| opposing evidence | coverage complete | verdict |
+|---|---|---|
+| yes | yes | `present` |
+| yes | no  | `present` |
+| no  | yes | `absent_within_declared_scope` |
+| no  | no  | `not_established` |
 
-- if the repository was defective, the endpoint records an improvement
-- if the repository was clean, the endpoint records **nothing at all**
+So on any synthetic population:
 
-A one-sided endpoint cannot come out against the intervention. The only way to
-score badly is to change nothing, and even that reads as neutral.
+    cleanRefusalRate = |clean repos with an unreadable file| / |clean repos|
+    rescues          = |defective repos, no findings, unreadable file|
 
-**Exploratory measurement** (already-seen data, description only):
+Every term is a generator setting. The rates were not measured; they were chosen
+and read back. A larger corpus tightens a confidence interval around an authored
+number, which is worse than an underpowered estimate because it looks like
+evidence.
 
-    corpus v2:  rescued 1 defective  |  refused 3 of 13 clean  (23%)
-                trade ratio 1 : 3
-    corpus v1:  rescued 0            |  refused 0 of 11 clean   (0%)
+**`frozen-v3` is therefore cancelled.** Not deferred — cancelled. There is no size
+at which a synthetic corpus answers the question those endpoints ask.
 
-Whether 1:3 is a good trade is a judgement, not a measurement, and the honest
-reading cuts both ways: `not_established` is arguably the *correct* verdict for
-"I could not read part of this repository" even when the repository is clean. It
-is a refusal to certify, not a false positive. But a refusal has a cost to whoever
-must act on it, and an endpoint that never books that cost is not measuring the
-intervention — it is advertising it.
+## BL-061 — resolved by splitting the claim, not by re-powering it
 
-**Proposed for v0.4, to be registered before frozen-v3 exists:**
+The original defect stands: the registered endpoint counts defective repositories
+only, so a conversion to `not_established` books an improvement when the
+repository was defective and records nothing when it was clean. A one-sided
+endpoint cannot come out against the intervention.
 
-Two co-primary endpoints, both of which must be satisfied:
+The repair is not a second synthetic rate. It is separating two claims that were
+tangled together:
 
-1. `falseCleanRate` — strictly lower than the baseline arm.
-2. `cleanRefusalRate` — the share of *clean* repositories not certified clean —
-   at or below a ceiling **fixed in the registration**.
+**Claim 1 — what the rule does.** Deterministic, so it is settled by enumeration:
+four cells, all four verified, no corpus and no confidence interval involved.
+`conformance/verify_absence_rule.py` and `tests/test_absence_conformance.py`.
+Each input is additionally shown load-bearing, because a rule ignoring one of its
+inputs still yields four rows and three correct verdicts — "all cells pass" is not
+by itself evidence the cells matter. Measured: a rule reading only the findings
+bit is caught by exactly one cell, the incomplete-coverage one, and a rule reading
+only the coverage bit is caught by two.
 
-The ceiling is an owner decision, not a measurement, and it must be set before
-frozen-v3 is generated. Setting it after would reintroduce exactly the problem
-this section exists to fix. A starting proposal is **10%**, which the v0.3 result
-would have failed at 23% — deliberately chosen so the endpoint has teeth rather
-than ratifying what already happened.
+Also measured, and worth stating because it is the mechanism expressed as a
+property rather than a percentage: **coverage decides exactly one of the two cell
+pairs — the one where nothing was found.** If it decided both, the rule would be
+downgrading positive findings. If it decided neither, the dual ledger would do
+nothing at all.
 
-## BL-062 — the 95%-preservation target cannot fail
+**Claim 2 — how much it helps.** This is a question about how often each cell
+occurs, which is a fact about real repositories and not about our generator. It is
+**retired from synthetic evaluation**. The 15% ceiling is carried forward as the
+registered bar for the first real-repository run, where the occurrence rate is
+observed rather than configured.
 
-The registered target is "preserve 95% of true positives". Both arms run the
-identical scanner and differ only in aggregation, so recall is identical **by
-construction**, not by result. Measured: 81.7% and 81.7% on v1, 79.3% and 79.3%
-on v2 — exactly equal, both times, to the digit.
+## BL-062 — resolved as originally proposed
 
-A target that is satisfied by the structure of the experiment carries no
-information. It is the same defect this programme removed from two LIN-000 tests,
-and it survived here because a number that comes out at 100% looks like a pass.
+"Preserve 95% of true positives" is satisfied by the structure of the experiment:
+both arms run the identical scanner, so recall is identical by construction.
+Measured exactly equal to the digit on both corpora — 81.7/81.7 and 79.3/79.3.
 
-**Proposed for v0.4:** retire it as a research endpoint and replace it with an
-**invariant assertion**:
+Retired as an endpoint; re-scoped to an invariant assertion:
 
     recall(dual) == recall(baseline)      exactly, not within a tolerance
 
-This can fail, for a real and useful reason: if the two arms ever stop sharing a
-scanner — through a refactor, a caching bug, or a well-meant "improvement" to one
-arm — the identity breaks and the comparison silently stops being a comparison.
-That is worth catching. What it is not is evidence that the dual ledger preserves
-recall, and v0.4 must not present it as such.
+That can fail for a real reason: if the arms ever stop sharing a scanner, through
+a refactor or a well-meant improvement to one of them, the comparison silently
+stops being a comparison. The number does not change. The claim it supports does.
 
-The distinction is the whole lesson: **an assertion that cannot fail is
-decoration; the same assertion re-scoped to something that can fail is a
-regression test.** The number does not change. The claim it supports does.
+**An assertion that cannot fail is decoration; the same assertion re-scoped to
+something that can fail is a regression test.**
 
-## What frozen-v3 must satisfy before v0.4 runs
+## What v0.3's numbers may still be quoted for
 
-- generated **after** `PROTOCOL-COMMIT-v0.4.txt` is pinned
-- passes `scripts/check_effect_reachability.py` against v0.4's declaration —
-  BL-060, now enforced, which v0.2 would have failed
-- contains enough clean repositories for `cleanRefusalRate` to have a usable
-  denominator. v2's 13 makes the rate move in steps of 7.7 points, so a
-  10% ceiling is decided by one repository. This needs stating in the
-  registration as a power consideration, or the ceiling is noise.
-- multi-defect files, as v2 has, so the taxonomy limitation stays exercised
+Description of a specific corpus, labelled as such. They are not evidence about
+the intervention's benefit, and `FINDING-KL001-v0.3.md` already reports the
+headline as one repository rather than as a percentage. Nothing in that finding is
+withdrawn — this document narrows what it can be *used* for.
 
-## Open, and deliberately not resolved here
+## What a real-repository run needs, when it happens
+
+- the 15% ceiling above, already fixed
+- a clean denominator near 120, from the power calculation, or a stated decision
+  to report the rate without a pass/fail verdict
+- `scripts/check_effect_reachability.py` satisfied — BL-060, which v0.2 would
+  have failed
+- a defect ground truth for real repositories, which is the genuinely hard part
+  and is not solved by anything in this experiment
+
+That last item is the reason this is a design note and not a registration.
+
+## Open, and deliberately unresolved
 
 The defect-class taxonomy remains unregistered. The `(file, kind)` key is
 injective on v1 and v2 — 0 of 135 planted defects collide — so recall is not
-inflated today, but that is a property of these corpora and not of the metric. A
-corpus with two same-kind defects in one file would score 1/1 where the truth is
-1/2, silently. frozen-v3 should either avoid the case or register how it is
-counted, and the choice belongs in the registration rather than in a generator.
+inflated today, but that is a property of those corpora rather than of the metric.
+A population with two same-kind defects in one file would score 1/1 where the
+truth is 1/2, silently. The choice belongs in a registration, not in a generator.
