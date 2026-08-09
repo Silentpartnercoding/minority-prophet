@@ -1,0 +1,79 @@
+{
+  "schema": "minority-prophet.eaa-p5-out-of-tree-result.v1",
+  "record": "EAA-P5",
+  "runId": "c8b39974-4ed0-48e4-a55c-8bbc83d004e3",
+  "status": "confirmatory-complete",
+  "verdict": "rejected",
+  "transition": "RESOLVE_SKIP_P6",
+  "subject": {
+    "repository": "Silentpartnercoding/minority-prophet",
+    "commit": "4776da971b786ba9da9743532e0dcb29b24a5ed3"
+  },
+  "candidate": {
+    "sha256": "311b4e3720c75bcd581b7ef3e836993c3e7b40b96b797b81559fca9478bc8260",
+    "selectedAbstentionThreshold": 0.0,
+    "independentOutputRequiresExternalWitness": true
+  },
+  "syntheticConfirmation": {
+    "seeds": [8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8109, 8110, 8111, 8112, 8113, 8114, 8115, 8116, 8117, 8118, 8119, 8120],
+    "worldsPerSeedPerCondition": 200,
+    "forgedRootCounts": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    "candidateCollapsePoint": 1,
+    "auditorV0CollapsePoint": 13,
+    "collapsePointImprovement": -12,
+    "minimumPrecollapseCoverage": 1.0,
+    "falseIndependentRate": 0.0,
+    "sourceOrderPermutationMismatches": 0,
+    "adaptiveSharedController": {
+      "worlds": 8000,
+      "selectedPairs": 224000,
+      "dependentPairs": 224000,
+      "labelsOnlyIndependentOutputs": 0,
+      "passed": true
+    }
+  },
+  "softwareConfirmation": {
+    "classification": "non-generated-curated-disjoint-confirmation",
+    "tasks": 256,
+    "worlds": 32,
+    "candidate": {
+      "retained": 256,
+      "errors": 121,
+      "selectiveRisk": 0.47265625,
+      "brier": 0.2801449811256632
+    },
+    "bestComparator": "hard_collapse",
+    "hardCollapse": {
+      "retained": 256,
+      "errors": 117,
+      "selectiveRisk": 0.45703125,
+      "brier": 0.2783203125
+    },
+    "relativeSelectiveRiskReduction": -0.03418803418803419,
+    "brierWorsening": 0.0018246686256632172,
+    "falseIndependentRate": 0.0,
+    "auditorV0": "unavailable: confirmation packet had no supported temporal contract"
+  },
+  "gate": {
+    "status": "rejected",
+    "conditions": {
+      "collapsePointImprovement": false,
+      "precollapseCoverage": true,
+      "falseIndependent": true,
+      "externalSelectiveRisk": false,
+      "externalBrier": true,
+      "negativeControls": true
+    }
+  },
+  "provenance": {
+    "outOfTreeInitialProtocolCommit": "092a4521dd92679e5476d595cced8238c19ace41",
+    "outOfTreeFinalPreregistrationCommit": "82dae98231d6ce77d596010dd6d5e0f49338cf3f",
+    "outOfTreeCandidateCommit": "ed95e26ee0d13915400ccd596d89be856bbdef9a",
+    "outOfTreeConfirmationCodeCommit": "1ac93eb8041f2b158883e8e22389b3c4a669c861",
+    "outOfTreeResultCommit": "c0df3469cca5a261caf2a74c83d1a0c71b59f86d",
+    "outOfTreeGateCommit": "17d1fd55865ce0672cd752fb4026cdaf01bffc69",
+    "confirmationPacketSha256": "004613e491b2cd4c1d928d3b9c3d489d2a27034508b76df6679437e39d53b7ae",
+    "scientificResultSha256": "6037ede03f6b279065be85132a105581a57143349b124fbae030e0073264a957"
+  },
+  "claimBoundary": "Out-of-tree evaluation of one frozen unified auditor composition; not a repository-native rerun, third-party validation, hidden-control detector, truth proof, independence certificate, or authority decision."
+}
