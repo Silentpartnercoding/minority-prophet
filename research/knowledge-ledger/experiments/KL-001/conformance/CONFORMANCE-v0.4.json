@@ -1,0 +1,72 @@
+{
+  "schema": "minority-prophet.kl001-conformance.v0.1",
+  "claim": "the absence verdict is a total function of (opposing evidence present, coverage complete)",
+  "method": "exhaustive enumeration of the input space, not sampling; 4 of 4 cells, no corpus involved",
+  "table": [
+    {
+      "hasOpposing": true,
+      "coverageComplete": true,
+      "verdict": "present",
+      "expected": "present",
+      "match": true
+    },
+    {
+      "hasOpposing": true,
+      "coverageComplete": false,
+      "verdict": "present",
+      "expected": "present",
+      "match": true
+    },
+    {
+      "hasOpposing": false,
+      "coverageComplete": true,
+      "verdict": "absent_within_declared_scope",
+      "expected": "absent_within_declared_scope",
+      "match": true
+    },
+    {
+      "hasOpposing": false,
+      "coverageComplete": false,
+      "verdict": "not_established",
+      "expected": "not_established",
+      "match": true
+    }
+  ],
+  "inputSensitivity": [
+    {
+      "input": "hasOpposing",
+      "decidesCells": 2,
+      "detail": [
+        {
+          "otherInput": true,
+          "whenTrue": "present",
+          "whenFalse": "absent_within_declared_scope"
+        },
+        {
+          "otherInput": false,
+          "whenTrue": "present",
+          "whenFalse": "not_established"
+        }
+      ]
+    },
+    {
+      "input": "coverageComplete",
+      "decidesCells": 1,
+      "detail": [
+        {
+          "otherInput": false,
+          "whenTrue": "absent_within_declared_scope",
+          "whenFalse": "not_established"
+        }
+      ]
+    }
+  ],
+  "tableComplete": true,
+  "allCellsMatch": true,
+  "everyInputDecidesAtLeastOneCell": true,
+  "pass": true,
+  "retiredEndpoints": {
+    "falseCleanRate": "fixed by corpus composition on a synthetic population; uninterpretable as evidence",
+    "cleanRefusalRate": "likewise; carried forward as a registered 15% ceiling for the first real-repository run"
+  }
+}
