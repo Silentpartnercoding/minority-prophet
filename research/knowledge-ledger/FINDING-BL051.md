@@ -235,11 +235,18 @@ that are roots. v0.1 and v0.2 asked for `root(c)` preserved for *every* `c`,
 which is strictly stronger, and under this schema's `S_a` is an identity. That is
 why it could not fail.
 
-The independent implementer measured the paper's reading blind and got **121,944
-rewirings, 0 violations** — matching the paper's own published exhaustive check,
-*"5,912 worlds; 121,944 rewirings"*, a figure absent from their package. **Theorem
-1 was tested after all**, by someone measuring a reading the registration had not
-asked for.
+The independent implementer measured the paper's reading blind and found it held
+with **0 violations**. **Theorem 1 was tested after all**, by someone measuring a
+reading the registration had not asked for.
+
+**[Corrected 2026-08-09 by DECISION-RW-001.]** This paragraph cited 121,944 as
+*matching the paper's published check exactly*, and offered the coincidence as
+corroboration. Under RW-001 — owner-decided, the identity is not a rewiring — the
+registered definition yields **116,032**, and the two reconcile only by adding
+back one identity per side-consistent world: `116,032 + 5,912 = 121,944`. A
+reconciliation, not an agreement. The evidence for the reading never rested on
+the number; it rests on the paper's words, *"preserves the **root set**"*, against
+the stronger reading v0.1 and v0.2 tested.
 
 v0.3 registers three distinct things where v0.2 had one:
 
