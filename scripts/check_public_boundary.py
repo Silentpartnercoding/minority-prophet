@@ -126,7 +126,23 @@ def main() -> int:
     parser.add_argument("--head", default="HEAD", help="commit to inspect")
     args = parser.parse_args()
 
-    problems = violations(added_lines(args.base, args.head))
+    added = added_lines(args.base, args.head)
+
+    # A diff-based check that inspects nothing still prints "passed". Running it
+    # with --head HEAD *before* committing makes base and head the same commit, so
+    # the diff is empty and the run is vacuous while looking green. That mistake
+    # has been made three times in this programme and published a leak each time,
+    # most recently the one this very file records. The check now refuses the
+    # situation rather than reporting a success it did not earn.
+    if not added and subprocess.run(("git", "status", "--porcelain"),
+                                    capture_output=True, text=True).stdout.strip():
+        print("Public-boundary check REFUSED: the diff is empty but the working "
+              "tree has uncommitted changes.\n  Nothing would be inspected, so a "
+              "pass here would mean nothing. Commit first, then re-run.",
+              file=sys.stderr)
+        return 1
+
+    problems = violations(added)
     if problems:
         print("Public-boundary check failed. Only newly added lines were inspected:", file=sys.stderr)
         for problem in problems:

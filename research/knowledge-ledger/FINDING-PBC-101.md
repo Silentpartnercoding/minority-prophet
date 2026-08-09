@@ -21,8 +21,8 @@ or `(`. Replayed against the 37 real leaked lines that RUN-20260808-1 removed:
 
 Missed forms, both of which are the *most common* shapes in the run records:
 
-    python_executable=/Users/<operator>/Development/.venv/bin/python
-    origin  <user>@<host>:/Users/<operator>/.../minority-prophet
+    python_executable=$HOME/Development/.venv/bin/python
+    origin  <user>@<host>:$HOME/.../minority-prophet
 
 An `=` or a `:` before the path defeats it. Every per-run `environment-lock.txt`
 writes the interpreter path in the first form, so the highest-frequency instance
@@ -35,7 +35,11 @@ above appeared literally in this document as evidence, in their real form. That
 was itself a disclosure -- an operator home path and a LAN host published to
 demonstrate a rule that failed to catch them -- and they are now shown in
 placeholder form. The delimiter that defeats the rule is `=` and `:`, which the
-placeholders preserve.
+placeholders preserve. The first placeholders drafted for this repair still
+read `/Users/<operator>/...`, and CI blocked them -- correctly, since the rule
+matches the *shape* of a home path and does not care that the username is a
+stand-in. Recorded because it is evidence the rule is not merely string-matching
+a known operator.
 
 CI's public-boundary job inspected those lines as newly added and **passed
 them**, while correctly blocking a different line in this same file. The gap is
