@@ -1,12 +1,9 @@
 {
   "schema": "minority-prophet.preregistration.v0.2",
   "experimentId": "KL-001",
-  "protocolVersion": {
-    "status": "unanswered",
-    "reason": "assigned at registration, when this kernel's protocol is written and frozen; the kernel is seeded and has no protocol yet"
-  },
+  "protocolVersion": "v0.3",
   "status": "preregistered",
-  "statusNote": "Advanced from seeded by owner authorisation, 2026-08-09. The gate's four items exist: mapping rules registered (pipeline/MAPPING-RULES.md), frozen corpus digest-manifested before evaluation, baseline measured, and this registration carrying all of it.",
+  "statusNote": "Protocol v0.2 FAILED its primary endpoint on frozen-v1 and is preserved in preregistration-v0.2.json and FINDING-KL001-v0.2.md. v0.3 is a NEW registration against a corpus that can exhibit the effect, not a retry: v0.2's numbers are not reused and its failure is not withdrawn.",
   "migrationRecord": {
     "migratedBy": "RUN-20260807-8",
     "from": "minority-prophet.preregistration.v0.1 (preserved in git history at this path)",
@@ -22,11 +19,14 @@
   "searchSpace": {
     "status": "answered",
     "definition": "Derived, never declared: every file matching the registered scope patterns in pipeline/MAPPING-RULES.md M1. Supplying a scope raises ScopeSuppliedError. This is the ADV-001 defence; FC1's W3 showed a supplied scope can omit the uncovered files and earn a clean absence.",
-    "corpus": "corpus/frozen-v1",
-    "corpusManifestDigest": "3f029aea56765bd89099ce0c3aaa1e52524dd86010063f99b9f5f0c58e77dca9",
+    "corpus": "corpus/frozen-v2",
+    "corpusManifestDigest": "a8b364838f33606312e0a67c9ec3a70d17fb80b38e929d9cb97cfa07a7c8f428",
     "repos": 60,
-    "plantedDefects": 71,
-    "cleanControls": 11
+    "plantedDefects": 135,
+    "cleanControls": 13,
+    "reposWithUnreadableFiles": 22,
+    "multiDefectFiles": 40,
+    "whyThisCorpus": "frozen-v1 could not exhibit the effect: 0 unreadable files and 0 multi-defect files. v2 plants both, so incomplete coverage actually occurs and the taxonomy question can bite."
   },
   "rootDefinition": {
     "status": "answered",
@@ -35,33 +35,32 @@
   },
   "baselines": {
     "status": "answered",
-    "measuredBy": "corpus/measure_baseline.py against corpus/frozen-v1",
-    "scanner": "plain pattern scanner, no dual ledger, deliberately unimpressive",
-    "baselineRecall": 0.8169,
-    "falseCleanRate": 0.1224,
+    "corpus": "corpus/frozen-v2",
+    "baselineRecall": 0.7926,
+    "falseCleanRate": 0.0426,
     "perClass": {
-      "shell-injection": {
-        "planted": 17,
-        "found": 17
-      },
-      "missing-timeout": {
-        "planted": 13,
-        "found": 0
+      "unchecked-return": {
+        "planted": 35,
+        "found": 35
       },
       "bare-except": {
+        "planted": 29,
+        "found": 29
+      },
+      "missing-timeout": {
+        "planted": 28,
+        "found": 0
+      },
+      "shell-injection": {
         "planted": 16,
         "found": 16
       },
       "hardcoded-credential": {
-        "planted": 12,
-        "found": 12
-      },
-      "unchecked-return": {
-        "planted": 13,
-        "found": 13
+        "planted": 27,
+        "found": 27
       }
     },
-    "note": "Read per-class, not aggregate. All 13 misses are one defect class (missing-timeout, 0/13); the other four are 100%. A dual ledger lifting the aggregate by fixing only that class would look like a general improvement and would not be one."
+    "measuredBeforeEndpointsRegistered": true
   },
   "controls": [
     {
@@ -137,41 +136,41 @@
   ],
   "primaryEndpoint": {
     "name": "false-clean rate",
-    "baseline": 0.1224,
+    "baseline": 0.0426,
     "direction": "lower is better",
-    "definition": "repositories with at least one planted defect that receive a clean conclusion"
+    "condition": "strictly below 0.0426"
   },
   "secondaryEndpoints": [
     {
       "name": "true-positive recall",
-      "baseline": 0.8169,
-      "constraint": "MUST be at least 0.95 x 0.8169 = 0.7761 absolute"
+      "baseline": 0.7926,
+      "constraint": "at least 0.753 absolute (95% of baseline)"
     },
     {
       "name": "per-class recall",
       "baseline": {
-        "shell-injection": {
-          "planted": 17,
-          "found": 17
-        },
-        "missing-timeout": {
-          "planted": 13,
-          "found": 0
+        "unchecked-return": {
+          "planted": 35,
+          "found": 35
         },
         "bare-except": {
+          "planted": 29,
+          "found": 29
+        },
+        "missing-timeout": {
+          "planted": 28,
+          "found": 0
+        },
+        "shell-injection": {
           "planted": 16,
           "found": 16
         },
         "hardcoded-credential": {
-          "planted": 12,
-          "found": 12
-        },
-        "unchecked-return": {
-          "planted": 13,
-          "found": 13
+          "planted": 27,
+          "found": 27
         }
       },
-      "constraint": "reported per class; no class may fall below its baseline"
+      "constraint": "no class below its baseline"
     }
   ],
   "effectSize": {
@@ -186,8 +185,8 @@
     "status": "unanswered",
     "reason": "stated at registration once the endpoint family is fixed (KL-000 precedent: none on an exact-zero primary endpoint; Bonferroni on secondary rate bounds)"
   },
-  "successCondition": "false-clean rate strictly below 0.1224 AND absolute recall at least 0.7761 AND no per-class recall below its baseline.",
-  "failureCondition": "false-clean rate not lower, or recall below the preserved threshold, or any per-class regression. Each is a failure on its own.",
+  "successCondition": "false-clean strictly below 0.0426 AND recall at least 0.753 AND no per-class regression.",
+  "failureCondition": "Any of the three unmet. Each is a failure on its own, and a failure is preserved rather than re-baselined -- see v0.2.",
   "invalidationCondition": "Corpus content not matching corpusManifestDigest; any scope supplied rather than derived; any root attributed per-finding rather than per-family; any not_searched or unavailable location recorded as searched; a metered model in the pipeline without founder authorisation.",
   "stopCondition": "No clean conclusion is permitted with incomplete mandatory file coverage.",
   "frozenSeedsOrSplits": {
@@ -214,5 +213,14 @@
     "date": "2026-08-09",
     "scope": "Owner authorised committing this gate. Zero spend: the pipeline, corpus and baseline are deterministic and dependency-free. A metered model in the pipeline would require separate founder authorisation and is an invalidation condition until granted."
   },
-  "kernelSpecificConstraint": "Baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable (standing blocker)."
+  "kernelSpecificConstraint": "Baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable (standing blocker).",
+  "priorProtocols": [
+    {
+      "version": "v0.2",
+      "outcome": "failed",
+      "corpus": "corpus/frozen-v1",
+      "reason": "primary endpoint unmoved: every file readable, so coverage was always complete and the dual ledger's only lever was never pulled",
+      "finding": "FINDING-KL001-v0.2.md"
+    }
+  ]
 }
