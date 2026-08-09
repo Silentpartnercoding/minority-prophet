@@ -1,16 +1,38 @@
 {
   "schema": "minority-prophet.live-commissions.v0.1",
   "purpose": "Experiments with an OUTSTANDING blind commission. While an entry is live, the values in its withheld set must not enter the public repository, because publishing them retires the commission's pass condition before it is answered. Remove or close the entry when the commission closes.",
-  "why": "RUN-20260808-1 found that twelve of LIN-000's fourteen outcome counters had been published hours earlier, inside the run report that proposed the experiment. The proposal and the numbers that would falsify it travelled in the same commit, and nothing checked for it. M27 recorded the rule as prose; this file is the machine-readable half. The checker that enforces it is BL-048 and is NOT yet built -- recorded as unbuilt rather than described as if it existed, since a control that does not run is prose (M26).",
+  "why": "RUN-20260808-1 found that twelve of LIN-000 v0.1's fourteen outcome counters had been published hours earlier, inside the run report that proposed the experiment. The proposal and the numbers that would falsify it travelled in the same commit, and nothing checked for it. M27 recorded the rule; this file is its machine-readable half and scripts/check_withheld_leak.py (BL-048) enforces it in CI. BL-051 is the first commission the control has protected while live.",
   "commissions": [
+    {
+      "id": "BL-051",
+      "experiment": "LIN-000 v0.2",
+      "status": "live",
+      "commissionedBy": "RUN-20260808-3",
+      "package": "$HOME/Development/lin000-v2-spec",
+      "resultsFile": "research/knowledge-ledger/lineage/results/lin000-v2-result.json",
+      "declaredBounds": [
+        50362,
+        20260808,
+        100000,
+        1000
+      ],
+      "declaredBoundsNote": "Derivable from count(k) = k! * 2^k, the registered seed, the registered world count, and the registered prefix interval. Inputs, not outcomes.",
+      "passCondition": "both stream digests from PINNED-DIGESTS.json, no sweep",
+      "deliberatelyShipped": "The two total digests and all 150 prefix digests. Prefixes localise a miss to a 1,000-world block; they leak no more than the total already does.",
+      "question": "Does a pre-declared reading of v0.2 hit both digests with no sweep? v0.1 needed a 96-way and a 72-way sweep."
+    },
     {
       "id": "BL-044",
       "experiment": "LIN-000",
       "status": "closed",
       "commissionedBy": "RUN-20260808-1",
       "closedBy": "RUN-20260808-2",
-      "result": "FINDING-BL044.md — necessary but not sufficient; both pre-declared readings missed, matches found by sweeping 96 and 72 readings respectively",
-      "declaredBounds": [50362, 20260808, 100000],
+      "result": "FINDING-BL044.md \u2014 necessary but not sufficient; both pre-declared readings missed, matches found by sweeping 96 and 72 readings respectively",
+      "declaredBounds": [
+        50362,
+        20260808,
+        100000
+      ],
       "declaredBoundsNote": "Legitimately shippable: derivable from count(k) = k! * 2^k, the registered seed, and the registered randomized count. Inputs the implementer derives against, not outcomes.",
       "withheldSetLeaked": true,
       "withheldSetLeakedNote": "Twelve of fourteen counters were public before the commission was issued. The pass condition was switched to world-stream digests in the brief, which is what made the commission answerable. The leak did no measured damage only because the implementer independently chose not to consult the public repository -- protection by luck, not by control."

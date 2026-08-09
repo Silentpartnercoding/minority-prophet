@@ -41,10 +41,18 @@ SELF_EXEMPT = {
 MIN_INTERESTING = 100
 
 
+# Structurally derivable metadata, not outcomes. prefixDigestCount is
+# worlds // prefixDigestsEvery by definition; blocking it would block the
+# integer 100 across the whole repository.
+DERIVABLE_KEYS = {"prefixDigests", "prefixDigestCount", "prefixDigestsEvery"}
+
+
 def _integers(value) -> set[int]:
     found: set[int] = set()
     if isinstance(value, dict):
-        for item in value.values():
+        for key, item in value.items():
+            if key in DERIVABLE_KEYS:
+                continue
             found |= _integers(item)
     elif isinstance(value, list):
         for item in value:
@@ -108,7 +116,7 @@ def violations(lines, blocked: dict[str, set[int]]) -> list[str]:
             continue
         for commission, values in blocked.items():
             for value in sorted(values):
-                if any(re.search(rf"(?<![\d,]){re.escape(s)}(?![\d,])", text)
+                if any(re.search(rf"(?<![\d,_]){re.escape(s)}(?![\d,_])", text)
                        for s in _spellings(value)):
                     out.append(
                         f"{path}:{number}: publishes a withheld outcome value of "

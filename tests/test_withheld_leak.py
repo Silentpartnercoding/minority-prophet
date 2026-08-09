@@ -87,6 +87,28 @@ class TestWithheldLeak(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 withheld_sets(root)
 
+    def test_underscore_separated_literals_are_not_false_positives(self):
+        """`RANDOMIZED_WORLDS = 100_000` does not contain the value 100. Caught
+        when the checker blocked the constant declaring its own world count."""
+        with tempfile.TemporaryDirectory() as d:
+            root = _fixture(pathlib.Path(d), status="live", values={"n": 100}, bounds=[])
+            blocked = withheld_sets(root)
+            self.assertEqual(violations([("m.py", 1, "WORLDS = 100_000")], blocked), [])
+            self.assertTrue(violations([("m.py", 2, "count is 100 exactly")], blocked))
+
+    def test_derivable_metadata_is_not_withheld(self):
+        """prefixDigestCount is worlds // interval by definition. Blocking it
+        would block a small round number across the whole repository."""
+        with tempfile.TemporaryDirectory() as d:
+            root = _fixture(pathlib.Path(d), status="live",
+                            values={"prefixDigestCount": 100, "prefixDigestsEvery": 1000,
+                                    "prefixDigests": ["a"], "real": 44450},
+                            bounds=[])
+            blocked = withheld_sets(root)["BL-TEST"]
+            self.assertNotIn(100, blocked)
+            self.assertNotIn(1000, blocked)
+            self.assertIn(44450, blocked)
+
     def test_it_would_have_caught_the_leak_that_motivated_it(self):
         """The RUN-20260807-10 regression, replayed against the real LIN-000
         results file: had LIN-000 been declared live at the time, the draft run
