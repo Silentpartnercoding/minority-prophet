@@ -29,6 +29,13 @@ jobs:
           fi
       - name: Check newly added public material
         run: python scripts/check_public_boundary.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+      - name: Sweep every tracked line, not only additions
+        # The step above inspects additions only, by design, so frozen records are
+        # never rewritten. The cost is that a term added to the blocklist today is
+        # never applied to anything committed yesterday -- which is how an
+        # owner-designated never-public term outlived the rule that blocks it. This
+        # step reconciles the whole published tree against the current rules.
+        run: python scripts/check_public_boundary.py --sweep --head "${{ github.sha }}"
       - name: Check no live commission's withheld values are published
         run: python scripts/check_withheld_leak.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
       - name: Verify preregistrations still match their pinned commits
