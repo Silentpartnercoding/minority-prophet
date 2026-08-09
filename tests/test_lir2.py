@@ -4,6 +4,7 @@ from experiments.lir1.synthetic_fixture import build_fixture, hide_edges
 from experiments.lir2.root_grouping import infer_roots, pair_score
 from experiments.lir2.tune import THRESHOLDS
 from experiments.lir2.score_confirmatory import BOOTSTRAP_SAMPLES, THRESHOLD
+from experiments.lir2.score_pheme_transfer import INPUT_SHA256, THRESHOLD as TRANSFER_THRESHOLD
 
 
 class LIR2Tests(unittest.TestCase):
@@ -11,6 +12,8 @@ class LIR2Tests(unittest.TestCase):
         self.assertEqual(THRESHOLDS, (0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95))
         self.assertEqual(THRESHOLD, 0.75)
         self.assertEqual(BOOTSTRAP_SAMPLES, 10_000)
+        self.assertEqual(TRANSFER_THRESHOLD, 0.75)
+        self.assertEqual(len(INPUT_SHA256), 64)
 
     def test_pair_score_is_symmetric(self):
         claims = build_fixture(1)
