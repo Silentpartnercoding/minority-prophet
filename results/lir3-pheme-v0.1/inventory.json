@@ -1,0 +1,38 @@
+{
+  "availableUnusedThreadDirectories": 1795,
+  "capPerSplit": 5000,
+  "caseOverlap": 0,
+  "developmentPercent": 25,
+  "excludedPriorCaseSetSha256": "003f05122dc1604cbb7f4ae54d497363b8b31e2b37507622b3bcb8fba28e2d68",
+  "excludedPriorCases": 607,
+  "labelBoundary": "Recorded PHEME reply-tree roots; not causal evidence independence.",
+  "rawArchiveSha256": "079f6ffdbc0b367399262f101774372e5d19dd8278c33d6c97a84461a9bc58dd",
+  "redistribution": "Tweet text, author identifiers, and normalized rows remain local.",
+  "schema": "minority-prophet.lir3-pheme-inventory.v1",
+  "splitSaltSha256": "6224cdcf181f577d214d81f570c1ec536fe69897f56eefbf7788edce54619637",
+  "splits": {
+    "confirmatory": {
+      "caseSetSha256": "d03ac90910866ba5ad65b95c54dc8edac0789e55b62fd1293b50e2470a1ab2eb",
+      "cases": 425,
+      "claims": 5000,
+      "invalidThreads": 0,
+      "normalizedJsonlSha256": "4a66b3bd48865c8a05d6167417d283ef3ad6ea46aef44aa18436a9ea2db5e1c0",
+      "recordedEdges": 4562,
+      "recordedRoots": 438,
+      "threadsExcludedMissingTweets": 1,
+      "threadsSkippedForCap": 919
+    },
+    "development": {
+      "caseSetSha256": "89bb815ec84230903c98337e417c1071da2e643c75118a06659df64ff20dfa85",
+      "cases": 417,
+      "claims": 5000,
+      "invalidThreads": 0,
+      "normalizedJsonlSha256": "312fd273d83efdefa7931785ab00deabd0f3fa73168654ee15e375681cb38d1a",
+      "recordedEdges": 4570,
+      "recordedRoots": 430,
+      "threadsExcludedMissingTweets": 0,
+      "threadsSkippedForCap": 33
+    }
+  },
+  "status": "sealed-disjoint-splits"
+}
