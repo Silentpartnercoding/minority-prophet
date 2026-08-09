@@ -1,0 +1,16 @@
+{
+  "note": "Not a registration. The declaration v0.2 would have had to make, applied retrospectively to show this check would have refused the run. v0.2's frozen preregistration is unchanged.",
+  "effectRequires": [
+    {
+      "property": "a repository containing a source file the scanner cannot decode",
+      "probe": [
+        "python3",
+        "research/knowledge-ledger/experiments/KL-001/corpus/probe_unreadable.py",
+        "{population}"
+      ],
+      "minimum": 1,
+      "population": "research/knowledge-ledger/experiments/KL-001/corpus/frozen-v1",
+      "negativeControl": "research/knowledge-ledger/experiments/KL-001/corpus/frozen-v1"
+    }
+  ]
+}
