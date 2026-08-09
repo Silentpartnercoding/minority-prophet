@@ -1,6 +1,12 @@
 import hashlib
+import pathlib
+import sys
+import tempfile
+import unittest
 
 from scripts.check_public_boundary import violations, sensitive_vocabulary_hit
+
+SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "scripts/check_public_boundary.py"
 
 
 def test_rejects_new_local_paths():
@@ -62,3 +68,168 @@ def test_allows_public_technical_language():
         ("docs/config.md", 9, "Set API_KEY=YOUR_API_KEY before running the example."),
     ]
     assert violations(lines) == []
+
+
+SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "scripts/check_public_boundary.py"
+
+
+class TestEmptyDiffIsRefusedNotPassed(unittest.TestCase):
+    """A vacuous run must not report success.
+
+    Running the check with --head HEAD before committing makes base and head the
+    same commit. The diff is empty, nothing is inspected, and the old behaviour
+    was to print "passed". Three publications in this programme were cleared by
+    exactly that, including the leak FINDING-PBC-101 records.
+    """
+
+    def _repo(self, tmp):
+        import subprocess as sp
+        g = lambda *a: sp.run(("git",) + a, cwd=tmp, capture_output=True, check=True)
+        g("init", "-q", "-b", "main")
+        g("config", "user.email", "t@t"); g("config", "user.name", "t")
+        (tmp / "a.txt").write_text("clean\n")
+        g("add", "-A"); g("commit", "-qm", "base")
+        return g
+
+    def _run(self, tmp):
+        import subprocess as sp
+        return sp.run((sys.executable, str(SCRIPT), "--base", "HEAD", "--head", "HEAD"),
+                      cwd=tmp, capture_output=True, text=True)
+
+    def test_empty_diff_with_a_dirty_tree_is_refused(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d); self._repo(tmp)
+            (tmp / "a.txt").write_text("uncommitted change\n")   # the real situation
+            r = self._run(tmp)
+            self.assertEqual(r.returncode, 1, f"must not pass:\n{r.stdout}{r.stderr}")
+            self.assertIn("REFUSED", r.stderr)
+
+    def test_empty_diff_with_a_clean_tree_still_passes(self):
+        """The guard must not break the legitimate no-op case: a branch with
+        nothing added is genuinely clean, and blocking it would make the check
+        impossible to run in CI on an unchanged tree."""
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d); self._repo(tmp)
+            r = self._run(tmp)
+            self.assertEqual(r.returncode, 0, f"{r.stdout}{r.stderr}")
+
+
+class TestSweepMode(unittest.TestCase):
+    """The diff mode cannot see what was already published. A term added to the
+    blocklist today is never applied to yesterday's commits, which is how an
+    owner-designated never-public term outlived the rule that blocks it."""
+
+    def _repo(self, tmp, content):
+        import subprocess as sp
+        g = lambda *a: sp.run(("git",) + a, cwd=tmp, capture_output=True, check=True)
+        g("init", "-q", "-b", "main")
+        g("config", "user.email", "t@t"); g("config", "user.name", "t")
+        (tmp / "old.md").write_text(content)
+        g("add", "-A"); g("commit", "-qm", "already published")
+        return g
+
+    def _sweep(self, tmp):
+        import subprocess as sp
+        return sp.run((sys.executable, str(SCRIPT), "--sweep", "--head", "HEAD"),
+                      cwd=tmp, capture_output=True, text=True)
+
+    def test_sweep_finds_a_pre_existing_violation_the_diff_mode_cannot(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            self._repo(tmp, "note: /Users/someone/secret/path/file.txt\n")
+
+            import subprocess as sp
+            diff = sp.run((sys.executable, str(SCRIPT), "--base", "HEAD", "--head", "HEAD"),
+                          cwd=tmp, capture_output=True, text=True)
+            self.assertEqual(diff.returncode, 0,
+                             "precondition: the diff mode sees nothing to inspect")
+
+            swept = self._sweep(tmp)
+            self.assertEqual(swept.returncode, 1, f"{swept.stdout}{swept.stderr}")
+            self.assertIn("SWEEP failed", swept.stderr)
+            self.assertIn("old.md", swept.stderr)
+
+    def test_sweep_is_clean_on_a_tree_with_nothing_to_find(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = pathlib.Path(d)
+            self._repo(tmp, "an ordinary sentence about verification.\n")
+            r = self._sweep(tmp)
+            self.assertEqual(r.returncode, 0, f"{r.stdout}{r.stderr}")
+            self.assertIn("sweep clean", r.stdout)
+
+
+def test_digests_can_be_supplied_without_the_term(monkeypatch):
+    """The term must be able to stay out of every artefact.
+
+    MP_BOUNDARY_TERMS requires the plaintext to reach CI, which means typing it
+    somewhere that logs. MP_BOUNDARY_DIGESTS takes the hash instead, computed on
+    the owner's machine, so the word exists in no file, no history and no
+    transcript -- and the digest is in a secret rather than in this public file,
+    so it cannot be wordlisted either.
+    """
+    import hashlib as _h
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS",
+                       _h.sha256(b"invented lane marker").hexdigest())
+    assert sensitive_vocabulary_hit("ship it through the invented lane marker")
+    assert not sensitive_vocabulary_hit("ship it through the ordinary channel")
+
+
+def test_multiple_digests_may_be_separated_by_whitespace_or_commas(monkeypatch):
+    import hashlib as _h
+    a = _h.sha256(b"alpha widget").hexdigest()
+    b = _h.sha256(b"beta widget").hexdigest()
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", f"{a}, {b}")
+    assert sensitive_vocabulary_hit("the alpha widget")
+    assert sensitive_vocabulary_hit("the beta widget")
+
+
+def test_malformed_digest_entries_are_ignored_not_crashed_on(monkeypatch):
+    """A secret with a stray quote or a truncated value must not take CI down;
+    it must simply not match. A boundary check that crashes is a boundary check
+    that gets disabled."""
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", "not-a-digest, deadbeef, ''")
+    assert not sensitive_vocabulary_hit("any ordinary sentence at all")
+
+
+def test_the_helper_refuses_a_term_on_the_command_line():
+    """A term in argv is in the shell history and the process list before the
+    program starts, which defeats the purpose of the tool."""
+    import subprocess as sp
+    script = pathlib.Path(__file__).resolve().parents[1] / "scripts/add_boundary_term.py"
+    r = sp.run([sys.executable, str(script), "some-term"], capture_output=True, text=True)
+    assert r.returncode == 2
+    assert "shell history" in r.stderr
+
+
+def test_the_helper_digest_matches_what_the_checker_looks_for(monkeypatch):
+    """The tool is useless if its digest is not the one the matcher tests."""
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
+    from add_boundary_term import digest
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", digest("Some Invented Phrase"))
+    assert sensitive_vocabulary_hit("we mention some invented phrase here")
+
+
+def test_a_run_with_hidden_rules_says_so_without_saying_what(monkeypatch, capsys):
+    """A secret input makes this check unreproducible by a third party: a fork
+    runs it without the secret and can pass where main would fail. The mitigation
+    is not to hide that, but to disclose the count. Enough for a reader to know an
+    unaudited input existed; nothing about what it was."""
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
+    import importlib, hashlib as _h
+    import scripts.check_public_boundary as m
+    monkeypatch.delenv("MP_BOUNDARY_TERMS", raising=False)
+
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS", "")
+    assert "supplied at runtime" not in m.provenance()
+
+    monkeypatch.setenv("MP_BOUNDARY_DIGESTS",
+                       f"{_h.sha256(b'x').hexdigest()} {_h.sha256(b'y').hexdigest()}")
+    note = m.provenance()
+    assert "2 supplied at runtime" in note
+    assert "not reproducible without them" in note
+    # and it discloses no digest
+    assert _h.sha256(b"x").hexdigest() not in note

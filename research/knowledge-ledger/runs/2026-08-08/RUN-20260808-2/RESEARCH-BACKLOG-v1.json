@@ -25,7 +25,7 @@
       "id": "BL-050",
       "type": "missing-control",
       "title": "Two gaps in the public-boundary check (PBC-101)",
-      "hypothesis": "The local-path rule misses 11 of 37 real leaked lines (any path preceded by '=' or ':'), and 'lockpick' -- the one term the owner named as never-public -- is not on the internal-wording blocklist.",
+      "hypothesis": "The local-path rule misses 11 of 37 real leaked lines (any path preceded by '=' or ':'), and '[REDACTED internal tooling term]' -- the one term the owner named as never-public -- is not on the internal-wording blocklist.",
       "discriminatingTest": "Replay the 37 removed lines; require 37/37 blocked. Assert the internal-tooling term is blocked.",
       "whyItMatters": "The highest-frequency leak shape in the repository is the one that slips through.",
       "wouldChangeADecision": true,

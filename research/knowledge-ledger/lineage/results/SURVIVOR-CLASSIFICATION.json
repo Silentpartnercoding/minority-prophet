@@ -1,0 +1,50 @@
+{
+  "schema": "minority-prophet.lin000-survivor-classification.v0.1",
+  "scope": "classified against this repository's v4 reference; the independent implementation that produced IND-v4-RESULTS.json is not in this repository",
+  "results": [
+    {
+      "mutant": "minIndexInChain",
+      "worldsExamined": 50362,
+      "rootOfCalls": 297378,
+      "callsWhereBehaviourDiffers": 0,
+      "worldsWhereBehaviourDiffers": 0,
+      "classification": "EQUIVALENT",
+      "meaning": "the mutation cannot change root_of's output on any world in the exhaustive space, so a firing count of zero is forced and implies nothing about checker power",
+      "firstDifferingExample": null
+    },
+    {
+      "mutant": "grandparentSkip",
+      "worldsExamined": 50362,
+      "rootOfCalls": 297378,
+      "callsWhereBehaviourDiffers": 0,
+      "worldsWhereBehaviourDiffers": 0,
+      "classification": "EQUIVALENT",
+      "meaning": "the mutation cannot change root_of's output on any world in the exhaustive space, so a firing count of zero is forced and implies nothing about checker power",
+      "firstDifferingExample": null
+    },
+    {
+      "mutant": "control:offByOneStop",
+      "worldsExamined": 50362,
+      "rootOfCalls": 297378,
+      "callsWhereBehaviourDiffers": 174812,
+      "worldsWhereBehaviourDiffers": 50236,
+      "classification": "BEHAVIOUR_CHANGING",
+      "meaning": "the mutation does change root_of's output, so a firing count of zero for it WOULD indicate a blind spot -- firing is not measured here",
+      "firstDifferingExample": {
+        "world": [
+          {
+            "parentIndex": null,
+            "side": 0
+          },
+          {
+            "parentIndex": 0,
+            "side": 0
+          }
+        ],
+        "index": 1,
+        "reference": 0,
+        "mutant": 1
+      }
+    }
+  ]
+}

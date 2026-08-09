@@ -4,7 +4,7 @@ BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEA
 HEAD_REF ?= HEAD
 
 .PHONY: help setup verify verify-python verify-integrity verify-site \
-	check-public-boundary check-withheld-leak check-registration-chain \
+	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
 	check-research-integrity
 
 help:
@@ -24,10 +24,17 @@ verify: verify-python verify-integrity verify-site
 verify-python:
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q
 
-verify-integrity: check-public-boundary check-withheld-leak check-registration-chain check-research-integrity
+verify-integrity: check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity
 
 check-public-boundary:
 	"$(PYTHON)" scripts/check_public_boundary.py --base "$(BASE)" --head "$(HEAD_REF)"
+
+# The diff check inspects additions only, so a term added to the blocklist today
+# is never applied to anything committed yesterday. This reconciles the whole
+# published tree. Without this target, routing CI through make would have dropped
+# the sweep silently.
+check-public-boundary-sweep:
+	"$(PYTHON)" scripts/check_public_boundary.py --sweep --head "$(HEAD_REF)"
 
 check-withheld-leak:
 	"$(PYTHON)" scripts/check_withheld_leak.py --base "$(BASE)" --head "$(HEAD_REF)"
