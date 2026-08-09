@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silentpartnercoding.github.io/minority-prophet/schemas/lir1-claim-instance-v1.json",
+  "title": "LIR-1 claim instance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "dataset", "case_id", "claim_id", "proposition_id", "text",
+    "timestamp", "author_id", "observed_parents", "content_truth",
+    "independence_label", "true_root_id", "label_basis", "label_scope",
+    "split", "channel_metadata"
+  ],
+  "properties": {
+    "schema": {"const": "minority-prophet.lir1-claim-instance.v1"},
+    "dataset": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "claim_id": {"type": "string", "minLength": 1},
+    "proposition_id": {"type": "string", "minLength": 1},
+    "text": {"type": ["string", "null"]},
+    "timestamp": {"type": ["string", "null"], "format": "date-time"},
+    "author_id": {"type": ["string", "null"]},
+    "observed_parents": {
+      "type": "array", "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "content_truth": {"enum": ["true", "false", "unresolved", "not_applicable"]},
+    "independence_label": {"enum": ["independent", "copy", "mutated_copy", "unknown"]},
+    "true_root_id": {"type": ["string", "null"]},
+    "label_basis": {
+      "enum": ["constructed_exact", "explicit_edge", "adjudicated_lineage", "heuristic_proxy", "unknown"]
+    },
+    "label_scope": {
+      "enum": ["content_truth", "direct_parent", "record_root", "evidence_independence", "none"]
+    },
+    "split": {"enum": ["development", "confirmatory"]},
+    "channel_metadata": {"type": "object"}
+  }
+}
+

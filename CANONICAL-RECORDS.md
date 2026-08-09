@@ -30,6 +30,10 @@ true outside its stated experiment.
 | HGD-1 | Canonical graded-dependence experiment: rejected | `results/hgd1-v1/result.json` | Six of seven hypotheses passed, but the primary absolute-effect threshold failed; collocation does not prove causal dependence, truth, or authority. |
 | HGD-2 | Canonical graded-dependence replication: rejected | `results/hgd2-v1/result.json` | Safety improved, but control coverage and attacked usefulness failed; much of the gain came through abstention. |
 | HES-1 | Canonical evidence-seeking experiment: supported with material subgroup limitation | `results/hes1-v1/result.json` | Blind acquisition restored substantial coverage, but software false-negative accuracy was inadequate; independence alone does not establish claim-specific competence. |
+| LIR-1/PHEME-R2 | Canonical recorded-lineage recovery experiment: rejected | `results/lir1-pheme-r2-v0.1/canonical-manifest.json` | Hidden-parent recovery failed on a disjoint PHEME holdout; reply-tree roots are recorded platform lineage, not causal evidence independence. |
+| LIR-1E | Canonical constructed record-root recovery experiment: supported with material abstention | `results/lir1e-confirmatory-v0.1/canonical-manifest.json` | The frozen method recovered useful constructed roots and truth advantage, answering 25 of 36 cases; it does not establish causal evidence independence or uncontrolled real-world performance. |
+| LIR-2 | Canonical precision-constrained root-coverage experiment: supported | `results/lir2-confirmatory-v0.1/canonical-manifest.json` | Direct root grouping answered 34 of 36 constructed cases correctly with zero false root merges; the synthetic generator and model pair remain a narrow boundary. |
+| LIR-2/PHEME | Canonical fixed-method recorded-lineage transfer: rejected | `results/lir2-pheme-transfer-v0.1/canonical-manifest.json` | The constructed-corpus root grouper did not transfer to PHEME reply-tree coverage; precision remained 1.0 but recall was 0.2020. |
 
 ## Promotion rule
 

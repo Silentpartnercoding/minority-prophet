@@ -1,0 +1,472 @@
+{
+  "ablationsAtPrimary": {
+    "noText": {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.0,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.0,
+        "inferred_answered": 33,
+        "inferred_brier": 0.3846187641723357,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 108,
+      "hiddenFraction": 0.4,
+      "parent": {
+        "evaluable": 108,
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 6,
+        "meanAbsoluteError": 4.0
+      },
+      "rootPair": {
+        "f1": 0.4543828264758497,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.29398148148148145
+      }
+    },
+    "noTime": {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.0,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.0,
+        "inferred_answered": 35,
+        "inferred_brier": 0.41794115005965665,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 108,
+      "hiddenFraction": 0.4,
+      "parent": {
+        "evaluable": 108,
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 7,
+        "meanAbsoluteError": 4.583333333333333
+      },
+      "rootPair": {
+        "f1": 0.3677581863979849,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.22530864197530864
+      }
+    }
+  },
+  "billing": {
+    "incrementalUsdRecorded": 0,
+    "mode": "subscription"
+  },
+  "caseCount": 36,
+  "claimCount": 432,
+  "criterion": {
+    "minimumCases": 30,
+    "minimumRootPairF1": 0.6,
+    "strictMinimumSurvivalLower95": 0.25,
+    "supported": true
+  },
+  "fractions": [
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 1.0,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 1.0,
+        "inferred_answered": 34,
+        "inferred_brier": 0.10812500000000004,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 10,
+      "hiddenFraction": 0.05,
+      "parent": {
+        "evaluable": 10,
+        "f1": 0.25,
+        "precision": 0.3333333333333333,
+        "recall": 0.2
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 2,
+        "meanAbsoluteError": 0.4722222222222222
+      },
+      "rootPair": {
+        "f1": 0.9454841334418227,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.8966049382716049
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.9696969696969697,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.9696969696969697,
+        "inferred_answered": 33,
+        "inferred_brier": 0.12879251700680278,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 34,
+      "hiddenFraction": 0.15,
+      "parent": {
+        "evaluable": 34,
+        "f1": 0.3214285714285714,
+        "precision": 0.4090909090909091,
+        "recall": 0.2647058823529412
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 0.6944444444444444
+      },
+      "rootPair": {
+        "f1": 0.9190992493744787,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.8503086419753086
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.9333333333333333,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.9333333333333333,
+        "inferred_answered": 30,
+        "inferred_brier": 0.14904336734693882,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 67,
+      "hiddenFraction": 0.25,
+      "parent": {
+        "evaluable": 67,
+        "f1": 0.3508771929824562,
+        "precision": 0.425531914893617,
+        "recall": 0.29850746268656714
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 0.9166666666666666
+      },
+      "rootPair": {
+        "f1": 0.8904109589041096,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.8024691358024691
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.84,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.84,
+        "inferred_answered": 25,
+        "inferred_brier": 0.18704506802721096,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 108,
+      "hiddenFraction": 0.4,
+      "parent": {
+        "evaluable": 108,
+        "f1": 0.32044198895027626,
+        "precision": 0.3972602739726027,
+        "recall": 0.26851851851851855
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 1.3333333333333333
+      },
+      "rootPair": {
+        "f1": 0.8308525033829499,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.7106481481481481
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.8,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.8,
+        "inferred_answered": 25,
+        "inferred_brier": 0.19708758503401366,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 139,
+      "hiddenFraction": 0.55,
+      "parent": {
+        "evaluable": 139,
+        "f1": 0.3096234309623431,
+        "precision": 0.37,
+        "recall": 0.26618705035971224
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 1.4444444444444444
+      },
+      "rootPair": {
+        "f1": 0.796098467254993,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.6612654320987654
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.7272727272727273,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.7272727272727273,
+        "inferred_answered": 22,
+        "inferred_brier": 0.21733843537414976,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 177,
+      "hiddenFraction": 0.7,
+      "parent": {
+        "evaluable": 177,
+        "f1": 0.2866449511400651,
+        "precision": 0.3384615384615385,
+        "recall": 0.24858757062146894
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 1.6666666666666667
+      },
+      "rootPair": {
+        "f1": 0.7312775330396475,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.5763888888888888
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.47058823529411764,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.47058823529411764,
+        "inferred_answered": 17,
+        "inferred_brier": 0.24642431972789122,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 218,
+      "hiddenFraction": 0.85,
+      "parent": {
+        "evaluable": 218,
+        "f1": 0.28116710875331563,
+        "precision": 0.3333333333333333,
+        "recall": 0.24311926605504589
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 2.0
+      },
+      "rootPair": {
+        "f1": 0.6569948186528497,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.48919753086419754
+      }
+    },
+    {
+      "aggregation": {
+        "declared_accuracy": 1.0,
+        "declared_advantage_survival": 0.375,
+        "declared_answered": 36,
+        "declared_brier": 0.0625,
+        "eligible_cases": 36,
+        "inferred_accuracy": 0.375,
+        "inferred_answered": 16,
+        "inferred_brier": 0.2535501700680273,
+        "majority_accuracy": 0.0,
+        "majority_answered": 36,
+        "majority_brier": 0.5625
+      },
+      "hiddenEdgeCount": 239,
+      "hiddenFraction": 0.95,
+      "parent": {
+        "evaluable": 239,
+        "f1": 0.27403846153846156,
+        "precision": 0.3220338983050847,
+        "recall": 0.2384937238493724
+      },
+      "rootCount": {
+        "cases": 36,
+        "maxAbsoluteError": 3,
+        "meanAbsoluteError": 2.0833333333333335
+      },
+      "rootPair": {
+        "f1": 0.6350710900473934,
+        "pairs": 2376,
+        "precision": 1.0,
+        "recall": 0.4652777777777778
+      }
+    }
+  ],
+  "inputs": {
+    "claimsSha256": "5ffff9f790b9849574ed3648ccb88674e0884e97a8432c7af34ec57c31e19084",
+    "constructionLabelsSha256": "582b4a3a5e2e02968214e147808302765d33abb4ad819cae9445165989f20177",
+    "requestsSha256": "d04b01b9ad848fbde1c6c338fb54f0e4cdc64563972a2348cc1168883bc9c3db",
+    "responsesSha256": "7fd4a8a1cc1399195eee2a99bc1145b868a13ecbb3f511087d3aa0216bcf1bd6"
+  },
+  "interpretationBoundary": "Constructed record-root recovery under frozen conditions; not proof of causal evidence independence or general truth inference.",
+  "primary": {
+    "aggregation": {
+      "declared_accuracy": 1.0,
+      "declared_advantage_survival": 0.84,
+      "declared_answered": 36,
+      "declared_brier": 0.0625,
+      "eligible_cases": 36,
+      "inferred_accuracy": 0.84,
+      "inferred_answered": 25,
+      "inferred_brier": 0.18704506802721096,
+      "majority_accuracy": 0.0,
+      "majority_answered": 36,
+      "majority_brier": 0.5625
+    },
+    "hiddenEdgeCount": 108,
+    "hiddenFraction": 0.4,
+    "parent": {
+      "evaluable": 108,
+      "f1": 0.32044198895027626,
+      "precision": 0.3972602739726027,
+      "recall": 0.26851851851851855
+    },
+    "rootCount": {
+      "cases": 36,
+      "maxAbsoluteError": 3,
+      "meanAbsoluteError": 1.3333333333333333
+    },
+    "rootPair": {
+      "f1": 0.8308525033829499,
+      "pairs": 2376,
+      "precision": 1.0,
+      "recall": 0.7106481481481481
+    }
+  },
+  "primaryBootstrap": {
+    "declaredAdvantageSurvival": {
+      "definedSamples": 10000,
+      "lower95": 0.6818181818181818,
+      "undefinedSamples": 0,
+      "upper95": 0.9615384615384616
+    },
+    "rootPairF1": {
+      "lower95": 0.7853795688847236,
+      "upper95": 0.871571615150196
+    },
+    "samples": 10000,
+    "seed": 20260808
+  },
+  "primaryFraction": 0.4,
+  "schema": "minority-prophet.lir1e-confirmatory-result.v1",
+  "sourceAdherence": {
+    "groups": {
+      "cell:different_family_disjoint": {
+        "matchedAssignedSource": 36,
+        "rate": 1.0,
+        "responses": 36
+      },
+      "cell:same_model_disjoint": {
+        "matchedAssignedSource": 72,
+        "rate": 1.0,
+        "responses": 72
+      },
+      "cell:same_model_same_source": {
+        "matchedAssignedSource": 72,
+        "rate": 1.0,
+        "responses": 72
+      },
+      "model:claude-fable-5": {
+        "matchedAssignedSource": 144,
+        "rate": 1.0,
+        "responses": 144
+      },
+      "model:gpt-5.6-sol": {
+        "matchedAssignedSource": 36,
+        "rate": 1.0,
+        "responses": 36
+      }
+    },
+    "overall": {
+      "matchedAssignedSource": 180,
+      "rate": 1.0,
+      "responses": 180
+    }
+  },
+  "status": "confirmatory-complete",
+  "threshold": 0.85,
+  "usage": {
+    "claude-fable-5": {
+      "calls": 144,
+      "usage": {
+        "cache_creation_input_tokens": 404352.0,
+        "cache_read_input_tokens": 118118.0,
+        "input_tokens": 144.0,
+        "output_tokens": 32068.0
+      }
+    },
+    "gpt-5.6-sol": {
+      "calls": 36,
+      "usage": {
+        "cache_write_input_tokens": 0.0,
+        "cached_input_tokens": 112128.0,
+        "input_tokens": 477446.0,
+        "output_tokens": 1801.0,
+        "reasoning_output_tokens": 0.0
+      }
+    }
+  }
+}

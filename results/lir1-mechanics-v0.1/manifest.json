@@ -1,0 +1,13 @@
+{
+  "schema": "minority-prophet.lir1-mechanics-manifest.v1",
+  "status": "software-mechanics-only",
+  "files": {
+    "experiments/lir1/PREREGISTRATION.md": "f7032c7453e847e91d5311de89f5ae4172c3b08ef0a716e53f5f7a63bd2463d0",
+    "experiments/lir1/infer.py": "35bd7b07960f1a21fa9ea959b2d262ae3b6277b185708e889eedba6db6248ef1",
+    "experiments/lir1/metrics.py": "e056da834e73c218c996817c8758dccd9f68d84aefba6227ca5781ddb8ed1f8d",
+    "experiments/lir1/model.py": "b5285a6dd4bbc4c528a6341db9f1fa3962e44a8808841e7270cbf1e71a9c501c",
+    "experiments/lir1/run_boundary.py": "9866d964474c5631dd5237be1fb637cf020a176d53726c546bde5b9c62aa0868",
+    "experiments/lir1/synthetic_fixture.py": "c80e2d10e11fe2f07025a534474a71aac3518a8bd47107598a33e6a2db247221",
+    "results/lir1-mechanics-v0.1/result.json": "52be87ab697786edfa1ee41d8d58d98b0a3adb4b0f7ea8b8c306290407018a8b"
+  }
+}

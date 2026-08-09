@@ -1,0 +1,183 @@
+{
+  "billing": {
+    "incrementalUsdRecorded": 0,
+    "mode": "subscription"
+  },
+  "caseCount": 12,
+  "claimCount": 144,
+  "hiddenEdgeCount": 30,
+  "hiddenFraction": 0.4,
+  "inputs": {
+    "claimsSha256": "93d6b2bc6d9bbe93811d756a42e7703a74977f2a61d9042db01a65dab5c3deb3",
+    "constructionLabelsSha256": "b19c05d76461dc1495bab949196435861e0664c5d70f00a4e81641a2206344fd",
+    "requestsSha256": "0e2cce5169060bca293032b5682fce18f9a73a9679f87a8cec834115a3dfcce7",
+    "responsesSha256": "f425a843fe3ec28f3a553bd4bc0f39555ad35b0e8eadcc47faad414a2490caea"
+  },
+  "interpretationBoundary": "Development estimates tune the method and are not confirmatory evidence.",
+  "schema": "minority-prophet.lir1e-development-result.v1",
+  "selectedMetrics": {
+    "aggregation": {
+      "declared_accuracy": 1.0,
+      "declared_advantage_survival": 0.8181818181818182,
+      "declared_answered": 12,
+      "declared_brier": 0.0625,
+      "eligible_cases": 12,
+      "inferred_accuracy": 0.8181818181818182,
+      "inferred_answered": 11,
+      "inferred_brier": 0.15463010204081631,
+      "majority_accuracy": 0.0,
+      "majority_answered": 12,
+      "majority_brier": 0.5625
+    },
+    "parent": {
+      "evaluable": 30,
+      "f1": 0.30769230769230765,
+      "precision": 0.36363636363636365,
+      "recall": 0.26666666666666666
+    },
+    "rootCount": {
+      "cases": 12,
+      "maxAbsoluteError": 3,
+      "meanAbsoluteError": 1.0
+    },
+    "rootPair": {
+      "f1": 0.877922077922078,
+      "pairs": 792,
+      "precision": 1.0,
+      "recall": 0.7824074074074074
+    }
+  },
+  "sourceAdherence": {
+    "groups": {
+      "cell:different_family_disjoint": {
+        "matchedAssignedSource": 12,
+        "rate": 1.0,
+        "responses": 12
+      },
+      "cell:same_model_disjoint": {
+        "matchedAssignedSource": 24,
+        "rate": 1.0,
+        "responses": 24
+      },
+      "cell:same_model_same_source": {
+        "matchedAssignedSource": 24,
+        "rate": 1.0,
+        "responses": 24
+      },
+      "model:claude-fable-5": {
+        "matchedAssignedSource": 48,
+        "rate": 1.0,
+        "responses": 48
+      },
+      "model:gpt-5.6-sol": {
+        "matchedAssignedSource": 12,
+        "rate": 1.0,
+        "responses": 12
+      }
+    },
+    "overall": {
+      "matchedAssignedSource": 60,
+      "rate": 1.0,
+      "responses": 60
+    }
+  },
+  "split": "development",
+  "status": "development-only-threshold-selection",
+  "thresholdSelection": {
+    "candidates": [
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.4
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.45
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.5
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.55
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.6
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.65
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.7
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.26666666666666666,
+        "precision": 0.26666666666666666,
+        "recall": 0.26666666666666666,
+        "threshold": 0.75
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.2909090909090909,
+        "precision": 0.32,
+        "recall": 0.26666666666666666,
+        "threshold": 0.8
+      },
+      {
+        "evaluable": 30,
+        "f1": 0.30769230769230765,
+        "precision": 0.36363636363636365,
+        "recall": 0.26666666666666666,
+        "threshold": 0.85
+      }
+    ],
+    "objective": "maximum hidden-parent F1; ties choose higher threshold",
+    "selected": 0.85
+  },
+  "usage": {
+    "claude-fable-5": {
+      "calls": 48,
+      "usage": {
+        "cache_creation_input_tokens": 135373.0,
+        "cache_read_input_tokens": 38822.0,
+        "input_tokens": 48.0,
+        "output_tokens": 10423.0
+      }
+    },
+    "gpt-5.6-sol": {
+      "calls": 12,
+      "usage": {
+        "cache_write_input_tokens": 0.0,
+        "cached_input_tokens": 22016.0,
+        "input_tokens": 160001.0,
+        "output_tokens": 593.0,
+        "reasoning_output_tokens": 0.0
+      }
+    }
+  }
+}
