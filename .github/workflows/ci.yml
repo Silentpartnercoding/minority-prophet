@@ -35,8 +35,9 @@ jobs:
           # history, no shell history and no transcript; and because the digest
           # lives in a secret rather than in the checker, it cannot be attacked
           # with a wordlist either. Absent secret = empty string = no extra terms.
+          # It propagates through make to the checker.
           MP_BOUNDARY_DIGESTS: ${{ secrets.MP_BOUNDARY_DIGESTS }}
-        run: python scripts/check_public_boundary.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+        run: make check-public-boundary BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Sweep every tracked line, not only additions
         # The step above inspects additions only, by design, so frozen records are
         # never rewritten. The cost is that a term added to the blocklist today is
@@ -45,11 +46,13 @@ jobs:
         # step reconciles the whole published tree against the current rules.
         env:
           MP_BOUNDARY_DIGESTS: ${{ secrets.MP_BOUNDARY_DIGESTS }}
-        run: python scripts/check_public_boundary.py --sweep --head "${{ github.sha }}"
+        run: make check-public-boundary-sweep HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Check no live commission's withheld values are published
-        run: python scripts/check_withheld_leak.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+        run: make check-withheld-leak BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Verify preregistrations still match their pinned commits
-        run: python scripts/check_registration_chain.py --ref "${{ github.sha }}"
+        run: make check-registration-chain HEAD_REF="${{ github.sha }}" PYTHON=python
+      - name: Check graduated research integrity
+        run: make check-research-integrity BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
 
   python:
     runs-on: ubuntu-latest
@@ -64,9 +67,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install --upgrade pip
       - run: python -m pip install pytest
-      - run: python -m pytest -q
-        env:
-          PYTHONPATH: .
+      - run: make verify-python PYTHON=python
 
   site:
     runs-on: ubuntu-latest
@@ -77,5 +78,4 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run lint
-      - run: npm test
+      - run: make verify-site

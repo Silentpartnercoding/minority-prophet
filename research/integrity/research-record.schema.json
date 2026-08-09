@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silentpartnercoding.github.io/minority-prophet/research-record.schema.json",
+  "title": "Minority Prophet research record",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "stage",
+    "authorityEffect",
+    "origin",
+    "protocol",
+    "result",
+    "manifest",
+    "verdict",
+    "artifacts",
+    "independenceClaims"
+  ],
+  "properties": {
+    "schema": {"const": "minority-prophet.research-record.v1"},
+    "id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._/-]*$"},
+    "stage": {"enum": ["exploratory", "candidate", "canonical", "imported"]},
+    "authorityEffect": {"const": "none"},
+    "origin": {
+      "type": "object",
+      "required": ["mode", "controlRelationship"],
+      "properties": {
+        "mode": {"enum": ["repository-native", "out-of-tree-import"]},
+        "controlRelationship": {"enum": ["same-control-domain", "external-control", "unknown"]},
+        "sourceRepository": {"type": ["string", "null"]},
+        "sourceCommit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{7,64}$"}
+      },
+      "additionalProperties": false
+    },
+    "protocol": {"$ref": "#/$defs/optionalArtifact"},
+    "result": {"$ref": "#/$defs/optionalArtifact"},
+    "manifest": {"$ref": "#/$defs/optionalArtifact"},
+    "verdict": {"type": ["string", "null"], "enum": [null, "supported", "rejected", "incomplete", "invalidated"]},
+    "artifacts": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "independenceClaims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["assessment", "witness", "witnessControlRelationship"],
+        "properties": {
+          "assessment": {"enum": ["dependent", "partially-dependent", "unknown", "independent"]},
+          "witness": {"$ref": "#/$defs/optionalArtifact"},
+          "witnessControlRelationship": {"enum": ["same-control-domain", "external-control", "unknown"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["path", "sha256", "commit"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{7,40}$"}
+      },
+      "additionalProperties": false
+    },
+    "optionalArtifact": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/artifact"}
+      ]
+    }
+  }
+}
