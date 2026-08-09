@@ -1,0 +1,218 @@
+{
+  "schema": "minority-prophet.preregistration.v0.2",
+  "experimentId": "KL-001",
+  "protocolVersion": {
+    "status": "unanswered",
+    "reason": "assigned at registration, when this kernel's protocol is written and frozen; the kernel is seeded and has no protocol yet"
+  },
+  "status": "preregistered",
+  "statusNote": "Advanced from seeded by owner authorisation, 2026-08-09. The gate's four items exist: mapping rules registered (pipeline/MAPPING-RULES.md), frozen corpus digest-manifested before evaluation, baseline measured, and this registration carrying all of it.",
+  "migrationRecord": {
+    "migratedBy": "RUN-20260807-8",
+    "from": "minority-prophet.preregistration.v0.1 (preserved in git history at this path)",
+    "stateEffect": "NONE. Migration does not advance the kernel: it remains seeded. A schema with more fields is not evidence (SCH-001 repair only)."
+  },
+  "question": "Does the dual ledger reduce false-clean repository conclusions?",
+  "null": "False-clean rate is not lower than ordinary multi-scanner aggregation.",
+  "target": "Lower false-clean rate while preserving at least 95% of baseline true-positive recall.",
+  "population": {
+    "status": "unanswered",
+    "reason": "requires the concrete corpus/world-generator this kernel's next gate builds; determined by this kernel's next gate (STATUS.json): The REAL first gate, now that the named narrow check is discharged: (1) the mapping pipeline that turns a repository into ledgers -- what counts as a mandatory file, what counts as searched, which scanner outputs become ..."
+  },
+  "searchSpace": {
+    "status": "answered",
+    "definition": "Derived, never declared: every file matching the registered scope patterns in pipeline/MAPPING-RULES.md M1. Supplying a scope raises ScopeSuppliedError. This is the ADV-001 defence; FC1's W3 showed a supplied scope can omit the uncovered files and earn a clean absence.",
+    "corpus": "corpus/frozen-v1",
+    "corpusManifestDigest": "3f029aea56765bd89099ce0c3aaa1e52524dd86010063f99b9f5f0c58e77dca9",
+    "repos": 60,
+    "plantedDefects": 71,
+    "cleanControls": 11
+  },
+  "rootDefinition": {
+    "status": "answered",
+    "definition": "One scanner family is one evidence root (MAPPING-RULES.md M2). Every finding a family reports collapses to that family's root regardless of count, file or defect class. Per-finding roots would let one scanner reporting five times manufacture five independent witnesses.",
+    "copyDefinition": "A repeated finding from the same family is a copy and adds no root."
+  },
+  "baselines": {
+    "status": "answered",
+    "measuredBy": "corpus/measure_baseline.py against corpus/frozen-v1",
+    "scanner": "plain pattern scanner, no dual ledger, deliberately unimpressive",
+    "baselineRecall": 0.8169,
+    "falseCleanRate": 0.1224,
+    "perClass": {
+      "shell-injection": {
+        "planted": 17,
+        "found": 17
+      },
+      "missing-timeout": {
+        "planted": 13,
+        "found": 0
+      },
+      "bare-except": {
+        "planted": 16,
+        "found": 16
+      },
+      "hardcoded-credential": {
+        "planted": 12,
+        "found": 12
+      },
+      "unchecked-return": {
+        "planted": 13,
+        "found": 13
+      }
+    },
+    "note": "Read per-class, not aggregate. All 13 misses are one defect class (missing-timeout, 0/13); the other four are 100%. A dual ledger lifting the aggregate by fixing only that class would look like a general improvement and would not be one."
+  },
+  "controls": [
+    {
+      "requirement": "head or record counting",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "source counting",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "evidence ledger without search coverage",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "search ledger without root collapse",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "dual ledger",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a genuinely independent-evidence condition",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a copied or shared-dependency condition",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "an incomplete-coverage condition",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a counterexample in a searched location",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    },
+    {
+      "requirement": "a counterexample in an unsearched location",
+      "fixture": {
+        "status": "unanswered",
+        "reason": "fixtures are constructed at registration; the requirement list is fixed by RESEARCH-METHOD.md 'Controls required everywhere'"
+      }
+    }
+  ],
+  "primaryEndpoint": {
+    "name": "false-clean rate",
+    "baseline": 0.1224,
+    "direction": "lower is better",
+    "definition": "repositories with at least one planted defect that receive a clean conclusion"
+  },
+  "secondaryEndpoints": [
+    {
+      "name": "true-positive recall",
+      "baseline": 0.8169,
+      "constraint": "MUST be at least 0.95 x 0.8169 = 0.7761 absolute"
+    },
+    {
+      "name": "per-class recall",
+      "baseline": {
+        "shell-injection": {
+          "planted": 17,
+          "found": 17
+        },
+        "missing-timeout": {
+          "planted": 13,
+          "found": 0
+        },
+        "bare-except": {
+          "planted": 16,
+          "found": 16
+        },
+        "hardcoded-credential": {
+          "planted": 12,
+          "found": 12
+        },
+        "unchecked-return": {
+          "planted": 13,
+          "found": 13
+        }
+      },
+      "constraint": "reported per class; no class may fall below its baseline"
+    }
+  ],
+  "effectSize": {
+    "status": "unanswered",
+    "reason": "requires the registered endpoint and its measurement scale; for conformance-style kernels the KL-000 precedent (exact-zero target, power via must-fail baselines) may apply instead of a minimum detectable effect -- decided at registration"
+  },
+  "uncertainty": {
+    "status": "unanswered",
+    "reason": "stated at registration for the registered endpoints (KL-000 precedent: rule-of-three bounds with fail-closed effective-sample caveats)"
+  },
+  "multipleTestingCorrection": {
+    "status": "unanswered",
+    "reason": "stated at registration once the endpoint family is fixed (KL-000 precedent: none on an exact-zero primary endpoint; Bonferroni on secondary rate bounds)"
+  },
+  "successCondition": "false-clean rate strictly below 0.1224 AND absolute recall at least 0.7761 AND no per-class recall below its baseline.",
+  "failureCondition": "false-clean rate not lower, or recall below the preserved threshold, or any per-class regression. Each is a failure on its own.",
+  "invalidationCondition": "Corpus content not matching corpusManifestDigest; any scope supplied rather than derived; any root attributed per-finding rather than per-family; any not_searched or unavailable location recorded as searched; a metered model in the pipeline without founder authorisation.",
+  "stopCondition": "No clean conclusion is permitted with incomplete mandatory file coverage.",
+  "frozenSeedsOrSplits": {
+    "status": "unanswered",
+    "reason": "seeds/splits are frozen at registration, immediately before the confirmatory run -- freezing them now, with no generator or corpus to consume them, would freeze nothing (KL-000 finding F11: a frozen seed without a registered draw schedule does not even freeze a stream)"
+  },
+  "protocolCommit": null,
+  "protocolCommitNote": "Deliberately null under methodology note M1; the binding lives in PROTOCOL-COMMIT.txt.",
+  "environment": {
+    "status": "unanswered",
+    "reason": "pinned at registration time (interpreter, platform, dependency policy); recording today's environment for an experiment that will not run in it would be provenance theatre"
+  },
+  "artifacts": [
+    "pipeline/MAPPING-RULES.md",
+    "pipeline/map_repository.py",
+    "corpus/generate_corpus.py",
+    "corpus/measure_baseline.py",
+    "corpus/frozen-v1/MANIFEST.json",
+    "results/baseline-v1.json"
+  ],
+  "safetyBoundary": "Synthetic repositories only; no real codebases, credentials, or vulnerability disclosures. The mapping pipeline's scope declaration is the kernel's risk surface (ADV-001, demonstrated at FC1's W3).",
+  "humanAuthorization": {
+    "granted": true,
+    "date": "2026-08-09",
+    "scope": "Owner authorised committing this gate. Zero spend: the pipeline, corpus and baseline are deterministic and dependency-free. A metered model in the pipeline would require separate founder authorisation and is an invalidation condition until granted."
+  },
+  "kernelSpecificConstraint": "Baseline true-positive recall must be measured BEFORE the dual ledger is applied, or the 95%-preservation target is unfalsifiable (standing blocker)."
+}

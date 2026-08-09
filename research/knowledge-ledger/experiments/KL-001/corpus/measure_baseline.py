@@ -53,7 +53,14 @@ def scan(corpus: pathlib.Path) -> dict[str, set[tuple[str, str]]]:
     for repo in sorted(p for p in corpus.iterdir() if p.is_dir()):
         hits = set()
         for f in sorted(repo.rglob("*.py")):
-            text = f.read_text()
+            # A plain scanner that cannot read a file skips it and still reports
+            # "nothing found". That silence is precisely the false-clean the dual
+            # ledger is supposed to refuse, so the baseline must reproduce it
+            # rather than crash.
+            try:
+                text = f.read_text()
+            except (UnicodeDecodeError, OSError):
+                continue
             for kind, pat in PATTERNS.items():
                 if pat.search(text):
                     hits.add((str(f.relative_to(repo)), kind))
