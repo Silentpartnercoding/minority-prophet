@@ -1,0 +1,156 @@
+{
+  "schema": "minority-prophet.lin000-reference-mutant-audit.v0.1",
+  "unit": "one (world, rewiring) pair",
+  "checkedMeans": "root set preserved, and both worlds side-consistent under the reading",
+  "firedMeans": "the verdict changed on an eligible pair: an immunity violation",
+  "maxClaims": 6,
+  "doesNotReplicate": "IND-v4-RESULTS.json does not state its unit of counting, so these figures are not comparable to it number-for-number and no correspondence is claimed",
+  "controlFiresZero": true,
+  "readingsWithDivergentPopulations": [
+    "depth0",
+    "alwaysZero",
+    "offByOneStop"
+  ],
+  "behaviourChangingButNeverCaught": [
+    "depth0",
+    "alwaysZero"
+  ],
+  "results": [
+    {
+      "mutant": "correct",
+      "equivalent": true,
+      "rootOfCallsDiffering": 0,
+      "rootOfCallsTotal": 297378,
+      "classification": "EQUIVALENT",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 0
+        },
+        "rootBased": {
+          "checked": 116032,
+          "fired": 0
+        }
+      }
+    },
+    {
+      "mutant": "depth0",
+      "equivalent": false,
+      "rootOfCallsDiffering": 174812,
+      "rootOfCallsTotal": 297378,
+      "classification": "BEHAVIOUR_CHANGING",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 0
+        },
+        "rootBased": {
+          "checked": 2834528,
+          "fired": 0
+        }
+      }
+    },
+    {
+      "mutant": "depth1",
+      "equivalent": false,
+      "rootOfCallsDiffering": 63064,
+      "rootOfCallsTotal": 297378,
+      "classification": "BEHAVIOUR_CHANGING",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 2848
+        },
+        "rootBased": {
+          "checked": 116032,
+          "fired": 2848
+        }
+      }
+    },
+    {
+      "mutant": "depth2",
+      "equivalent": false,
+      "rootOfCallsDiffering": 13136,
+      "rootOfCallsTotal": 297378,
+      "classification": "BEHAVIOUR_CHANGING",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 3940
+        },
+        "rootBased": {
+          "checked": 116032,
+          "fired": 3940
+        }
+      }
+    },
+    {
+      "mutant": "alwaysZero",
+      "equivalent": false,
+      "rootOfCallsDiffering": 123508,
+      "rootOfCallsTotal": 297378,
+      "classification": "BEHAVIOUR_CHANGING",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 0
+        },
+        "rootBased": {
+          "checked": 90280,
+          "fired": 0
+        }
+      }
+    },
+    {
+      "mutant": "offByOneStop",
+      "equivalent": false,
+      "rootOfCallsDiffering": 174812,
+      "rootOfCallsTotal": 297378,
+      "classification": "BEHAVIOUR_CHANGING",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 1720
+        },
+        "rootBased": {
+          "checked": 687288,
+          "fired": 118968
+        }
+      }
+    },
+    {
+      "mutant": "minIndexInChain",
+      "equivalent": true,
+      "rootOfCallsDiffering": 0,
+      "rootOfCallsTotal": 297378,
+      "classification": "EQUIVALENT",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 0
+        },
+        "rootBased": {
+          "checked": 116032,
+          "fired": 0
+        }
+      }
+    },
+    {
+      "mutant": "grandparentSkip",
+      "equivalent": true,
+      "rootOfCallsDiffering": 0,
+      "rootOfCallsTotal": 297378,
+      "classification": "EQUIVALENT",
+      "readings": {
+        "parentLocal": {
+          "checked": 116032,
+          "fired": 0
+        },
+        "rootBased": {
+          "checked": 116032,
+          "fired": 0
+        }
+      }
+    }
+  ]
+}

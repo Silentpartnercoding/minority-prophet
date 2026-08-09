@@ -1,5 +1,12 @@
 # KL-001 protocol v0.2 — FAILED on its primary endpoint
 
+> **SUPERSEDED IN FRAMING, NOT WITHDRAWN.** The result below stands: the v0.2
+> endpoint did not move. `DESIGN-v0.4.md` later establishes *why* it could not
+> have — corpus v1 contains zero instances of the property the mechanism acts
+> on, so the endpoint was pinned to its baseline before any data existed. Read
+> this document with that, or its conclusion reads as a weaker result than it is.
+
+
 Run 2026-08-09 against the registered corpus `corpus/frozen-v1`, manifest digest
 pinned in the preregistration. Reported as a failure and **preserved as one**.
 

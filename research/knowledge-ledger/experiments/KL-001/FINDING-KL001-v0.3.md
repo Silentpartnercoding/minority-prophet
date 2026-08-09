@@ -1,5 +1,14 @@
 # KL-001 v0.3 — the dual ledger's effect is one repository, and v0.2's corpus could not have shown it
 
+> **SUPERSEDED IN FRAMING, NOT WITHDRAWN.** Every number below is accurate and
+> the registered primary endpoint was met. But `DESIGN-v0.4.md` establishes that
+> the verdict is a total function of two bits, so **both rates reported here are
+> fixed by corpus composition** — generator settings read back, not measurements.
+> No claim about practical benefit may be drawn from this document. A reader who
+> stops here comes away with 'reduces false cleans', which is the misreading
+> DESIGN-v0.4.md exists to prevent.
+
+
 Run against the registered protocol in `preregistration-v0.3.json`, pinned by
 `PROTOCOL-COMMIT-v0.3.txt`. Both arms use the identical scanner; only the
 aggregation differs.
