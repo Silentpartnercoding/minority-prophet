@@ -71,6 +71,7 @@ class LIR1Tests(unittest.TestCase):
             "results/lir1e-development-v0.1/manifest.json",
             "results/lir1e-confirmatory-v0.1/canonical-manifest.json",
             "results/lir2-development-v0.1/manifest.json",
+            "results/lir2-confirmatory-v0.1/canonical-manifest.json",
         ):
             manifest = json.loads((root / manifest_path).read_text())
             for relative, expected in manifest["files"].items():
