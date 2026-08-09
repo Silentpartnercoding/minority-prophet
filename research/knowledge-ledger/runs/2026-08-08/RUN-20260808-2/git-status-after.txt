@@ -1,0 +1,6 @@
+?? research/knowledge-ledger/FINDING-BL044.md
+?? research/knowledge-ledger/FINDING-CHAIN-101.md
+?? research/knowledge-ledger/FINDING-PBC-101.md
+?? research/knowledge-ledger/LIVE-COMMISSIONS.json
+?? research/knowledge-ledger/lineage/results/independent/
+?? research/knowledge-ledger/runs/2026-08-08/RUN-20260808-2/

@@ -1,0 +1,13 @@
+{
+  "schema": "minority-prophet.lir1-pheme-acquisition-manifest.v1",
+  "status": "development-acquisition-inventory",
+  "files": {
+    "experiments/lir1/PHEME-PILOT-PROTOCOL.md": "beeba6ec6427068b54095aa7de2e62b9ba6ff9d60d87a7b133d5436f62c5e98a",
+    "experiments/lir1/pheme.py": "84b5039f17b332f7fc69e0e63889f1908991f7b1fe1cf1254e57b675b1118a6d",
+    "results/lir1-pheme-development-v0.1/inventory.json": "66ace7392dfe2011ec14b2a07d87182adfc40b98104d190c8452d2a9921c18a8"
+  },
+  "privateInput": {
+    "rawArchiveSha256": "079f6ffdbc0b367399262f101774372e5d19dd8278c33d6c97a84461a9bc58dd",
+    "normalizedJsonlSha256": "63d34d7e7f2cfbbcbc87d71f37b95b770f12ffde820a8b88a25ab73da6d5658f"
+  }
+}

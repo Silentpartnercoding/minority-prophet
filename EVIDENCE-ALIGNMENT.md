@@ -53,8 +53,15 @@ causal independence.
 | HGD-1 | Interval accounting reduced false-confident error, but its primary claim was rejected after missing the frozen absolute-effect threshold. | Proof that collocation establishes dependence, historical measurements were wrong, or the mechanism may grant authority. |
 | HGD-2 | Interval accounting improved safety and preserved control accuracy, but failed frozen coverage and usefulness criteria. | A generally useful steering mechanism or proof that abstention alone solves dependent evidence. |
 | HES-1 | Frozen evidence seeking recovered substantial environmental and software coverage after abstention; all seven hypotheses passed. | Universal source competence, especially for software false-negative claims, or authority to act. |
+| EAA-P5 | One frozen out-of-tree unified auditor preserved conservative dependence labeling but failed its collapse-point and external selective-risk criteria. | Promotion of that composition, a claim that Minority Prophet as a whole failed, third-party validation, hidden-control discovery, independence certification, truth, or authority. |
+| LIR-1/PHEME-R2 | At 40% hidden recorded edges, hidden-parent F1 was 0.1044 (case-bootstrap 95% interval 0.0846–0.1261), rejecting the greater-than-0.50 criterion; root-pair recall was 0.2256. | Causal evidence-independence inference, all social platforms, or proof that stronger methods must fail. |
+| LIR-1E | In the 36-case constructed echo holdout at 40% hiding, root-pair F1 was 0.8309 and declared-advantage survival was 0.84 (case-bootstrap 95% interval 0.6818–0.9615), supporting the frozen criterion; inferred collapse answered 25 cases and was correct on 21. | Causal evidence independence, full-coverage truth recovery, uncontrolled real-world performance, or treating textual difference as independent observation. |
+| LIR-2 | On a new 36-case constructed holdout, direct root grouping achieved precision 1.0, recall 0.9522, answered 34 cases, and was correct on all 34; the same-case LIR-1E baseline answered 29 and was correct on 25. | Causal source independence, authentication, universal zero-error performance, or generalization beyond the frozen synthetic generator and model pair. |
+| LIR-2/PHEME | Fixed threshold 0.75 transferred with precision 1.0 but recall 0.2020, F1 0.3362, and root-count MAE 5.5517, rejecting all coverage/error thresholds. | Claiming that constructed echo performance transferred to real recorded reply lineage, or that failure on one known corpus rules out stronger methods. |
+| LIR-3/PHEME | With 40% of exact parent-status IDs hidden but reply-target author retained, the frozen author-only rule achieved recorded-root precision, recall, and F1 of 1.0 with zero root-count error on 425 sealed cases. | Causal copying, evidence independence, author authentication, content truth, cross-platform generalization, or general provenance recovery. |
+| LIR-4/PHEME | At 50% missing reply-target identity among hidden-edge records, precision remained 1.0 but recall fell to 0.4329, F1 to 0.6043, and root-count MAE rose to 2.405, rejecting graceful degradation. | General resistance to false identity or cross-root misbinding; only one final-holdout case had multiple roots, so the safety diagnostic was underpowered. |
 
-## v1.0.5 manuscript alignment
+## v1.0.6 manuscript alignment
 
 The active manuscript corrects two inherited presentation defects without
 altering earlier snapshots:
@@ -66,12 +73,16 @@ altering earlier snapshots:
   DAG. The compiler-ratified model is a multi-parent DAG. v1.0.5 now uses a
   parent relation and a set of root ancestors, matching `formal/PROOFS.md` and
   `formal/lean/`.
+- v1.0.6 closes LIR-1–LIR-4 as one bounded empirical series. It states both the
+  supported typed-provenance bridge and the rejected degradation claim, while
+  preserving the distinction between recorded platform roots and causal
+  evidence independence.
 
 ## Manuscript policy
 
-- `papers/minority-prophet-v1.0.5.md` is the active evidence-aligned draft, adopted
+- `papers/minority-prophet-v1.0.6.md` is the active evidence-aligned draft, adopted
   2026-08-08.
-- v0.9, v1.0, v1.0.1, v1.0.2, v1.0.3, and v1.0.4 are preserved historical drafts and defer to
+- v0.9, v1.0, v1.0.1, v1.0.2, v1.0.3, v1.0.4, and v1.0.5 are preserved historical drafts and defer to
   this ledger.
 - EXP008's archived attack mixture is not EXP007A's selected attack.
 - All point estimates must name their record and scope.

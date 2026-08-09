@@ -1,0 +1,1 @@
+Using only the source packet, answer the question. Return one JSON object with exactly "answer", "confidence", and "explanation". Copy the answer token exactly. "confidence" is a number from 0 through 1. Do not use outside knowledge.

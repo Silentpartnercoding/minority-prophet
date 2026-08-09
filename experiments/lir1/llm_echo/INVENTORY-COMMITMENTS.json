@@ -1,0 +1,29 @@
+{
+  "schema": "minority-prophet.lir1e-inventory-commitments.v1",
+  "status": "sealed-before-model-execution",
+  "protocolCommit": "eb87f94",
+  "generatorCommit": "beb63a8",
+  "development": {
+    "caseCount": 12,
+    "requestCount": 60,
+    "plannedRecordCount": 144,
+    "seedSha256": "ab6b89a9f6ce1508d486b7a60625bda712eb2b71d19738500d7601756352c68f",
+    "requestsSha256": "0e2cce5169060bca293032b5682fce18f9a73a9679f87a8cec834115a3dfcce7",
+    "constructionLabelsSha256": "b19c05d76461dc1495bab949196435861e0664c5d70f00a4e81641a2206344fd"
+  },
+  "confirmatory": {
+    "caseCount": 36,
+    "requestCount": 180,
+    "plannedRecordCount": 432,
+    "seedSha256": "abb55a85e0c0e07dc7f3558d67d911dfa03b9ceec54193f85e16408a2886052a",
+    "requestsSha256": "d04b01b9ad848fbde1c6c338fb54f0e4cdc64563972a2348cc1168883bc9c3db",
+    "constructionLabelsSha256": "582b4a3a5e2e02968214e147808302765d33abb4ad819cae9445165989f20177"
+  },
+  "sharedArtifacts": {
+    "protocolSha256": "18c62689262324695923f6122e1279f822504ed002c3cfb58e3db0e734f1a49c",
+    "generatorSha256": "19319830383435837949edc037daedf65d6f8bb60277f07f5b6b743715d6aab0",
+    "promptSha256": "e00000c92202e9513244a4ecc9f9d7d48427e422e76b117fef713af9fef6bb49"
+  },
+  "privateLocation": "artifacts/lir1/llm_echo/",
+  "note": "The commitments bind sealed local material without publishing seed bytes, construction labels, credentials, receipts, or model responses."
+}

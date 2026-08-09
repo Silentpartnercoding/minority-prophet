@@ -1,0 +1,14 @@
+{
+  "schema": "minority-prophet.lir1e-development-manifest.v1",
+  "status": "development-only",
+  "files": {
+    "results/lir1e-development-v0.1/result.json": "25939bac4ffcb55bdafe6100d7802c496d6d0f34e9ca6013b98811695334080e"
+  },
+  "privateArtifacts": {
+    "responses.jsonl": "f425a843fe3ec28f3a553bd4bc0f39555ad35b0e8eadcc47faad414a2490caea",
+    "claims.jsonl": "93d6b2bc6d9bbe93811d756a42e7703a74977f2a61d9042db01a65dab5c3deb3",
+    "transformation-log.jsonl": "aef408691ae2fa07cdf102e1ec0c2cd7162aef2d3646b2f221dd799c10107a72"
+  },
+  "selectedThreshold": 0.85,
+  "note": "Raw provider responses and receipts remain private. Two local clean materialization and scoring runs produced byte-identical result JSON."
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "minority-prophet.lir2-holdout-commitment.v1",
+  "status": "sealed-before-model-execution",
+  "caseCount": 36,
+  "requestCount": 180,
+  "plannedRecordCount": 432,
+  "seedSha256": "51b7ce5b48c527046ddd0c3011ceeec79718d9d03e3ea9ad6117cd97963cde71",
+  "requestsSha256": "55ee08cbd2bf4362b8ac1584abb2da41e0c9fb9a49da3dd28bf45084b8a61b49",
+  "constructionLabelsSha256": "13b2b9348b7f97d5f6fe9d08d7e7cb4ebf3646d21a21ff6dc7018df8a8eb6eca",
+  "generatorSha256": "19319830383435837949edc037daedf65d6f8bb60277f07f5b6b743715d6aab0",
+  "promptSha256": "e00000c92202e9513244a4ecc9f9d7d48427e422e76b117fef713af9fef6bb49",
+  "overlapWithLir1eConfirmatoryCases": 0,
+  "privateLocation": "artifacts/lir2/confirmatory/"
+}

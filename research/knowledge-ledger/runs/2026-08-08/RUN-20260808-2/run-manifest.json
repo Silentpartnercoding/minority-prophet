@@ -1,0 +1,29 @@
+{
+  "schema": "minority-prophet.run-manifest.v0.1",
+  "runId": "RUN-20260808-2",
+  "startUtc": "2026-08-08T11:37:23Z",
+  "model": {
+    "name": "Claude Fable 5",
+    "id": "claude-fable-5",
+    "reportedBy": "runtime environment description",
+    "captureMethod": "agent-transcription",
+    "captureCaveat": "Unverified per PROV-004."
+  },
+  "records": [
+    "FINDING-BL044.md",
+    "FINDING-CHAIN-101.md",
+    "FINDING-PBC-101.md",
+    "LIVE-COMMISSIONS.json",
+    "lineage/results/independent/IND-LIN000-*"
+  ],
+  "artifacts": [
+    "CONSTRAINTS-v1.json",
+    "KERNEL-STATUS-SNAPSHOT-v1.json",
+    "METHODOLOGY-NOTES.md",
+    "START-UTC.txt",
+    "environment-lock.txt",
+    "git-status-before.txt",
+    "inputs/PROMPT.txt",
+    "pip-freeze.txt"
+  ]
+}

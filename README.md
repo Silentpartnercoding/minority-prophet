@@ -72,10 +72,17 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`benchmark/`](benchmark/) — synthetic worlds, evaluation metrics, and CLI
 - [`aggregation/`](aggregation/) — public baseline algorithms
 - [`experiments/resolved_weather_v01.py`](experiments/resolved_weather_v01.py) — Experiment 002 acquisition and scoring runner
+- [`experiments/lir1/`](experiments/lir1/), [`experiments/lir2/`](experiments/lir2/),
+  [`experiments/lir3/`](experiments/lir3/), and [`experiments/lir4/`](experiments/lir4/)
+  — lineage-inference boundary track;
+  LIR-3 supports a narrow recorded-reply provenance bridge, not causal evidence
+  independence or truth recovery; LIR-4 shows that bridge does not degrade
+  gracefully under substantial identity missingness
 - [`provenance/`](provenance/) — evidence graph implementation and JSON Schema
 - [`results/resolved-weather-v0.1.manifest.json`](results/resolved-weather-v0.1.manifest.json) — canonical derived-record hashes and reproducibility boundary
 - [`results/hes1-v1/`](results/hes1-v1/) — blind evidence-seeking result: strong coverage recovery with a material false-negative software limitation
 - [`research/field-evidence/2026-08-06/`](research/field-evidence/2026-08-06/) — sanitized field observation showing why root identity and dependency matter
+- [`results/eaa-p5-out-of-tree-v1/`](results/eaa-p5-out-of-tree-v1/) — imported out-of-tree test of a unified dependence auditor; the frozen gate rejected the candidate, which did not displace the simpler comparators
 - [Minority Prophet Gate](https://github.com/Silentpartnercoding/minority-prophet-gate) — reference implementation of evidence-root aggregation
 - [`website/`](website/) and [`app/`](app/) — dashboard specification and implementation
 

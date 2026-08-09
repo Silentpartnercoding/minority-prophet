@@ -1,0 +1,136 @@
+{
+  "randomized": [
+    {
+      "variant": "BASELINE (frozen reading)",
+      "digest": "e69fc115e77f8020700a681ceab4459972873bcccecb679b597c0641b32a2a3e",
+      "hit": true
+    },
+    {
+      "variant": "R1-alt: seed as ASCII \"20260808\"",
+      "digest": "553830fc00b4a680bf62c1615378b6f4e574b42f275961dfdfd14df537106d4e",
+      "hit": false
+    },
+    {
+      "variant": "R1-alt: seed as uint64 little-endian",
+      "digest": "28ae976cf7796e909f235778fd0216e615093e9b4861c92d42ab53aa6ee6f5b1",
+      "hit": false
+    },
+    {
+      "variant": "R2-alt: counter as uint32_be",
+      "digest": "1edbb8307d53e672a677955b54da378371051f634ae70289ecba1bd5af9ae23d",
+      "hit": false
+    },
+    {
+      "variant": "R3-alt: words read little-endian",
+      "digest": "dd18e6a3cfe34c4eac5f9db9099cfe2162a0a78824bf19f26dccbcf9405a33c8",
+      "hit": false
+    },
+    {
+      "variant": "R4/R9-alt: uniform_below(1) short-circuits (no word)",
+      "digest": "d2175c5a132be5c7dc75ef0ddc16d5b5198dc1171ae2310f2cad34bb9364ddb1",
+      "hit": false
+    },
+    {
+      "variant": "R4-alt: float sampler floor(w/2^32 * n) (forbidden by §Invalidation)",
+      "digest": "7665b34c60321de6edfe7531fd126310e88afa11ef3d96d79d535d52ebdc6231",
+      "hit": false
+    },
+    {
+      "variant": "R8-alt: claim 0 consumes a root-decision draw",
+      "digest": "82ab90eea9704bd2c000f7ea6d28da2a37f4f3f97ff0a431f99ba9bb6a94eda8",
+      "hit": false
+    },
+    {
+      "variant": "R7-alt: side drawn before parent for non-roots",
+      "digest": "6e254cb6d667f975baa5bc03de3571214b3e60c72e393e819ac38796d8896193",
+      "hit": false
+    },
+    {
+      "variant": "R5-alt: generator reseeds per world",
+      "digest": "a915aadef36fdc66877577d8501389d1eb242791627c3d04afadae3335f0560b",
+      "hit": false
+    },
+    {
+      "variant": "R15-alt: trailing \";\" after last claim",
+      "digest": "e3731171ee58ee921b174fbcadd0ee739242ab7667d65714f8c6026504f07650",
+      "hit": false
+    },
+    {
+      "variant": "R15-alt: root rendered as \"null\"",
+      "digest": "ddd3b0840d3050a05983dfd4f02d394f68f6f100fb81391049c8eb1c5dc02235",
+      "hit": false
+    },
+    {
+      "variant": "R15-alt: claims joined with \",\"",
+      "digest": "926558bcae7ec0b1eaca01a1d8e4c389d29d4e5d5226d6a6d01ac70408c4220c",
+      "hit": false
+    }
+  ],
+  "exhaustive": [
+    {
+      "variant": "BASELINE (frozen reading)",
+      "digest": "a71c64ebd472db09ff7813a1a470d002c014a6a4d0cbd6b515aaad61ef3be711",
+      "hit": true,
+      "worlds": 50362
+    },
+    {
+      "variant": "R12-alt: side-major within a position",
+      "digest": "99391ad8a62b75a7358a7d3f6bd61d7a233203b675b1d1736a41f02c2123c3c1",
+      "hit": false,
+      "worlds": 50362
+    },
+    {
+      "variant": "R12-alt: null parent ordered last",
+      "digest": "f48957aa1f25e0c34284b2ac2b534f3012ef1566fc2b90a5f2d7798199e03629",
+      "hit": false,
+      "worlds": 50362
+    },
+    {
+      "variant": "R12-alt: position 0 varies fastest",
+      "digest": "c987aeaed427b52ef2d5467482c1ecaa09c222594087c265b64724c7e96f3d9a",
+      "hit": false,
+      "worlds": 50362
+    },
+    {
+      "variant": "R12-alt: k descending",
+      "digest": "d2ffaf30bb4cf3611996773188ef024f0fa822ba2f89e8675f9933234c6b8bcd",
+      "hit": false,
+      "worlds": 50362
+    },
+    {
+      "variant": "R12-alt: side-major + null last",
+      "digest": "2448f1669d6657628062178acd704dd04135b6ad96677884e5214199b5d11e84",
+      "hit": false,
+      "worlds": 50362
+    },
+    {
+      "variant": "R15-alt: trailing \";\" after last claim",
+      "digest": "0f97c2f62c314857133a37e6b21d4caaceff788d0086753b89c92f605ebe1e96",
+      "hit": false,
+      "worlds": 50362
+    },
+    {
+      "variant": "R15-alt: root rendered as \"null\"",
+      "digest": "be7a9e2789d39c9c1e2faa5393188e4e94e0e32a2ec46671154aff0dcad8a996",
+      "hit": false,
+      "worlds": 50362
+    }
+  ],
+  "generatorStats": {
+    "consumed": 2759273,
+    "rejections": 0,
+    "ub1calls": 66427
+  },
+  "summary": {
+    "randomizedVariantsTested": 13,
+    "randomizedHits": [
+      "BASELINE (frozen reading)"
+    ],
+    "exhaustiveVariantsTested": 8,
+    "exhaustiveHits": [
+      "BASELINE (frozen reading)"
+    ],
+    "distinctRandomizedDigests": 13,
+    "distinctExhaustiveDigests": 8
+  }
+}

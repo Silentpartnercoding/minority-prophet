@@ -1,0 +1,175 @@
+{
+  "abstentions": 2,
+  "aggregation": {
+    "declared_accuracy": 1.0,
+    "declared_advantage_survival": 1.0,
+    "declared_answered": 36,
+    "declared_brier": 0.0625,
+    "eligible_cases": 36,
+    "inferred_accuracy": 1.0,
+    "inferred_answered": 34,
+    "inferred_brier": 0.08375,
+    "majority_accuracy": 0.0,
+    "majority_answered": 36,
+    "majority_brier": 0.5625
+  },
+  "allCaseCorrectYield": 0.9444444444444444,
+  "billing": {
+    "incrementalUsdRecorded": 0,
+    "mode": "subscription"
+  },
+  "bootstrap": {
+    "intervals95": {
+      "accuracyAnswered": {
+        "lower": 1.0,
+        "upper": 1.0
+      },
+      "allCaseCorrectYield": {
+        "lower": 0.8611111111111112,
+        "upper": 1.0
+      },
+      "coverage": {
+        "lower": 0.8611111111111112,
+        "upper": 1.0
+      },
+      "rootF1": {
+        "lower": 0.9535728704077513,
+        "upper": 0.9937888198757764
+      },
+      "rootPrecision": {
+        "lower": 1.0,
+        "upper": 1.0
+      },
+      "rootRecall": {
+        "lower": 0.9112654320987654,
+        "upper": 0.9876543209876543
+      }
+    },
+    "samples": 10000,
+    "seed": 20260808
+  },
+  "caseCount": 36,
+  "claimCount": 432,
+  "correctAnswered": 34,
+  "coverage": 0.9444444444444444,
+  "criterion": {
+    "minimumAccuracyAnswered": 0.8,
+    "minimumAllCaseCorrectYield": 0.65,
+    "minimumCases": 30,
+    "minimumCoverage": 0.8,
+    "minimumRootRecall": 0.8,
+    "supported": true,
+    "zeroFalseRootMerges": true
+  },
+  "hiddenFraction": 0.4,
+  "inputs": {
+    "claimsSha256": "9ea76600051198e649edbcb5ba6d14c290be79ac4f7d3565e77a4a4b8cf89701",
+    "constructionLabelsSha256": "13b2b9348b7f97d5f6fe9d08d7e7cb4ebf3646d21a21ff6dc7018df8a8eb6eca",
+    "requestsSha256": "55ee08cbd2bf4362b8ac1584abb2da41e0c9fb9a49da3dd28bf45084b8a61b49",
+    "responsesSha256": "8ac37e584efd1ad84eee7d3b391925b16b7f943e888ae63bc9ca81e9bfadce75"
+  },
+  "interpretationBoundary": "Constructed record-root coverage under frozen conditions; not causal evidence independence or real-world truth performance.",
+  "lir1ParentBaselineSameCases": {
+    "aggregation": {
+      "declared_accuracy": 1.0,
+      "declared_advantage_survival": 0.8620689655172413,
+      "declared_answered": 36,
+      "declared_brier": 0.0625,
+      "eligible_cases": 36,
+      "inferred_accuracy": 0.8620689655172413,
+      "inferred_answered": 29,
+      "inferred_brier": 0.17704506802721096,
+      "majority_accuracy": 0.0,
+      "majority_answered": 36,
+      "majority_brier": 0.5625
+    },
+    "hiddenEdgeCount": 102,
+    "hiddenFraction": 0.4,
+    "parent": {
+      "evaluable": 102,
+      "f1": 0.3595505617977528,
+      "precision": 0.42105263157894735,
+      "recall": 0.3137254901960784
+    },
+    "rootCount": {
+      "cases": 36,
+      "maxAbsoluteError": 3,
+      "meanAbsoluteError": 1.2222222222222223
+    },
+    "rootPair": {
+      "f1": 0.8376681614349776,
+      "pairs": 2376,
+      "precision": 1.0,
+      "recall": 0.720679012345679
+    }
+  },
+  "rootCount": {
+    "cases": 36,
+    "maxAbsoluteError": 2,
+    "meanAbsoluteError": 0.2222222222222222
+  },
+  "rootPair": {
+    "f1": 0.975494071146245,
+    "pairs": 2376,
+    "precision": 1.0,
+    "recall": 0.9521604938271605
+  },
+  "schema": "minority-prophet.lir2-confirmatory-result.v1",
+  "sourceAdherence": {
+    "groups": {
+      "cell:different_family_disjoint": {
+        "matchedAssignedSource": 36,
+        "rate": 1.0,
+        "responses": 36
+      },
+      "cell:same_model_disjoint": {
+        "matchedAssignedSource": 72,
+        "rate": 1.0,
+        "responses": 72
+      },
+      "cell:same_model_same_source": {
+        "matchedAssignedSource": 72,
+        "rate": 1.0,
+        "responses": 72
+      },
+      "model:claude-fable-5": {
+        "matchedAssignedSource": 144,
+        "rate": 1.0,
+        "responses": 144
+      },
+      "model:gpt-5.6-sol": {
+        "matchedAssignedSource": 36,
+        "rate": 1.0,
+        "responses": 36
+      }
+    },
+    "overall": {
+      "matchedAssignedSource": 180,
+      "rate": 1.0,
+      "responses": 180
+    }
+  },
+  "status": "confirmatory-complete",
+  "threshold": 0.75,
+  "usage": {
+    "claude-fable-5": {
+      "calls": 144,
+      "usage": {
+        "cache_creation_input_tokens": 403605.0,
+        "cache_read_input_tokens": 118944.0,
+        "input_tokens": 144.0,
+        "output_tokens": 32025.0
+      }
+    },
+    "gpt-5.6-sol": {
+      "calls": 36,
+      "usage": {
+        "cache_write_input_tokens": 0.0,
+        "cached_input_tokens": 141312.0,
+        "input_tokens": 478090.0,
+        "output_tokens": 1795.0,
+        "reasoning_output_tokens": 0.0
+      }
+    }
+  }
+}

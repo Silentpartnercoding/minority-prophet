@@ -1,0 +1,15 @@
+{
+  "schema": "minority-prophet.lir2-development-manifest.v1",
+  "status": "development-method-selected",
+  "selectedThreshold": 0.75,
+  "files": {
+    "experiments/lir2/PREREGISTRATION.md": "c5312b985555e5bf588e50f74662614a8073ce20b89b00a7aeefc62b9f2cf0c6",
+    "experiments/lir2/root_grouping.py": "32807273c38a148cad3bcf986148f444582d4431c25882623997561aa76a3071",
+    "experiments/lir2/tune.py": "a3025978fb572a83fcf48882aabc44ee0a47113b1f0eaa79494c50ef9a5ea15c",
+    "results/lir2-development-v0.1/result.json": "1de46dfc49bd81539b2786fb0312f2d29a4ea572d8865feed46fb20c12908013"
+  },
+  "reproduction": {
+    "cleanRuns": 2,
+    "byteIdentical": true
+  }
+}

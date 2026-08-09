@@ -215,7 +215,8 @@ lineage-bearing schema.
 ## Owner dispositions, 2026-08-08 (BL-043, BL-045)
 
 **Paper v1.0.4 was adopted** as the active evidence-aligned draft at this
-checkpoint. It is now a preserved prior snapshot; v1.0.5 is current.
+checkpoint. It is now a preserved prior snapshot; v1.0.5 succeeded it and is
+also now preserved by v1.0.6.
 
 **A2 — does presence need complete coverage? Ratified as registered: no.**
 
@@ -245,7 +246,7 @@ rediscovered as a defect. Reversible at the next substantive revision.
 
 ## Additions — 2026-08-08 (paper v1.0.5)
 
-v1.0.5 is the active evidence-aligned draft. It incorporates HGD-1, HGD-2,
+v1.0.5 was the active evidence-aligned draft at this checkpoint. It incorporates HGD-1, HGD-2,
 and HES-1 without promoting rejected primary claims or hiding the HES-1
 claim-direction limitation.
 
@@ -259,3 +260,21 @@ It also corrects two inherited presentation defects:
 
 PPR-101's redundant `|margin|` notation was removed in this substantive
 revision. The quantity remains the same because margin is already absolute.
+
+---
+
+## Additions — 2026-08-08 (paper v1.0.6)
+
+v1.0.6 is the active evidence-aligned draft. It closes the LIR-1–LIR-4
+lineage-inference series without turning recorded PHEME reply roots into causal
+evidence-independence labels.
+
+The revision adds both sides of the result:
+
+- LIR-3 supported a narrow typed-provenance bridge when reply-target author
+  identity remained observable while exact parent-status IDs were hidden; and
+- LIR-4 rejected graceful degradation when substantial target identity was
+  removed, while its forged-identity safety diagnostic remained underpowered.
+
+No prior paper is rewritten. Any balanced multi-root or cross-platform LIR-5
+is explicitly a separate research chapter.

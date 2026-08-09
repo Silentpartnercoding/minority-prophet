@@ -1,0 +1,19 @@
+{
+  "schema": "minority-prophet.lir3-holdout-commitment.v1",
+  "status": "frozen-before-confirmatory-scoring",
+  "developmentResultSha256": "dec0f4d5c64ff0966920ec14a7d16f649d3e6778cf57dc7be29a6d7bf17322ba",
+  "confirmatoryInputSha256": "4a66b3bd48865c8a05d6167417d283ef3ad6ea46aef44aa18436a9ea2db5e1c0",
+  "confirmatoryCaseSetSha256": "d03ac90910866ba5ad65b95c54dc8edac0789e55b62fd1293b50e2470a1ab2eb",
+  "confirmatoryCases": 425,
+  "confirmatoryClaims": 5000,
+  "hiddenFraction": 0.4,
+  "selectedConfiguration": {
+    "id": "author-0.00-margin-0.00-fallback-none",
+    "authorMinScore": 0.0,
+    "authorMargin": 0.0,
+    "fallback": "none"
+  },
+  "bootstrapSeed": 20260809,
+  "bootstrapSamples": 10000,
+  "note": "The exact reply-parent status ID remains hidden; reply-target author ID is observable."
+}

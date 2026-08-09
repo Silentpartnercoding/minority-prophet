@@ -1,0 +1,49 @@
+{
+  "schema": "minority-prophet.lir1e-execution-config.v1",
+  "status": "registered",
+  "frozenRequestsSha256": "55ee08cbd2bf4362b8ac1584abb2da41e0c9fb9a49da3dd28bf45084b8a61b49",
+  "runnerIdentity": "local-subscription-runner-lir2-confirmatory",
+  "executionWindowUtc": {
+    "notBefore": "2026-08-08T23:30:00Z",
+    "notAfter": "2026-08-09T23:30:00Z"
+  },
+  "assignments": {
+    "model-a": {
+      "adapter": "claude-cli",
+      "provider": "Anthropic",
+      "model": "claude-fable-5",
+      "cliVersion": "2.1.223",
+      "seedSupported": false,
+      "billingMode": "subscription"
+    },
+    "model-b": {
+      "adapter": "codex-cli",
+      "provider": "OpenAI",
+      "model": "gpt-5.6-sol",
+      "cliVersion": "0.146.0-alpha.3.1",
+      "seedSupported": false,
+      "billingMode": "subscription"
+    }
+  },
+  "parameters": {
+    "temperature": 0,
+    "maxOutputTokens": 300,
+    "tools": false,
+    "web": false,
+    "memory": false
+  },
+  "limits": {
+    "maximumCalls": 190,
+    "maximumInputTokens": 1000000,
+    "maximumOutputTokens": 57000,
+    "maximumUsd": 0
+  },
+  "analysis": {
+    "fixedRootThreshold": 0.75,
+    "developmentResultSha256": "1de46dfc49bd81539b2786fb0312f2d29a4ea572d8865feed46fb20c12908013",
+    "bootstrapSeed": 20260808,
+    "bootstrapSamples": 10000
+  },
+  "redistribution": "Raw CLI receipts and responses remain private; aggregate metrics may be published after scoring closes.",
+  "clockSource": "runner host UTC system clock"
+}

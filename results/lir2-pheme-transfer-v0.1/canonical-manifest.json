@@ -1,0 +1,23 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "LIR-2/PHEME",
+  "status": "canonical-fixed-method-recorded-lineage-transfer-rejected",
+  "files": {
+    "experiments/lir2/PHEME-TRANSFER-PREREGISTRATION.md": "47f9361a2bea67c8c32af147a977e73467dca5719be93c33da2e99144c7ef3f7",
+    "experiments/lir2/root_grouping.py": "32807273c38a148cad3bcf986148f444582d4431c25882623997561aa76a3071",
+    "experiments/lir2/score_pheme_transfer.py": "fa24bb48da0be56a04a34b33a50a4ea1ad367454e234c006d8f406a26a8f2dec",
+    "results/lir2-development-v0.1/result.json": "1de46dfc49bd81539b2786fb0312f2d29a4ea572d8865feed46fb20c12908013",
+    "results/lir1-pheme-r2-v0.1/result.json": "a92595ab69b1a2247ab1ae2dcca2e9629744374a9e5791890d92120073221800",
+    "results/lir2-pheme-transfer-v0.1/README.md": "10e450d1b26b345da724cdca0cd8b5585e048a5592ec314f72fa8cfba3ac7f3c",
+    "results/lir2-pheme-transfer-v0.1/REPRODUCTION.md": "8498f7c069c0dc12e96f35f3d5eb33abf86c19626a1ebb4a0583a447489067ff",
+    "results/lir2-pheme-transfer-v0.1/result.json": "579db4ef73c08feddd235eebfaad0a40b4fe63aa238020dd550ae4e13c3bd73b"
+  },
+  "privateInput": {
+    "normalizedPhemeR2Sha256": "1c3e9e08149021cdb81da02b96750d75e0f0dce1dd7432bf5f7613fb206a2266"
+  },
+  "reproduction": {
+    "cleanRuns": 2,
+    "byteIdentical": true,
+    "resultSha256": "579db4ef73c08feddd235eebfaad0a40b4fe63aa238020dd550ae4e13c3bd73b"
+  }
+}

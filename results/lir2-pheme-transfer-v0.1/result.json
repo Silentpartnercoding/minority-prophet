@@ -1,0 +1,173 @@
+{
+  "caseCount": 290,
+  "claimCount": 5000,
+  "criterion": {
+    "minimumRootF1": 0.6,
+    "minimumRootPrecision": 0.99,
+    "minimumRootRecall": 0.45,
+    "strictMaximumRootCountMae": 4.0,
+    "supported": false
+  },
+  "fractions": [
+    {
+      "hiddenFraction": 0.05,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 9,
+        "meanAbsoluteError": 0.6862068965517242
+      },
+      "rootPair": {
+        "f1": 0.8213143458961419,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.6968052449239135
+      }
+    },
+    {
+      "hiddenFraction": 0.15,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 26,
+        "meanAbsoluteError": 2.093103448275862
+      },
+      "rootPair": {
+        "f1": 0.6218733710555938,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.4512454501600667
+      }
+    },
+    {
+      "hiddenFraction": 0.25,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 48,
+        "meanAbsoluteError": 3.510344827586207
+      },
+      "rootPair": {
+        "f1": 0.4735287472700344,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.31021137569618035
+      }
+    },
+    {
+      "hiddenFraction": 0.4,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 85,
+        "meanAbsoluteError": 5.551724137931035
+      },
+      "rootPair": {
+        "f1": 0.3361698634634853,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.2020457834495461
+      }
+    },
+    {
+      "hiddenFraction": 0.55,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 122,
+        "meanAbsoluteError": 7.6931034482758625
+      },
+      "rootPair": {
+        "f1": 0.22313131903453917,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.12557558216024206
+      }
+    },
+    {
+      "hiddenFraction": 0.7,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 148,
+        "meanAbsoluteError": 9.848275862068965
+      },
+      "rootPair": {
+        "f1": 0.14264333058431838,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.07679910538087094
+      }
+    },
+    {
+      "hiddenFraction": 0.85,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 188,
+        "meanAbsoluteError": 12.048275862068966
+      },
+      "rootPair": {
+        "f1": 0.08803924034712614,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.046046572819365875
+      }
+    },
+    {
+      "hiddenFraction": 0.95,
+      "rootCount": {
+        "cases": 290,
+        "maxAbsoluteError": 205,
+        "meanAbsoluteError": 13.434482758620689
+      },
+      "rootPair": {
+        "f1": 0.06467218332272438,
+        "pairs": 91582,
+        "precision": 1.0,
+        "recall": 0.03341665570319695
+      }
+    }
+  ],
+  "interpretationBoundary": "Prospective fixed-method transfer on a previously studied corpus, not a new independent dataset holdout.",
+  "knownLir1Comparator": {
+    "rootCountMae": 4.931034482758621,
+    "rootF1": 0.36804493457475823,
+    "rootPrecision": 0.9990288905074047,
+    "rootRecall": 0.2255733894662983
+  },
+  "labelBoundary": "Recorded PHEME reply-tree roots; not causal evidence independence.",
+  "normalizedInputSha256": "1c3e9e08149021cdb81da02b96750d75e0f0dce1dd7432bf5f7613fb206a2266",
+  "primary": {
+    "hiddenFraction": 0.4,
+    "rootCount": {
+      "cases": 290,
+      "maxAbsoluteError": 85,
+      "meanAbsoluteError": 5.551724137931035
+    },
+    "rootPair": {
+      "f1": 0.3361698634634853,
+      "pairs": 91582,
+      "precision": 1.0,
+      "recall": 0.2020457834495461
+    }
+  },
+  "primaryBootstrap": {
+    "intervals95": {
+      "rootCountMae": {
+        "lower": 4.751724137931035,
+        "upper": 6.506896551724138
+      },
+      "rootF1": {
+        "lower": 0.23485271176597852,
+        "upper": 0.4863476310414395
+      },
+      "rootPrecision": {
+        "lower": 1.0,
+        "upper": 1.0
+      },
+      "rootRecall": {
+        "lower": 0.1330499235567712,
+        "upper": 0.3213073497027998
+      }
+    },
+    "samples": 10000,
+    "seed": 20260808
+  },
+  "schema": "minority-prophet.lir2-pheme-transfer.v1",
+  "status": "transfer-complete",
+  "threshold": 0.75
+}

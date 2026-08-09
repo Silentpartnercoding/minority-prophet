@@ -28,7 +28,28 @@ jobs:
             echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Check newly added public material
+        env:
+          # Terms too sensitive to name in the public blocklist, supplied as
+          # SHA-256 digests computed on the owner's machine by
+          # scripts/add_boundary_term.py. The plaintext reaches no file, no git
+          # history, no shell history and no transcript; and because the digest
+          # lives in a secret rather than in the checker, it cannot be attacked
+          # with a wordlist either. Absent secret = empty string = no extra terms.
+          MP_BOUNDARY_DIGESTS: ${{ secrets.MP_BOUNDARY_DIGESTS }}
         run: python scripts/check_public_boundary.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+      - name: Sweep every tracked line, not only additions
+        # The step above inspects additions only, by design, so frozen records are
+        # never rewritten. The cost is that a term added to the blocklist today is
+        # never applied to anything committed yesterday -- which is how an
+        # owner-designated never-public term outlived the rule that blocks it. This
+        # step reconciles the whole published tree against the current rules.
+        env:
+          MP_BOUNDARY_DIGESTS: ${{ secrets.MP_BOUNDARY_DIGESTS }}
+        run: python scripts/check_public_boundary.py --sweep --head "${{ github.sha }}"
+      - name: Check no live commission's withheld values are published
+        run: python scripts/check_withheld_leak.py --base "${{ steps.comparison.outputs.base }}" --head "${{ github.sha }}"
+      - name: Verify preregistrations still match their pinned commits
+        run: python scripts/check_registration_chain.py --ref "${{ github.sha }}"
 
   python:
     runs-on: ubuntu-latest

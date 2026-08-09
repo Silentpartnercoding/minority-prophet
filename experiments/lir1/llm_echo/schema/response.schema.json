@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.example/schemas/lir1e-response-v1.json",
+  "title": "LIR-1E captured model response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "requestId", "attempt", "provider", "model", "requestedAt",
+    "completedAt", "requestParameters", "rawResponse", "providerRequestId",
+    "usage", "status"
+  ],
+  "properties": {
+    "schema": {"const": "minority-prophet.lir1e-response.v1"},
+    "requestId": {"type": "string"},
+    "attempt": {"type": "integer", "minimum": 1, "maximum": 2},
+    "provider": {"type": "string"},
+    "model": {"type": "string"},
+    "requestedAt": {"type": "string", "format": "date-time"},
+    "completedAt": {"type": "string", "format": "date-time"},
+    "requestParameters": {"type": "object"},
+    "rawResponse": {"type": ["string", "null"]},
+    "providerRequestId": {"type": ["string", "null"]},
+    "usage": {"type": ["object", "null"]},
+    "status": {"enum": ["valid", "malformed", "refused", "provider_error"]}
+  }
+}

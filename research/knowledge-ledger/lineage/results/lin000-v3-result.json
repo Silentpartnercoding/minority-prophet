@@ -1,0 +1,113 @@
+{
+  "schema": "minority-prophet.lin000-result.v0.3",
+  "registration": "REGISTRATION-v0.3.md as amended by REGISTRATION-v0.3.1.md (E2)",
+  "traceability": "TRACEABILITY-v0.3.json (TRC-101, written at registration time)",
+  "seed": 20260808,
+  "generatorConformance": [
+    {
+      "modulus": 2863311531,
+      "digest": "227f0168c67959832a095ae514137c7c664890cf804014d0d72ed416f71886bd",
+      "wordsConsumed": 1485,
+      "rejections": 485,
+      "rejectionRegion": 1431655765
+    },
+    {
+      "modulus": 2576980378,
+      "digest": "657cf6ed28241af283deb1ee6c087b456cb3004f9900ce8001cfa6cba76e11c1",
+      "wordsConsumed": 1666,
+      "rejections": 666,
+      "rejectionRegion": 1717986918
+    },
+    {
+      "modulus": 1717986919,
+      "digest": "5b1baed29396d68a2af08e5f91e7a2b8084fa70d634c10a1696f61dc639cbdf8",
+      "wordsConsumed": 1244,
+      "rejections": 244,
+      "rejectionRegion": 858993458
+    },
+    {
+      "modulus": 20,
+      "digest": "ff52699e9300c0fe79c82a9d62e7d3c64b6139b16c49ef76a7d446da9295afc6",
+      "wordsConsumed": 1000,
+      "rejections": 0,
+      "rejectionRegion": 16
+    },
+    {
+      "modulus": 10,
+      "digest": "c8b71c390acd1a2de136b0ceb94521b5727aa83649d80a554dbfa9401a97bab0",
+      "wordsConsumed": 1000,
+      "rejections": 0,
+      "rejectionRegion": 6
+    },
+    {
+      "modulus": 2,
+      "digest": "d888eee31c27e8fb970a9f7e940b69a9e93747400bd8e36d6e3999eac6886a61",
+      "wordsConsumed": 1000,
+      "rejections": 0,
+      "rejectionRegion": 0
+    },
+    {
+      "modulus": 1,
+      "digest": "7e0f8f11af1b6c00bd7b311f7c578f33d2942890992454101cddfbbd7e23dad5",
+      "wordsConsumed": 1000,
+      "rejections": 0,
+      "rejectionRegion": 0
+    }
+  ],
+  "t1": {
+    "worlds": 50362,
+    "t1PosChecked": 116032,
+    "t1PosViolations": 0,
+    "t1NecChecked": 78080,
+    "t1NecVerdictChanges": 47224,
+    "t1IdChecked": 1225776,
+    "t1IdViolations": 0,
+    "elapsedSeconds": 93.9
+  },
+  "phases": {
+    "exhaustive": {
+      "worlds": 50362,
+      "l1PosChecked": 5912,
+      "l1PosViolations": 0,
+      "l1NegChecked": 44450,
+      "l1NegWitnesses": 44450,
+      "ablShallowChecked": 50362,
+      "ablShallowCaught": 35416,
+      "ablCountChecked": 50362,
+      "ablCountCaught": 21440,
+      "elapsedSeconds": 0.3
+    },
+    "randomized": {
+      "worlds": 100000,
+      "l1PosChecked": 54747,
+      "l1PosViolations": 0,
+      "l1NegChecked": 45253,
+      "l1NegWitnesses": 45253,
+      "ablShallowChecked": 100000,
+      "ablShallowCaught": 76833,
+      "ablCountChecked": 100000,
+      "ablCountCaught": 34779,
+      "elapsedSeconds": 1.7
+    }
+  },
+  "digestCarryOver": {
+    "exhaustive": {
+      "digest": "a71c64ebd472db09ff7813a1a470d002c014a6a4d0cbd6b515aaad61ef3be711",
+      "matchesV2": true
+    },
+    "randomized": {
+      "digest": "e69fc115e77f8020700a681ceab4459972873bcccecb679b597c0641b32a2a3e",
+      "matchesV2": true
+    }
+  },
+  "invalidationReasons": [],
+  "valid": true,
+  "v03AsRegistered": {
+    "valid": false,
+    "reasons": [
+      "modulus 20 never rejected",
+      "modulus 10 never rejected"
+    ],
+    "note": "Invalid under v0.3's condition as written. The condition is the defect (E2); recorded, not reinterpreted."
+  }
+}

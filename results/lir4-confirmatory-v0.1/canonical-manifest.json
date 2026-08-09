@@ -1,0 +1,26 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "LIR-4/PHEME",
+  "status": "canonical-provenance-graceful-degradation-rejected",
+  "files": {
+    "experiments/lir4/PREREGISTRATION.md": "dbac0f533005d8c27ebe3b845e7531f4f417f5f1a7ce32869d6abf24fc2a12d1",
+    "experiments/lir4/HOLDOUT-COMMITMENT.json": "7d9d025146e4a3fe8edb53156c454502ee8fac00fc1bfad003bf103c2699b06a",
+    "experiments/lir4/materialize.py": "24ce69cc72f3af0ef4a765b8731a2ad90768478eb14c682db9be70b9f45c94ac",
+    "experiments/lir4/attacks.py": "2ca0ad05da2b45b840357fc9a957885b341d602ad8946ce34351d3fad3f1f2f8",
+    "experiments/lir4/score_confirmatory.py": "462a21c6a9fce7adcf4c2235a239f9d976dfc49f98ad954f01a9f4d37b02bd0b",
+    "results/lir4-pheme-v0.1/inventory.json": "a9782286aed3d4f401b6bdbe34f0da6a7038b7dc91405f2e99395b162a996562",
+    "results/lir4-confirmatory-v0.1/README.md": "29e1619e3c5ba41283c8346fe3219b64ce2c3016692ead61c9cbd5446f382a5c",
+    "results/lir4-confirmatory-v0.1/REPRODUCTION.md": "1fc946e62a6bb955585de26e5b50cd00422030ecb3c50b438a0fdda20ee2a2f9",
+    "results/lir4-confirmatory-v0.1/result.json": "19ce697b29484725b04ff5dde153962dd1d62fffe5eb3760f24c963af0b97ce6"
+  },
+  "privateInput": {
+    "normalizedHoldoutSha256": "974df303ea8c489060b281260abde10e7b59f6525fcd2943e8c7138c99ddfe15",
+    "holdoutCaseSetSha256": "f36868482c6fdf729876886c1ab0251dc998d5adec02762f4669b808eecabfbe"
+  },
+  "reproduction": {
+    "cleanRuns": 2,
+    "byteIdentical": true,
+    "resultSha256": "19ce697b29484725b04ff5dde153962dd1d62fffe5eb3760f24c963af0b97ce6"
+  },
+  "claimBoundary": "Recorded PHEME reply-tree degradation only; safety diagnostic underpowered; not causal evidence independence or truth."
+}

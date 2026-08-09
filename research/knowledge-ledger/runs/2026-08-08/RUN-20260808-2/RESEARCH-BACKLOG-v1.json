@@ -1,0 +1,66 @@
+{
+  "schema": "minority-prophet.research-backlog.v0.1",
+  "runId": "RUN-20260808-2",
+  "version": 1,
+  "note": "Written live at close. This run recorded four findings and repaired none; every item below is the repair it declined to fold into a logging run.",
+  "rankingCriteria": "information gain, safety, cost, prerequisite readiness, and whether the outcome would change a decision. Rank 1 is highest.",
+  "carriedOver": "BL-044 CLOSED by FINDING-BL044.md (necessary but not sufficient). BL-046 CLOSED by FINDING-BL046.md. BL-043 (A2) and BL-045 (paper v1.0.4) CLOSED by RUN-20260808-1's owner dispositions. BL-047 (Gate T5 floor vs paper T5, undocumented correspondence) open. BL-042 (TRC-101 at registration time) remains urgent before any kernel registers. Gate PR #9 (escalate when immunity is void) open as a draft and owner-gated. BL-023, BL-026, BL-027, BL-028, BL-029, BL-030, BL-031, BL-032, BL-034, BL-036, BL-037, BL-038, BL-039 unchanged.",
+  "items": [
+    {
+      "rank": 1,
+      "id": "BL-049",
+      "type": "broken-control",
+      "title": "The registration chain check tests a proxy, not the property",
+      "hypothesis": "'last-touching commit == pinned SHA' is red on an intact repository whenever history is merged from a line duplicating a registration commit, and green on a tampering that preserves commit identity. The substantive property -- pinned commit is an ancestor of the published branch AND the blob at HEAD equals the blob at the pin -- passes 4/4 today.",
+      "discriminatingTest": "Replace the check; assert it stays green across the present duplicate history and goes red on a synthetic content change at HEAD with the pin untouched.",
+      "whyItMatters": "A control that is permanently red teaches everyone to ignore it, and this one is red on a repository whose registrations verify.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether the chain alert is actionable at all.",
+      "cost": "small",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 2,
+      "id": "BL-050",
+      "type": "missing-control",
+      "title": "Two gaps in the public-boundary check (PBC-101)",
+      "hypothesis": "The local-path rule misses 11 of 37 real leaked lines (any path preceded by '=' or ':'), and '[REDACTED internal tooling term]' -- the one term the owner named as never-public -- is not on the internal-wording blocklist.",
+      "discriminatingTest": "Replay the 37 removed lines; require 37/37 blocked. Assert the internal-tooling term is blocked.",
+      "whyItMatters": "The highest-frequency leak shape in the repository is the one that slips through.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether the boundary check can be relied on for the class it claims to cover.",
+      "cost": "small",
+      "prerequisitesReady": true,
+      "safety": "owner judgement needed: the blocklist is public and names what it protects"
+    },
+    {
+      "rank": 3,
+      "id": "BL-048",
+      "type": "missing-control",
+      "title": "Withheld-set checker for live commissions (M27 enforcement)",
+      "hypothesis": "Publishing a run report can retire a live commission's pass condition. LIVE-COMMISSIONS.json declares the withheld sets; nothing enforces them.",
+      "discriminatingTest": "Block additions containing any live commission's withheld values; verify it would have flagged the RUN-20260807-10 publication.",
+      "whyItMatters": "M27 is currently prose, and this program's own rule (M26) is that prose is not a control.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether the next commission is issued blind or spoiled in advance.",
+      "cost": "small",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    },
+    {
+      "rank": 4,
+      "id": "BL-051",
+      "type": "specification-defect",
+      "title": "LIN-000's registration under-determines its own pass condition",
+      "hypothesis": "BL-044 measured 96 exhaustive orderings and 72 draw-schedule readings admitted by the registered prose, exactly one correct each. Fixes: define the generator in-document (counter-based), register draws as primitives not distributions, specify boundary cases and enumeration orders, and publish prefix digests.",
+      "discriminatingTest": "Re-commission against a revised registration; a second implementation should hit both digests on its pre-declared reading, with no sweep.",
+      "whyItMatters": "Answers whether the F11 repair generalises. Today it does not: it buys 'one coin-flip away', not a stream.",
+      "wouldChangeADecision": true,
+      "wouldChangeWhat": "Whether KL-000 adopts schedule registration program-wide (BL-016/F11).",
+      "cost": "registration revision plus one commission",
+      "prerequisitesReady": true,
+      "safety": "none engaged"
+    }
+  ]
+}

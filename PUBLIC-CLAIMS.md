@@ -40,6 +40,11 @@ that a deployment identified its roots correctly.
 - A preregistered evidence-origin experiment prevented supported copies,
   paraphrases, translations, summaries, and model transformations from adding
   roots. Unknown and forged origin claims always escalated.
+- A closed lineage-inference series found that text and time alone did not
+  recover recorded PHEME reply roots, while retained reply-target author
+  identity did. Removing that identity from half of hidden-edge records reduced
+  recall from 1.0 to 0.4329 while precision remained 1.0. This is recorded
+  platform lineage, not causal evidence independence or truth.
 
 ## Open boundaries
 
@@ -49,6 +54,8 @@ that a deployment identified its roots correctly.
   matched separate controllers carrying one adverse claim remained separate.
 - Expiry, revocation, and key compromise sit outside the counting theorems.
 - Synthetic and replay evidence does not establish real-world truth recovery.
+- The lineage series does not establish resistance to forged provenance: the
+  final PHEME safety diagnostic had only one multi-root case and was underpowered.
 - Released-implementation comparisons, matched-coverage analysis, and primary-
   source citation verification remain incomplete.
 

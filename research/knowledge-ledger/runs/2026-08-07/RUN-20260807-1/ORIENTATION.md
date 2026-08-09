@@ -117,7 +117,7 @@ its *reason* has expired.
 
 ```
 github  https://github.com/Silentpartnercoding/minority-prophet.git   (public GitHub)
-origin  james@100.101.32.77:$HOME/.../minority-prophet         (working copy over SSH)
+origin  <user>@<host>:$HOME/.../minority-prophet         (working copy over SSH)
 ```
 
 Both are reachable. They are **not** interchangeable and every push command
