@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 type ClaimKind = "independent" | "copied" | "contradiction";
 
-const paperUrl = "https://github.com/Silentpartnercoding/minority-prophet/blob/main/papers/minority-prophet-v1.0.7.md";
+const paperUrl = "https://github.com/Silentpartnercoding/minority-prophet/blob/main/papers/00-CURRENT-PAPER.md";
 
 const claims: { id: string; agent: string; belief: string; confidence: number; kind: ClaimKind; source: string }[] = [
   { id: "C-003", agent: "Observer 03", belief: "TRUE", confidence: 98, kind: "independent", source: "Instrument C" },
