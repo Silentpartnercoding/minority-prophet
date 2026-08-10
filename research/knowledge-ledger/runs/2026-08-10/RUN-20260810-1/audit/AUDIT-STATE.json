@@ -1,0 +1,56 @@
+{
+  "schema": "internal-adversarial-review.state.v0.1",
+  "LABEL": "INTERNAL ADVERSARIAL REVIEW - NOT AN INDEPENDENT AUDIT",
+  "controlDomain": {
+    "operator": "repository owner",
+    "auditor": "Claude, directed by the same operator",
+    "independent": false,
+    "why": "AGENTS.md rule 2: agents directed by the same operator or orchestrator are one control domain. Any agreement between this review and the repositories' own tests is internal replication, not independent validation. This label may not be removed by summarisation."
+  },
+  "auditedCommits": {
+    "minority-prophet": "427f27846e2c5205ce86942916493350e34b2206",
+    "minority-prophet-gate": "88a9f471f79ef4b742034909839401fc9cb7a48d",
+    "minority-prophet-border": "41c1c070473fc7481ca9bfc86edf3ce9a3528318",
+    "epistemic-ci": "6870233b5e0dd963d6e1f34a40d55a549118df78"
+  },
+  "environment": {
+    "python": "3.14.6",
+    "platform": "macOS-26.4.1-arm64-arm-64bit-Mach-O"
+  },
+  "stage": "findings-recorded",
+  "completed": [
+    "stage-1-baselines",
+    "eci-vacuous-composition",
+    "gate-boundary-exhaustive",
+    "gate-copy-invariance",
+    "gate-origin-semantics"
+  ],
+  "failed": [],
+  "retries": {},
+  "unresolved": [],
+  "nextAction": "border replay/binding attacks; cross-repo composition harness",
+  "findings": [
+    {
+      "id": "ECI-01",
+      "class": "ASSURANCE WEAKNESS",
+      "repo": "epistemic-ci",
+      "summary": "all four checks pass on a verifier that never reads the verdict it verifies"
+    },
+    {
+      "id": "GATE-01",
+      "class": "DOCUMENTATION GAP",
+      "repo": "minority-prophet-gate",
+      "summary": "origin is documented as collapsing roots; no code path uses it for root identity"
+    }
+  ],
+  "noCounterexample": [
+    "gate: deterministic deny never overridden -- 486 evidence shapes enumerated, 0 escapes",
+    "gate: T2 copy invariance holds -- 50 properly derived copies leave the verdict unchanged",
+    "gate: wrong-subject evidence escalates rather than proceeding",
+    "epistemic-ci: github-app security tests skip locally but DO run in a dedicated CI job"
+  ],
+  "ownErrorsCorrected": [
+    "invented a top-level 'parent' key; real lineage field is attest.derived_from -- the resulting 'T2 counterexample' was my error and T2 holds",
+    "ran the first gate pass under TrustAllVerifier without registering that its own docstring says it provides no security"
+  ]
+}

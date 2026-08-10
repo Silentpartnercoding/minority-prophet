@@ -1,10 +1,16 @@
 # What this programme has contributed to Epistemic CI, and what it has not
 
 `Silentpartnercoding/epistemic-ci` is a vendor-neutral meta-validation gate: a
-test for the tests. Its v0 has three checks — **Vacuous Test** (planted defects
+test for the tests. Its v0 has **four** checks — **Vacuous Test** (planted defects
 must make verification fail), **Executable Pass Condition** (corrupted outputs
 must make the checker fail), **Observation Surface** (a positive population
-count, a population fingerprint and a result fingerprint bound to one run id).
+count, a population fingerprint and a result fingerprint bound to one run id),
+and **Final Artifact Binding** (a detached receipt naming and hashing every
+declared final artifact, with the verifier rejecting each alteration).
+
+An earlier version of this file said three. Final Artifact Binding was already
+shipped when it was written, so the omission was in this summary, not in the
+tool.
 
 This programme's failure modes are the obvious source of candidate checks, so
 this file records which have been logged there, which are already covered, and
@@ -21,6 +27,22 @@ proposed twice and to stop local findings quietly failing to travel.
 
 Each carries the worked instance that produced it, the expected failure
 condition, and a minimal fixture, per CONTRIBUTING.
+
+## Merged upstream
+
+| change | failure mode | how it was found |
+|---|---|---|
+| [#11](https://github.com/Silentpartnercoding/epistemic-ci/pull/11) **assurance bound** | a green run whose verifier never reads the verdict it verifies | RUN-20260810-1, internal adversarial review: a verifier checking only that its input is non-empty passes all four checks, then accepts a flipped verdict |
+
+Reported rather than enforced. Whether a declared mutation set is representative
+cannot be decided without knowing which defects matter, which is the thing under
+study — so every result now states its own bound in machine-readable form instead
+of a check pretending to close it.
+
+**The recurrence matters more than the finding.** This programme found the same
+blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): two
+grossly broken implementations pass, because mutation selection determines what is
+learned. Two separately written codebases, one shared weakness.
 
 ## Already covered by v0 — deliberately not proposed
 
