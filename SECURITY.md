@@ -62,6 +62,13 @@ permission to do anything else, and nothing here overrides law or the LICENSE.
   describing an unfixed vulnerability, and do not publish a working exploit
   against a real deployment.
 
+### Where to start
+
+`CLAIMS.md` lists what this project asserts, with the evidence behind each claim
+and what would falsify it, plus a section of known weaknesses published so you do
+not spend time rediscovering them. `AUDIT-BRIEF/` explains what has already been
+found and why no attack method is prescribed.
+
 ### Reporting
 
 Report privately first, through this repository's private security advisory
