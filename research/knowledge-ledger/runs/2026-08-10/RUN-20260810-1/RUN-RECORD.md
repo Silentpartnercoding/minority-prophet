@@ -101,10 +101,49 @@ Harness: 6 of 6 invariant scenarios hold, previously 4 of 6.
 reporting weakness with no runtime consequence. The one that could double a
 transfer was in the seam, which is exactly where nothing had been looked.
 
+## Invariants 2–11, and Border
+
+Run after SYS-01, because one broken invariant out of eleven is not a reason to
+assume the other ten.
+
+**Invariants 2–11: ten hold, zero violations, one documented gap.** Deny executes
+zero times even with 100 supporting roots. Escalate executes zero times. Evidence
+past its TTL, or carrying no `observed_at` under a TTL policy, escalates rather
+than proceeding. Evidence bound to another subject escalates. Target substitution
+under a reused idempotency key raises. Twenty claims with no attest block lose to
+one opposing root. A `prepare()` failure propagates with zero effects. The
+recorded result distinguishes authorization from evidence from enforcement via
+`route`. The one gap is INV-9, which is GATE-01 already recorded: `origin` is not
+a collapse key, and supplying independence is the verifier's job.
+
+So the seam failure was specific to the exactly-once controller rather than
+general to the composition.
+
+**Border: 9 of 9 on DSSE/admission binding, 8 of 8 on subject-link.** Substituted
+action digests, flipped decision points, extended expiries, swapped policy
+digests, renamed subjects, stripped signatures, unknown key ids and foreign-key
+forgeries are all rejected. Revoked, expired, wrong-audience and badly-signed
+subject links are rejected; two claims from one provider do not become two
+providers; different pairwise subjects do not merge.
+
+Worth recording: on the accepting control, `establishes_provider_independence` is
+**False**. Two distinct providers satisfy a count requirement and Border still
+declines to call that independence — the opposite of the failure mode this
+programme names as central.
+
+**A methodological correction inside this pass.** The first Border suite ran
+without a valid baseline: the envelope failed with "unknown admission statement
+type", so all three tamper tests were rejected for a schema reason and would have
+been recorded as security passes. Repeated with a verified baseline. A rejection
+that happens for the wrong reason is not a control.
+
+`audit/system-integration/harness_v2.py`, `audit/border/BORDER-RESULTS.md`.
+
 ## What is still not done
 
-Border, KL-011 readiness, the claim/adoption audit, and invariants 2–11 of the
-system audit. Silence about those is silence, not a clean result.
+KL-011 readiness, the claim/adoption audit, Border's delegated-authority scope and
+OpenID gateway paths, and replay across a durable store. Silence about those is
+silence, not a clean result.
 
 ## Artifacts
 
