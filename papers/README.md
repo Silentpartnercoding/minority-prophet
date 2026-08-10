@@ -1,10 +1,11 @@
 # Papers
 
-Start with **[the current paper](./minority-prophet-v1.0.6.md)**.
+Start with **[the current paper](./minority-prophet-v1.0.7.md)**.
 
 | File | Status |
 | --- | --- |
-| [`minority-prophet-v1.0.6.md`](./minority-prophet-v1.0.6.md) | Current evidence-aligned pre-submission manuscript; closes LIR-1–LIR-4 |
+| [`minority-prophet-v1.0.7.md`](./minority-prophet-v1.0.7.md) | Current reader-first, evidence-aligned pre-submission manuscript |
+| [`minority-prophet-v1.0.6.md`](./minority-prophet-v1.0.6.md) | Preserved prior snapshot; closes LIR-1–LIR-4 |
 | [`minority-prophet-v1.0.5.md`](./minority-prophet-v1.0.5.md) | Preserved prior snapshot |
 | [`minority-prophet-v1.0.4.md`](./minority-prophet-v1.0.4.md) | Preserved prior snapshot |
 | [`minority-prophet-v1.0.3.md`](./minority-prophet-v1.0.3.md) | Preserved historical snapshot |
