@@ -67,11 +67,44 @@ Both were caught by reading source, neither by re-running. That is the same
 pattern this programme keeps finding: the tooling catches mechanical error and is
 blind to design error.
 
-## What was not done
+## SYS-01 — the stated gap, tested, and it failed
 
-Border, the cross-repository composition harness, KL-011 readiness and the
-claim/adoption audit. Silence about those is silence, not a clean result. The
-composition harness is the stated gap and is tested separately.
+The composition harness was the review's own stated gap, and building it produced
+the most serious finding of the run.
+
+**Invariant 1: an allow executes the exact bound action at most once.** It did
+not. `RuntimeController.apply` executed the effect and recorded the ledger entry
+*afterwards*, so anything failing in between left no record and a retrying caller
+executed again:
+
+    transport fails after the effect lands    3 retries -> 3 transfers
+    adapter returns an invalid receipt        3 retries -> 3 transfers
+
+The second is the sharper one: validation rejecting a malformed receipt caused the
+effect to repeat, so a defensive check made the failure worse.
+
+The documented caveat did not cover it. It says production callers must supply a
+durable transactional ledger *"with the same semantics"* — but the semantics were
+the defect. No storage backend can record an execution the code does not mention
+until after it has happened. The order is the guarantee, not the durability.
+
+Fixed in gate#15: intent is recorded before the effect, and an unresolved entry on
+a later attempt fails closed with a reconcile instruction rather than executing
+again. Four regression tests, three of which fail against the previous ordering —
+verified by reverting only the source file and leaving the tests in place, after a
+first attempt at that check stashed both at once and proved nothing.
+
+Harness: 6 of 6 invariant scenarios hold, previously 4 of 6.
+`audit/system-integration/harness.py`.
+
+**This is why the gap mattered.** Every finding before it was a documentation or
+reporting weakness with no runtime consequence. The one that could double a
+transfer was in the seam, which is exactly where nothing had been looked.
+
+## What is still not done
+
+Border, KL-011 readiness, the claim/adoption audit, and invariants 2–11 of the
+system audit. Silence about those is silence, not a clean result.
 
 ## Artifacts
 
