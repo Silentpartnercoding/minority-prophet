@@ -19,14 +19,34 @@
     "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
     "DISCHARGED at RUN-20260807-8, retained for the record: 'schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "DISCHARGED at RUN-20260807-6, retained for the record: 'blocked-prerequisite: KL-000 independent reimplementation' -- discharged by IND-20260807-1/-2/-3; see correctionRecord",
-    "constraint SCH-005: flipBudget, unattributed evidence, and uncertainty are named as evidence-ledger fields in RESEARCH-DIRECTION.md but are never emitted by the receipt. A protected field the receipt does not carry cannot be shown to survive crossing systems.",
-    "constraint ADV-001: an under-declared search space is undetectable, so cross-system preservation of coverage is only as strong as the original declaration",
-    "inherited from KL-000's close (new at RUN-20260807-6): A2 undecided (19,152 worlds); any KL-011 transaction transports conclusion semantics the program has not decided"
+    "SCH-005 DISCHARGED by owner decision 2026-08-10: the fields are emitted by the v0.2 evaluator. What remains is engineering, not a decision.",
+    "ADV-001 DISCHARGED by owner decision 2026-08-10: KL-011 must derive scope. Unimplemented for KL-011's own pipeline."
   ],
   "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed. Its two-implementation prerequisite is met in substance by the KL-000 independent implementation (qualified per KL-000/FINAL-RECORD.md); that fact supports no KL-011 result claim whatsoever.",
   "dependsOn": [
     "KL-000"
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed and held it through protocol v1.3.0 with zero violations in every run of both implementations. SUPERSEDED CLAUSE preserved: this note previously ended 'KL-000 itself awaits independent reimplementation' (true at RUN-20260807-1; discharged since -- see correctionRecord). Promotion of any KL-000 claim remains a separate owner decision, and KL-011 work beyond fixtures still waits on its own preregistration, not on KL-000.",
-  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence.",
+  "ownerDecisions": {
+    "A2": {
+      "question": "does presence require complete coverage?",
+      "decision": "NO -- a found counterexample stands regardless of coverage",
+      "decidedOn": "2026-08-10",
+      "worldsAffected": 19152,
+      "note": "This is what the v0.1 evaluator already does; the decision removes an ambiguity that let two conforming implementations diverge on 17.3% of receipts, and changes no behaviour. Registered and pinned by tests in tests/test_transaction_v2.py. The asymmetry with absence is deliberate: absence is a claim about everything not found, presence is a claim about something that was."
+    },
+    "SCH-005": {
+      "question": "protected fields the receipt never emitted",
+      "decision": "ADD them to the receipt, in a v0.2 evaluator",
+      "decidedOn": "2026-08-10",
+      "note": "RESEARCH-DIRECTION.md always specified unattributed evidence, uncertainty, declared shared dependencies and the reason for abstention. v0.1 emitted none. The omission has a shape: everything emitted expresses confidence, everything absent expresses doubt. Narrowing the claim to match the code was considered and rejected -- it would have deleted the requirement rather than met it. v0.1 is pinned by SHA-256 in four KL-000 registrations and is untouched; the fields live in knowledge_ledger/transaction_v2.py at schema v0.2."
+    },
+    "ADV-001": {
+      "question": "under-declared search space is undetectable",
+      "decision": "REQUIRE derived scope; do not accept a supplied scope",
+      "decidedOn": "2026-08-10",
+      "note": "KL-001's pipeline/map_repository.py already derives scope and raises ScopeSuppliedError. KL-011 must do the same rather than record the limitation."
+    }
+  }
 }
