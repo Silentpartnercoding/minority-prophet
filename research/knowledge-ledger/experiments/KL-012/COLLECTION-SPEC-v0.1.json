@@ -1,0 +1,57 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-012",
+  "title": "Does independent-root counting predict token survival better than voice counting?",
+  "status": "collection-rule-frozen",
+  "frozenBefore": "any token was collected under this rule",
+  "whyFrozenFirst": "Collecting is not analysing, but a rule written after looking at the data is a rule chosen knowing what it does. Freezing it first means the collector runs mechanically and cannot be steered. The pilot (RUN-20260811-1) violated this: its 14-day death threshold was chosen while looking at the data, which is why that run is exploratory and not a result.",
+  "population": {
+    "frame": "every SPL token whose initializeMint/initializeMint2 appears in a contiguous block range, top-level or inner instruction",
+    "blockRange": "declared at collection start and recorded in the manifest; not extended after any outcome is inspected",
+    "livenessFilter": {
+      "rule": "a token enters the analysed population only if it has at least MIN_DISTINCT_SIGNERS distinct signing accounts transacting against its mint within LIVENESS_WINDOW_HOURS of creation",
+      "MIN_DISTINCT_SIGNERS": 5,
+      "LIVENESS_WINDOW_HOURS": 24,
+      "why": "The pilot measured an 88% death rate because the frame included tokens that never launched at all. They die for reasons unrelated to backing independence and leave a predictor no room to be wrong. This filter is the outcome-side counterpart to BL-060: a population whose outcome barely varies cannot test a predictor, however sound."
+    }
+  },
+  "rootMeasure": {
+    "voiceCount": "distinct signing accounts that transacted against the mint",
+    "rootCount": "voices collapsed by funding cluster: two accounts are the same root if they share a funding ancestor within MAX_HOPS, after excluding hub funders",
+    "MAX_HOPS": 3,
+    "hubExclusion": {
+      "rule": "a funder is a HUB and is never used to merge roots if its full history exceeds HUB_MIN_TX or it has funded more than HUB_MIN_FANOUT distinct accounts",
+      "HUB_MIN_TX": 50000,
+      "HUB_MIN_FANOUT": 5000,
+      "why": "Fifty accounts funded from one exchange are fifty people. Collapsing them would make the method appear predictive for a reason that has nothing to do with independence. The pilot could not measure this: 14 of 32 funders exceeded a 4,000-transaction cap, so their true size was unknown. An archival endpoint is required, and a funder whose history cannot be fully retrieved is treated as a HUB -- failing closed, since merging on unknown evidence is the error that matters."
+    }
+  },
+  "outcome": {
+    "primary": "timeToDeath",
+    "definition": "hours from creation until the mint is unresolvable, its supply is zero, or no transaction touches it for DEATH_IDLE_HOURS; right-censored at OBSERVATION_HOURS",
+    "DEATH_IDLE_HOURS": 336,
+    "OBSERVATION_HOURS": 720,
+    "why": "A binary alive/dead at one instant discards each token's trajectory and has little power at an extreme base rate. Time to death uses the whole path. DEATH_IDLE_HOURS is set to 336 -- fourteen days -- which is the pilot's threshold, adopted deliberately rather than re-tuned, because changing it now would be choosing a threshold with knowledge of what the old one produced.",
+    "secondary": "peakMultiple, if pool reserves prove derivable; NOT required for the primary endpoint and not a fallback if the primary fails"
+  },
+  "endpoint": {
+    "H0": "root count predicts time to death no better than voice count",
+    "test": "compare predictive performance of rootCount against voiceCount on the same conditioned population, same outcome",
+    "passCondition": "root count is a better predictor by the registered margin",
+    "failCondition": "it is not -- and this is a real possible answer the design must be able to produce"
+  },
+  "effectRequires": [
+    {
+      "property": "voice count and root count disagree",
+      "minimum": 1,
+      "measuredInPilot": "1.45x inflation, 17 of 47 deployers launched more than one token, 56% of tokens -- SATISFIED before this run"
+    },
+    {
+      "property": "the outcome varies",
+      "rule": "death rate in the conditioned population must fall between 20% and 80%",
+      "why": "the pilot's 88% is outside this band. If the liveness filter does not bring it inside, the run STOPS and reports that, rather than proceeding with an outcome that cannot be predicted."
+    }
+  ],
+  "stopRule": "collection ends at the declared block range or when the outcome-variance requirement is shown unsatisfiable, whichever is first. The range is not extended to obtain a result.",
+  "priorRun": "RUN-20260811-1 pilot: n=68, 88% death, repeat-deployer 87% vs single 90%, p=1.000. Exploratory only -- its death threshold was chosen while looking at the data. It establishes feasibility and base rates, not a result."
+}
