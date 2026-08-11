@@ -11,16 +11,29 @@ supplies its own thresholds is choosing them while looking at the data.
     python3 collect.py outcomes           # time-to-death
     python3 collect.py status
 """
-import json, os, sys, time, threading, urllib.request
+import json, os, pathlib, sys, time, threading, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE = os.path.join(HERE, "kl012")
 os.makedirs(STATE, exist_ok=True)
-SPEC_PATH = os.environ.get("KL012_SPEC", os.path.join(
-    "/Users/james/Development/minority-prophet-first-transmission",
-    "research/knowledge-ledger/experiments/KL-012/COLLECTION-SPEC-v0.1.json"))
-if not os.path.exists(SPEC_PATH):
-    sys.exit("refusing to run: frozen collection spec not found")
+# The spec is located relative to this file when it sits in the repository, or
+# via KL012_SPEC when the collector is run from a scratch copy. Never hardcoded:
+# an operator path in a public file is the defect the boundary check exists for,
+# and it caught this one.
+def _find_spec():
+    env = os.environ.get("KL012_SPEC")
+    if env and os.path.exists(env): return env
+    here = pathlib.Path(os.path.abspath(__file__)).resolve()
+    for base in here.parents:
+        cand = base / "COLLECTION-SPEC-v0.1.json"
+        if cand.exists(): return str(cand)
+        cand = base / "research/knowledge-ledger/experiments/KL-012/COLLECTION-SPEC-v0.1.json"
+        if cand.exists(): return str(cand)
+    return None
+
+SPEC_PATH = _find_spec()
+if not SPEC_PATH:
+    sys.exit("refusing to run: frozen collection spec not found (set KL012_SPEC)")
 SPEC = json.load(open(SPEC_PATH))
 
 RPC = os.environ.get("SOL_RPC", "https://api.mainnet-beta.solana.com")
