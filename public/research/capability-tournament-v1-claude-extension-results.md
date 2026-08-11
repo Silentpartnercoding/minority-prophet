@@ -8,6 +8,19 @@ Frozen manifest: `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e4
 
 Runtime SHA-256: `4487f41cb97c1a577b1e4b12b2b7900b7e90e0c4ff8f85f3f456e92a11287cbe`
 
+## Claim boundary
+
+This extension remains a **constructed conformance study**, not a Minority
+Prophet lift study. A and B both receive complete supplied lineage. The recorded
+C result is deterministic code, not the same Claude model augmented with
+Minority Prophet output. No A-to-B or B-to-C difference here estimates
+provenance gain, Minority Prophet gain, H1, H2, or H3.
+
+The unit of replication is the generated case: eight cases per model and lane.
+The 128 scores are 16 related dispositions inside each case, not 128 independent
+trials. One clean replicate per alias and lane cannot establish a stable model
+ranking or support a significance claim.
+
 ## Scope
 
 This preregistered extension applies the already frozen Capability Tournament
@@ -15,7 +28,7 @@ v1 packets, prompts, lanes, hidden reference, and scoring rule to Claude Opus,
 Sonnet, and Haiku. It does not alter or rerun the initial GPT/Codex grid.
 
 Every alias ran eight cases in A (reasoning only) and B (tools available), for
-128 scored dispositions per model and lane. The resolved aliases were
+128 within-case scored dispositions per model and lane. The resolved aliases were
 `claude-opus-5`, `claude-sonnet-5`, and `claude-haiku-4-5`.
 
 ## Protocol scores
@@ -81,15 +94,15 @@ happened.
 
 ## Combined interpretation
 
-The Claude extension does not change the initial result: canonical Minority
-Prophet remains 128/128 in 18.7 ms with zero model tokens. The strongest AI
-protocol score remains GPT-5.6 Terra A at 116/128; Claude Opus A is next among
-the AI lanes at 106/128.
+In this descriptive table, canonical Minority Prophet remains 128/128 in 18.7
+ms with zero model tokens. GPT-5.6 Terra A recorded 116/128 and Claude Opus A
+recorded 106/128. These observations are not stable cross-provider rankings.
 
 This is one clean replicate per alias and lane. It demonstrates conformance to
 a constructed distinct-origin rule under complete, truthful lineage. It does
 not establish stable provider rankings, real-world root independence, root
-honesty, authorization, or ultimate truth.
+honesty, authorization, or ultimate truth. It also does not estimate provenance
+gain or Minority Prophet gain.
 
 ## Audit notes
 

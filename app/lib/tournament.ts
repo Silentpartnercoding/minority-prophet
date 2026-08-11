@@ -36,9 +36,9 @@ export const tournamentRows: TournamentRow[] = [
 ];
 
 export const laneDetails = [
-  { lane: "A", title: "AI reasons alone", copy: "The model receives the complete raw packet inline. Shell, files, web, retrieval, and every other tool are disabled." },
-  { lane: "B", title: "The same AI may use tools", copy: "The same model receives the identical packet. It may choose shell, scripts, packages, or web tools. It is not told to use Minority Prophet." },
-  { lane: "C", title: "Canonical Minority Prophet", copy: "The same raw packet enters deterministic code. It derives origins by following parent links, counts distinct roots, and abstains on exact ties." },
+  { lane: "A", title: "AI reasons alone", copy: "The model receives the complete raw packet, including immediate parent links. Shell, files, web, retrieval, and every other tool are disabled." },
+  { lane: "B", title: "The same AI may use tools", copy: "The same model receives the identical complete-lineage packet. It may choose shell, scripts, packages, or web tools. It is not told to use Minority Prophet." },
+  { lane: "C", title: "Canonical Minority Prophet", copy: "The raw packet enters standalone deterministic code—not the same model plus MP output. It follows parent links, counts distinct roots, and abstains on exact ties." },
 ];
 
 export const formatTime = (timeMs: number) => {

@@ -30,20 +30,20 @@ export default function Home() {
     </section>
 
     <section className="experiment-index" id="experiments">
-      <div className="experiment-index-heading"><p className="section-index">02 / LIVE EXPERIMENTS</p><h2>See the claim.<br /><em>Inspect the evidence.</em></h2><p>Two separate experiences: one measured tournament and one interactive synthetic world. Each keeps its evidence boundary visible.</p></div>
+      <div className="experiment-index-heading"><p className="section-index">02 / LIVE EXPERIMENTS</p><h2>See the claim.<br /><em>Inspect the evidence.</em></h2><p>Two separate experiences: one bounded conformance tournament and one interactive synthetic world. Neither is the full Baseline → Provenance → Minority Prophet lift study.</p></div>
       <div className="experiment-preview-grid">
         <article className="experiment-preview tournament-preview" id="leaderboard">
           <p className="panel-label">CAPABILITY TOURNAMENT V1</p>
           <h3>Same packet.<br />Different methods.</h3>
-          <p>AI reasoning, tool-using AI, a conventional vote, and the canonical deterministic method faced the same 128 decisions.</p>
+          <p>AI reasoning, tool-using AI, a conventional vote, and the canonical deterministic method faced the same eight cases and 128 within-case dispositions.</p>
           <div className="preview-numbers">
             <div><strong>128/128</strong><span>canonical result</span></div>
             <div><strong>18.7 ms</strong><span>canonical wall time</span></div>
             <div><strong>Per model</strong><span>costs kept separate</span></div>
           </div>
           <div className="preview-cost-list" aria-label="Selected individual run estimates"><span>Canonical C <b>$0 model</b></span><span>GPT Terra A <b>≈ $0.89</b></span><span>Claude Opus A <b>≈ $3.25</b></span></div>
-          <p className="preview-cost-note">Each figure belongs to that individual model and lane across all eight cases. The full page shows every run separately; nothing is combined.</p>
-          <a className="preview-link" href="/experiments/capability-tournament">Open the full leaderboard <span>→</span></a>
+          <p className="preview-cost-note">Conformance result only: C is deterministic code, not the same model plus Minority Prophet. The 128 dispositions are not 128 independent trials, no A→B→C lift is estimated, and nothing is combined.</p>
+          <a className="preview-link" href="/experiments/capability-tournament">Open the full result <span>→</span></a>
         </article>
 
         <article className="experiment-preview observatory-preview" id="dashboard">
