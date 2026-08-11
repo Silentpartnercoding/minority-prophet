@@ -13,17 +13,6 @@ const costGroups = costOrder.map((name) => ({ name, rows: tournamentRows.filter(
 const bestAiLane = tournamentRows.find((row) => row.name === "GPT-5.6 Terra" && row.lane === "A")!;
 const canonicalLane = tournamentRows.find((row) => row.name === "Minority Prophet")!;
 const scaleTimeRatio = Math.round(bestAiLane.timeMs / canonicalLane.timeMs).toLocaleString("en-US");
-const scaleRows = [1_000, 100_000, 1_000_000].map((dispositions) => {
-  const canonicalSeconds = canonicalLane.timeMs / 128 * dispositions / 1000;
-  const aiSeconds = bestAiLane.timeMs / 128 * dispositions / 1000;
-  const aiCost = bestAiLane.cost! / 128 * dispositions;
-  const aiDuration = aiSeconds < 3600 ? `${(aiSeconds / 60).toFixed(1)} min` : `${(aiSeconds / 86_400).toFixed(1)} days`;
-  return {
-    dispositions: dispositions.toLocaleString("en-US"),
-    canonical: `${canonicalSeconds < 1 ? canonicalSeconds.toFixed(3) : canonicalSeconds.toFixed(1)} seconds · $0 model API`,
-    ai: `${Math.round(aiSeconds).toLocaleString("en-US")} seconds (${aiDuration}) · ≈ $${aiCost < 10 ? aiCost.toFixed(2) : Math.round(aiCost).toLocaleString("en-US")}`,
-  };
-});
 const speedMultiple = (timeMs: number) => {
   if (timeMs === 18.7) return "C reference";
   if (timeMs < 18.7) return `${(18.7 / timeMs).toFixed(1)}× faster than C`;
@@ -34,30 +23,36 @@ export default function CapabilityTournamentPage() {
   return <main>
     <SiteNav />
     <header className="experiment-hero tournament-page-hero">
-      <div><p className="eyebrow"><span /> CAPABILITY TOURNAMENT</p><h1>Same packet.<br /><em>Different methods.</em></h1><p className="lede">The Capability Tournament is an ongoing public comparison of how general models, tool-using agents, conventional algorithms, and deterministic evidence rules handle the same frozen challenge. It matters because fast agent networks need to know which decisions require probabilistic judgment and which should become transparent, repeatable code.</p></div>
+      <div><p className="eyebrow"><span /> CAPABILITY TOURNAMENT · CONFORMANCE STUDY</p><h1>Same packet.<br /><em>Different methods.</em></h1><p className="lede">This is a bounded conformance comparison: general models, tool-using agents, conventional algorithms, and a deterministic evidence rule handle the same frozen complete-lineage packet. It is not the Baseline → Provenance → Minority Prophet lift experiment.</p></div>
       <div className="tournament-promise"><span>OUR PUBLIC COMMITMENT</span><h2>Keep the comparison inspectable.</h2><ul><li>Freeze protocols before execution.</li><li>Give every lane the same public packet.</li><li>Preserve failures, raw scores, costs, and boundaries.</li><li>Add new models as labeled extensions.</li><li>Repeat before making broader claims.</li></ul></div>
     </header>
+
+    <section className="study-warning" aria-labelledby="study-warning-heading">
+      <p className="section-index">READ THIS FIRST</p>
+      <div><h2 id="study-warning-heading">Eight cases.<br /><em>Not 128 independent trials.</em></h2><p>The packet contains eight generated cases with 16 related dispositions inside each case. The 128 decisions are useful for inspecting rule execution, but they do not supply 128 statistically independent replications.</p></div>
+      <div className="study-warning-points"><article><b>C is code, not an augmented model.</b><p>Condition C runs the canonical deterministic root vote. It is not the same model receiving Minority Prophet output, so C minus B is not a Minority Prophet gain estimate.</p></article><article><b>The lineage is complete and truthful by construction.</b><p>The result checks whether methods recover a declared distinct-origin rule. It does not test hidden copying, forged roots, missing provenance, source honesty, or external truth.</p></article></div>
+    </section>
 
     <section className="scale-section scale-section-summary" aria-labelledby="scale-heading">
       <div className="scale-story">
         <p className="section-index">01 / WHY THIS JUNCTION MATTERS</p>
         <h2 id="scale-heading">Agents will talk<br /><em>faster than humans can check.</em></h2>
-        <p>In an agent-to-agent system, claims, receipts, delegated tasks, and proposed actions can cross service boundaries continuously. Re-asking a general model to rediscover a known lineage rule at every handoff adds cost, latency, and a fresh chance to change the rule.</p>
+        <p>In an agent-to-agent system, claims, receipts, delegated tasks, and proposed actions can cross service boundaries continuously. This exercise asks whether a known lineage rule is better implemented as transparent code than re-inferred from scratch inside each bounded packet.</p>
         <p>A deterministic verifier gives that fast-moving network a small, transparent checkpoint and sends only unresolved cases onward for judgment.</p>
       </div>
       <div className="network-flow" aria-label="An agent claim passes through evidence binding and deterministic assessment before separate policy or human review">
         <article><span>01</span><b>Agent sends</b><small>claim + lineage</small></article><i>→</i><article><span>02</span><b>Evidence binds</b><small>records + context</small></article><i>→</i><article className="flow-highlight"><span>03</span><b>Rule checks</b><small>origins + exact ties</small></article><i>→</i><article><span>04</span><b>Decision routes</b><small>policy or human</small></article>
       </div>
       <div className="scale-comparison">
-        <div className="scale-measured"><span>MEASURED ON THE SAME 128 DISPOSITIONS</span><article><b>Canonical C</b><strong>128/128</strong><small>18.7 ms · $0 model calls</small></article><article><b>Best AI lane · Terra A</b><strong>116/128</strong><small>365.0 s · ≈ $0.89 proxy</small></article></div>
-        <div className="scale-illustration"><div className="scale-illustration-heading"><span>SIMPLE LINEAR ILLUSTRATION · SAME SCALE, BOTH METHODS</span><strong>Terra A took ≈ {scaleTimeRatio}× the elapsed time in the observed packet.</strong></div><div className="scale-matrix-wrap"><table className="scale-matrix"><thead><tr><th>Decisions</th><th>Canonical C</th><th>Terra A</th></tr></thead><tbody>{scaleRows.map((row) => <tr key={row.dispositions}><td>{row.dispositions}</td><td>{row.canonical}</td><td>{row.ai}</td></tr>)}</tbody></table></div></div>
-        <p>This illustration scales the observed per-packet rates linearly to make the operational consequence legible. It is not a production capacity, latency, or billing forecast: concurrency, batching, hardware, network overhead, provider behavior, and prices will change deployment results.</p>
+        <div className="scale-measured"><span>OBSERVED ON ONE EIGHT-CASE PACKET</span><article><b>Canonical C</b><strong>128/128</strong><small>18.7 ms · $0 model calls</small></article><article><b>Best AI lane · Terra A</b><strong>116/128</strong><small>365.0 s · ≈ $0.89 proxy</small></article></div>
+        <div className="scale-illustration"><div className="scale-illustration-heading"><span>DESCRIPTIVE TELEMETRY · NOT A CAPACITY FORECAST</span><strong>Terra A took ≈ {scaleTimeRatio}× the elapsed time in this observed packet.</strong></div><p className="scale-caveat">The methods ran through different execution paths: local deterministic code versus subscription-backed model CLI calls. The ratio describes this run only. It must not be linearly projected to production throughput, latency, or cost.</p></div>
+        <p>No production scaling claim is made. Concurrency, batching, hardware, network overhead, provider behavior, prices, and packet shape can all change the comparison.</p>
       </div>
       <div className="scale-takeaway"><span>THE VALUE</span><p>Use expensive probabilistic intelligence where judgment is needed. Use deterministic code where the invariant is already known. At scale, that separation keeps the agent network fast without turning uncertainty into permission.</p></div>
     </section>
 
     <section className="cost-section" aria-labelledby="cost-heading">
-      <div className="cost-heading"><p className="section-index">02 / COST BY MODEL AND LANE</p><h2 id="cost-heading">No combined score.<br /><em>Every run stands alone.</em></h2><p>Each amount below belongs to one contestant lane running the full eight-case packet. Cost, accuracy, and time stay attached to that exact run.</p></div>
+      <div className="cost-heading"><p className="section-index">02 / OBSERVED TELEMETRY BY LANE</p><h2 id="cost-heading">No combined score.<br /><em>Every run stands alone.</em></h2><p>Each amount below belongs to one contestant lane running the full eight-case packet. Cost, accuracy, and time stay attached to that exact run; they do not establish stable provider rankings.</p></div>
       <div className="cost-model-grid">
         {costGroups.map((group) => <article className={group.name === "Minority Prophet" ? "canonical-cost-model" : ""} key={group.name}>
           <header><h3>{group.name}</h3><span>{group.rows[0]?.provider}</span></header>
@@ -77,11 +72,11 @@ export default function CapabilityTournamentPage() {
       <div className="lane-grid" aria-label="Tournament lane definitions">{laneDetails.map((item) => <article key={item.lane} className={`lane-card lane-${item.lane.toLowerCase()}`}><span>LANE {item.lane}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div>
 
       <div className="result-block">
-        <div className="result-title"><div><p className="panel-label">OVERALL LEADERBOARD</p><h3>Accuracy first</h3></div><p>One clean replicate · GPT/Codex initial grid · preregistered Claude extension</p></div>
-        <div className="leaderboard-table-wrap"><table className="leaderboard-table"><thead><tr><th>Rank</th><th>Contestant</th><th>Lane</th><th>Protocol score</th><th>Raw answers</th><th>Exact cases</th><th>Invalid trials</th><th>Wall time</th><th>Tools</th><th>Input / output tokens</th><th>Cost estimate</th></tr></thead>
-          <tbody>{[...tournamentRows].sort((a, b) => b.correct - a.correct || a.timeMs - b.timeMs).map((row, index) => <tr key={`${row.name}-${row.lane}`}><td>{String(index + 1).padStart(2, "0")}</td><td><b>{row.name}</b><small>{row.provider}</small></td><td><span className={`lane-badge lane-${row.lane.toLowerCase()}`}>{laneLabel(row.lane)}</span></td><td><strong>{row.correct}/128</strong></td><td>{row.rawCorrect ?? row.correct}/128</td><td>{row.exact}/8{row.rawExact !== undefined && row.rawExact !== row.exact ? ` (${row.rawExact} raw)` : ""}</td><td>{row.invalidTrials}/8</td><td>{formatTime(row.timeMs)}</td><td>{row.toolCalls}</td><td>{formatTokens(row.inputTokens)} / {formatTokens(row.outputTokens)}</td><td>{row.cost === 0 ? "$0 model cost" : row.cost ? `$${row.cost.toFixed(3)}` : "—"}</td></tr>)}</tbody>
+        <div className="result-title"><div><p className="panel-label">DESCRIPTIVE RESULT TABLE</p><h3>Observed scores, not stable ranks</h3></div><p>One clean replicate · eight cases · correlated within-case dispositions</p></div>
+        <div className="leaderboard-table-wrap"><table className="leaderboard-table"><thead><tr><th>Contestant</th><th>Lane</th><th>Protocol score</th><th>Raw answers</th><th>Exact cases</th><th>Invalid trials</th><th>Wall time</th><th>Tools</th><th>Input / output tokens</th><th>Cost estimate</th></tr></thead>
+          <tbody>{[...tournamentRows].sort((a, b) => b.correct - a.correct || a.timeMs - b.timeMs).map((row) => <tr key={`${row.name}-${row.lane}`}><td><b>{row.name}</b><small>{row.provider}</small></td><td><span className={`lane-badge lane-${row.lane.toLowerCase()}`}>{laneLabel(row.lane)}</span></td><td><strong>{row.correct}/128</strong></td><td>{row.rawCorrect ?? row.correct}/128</td><td>{row.exact}/8{row.rawExact !== undefined && row.rawExact !== row.exact ? ` (${row.rawExact} raw)` : ""}</td><td>{row.invalidTrials}/8</td><td>{formatTime(row.timeMs)}</td><td>{row.toolCalls}</td><td>{formatTokens(row.inputTokens)} / {formatTokens(row.outputTokens)}</td><td>{row.cost === 0 ? "$0 model cost" : row.cost ? `$${row.cost.toFixed(3)}` : "—"}</td></tr>)}</tbody>
         </table></div>
-        <p className="speed-note table-boundary">Lane B means tools were available, not necessarily used. “Protocol score” counts failed or workspace-boundary-violating trials as incorrect; “Raw answers” preserves answer accuracy before that penalty.</p>
+        <p className="speed-note table-boundary">Lane B means tools were available, not necessarily used. “Protocol score” counts failed or workspace-boundary-violating trials as incorrect; “Raw answers” preserves answer accuracy before that penalty. With one replicate per model and lane, differences are descriptive and have no confidence intervals or paired significance test.</p>
       </div>
 
       <div className="result-block speed-block"><div className="result-title"><div><p className="panel-label">SPEED COMPARISON</p><h3>How long each run took</h3></div><p>Wall time · shorter is faster · logarithmic bars</p></div><div className="speed-chart">
@@ -91,7 +86,7 @@ export default function CapabilityTournamentPage() {
 
       <div className="lane-breakouts">{(["A", "B", "C"] as Lane[]).map((lane) => <section key={lane}><div><span className={`lane-badge lane-${lane.toLowerCase()}`}>Lane {lane}</span><h3>{lane === "A" ? "Reasoning only" : lane === "B" ? "Tools available" : "Deterministic root vote"}</h3></div>{tournamentRows.filter((row) => row.lane === lane).sort((a, b) => b.correct - a.correct).map((row) => <article key={`${lane}-${row.name}`}><p><b>{row.name}</b><small>{row.provider}</small></p><strong>{row.correct}/128</strong><span>{formatTime(row.timeMs)} · {row.toolCalls} tools{row.invalidTrials ? ` · ${row.invalidTrials} invalid` : ""}</span></article>)}</section>)}</div>
 
-      <div className="tournament-boundary"><div><h3>C did not receive the roots.</h3><p>Every lane received the same raw records and immediate parent links. C followed those links to derive origins itself. No lane received the hidden answer key, a root map, a root count, or precomputed root IDs.</p></div><div><h3>What this result does not prove.</h3><p>It tests conformance to a constructed distinct-origin rule under complete, truthful lineage. It does not prove that real-world roots are honest, independent, current, authorized, or ultimately true.</p></div><div className="tournament-links"><a href="/research/capability-tournament-v1-results.md">Read the full result ↗</a><a href="/research/capability-tournament-v1-protocol.md">Read the frozen protocol ↗</a></div></div>
+      <div className="tournament-boundary"><div><h3>C did not receive the roots.</h3><p>Every lane received the same raw records and immediate parent links. C followed those links to derive origins itself. No lane received the hidden answer key, a root map, a root count, or precomputed root IDs.</p></div><div><h3>This is not the lift study.</h3><p>Tournament A and B both received complete lineage, while C is deterministic code rather than the same model plus Minority Prophet analysis. These lanes cannot estimate Baseline → Provenance gain, Minority Prophet gain, H1, H2, or H3.</p></div><div><h3>What this result does not prove.</h3><p>It tests conformance to a constructed distinct-origin rule under complete, truthful lineage. It does not prove that real-world roots are honest, independent, current, authorized, or ultimately true.</p></div><div><h3>What comes next.</h3><p>A separate causal study must run the same model and immutable world under claims only, claims plus provenance, and the identical provenance plus non-answer-leaking Minority Prophet analysis, with repeated seeds and paired uncertainty estimates.</p></div><div className="tournament-links"><a href="/research/capability-tournament-v1-results.md">Read the full result ↗</a><a href="/research/capability-tournament-v1-protocol.md">Read the frozen protocol ↗</a><a href="/research/capability-tournament-v1-adversarial-review.md">Read the adversarial review ↗</a><a href="/research/capability-tournament-v1-summary.json">Machine-readable boundary ↗</a></div></div>
     </section>
 
     <SiteFooter />

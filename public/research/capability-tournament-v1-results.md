@@ -10,6 +10,20 @@ Isolated runner: `9888f25970186fb219a0d193a192f8d26f53ede1`
 
 Frozen manifest: `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff`
 
+## Claim boundary — read before comparing scores
+
+This is a **constructed conformance study**, not a Minority Prophet lift study.
+Tournament A and B both receive the complete supplied lineage. Tournament C is
+the deterministic canonical rule, not the same model augmented with Minority
+Prophet output. Therefore A-to-B and B-to-C differences do not estimate
+provenance gain, Minority Prophet gain, H1, H2, or H3.
+
+The unit of replication is the generated case: **eight cases**. Each case has
+16 related propositions, yielding 128 within-case dispositions. The 128 values
+are not 128 statistically independent trials. There is one clean replicate per
+model and lane, so the table is descriptive; it has no repeated-seed confidence
+intervals or paired significance tests.
+
 ## Question
 
 When the same models receive the same difficult, fully specified evidence graphs,
@@ -24,6 +38,8 @@ ultimately true.
 ## Frozen task
 
 - Eight cases, 16 propositions per case, and 128 scored decisions per lane.
+- The 16 dispositions within a case share one generated packet and are not
+  treated as independent replications.
 - Between 201 and 524 shuffled records per case.
 - Every contestant receives the identical public packet.
 - Packets expose immediate `parent_record_id` links. A null parent denotes a
@@ -97,8 +113,9 @@ or [machine-readable summary](capability-tournament-v1-claude-extension-summary.
 
 At 18.7 milliseconds for all 128 decisions, canonical C was approximately
 19,500 times faster than the most accurate AI lane, Terra reasoning-only. This
-is an implementation comparison on one local machine, not a general latency
-claim about every deployment.
+is descriptive telemetry from different execution paths on one local machine,
+not a controlled serving benchmark or a general latency, capacity, cost, or
+linear-scaling claim.
 
 ## Fixed-method results
 
@@ -147,6 +164,10 @@ known, a small deterministic implementation can apply distinct-origin counting
 and exact abstention more reliably and cheaply than asking an LLM to infer an
 aggregation rule from the same evidence.
 
+Here, “more reliably and cheaply” is restricted to exact conformance and the
+observed telemetry for this frozen eight-case packet. It does not establish a
+stable model ranking, a population effect, or production economics.
+
 The result also supports separating two jobs:
 
 1. An adapter establishes the lineage relation supplied to the evaluator.
@@ -162,9 +183,23 @@ The result also supports separating two jobs:
   LLM the Minority Prophet result as a tool.
 - It does not establish stable model rankings. Each model/lane has one clean
   replicate, and hosted model aliases may change.
+- It does not estimate the causal value of provenance visibility: both A and B
+  already received the complete lineage.
+- It does not estimate Minority Prophet value-add: C is deterministic code, not
+  the same model receiving a non-answer-leaking Minority Prophet analysis.
+- It does not test H1, H2, or H3, and the displayed C-minus-B difference must
+  not be reported as “Minority Prophet gain.”
+- It does not provide 128 independent trials; the primary replication unit is
+  eight generated cases with 16 correlated dispositions per case.
+- It does not test incomplete, false, fabricated, stale, or adversarial
+  provenance. The lineage semantics are complete and truthful by construction.
 - C's perfect score is conformance to a reference deliberately defined by the
   same distinct-origin invariant, not independent empirical validation of that
   invariant.
+
+Read the separate
+[adversarial validity review](capability-tournament-v1-adversarial-review.md)
+or the [machine-readable claim boundary](capability-tournament-v1-summary.json).
 
 ## Audit history
 
@@ -178,10 +213,15 @@ above.
 
 ## Next confirmatory work
 
-1. Repeat every AI lane enough times to measure stochastic variance.
-2. Add a separate AI-plus-Minority-Prophet lane to test integration and
-   explanation quality without conflating it with standalone C.
-3. Run a separately preregistered root-integrity benchmark where forged or
+1. Run a separately frozen causal study on identical worlds and model versions:
+   A receives claims only; B receives the exact claims plus provenance; C
+   receives the exact B context plus non-answer-leaking Minority Prophet
+   analysis.
+2. Repeat paired model/world/condition trials across frozen seeds, report
+   case-level uncertainty, and test A-to-B and B-to-C changes directly.
+3. Retain standalone deterministic C as a conformance control, but do not
+   substitute it for the same-model AI-plus-Minority-Prophet condition.
+4. Run a separately preregistered root-integrity benchmark where forged or
    colluding origins carry observable verification signals.
-4. Run an empirical domain benchmark whose outcomes are measured independently
+5. Run an empirical domain benchmark whose outcomes are measured independently
    of the aggregation rule.

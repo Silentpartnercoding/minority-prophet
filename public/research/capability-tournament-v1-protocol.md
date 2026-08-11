@@ -11,8 +11,14 @@ recover the best-supported dispositions by reasoning alone, can a tool-using AI
 do so more reliably or efficiently, and how do both compare with conventional
 methods and the canonical Minority Prophet root vote?
 
-This is a finite lineage-aggregation contest. It is not a test of ultimate
-truth discovery.
+This is a finite, constructed lineage-aggregation conformance contest. It is
+not a test of ultimate truth discovery.
+
+The A/B/C labels in this tournament are local protocol labels. They are not the
+Baseline / Provenance / same-model-plus-Minority-Prophet conditions required to
+estimate epistemic lift. A and B both receive complete supplied lineage; C is a
+standalone deterministic implementation. This protocol therefore does not
+estimate provenance gain or Minority Prophet gain.
 
 ## Identical challenge
 
@@ -20,6 +26,8 @@ truth discovery.
 - Cases: 8
 - Propositions per case: 16
 - Total scored dispositions per contestant: 128
+- Unit of replication: 8 generated cases; the 16 dispositions within each case
+  share a packet and are not independent trials.
 - Manifest hash: `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff`
 - Every lane consumes the exact same immutable `public_packet` bytes.
 - Records expose only their immediate `parent_record_id`; no contestant is

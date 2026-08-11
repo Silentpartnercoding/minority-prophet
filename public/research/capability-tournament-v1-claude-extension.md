@@ -15,12 +15,20 @@ reasoning alone or with self-chosen tools?
 This remains a finite lineage-aggregation contest. It is not a test of ultimate
 truth discovery, root legitimacy, or real-world source independence.
 
+These A/B labels are local tournament lanes, not the claims-only and
+provenance-visible conditions of an epistemic-lift study. Both lanes receive
+complete supplied lineage, and the inherited C result is standalone
+deterministic code rather than the same Claude model plus Minority Prophet.
+This extension cannot estimate provenance gain or Minority Prophet gain.
+
 ## Frozen inheritance
 
 The extension inherits without modification:
 
 - generator seed `2026081000`;
 - 8 cases, 16 propositions per case, and 128 scored dispositions per lane;
+- the case is the replication unit; the 16 dispositions within a case are not
+  independent trials;
 - manifest hash
   `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff`;
 - the exact serialized `public_packet` bytes, prompt body, response schema,
