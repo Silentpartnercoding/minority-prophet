@@ -7,8 +7,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("host") ?? "localhost";
   const protocol = host.includes("localhost") ? "http" : "https";
   const metadataBase = new URL(`${protocol}://${host}`);
-  const title = "Minority Prophet — Capability Tournament";
-  const description = "A same-input benchmark comparing AI reasoning, tool-using AI, conventional methods, and distinct-root aggregation under copied consensus.";
+  const title = "Minority Prophet — Truth Is Not Popularity";
+  const description = "Public research and experiments for distinguishing independent evidence from copied consensus.";
   return {
     metadataBase,
     title,
