@@ -40,9 +40,13 @@ defects, all since fixed:
 
 The third is the only one with a runtime consequence, and it was in a **seam
 between two components** rather than inside either. Every component-level finding
-was documentation or reporting. Make of that what you will; the maintainers'
-reading is that the seams are underexplored, but that is their model and you are
-not obliged to share it.
+was documentation or reporting.
+
+The maintainers took one lesson from that — *the joins between systems are less
+explored than the systems* — and it is offered as a hunch, not a hint. It is the
+sort of guess that sends everyone to the same place. Ignore it if your instinct
+points elsewhere; somewhere the maintainers are not looking is the most useful
+place you can be.
 
 Full record: `research/knowledge-ledger/runs/2026-08-10/RUN-20260810-1/`.
 
