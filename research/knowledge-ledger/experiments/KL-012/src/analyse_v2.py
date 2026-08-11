@@ -16,9 +16,19 @@ import json, os, sys
 from math import comb
 
 HERE=os.path.dirname(os.path.abspath(__file__)); ST=os.path.join(HERE,"kl012v2")
-SPEC=json.load(open(os.environ.get("KL012_SPEC_V2",
-    "/Users/james/Development/minority-prophet-first-transmission/"
-    "research/knowledge-ledger/experiments/KL-012/COLLECTION-SPEC-v0.2.json")))
+SPEC_ENV = os.environ.get("KL012_SPEC_V2")
+def _spec():
+    """Locate the frozen spec relative to this file, or via KL012_SPEC_V2.
+    Never a hardcoded home path: that is the defect the boundary check exists for
+    and it has now caught it five times in one day."""
+    if SPEC_ENV and os.path.exists(SPEC_ENV): return SPEC_ENV
+    import pathlib as _p
+    for base in _p.Path(os.path.abspath(__file__)).resolve().parents:
+        for rel in ("COLLECTION-SPEC-v0.2.json",
+                    "research/knowledge-ledger/experiments/KL-012/COLLECTION-SPEC-v0.2.json"):
+            if (base/rel).exists(): return str(base/rel)
+    sys.exit("refusing to run: frozen spec v0.2 not found (set KL012_SPEC_V2)")
+SPEC=json.load(open(_spec()))
 MAX_HOPS=SPEC["exposure"]["MAX_HOPS"]
 
 
