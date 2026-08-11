@@ -22,7 +22,6 @@ const scaleRows = [1_000, 100_000, 1_000_000].map((dispositions) => {
     dispositions: dispositions.toLocaleString("en-US"),
     canonical: `${canonicalSeconds < 1 ? canonicalSeconds.toFixed(3) : canonicalSeconds.toFixed(1)} seconds · $0 model API`,
     ai: `${Math.round(aiSeconds).toLocaleString("en-US")} seconds (${aiDuration}) · ≈ $${aiCost < 10 ? aiCost.toFixed(2) : Math.round(aiCost).toLocaleString("en-US")}`,
-    difference: `≈ ${scaleTimeRatio}× elapsed time`,
   };
 });
 const speedMultiple = (timeMs: number) => {
@@ -39,8 +38,26 @@ export default function CapabilityTournamentPage() {
       <div className="tournament-promise"><span>OUR PUBLIC COMMITMENT</span><h2>Keep the comparison inspectable.</h2><ul><li>Freeze protocols before execution.</li><li>Give every lane the same public packet.</li><li>Preserve failures, raw scores, costs, and boundaries.</li><li>Add new models as labeled extensions.</li><li>Repeat before making broader claims.</li></ul></div>
     </header>
 
+    <section className="scale-section scale-section-summary" aria-labelledby="scale-heading">
+      <div className="scale-story">
+        <p className="section-index">01 / WHY THIS JUNCTION MATTERS</p>
+        <h2 id="scale-heading">Agents will talk<br /><em>faster than humans can check.</em></h2>
+        <p>In an agent-to-agent system, claims, receipts, delegated tasks, and proposed actions can cross service boundaries continuously. Re-asking a general model to rediscover a known lineage rule at every handoff adds cost, latency, and a fresh chance to change the rule.</p>
+        <p>A deterministic verifier gives that fast-moving network a small, transparent checkpoint and sends only unresolved cases onward for judgment.</p>
+      </div>
+      <div className="network-flow" aria-label="An agent claim passes through evidence binding and deterministic assessment before separate policy or human review">
+        <article><span>01</span><b>Agent sends</b><small>claim + lineage</small></article><i>→</i><article><span>02</span><b>Evidence binds</b><small>records + context</small></article><i>→</i><article className="flow-highlight"><span>03</span><b>Rule checks</b><small>origins + exact ties</small></article><i>→</i><article><span>04</span><b>Decision routes</b><small>policy or human</small></article>
+      </div>
+      <div className="scale-comparison">
+        <div className="scale-measured"><span>MEASURED ON THE SAME 128 DISPOSITIONS</span><article><b>Canonical C</b><strong>128/128</strong><small>18.7 ms · $0 model calls</small></article><article><b>Best AI lane · Terra A</b><strong>116/128</strong><small>365.0 s · ≈ $0.89 proxy</small></article></div>
+        <div className="scale-illustration"><div className="scale-illustration-heading"><span>SIMPLE LINEAR ILLUSTRATION · SAME SCALE, BOTH METHODS</span><strong>Terra A took ≈ {scaleTimeRatio}× the elapsed time in the observed packet.</strong></div><div className="scale-matrix-wrap"><table className="scale-matrix"><thead><tr><th>Decisions</th><th>Canonical C</th><th>Terra A</th></tr></thead><tbody>{scaleRows.map((row) => <tr key={row.dispositions}><td>{row.dispositions}</td><td>{row.canonical}</td><td>{row.ai}</td></tr>)}</tbody></table></div></div>
+        <p>This illustration scales the observed per-packet rates linearly to make the operational consequence legible. It is not a production capacity, latency, or billing forecast: concurrency, batching, hardware, network overhead, provider behavior, and prices will change deployment results.</p>
+      </div>
+      <div className="scale-takeaway"><span>THE VALUE</span><p>Use expensive probabilistic intelligence where judgment is needed. Use deterministic code where the invariant is already known. At scale, that separation keeps the agent network fast without turning uncertainty into permission.</p></div>
+    </section>
+
     <section className="cost-section" aria-labelledby="cost-heading">
-      <div className="cost-heading"><p className="section-index">01 / COST BY MODEL AND LANE</p><h2 id="cost-heading">No combined score.<br /><em>Every run stands alone.</em></h2><p>Each amount below belongs to one contestant lane running the full eight-case packet. Cost, accuracy, and time stay attached to that exact run.</p></div>
+      <div className="cost-heading"><p className="section-index">02 / COST BY MODEL AND LANE</p><h2 id="cost-heading">No combined score.<br /><em>Every run stands alone.</em></h2><p>Each amount below belongs to one contestant lane running the full eight-case packet. Cost, accuracy, and time stay attached to that exact run.</p></div>
       <div className="cost-model-grid">
         {costGroups.map((group) => <article className={group.name === "Minority Prophet" ? "canonical-cost-model" : ""} key={group.name}>
           <header><h3>{group.name}</h3><span>{group.rows[0]?.provider}</span></header>
@@ -56,7 +73,7 @@ export default function CapabilityTournamentPage() {
     </section>
 
     <section className="leaderboard-section tournament-detail" id="results">
-      <div className="section-heading tournament-heading"><div><p className="section-index">02 / THE TEST</p><h2>One input.<br /><em>Different capabilities.</em></h2></div></div>
+      <div className="section-heading tournament-heading"><div><p className="section-index">03 / THE TEST</p><h2>One input.<br /><em>Different capabilities.</em></h2></div></div>
       <div className="lane-grid" aria-label="Tournament lane definitions">{laneDetails.map((item) => <article key={item.lane} className={`lane-card lane-${item.lane.toLowerCase()}`}><span>LANE {item.lane}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div>
 
       <div className="result-block">
@@ -77,23 +94,6 @@ export default function CapabilityTournamentPage() {
       <div className="tournament-boundary"><div><h3>C did not receive the roots.</h3><p>Every lane received the same raw records and immediate parent links. C followed those links to derive origins itself. No lane received the hidden answer key, a root map, a root count, or precomputed root IDs.</p></div><div><h3>What this result does not prove.</h3><p>It tests conformance to a constructed distinct-origin rule under complete, truthful lineage. It does not prove that real-world roots are honest, independent, current, authorized, or ultimately true.</p></div><div className="tournament-links"><a href="/research/capability-tournament-v1-results.md">Read the full result ↗</a><a href="/research/capability-tournament-v1-protocol.md">Read the frozen protocol ↗</a></div></div>
     </section>
 
-    <section className="scale-section" aria-labelledby="scale-heading">
-      <div className="scale-story">
-        <p className="section-index">03 / WHY THIS JUNCTION MATTERS</p>
-        <h2 id="scale-heading">Agents will talk<br /><em>faster than humans can check.</em></h2>
-        <p>In an agent-to-agent system, claims, receipts, delegated tasks, and proposed actions can cross service boundaries continuously. Re-asking a general model to rediscover a known lineage rule at every handoff adds cost, latency, and a fresh chance to change the rule.</p>
-        <p>A deterministic verifier gives that fast-moving network a small, transparent checkpoint and sends only unresolved cases onward for judgment.</p>
-      </div>
-      <div className="network-flow" aria-label="An agent claim passes through evidence binding and deterministic assessment before separate policy or human review">
-        <article><span>01</span><b>Agent sends</b><small>claim + lineage</small></article><i>→</i><article><span>02</span><b>Evidence binds</b><small>records + context</small></article><i>→</i><article className="flow-highlight"><span>03</span><b>Rule checks</b><small>origins + exact ties</small></article><i>→</i><article><span>04</span><b>Decision routes</b><small>policy or human</small></article>
-      </div>
-      <div className="scale-comparison">
-        <div className="scale-measured"><span>MEASURED ON THE SAME 128 DISPOSITIONS</span><article><b>Canonical C</b><strong>128/128</strong><small>18.7 ms · $0 model calls</small></article><article><b>Best AI lane · Terra A</b><strong>116/128</strong><small>365.0 s · ≈ $0.89 proxy</small></article></div>
-        <div className="scale-illustration"><span>SIMPLE LINEAR ILLUSTRATION · SAME SCALE, BOTH METHODS</span><div className="scale-matrix-wrap"><table className="scale-matrix"><thead><tr><th>Decisions</th><th>Canonical C</th><th>Terra A</th><th>Elapsed difference</th></tr></thead><tbody>{scaleRows.map((row) => <tr key={row.dispositions}><td>{row.dispositions}</td><td>{row.canonical}</td><td>{row.ai}</td><td>{row.difference}</td></tr>)}</tbody></table></div></div>
-        <p>This illustration scales the observed per-packet rates linearly to make the operational consequence legible. It is not a production capacity, latency, or billing forecast: concurrency, batching, hardware, network overhead, provider behavior, and prices will change deployment results.</p>
-      </div>
-      <div className="scale-takeaway"><span>THE VALUE</span><p>Use expensive probabilistic intelligence where judgment is needed. Use deterministic code where the invariant is already known. At scale, that separation keeps the agent network fast without turning uncertainty into permission.</p></div>
-    </section>
     <SiteFooter />
   </main>;
 }
