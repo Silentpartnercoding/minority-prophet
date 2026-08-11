@@ -35,12 +35,6 @@ export const tournamentRows: TournamentRow[] = [
   { name: "GPT-5.6 Luna", provider: "OpenAI / Codex", lane: "A", correct: 16, exact: 1, invalidTrials: 0, timeMs: 296_033, inputTokens: 289_024, outputTokens: 13_697, toolCalls: 0, cost: 0.371206 },
 ];
 
-export const recordedCosts = {
-  openAI: 7.7470253,
-  claude: 20.5524484,
-  combined: 28.2994737,
-};
-
 export const laneDetails = [
   { lane: "A", title: "AI reasons alone", copy: "The model receives the complete raw packet inline. Shell, files, web, retrieval, and every other tool are disabled." },
   { lane: "B", title: "The same AI may use tools", copy: "The same model receives the identical packet. It may choose shell, scripts, packages, or web tools. It is not told to use Minority Prophet." },

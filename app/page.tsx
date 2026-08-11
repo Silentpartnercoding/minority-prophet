@@ -1,5 +1,5 @@
 import { SiteFooter, SiteNav } from "./components/site-chrome";
-import { paperUrl, recordedCosts } from "./lib/tournament";
+import { paperUrl } from "./lib/tournament";
 
 export default function Home() {
   return <main>
@@ -39,9 +39,10 @@ export default function Home() {
           <div className="preview-numbers">
             <div><strong>128/128</strong><span>canonical result</span></div>
             <div><strong>18.7 ms</strong><span>canonical wall time</span></div>
-            <div><strong>{`≈ $${recordedCosts.combined.toFixed(2)}`}</strong><span>recorded AI estimate</span></div>
+            <div><strong>Per model</strong><span>costs kept separate</span></div>
           </div>
-          <p className="preview-cost-note"><b>$0 model cost</b>{` for the deterministic lane. The ≈ $${recordedCosts.combined.toFixed(2)} figure combines recorded GPT list-price proxies and Claude CLI estimates; it is not an invoice.`}</p>
+          <div className="preview-cost-list" aria-label="Selected individual run estimates"><span>Canonical C <b>$0 model</b></span><span>GPT Terra A <b>≈ $0.89</b></span><span>Claude Opus A <b>≈ $3.25</b></span></div>
+          <p className="preview-cost-note">Each figure belongs to that individual model and lane across all eight cases. The full page shows every run separately; nothing is combined.</p>
           <a className="preview-link" href="/experiments/capability-tournament">Open the full leaderboard <span>→</span></a>
         </article>
 

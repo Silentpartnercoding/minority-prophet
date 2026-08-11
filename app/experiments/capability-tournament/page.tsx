@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SiteFooter, SiteNav } from "../../components/site-chrome";
-import { formatTime, formatTokens, laneDetails, laneLabel, type Lane, recordedCosts, tournamentRows } from "../../lib/tournament";
+import { formatTime, formatTokens, laneDetails, laneLabel, type Lane, tournamentRows } from "../../lib/tournament";
 
 export const metadata: Metadata = {
   title: "Capability Tournament v1 — Minority Prophet",
@@ -8,6 +8,15 @@ export const metadata: Metadata = {
 };
 
 const maxTournamentTime = Math.max(...tournamentRows.map((row) => row.timeMs));
+const costOrder = ["Minority Prophet", "GPT-5.6 Terra", "Claude Opus 5", "GPT-5.6 Sol", "Cluster vote", "Claude Sonnet 5", "GPT-5.6 Luna", "Claude Haiku 4.5"];
+const costGroups = costOrder.map((name) => ({ name, rows: tournamentRows.filter((row) => row.name === name).sort((a, b) => a.lane.localeCompare(b.lane)) }));
+const bestAiLane = tournamentRows.find((row) => row.name === "GPT-5.6 Terra" && row.lane === "A")!;
+const canonicalLane = tournamentRows.find((row) => row.name === "Minority Prophet")!;
+const scaleDispositions = 1_000_000;
+const scaleAiCost = bestAiLane.cost! / 128 * scaleDispositions;
+const scaleAiCostPerThousand = bestAiLane.cost! / 128 * 1000;
+const scaleAiSerialDays = bestAiLane.timeMs / 128 * scaleDispositions / 86_400_000;
+const scaleCanonicalSerialSeconds = canonicalLane.timeMs / 128 * scaleDispositions / 1000;
 const speedMultiple = (timeMs: number) => {
   if (timeMs === 18.7) return "C reference";
   if (timeMs < 18.7) return `${(18.7 / timeMs).toFixed(1)}× faster than C`;
@@ -18,25 +27,29 @@ export default function CapabilityTournamentPage() {
   return <main>
     <SiteNav />
     <header className="experiment-hero tournament-page-hero">
-      <div><p className="eyebrow"><span /> CAPABILITY TOURNAMENT V1</p><h1>Same packet.<br /><em>Three lanes.</em></h1><p className="lede">A frozen, same-input comparison of unaided AI reasoning, tool-using AI, conventional voting, and deterministic distinct-root aggregation.</p></div>
-      <div className="experiment-hero-result"><span>CLEAN RUN</span><strong>128 / 128</strong><small>canonical dispositions · 8 cases</small><p>18.7 ms · $0 model cost</p></div>
+      <div><p className="eyebrow"><span /> CAPABILITY TOURNAMENT</p><h1>Same packet.<br /><em>Different methods.</em></h1><p className="lede">The Capability Tournament is an ongoing public comparison of how general models, tool-using agents, conventional algorithms, and deterministic evidence rules handle the same frozen challenge. It matters because fast agent networks need to know which decisions require probabilistic judgment and which should become transparent, repeatable code.</p></div>
+      <div className="tournament-promise"><span>OUR PUBLIC COMMITMENT</span><h2>Keep the comparison inspectable.</h2><ul><li>Freeze protocols before execution.</li><li>Give every lane the same public packet.</li><li>Preserve failures, raw scores, costs, and boundaries.</li><li>Add new models as labeled extensions.</li><li>Repeat before making broader claims.</li></ul></div>
     </header>
 
     <section className="cost-section" aria-labelledby="cost-heading">
-      <div><p className="section-index">01 / COST VISIBILITY</p><h2 id="cost-heading">What the recorded runs<br /><em>approximately cost.</em></h2></div>
-      <div className="cost-grid">
-        <article><span>OPENAI / CODEX</span><strong>{`≈ $${recordedCosts.openAI.toFixed(2)}`}</strong><p>List-price proxy from recorded input and output tokens.</p></article>
-        <article><span>ANTHROPIC / CLAUDE CODE</span><strong>{`≈ $${recordedCosts.claude.toFixed(2)}`}</strong><p>CLI-reported provider estimate for completed telemetry.</p></article>
-        <article className="cost-total"><span>COMBINED RECORDED ESTIMATE</span><strong>{`≈ $${recordedCosts.combined.toFixed(2)}`}</strong><p>Comparison estimate, not an invoice or subscription bill.</p></article>
-        <article className="cost-canonical"><span>CANONICAL LANE C</span><strong>$0 model cost</strong><p>Deterministic code; compute and hosting are not claimed to be free.</p></article>
+      <div className="cost-heading"><p className="section-index">01 / COST BY MODEL AND LANE</p><h2 id="cost-heading">No combined score.<br /><em>Every run stands alone.</em></h2><p>Each amount below belongs to one contestant lane running the full eight-case packet. Cost, accuracy, and time stay attached to that exact run.</p></div>
+      <div className="cost-model-grid">
+        {costGroups.map((group) => <article className={group.name === "Minority Prophet" ? "canonical-cost-model" : ""} key={group.name}>
+          <header><h3>{group.name}</h3><span>{group.rows[0]?.provider}</span></header>
+          {group.rows.map((row) => <div className="cost-lane-row" key={`${row.name}-${row.lane}`}>
+            <span className={`lane-badge lane-${row.lane.toLowerCase()}`}>{laneLabel(row.lane)}</span>
+            <p><b>{row.correct}/128</b>{row.rawCorrect !== undefined && row.rawCorrect !== row.correct ? <small>{row.rawCorrect}/128 raw</small> : <small>protocol score</small>}</p>
+            <p><b>{formatTime(row.timeMs)}</b><small>wall time</small></p>
+            <p className="individual-cost"><b>{row.cost === 0 ? "$0 model" : row.cost ? `≈ $${row.cost.toFixed(2)}` : "—"}</b><small>{row.cost === 0 ? "model cost" : "run estimate"}</small></p>
+          </div>)}
+        </article>)}
       </div>
-      <p className="cost-boundary">Approximate only. GPT figures are list-price proxies; Claude figures are CLI provider estimates. The total excludes an unreturned timed-out attempt and does not represent actual account billing.</p>
+      <p className="cost-boundary">No costs are added together. GPT figures are API list-price proxies; Claude figures are CLI-reported provider estimates. They are not invoices or controlled API-cost measurements. Haiku B excludes cost telemetry for one timed-out attempt that returned no completed usage record.</p>
     </section>
 
     <section className="leaderboard-section tournament-detail" id="results">
-      <div className="section-heading tournament-heading"><div><p className="section-index">02 / THE TEST</p><h2>One input.<br /><em>Different capabilities.</em></h2></div><div className="verified-stamp"><i /> CLEAN RUN · 8 CASES · 128 DECISIONS</div></div>
+      <div className="section-heading tournament-heading"><div><p className="section-index">02 / THE TEST</p><h2>One input.<br /><em>Different capabilities.</em></h2></div></div>
       <div className="lane-grid" aria-label="Tournament lane definitions">{laneDetails.map((item) => <article key={item.lane} className={`lane-card lane-${item.lane.toLowerCase()}`}><span>LANE {item.lane}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div>
-      <div className="headline-result"><div><span>CANONICAL C</span><strong>128 / 128</strong><small>correct dispositions</small></div><p>Minority Prophet completed the frozen task in <b>18.7 milliseconds</b> with zero model tokens. The most accurate GPT reasoning lane took <b>365.0 seconds</b>: about <b>19,519× longer</b>.</p></div>
 
       <div className="result-block">
         <div className="result-title"><div><p className="panel-label">OVERALL LEADERBOARD</p><h3>Accuracy first</h3></div><p>One clean replicate · GPT/Codex initial grid · preregistered Claude extension</p></div>
@@ -54,6 +67,24 @@ export default function CapabilityTournamentPage() {
       <div className="lane-breakouts">{(["A", "B", "C"] as Lane[]).map((lane) => <section key={lane}><div><span className={`lane-badge lane-${lane.toLowerCase()}`}>Lane {lane}</span><h3>{lane === "A" ? "Reasoning only" : lane === "B" ? "Tools available" : "Deterministic root vote"}</h3></div>{tournamentRows.filter((row) => row.lane === lane).sort((a, b) => b.correct - a.correct).map((row) => <article key={`${lane}-${row.name}`}><p><b>{row.name}</b><small>{row.provider}</small></p><strong>{row.correct}/128</strong><span>{formatTime(row.timeMs)} · {row.toolCalls} tools{row.invalidTrials ? ` · ${row.invalidTrials} invalid` : ""}</span></article>)}</section>)}</div>
 
       <div className="tournament-boundary"><div><h3>C did not receive the roots.</h3><p>Every lane received the same raw records and immediate parent links. C followed those links to derive origins itself. No lane received the hidden answer key, a root map, a root count, or precomputed root IDs.</p></div><div><h3>What this result does not prove.</h3><p>It tests conformance to a constructed distinct-origin rule under complete, truthful lineage. It does not prove that real-world roots are honest, independent, current, authorized, or ultimately true.</p></div><div className="tournament-links"><a href="/research/capability-tournament-v1-results.md">Read the full result ↗</a><a href="/research/capability-tournament-v1-protocol.md">Read the frozen protocol ↗</a></div></div>
+    </section>
+
+    <section className="scale-section" aria-labelledby="scale-heading">
+      <div className="scale-story">
+        <p className="section-index">03 / WHY THIS JUNCTION MATTERS</p>
+        <h2 id="scale-heading">Agents will talk<br /><em>faster than humans can check.</em></h2>
+        <p>In an agent-to-agent system, claims, receipts, delegated tasks, and proposed actions can cross service boundaries continuously. Re-asking a general model to rediscover a known lineage rule at every handoff adds cost, latency, and a fresh chance to change the rule.</p>
+        <p>A deterministic verifier gives that fast-moving network a small, transparent checkpoint and sends only unresolved cases onward for judgment.</p>
+      </div>
+      <div className="network-flow" aria-label="An agent claim passes through evidence binding and deterministic assessment before separate policy or human review">
+        <article><span>01</span><b>Agent sends</b><small>claim + lineage</small></article><i>→</i><article><span>02</span><b>Evidence binds</b><small>records + context</small></article><i>→</i><article className="flow-highlight"><span>03</span><b>Rule checks</b><small>origins + exact ties</small></article><i>→</i><article><span>04</span><b>Decision routes</b><small>policy or human</small></article>
+      </div>
+      <div className="scale-comparison">
+        <div className="scale-measured"><span>MEASURED ON THE SAME 128 DISPOSITIONS</span><article><b>Canonical C</b><strong>128/128</strong><small>18.7 ms · $0 model calls</small></article><article><b>Best AI lane · Terra A</b><strong>116/128</strong><small>365.0 s · ≈ $0.89 proxy</small></article></div>
+        <div className="scale-illustration"><span>SIMPLE LINEAR ILLUSTRATION · OBSERVED RATES</span><article><b>Terra A · 1,000 dispositions</b><strong>{`≈ $${scaleAiCostPerThousand.toFixed(2)}`}</strong><small>list-price proxy at the measured token rate</small></article><article><b>Canonical · 1,000,000</b><strong>{`≈ ${Math.round(scaleCanonicalSerialSeconds)} seconds`}</strong><small>serial local compute · $0 model API</small></article><article><b>Terra A · 1,000,000</b><strong>{`≈ $${Math.round(scaleAiCost).toLocaleString("en-US")}`}</strong><small>{`and ≈ ${scaleAiSerialDays.toFixed(1)} serial days`}</small></article></div>
+        <p>This illustration scales the observed per-packet rates linearly to make the operational consequence legible. It is not a production capacity, latency, or billing forecast: concurrency, batching, hardware, network overhead, provider behavior, and prices will change deployment results.</p>
+      </div>
+      <div className="scale-takeaway"><span>THE VALUE</span><p>Use expensive probabilistic intelligence where judgment is needed. Use deterministic code where the invariant is already known. At scale, that separation keeps the agent network fast without turning uncertainty into permission.</p></div>
     </section>
     <SiteFooter />
   </main>;
