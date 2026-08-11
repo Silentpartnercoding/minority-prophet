@@ -1,0 +1,2506 @@
+{
+  "schema": "minority-prophet.kl011-result.v0.2",
+  "protocolVersion": "v0.2",
+  "evaluator": "knowledge_ledger/transaction_v2.py",
+  "transactions": 10,
+  "injections": [
+    "paraphrase",
+    "retry",
+    "reordering",
+    "duplication",
+    "partial failure",
+    "one malicious duplicate",
+    "one unavailable location"
+  ],
+  "comparisons": 350,
+  "perEndpoint": {
+    "E1": {
+      "checked": 70,
+      "failures": 0,
+      "verdict": "PASS",
+      "firstCounterexample": null
+    },
+    "E2": {
+      "checked": 70,
+      "failures": 0,
+      "verdict": "PASS",
+      "firstCounterexample": null
+    },
+    "E3": {
+      "checked": 70,
+      "failures": 0,
+      "verdict": "PASS",
+      "firstCounterexample": null
+    },
+    "E4": {
+      "checked": 70,
+      "failures": 0,
+      "verdict": "PASS",
+      "firstCounterexample": null
+    },
+    "E5": {
+      "checked": 70,
+      "failures": 0,
+      "verdict": "PASS",
+      "firstCounterexample": null
+    }
+  },
+  "invalidations": {
+    "I2_incompleteInjections": [],
+    "I3_suppliedScope": []
+  },
+  "verdict": "PASS",
+  "claimAllowed": "That the declared conclusion fields survived this transport under these seven injections, on the declared population. NOT that conclusions survive arbitrary transports, NOT that the transport is secure, and NOT any rate.",
+  "rows": [
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t01-clean-complete",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True} vs {'declared': 2, 'searched': 2, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t02-present",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 2, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 2, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t03-incomplete-coverage",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 2, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 2, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t04-present-incomplete",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 2, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 2, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 2, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 2, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "absent_within_declared_scope vs absent_within_declared_scope"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 1, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t05-unattributed",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b'}) vs ({'a'}, {'b'})"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b'}) vs ({'a'}, {'b'})"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b'}) vs ({'a'}, {'b'})"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b'}) vs ({'a'}, {'b'})"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b'}) vs ({'a'}, {'b'})"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b'}) vs ({'a'}, {'b'})"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'tied_roots'}"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t06-tied",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b', 'c'}) vs ({'a'}, {'b', 'c'})"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b', 'c'}) vs ({'a'}, {'b', 'c'})"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b', 'c'}) vs ({'a'}, {'b', 'c'})"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b', 'c'}) vs ({'a'}, {'b', 'c'})"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b', 'c'}) vs ({'a'}, {'b', 'c'})"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'a'}, {'b', 'c'}) vs ({'a'}, {'b', 'c'})"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'outnumbered'}"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t07-outnumbered",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), {'a'}) vs (set(), {'a'})"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 1, 'sideSeparationDeclared': False, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "present vs present"
+    },
+    {
+      "transaction": "t08-shared-dependency",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False} vs {'declared': 2, 'searched': 1, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "(set(), set()) vs (set(), set())"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 2, 'searched': 0, 'unavailable': 2, 'complete': False} vs {'declared': 2, 'searched': 0, 'unavailable': 2, 'complete': False}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 2, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'} vs {'unsearchedLocations': 2, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': 'incomplete_coverage'}"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "not_established vs not_established"
+    },
+    {
+      "transaction": "t09-unavailable",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "paraphrase",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'b', 'a'}, set()) vs ({'b', 'a'}, set())"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "paraphrase",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "paraphrase",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "paraphrase",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "supported vs supported"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "paraphrase",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "retry",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'b', 'a'}, set()) vs ({'b', 'a'}, set())"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "retry",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "retry",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "retry",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "supported vs supported"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "retry",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "reordering",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'b', 'a'}, set()) vs ({'b', 'a'}, set())"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "reordering",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "reordering",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "reordering",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "supported vs supported"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "reordering",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "duplication",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'b', 'a'}, set()) vs ({'b', 'a'}, set())"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "duplication",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True} vs {'declared': 1, 'searched': 1, 'unavailable': 0, 'complete': True}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "duplication",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 0, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "duplication",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "supported vs supported"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "duplication",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "partial failure",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'b', 'a'}, set()) vs ({'b', 'a'}, set())"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "partial failure",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 0, 'complete': False}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "partial failure",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "partial failure",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "supported vs supported"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "partial failure",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one malicious duplicate",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one malicious duplicate",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one malicious duplicate",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one malicious duplicate",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one malicious duplicate",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "both arms refused identically"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one unavailable location",
+      "endpoint": "E1",
+      "preserved": true,
+      "detail": "({'b', 'a'}, set()) vs ({'b', 'a'}, set())"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one unavailable location",
+      "endpoint": "E2",
+      "preserved": true,
+      "detail": "{'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False} vs {'declared': 1, 'searched': 0, 'unavailable': 1, 'complete': False}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one unavailable location",
+      "endpoint": "E3",
+      "preserved": true,
+      "detail": "{'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None} vs {'unsearchedLocations': 1, 'unattributedRecords': 0, 'declaredSharedDependencies': 0, 'sideSeparationDeclared': True, 'abstentionReason': None}"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one unavailable location",
+      "endpoint": "E4",
+      "preserved": true,
+      "detail": "supported vs supported"
+    },
+    {
+      "transaction": "t10-supported",
+      "injection": "one unavailable location",
+      "endpoint": "E5",
+      "preserved": true,
+      "detail": "no authority-bearing field"
+    }
+  ]
+}

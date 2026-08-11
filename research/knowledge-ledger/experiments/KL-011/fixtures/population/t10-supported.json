@@ -1,0 +1,30 @@
+{
+  "schema": "minority-prophet.knowledge-transaction.v0.1",
+  "transactionId": "t10",
+  "claim": {
+    "type": "presence",
+    "statement": "no defect of the declared classes is present"
+  },
+  "searchLedger": {
+    "locations": [
+      {
+        "id": "loc-0",
+        "status": "searched"
+      }
+    ]
+  },
+  "evidenceLedger": {
+    "records": [
+      {
+        "recordId": "r0",
+        "rootId": "a",
+        "side": "support"
+      },
+      {
+        "recordId": "r1",
+        "rootId": "b",
+        "side": "support"
+      }
+    ]
+  }
+}
