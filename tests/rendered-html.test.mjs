@@ -75,8 +75,12 @@ test("server-renders the complete capability tournament with visible costs", asy
   assert.match(html, /faster than humans can check/);
   assert.match(html, /MEASURED ON THE SAME 128 DISPOSITIONS/);
   assert.match(html, /≈ \$6\.95/);
+  assert.match(html, /100,000/);
+  assert.match(html, /14\.6 seconds · \$0 model API/);
+  assert.match(html, /285,168 seconds \(3\.3 days\)/);
+  assert.match(html, /2,851,680 seconds \(33\.0 days\)/);
   assert.match(html, /≈ \$6,954/);
-  assert.match(html, /≈ 33\.0 serial days/);
+  assert.match(html, /≈ 19,520× elapsed time/);
   assert.match(html, /not a production capacity, latency, or billing forecast/);
   assert.match(html, /Agent sends/);
   assert.match(html, /Evidence binds/);

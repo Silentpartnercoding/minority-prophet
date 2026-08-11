@@ -12,11 +12,19 @@ const costOrder = ["Minority Prophet", "GPT-5.6 Terra", "Claude Opus 5", "GPT-5.
 const costGroups = costOrder.map((name) => ({ name, rows: tournamentRows.filter((row) => row.name === name).sort((a, b) => a.lane.localeCompare(b.lane)) }));
 const bestAiLane = tournamentRows.find((row) => row.name === "GPT-5.6 Terra" && row.lane === "A")!;
 const canonicalLane = tournamentRows.find((row) => row.name === "Minority Prophet")!;
-const scaleDispositions = 1_000_000;
-const scaleAiCost = bestAiLane.cost! / 128 * scaleDispositions;
-const scaleAiCostPerThousand = bestAiLane.cost! / 128 * 1000;
-const scaleAiSerialDays = bestAiLane.timeMs / 128 * scaleDispositions / 86_400_000;
-const scaleCanonicalSerialSeconds = canonicalLane.timeMs / 128 * scaleDispositions / 1000;
+const scaleTimeRatio = Math.round(bestAiLane.timeMs / canonicalLane.timeMs).toLocaleString("en-US");
+const scaleRows = [1_000, 100_000, 1_000_000].map((dispositions) => {
+  const canonicalSeconds = canonicalLane.timeMs / 128 * dispositions / 1000;
+  const aiSeconds = bestAiLane.timeMs / 128 * dispositions / 1000;
+  const aiCost = bestAiLane.cost! / 128 * dispositions;
+  const aiDuration = aiSeconds < 3600 ? `${(aiSeconds / 60).toFixed(1)} min` : `${(aiSeconds / 86_400).toFixed(1)} days`;
+  return {
+    dispositions: dispositions.toLocaleString("en-US"),
+    canonical: `${canonicalSeconds < 1 ? canonicalSeconds.toFixed(3) : canonicalSeconds.toFixed(1)} seconds · $0 model API`,
+    ai: `${Math.round(aiSeconds).toLocaleString("en-US")} seconds (${aiDuration}) · ≈ $${aiCost < 10 ? aiCost.toFixed(2) : Math.round(aiCost).toLocaleString("en-US")}`,
+    difference: `≈ ${scaleTimeRatio}× elapsed time`,
+  };
+});
 const speedMultiple = (timeMs: number) => {
   if (timeMs === 18.7) return "C reference";
   if (timeMs < 18.7) return `${(18.7 / timeMs).toFixed(1)}× faster than C`;
@@ -81,7 +89,7 @@ export default function CapabilityTournamentPage() {
       </div>
       <div className="scale-comparison">
         <div className="scale-measured"><span>MEASURED ON THE SAME 128 DISPOSITIONS</span><article><b>Canonical C</b><strong>128/128</strong><small>18.7 ms · $0 model calls</small></article><article><b>Best AI lane · Terra A</b><strong>116/128</strong><small>365.0 s · ≈ $0.89 proxy</small></article></div>
-        <div className="scale-illustration"><span>SIMPLE LINEAR ILLUSTRATION · OBSERVED RATES</span><article><b>Terra A · 1,000 dispositions</b><strong>{`≈ $${scaleAiCostPerThousand.toFixed(2)}`}</strong><small>list-price proxy at the measured token rate</small></article><article><b>Canonical · 1,000,000</b><strong>{`≈ ${Math.round(scaleCanonicalSerialSeconds)} seconds`}</strong><small>serial local compute · $0 model API</small></article><article><b>Terra A · 1,000,000</b><strong>{`≈ $${Math.round(scaleAiCost).toLocaleString("en-US")}`}</strong><small>{`and ≈ ${scaleAiSerialDays.toFixed(1)} serial days`}</small></article></div>
+        <div className="scale-illustration"><span>SIMPLE LINEAR ILLUSTRATION · SAME SCALE, BOTH METHODS</span><div className="scale-matrix-wrap"><table className="scale-matrix"><thead><tr><th>Decisions</th><th>Canonical C</th><th>Terra A</th><th>Elapsed difference</th></tr></thead><tbody>{scaleRows.map((row) => <tr key={row.dispositions}><td>{row.dispositions}</td><td>{row.canonical}</td><td>{row.ai}</td><td>{row.difference}</td></tr>)}</tbody></table></div></div>
         <p>This illustration scales the observed per-packet rates linearly to make the operational consequence legible. It is not a production capacity, latency, or billing forecast: concurrency, batching, hardware, network overhead, provider behavior, and prices will change deployment results.</p>
       </div>
       <div className="scale-takeaway"><span>THE VALUE</span><p>Use expensive probabilistic intelligence where judgment is needed. Use deterministic code where the invariant is already known. At scale, that separation keeps the agent network fast without turning uncertainty into permission.</p></div>
