@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { access } from "node:fs/promises";
 import test from "node:test";
 
 async function render() {
@@ -26,5 +27,22 @@ test("server-renders the Minority Prophet research interface", async () => {
   assert.match(html, /Evidence assessment never grants authority/);
   assert.match(html, /Read the paper/);
   assert.match(html, /papers\/00-CURRENT-PAPER\.md/);
+  assert.match(html, /CAPABILITY TOURNAMENT \/ CLEAN V1 RUN/);
+  assert.match(html, /OVERALL LEADERBOARD/);
+  assert.match(html, /C did not receive the roots/);
+  assert.match(html, /Claude Opus 5/);
+  assert.match(html, /Tools called/);
+  assert.match(html, /tools were available, not necessarily used/);
+  assert.match(html, /19,519× longer/);
+  assert.doesNotMatch(html, /Claude extension pending/);
   assert.doesNotMatch(html, /Starter Project|react-loading-skeleton/i);
+
+  await Promise.all([
+    access(new URL("../public/research/capability-tournament-v1-results.md", import.meta.url)),
+    access(new URL("../public/research/capability-tournament-v1-protocol.md", import.meta.url)),
+    access(new URL("../public/research/capability-tournament-v1-claude-extension.md", import.meta.url)),
+    access(new URL("../public/research/capability-tournament-v1-claude-extension-v1.1-amendment.md", import.meta.url)),
+    access(new URL("../public/research/capability-tournament-v1-claude-extension-results.md", import.meta.url)),
+    access(new URL("../public/research/capability-tournament-v1-claude-extension-summary.json", import.meta.url)),
+  ]);
 });

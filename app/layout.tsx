@@ -7,15 +7,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("host") ?? "localhost";
   const protocol = host.includes("localhost") ? "http" : "https";
   const metadataBase = new URL(`${protocol}://${host}`);
-  const title = "Minority Prophet — Truth Is Not Popularity";
-  const description = "A public benchmark for truth aggregation under social pressure.";
+  const title = "Minority Prophet — Capability Tournament";
+  const description = "A same-input benchmark comparing AI reasoning, tool-using AI, conventional methods, and distinct-root aggregation under copied consensus.";
   return {
     metadataBase,
     title,
     description,
     icons: { icon: "/favicon.svg" },
-    openGraph: { title, description, images: [{ url: "/og.png", width: 1200, height: 630 }] },
-    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
+    openGraph: { title, description, images: [{ url: "/og-capability-v1.png", width: 1731, height: 909 }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og-capability-v1.png"] },
   };
 }
 
