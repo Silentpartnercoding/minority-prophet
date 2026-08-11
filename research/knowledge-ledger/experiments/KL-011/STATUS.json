@@ -2,9 +2,9 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-011",
   "realm": "cross-system interoperability",
-  "state": "seeded",
-  "resultStatus": "none",
-  "lastCompletedGate": "registry-entry",
+  "state": "fixture-passed",
+  "resultStatus": "v0.2 complete; all five registered endpoints met on the declared fixture population",
+  "lastCompletedGate": "fixture \u2014 the crossing experiment, reported against the v0.2 endpoints",
   "reviewedByRun": "RUN-20260807-8",
   "correctionRecord": {
     "correctedBy": "RUN-20260807-6",
@@ -12,17 +12,17 @@
     "evidence": "IND-20260807-1/-2/-3 (KL-000/results/independent/): a zero-dependency Rust implementation with hand-written JSON, SHA-256 and PRNG, written from the registered documents, agreeing with the reference on the evaluator's exhaustive partitioning, the complete conclusion function (160/49,480/41,820/19,380 over all 110,840 receipts), and the canonical form and digests for the two pinned receipts C11/C12 (byte-identical, 703 and 691 bytes). Commissioned ONCE, exactly as the superseded text said it should be, serving both KL-000's gate and this kernel's prerequisite. Qualified by LEAK-101 as recorded in KL-000/FINAL-RECORD.md; the qualification travels with any KL-011 use of this artifact too.",
     "pattern": "This is the stale-self-description family again -- a record whose truth expired while the world moved, detected by re-deriving from evidence rather than reading the record. Prior instances: PROV-005 (a deleted remote's cache measured as the remote), ART-101 (a result artifact carrying its predecessor's identity), TEST-101 (a projected verification value inherited unexecuted for three runs), and the DOC-102 miscount chain. The fix is the same every time: records name their evidence, and reviews re-derive rather than re-read. This record now cites what discharged its blocker instead of asserting the blocker."
   },
-  "nextGate": "Its own work, no longer anyone else's: (1) preregistration at schema v0.2 (the v0.1 document cannot satisfy RESEARCH-METHOD.md -- SCH-001); (2) the five-stage pipeline itself (discovery, collection, provenance, decision, presentation) exchanging one bounded claim, with the registered injection set: paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, one unavailable location; (3) its fixtures, tests, and results directories (ENG-001). The two-implementation prerequisite is met in substance; what KL-011 inherits from KL-000's close must be carried into its design: A2 undecided (19,152 worlds of conclusion semantics any transaction would transport), SCH-005 (protected fields the receipt never emits cannot be shown to survive crossing systems), ADV-001 (coverage preservation is only as strong as the original declaration), and F11 (no cross-implementation randomized stream). First falsifiable step: the v0.2 preregistration, owner's to schedule.",
+  "nextGate": "A transport that is not of our own construction. This run crossed a process boundary through bytes we serialised with a codec we chose. The untested cases are a transport we do not control -- a real queue, a real network, a second implementation reading the receipt -- and F11's question of whether an independent reader reconstructs the same conclusion from the same bytes.",
   "supersededNextGate": "SUPERSEDED at RUN-20260807-6, preserved verbatim (written at RUN-20260807-1, when no independent implementation existed): 'BLOCKED on KL-000's next gate. KL-011 requires two independently written implementations; KL-000 has one implementation whose author also wrote its verifier. The independent reimplementation that KL-000 needs is the SAME artifact KL-011 needs, so it should be commissioned once. After that: five stages (discovery, collection, provenance, decision, presentation) exchanging one bounded claim, with paraphrase, retry, reordering, duplication, partial failure, one malicious duplicate, and one unavailable location injected.'",
   "blockers": [
     "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
-    "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
     "DISCHARGED at RUN-20260807-8, retained for the record: 'schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
     "DISCHARGED at RUN-20260807-6, retained for the record: 'blocked-prerequisite: KL-000 independent reimplementation' -- discharged by IND-20260807-1/-2/-3; see correctionRecord",
     "SCH-005 DISCHARGED by owner decision 2026-08-10: the fields are emitted by the v0.2 evaluator. What remains is engineering, not a decision.",
-    "ADV-001 DISCHARGED by owner decision 2026-08-10: KL-011 must derive scope. Unimplemented for KL-011's own pipeline."
+    "ADV-001 DISCHARGED by owner decision 2026-08-10: KL-011 must derive scope. Unimplemented for KL-011's own pipeline.",
+    "ENG-001 DISCHARGED at v0.2: src/, fixtures/, tests/, results/ present. REPRODUCE.md still absent."
   ],
-  "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed. Its two-implementation prerequisite is met in substance by the KL-000 independent implementation (qualified per KL-000/FINAL-RECORD.md); that fact supports no KL-011 result claim whatsoever.",
+  "claimAllowed": "That roots, coverage, uncertainty, conclusion and the authorization boundary survived THIS transport under the seven registered injections, on a declared fixture population of ten transactions. NOT that conclusions survive arbitrary transports, NOT that the transport is secure, and NOT any rate. The population is synthetic and its composition was chosen; per KL-001's DESIGN-v0.4, that forbids any frequency claim, which is why every endpoint here is an equality and none is a rate.",
   "dependsOn": [
     "KL-000"
   ],
@@ -48,5 +48,26 @@
       "decidedOn": "2026-08-10",
       "note": "KL-001's pipeline/map_repository.py already derives scope and raises ScopeSuppliedError. KL-011 must do the same rather than record the limitation."
     }
-  }
+  },
+  "protocolVersion": "v0.2",
+  "v02Outcome": {
+    "comparisons": 350,
+    "perEndpoint": {
+      "E1": "PASS",
+      "E2": "PASS",
+      "E3": "PASS",
+      "E4": "PASS",
+      "E5": "PASS"
+    },
+    "ablations": "Each endpoint was shown able to fail. A lossy transport was substituted for the faithful one, once per endpoint, and each ablation turned exactly its own endpoint red and no other: uncertainty stripped -> E3 only (30), roots stripped -> E1 only (30), coverage forced complete -> E2 only (34), conclusion overwritten -> E4 only (46), authority field injected -> E5 only (64). A clean diagonal, so the endpoints discriminate and do not overlap. Without this the 350/350 pass would be indistinguishable from a comparison that cannot fail.",
+    "crossingIsReal": "Invalidation clause I1 requires the arms share no in-memory object. The crossed arm spawns a separate interpreter and reaches it only through serialised bytes on a pipe."
+  },
+  "priorOutcomes": [
+    {
+      "protocol": "v0.2",
+      "state": "complete",
+      "result": "results/RESULTS-v0.2.json",
+      "note": "All five endpoints met; every endpoint separately shown able to fail."
+    }
+  ]
 }

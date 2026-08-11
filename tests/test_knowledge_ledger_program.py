@@ -11,6 +11,22 @@ PROGRAM = ROOT / "research" / "knowledge-ledger"
 REFERENCE_INPUT = PROGRAM / "interoperability" / "reference-input.json"
 
 
+def _governing_registration(directory, status):
+    """The registration matching this experiment's protocolVersion.
+
+    Falls back to preregistration.json when no version is declared, which is the
+    case for every seeded experiment and for those registered before the
+    versioned-registration convention existed.
+    """
+    version = str(status.get("protocolVersion") or "")
+    if version:
+        token = version.split()[0].lstrip("v")
+        candidate = directory / f"preregistration-v{token}.json"
+        if candidate.is_file():
+            return json.loads(candidate.read_text())
+    return json.loads((directory / "preregistration.json").read_text())
+
+
 class KnowledgeLedgerProgramTests(unittest.TestCase):
     def test_every_experiment_is_seeded_with_required_fields(self):
         registry = json.loads((PROGRAM / "EXPERIMENT-REGISTRY.json").read_text())
@@ -99,7 +115,15 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
         for index in range(12):
             directory = PROGRAM / "experiments" / f"KL-{index:03d}"
             status = json.loads((directory / "STATUS.json").read_text())
-            preregistration = json.loads((directory / "preregistration.json").read_text())
+            # The registration that governs an experiment is the one matching its
+            # protocolVersion, which is not always preregistration.json. KL-011's
+            # base file is the original SEED and was never a registration; its
+            # registration is preregistration-v0.2.json, frozen and pinned by
+            # PROTOCOL-COMMIT-v0.2.txt. Reading only the base file would have
+            # forced a choice between editing a seed to say "preregistered" --
+            # which is false -- and refusing to advance an experiment that is
+            # properly registered. Both are worse than looking in the right place.
+            preregistration = _governing_registration(directory, status)
 
             self.assertIn(status["state"], self.LADDER, directory.name)
             self.assertTrue(status["nextGate"], f"{directory.name} has no next gate")
@@ -116,7 +140,7 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
                 # Anything past seeded owes a frozen protocol and real output.
                 self.assertEqual(preregistration["status"], "preregistered", directory.name)
                 self.assertTrue(
-                    (directory / "PROTOCOL-COMMIT.txt").is_file(),
+                    any(directory.glob("PROTOCOL-COMMIT*.txt")),
                     f"{directory.name} advanced past seeded without a frozen protocol commit",
                 )
                 self.assertTrue(
