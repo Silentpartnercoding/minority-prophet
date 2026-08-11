@@ -1,0 +1,106 @@
+{
+  "schema": "minority-prophet.preregistration.v0.2",
+  "experimentId": "KL-011",
+  "protocolVersion": "v0.2",
+  "status": "preregistered",
+  "protocolCommit": null,
+  "registeredBefore": "any pipeline code, fixture or result existed. The directory held PROTOCOL.md, STATUS.json and preregistration.json when this was written.",
+  "question": "Can a conclusion cross independent systems without losing roots, coverage, uncertainty, or authorization boundaries?",
+  "questionKind": "structural",
+  "whyStructural": "KL-001 established that a rate measured over a corpus the researcher composed reads back generator settings rather than a measurement, and that a verdict which is a total function of its inputs is settled by enumerating the input space rather than sampling it. This experiment therefore asks only yes/no questions about a transport. It does not ask how often anything happens, and no endpoint here is a rate.",
+  "arms": {
+    "direct": "the receipt is read by the same process that produced it",
+    "crossed": "the receipt is serialised, transported through the registered injection set, and re-read by a second process that shares no in-memory state with the first"
+  },
+  "evaluator": {
+    "path": "knowledge_ledger/transaction_v2.py",
+    "schema": "minority-prophet.knowledge-transaction.v0.2",
+    "why": "v0.1 emits no unattributed-evidence count, no uncertainty block and no abstention reason (SCH-005). A receipt that cannot carry doubt could satisfy this experiment while establishing only that CONFIDENT claims survive a crossing, leaving the interesting case untestable."
+  },
+  "primaryEndpoints": [
+    {
+      "id": "E1",
+      "name": "root preservation",
+      "statement": "for every transaction, the crossed receipt's supportingRoots and opposingRoots equal the direct receipt's, as sets",
+      "passCondition": "equality on every transaction in the declared population",
+      "failCondition": "one transaction where they differ"
+    },
+    {
+      "id": "E2",
+      "name": "coverage preservation",
+      "statement": "the crossed receipt's search.declared, searched, unavailable and complete equal the direct receipt's",
+      "passCondition": "equality on every transaction",
+      "failCondition": "one transaction where they differ"
+    },
+    {
+      "id": "E3",
+      "name": "uncertainty preservation",
+      "statement": "the crossed receipt's entire uncertainty block equals the direct receipt's, including abstentionReason and unattributedRecords",
+      "passCondition": "equality on every transaction",
+      "failCondition": "one transaction where they differ",
+      "note": "This endpoint is the reason the v0.2 evaluator was required. Under v0.1 it could not be evaluated at all."
+    },
+    {
+      "id": "E4",
+      "name": "conclusion preservation",
+      "statement": "the crossed receipt's conclusion equals the direct receipt's",
+      "passCondition": "equality on every transaction",
+      "failCondition": "one transaction where they differ"
+    },
+    {
+      "id": "E5",
+      "name": "authorization boundary",
+      "statement": "no crossed receipt carries a field that grants, implies or upgrades authority to execute; evidence assessment and authority remain separate across the crossing",
+      "passCondition": "no such field in any crossed receipt",
+      "failCondition": "one crossed receipt from which an executor could infer permission that the direct receipt did not convey"
+    }
+  ],
+  "invalidationClauses": [
+    {
+      "id": "I1",
+      "clause": "if the direct and crossed arms share any in-memory object, the crossing is simulated and every endpoint is void"
+    },
+    {
+      "id": "I2",
+      "clause": "if the injection set is applied to fewer than all seven registered injections, the run is incomplete, not passing"
+    },
+    {
+      "id": "I3",
+      "clause": "if any transaction's scope is supplied rather than derived, that transaction is void (ADV-001)"
+    },
+    {
+      "id": "I4",
+      "clause": "if the population contains no transaction whose direct receipt carries a non-null abstentionReason, E3 is unreachable and the run does not test what it claims"
+    }
+  ],
+  "injectionSet": [
+    "paraphrase",
+    "retry",
+    "reordering",
+    "duplication",
+    "partial failure",
+    "one malicious duplicate",
+    "one unavailable location"
+  ],
+  "effectRequires": [
+    {
+      "property": "a transaction whose direct receipt carries a non-null abstentionReason",
+      "probe": [
+        "python3",
+        "research/knowledge-ledger/experiments/KL-011/probe_uncertainty.py",
+        "{population}"
+      ],
+      "population": "research/knowledge-ledger/experiments/KL-011/fixtures/population",
+      "negativeControl": "research/knowledge-ledger/experiments/KL-011/fixtures/confident-only",
+      "minimum": 1,
+      "why": "BL-060. E3 measures whether uncertainty survives. A population in which nothing is uncertain cannot move it, and would pass by construction."
+    }
+  ],
+  "ownerDecisions": {
+    "A2": "presence does not require complete coverage",
+    "SCH-005": "the v0.2 evaluator emits the uncertainty fields",
+    "ADV-001": "scope is derived, never supplied"
+  },
+  "claimAllowedOnPass": "That the declared conclusion fields survived this transport under these seven injections, on the declared population. NOT that conclusions survive arbitrary transports, NOT that the transport is secure, and NOT any rate.",
+  "claimAllowedOnFail": "That at least one declared field does not survive, with the transaction that shows it. A single counterexample settles the endpoint; no rate is implied."
+}
