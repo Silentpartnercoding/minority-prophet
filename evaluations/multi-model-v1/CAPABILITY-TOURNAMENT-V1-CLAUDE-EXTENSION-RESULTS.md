@@ -1,8 +1,8 @@
 # Capability Tournament v1 — Claude extension results
 
-Status: completed  
-Run date: 2026-08-11  
-Frozen manifest: `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff`  
+Status: completed
+Run date: 2026-08-11
+Frozen manifest: `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff`
 Runtime SHA-256: `4487f41cb97c1a577b1e4b12b2b7900b7e90e0c4ff8f85f3f456e92a11287cbe`
 
 ## Scope

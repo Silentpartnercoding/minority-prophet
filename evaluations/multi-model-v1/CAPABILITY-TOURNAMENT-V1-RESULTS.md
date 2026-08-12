@@ -1,9 +1,9 @@
 # Capability Tournament v1 — Results
 
-Status: completed  
-Run date: 2026-08-11  
-Preregistered protocol: `977766b5e2bed77cf6bab948e56ab3fcb49c2a05`  
-Isolated runner: `9888f25970186fb219a0d193a192f8d26f53ede1`  
+Status: completed
+Run date: 2026-08-11
+Preregistered protocol: `977766b5e2bed77cf6bab948e56ab3fcb49c2a05`
+Isolated runner: `9888f25970186fb219a0d193a192f8d26f53ede1`
 Frozen manifest: `sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff`
 
 ## Question
@@ -156,4 +156,3 @@ above.
    colluding origins carry observable verification signals.
 4. Run an empirical domain benchmark whose outcomes are measured independently
    of the aggregation rule.
-
