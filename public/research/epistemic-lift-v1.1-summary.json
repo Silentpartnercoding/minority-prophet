@@ -1,0 +1,64 @@
+{
+  "schema": "mp-epistemic-lift-public-summary.v1",
+  "study": "epistemic-lift-v1.1-raw-capture",
+  "status": "COMPLETED",
+  "namespace": "DEMO",
+  "verification": "PASSED",
+  "official_leaderboard_eligible": false,
+  "interpretation": "complete transport-controlled replication on synthetic development worlds; not an independent confirmatory evaluation",
+  "design": {
+    "worlds": 32,
+    "models": 2,
+    "conditions": 3,
+    "expected_cells": 192,
+    "completed_cells": 192,
+    "failed_cells": 0,
+    "parse_failures": 0,
+    "condition_A": "claims and ordinary source labels only",
+    "condition_B": "condition A plus complete declared provenance and evidence context",
+    "condition_C": "exact condition B payload plus deterministic read-only Minority Prophet receipt",
+    "response_transport": "raw final response captured once and parsed locally",
+    "condition_order": "all six A/B/C permutations counterbalanced"
+  },
+  "results": [
+    {
+      "model": "gpt-5.6-sol",
+      "provider": "openai-codex-cli",
+      "A_truth_recovery": 0.125,
+      "B_truth_recovery": 0.6875,
+      "C_truth_recovery": 0.96875,
+      "provenance_gain_B_minus_A": 0.5625,
+      "minority_prophet_gain_C_minus_B": 0.28125,
+      "exact_paired_p_C_minus_B": 0.003906,
+      "B_to_C_improvements": 9,
+      "B_to_C_regressions": 0,
+      "candidate_rule_passed": true
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic-claude-cli",
+      "A_truth_recovery": 0.03125,
+      "B_truth_recovery": 0.6875,
+      "C_truth_recovery": 0.90625,
+      "provenance_gain_B_minus_A": 0.65625,
+      "minority_prophet_gain_C_minus_B": 0.21875,
+      "exact_paired_p_C_minus_B": 0.015625,
+      "B_to_C_improvements": 7,
+      "B_to_C_regressions": 0,
+      "candidate_rule_passed": true
+    }
+  ],
+  "integrity": {
+    "manifest_hash": "sha256:7bf6d393e59ce6fbc78ca41bda4f71b5a0c29dc95d2b535bb19901c345bf3943",
+    "mp_tool_contract_hash": "sha256:fac9d675d2c77998174a6d934a4c24ff4e3258b69b812d1a02d54365db59394a",
+    "report_hash": "sha256:396a3330d2368804e7bdb79ba7d3e028dea80573c13693bb8b94c06c83719c98",
+    "protocol_commit": "0b7291015d78897474eb3d8ad6a3c093df9f5c4f"
+  },
+  "claim_boundary": [
+    "synthetic development worlds",
+    "same worlds were exposed in an earlier transport run",
+    "not a hidden or independently audited evaluation",
+    "not an official leaderboard result",
+    "no real-world truth or authority claim"
+  ]
+}

@@ -13,7 +13,7 @@ async function render(path = "/") {
   );
 }
 
-test("server-renders a concise landing page with both experiment previews", async () => {
+test("server-renders a concise landing page with the lift study and separate supporting experiments", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
@@ -29,6 +29,12 @@ test("server-renders a concise landing page with both experiment previews", asyn
   assert.match(html, /Read the paper/);
   assert.match(html, /papers\/00-CURRENT-PAPER\.md/);
   assert.match(html, /CAPABILITY TOURNAMENT V1/);
+  assert.match(html, /EPISTEMIC LIFT v1\.1/);
+  assert.match(html, /192\/192/);
+  assert.match(html, /C − B/);
+  assert.match(html, /28\.125%/);
+  assert.match(html, /21\.875%/);
+  assert.match(html, /Validated DEMO result/);
   assert.match(html, /GPT Terra A/);
   assert.match(html, /≈ \$0\.89/);
   assert.match(html, /Claude Opus A/);
@@ -39,6 +45,7 @@ test("server-renders a concise landing page with both experiment previews", asyn
   assert.match(html, /no A→B→C lift is estimated/);
   assert.match(html, /model calls in demo/);
   assert.match(html, /href="\/experiments\/capability-tournament"/);
+  assert.match(html, /href="\/experiments\/epistemic-lift"/);
   assert.match(html, /href="\/experiments\/epistemic-observatory"/);
   assert.doesNotMatch(html, /OVERALL LEADERBOARD/);
   assert.doesNotMatch(html, /Claude extension pending/);
@@ -53,7 +60,51 @@ test("server-renders a concise landing page with both experiment previews", asyn
     access(new URL("../public/research/capability-tournament-v1-claude-extension-summary.json", import.meta.url)),
     access(new URL("../public/research/capability-tournament-v1-adversarial-review.md", import.meta.url)),
     access(new URL("../public/research/capability-tournament-v1-summary.json", import.meta.url)),
+    access(new URL("../public/research/epistemic-lift-v1.1-results.md", import.meta.url)),
+    access(new URL("../public/research/epistemic-lift-v1.1-protocol.md", import.meta.url)),
+    access(new URL("../public/research/epistemic-lift-v1.1-summary.json", import.meta.url)),
   ]);
+});
+
+test("server-renders the complete same-model epistemic lift study", async () => {
+  const response = await render("/experiments/epistemic-lift");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Epistemic Lift Study v1\.1 — Minority Prophet/);
+  assert.match(html, /Same model/);
+  assert.match(html, /Same world/);
+  assert.match(html, /192\/192/);
+  assert.match(html, /GPT-5\.6 Sol/);
+  assert.match(html, /Claude Sonnet 5/);
+  assert.match(html, /96\.875%/);
+  assert.match(html, /90\.625%/);
+  assert.match(html, /28\.125%/);
+  assert.match(html, /21\.875%/);
+  assert.match(html, /0\.003906/);
+  assert.match(html, /0\.015625/);
+  assert.match(html, /9(?:<!-- -->)? better · (?:<!-- -->)?0(?:<!-- -->)? worse/);
+  assert.match(html, /7(?:<!-- -->)? better · (?:<!-- -->)?0(?:<!-- -->)? worse/);
+  assert.match(html, /exact B payload/);
+  assert.match(html, /Hidden truth labels were rejected/);
+  assert.match(html, /validated DEMO development study/);
+  assert.match(html, /not an independent confirmation/);
+  assert.match(html, /epistemic-lift-v1\.1-results\.md/);
+  assert.match(html, /epistemic-lift-v1\.1-protocol\.md/);
+  assert.match(html, /epistemic-lift-v1\.1-summary\.json/);
+});
+
+test("machine-readable lift summary preserves results and development boundary", async () => {
+  const summary = JSON.parse(await readFile(new URL("../public/research/epistemic-lift-v1.1-summary.json", import.meta.url), "utf8"));
+  assert.equal(summary.status, "COMPLETED");
+  assert.equal(summary.verification, "PASSED");
+  assert.equal(summary.official_leaderboard_eligible, false);
+  assert.equal(summary.design.completed_cells, 192);
+  assert.equal(summary.design.failed_cells, 0);
+  assert.equal(summary.results.length, 2);
+  assert.equal(summary.results[0].minority_prophet_gain_C_minus_B, 0.28125);
+  assert.equal(summary.results[1].minority_prophet_gain_C_minus_B, 0.21875);
+  assert.ok(summary.results.every((result) => result.B_to_C_regressions === 0));
+  assert.ok(summary.claim_boundary.includes("not an official leaderboard result"));
 });
 
 test("server-renders the complete capability tournament with visible costs", async () => {
