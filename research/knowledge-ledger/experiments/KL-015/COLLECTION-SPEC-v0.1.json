@@ -1,0 +1,69 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-015",
+  "title": "Are some wallets followed within seconds on newly-traded tokens?",
+  "status": "collection-rule-frozen",
+  "supersedesInPurpose": "KL-014, stopped as not executable",
+  "whyKL014Failed": "KL-014's subjects held positions taken 354 to 9,085 hours ago, while a token's reachable signature history spans 2.5 to 33 hours. Every event lay outside the baseline's reach, so the comparison would have measured ERA -- busy windows during a token's rise against dead windows today -- and produced a large spurious effect. It was stopped before any number was computed, because the baseline was built first.",
+  "population": {
+    "source": "pump.fun coins?complete=true sorted by created_timestamp DESC",
+    "TRADEABILITY_GATE": {
+      "MIN_LIQUIDITY_USD": 5000,
+      "MIN_VOL24_USD": 5000,
+      "verifiedBy": "DexScreener, an external source we do not control",
+      "why": "GRADUATED IS NOT TRADED. Measured on this population before registering: of 180 recent graduates, 160 had some pair but only 37 cleared liq>=$5k and vol>=$5k. KL-012 v0.2 made exactly this mistake -- its 'winners' were graduates whose median market cap was $1,539, so both arms were failures and the run could only return a null."
+    },
+    "RECENCY_GATE": {
+      "MAX_AGE_HOURS": 6,
+      "why": "the token's entire history must be pageable, so events and baseline occupy one reachable window. Verified before registering: 8 of 8 candidates fully reachable within 12 pages of 1,000 signatures."
+    }
+  },
+  "subjects": {
+    "definition": "wallets with an early position in a qualifying token, excluding custodians by the inherited filter",
+    "custodianRule": {
+      "MAX_SOL": 2000,
+      "MAX_TOKEN_POSITIONS": 300,
+      "MAX_COUNTERPARTIES": 8,
+      "failClosed": "a wallet that cannot be profiled is excluded",
+      "inherited": "thresholds carried unchanged from the KL-014 precursor rather than re-tuned. Re-tuning them now would be choosing them with knowledge of what they produced."
+    },
+    "notInheritedFromKL014": "the eleven KL-014 wallets do NOT carry over. Subjects are whoever appears in this fresh population, so the post-hoc selection that produced those eleven does not contaminate this run."
+  },
+  "measure": {
+    "LEAD_WINDOW_S": 60,
+    "statistic": "distinct signing wallets acting on the token in the 60 seconds after a subject's first transaction on it"
+  },
+  "baseline": {
+    "BASELINE_WINDOWS": 10,
+    "rule": "random 60-second windows drawn from the SAME reachable history as the events, excluding any window overlapping a subject event",
+    "builtFirst": "the baseline is computed before any subject event is measured. This is the only procedural change that has caught an error before it produced a number."
+  },
+  "endpoint": {
+    "H0": "followers after a subject's first buy = wallets in an arbitrary window",
+    "DIRECTION_PREDICTED": "subject events are followed by MORE distinct wallets",
+    "test": "paired sign test on (followers - that token's median baseline), two-sided",
+    "passCondition": "p < 0.05 AND median difference positive",
+    "failCondition": "p >= 0.05, or median difference negative"
+  },
+  "effectRequires": [
+    {
+      "property": "at least 20 measurable subject events",
+      "minimum": 20
+    },
+    {
+      "property": "every event lies inside the token's reachable history",
+      "rule": "an event outside it is DISCARDED, not compared",
+      "why": "the exact failure that stopped KL-014"
+    },
+    {
+      "property": "baseline windows are not all identical per token",
+      "minimum": 2
+    }
+  ],
+  "singleTestRule": "one window length, one statistic, one test. No sweeping.",
+  "knownLimits": [
+    "a transaction touching a token is not necessarily a buy; direction is not parsed, so 'follower' over-counts",
+    "pump.fun graduates under 6 hours old only",
+    "tokens are young, so 'success' is not yet observed -- this measures following behaviour, not whether following was profitable"
+  ]
+}
