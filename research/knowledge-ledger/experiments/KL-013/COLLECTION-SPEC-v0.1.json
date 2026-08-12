@@ -1,0 +1,47 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.4",
+  "experimentId": "KL-013",
+  "title": "Do winning tokens come from creators who launch FEWER tokens?",
+  "status": "collection-rule-frozen",
+  "separateExperiment": "Registered as KL-013, not a fourth KL-012 attempt. KL-012 tested funding-cluster membership and is closed with a null and a failure. This tests a different exposure that needs no funding graph, so it is immune to KL-012's one-hop limitation. Numbering it separately stops a new hypothesis inheriting a closed experiment's record.",
+  "hypothesis": "Serial launchers are spraying; a creator who launches once is making a real attempt. So winners should come from creators with FEWER tokens.",
+  "provenanceOfTheHypothesis": "Observed incidentally while collecting KL-012 v0.2, before any funder was traced: graduated tokens averaged 1.22 tokens per creator, non-graduated 2.05. Never registered, never tested. It is a post-hoc observation and is treated as one -- KL-012 v0.3 has just demonstrated what happens to post-hoc leads, where a 50% effect became 5.9% on fresh data.",
+  "DIRECTION_PREDICTED": "winners have FEWER tokens per creator",
+  "population": {
+    "source": "pump.fun public API",
+    "freshWindowRule": "must not overlap KL-012 v0.2's window, and must not reuse KL-012 v0.3's collected token set. Both produced or informed this hypothesis.",
+    "excludeV02Start": 1786412000000,
+    "excludeV02End": 1786505700000,
+    "excludeV03Mints": "kl012v3/population.json -- every mint in it is discarded",
+    "frame": "tokens retrievable in the fresh window, graduated or not"
+  },
+  "outcome": {
+    "variable": "usd_market_cap",
+    "WINNER_THRESHOLD_USD": 10000000,
+    "whySameThreshold": "kept identical to KL-012 v0.3 rather than re-chosen. A new threshold picked now would be picked knowing what the old one produced."
+  },
+  "exposure": {
+    "measure": "tokensPerCreator -- count of tokens by that creator in the frame",
+    "statistic": "share of creators who launched MORE THAN ONE token in the frame, compared between winners and the rest",
+    "whyNoFundingGraph": "this measure is read directly from the population and requires no Solana RPC, so it cannot be blinded by the one-hop ancestry limit that constrains KL-012."
+  },
+  "endpoint": {
+    "H0": "winners and the rest are equally likely to be serial launchers",
+    "test": "Fisher exact, two-sided",
+    "passCondition": "p < 0.05 AND winners are LESS likely to be serial launchers",
+    "failCondition": "p >= 0.05, or winners are MORE likely. A significant result in the opposite direction is a failure, exactly as KL-012 v0.3 was."
+  },
+  "effectRequires": [
+    {
+      "property": "at least 30 winners in the fresh frame",
+      "minimum": 30,
+      "why": "KL-012 v0.3 ran at 34 and one token moved p from 0.048 to 0.183. Below 30 this cannot do better and STOPS."
+    },
+    {
+      "property": "at least 10% of creators launched more than one token",
+      "minimum": 0.1,
+      "why": "if almost nobody is a serial launcher the exposure barely varies and the endpoint is unreachable. STOP and report that."
+    }
+  ],
+  "singleTestRule": "one threshold, one statistic, one test. No thresholds are swept. KL-012's exploratory pass swept four and the one that reached significance did not replicate."
+}
