@@ -1,0 +1,52 @@
+{
+  "schema": "mp-epistemic-live-tool-summary.v1",
+  "status": "GRID_COMPLETE_STRICT_VALIDATION_FAILED",
+  "namespace": "DEMO",
+  "protocol_commit": "3259539c1ec661059b958b744c409aa747a2536e",
+  "manifest_hash": "sha256:a61cd271d5eb0642093d63157726a2a3aeca2a01798ae50260cdc42e48330933",
+  "base_benchmark_manifest_hash": "sha256:7bf6d393e59ce6fbc78ca41bda4f71b5a0c29dc95d2b535bb19901c345bf3943",
+  "mp_tool_contract_hash": "sha256:fac9d675d2c77998174a6d934a4c24ff4e3258b69b812d1a02d54365db59394a",
+  "attempted_trials": 64,
+  "strict_valid_trials": 58,
+  "strict_failed_trials": 6,
+  "wall_clock_ms": 1176319,
+  "models": [
+    {
+      "model": "gpt-5.6-sol",
+      "attempted": 32,
+      "strict_valid": 28,
+      "correct": 27,
+      "intent_to_treat_accuracy": 0.84375,
+      "accuracy_given_strict_valid_call": 0.9642857142857143,
+      "strict_tool_success_rate": 0.875,
+      "end_to_end_ms": { "mean": 67750.03571428571, "median": 51040, "p95": 116706, "max": 170533 },
+      "mp_execution_ms": { "mean": 1.628090785715228, "median": 1.2272089999896707, "p95": 3.0509579999998095, "max": 4.3683750000054715 },
+      "precomputed_c_accuracy": 0.96875,
+      "precomputed_c_mean_ms": 8166.28125,
+      "provider_reported_cost_usd": null
+    },
+    {
+      "model": "claude-sonnet-5",
+      "attempted": 32,
+      "strict_valid": 30,
+      "correct": 29,
+      "intent_to_treat_accuracy": 0.90625,
+      "accuracy_given_strict_valid_call": 0.9666666666666667,
+      "strict_tool_success_rate": 0.9375,
+      "end_to_end_ms": { "mean": 44732.166666666664, "median": 36445, "p95": 92465, "max": 96956 },
+      "mp_execution_ms": { "mean": 2.205902533334423, "median": 1.6813330000004498, "p95": 3.8725410000006377, "max": 9.136959000003117 },
+      "precomputed_c_accuracy": 0.90625,
+      "precomputed_c_mean_ms": 9066.78125,
+      "provider_reported_cost_usd_partial": 6.3425468999999985
+    }
+  ],
+  "failure_counts": {
+    "wrong_input_hash": 5,
+    "duplicate_tool_call": 1,
+    "valid_call_wrong_final_decision": 2,
+    "parse_failure_after_valid_call": 0
+  },
+  "runtime_state_sha256": "531ad6c973426d5c5d6d4ca4a58af424d129447404fa22810a5da372af60ecfd",
+  "generated_result_json_sha256": "a2091c5bf7720d16ac3ff6298ea1681cff231217aadb185ac408ea5acb51bb09",
+  "semantic_report_hash": "sha256:fb363d67a4dc194452d669ffe572385d229d449f3269295052ce14b4eea7c19e"
+}
