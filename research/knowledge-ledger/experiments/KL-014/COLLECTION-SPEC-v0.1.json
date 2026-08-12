@@ -1,0 +1,47 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-014",
+  "title": "Are the recurring wallets in winning tokens being COPY-TRADED?",
+  "status": "collection-rule-frozen",
+  "whyThisAndNotAnotherHolderTest": "KL-014's precursor found 47 wallets that were top holders in 2+ tokens above $10M. Profiling showed 36 were custodial -- balances of 400,000 to 1,026,000 SOL across thousands of token positions, with a different counterparty on nearly every transaction. They appeared in winners and never in controls for a mechanical reason: successful tokens get deposited somewhere, failed ones never do. The control set could not expose this, because not succeeding is precisely why controls never reach an exchange.\n\nEleven wallets survived a custodian filter. That filter's thresholds were chosen AFTER seeing the exchange profiles, so those eleven are a lead, not a finding.\n\nLead-follow timing does not depend on those thresholds. A custodian has thousands of counterparties and NO timing relationship -- deposits do not cluster seconds after one wallet acts. A copied trader's followers do, every time. So this tests a property the balance filter cannot fake.",
+  "subjects": {
+    "source": "kl014/holders.json, wallets in >=2 winners surviving the custodian filter",
+    "n_expected": 11,
+    "custodianFilterIsInherited": "the eleven are taken as given. This experiment does not re-tune that filter, because re-tuning it after seeing this result is the move that produced the lead it is testing."
+  },
+  "measure": {
+    "LEAD_WINDOW_S": 60,
+    "definition": "for each subject wallet W and each winning token T where W is a top holder: find W's earliest transaction touching T, then count DISTINCT other signing wallets whose transactions touch T in the following LEAD_WINDOW_S seconds",
+    "statistic": "followersPerEvent, the count above"
+  },
+  "baseline": {
+    "definition": "for the same token T, sample BASELINE_WINDOWS random 60-second windows that do not overlap any subject event, and count distinct signing wallets in each. This is the number of wallets that act in an arbitrary minute of that token's life.",
+    "BASELINE_WINDOWS": 10,
+    "whyItIsTheControl": "a busy token has 'followers' by coincidence. Without this, every subject in a high-volume token looks copied. This is the control whose absence produced the exchange result: the previous comparison group could not exhibit the confound, so the confound went unseen."
+  },
+  "endpoint": {
+    "H0": "followers after a subject's buy = wallets in an arbitrary window",
+    "DIRECTION_PREDICTED": "subject events are followed by MORE distinct wallets",
+    "test": "paired: per subject-event, followers minus that token's median baseline; sign test across all events, two-sided",
+    "passCondition": "p < 0.05 AND the median difference is positive",
+    "failCondition": "p >= 0.05, or the median difference is negative. A negative result is a failure, not a reinterpretation."
+  },
+  "effectRequires": [
+    {
+      "property": "at least 20 subject events (wallet-token pairs) are measurable",
+      "minimum": 20,
+      "why": "below this the sign test cannot reach p<0.05 even if every event is positive. STOP rather than report an underpowered number."
+    },
+    {
+      "property": "baseline windows vary",
+      "rule": "the token's baseline counts must not all be identical",
+      "why": "if every window has the same wallet count the comparison is degenerate."
+    }
+  ],
+  "singleTestRule": "one window length, one statistic, one test. No sweeping of LEAD_WINDOW_S after seeing results.",
+  "knownLimits": [
+    "a transaction touching a token is not necessarily a BUY; direction is not parsed, so 'follower' means 'acted on the same token', which over-counts",
+    "top-holder status is measured now, not at the time of the event",
+    "pump.fun tokens only, and only tokens that exceeded $10M"
+  ]
+}
