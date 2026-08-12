@@ -8,14 +8,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = host.includes("localhost") ? "http" : "https";
   const metadataBase = new URL(`${protocol}://${host}`);
   const title = "Minority Prophet — Truth Is Not Popularity";
-  const description = "Public research and experiments for distinguishing independent evidence from copied consensus.";
+  const description = "A same-model, same-world study measuring truth recovery with claims alone, provenance, and Minority Prophet's deterministic evidence analysis.";
   return {
     metadataBase,
     title,
     description,
     icons: { icon: "/favicon.svg" },
-    openGraph: { title, description, images: [{ url: "/og-capability-v1.png", width: 1731, height: 909 }] },
-    twitter: { card: "summary_large_image", title, description, images: ["/og-capability-v1.png"] },
+    openGraph: { title, description, images: [{ url: "/og-lift-v11.png", width: 1732, height: 908 }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og-lift-v11.png"] },
   };
 }
 

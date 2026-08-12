@@ -1,4 +1,5 @@
 import { SiteFooter, SiteNav } from "./components/site-chrome";
+import { formatPercent, liftModels } from "./lib/lift-study";
 import { paperUrl } from "./lib/tournament";
 
 export default function Home() {
@@ -9,9 +10,9 @@ export default function Home() {
       <div className="hero-copy">
         <p className="eyebrow"><span /> EVIDENCE-AWARE AGGREGATION</p>
         <h1>Truth is not<br /><em>popularity.</em></h1>
-        <p className="lede">Minority Prophet tests whether systems can distinguish independent evidence from copied consensus—without confusing an evidence assessment with permission.</p>
+        <p className="lede">Minority Prophet tests whether systems can distinguish independent evidence from copied consensus. In a complete 192-cell development study, the same models improved again when provenance was augmented with the MP receipt.</p>
         <div className="hero-actions">
-          <a className="button primary" href="#experiments">Explore the evidence <span>↓</span></a>
+          <a className="button primary" href="/experiments/epistemic-lift">See the lift study <span>→</span></a>
           <a className="button secondary" href={paperUrl}>Read the paper <span>→</span></a>
         </div>
       </div>
@@ -30,8 +31,18 @@ export default function Home() {
     </section>
 
     <section className="experiment-index" id="experiments">
-      <div className="experiment-index-heading"><p className="section-index">02 / LIVE EXPERIMENTS</p><h2>See the claim.<br /><em>Inspect the evidence.</em></h2><p>Two separate experiences: one bounded conformance tournament and one interactive synthetic world. Neither is the full Baseline → Provenance → Minority Prophet lift study.</p></div>
+      <div className="experiment-index-heading"><p className="section-index">02 / LIVE EXPERIMENTS</p><h2>See the claim.<br /><em>Measure the lift.</em></h2><p>Three distinct experiments: a same-model causal lift study, a bounded method-conformance tournament, and an interactive synthetic world. Their claims and units stay separate.</p></div>
       <div className="experiment-preview-grid">
+        <article className="experiment-preview lift-preview">
+          <p className="panel-label">EPISTEMIC LIFT v1.1 · COMPLETE DEVELOPMENT STUDY</p>
+          <div className="lift-preview-layout"><div><h3>Baseline → Provenance<br />→ Minority Prophet.</h3><p>Two models faced the same 32 frozen worlds in three controlled conditions. Only the available epistemic information changed.</p></div><div className="lift-preview-chart">
+            {liftModels.map((model) => <div key={model.name}><header><b>{model.name}</b><span>C − B <strong>+{formatPercent(model.mpGain)}</strong></span></header><p><i style={{ width: `${model.baseline}%` }} /><span>A {formatPercent(model.baseline)}</span></p><p><i style={{ width: `${model.provenance}%` }} /><span>B {formatPercent(model.provenance)}</span></p><p className="mp"><i style={{ width: `${model.minorityProphet}%` }} /><span>C {formatPercent(model.minorityProphet)}</span></p></div>)}
+          </div></div>
+          <div className="preview-numbers"><div><strong>192/192</strong><span>completed cells</span></div><div><strong>0</strong><span>failures</span></div><div><strong>Both</strong><span>paired p &lt; 0.05</span></div></div>
+          <p className="preview-cost-note">Validated DEMO result on synthetic development worlds—not yet an independent hidden evaluation or official leaderboard entry.</p>
+          <a className="preview-link" href="/experiments/epistemic-lift">Open the complete lift result <span>→</span></a>
+        </article>
+
         <article className="experiment-preview tournament-preview" id="leaderboard">
           <p className="panel-label">CAPABILITY TOURNAMENT V1</p>
           <h3>Same packet.<br />Different methods.</h3>
@@ -43,7 +54,7 @@ export default function Home() {
           </div>
           <div className="preview-cost-list" aria-label="Selected individual run estimates"><span>Canonical C <b>$0 model</b></span><span>GPT Terra A <b>≈ $0.89</b></span><span>Claude Opus A <b>≈ $3.25</b></span></div>
           <p className="preview-cost-note">Conformance result only: C is deterministic code, not the same model plus Minority Prophet. The 128 dispositions are not 128 independent trials, no A→B→C lift is estimated, and nothing is combined.</p>
-          <a className="preview-link" href="/experiments/capability-tournament">Open the full result <span>→</span></a>
+          <a className="preview-link" href="/experiments/capability-tournament">Open the conformance result <span>→</span></a>
         </article>
 
         <article className="experiment-preview observatory-preview" id="dashboard">
