@@ -1,0 +1,37 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-015",
+  "hypothesis": "HRI-2",
+  "version": "v0.1",
+  "title": "Do evidence roots mark where new evidence entered?",
+  "status": "collection-rule-frozen",
+  "frozenBefore": "any OpenAlex query was issued for this experiment",
+  "whyFrozenFirst": "Both ground-truth signals here -- work type and retraction -- are cheap to slice many ways. A false-root rate computed after choosing which slice to report is a number chosen knowing what it produces. The slice, the criterion and the exclusions are fixed here.",
+  "dependsOn": {
+    "experiment": "KL-014 v0.3",
+    "what": "a root criterion demonstrated to recover known-independent observations",
+    "ifThatFails": "HRI-2 is answered vacuously and reports that, rather than computing a false-root rate over roots that are not measuring independence. This is registered now so the dependency cannot be quietly dropped if v0.3 is inconvenient."
+  },
+  "groundTruth": [
+    {
+      "id": "G1-structural",
+      "signal": "OpenAlex work type",
+      "rule": "type=review is non-originative by definition; a review classified as an evidence root is a false root",
+      "noJudgementRequired": true
+    },
+    {
+      "id": "G2-retraction",
+      "signal": "OpenAlex is_retracted, refined by retraction reason",
+      "rule": "a retracted work whose retraction concerns data or results is a root whose evidence was never there",
+      "caveat": "retraction is NOT wrongness. Authorship and ethics retractions may leave sound data. Reason is required; is_retracted alone is insufficient and using it alone is prohibited."
+    }
+  ],
+  "endpoints": {
+    "primary": "false-root rate: proportion of works classified as evidence roots that are type=review",
+    "secondary": "retraction-cascade depth: number of works transitively depending on a data-related retracted root",
+    "H0": "root status is uncorrelated with originative status; false-root rate equals the base rate of reviews in the corpus"
+  },
+  "whyTheSecondaryMattersBeyondThisHypothesis": "A retraction is a root-set error occurring in the world rather than in a constructed witness. T5 (root_error_tolerance, formal/lean/) states what a margin survives when the root set is disturbed by k. Retraction cascades are the first chance to observe that disturbance empirically rather than assume it.",
+  "stopRule": "corpus declared before any query and not extended; if retraction reasons cannot be separated into data-related and administrative for the declared corpus, the secondary endpoint is reported as unassignable rather than computed from is_retracted alone.",
+  "prohibitedOverstatement": "Do not equate retraction with error. Do not report a false-root rate without the corpus base rate of reviews beside it, since the null is that they are equal."
+}
