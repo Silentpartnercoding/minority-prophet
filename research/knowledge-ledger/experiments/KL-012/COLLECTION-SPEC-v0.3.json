@@ -1,0 +1,50 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.3",
+  "experimentId": "KL-012",
+  "supersedes": "COLLECTION-SPEC-v0.2.json",
+  "title": "Do high-market-cap tokens have MORE shared-funding creators than the rest?",
+  "status": "collection-rule-frozen",
+  "directionIsReversedFromV02": true,
+  "whyReversed": "v0.2 predicted that non-graduated tokens would cluster MORE, on the theory that manufactured backing predicts failure. It returned a null: 27.9% against 24.2%, p=0.203. The null stands and is not withdrawn.\n\nThe reason it was uninformative is that its outcome was wrong. `complete` means a bonding curve filled, not that a token succeeded: the median graduated token in that window had a market cap of $1,539. Both arms were overwhelmingly failures, so the comparison was failures-that-graduated against failures-that-did-not.\n\nAn exploratory re-analysis using market cap, at thresholds chosen AFTER seeing the distribution, found the opposite of the v0.2 prediction: above $10M, 50% of winning creators sat in a shared-funding cluster against 21% of the rest, p=0.010 raw and 0.040 after Bonferroni for four thresholds. That is a lead, not a result -- n=16, and moving two tokens across the line takes p from 0.010 to 0.123.\n\nThis registration tests that lead properly, and predicts the REVERSED direction in advance so it cannot be claimed either way after the fact.",
+  "hypothesis": "Shared funding infrastructure is a competence signal, not a fraud signal: operators with real distribution launch repeatedly from shared funding, amateurs launch once from a fresh wallet.",
+  "design": "case-control on a FRESH window",
+  "population": {
+    "source": "pump.fun public API, frontend-api-v3.pump.fun/coins",
+    "freshWindowRule": "the window MUST NOT overlap v0.2's, which ran 2026-08-10 15:13 to 2026-08-11 17:35 UTC. Any token whose created_timestamp falls inside that range is discarded. The lead was generated on that data and cannot be confirmed by it.",
+    "v02WindowStart": 1786412000000,
+    "v02WindowEnd": 1786505700000,
+    "frame": "all tokens retrievable in the fresh window, graduated or not"
+  },
+  "outcome": {
+    "variable": "usd_market_cap",
+    "WINNER_THRESHOLD_USD": 10000000,
+    "whyFixedNow": "$10M is fixed here, before the fresh population exists, because it is the threshold the lead appeared at. Re-tuning it after collection would be choosing the bar that makes the result work -- and the v0.2 experiment exists precisely because that error is easy.",
+    "noOtherThresholdMayBeReported": "exactly one threshold is tested. v0.2's exploratory pass tried four and one reached significance; testing several again would reintroduce the multiple-comparison problem the Bonferroni correction only partly answered."
+  },
+  "exposure": {
+    "measure": "creator sits in a multi-creator shared-funding cluster",
+    "MAX_HOPS": 1,
+    "whyOneHop": "v0.2 specified three hops and implemented one. Rather than silently keep the mismatch, one hop is registered as the measure. Deeper ancestry is a separate question and would be a separate registration.",
+    "HUB_FANOUT": 25,
+    "hubRule": "a funder of 25 or more creators, or one whose history could not be fully retrieved, is a HUB and merges nothing. Failing closed pushes the measured effect toward null, which is the safe direction for a hypothesis we now expect to be true."
+  },
+  "endpoint": {
+    "H0": "winners and the rest have the same shared-funding clustering rate",
+    "DIRECTION_PREDICTED": "winners cluster MORE",
+    "test": "Fisher exact, two-sided",
+    "passCondition": "p < 0.05 AND winners cluster more",
+    "failCondition": "p >= 0.05, or winners cluster LESS. A result in the v0.2 direction is a failure of THIS registration, not a revival of that one."
+  },
+  "effectRequires": [
+    {
+      "property": "at least 30 winners above the threshold in the fresh window",
+      "minimum": 30,
+      "why": "the lead rests on n=16, where two tokens move p across 0.05. Below 30 the run cannot improve on what generated it, and STOPS rather than reporting a second fragile number."
+    },
+    {
+      "property": "at least one multi-creator cluster exists",
+      "minimum": 1
+    }
+  ],
+  "stopRule": "collect until the winner count reaches 30 or the API's reachable window is exhausted, whichever comes first. The threshold is never lowered to reach 30."
+}
