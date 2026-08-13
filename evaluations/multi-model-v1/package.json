@@ -1,10 +1,27 @@
 {
-  "name":"minority-prophet-eval","version":"0.1.0","private":true,"type":"module",
-  "description":"Reproducible A/B/C evaluation of truth recovery under correlated consensus.",
+  "name":"@minority-prophet/engine","version":"0.1.0","private":false,"type":"module",
+  "description":"Provider-neutral deterministic evidence-structure engine and reproducible A/B/C evaluation harness.",
+  "license":"Apache-2.0",
+  "bin":{
+    "mp-engine":"runtime-cli.js",
+    "mp-engine-mcp":"mp-mcp-server.js"
+  },
+  "exports":{
+    ".":"./mp-tool-v2.js",
+    "./mcp":"./mp-mcp-server.js",
+    "./http":"./runtime-http.js",
+    "./provenance":"./provenance-receipt.js"
+  },
+  "files":[
+    "runtime-cli.js","runtime-http.js","mp-mcp-server.js","mp-tool-v2.js",
+    "provenance-inference.js","provenance-receipt.js","provenance-service.js",
+    "http-utils.js","src/domain/constants.js","src/lib/hash.js","RUNTIME-README.md","RELEASE.md","Dockerfile.runtime","LICENSE"
+  ],
   "scripts":{
-    "test":"node --test core.test.js lift.test.js live-tool.test.js provenance-discovery.test.js provenance-receipt.test.js provenance-service.test.js provenance-configuration-proof.test.js hard-worlds.test.js capability-worlds.test.js capability-tournament.test.js capability-tournament-claude.test.js capability-tournament-claude-audit.test.js canonical-capability-runner.test.js persistence.test.js pipeline.test.js resume.test.js artifacts.test.js web.test.js cli-provider.test.js",
+    "test":"node --test core.test.js lift.test.js live-tool.test.js provenance-discovery.test.js provenance-receipt.test.js provenance-service.test.js provenance-configuration-proof.test.js hard-worlds.test.js capability-worlds.test.js capability-tournament.test.js capability-tournament-claude.test.js capability-tournament-claude-audit.test.js canonical-capability-runner.test.js persistence.test.js pipeline.test.js resume.test.js artifacts.test.js web.test.js cli-provider.test.js runtime-product.test.js release-artifact.test.js",
+    "pack:evidence":"node build-runtime-release.mjs",
     "generate":"node cli.js generate","run:demo":"node cli.js run-demo","run:pilot":"node real-pilot.js","verify":"node cli.js verify",
     "run:hard":"node hard-tournament.js","audit:hard":"node hard-audit.js","run:capability":"node capability-tournament.js","run:capability:claude":"node capability-tournament-claude.js","run:lift":"node epistemic-lift-v1.js","run:lift:v11":"node epistemic-lift-v11.js","run:lift:live-tool":"node epistemic-live-tool-v1.js","run:provenance-discovery":"node provenance-discovery-run.js","probe:models":"node model-probe.js","publish:local":"node cli.js publish-local","dev":"node cli.js serve"
   },
-  "engines":{"node":">=18.18"}
+  "engines":{"node":">=22.13"}
 }
