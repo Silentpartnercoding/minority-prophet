@@ -1,0 +1,47 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.2",
+  "experimentId": "KL-012",
+  "supersedes": "COLLECTION-SPEC-v0.1.json",
+  "title": "Do graduated tokens have more independent funding roots than non-graduated ones?",
+  "status": "collection-rule-frozen",
+  "whyV1WasAbandoned": "v0.1 built its population by scanning initializeMint across 6,000 blocks: 1,570 tokens. An external check found 2 of them ever had a tradeable pair, and both had zero liquidity. Scanning mint creation catches every token on the chain, overwhelmingly spam and tests, so the population was noise. Reaching 100 tradeable tokens that way needs ~302,000 blocks -- about six days of continuous scanning. The reachability check cost minutes and saved that, which is the second time BL-060 has paid for itself.",
+  "design": "case-control",
+  "whyCaseControl": "The outcome is rare. A blind cohort large enough to contain enough winners is prohibitive -- the v0.1 arithmetic. Case-control samples cases and controls separately and compares their structure, which is the standard answer to a rare outcome and removes the need for an enormous cohort. It cannot estimate the base rate, and this experiment does not claim one.",
+  "population": {
+    "source": "pump.fun public API, frontend-api-v3.pump.fun/coins",
+    "whyThisSource": "It supplies mint, creator, created_timestamp and the outcome directly, so the population and the outcome come from a party we do not control and cannot edit. Solana RPC is then used only for funding lineage, which is the one thing no API provides.",
+    "cases": "complete=true, sorted by created_timestamp DESC, paged to the API limit",
+    "controls": "complete=false, same sort, same paging, same window",
+    "windowRule": "controls are restricted to the created_timestamp range spanned by the cases, so both groups are drawn from one launch window. A control outside that range is discarded, not re-sampled.",
+    "scopeLimit": "pump.fun only. This is one launchpad, not 'memecoins'. Any result must say so."
+  },
+  "outcome": {
+    "variable": "complete",
+    "meaning": "the bonding curve filled and the token moved to an AMM pool",
+    "whyNotPrice": "price requires pool-reserve parsing and a choice of horizon; `complete` is a discrete milestone the source records itself, with no threshold chosen by us.",
+    "notUsed": "usd_market_cap is recorded for description and is NOT the endpoint. Market cap was inspected before this rule was frozen, so using it as an endpoint would be choosing one after seeing it."
+  },
+  "exposure": {
+    "voiceCount": "1 per token -- the creator",
+    "rootMeasure": "creators are grouped by shared funding ancestor within MAX_HOPS, after hub exclusion, exactly as v0.1 defined. A group of creators sharing a non-hub ancestor is one root.",
+    "MAX_HOPS": 3,
+    "HUB_MIN_TX": 50000,
+    "hubRule": "a funder whose full history cannot be retrieved is treated as a HUB and merges nothing -- failing closed, since merging on unknown evidence manufactures the result while refusing only costs sensitivity."
+  },
+  "endpoint": {
+    "H0": "graduated and non-graduated tokens have the same creator-clustering rate",
+    "statistic": "share of creators in each group that belong to a multi-creator funding cluster",
+    "test": "Fisher exact, two-sided",
+    "passCondition": "p < 0.05 and the direction is stated before the test is run",
+    "directionPredicted": "non-graduated tokens will show MORE clustering, because the hypothesis is that manufactured backing predicts failure. Stated here so a result in the opposite direction cannot be reinterpreted as a success.",
+    "failCondition": "p >= 0.05, or the effect runs opposite to the prediction"
+  },
+  "effectRequires": [
+    {
+      "property": "at least one multi-creator funding cluster exists in the combined sample",
+      "minimum": 1,
+      "why": "BL-060. If every creator is its own root, voice and root counts are identical and the endpoint is unreachable. The run STOPS and reports that rather than producing a p-value from a degenerate comparison."
+    }
+  ],
+  "whatWasSeenBeforeFreezing": "API paging depth, group sizes (200 each), and the market-cap distribution of graduated tokens. NOT seen: any relationship between funding structure and outcome, which is the thing under test. Recorded so a reader can judge the contamination risk rather than take a claim of blindness on trust."
+}
