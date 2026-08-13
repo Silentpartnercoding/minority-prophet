@@ -29,12 +29,43 @@ class EvidenceAlignmentTests(unittest.TestCase):
         ledger = json.loads((ROOT / "formal/THEOREM-LEDGER.json").read_text())
         entries = {entry["id"]: entry for entry in ledger["claims"]}
         bounded = entries["LEDGER-H2"]
-        self.assertEqual(bounded["proof_status"], "tested_reference_implementation")
+        # `tested_implementation` is the declared evidence class. The
+        # reference-vs-production distinction this entry needs is a DEPLOYMENT
+        # qualifier, not an evidence class, so it lives in its own field and in
+        # the prose -- not in proof_status. See status_vocabulary_is_closed.
+        self.assertEqual(bounded["proof_status"], "tested_implementation")
+        self.assertEqual(bounded["deployment_status"], "reference_implementation_only")
         self.assertGreaterEqual(len(bounded["implementation_tests"]), 4)
         self.assertIn("not evidence that a particular production path uses it",
                       bounded["prohibited_overstatement"])
+        self.assertIn("A deployment must still supply",
+                      bounded["security_interpretation"])
         requirements = (ROOT / "PROVENANCE-REQUIREMENTS.md").read_text()
         self.assertNotIn("new in v3, unimplemented", requirements)
+
+    def test_ledger_status_vocabulary_is_closed(self):
+        """Every proof_status must be a declared evidence class.
+
+        Regression guard. LEDGER-H2 previously carried an undeclared status,
+        `tested_reference_implementation`, pinned by this very test file -- so
+        the drift was locked in rather than caught. The evidence classes are the
+        one mechanism keeping "a reference implementation exists" from being
+        read as "this is proved"; the list must not grow by accident.
+        """
+        ledger = json.loads((ROOT / "formal/THEOREM-LEDGER.json").read_text())
+        declared = set(ledger["status_vocabulary"])
+        self.assertIn("status_vocabulary_is_closed", ledger)
+        undeclared = sorted(
+            {entry["proof_status"] for entry in ledger["claims"]} - declared
+        )
+        self.assertEqual(
+            undeclared, [],
+            f"undeclared proof_status value(s) {undeclared}; either use a "
+            f"declared class from {sorted(declared)} or add the new class to "
+            "status_vocabulary WITH a definition, deliberately",
+        )
+        for entry in ledger["claims"]:
+            self.assertIn("prohibited_overstatement", entry, entry["id"])
 
     def test_active_paper_uses_canonical_exp007a_values(self):
         paper = (ROOT / "papers/minority-prophet-v1.0.7.md").read_text()
