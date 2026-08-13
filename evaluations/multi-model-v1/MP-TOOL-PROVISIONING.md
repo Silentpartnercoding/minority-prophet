@@ -11,6 +11,15 @@ Minority Prophet is deterministic code joined to a model through a narrow, read-
 
 The same contract can be exposed as an in-process function, local service, MCP tool, or HTTP endpoint. Transport must not change its semantics.
 
+The local evaluation server also exposes an opt-in loopback adapter at
+`POST /internal/provenance/compile` when `MP_PROVENANCE_TOKEN` is configured.
+It accepts an exactly bound evidence packet and lineage proposal, then returns
+the deterministic `mp-provenance-receipt.v1`. The endpoint rejects unbound
+fields and any request that claims protected-action authority. It does not call
+a model, browse, choose a route, or authorize the protected action. A caller
+may obtain the proposal from deterministic code or a separately controlled
+secondary model; the receipt compiler applies the same validation either way.
+
 ## Benchmark shape
 
 Condition C receives a precomputed receipt rather than letting the model decide whether to call a live tool. This guarantees every C trial receives the identical deterministic output and removes tool-choice, latency, retry, and provider tool-calling differences from the causal comparison.
@@ -20,3 +29,7 @@ The receipt input is built only from the exact bytes visible in Condition B. Hid
 ## Boundary
 
 This candidate engine tests evidence structure. It does not prove source truth, validate externally supplied provenance, browse for missing evidence, recommend an answer, or authorize an action. Those capabilities require separate evaluation and controls.
+
+The HTTP adapter is loopback-only because the server binds to `127.0.0.1`.
+Production transport security, service identity, credential custody, and
+network policy remain deployment responsibilities and are not configured here.
