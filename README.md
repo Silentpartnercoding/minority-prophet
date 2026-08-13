@@ -7,6 +7,25 @@
 Minority Prophet asks whether grounded evidence can survive an overwhelming
 copied majority.
 
+## Installable surfaces
+
+The repository deliberately separates research code from the deterministic
+agent runtime.
+
+```sh
+# Python benchmark, aggregation, and provenance primitives
+python -m pip install .
+
+# Provider-neutral read-only MCP/HTTP engine
+npm --prefix evaluations/multi-model-v1 install
+MP_ENGINE_ALLOW_INSECURE_LOCAL=1 npm --prefix evaluations/multi-model-v1 exec mp-engine -- doctor
+```
+
+The engine package exposes only versioned runtime modules in its publish
+allowlist. See
+[`evaluations/multi-model-v1/RUNTIME-README.md`](evaluations/multi-model-v1/RUNTIME-README.md).
+Installation does not authorize an agent to execute protected actions.
+
 ## Core invariant
 
 **A recorded copy must not gain a new vote.** In plain language: photocopying one

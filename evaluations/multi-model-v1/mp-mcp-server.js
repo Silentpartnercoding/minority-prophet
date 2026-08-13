@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, realpathSync } from 'node:fs';
 import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 import { executeMinorityProphetTool, MP_TOOL_CONTRACT_HASH, MP_TOOL_DEFINITION } from './mp-tool-v2.js';
@@ -85,7 +85,7 @@ function send(message) {
   process.stdout.write(`${JSON.stringify(message)}\n`);
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+export function startMcpStdio() {
   let pending = '';
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (chunk) => {
@@ -99,3 +99,11 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     }
   });
 }
+
+function invokedDirectly() {
+  if (!process.argv[1]) return false;
+  try { return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(process.argv[1]); }
+  catch { return false; }
+}
+
+if (invokedDirectly()) startMcpStdio();

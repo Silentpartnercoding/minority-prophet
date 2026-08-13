@@ -49,6 +49,8 @@ results/*.json
 # typescript
 next-env.d.ts
 /dist/
+/build/
+*.egg-info/
 /.wrangler/
 /outputs/
 /work/
