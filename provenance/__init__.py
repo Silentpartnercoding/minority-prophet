@@ -9,6 +9,7 @@ from .graph import (
     UnattributedRootError,
     Violation,
     build,
+    resolvable_reference,
 )
 
 __all__ = [
@@ -20,6 +21,7 @@ __all__ = [
     "UnattributedRootError",
     "Violation",
     "build",
+    "resolvable_reference",
 ]
 from .root_registry import (
     ClockError,

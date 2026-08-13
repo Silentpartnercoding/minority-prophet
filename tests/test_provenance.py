@@ -11,7 +11,7 @@ def node(node_id, parents=()):
         observer_id=f"observer-{node_id}",
         source_id=f"source-{node_id}",
         confidence=0.9,
-        evidence={"measurement": 1},
+        evidence={"measurement": "https://example.org/obs/" + node_id},
         copied_from=parents,
     )
 
@@ -58,10 +58,25 @@ class UnattributedRootTests(unittest.TestCase):
             evidence=evidence, copied_from=parents,
         )
 
-    def test_gate_is_off_by_default_for_backward_compatibility(self):
+    def test_gate_is_ON_by_default(self):
+        """Flipped 2026-08-13. Opting out is now explicit and visible."""
+        from provenance import UnattributedRootError
+
+        with self.assertRaises(UnattributedRootError):
+            EvidenceGraph().add(self._node("bare", {}))
+        permissive = EvidenceGraph(require_root_evidence=False)
+        permissive.add(self._node("bare", {}))
+        self.assertEqual(permissive.roots("bare"), frozenset({"bare"}))
+
+    def test_named_but_uncheckable_evidence_is_refused(self):
+        """Presence is not enough; the reference must be dereferenceable in form."""
+        from provenance import UnattributedRootError
+
         graph = EvidenceGraph()
-        graph.add(self._node("bare", {}))
-        self.assertEqual(graph.roots("bare"), frozenset({"bare"}))
+        with self.assertRaises(UnattributedRootError):
+            graph.add(self._node("vague", {"source": "trust me"}))
+        graph.add(self._node("cited", {"source": "10.1038/nature12373"}))
+        self.assertEqual(graph.roots("cited"), frozenset({"cited"}))
 
     def test_root_without_evidence_is_refused_when_gate_is_on(self):
         from provenance import UnattributedRootError
@@ -72,13 +87,13 @@ class UnattributedRootTests(unittest.TestCase):
 
     def test_root_with_evidence_is_accepted_when_gate_is_on(self):
         graph = EvidenceGraph(require_root_evidence=True)
-        graph.add(self._node("cited", {"source": "wire-123"}))
+        graph.add(self._node("cited", {"source": "https://example.org/wire-123"}))
         self.assertEqual(graph.roots("cited"), frozenset({"cited"}))
 
     def test_non_root_is_unaffected_by_the_gate(self):
         """Only parentless claims mint roots, so only they are gated."""
         graph = EvidenceGraph(require_root_evidence=True)
-        graph.add(self._node("origin", {"source": "wire-123"}))
+        graph.add(self._node("origin", {"source": "https://example.org/wire-123"}))
         graph.add(self._node("copy", {}, ("origin",)))
         self.assertEqual(graph.roots("copy"), frozenset({"origin"}))
 

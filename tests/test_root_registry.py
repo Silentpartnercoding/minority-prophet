@@ -67,7 +67,12 @@ class RootRegistryTests(unittest.TestCase):
             return EvidenceNode(
                 node_id=node_id, proposition_id="weather", value=True,
                 observer_id="issuer-a", source_id="sensor-a", confidence=1.0,
-                evidence={"digest": "bound"},
+                # A resolvable digest: EvidenceGraph now requires roots to name
+                # something dereferenceable (2026-08-13). This test is about
+                # root AUTHORIZATION, so it supplies valid evidence in order to
+                # reach the authorization assertion rather than tripping the
+                # attribution gate first.
+                evidence={"digest": "b1946ac92492d2347c6235b4d2611184"},
             )
 
         graph.add(evidence_node(receipt.root_id))

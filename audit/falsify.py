@@ -530,7 +530,8 @@ def probe_implementation():
     def node(nid, value, parents=()):
         return EvidenceNode(node_id=nid, proposition_id="p", value=value,
                             observer_id="o", source_id="s", confidence=1.0,
-                            evidence={}, copied_from=tuple(parents))
+                            evidence={"ref": f"https://example.org/{nid}"},
+                            copied_from=tuple(parents))
 
     # H1b: is side-consistency enforced anywhere?
     g = EvidenceGraph()
@@ -561,8 +562,8 @@ def probe_implementation():
     g2 = EvidenceGraph()
     g2.add(node("r2", True))
     n2 = EvidenceNode(node_id="c2", proposition_id="DIFFERENT", value=True,
-                      observer_id="o", source_id="s", confidence=1.0, evidence={},
-                      copied_from=("r2",))
+                      observer_id="o", source_id="s", confidence=1.0,
+                      evidence={"ref": "https://example.org/c2"}, copied_from=("r2",))
     try:
         g2.add(n2)
         prop_checked = False
