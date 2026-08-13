@@ -1,0 +1,12 @@
+export const CONDITIONS = Object.freeze({ BASELINE: 'A_RAW_BASELINE', PROVENANCE: 'B_PROVENANCE_AVAILABLE', MINORITY_PROPHET: 'C_MINORITY_PROPHET', ADVERSARIAL: 'D_ADVERSARIAL' });
+export const RESULT_NAMESPACES = Object.freeze({ DEMO: 'DEMO', VERIFIED: 'VERIFIED' });
+export const RUN_STATUS = Object.freeze({ RUNNING: 'RUNNING', COMPLETED: 'COMPLETED', FAILED: 'FAILED', INVALIDATED: 'INVALIDATED' });
+export const BENCHMARK_VERSION = '0.1.0-dev';
+export const HARD_BENCHMARK_VERSION = '0.2.0-hard-dev';
+export const LIFT_BENCHMARK_VERSION = '0.3.0-lift-candidate';
+export const SCORER_VERSION = 'mp-score-v2';
+export const PROMPT_VERSION = 'abc-prompts-v5';
+export const MP_ENGINE_VERSION = 'mp-engine-v1';
+export const LIFT_PROMPT_VERSION = 'lift-prompts-v1';
+export const LIFT_MP_ENGINE_VERSION = 'mp-epistemic-tool-v2';
+export const TABLES = Object.freeze(['benchmark_versions','scenario_families','worlds','claims','provenance_edges','models','providers','model_versions','experiments','trials','raw_responses','parsed_responses','scores','benchmark_runs','verification_records','leaderboard_snapshots']);

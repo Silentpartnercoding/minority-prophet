@@ -1,0 +1,42 @@
+{
+  "schema": "mp-capability-summary.v1",
+  "status": "completed",
+  "run_date": "2026-08-11",
+  "protocol_commit": "977766b5e2bed77cf6bab948e56ab3fcb49c2a05",
+  "runner_commit": "9888f25970186fb219a0d193a192f8d26f53ede1",
+  "manifest_hash": "sha256:e65d843669b1a0ead2a468ed8f05a44f3d74cf6e8184c05d2f697e427a8ec4ff",
+  "cases": 8,
+  "decisions_per_contestant": 128,
+  "ai_trials": 48,
+  "ai_failures": 0,
+  "audit": {
+    "reasoning_lane_tool_events": 0,
+    "tool_lane_shell_calls": 78,
+    "tool_lane_web_searches": 0,
+    "tool_lane_installs": 0,
+    "outside_path_accesses": 0,
+    "hidden_or_canonical_accesses": 0
+  },
+  "ai_lanes": [
+    {"model":"gpt-5.6-sol","lane":"reasoning","correct":102,"decisions":128,"exact_cases":5,"cases":8,"execution_ms":512249,"input_tokens":300694,"output_tokens":25952,"list_price_proxy_usd":2.237102},
+    {"model":"gpt-5.6-sol","lane":"tools","correct":69,"decisions":128,"exact_cases":4,"cases":8,"execution_ms":351070,"input_tokens":1101609,"output_tokens":12559,"tool_calls":19,"list_price_proxy_usd":2.418447},
+    {"model":"gpt-5.6-terra","lane":"reasoning","correct":116,"decisions":128,"exact_cases":5,"cases":8,"execution_ms":365015,"input_tokens":300475,"output_tokens":16746,"list_price_proxy_usd":0.8900575},
+    {"model":"gpt-5.6-terra","lane":"tools","correct":68,"decisions":128,"exact_cases":4,"cases":8,"execution_ms":245782,"input_tokens":1097326,"output_tokens":9151,"tool_calls":18,"list_price_proxy_usd":1.021252},
+    {"model":"gpt-5.6-luna","lane":"reasoning","correct":16,"decisions":128,"exact_cases":1,"cases":8,"execution_ms":296033,"input_tokens":289024,"output_tokens":13697,"list_price_proxy_usd":0.371206},
+    {"model":"gpt-5.6-luna","lane":"tools","correct":35,"decisions":128,"exact_cases":2,"cases":8,"execution_ms":496317,"input_tokens":1933985,"output_tokens":20412,"tool_calls":41,"list_price_proxy_usd":0.8089608}
+  ],
+  "fixed_methods": [
+    {"method":"minority_prophet_root_vote","correct":128,"decisions":128,"exact_cases":8,"cases":8,"elapsed_ns":18714750},
+    {"method":"standard_cluster_vote","correct":96,"decisions":128,"exact_cases":6,"cases":8,"elapsed_ns":9511959},
+    {"method":"standard_truthfinder","correct":17,"decisions":128,"exact_cases":0,"cases":8,"elapsed_ns":95432249},
+    {"method":"standard_head_majority","correct":12,"decisions":128,"exact_cases":0,"cases":8,"elapsed_ns":1920541},
+    {"method":"standard_accu_lite","correct":12,"decisions":128,"exact_cases":0,"cases":8,"elapsed_ns":732772874},
+    {"method":"standard_confidence_weighted","correct":6,"decisions":128,"exact_cases":0,"cases":8,"elapsed_ns":4182375},
+    {"method":"standard_dawid_skene","correct":0,"decisions":128,"exact_cases":0,"cases":8,"elapsed_ns":323136835}
+  ],
+  "canonical_provenance": {
+    "commit": "41911af5b372dbeec8513581d6970abcda4dd166",
+    "root_vote_sha256": "74ccf33aafc6de3281dee253558934a47f338e254c6a2e4b322556ff0db4328e",
+    "baselines_sha256": "c80ea6579d7bbe6061dd73b1d03666c175241d80eac38447aca11c0e3d34e3dd"
+  }
+}
