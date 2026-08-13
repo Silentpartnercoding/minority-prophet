@@ -1,0 +1,55 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.2",
+  "experimentId": "KL-013",
+  "title": "Do winning tokens come from creators who launch FEWER tokens?",
+  "status": "collection-rule-frozen",
+  "separateExperiment": "Registered as KL-013, not a fourth KL-012 attempt. KL-012 tested funding-cluster membership and is closed with a null and a failure. This tests a different exposure that needs no funding graph, so it is immune to KL-012's one-hop limitation. Numbering it separately stops a new hypothesis inheriting a closed experiment's record.",
+  "hypothesis": "Serial launchers are spraying; a creator who launches once is making a real attempt. So winners should come from creators with FEWER tokens.",
+  "provenanceOfTheHypothesis": "Observed incidentally while collecting KL-012 v0.2, before any funder was traced: graduated tokens averaged 1.22 tokens per creator, non-graduated 2.05. Never registered, never tested. It is a post-hoc observation and is treated as one -- KL-012 v0.3 has just demonstrated what happens to post-hoc leads, where a 50% effect became 5.9% on fresh data.",
+  "DIRECTION_PREDICTED": "winners have FEWER tokens per creator",
+  "population": {
+    "source": "pump.fun public API",
+    "freshWindowRule": "must not overlap KL-012 v0.2's window, which produced this hypothesis. KL-012 v0.3's token set is NOT excluded; see whyTheExclusionIsNarrowedAndNotDropped.",
+    "excludeV02Start": 1786412000000,
+    "excludeV02End": 1786505700000,
+    "frame": "tokens retrievable in the fresh window, graduated or not"
+  },
+  "outcome": {
+    "variable": "usd_market_cap",
+    "WINNER_THRESHOLD_USD": 10000000,
+    "whySameThreshold": "kept identical to KL-012 v0.3 rather than re-chosen. A new threshold picked now would be picked knowing what the old one produced."
+  },
+  "exposure": {
+    "measure": "tokensPerCreator -- count of tokens by that creator in the frame",
+    "statistic": "share of creators who launched MORE THAN ONE token in the frame, compared between winners and the rest",
+    "whyNoFundingGraph": "this measure is read directly from the population and requires no Solana RPC, so it cannot be blinded by the one-hop ancestry limit that constrains KL-012."
+  },
+  "endpoint": {
+    "H0": "winners and the rest are equally likely to be serial launchers",
+    "test": "Fisher exact, two-sided",
+    "passCondition": "p < 0.05 AND winners are LESS likely to be serial launchers",
+    "failCondition": "p >= 0.05, or winners are MORE likely. A significant result in the opposite direction is a failure, exactly as KL-012 v0.3 was."
+  },
+  "effectRequires": [
+    {
+      "property": "at least 30 winners in the fresh frame",
+      "minimum": 30,
+      "why": "KL-012 v0.3 ran at 34 and one token moved p from 0.048 to 0.183. Below 30 this cannot do better and STOPS."
+    },
+    {
+      "property": "at least 10% of creators launched more than one token",
+      "minimum": 0.1,
+      "why": "if almost nobody is a serial launcher the exposure barely varies and the endpoint is unreachable. STOP and report that."
+    }
+  ],
+  "singleTestRule": "one threshold, one statistic, one test. No thresholds are swept. KL-012's exploratory pass swept four and the one that reached significance did not replicate.",
+  "supersedes": "COLLECTION-SPEC-v0.1.json",
+  "whyV01Stopped": "v0.1 stopped on its own effectRequires: 0 winners against a required 30. The cause was its exclusion rule, not the world. It excluded every mint in KL-012 v0.3's population, and v0.3 had been collected by sorting on market_cap -- so the exclusion removed precisely the 34 tokens above $10M that the endpoint needs. The rule was not conservative, it was structurally incompatible with having any winners.\n\nThe stop is recorded rather than patched away. v0.1 is superseded, not edited.",
+  "whyTheExclusionIsNarrowedAndNotDropped": "The hypothesis came from KL-012 v0.2's data -- graduated 1.22 tokens per creator against 2.05 -- so v0.2's WINDOW remains excluded, and that exclusion is doing the real work.\n\nKL-012 v0.3's token set is no longer excluded. It was collected under a different registration to test a different exposure, funding-cluster membership, and tokens-per-creator was never computed on it at any point. The risk it guards against does not exist for this measure.\n\nStated plainly because the sequence looks bad: a rule was relaxed after it produced an unusable result. The justification is about the design -- an exclusion aimed at market-cap-sorted data cannot coexist with a market-cap endpoint -- and it would have been correct before the run. It was not noticed before the run, which is the honest part.",
+  "unchangedFromV01": [
+    "DIRECTION_PREDICTED: winners have FEWER tokens per creator",
+    "WINNER_THRESHOLD_USD: 10,000,000",
+    "effectRequires: >=30 winners, >=10% serial launchers",
+    "one threshold, one statistic, one test"
+  ]
+}
