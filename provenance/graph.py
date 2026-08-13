@@ -144,6 +144,59 @@ class EvidenceNode:
 
 
 @dataclass(frozen=True)
+class GateReport:
+    """What the root-evidence gate admitted and turned away.
+
+    A gate nobody reads is a gate nobody can tune. `refusal_rate` is the number
+    to watch, and BOTH directions are informative:
+
+      rate ~ 0.0   Either the incoming evidence genuinely carries references, or
+                   the gate is not wired up. Check `roots_admitted` is non-zero
+                   before concluding the first.
+      rate rising  Something upstream changed. Read `refused_by_reason` and a
+                   sample of `refused` before assuming the source got worse --
+                   the usual cause is a legitimate reference format that
+                   `resolvable_reference` does not recognise, which is a gap in
+                   the recogniser rather than in the data.
+      rate ~ 1.0   The graph is being starved. Almost certainly a format
+                   mismatch, not an attack.
+
+    There is no "correct" rate. On the corpus KL-014 measured, roughly 46% of
+    indexed journal articles record no ancestry at all, so a high rate on real
+    published material is expected rather than alarming. What matters is that
+    the number is SEEN, and that a change in it is noticed.
+    """
+
+    roots_offered: int
+    """Every parentless claim passed to `add`, whatever happened next."""
+    roots_refused: int
+    """Those the gate rejected. In strict mode they are absent from the graph;
+    in permissive mode they are PRESENT but flagged, and `immunity_applicable`
+    is False. The count is the same either way, which is the point."""
+    refused_by_reason: dict[str, int]
+    refused: tuple[str, ...]
+
+    @property
+    def roots_admitted(self) -> int:
+        """Roots the gate would let through. In permissive mode the graph also
+        contains the refused ones; this is the number that passed on merit."""
+        return self.roots_offered - self.roots_refused
+
+    @property
+    def refusal_rate(self) -> float:
+        """Refused roots as a fraction of roots offered. 0.0 if none offered."""
+        return self.roots_refused / self.roots_offered if self.roots_offered else 0.0
+
+    def summary(self) -> str:
+        """One line, suitable for a log."""
+        if not self.roots_offered:
+            return "root gate: no roots offered"
+        reasons = ", ".join(f"{k}={v}" for k, v in sorted(self.refused_by_reason.items()))
+        return (f"root gate: {self.roots_offered} offered, {self.roots_refused} refused "
+                f"({self.refusal_rate:.1%})" + (f" [{reasons}]" if reasons else ""))
+
+
+@dataclass(frozen=True)
 class Violation:
     """A rejected-or-recorded integrity failure, kept for audit."""
 
@@ -178,6 +231,7 @@ class EvidenceGraph:
         self._strict = strict
         self._root_authority = root_authority
         self._require_root_evidence = require_root_evidence
+        self._roots_offered = 0
 
     # ------------------------------------------------------------------ ingest
 
@@ -194,6 +248,9 @@ class EvidenceGraph:
                 raise RootAuthorizationError(
                     f"root {node.node_id!r} is not active in the configured authority"
                 )
+
+        if node.is_root:
+            self._roots_offered += 1
 
         if node.is_root and self._require_root_evidence:
             if resolvable_reference(node.evidence) is None:
@@ -245,6 +302,26 @@ class EvidenceGraph:
             )
 
     # ------------------------------------------------------------------ queries
+
+    def gate_report(self) -> GateReport:
+        """Admitted-vs-refused counts for the root-evidence gate.
+
+        Populated in BOTH modes: strict raises after recording, permissive
+        records and continues. A caller that lets the exception escape should
+        still hold the graph long enough to read this, or the refusal is
+        invisible -- which is the failure this method exists to prevent.
+        """
+        refused = [v for v in self._violations if v.kind == "unattributed_root"]
+        by_reason: dict[str, int] = {}
+        for violation in refused:
+            key = "no_evidence" if "no evidence at all" in violation.detail else "unresolvable_reference"
+            by_reason[key] = by_reason.get(key, 0) + 1
+        return GateReport(
+            roots_offered=self._roots_offered,
+            roots_refused=len(refused),
+            refused_by_reason=by_reason,
+            refused=tuple(v.node_id for v in refused),
+        )
 
     @property
     def violations(self) -> tuple[Violation, ...]:
