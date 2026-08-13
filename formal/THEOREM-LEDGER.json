@@ -310,7 +310,7 @@
       "statement": "R1 requires a sub-requirement bounding how many roots one attested identity can create per unit time; without it, margin is not a budget an attacker must pay.",
       "definition_version": "core-v3-dag",
       "assumptions": [],
-      "proof_status": "tested_reference_implementation",
+      "proof_status": "tested_implementation",
       "lean_theorem": null,
       "known_counterexamples_outside_scope": [
         "CE-05 is the motivating witness."
@@ -322,7 +322,8 @@
         "tests/test_root_registry.py::RootRegistryTests::test_tombstone_never_restores_capacity_or_orphans_ce04"
       ],
       "security_interpretation": "The reference RootRegistry demonstrates durable bounded issuance, tombstones, replay protection and cross-process quota serialization. A deployment must still supply a production identity verifier, protected integrity key and actual integration.",
-      "prohibited_overstatement": "Do not claim every deployment enforces the bound. The repository contains a tested reference implementation, not evidence that a particular production path uses it."
+      "prohibited_overstatement": "Do not claim every deployment enforces the bound. The repository contains a tested reference implementation, not evidence that a particular production path uses it.",
+      "deployment_status": "reference_implementation_only"
     },
     {
       "id": "U1",
@@ -398,5 +399,6 @@
       "Root identity (U1) remains undefined. It is now explicitly declared part of the trusted base rather than silently assumed.",
       "CE-07 (side consistency forbids synthesis in a DAG) is a scope limit, not a bug. Edge polarity is the proposed repair and is not implemented."
     ]
-  }
+  },
+  "status_vocabulary_is_closed": "proof_status MUST be one of status_vocabulary. The list is deliberately closed: an evidence ledger whose vocabulary grows silently is how 'a reference implementation exists' drifts into 'this is proved'. Qualifiers such as deployment_status belong in their own field, never in the evidence class. Enforced by tests/test_evidence_alignment.py::test_ledger_status_vocabulary_is_closed."
 }

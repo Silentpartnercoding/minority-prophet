@@ -3,8 +3,19 @@ name = "minority-prophet"
 version = "0.1.0"
 description = "A benchmark for truth aggregation under social pressure"
 authors = [{name = "James Siyuan He"}]
+readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
+
+[project.scripts]
+minority-prophet-benchmark = "benchmark.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["aggregation*", "benchmark*", "provenance*"]
 
 [tool.ruff]
 line-length = 100

@@ -6,8 +6,10 @@ from .graph import (
     EvidenceNode,
     PropositionMismatchError,
     SideConsistencyError,
+    UnattributedRootError,
     Violation,
     build,
+    resolvable_reference,
 )
 
 __all__ = [
@@ -16,8 +18,10 @@ __all__ = [
     "EvidenceNode",
     "PropositionMismatchError",
     "SideConsistencyError",
+    "UnattributedRootError",
     "Violation",
     "build",
+    "resolvable_reference",
 ]
 from .root_registry import (
     ClockError,

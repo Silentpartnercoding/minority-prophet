@@ -1,0 +1,13 @@
+FROM node:22.22.0-alpine@sha256:e4bf2a82ad0a4037d28035ae71529873c069b13eb0455466ae0bc13363826e34
+
+WORKDIR /opt/minority-prophet
+COPY package.json ./
+COPY runtime-cli.js runtime-http.js mp-mcp-server.js mp-tool-v2.js ./
+COPY provenance-inference.js provenance-receipt.js provenance-service.js http-utils.js ./
+COPY src/domain/constants.js ./src/domain/constants.js
+COPY src/lib/hash.js ./src/lib/hash.js
+
+RUN chown -R node:node /opt/minority-prophet
+USER node
+EXPOSE 8421
+CMD ["node", "runtime-cli.js", "serve"]

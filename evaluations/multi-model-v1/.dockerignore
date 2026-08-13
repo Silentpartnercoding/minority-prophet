@@ -1,0 +1,15 @@
+*
+!package.json
+!runtime-cli.js
+!runtime-http.js
+!mp-mcp-server.js
+!mp-tool-v2.js
+!provenance-inference.js
+!provenance-receipt.js
+!provenance-service.js
+!http-utils.js
+!src/
+!src/domain/
+!src/domain/constants.js
+!src/lib/
+!src/lib/hash.js

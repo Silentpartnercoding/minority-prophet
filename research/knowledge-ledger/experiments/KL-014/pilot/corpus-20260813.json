@@ -1,0 +1,120 @@
+{
+  "schema": "minority-prophet.kl014-pilot-corpus.v0.1",
+  "status": "EXPLORATORY PILOT — ONE CONTROL DOMAIN — NOT A RESULT",
+  "retrievedOn": "2026-08-13",
+  "underPreregistration": "preregistration-v0.2.json, pinned at PROTOCOL-COMMIT-v0.2.txt before any retrieval",
+
+  "doesNotMeetItsOwnMinimum": {
+    "declared": "3 to 6 propositions, at least 4 claims each (preregistration-v0.2.json, pilotArm.size)",
+    "achieved": "3 propositions; 4 / 2 / 3 claims respectively",
+    "consequence": "Only P1 meets the declared minimum. P2 and P3 are reported for structure only and are excluded from the primary tally. The shortfall is reported rather than resolved by lowering the bar or extending retrieval, per stopRule.",
+    "cause": "Roughly half of retrieval attempts failed: HTTP 403, 406 or timeout. Not a property of the world; a property of this retrieval method."
+  },
+
+  "labelling": {
+    "by": "one agent under one operator",
+    "controlDomain": "single",
+    "interRaterStatistic": "undefined, not merely unmeasured — there is one rater. AGENTS.md boundaries 2 and 3.",
+    "blinded": false,
+    "whyNotBlinded": "The sole labeller also computed the identities. The confirmatory design requires three independent labellers blinded to the identities; this pilot cannot satisfy that and does not claim to."
+  },
+
+  "selectionBias": {
+    "propositionsWereHandPicked": true,
+    "note": "Propositions were chosen by the analyst after seeing that coverage existed. Two of three are institutional announcements, which is the maximal-syndication case and is expected to inflate the split factor relative to a random corpus. The third (a sporting result) was added deliberately as a contrast case where independent observation is plausible.",
+    "effectOnEstimate": "The split factor reported here must not be read as an estimate of the real-world split factor. Corpus selection alone could account for it."
+  },
+
+  "propositions": [
+    {
+      "id": "P1",
+      "text": "The 2025 Nobel Prize in Physics was awarded to John Clarke, Michel H. Devoret and John M. Martinis",
+      "resolved": true,
+      "underlyingObservations": 1,
+      "observationNote": "One announcement event by the Royal Swedish Academy of Sciences, 2025-10-07. No outlet in this set independently determined the committee's decision.",
+      "meetsMinimum": true,
+      "claims": [
+        {
+          "issuer": "aljazeera.com",
+          "citesPrimary": true,
+          "primarySourceId": "rsa-nobel-physics-2025-announcement",
+          "evidence": "\"The award, announced by the Royal Swedish Academy of Sciences on Tuesday\"; photo credit to the Royal Swedish Academy and Reuters"
+        },
+        {
+          "issuer": "thequantuminsider.com",
+          "citesPrimary": true,
+          "primarySourceId": "rsa-nobel-physics-2025-announcement",
+          "evidence": "\"according to a statement from the academy\"; links directly to the Academy's official PDF statement"
+        },
+        {
+          "issuer": "aip.org",
+          "citesPrimary": false,
+          "primarySourceId": null,
+          "evidence": "No attribution to the Nobel Foundation or Academy. Presented as AIP's own press release dated 2025-10-07."
+        },
+        {
+          "issuer": "iqus.uw.edu",
+          "citesPrimary": false,
+          "primarySourceId": null,
+          "evidence": "No attribution wording; a bare source header \"The Nobel Prize | October 8, 2025\". States the award directly."
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "text": "The 2025 Nobel Prize in Chemistry was awarded to Susumu Kitagawa, Richard Robson and Omar M. Yaghi",
+      "resolved": true,
+      "underlyingObservations": 1,
+      "observationNote": "One announcement event by the Royal Swedish Academy of Sciences, 2025-10-08.",
+      "meetsMinimum": false,
+      "claims": [
+        {
+          "issuer": "newsonair.gov.in",
+          "citesPrimary": false,
+          "primarySourceId": null,
+          "evidence": "No attribution of any kind. States as bare fact: \"Three scientists from the US, Japan, and Australia have been conferred with the 2025 Nobel Prize in Chemistry today.\""
+        },
+        {
+          "issuer": "washington.edu",
+          "citesPrimary": true,
+          "primarySourceId": "rsa-nobel-chemistry-2025-announcement",
+          "evidence": "\"The Royal Swedish Academy of Sciences on Oct. 8 awarded the Nobel Prize in Chemistry to...\" with a hyperlink to nobelprize.org"
+        }
+      ]
+    },
+    {
+      "id": "P3",
+      "text": "Super Bowl LIX ended Philadelphia Eagles 40, Kansas City Chiefs 22",
+      "resolved": true,
+      "underlyingObservations": 1,
+      "observationNote": "One event. CONTRAST CASE: unlike P1 and P2, outlets could and did observe this directly, so a low split factor here would mean something different from a low split factor there.",
+      "meetsMinimum": false,
+      "claims": [
+        {
+          "issuer": "espn.com",
+          "citesPrimary": false,
+          "primarySourceId": null,
+          "evidence": "Score presented in ESPN's own scoreboard and box-score tables with no attribution for the numerical result. An AP-authored recap sits alongside but the score itself is unattributed."
+        },
+        {
+          "issuer": "yahoo.com",
+          "citesPrimary": true,
+          "primarySourceId": "upi-super-bowl-lix-report",
+          "evidence": "Bylined Wade Sheridan, credited to United Press International; photos credited to UPI photographers; links to the full UPI story."
+        },
+        {
+          "issuer": "foxsports.com",
+          "citesPrimary": false,
+          "primarySourceId": null,
+          "evidence": "Score presented as part of FOX Sports' own game coverage with no credit to AP, NFL or Sportradar."
+        }
+      ]
+    }
+  ],
+
+  "retrievalFailures": {
+    "count": 6,
+    "note": "cen.acs.org 406; physics.aps.org 403; cnbc.com 403; npr.org timeout; britannica.com 403; science.org 403; bls.gov archive 403. Recorded because a corpus assembled only from fetchable sources is itself a selected corpus.",
+    "notDropped": "These are counted as attempted-and-unresolved, not silently omitted."
+  }
+}

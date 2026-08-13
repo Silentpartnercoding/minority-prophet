@@ -1,0 +1,113 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-014",
+  "hypothesis": "HRI-1",
+  "title": "Does one evidence root correspond to one underlying observation?",
+  "status": "collection-rule-frozen",
+  "frozenBefore": "any corpus item was selected, any identity was computed, and any label was assigned under this rule",
+  "whyFrozenFirst": "The quantity under test is a ratio between two counts, one of which (labelled observations) is produced by human judgement. A labelling rule written after seeing the root identities is a rule chosen knowing what ratio it produces. Freezing first, and blinding labellers to the identities, is the only thing separating this from an exercise that returns whatever number is wanted.",
+  "question": {
+    "plain": "When five issuers report the same event, does the aggregator see one root or five?",
+    "formal": "For each proposition p, let R(p) be the number of distinct mp-root-v1 identities among parentless claims asserting p, and O(p) the number of distinct underlying observations those claims rest on, established by blinded labelling. Estimate the distribution of R(p)/O(p).",
+    "whyNotAnswerable": "No theorem settles this. Every theorem in formal/lean/ is correct GIVEN the identity criterion; the criterion is an input, not a conclusion. mp-root-v1 (provenance/ROOT-IDENTITY.md) makes identity unforgeable, which is a different property from making it correspond to an observation. Issuer is part of the digest, so two issuers reporting one event produce two identities by construction."
+  },
+  "population": {
+    "frame": "published claims about factual propositions that have since resolved, where each claim carries an authenticated issuer, a proposition identifier, an asserted value and an evidence reference sufficient to compute mp-root-v1",
+    "selection": "the frame, the source set and the proposition list are declared at collection start and recorded in the manifest; neither is extended, narrowed or re-sampled after any identity is computed or any label is assigned",
+    "minPropositions": 200,
+    "minClaimsPerProposition": 3,
+    "why": "Below three claims a proposition cannot exhibit a split. Two hundred propositions is the smallest frame that can distinguish a median split factor of 1.0 from 1.5 at the spread seen in constructed cases; it is registered here rather than chosen later from the observed variance.",
+    "exclusions": [
+      "propositions whose claims all originate from one issuer -- no split is possible and they only dilute the estimate",
+      "claims whose evidence reference is absent, since mp-root-v1 is not computable and the item is neither a split nor a merge but a missing input"
+    ],
+    "exclusionsAreDeclaredNotDiscovered": "both exclusions are properties of the record, decidable before any label exists"
+  },
+  "identityArm": {
+    "measure": "mp-root-v1",
+    "definition": "SHA-256 over authenticated issuer, issuer-scoped observation identifier, proposition, asserted value and evidence digest, per provenance/ROOT-IDENTITY.md",
+    "computedBy": "the shipped implementation, not a reimplementation, so the number measured is the number the system would act on",
+    "blinding": "identities are computed and sealed before labelling begins and are not visible to labellers"
+  },
+  "observationArm": {
+    "unit": "an underlying observation event -- the act of witnessing, not the act of reporting",
+    "rule": "two claims rest on the same observation if a labeller, seeing only the claim texts, their cited sources and their timestamps, judges that neither could have been produced without the other's source or a common source they both cite",
+    "labellers": 3,
+    "independence": "labellers work independently, do not see each other's labels, and do not see any mp-root-v1 identity, issuer digest or root count",
+    "interRaterThreshold": {
+      "statistic": "Krippendorff alpha on the same-observation partition",
+      "minimum": 0.67,
+      "why": "Below this the partition is not reproducible and the denominator of the ratio is noise. 0.67 is the conventional floor for tentative conclusions and is registered now so it cannot be relaxed to rescue a run.",
+      "onFailure": "the run STOPS and reports that the ground truth was not establishable on this corpus. It is not retried on a different corpus chosen because it agrees better; a second corpus, if any, is a new registration."
+    },
+    "adjudication": "disagreements are resolved by majority of the three labellers; items with no majority are reported as unresolved and counted in a declared sensitivity band, not silently dropped"
+  },
+  "endpoint": {
+    "primary": "median split factor, median over propositions of R(p)/O(p)",
+    "H0": "median split factor = 1.0 -- root identity tracks observation identity",
+    "secondary": [
+      "merge rate: proportion of labelled observation pairs judged distinct that share one mp-root-v1 identity",
+      "split factor distribution, not only its median, since a long tail matters even at a benign median"
+    ],
+    "bothDirectionsMatter": "Split inflates margin and overstates security. Merge destroys margin and causes false abstention. They are different failures with different owners and are reported separately, never netted."
+  },
+  "effectRequires": [
+    {
+      "property": "the measure can detect a split at all",
+      "rule": "on constructed cases where the number of underlying observations is known by construction, the computed split factor must recover the constructed value exactly",
+      "why": "If mp-root-v1 collapsed everything to one identity, the real run would return 1.0 for a reason that has nothing to do with reporting behaviour. This is a sensitivity check on the instrument, run before the corpus, and it is not a result.",
+      "onFailure": "the instrument is wrong and the real run does not start"
+    },
+    {
+      "property": "the corpus can exhibit a split",
+      "rule": "at least 20% of propositions must carry claims from three or more distinct issuers",
+      "why": "A corpus where issuers rarely overlap cannot distinguish the hypotheses, however sound the method. Registered as a precondition rather than discovered as an excuse."
+    }
+  ],
+  "stopRule": "collection ends at the declared proposition list, at the inter-rater failure condition, or at the instrument-sensitivity failure, whichever is first. The list is not extended and the labelling rule is not amended to obtain a result.",
+  "decisionRule": {
+    "statedBeforeData": true,
+    "ifMedianSplitFactorAtOrBelow1_2": "flip_budget may be described as an operational security budget, with the measured factor and its confidence interval disclosed alongside.",
+    "ifMedianSplitFactorAbove1_2": "flip_budget must not be published as an operational security budget without dividing by the measured factor and disclosing the divisor. formal/CLAIM-SCOPE.md and PROVENANCE-REQUIREMENTS.md R3 are amended in the same change.",
+    "ifRunStops": "the first gate in HRI-1 stands unchanged: flip_budget remains publishable as a count of root-set units, which is what it provably is, and not as a security budget.",
+    "why": "The consequence is registered before the number exists so that an inconvenient result cannot be re-described as a limitation of the corpus."
+  },
+  "whatThisDoesNotMeasure": [
+    "whether any observation is true -- this is an independence measure, not an accuracy measure",
+    "deliberate identity splitting by one controller, which is HVI-1's question and has a different remedy",
+    "whether a production deployment uses RootRegistry at all, which is a deployment property recorded as LEDGER-H2 deployment_status"
+  ],
+  "priorWork": "None. This quantity has not been measured. formal/EXTENSION-SOCKETS.md section 5 identified it as the socket where a measurement, not a theorem, is what is missing; formal/THEOREM-LEDGER.json carries it as U1 underspecified.",
+  "version": "v0.2",
+  "supersedes": "v0.1",
+  "amendedBefore": "any corpus item was retrieved, any evidence digest was constructed, and any split factor was computed",
+  "whyAmended": "v0.1 assumed the corpus carries 'an evidence reference sufficient to compute mp-root-v1'. It does not, and cannot: evidence_digest is a field an issuer supplies in a signed issuance request, and no deployment exists that has signed real published claims. Measuring on real data therefore requires CONSTRUCTING the digest, and the construction rule determines the answer before any data is seen -- digesting each outlet's own article yields one root per outlet, digesting the primary source they cite yields one root for all of them. Same corpus, answers a factor of N apart, chosen by the analyst. v0.1 left that choice free, which would have made any single number an artefact of an unstated decision. v0.2 pins the rules and requires the answer to be reported under each.",
+  "evidenceDigestConstruction": {
+    "why": "mp-root-v1 digests an evidence_digest that real published claims do not carry. How it is constructed is the single most consequential free parameter in this measurement and is pinned here, before any retrieval.",
+    "rules": [
+      {
+        "id": "D1-surface",
+        "rule": "sha256 of the claim's own published text, normalised to lowercase with runs of whitespace collapsed",
+        "models": "a deployment in which each issuer digests the artefact it produced",
+        "expectedDirection": "maximal split: every issuer distinct by construction, so the split factor equals the number of issuers per observation"
+      },
+      {
+        "id": "D2-cited-primary",
+        "rule": "sha256 of the identifier of the primary source the claim cites -- wire slug, dataset DOI, filing number, court docket, official release URL. A claim citing no primary source falls back to D1 for that claim only, and the fallback count is reported.",
+        "models": "a deployment in which each issuer digests the underlying evidence rather than its own retelling",
+        "expectedDirection": "minimal split: claims resting on one primary source collapse to one root"
+      }
+    ],
+    "primaryReported": "both, side by side, never one alone",
+    "theRatioIsTheFinding": "D1 split divided by D2 split quantifies how much the whole measurement depends on a choice that provenance/ROOT-IDENTITY.md does not currently constrain. If that ratio is near 1 the choice does not matter and the parameter is benign. If it is large, mp-root-v1 does not have a determinate split factor at all until the deployment fixes the digest convention -- which would be a finding about the SPECIFICATION, not about reporting behaviour.",
+    "notPinnedAndWhy": "A transitive first-mover rule (resolve citation chains to the earliest publisher) is a plausible third construction and is deliberately OUT of scope for the pilot: it requires a citation graph the pilot corpus will not reliably support, and adding an under-supported third arm would widen the reported range without evidence."
+  },
+  "pilotArm": {
+    "status": "exploratory, NOT confirmatory",
+    "whyExploratory": "Labelling of 'same underlying observation' will be performed by one agent under one operator. Per AGENTS.md boundaries 2 and 3 that is a single control domain: internal replication, not the three independent blinded labellers the confirmatory design requires. Its inter-rater statistic is therefore undefined, not merely unmeasured.",
+    "whatItCanEstablish": "feasibility, the order of magnitude of the D1/D2 ratio, and whether the confirmatory run is worth human labelling time",
+    "whatItCannotEstablish": "any answer to HRI-1, in either direction",
+    "mustBeLabelled": "every artefact and every number carries 'exploratory pilot, one control domain, not a result'",
+    "size": "3 to 6 resolved propositions, at least 4 claims each; declared before retrieval and not extended"
+  }
+}

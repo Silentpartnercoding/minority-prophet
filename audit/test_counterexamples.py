@@ -203,7 +203,7 @@ def _node(nid, value, parents=(), proposition="p"):
         observer_id="o",
         source_id="s",
         confidence=1.0,
-        evidence={},
+        evidence={"ref": f"https://example.org/{nid}"},
         copied_from=tuple(parents),
     )
 

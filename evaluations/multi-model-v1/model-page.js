@@ -1,0 +1,9 @@
+import { bar, esc, layout, pct } from './web-base.js';
+
+export function modelPage(model, namespace) {
+  if (!model) return layout('Model not found', '<h1>Model not found.</h1>', namespace);
+  const step = (title, score, delta = null, signal = false) => `<div class="step"><div class="eyebrow">${title}</div><h2>${pct(score.mp_score)}</h2>${delta ? `<p class="delta">${delta.gain >= 0 ? '+' : ''}${pct(delta.gain)} · paired p=${delta.p_value}</p>` : ''}${bar(score.mp_score,signal)}<p class="muted">95% CI ${pct(score.confidence_interval_95.low)}–${pct(score.confidence_interval_95.high)} · n=${score.trials}</p></div>`;
+  const failures = model.failure_modes.length ? esc(model.failure_modes.map((item) => `${item.world_id} (${item.condition})`).join(', ')) : 'No failures in this development slice.';
+  const body = `<section class="hero"><div class="eyebrow">${esc(model.provider)} · ${esc(model.model_version)}</div><h1>${esc(model.model)}</h1><p class="subhead">Native behavior, provenance reasoning, and Minority Prophet transformation.</p></section><div class="steps">${step('Raw baseline',model.baseline)}<div class="arrow">→</div>${step('+ Provenance',model.provenance,model.provenance_gain)}<div class="arrow">→</div>${step('+ Minority Prophet',model.minority_prophet,model.minority_prophet_gain,true)}</div><h2>Scenario breakdown</h2><table><tr><th>Family</th><th>Baseline</th><th>Provenance</th><th>Minority Prophet</th></tr>${model.scenario_breakdown.map((item) => `<tr><td>${esc(item.scenario_family)}</td><td>${pct(item.baseline)}</td><td>${pct(item.provenance)}</td><td>${pct(item.minority_prophet)}</td></tr>`).join('')}</table><h2>Failure modes</h2><p>${failures}</p><h2>Reproducibility</h2><pre>${esc(JSON.stringify({ run_id:model.run_id,benchmark_version:model.benchmark_version,model_version:model.model_version,trials:model.trials,last_evaluated:model.last_evaluated },null,2))}</pre>`;
+  return layout(model.model, body, namespace);
+}

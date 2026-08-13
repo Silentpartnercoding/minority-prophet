@@ -7,6 +7,25 @@
 Minority Prophet asks whether grounded evidence can survive an overwhelming
 copied majority.
 
+## Installable surfaces
+
+The repository deliberately separates research code from the deterministic
+agent runtime.
+
+```sh
+# Python benchmark, aggregation, and provenance primitives
+python -m pip install .
+
+# Provider-neutral read-only MCP/HTTP engine
+npm --prefix evaluations/multi-model-v1 install
+MP_ENGINE_ALLOW_INSECURE_LOCAL=1 npm --prefix evaluations/multi-model-v1 exec mp-engine -- doctor
+```
+
+The engine package exposes only versioned runtime modules in its publish
+allowlist. See
+[`evaluations/multi-model-v1/RUNTIME-README.md`](evaluations/multi-model-v1/RUNTIME-README.md).
+Installation does not authorize an agent to execute protected actions.
+
 ## Core invariant
 
 **A recorded copy must not gain a new vote.** In plain language: photocopying one
@@ -34,6 +53,8 @@ effect. Evidence assessment never grants authority.
 
 The repository contains the benchmark, formal model, canonical record registry,
 root-issuance reference, neutral evidence contract, tests, and dashboard.
+The component and adapter boundaries are summarized in
+[`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md).
 
 ## Minority Prophet Test v0.1
 
@@ -86,6 +107,10 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
 - [`results/hes1-v1/`](results/hes1-v1/) — blind evidence-seeking result: strong coverage recovery with a material false-negative software limitation
 - [`research/field-evidence/2026-08-06/`](research/field-evidence/2026-08-06/) — sanitized field observation showing why root identity and dependency matter
 - [`results/eaa-p5-out-of-tree-v1/`](results/eaa-p5-out-of-tree-v1/) — imported out-of-tree test of a unified dependence auditor; the frozen gate rejected the candidate, which did not displace the simpler comparators
+- [`evaluations/multi-model-v1/`](evaluations/multi-model-v1/) — exploratory,
+  dependency-free A/B/C model-evaluation and provenance-formation harness;
+  its DEMO studies are preserved but are not canonical or independently
+  validated records
 - [Minority Prophet Gate](https://github.com/Silentpartnercoding/minority-prophet-gate) — reference implementation of evidence-root aggregation
 - [`website/`](website/) and [`app/`](app/) — dashboard specification and implementation
 

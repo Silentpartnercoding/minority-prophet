@@ -67,7 +67,12 @@ class RootRegistryTests(unittest.TestCase):
             return EvidenceNode(
                 node_id=node_id, proposition_id="weather", value=True,
                 observer_id="issuer-a", source_id="sensor-a", confidence=1.0,
-                evidence={"digest": "bound"},
+                # A resolvable digest: EvidenceGraph now requires roots to name
+                # something dereferenceable (2026-08-13). This test is about
+                # root AUTHORIZATION, so it supplies valid evidence in order to
+                # reach the authorization assertion rather than tripping the
+                # attribution gate first.
+                evidence={"digest": "b1946ac92492d2347c6235b4d2611184"},
             )
 
         graph.add(evidence_node(receipt.root_id))
@@ -132,3 +137,52 @@ class RootRegistryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class QuotaDenominationTests(unittest.TestCase):
+    """R1.4's quota counts observation units, not artifacts.
+
+    KL-014 v0.4 registered a claim that it counted issuance events, so an issuer
+    could declare many observations inside one artifact and slip past the bound.
+    That claim was FALSE -- see
+    research/knowledge-ledger/experiments/KL-014/CORRECTION-20260813-quota.md.
+
+    This test guards the property so the wrong conclusion is not reached again
+    from reading the quota code.
+    """
+
+    def test_quota_is_denominated_in_observation_units(self):
+        import time
+
+        verifier = HmacIssuerVerifier({("issuer-a", "k1"): b"k"})
+        registry = RootRegistry(
+            Path(self.tmp.name) / "quota.db",
+            verifier=verifier, integrity_key=b"i",
+            roots_per_window=2, window_seconds=3600,
+        )
+        now = int(time.time())
+
+        def request(observation):
+            req = RootRequest(
+                issuer_id="issuer-a", key_id="k1", observation_id=observation,
+                proposition_id="p", value=True,
+                evidence_digest=hashlib.sha256(observation.encode()).hexdigest(),
+                observed_at=now, nonce=observation,
+            )
+            return req.with_signature(verifier.sign(req))
+
+        minted = 0
+        for index in range(4):
+            try:
+                registry.issue(request(f"sample-{index}"))
+                minted += 1
+            except IssuanceLimitError:
+                pass
+
+        # Four declared observations, quota of two: exactly two are minted.
+        # If the quota bound artifacts rather than units, all four would pass.
+        self.assertEqual(minted, 2)
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)

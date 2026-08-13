@@ -22,6 +22,7 @@ What this module does NOT do, and no theorem covers (see formal/CLAIM-SCOPE.md):
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Iterable, Protocol
@@ -47,6 +48,61 @@ class PropositionMismatchError(ValueError):
 
 class CycleError(ValueError):
     """A derivation cycle. `rootsOf` is only well defined on a DAG."""
+
+
+_RESOLVABLE_FORMS: tuple[tuple[str, "re.Pattern[str]"], ...] = (
+    ("doi", re.compile(r"^(https?://(dx\.)?doi\.org/)?10\.\d{4,9}/\S+$", re.I)),
+    ("url", re.compile(r"^https?://\S+\.\S+", re.I)),
+    ("hash", re.compile(r"^[0-9a-f]{32,128}$", re.I)),
+    ("arxiv", re.compile(r"^(arxiv:)?\d{4}\.\d{4,5}(v\d+)?$", re.I)),
+    ("urn", re.compile(r"^urn:[a-z0-9][a-z0-9-]{0,31}:\S+$", re.I)),
+)
+
+
+def resolvable_reference(evidence: dict[str, Any]) -> str | None:
+    """The first value in `evidence` that has the FORM of a dereferenceable reference.
+
+    Returns the matched form name, or None.
+
+    This checks SHAPE, NOT EXISTENCE. A well-formed DOI that was never
+    registered passes. Verifying that a reference resolves requires a network
+    call at ingest, which is a different trade-off and is not made here. The
+    guarantee is narrow and deliberate: the claim named something that could in
+    principle be checked, rather than prose that could not.
+    """
+    for value in evidence.values():
+        if not isinstance(value, str):
+            continue
+        candidate = value.strip()
+        for name, pattern in _RESOLVABLE_FORMS:
+            if pattern.match(candidate):
+                return name
+    return None
+
+
+class UnattributedRootError(ValueError):
+    """A parentless claim that names no checkable evidence.
+
+    A claim with no recorded ancestry is an evidence ROOT, and roots are what
+    `margin` counts. A claim that also carries no evidence therefore contributes
+    full evidential weight while identifying nothing -- it is indistinguishable
+    from an independent observation, which is CE-01 in
+    formal/COUNTEREXAMPLES.md.
+
+    KL-014's pilot measured this on real published claims: 5 of 9 (56%) cited no
+    resolvable primary source. By contrast the bundled-artifact regimes that
+    KL-014 v0.4 was written to address are roughly 2% of the literature. The
+    attribution gap is the larger problem by more than an order of magnitude,
+    which is why this gate exists and the unit rule was deprioritised.
+
+    ON BY DEFAULT since 2026-08-13. Pass `require_root_evidence=False` to admit
+    unattributed roots, which is what every version before this did.
+
+    The gate requires a reference with the FORM of something dereferenceable --
+    a DOI, URL, content hash, arXiv id or URN. `{"source": "trust me"}` is
+    refused; `{"source": "10.1038/nature12373"}` is admitted. See
+    `resolvable_reference` for what that does and does not guarantee.
+    """
 
 
 class RootAuthorizationError(ValueError):
@@ -115,11 +171,13 @@ class EvidenceGraph:
         no theorem in formal/PROOFS.md applies to such a graph.
     """
 
-    def __init__(self, *, strict: bool = True, root_authority: RootAuthority | None = None) -> None:
+    def __init__(self, *, strict: bool = True, root_authority: RootAuthority | None = None,
+                 require_root_evidence: bool = True) -> None:
         self._nodes: dict[str, EvidenceNode] = {}
         self._violations: list[Violation] = []
         self._strict = strict
         self._root_authority = root_authority
+        self._require_root_evidence = require_root_evidence
 
     # ------------------------------------------------------------------ ingest
 
@@ -135,6 +193,22 @@ class EvidenceGraph:
             if node.node_id not in self._root_authority.active_roots():
                 raise RootAuthorizationError(
                     f"root {node.node_id!r} is not active in the configured authority"
+                )
+
+        if node.is_root and self._require_root_evidence:
+            if resolvable_reference(node.evidence) is None:
+                detail = ("carries no evidence at all" if not node.evidence
+                          else f"evidence {sorted(node.evidence)} names nothing "
+                               "dereferenceable (expected a DOI, URL, hash, arXiv id or URN)")
+                self._reject(
+                    UnattributedRootError,
+                    Violation(
+                        "unattributed_root",
+                        node.node_id,
+                        "",
+                        f"parentless claim {detail}, so it would count as an "
+                        "independent observation while identifying nothing",
+                    ),
                 )
 
         for parent_id in node.copied_from:
@@ -281,9 +355,10 @@ def _node_from_raw(raw: dict[str, Any]) -> EvidenceNode:
     )
 
 
-def build(nodes: Iterable[EvidenceNode], *, strict: bool = True) -> EvidenceGraph:
+def build(nodes: Iterable[EvidenceNode], *, strict: bool = True,
+          require_root_evidence: bool = True) -> EvidenceGraph:
     """Convenience constructor; nodes must arrive in dependency order."""
-    graph = EvidenceGraph(strict=strict)
+    graph = EvidenceGraph(strict=strict, require_root_evidence=require_root_evidence)
     for node in nodes:
         graph.add(node)
     return graph

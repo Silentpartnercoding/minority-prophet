@@ -3,7 +3,7 @@ BOOTSTRAP_PYTHON ?= python3
 BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEAD^)
 HEAD_REF ?= HEAD
 
-.PHONY: help setup verify verify-python verify-integrity verify-site \
+.PHONY: help setup verify verify-python verify-integrity verify-site verify-evaluation \
 	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
 	check-research-integrity
 
@@ -13,13 +13,14 @@ help:
 	@echo "make verify-python"
 	@echo "make verify-integrity BASE=origin/main HEAD_REF=HEAD"
 	@echo "make verify-site"
+	@echo "make verify-evaluation"
 
 setup:
 	"$(BOOTSTRAP_PYTHON)" -m venv .venv
 	.venv/bin/python -m pip install --upgrade pip pytest
 	npm ci
 
-verify: verify-python verify-integrity verify-site
+verify: verify-python verify-integrity verify-site verify-evaluation
 
 verify-python:
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q
@@ -48,3 +49,6 @@ check-research-integrity:
 verify-site:
 	npm run lint
 	npm test
+
+verify-evaluation:
+	npm --prefix evaluations/multi-model-v1 test
