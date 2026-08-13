@@ -1,0 +1,68 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-016",
+  "title": "Is a wallet's buy followed by MORE activity than the minute that preceded it?",
+  "status": "collection-rule-frozen",
+  "whyKL015Failed": "KL-015's registered endpoint passed at p=0.00000, 35 positive and 0 negative, and its own control refuted it. Subjects are top holders, so they buy early during the launch burst, while the baseline sampled random windows across a token's whole life including quiet stretches. The 60 seconds BEFORE each event were just as busy as the 60 after -- median 25 against 25. The p-value measured the difference between busy periods and ordinary periods, a fact about token lifecycles rather than about influence.\n\nThe sequencing was right: the baseline was built first. The CONTRAST was wrong. Freezing the wrong control still freezes the wrong control.",
+  "design": "self-matched before/after",
+  "whyThisContrastCannotHaveThatConfound": "each event is compared to the 60 seconds immediately preceding it, in the same token, seconds apart. Burst level, token age, liquidity, hype and lifecycle stage are identical on both sides by construction, because they are the same moment. A global baseline can be mismatched on any of those; an adjacent minute cannot.",
+  "population": {
+    "source": "pump.fun coins?complete=true, newest first",
+    "TRADEABILITY_GATE": {
+      "MIN_LIQUIDITY_USD": 5000,
+      "MIN_VOL24_USD": 5000,
+      "verifiedBy": "DexScreener",
+      "why": "graduated is not traded -- of 180 recent graduates only 37 cleared this, and KL-012 v0.2 died on exactly that"
+    },
+    "RECENCY_GATE": {
+      "MAX_AGE_HOURS": 6,
+      "why": "full history must be pageable so events and their preceding minute sit in one reachable window"
+    },
+    "freshWindowRule": "tokens used by KL-015 are EXCLUDED. KL-015 generated the +8.1 residue this experiment tests, and data that produced a hypothesis cannot confirm it."
+  },
+  "subjects": {
+    "definition": "top holders of qualifying tokens, custodians excluded",
+    "custodianRule": {
+      "MAX_SOL": 2000,
+      "MAX_TOKEN_POSITIONS": 300,
+      "MAX_COUNTERPARTIES": 8,
+      "failClosed": true,
+      "inherited": "thresholds unchanged from KL-014/KL-015, not re-tuned"
+    }
+  },
+  "measure": {
+    "WINDOW_S": 60,
+    "after": "distinct signing wallets, other than the subject, acting on the token in the 60s after the subject's first transaction on it",
+    "before": "the same count for the 60s immediately before it",
+    "statistic": "after minus before, per event"
+  },
+  "TIE_RULE": {
+    "rule": "events where after == before are TIES and are EXCLUDED from the sign test, and the excluded count is reported alongside the result",
+    "fixedInAdvanceBecause": "KL-015 had 11 ties in 46 events and how ties are handled moved that result more than any other choice. Fixing the rule now removes it as a lever."
+  },
+  "endpoint": {
+    "H0": "a subject's buy is followed by the same activity as preceded it",
+    "DIRECTION_PREDICTED": "MORE activity after than before",
+    "test": "sign test on (after - before), two-sided, ties excluded",
+    "passCondition": "p < 0.05 AND median difference positive",
+    "failCondition": "p >= 0.05, or median negative"
+  },
+  "effectRequires": [
+    {
+      "property": "at least 150 non-tied events",
+      "minimum": 150,
+      "why": "KL-015 left n=28 after ties, which cannot resolve an +8 effect. 150 non-tied events give the sign test power to separate +8 from zero. Below this the run STOPS rather than reporting another borderline number."
+    },
+    {
+      "property": "events lie inside reachable history",
+      "rule": "an event whose preceding minute is not fully retrievable is DISCARDED"
+    }
+  ],
+  "replicationRule": "if this returns 0.01 < p < 0.05 it is NOT reported as a finding. Today produced a p=0.010 that became 5.9% on fresh data and a p=0.00000 that was an artifact. A borderline result triggers a replication on a further disjoint window before any claim is made, and that requirement is fixed here rather than decided after seeing the number.",
+  "singleTestRule": "one window length, one statistic, one test.",
+  "knownLimits": [
+    "direction is not parsed: 'activity' means transactions touching the token, so sells and bots count as followers",
+    "a positive result shows temporal association, not that anyone copied anyone",
+    "pump.fun graduates under 6 hours old only"
+  ]
+}
