@@ -49,6 +49,27 @@ class CycleError(ValueError):
     """A derivation cycle. `rootsOf` is only well defined on a DAG."""
 
 
+class UnattributedRootError(ValueError):
+    """A parentless claim that carries no evidence.
+
+    A claim with no recorded ancestry is an evidence ROOT, and roots are what
+    `margin` counts. A claim that also carries no evidence therefore contributes
+    full evidential weight while identifying nothing -- it is indistinguishable
+    from an independent observation, which is CE-01 in
+    formal/COUNTEREXAMPLES.md.
+
+    KL-014's pilot measured this on real published claims: 5 of 9 (56%) cited no
+    resolvable primary source. By contrast the bundled-artifact regimes that
+    KL-014 v0.4 was written to address are roughly 2% of the literature. The
+    attribution gap is the larger problem by more than an order of magnitude,
+    which is why this gate exists and the unit rule was deprioritised.
+
+    Opt-in via `EvidenceGraph(require_root_evidence=True)`. It is not yet the
+    default because it is a semantic tightening that existing callers have not
+    been migrated for; it SHOULD become the default once they have.
+    """
+
+
 class RootAuthorizationError(ValueError):
     """A parentless claim was not minted by the configured root authority."""
 
@@ -115,11 +136,13 @@ class EvidenceGraph:
         no theorem in formal/PROOFS.md applies to such a graph.
     """
 
-    def __init__(self, *, strict: bool = True, root_authority: RootAuthority | None = None) -> None:
+    def __init__(self, *, strict: bool = True, root_authority: RootAuthority | None = None,
+                 require_root_evidence: bool = False) -> None:
         self._nodes: dict[str, EvidenceNode] = {}
         self._violations: list[Violation] = []
         self._strict = strict
         self._root_authority = root_authority
+        self._require_root_evidence = require_root_evidence
 
     # ------------------------------------------------------------------ ingest
 
@@ -136,6 +159,18 @@ class EvidenceGraph:
                 raise RootAuthorizationError(
                     f"root {node.node_id!r} is not active in the configured authority"
                 )
+
+        if node.is_root and self._require_root_evidence and not node.evidence:
+            self._reject(
+                UnattributedRootError,
+                Violation(
+                    "unattributed_root",
+                    node.node_id,
+                    "",
+                    "parentless claim carries no evidence, so it would count as an "
+                    "independent observation while identifying nothing",
+                ),
+            )
 
         for parent_id in node.copied_from:
             parent = self._nodes[parent_id]
