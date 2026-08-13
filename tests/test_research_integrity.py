@@ -272,6 +272,15 @@ def test_ci_runs_imported_evaluation_with_full_history():
     assert "make verify-evaluation" in workflow
 
 
+def test_ci_checks_runtime_supply_chain_without_publishing():
+    workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
+    assert "runtime-supply-chain:" in workflow
+    assert "npm audit" in workflow
+    assert "run pack:evidence" in workflow
+    assert "npm publish" not in workflow
+    assert "attest-build-provenance" not in workflow
+
+
 def test_accepts_claude_bridge_that_imports_agents(tmp_path):
     root, _ = _repo(tmp_path)
     _write(root / "AGENTS.md", "canonical instructions\n")
