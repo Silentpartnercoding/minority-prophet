@@ -132,3 +132,54 @@ independent evidence is unmeasured. See `formal/CLAIM-SCOPE.md`.
 labelling protocol with the root identifiers withheld from labellers, a
 registered inter-rater threshold, and a sensitivity demonstration that the
 measure detects a known split in constructed cases. Registered as KL-014.
+
+## HRI-2 — do evidence roots mark where new evidence entered?
+
+**Question:** Does the set of claims an aggregator treats as evidence roots
+correspond to the work that actually introduced new observation, rather than to
+work that merely failed to record its ancestry?
+
+**Null hypothesis:** Root status is uncorrelated with whether a work introduced
+new observation.
+
+**Depends on KL-014 v0.3.** This question is not interpretable until a root
+criterion is shown to recover known-independent observations. If v0.3 finds that
+no reference-based criterion does, HRI-2 is answered vacuously — roots would not
+mark anything, because the criterion producing them is not measuring
+independence — and that dependency is registered rather than discovered later.
+
+**Unit:** A work, and whether it contributed an observation that did not exist
+in the literature before it.
+
+**Ground truth, taken from metadata rather than judgement:**
+- *Structurally non-originative:* a review or meta-analysis introduces no new
+  observation by definition. A review appearing as an evidence root is a false
+  root, and no opinion is required to say so.
+- *Retroactively phantom:* a retracted work whose retraction concerns the data
+  or result is a root whose evidence was never there. OpenAlex flags 78,465
+  retracted articles.
+
+**Metric:** False-root rate — the proportion of works classified as evidence
+roots that are structurally non-originative. Secondary: retraction-cascade
+depth, the number of works transitively depending on a retracted root.
+
+**Why the retraction arm matters beyond this hypothesis.** A retraction is a
+root-set error occurring in the world rather than in a constructed witness. T5
+(`root_error_tolerance`) states what a margin survives when the root set is
+disturbed by `k`; retraction cascades are the first opportunity to observe that
+disturbance empirically instead of by assumption.
+
+**Failure condition:** The root criterion inherited from KL-014 v0.3 does not
+recover known-independent observations, making root status uninterpretable; or
+retraction reasons cannot be separated into data-related and administrative,
+making "phantom" unassignable.
+
+**Success condition:** Answered in either direction on a frozen corpus. A false-
+root rate near zero would mean root structure tracks originative work and is a
+genuinely positive result. A high rate would mean the aggregator's roots mark
+absent provenance rather than present evidence — which is CE-01 restated as a
+property of a real corpus rather than a constructed witness.
+
+**Prohibited overstatement:** "Retracted" is not "was wrong"; some retractions
+are authorship or ethics disputes with sound underlying data. Any phantom-root
+claim must rest on retraction *reason*, not on retraction alone.
