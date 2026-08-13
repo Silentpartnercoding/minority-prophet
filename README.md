@@ -34,6 +34,8 @@ effect. Evidence assessment never grants authority.
 
 The repository contains the benchmark, formal model, canonical record registry,
 root-issuance reference, neutral evidence contract, tests, and dashboard.
+The component and adapter boundaries are summarized in
+[`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md).
 
 ## Minority Prophet Test v0.1
 

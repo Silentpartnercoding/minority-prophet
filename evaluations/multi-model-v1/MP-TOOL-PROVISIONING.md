@@ -13,12 +13,16 @@ The same contract can be exposed as an in-process function, local service, MCP t
 
 The local evaluation server also exposes an opt-in loopback adapter at
 `POST /internal/provenance/compile` when `MP_PROVENANCE_TOKEN` is configured.
-It accepts an exactly bound evidence packet and lineage proposal, then returns
-the deterministic `mp-provenance-receipt.v1`. The endpoint rejects unbound
-fields and any request that claims protected-action authority. It does not call
-a model, browse, choose a route, or authorize the protected action. A caller
-may obtain the proposal from deterministic code or a separately controlled
-secondary model; the receipt compiler applies the same validation either way.
+It accepts Gate's neutral `evidence-collector.request.v1` envelope. The opaque
+service input is MP-owned `mp-provenance-service-input.v1`, containing the
+exact evidence packet and lineage proposal. The service returns Gate's neutral
+`evidence-collector.response.v1` envelope with a deterministic
+`mp-provenance-receipt.v1` verification artifact. Gate therefore contains no MP
+schema logic. The endpoint rejects unbound fields and any request that claims
+protected-action authority. It does not call a model, browse, choose a route,
+or authorize the protected action. A caller may obtain the proposal from
+deterministic code or a separately controlled secondary model; the receipt
+compiler applies the same validation either way.
 
 ## Benchmark shape
 

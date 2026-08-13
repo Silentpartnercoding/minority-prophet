@@ -2,12 +2,12 @@ import { timingSafeEqual } from 'node:crypto';
 import { json } from './http-utils.js';
 import { compileProvenanceProposal } from './provenance-receipt.js';
 
-const REQUEST_SCHEMA = 'mp-provenance-service-request.v1';
-const RESPONSE_SCHEMA = 'mp-provenance-service-response.v1';
-const REQUEST_KEYS = new Set([
-  'schema', 'challenge_id', 'dispatch_id', 'action_digest', 'decision_subject',
-  'packet', 'proposal', 'grants_protected_action_authority'
-]);
+const REQUEST_SCHEMA = 'evidence-collector.request.v1';
+const RESPONSE_SCHEMA = 'evidence-collector.response.v1';
+const INPUT_SCHEMA = 'mp-provenance-service-input.v1';
+const COLLECTOR_ID = 'minority-prophet:provenance-service';
+const REQUEST_KEYS = new Set(['schema', 'dispatch', 'input', 'grants_protected_action_authority']);
+const INPUT_KEYS = new Set(['schema', 'packet', 'proposal']);
 
 function authorized(actual, token) {
   if (!token || typeof actual !== 'string') return false;
@@ -35,12 +35,27 @@ function validate(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return 'request_not_object';
   for (const key of Object.keys(value)) if (!REQUEST_KEYS.has(key)) return `unexpected_field:${key}`;
   if (value.schema !== REQUEST_SCHEMA) return 'invalid_schema';
-  for (const key of ['challenge_id', 'dispatch_id', 'action_digest', 'decision_subject']) {
-    if (typeof value[key] !== 'string' || value[key].length === 0) return `invalid_${key}`;
-  }
-  if (!value.packet || typeof value.packet !== 'object' || Array.isArray(value.packet)) return 'invalid_packet';
-  if (!value.proposal || typeof value.proposal !== 'object' || Array.isArray(value.proposal)) return 'invalid_proposal';
   if (value.grants_protected_action_authority !== false) return 'authority_boundary_violation';
+  const dispatch = value.dispatch;
+  if (!dispatch || typeof dispatch !== 'object' || Array.isArray(dispatch)) return 'invalid_dispatch';
+  for (const key of ['challenge_id', 'dispatch_id', 'action_digest', 'decision_subject']) {
+    if (typeof dispatch[key] !== 'string' || dispatch[key].length === 0) return `invalid_dispatch_${key}`;
+  }
+  if (dispatch.grants_protected_action_authority !== false) return 'dispatch_authority_boundary_violation';
+  if (!dispatch.route || dispatch.route.collector_kind !== 'epistemic_service' ||
+      dispatch.route.output_role !== 'verification_artifact' ||
+      dispatch.route.route_grants_protected_action_authority !== false) return 'invalid_epistemic_route';
+  if (!Array.isArray(dispatch.requirements) || dispatch.requirements.length === 0) return 'invalid_requirements';
+  for (const requirement of dispatch.requirements) {
+    if (typeof requirement?.requirement_id !== 'string' || !Array.isArray(requirement.accepted_kinds) ||
+        requirement.accepted_kinds.length === 0) return 'invalid_requirement';
+  }
+  const input = value.input;
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return 'invalid_input';
+  for (const key of Object.keys(input)) if (!INPUT_KEYS.has(key)) return `unexpected_input_field:${key}`;
+  if (input.schema !== INPUT_SCHEMA) return 'invalid_input_schema';
+  if (!input.packet || typeof input.packet !== 'object' || Array.isArray(input.packet)) return 'invalid_packet';
+  if (!input.proposal || typeof input.proposal !== 'object' || Array.isArray(input.proposal)) return 'invalid_proposal';
   return null;
 }
 
@@ -64,19 +79,37 @@ export async function handleProvenanceServiceRoute(request, response, url, { pro
   }
   let receipt;
   try {
-    receipt = compileProvenanceProposal(value.packet, value.proposal);
+    receipt = compileProvenanceProposal(value.input.packet, value.input.proposal);
   } catch {
     json(response, 422, { error: 'invalid_packet_or_proposal' });
     return true;
   }
+  const forbidden = ['assertion', 'answer', 'correct_answer', 'ground_truth', 'recommended_answer'];
+  if (receipt.answer_included !== false || receipt.ground_truth_included !== false ||
+      forbidden.some((key) => Object.hasOwn(receipt, key))) {
+    json(response, 500, { error: 'unsafe_receipt' });
+    return true;
+  }
+  const items = value.dispatch.requirements.map((requirement) => ({
+    requirement_id: requirement.requirement_id,
+    evidence_kind: requirement.accepted_kinds[0],
+    envelope: {
+      ...receipt,
+      attest: {
+        origin: COLLECTOR_ID,
+        subject: value.dispatch.decision_subject,
+        evidence_kind: requirement.accepted_kinds[0]
+      }
+    }
+  }));
   json(response, 200, {
     schema: RESPONSE_SCHEMA,
-    challenge_id: value.challenge_id,
-    dispatch_id: value.dispatch_id,
-    action_digest: value.action_digest,
-    decision_subject: value.decision_subject,
-    output_role: 'verification_artifact',
-    receipt,
+    challenge_id: value.dispatch.challenge_id,
+    dispatch_id: value.dispatch.dispatch_id,
+    collector_id: COLLECTOR_ID,
+    status: 'completed',
+    items,
+    diagnostics: { receipt_status: receipt.status, compiler_version: receipt.compiler_version },
     grants_protected_action_authority: false
   });
   return true;
