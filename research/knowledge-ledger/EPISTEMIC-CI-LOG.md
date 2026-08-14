@@ -1,20 +1,14 @@
 # What this programme has contributed to Epistemic CI, and what it has not
 
 `Silentpartnercoding/epistemic-ci` is a vendor-neutral meta-validation gate: a
-test for the tests. Its v0 has **five** checks — **Vacuous Test** (planted defects
-must make verification fail), **Executable Pass Condition** (corrupted outputs
-must make the checker fail), **Observation Surface** (a positive population
-count, a population fingerprint and a result fingerprint bound to one run id),
-**Final Artifact Binding** (a detached receipt naming and hashing every
-declared final artifact, with the verifier rejecting each alteration), and
-**Pinned Input Binding** (corrupting the workspace copy of a declared pinned
-input must leave the result unmoved).
+test for the tests. Its v0 has **eight** checks — **Vacuous Test**, **Executable
+Pass Condition**, **Observation Surface**, **Final Artifact Binding**, **Pinned
+Input Binding**, **Control Discrimination**, **Evidential Independence** and
+**Effect Reachability**.
 
-An earlier version of this file said three, then four. Final Artifact Binding was
-already shipped when "three" was written, so that omission was in this summary
-rather than the tool. "Four" was correct until PR #13 below. A summary that
-lags the thing it summarises is the failure this file exists to prevent, so the
-count is stated explicitly each time it changes.
+This file has now stated the wrong number three times — three, four, and five —
+each after checks had already shipped. Twice the cause was this programme's own
+contribution landing upstream without the summary following it.
 
 This programme's failure modes are the obvious source of candidate checks, so
 this file records which have been logged there, which are already covered, and
@@ -48,7 +42,7 @@ blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): t
 grossly broken implementations pass, because mutation selection determines what is
 learned. Two separately written codebases, one shared weakness.
 
-## Merged upstream — check 5
+## Merged upstream — checks 5 to 8
 
 | change | failure mode | how it was found |
 |---|---|---|
@@ -83,12 +77,27 @@ versions: `epistemic-ci` declares `dependencies = []` and runs
 dependency-free meta-validation tool, in order to test a check about not trusting
 what you did not verify, was caught by the tool's own CI and rewritten.
 
-**A limit of the local control, recorded rather than patched.** The count test
-added in PR #86 compares the stated number of checks against the names beside it.
-It did **not** catch this entry sitting under "awaiting review" after the PR
-merged, because the count did not change. The control guards one specific
-staleness and no other, and enumerating the rest would be inventing failures
-rather than recording them.
+**The local control was too weak, twice, and is now replaced.** The count test
+added in PR #86 compared the stated number against the names in the same
+sentence. It cannot catch the failure that actually recurs: when *both* go stale
+together they stay internally consistent and the test passes. It missed the
+"awaiting review" staleness after #13 merged, and it missed the count reading
+five while upstream had eight.
+
+The reasoning that produced it was also wrong. A cross-repository check was
+rejected as catching "a strictly rarer case at strictly higher cost". That case
+is not rarer — it is the only one that has ever occurred here. The test now
+queries epistemic-ci for its actual check count, and skips rather than fails when
+the network is unavailable, so an offline run is not a false red.
+
+**Checks 6, 7 and 8 followed** ([#14](https://github.com/Silentpartnercoding/epistemic-ci/pull/14),
+[#15](https://github.com/Silentpartnercoding/epistemic-ci/pull/15)), closing the
+three remaining proposals. Control Discrimination and Evidential Independence are
+both questions about the shape of one outcome matrix — whether a row varies at
+all, and whether two rows are identical. Effect Reachability departs from its
+issue deliberately: the proposal was a single population predicate returning more
+than zero, which *passes the worked instance*, since 208 searched is greater than
+zero. Requiring every declared stratum to be non-empty catches it.
 
 **Scope, stated rather than assumed.** Check 5 establishes *insensitivity*
 generically. *Sensitivity* — that corrupting what the pin resolves to makes the
