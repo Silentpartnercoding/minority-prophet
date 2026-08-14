@@ -16,6 +16,8 @@ and do not describe it as the aggregator the theorems are about.
 
 from .baselines import AggregationResult, majority_vote, weighted_vote
 from .root_vote import (
+    BASIS_RANK,
+    IndependenceBasis,
     RootVerdict,
     RootedClaim,
     UnattributedPolicy,
@@ -32,6 +34,8 @@ from .semantic import (
 
 __all__ = [
     "AggregationResult",
+    "BASIS_RANK",
+    "IndependenceBasis",
     "RootVerdict",
     "RootedClaim",
     "SemanticResult",
