@@ -48,7 +48,7 @@ blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): t
 grossly broken implementations pass, because mutation selection determines what is
 learned. Two separately written codebases, one shared weakness.
 
-## Proposed and implemented, awaiting review
+## Merged upstream — check 5
 
 | change | failure mode | how it was found |
 |---|---|---|
@@ -75,6 +75,20 @@ found in this programme the same day, in `aggregation/semantic.py` under
 `results/los-inspired-v0.1.manifest.json`. That one was checked for and
 respected; this one was not checked for and was broken. One codebase, one day,
 two instances, one of them missed by the person who had just handled the other.
+
+**Merged 2026-08-14, after failing this project's CI first.** The initial commit
+wrote the tests with pytest, which broke self-test on all four supported Python
+versions: `epistemic-ci` declares `dependencies = []` and runs
+`python -m unittest discover`. Adding a dependency to a deliberately
+dependency-free meta-validation tool, in order to test a check about not trusting
+what you did not verify, was caught by the tool's own CI and rewritten.
+
+**A limit of the local control, recorded rather than patched.** The count test
+added in PR #86 compares the stated number of checks against the names beside it.
+It did **not** catch this entry sitting under "awaiting review" after the PR
+merged, because the count did not change. The control guards one specific
+staleness and no other, and enumerating the rest would be inventing failures
+rather than recording them.
 
 **Scope, stated rather than assumed.** Check 5 establishes *insensitivity*
 generically. *Sensitivity* — that corrupting what the pin resolves to makes the
