@@ -1,16 +1,20 @@
 # What this programme has contributed to Epistemic CI, and what it has not
 
 `Silentpartnercoding/epistemic-ci` is a vendor-neutral meta-validation gate: a
-test for the tests. Its v0 has **four** checks — **Vacuous Test** (planted defects
+test for the tests. Its v0 has **five** checks — **Vacuous Test** (planted defects
 must make verification fail), **Executable Pass Condition** (corrupted outputs
 must make the checker fail), **Observation Surface** (a positive population
 count, a population fingerprint and a result fingerprint bound to one run id),
-and **Final Artifact Binding** (a detached receipt naming and hashing every
-declared final artifact, with the verifier rejecting each alteration).
+**Final Artifact Binding** (a detached receipt naming and hashing every
+declared final artifact, with the verifier rejecting each alteration), and
+**Pinned Input Binding** (corrupting the workspace copy of a declared pinned
+input must leave the result unmoved).
 
-An earlier version of this file said three. Final Artifact Binding was already
-shipped when it was written, so the omission was in this summary, not in the
-tool.
+An earlier version of this file said three, then four. Final Artifact Binding was
+already shipped when "three" was written, so that omission was in this summary
+rather than the tool. "Four" was correct until PR #13 below. A summary that
+lags the thing it summarises is the failure this file exists to prevent, so the
+count is stated explicitly each time it changes.
 
 This programme's failure modes are the obvious source of candidate checks, so
 this file records which have been logged there, which are already covered, and
@@ -44,6 +48,40 @@ blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): t
 grossly broken implementations pass, because mutation selection determines what is
 learned. Two separately written codebases, one shared weakness.
 
+## Proposed and implemented, awaiting review
+
+| change | failure mode | how it was found |
+|---|---|---|
+| [#13](https://github.com/Silentpartnercoding/epistemic-ci/pull/13) **Pinned Input Binding** | a runner that declares its results came from specific bytes while reading whatever is in the workspace | `evaluations/multi-model-v1/canonical-capability-runner.py` pinned two files at commit `41911af`, recorded their digests in `CAPABILITY-TOURNAMENT-V1-SUMMARY.json`, and then hashed and executed the **working-tree** copies |
+
+**Why v0 missed it.** All four existing checks share one polarity: mutate
+something, verification must fail. They establish that checking is *sensitive* to
+corruption. This defect is the other half — a pinned input must be *insensitive*
+to workspace corruption, because the run should never read it. Sensitivity in the
+wrong place is a defect, and a silent one: every recorded digest still matches,
+since the digest is taken of the same copy that was executed.
+
+**Reconciliation, since the two rules appear to contradict.** They partition the
+inputs rather than ranking the checks: a *live* input is read from the workspace
+and Vacuous Test is correct for it; a *pinned* input is read from an immutable
+reference and check 5 is correct for it. A path declared as both is rejected as a
+configuration contradiction, because either behaviour would be wrong for one of
+the two checks. Without that rule a correctly-pinned runner is reported defective
+by check 1.
+
+**The recurrence matters more than the finding, again.** The same class of
+binding — a file whose bytes are bound by a published record — had already been
+found in this programme the same day, in `aggregation/semantic.py` under
+`results/los-inspired-v0.1.manifest.json`. That one was checked for and
+respected; this one was not checked for and was broken. One codebase, one day,
+two instances, one of them missed by the person who had just handled the other.
+
+**Scope, stated rather than assumed.** Check 5 establishes *insensitivity*
+generically. *Sensitivity* — that corrupting what the pin resolves to makes the
+run fail — depends on the pin mechanism and is checked only where a
+`tamper_command` is supplied; otherwise it is reported not established. Pins are
+counted separately from mutations so they cannot inflate the assurance bound.
+
 ## Already covered by v0 — deliberately not proposed
 
 - **A checker that accepts corrupted output.** Executable Pass Condition.
@@ -66,6 +104,17 @@ learned. Two separately written codebases, one shared weakness.
   that skipped a real registration, a collision floor that quietly dropped values.
   Generalises poorly into a config-driven check; the discipline is to report
   reduced coverage rather than to detect it automatically.
+- **"The verification system committed the error the project exists to prevent."**
+  True as a description of #13, and deliberately not recorded as a finding. It is
+  an interpretation of two facts rather than a third: that the runner read the
+  workspace, and that this programme's thesis is that a copy is not an original.
+  The claim that these are *the same* error is a claim about resemblance, and no
+  observation makes it come out false. A statement that cannot fail is not
+  evidence — the same objection this programme raised against its own
+  `check_t4_tightness`, which reported 4,638/4,638 from a computation that never
+  constructed a second world. The recurrence above is logged instead because it is
+  countable, predicts that more instances exist, and could be refuted by showing
+  the two cases are structurally unalike.
 
 ## Rule
 
