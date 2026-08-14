@@ -14,6 +14,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 from types import SimpleNamespace
@@ -38,13 +39,48 @@ def load_module(name: str, path: Path):
     return module
 
 
-def verify_canonical_repo(repo: Path) -> dict[str, str]:
-    root_vote = repo / "aggregation" / "root_vote.py"
-    baselines = repo / "experiments" / "exp008_shootout.py"
+CANONICAL_SOURCES = {
+    "root_vote": "aggregation/root_vote.py",
+    "baselines": "experiments/exp008_shootout.py",
+}
+
+
+def materialize_canonical_sources(repo: Path, into: Path) -> tuple[dict[str, Path], dict[str, str]]:
+    """Extract the canonical sources AT PINNED_COMMIT, not from the working tree.
+
+    Corrected 2026-08-14. This previously hashed and executed the WORKING-TREE
+    copies of the pinned files. That was only accidentally correct: it agreed
+    with the pin exactly as long as nobody edited those files, and the moment
+    one changed on a feature branch the canonical evaluation failed -- not
+    because the canonical implementation had changed, but because an unrelated
+    working tree had.
+
+    Worse than the false failure is what it implied about the published record.
+    CAPABILITY-TOURNAMENT-V1-SUMMARY.json asserts that its results came from
+    root_vote.py at 74ccf33 and exp008_shootout.py at c80ea65. That assertion
+    is only true if the runner actually EXECUTED those bytes. Reading the
+    working tree made it true by coincidence rather than by construction.
+
+    Reading from the commit makes the pin mean what it says, and lets the
+    canonical implementation evolve without invalidating a canonical result.
+    """
+    paths: dict[str, Path] = {}
+    observed: dict[str, str] = {}
+    for name, relative in CANONICAL_SOURCES.items():
+        blob = subprocess.check_output(
+            ["git", "show", f"{PINNED_COMMIT}:{relative}"], cwd=repo
+        )
+        destination = into / relative.replace("/", "__")
+        destination.write_bytes(blob)
+        paths[name] = destination
+        observed[name] = hashlib.sha256(blob).hexdigest()
+    return paths, observed
+
+
+def verify_canonical_repo(repo: Path, into: Path) -> tuple[dict[str, Path], dict[str, str]]:
     head = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=repo, text=True
     ).strip()
-    observed = {"root_vote": sha256(root_vote), "baselines": sha256(baselines)}
     subprocess.run(
         ["git", "cat-file", "-e", f"{PINNED_COMMIT}^{{commit}}"],
         cwd=repo,
@@ -52,9 +88,14 @@ def verify_canonical_repo(repo: Path) -> dict[str, str]:
         capture_output=True,
         text=True,
     )
+    paths, observed = materialize_canonical_sources(repo, into)
     if observed != {"root_vote": ROOT_VOTE_SHA256, "baselines": BASELINES_SHA256}:
-        raise RuntimeError(f"canonical source hash mismatch: {observed}")
-    return {"commit": PINNED_COMMIT, "checkout_commit": head, **observed}
+        raise RuntimeError(
+            f"canonical source hash mismatch AT {PINNED_COMMIT}: {observed}. "
+            "The pinned commit no longer contains the pinned bytes, which means "
+            "history was rewritten -- not that the working tree changed."
+        )
+    return paths, {"commit": PINNED_COMMIT, "checkout_commit": head, **observed}
 
 
 def map_binary(values: list[int]) -> list[str]:
@@ -156,14 +197,15 @@ def main() -> None:
     parser.add_argument("input", type=Path)
     parser.add_argument("--canonical-repo", type=Path, default=Path(__file__).resolve().parents[2])
     args = parser.parse_args()
-    provenance = verify_canonical_repo(args.canonical_repo)
-    root_vote = load_module("pinned_root_vote", args.canonical_repo / "aggregation" / "root_vote.py")
-    baselines = load_module("pinned_exp008", args.canonical_repo / "experiments" / "exp008_shootout.py")
-    packets = json.loads(args.input.read_text())
-    print(json.dumps({
-        "canonical_provenance": provenance,
-        "cases": [run_case(packet, root_vote, baselines) for packet in packets],
-    }, sort_keys=True))
+    with tempfile.TemporaryDirectory() as workspace:
+        paths, provenance = verify_canonical_repo(args.canonical_repo, Path(workspace))
+        root_vote = load_module("pinned_root_vote", paths["root_vote"])
+        baselines = load_module("pinned_exp008", paths["baselines"])
+        packets = json.loads(args.input.read_text())
+        print(json.dumps({
+            "canonical_provenance": provenance,
+            "cases": [run_case(packet, root_vote, baselines) for packet in packets],
+        }, sort_keys=True))
 
 
 if __name__ == "__main__":
