@@ -1,6 +1,6 @@
 # Minority Prophet
 
-**When AI agents agree, check whether the evidence does.**
+**An echo is not a witness.**
 
 Five agents can return the same answer while all relying on one recorded source.
 Minority Prophet uses recorded claim ancestry, collapses dependent support into

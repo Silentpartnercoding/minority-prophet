@@ -1,5 +1,6 @@
 import { SiteFooter, SiteNav } from "./components/site-chrome";
 import { formatPercent, liftModels } from "./lib/lift-study";
+import { paperUrl } from "./lib/tournament";
 
 export default function Home() {
   return <main>
@@ -8,11 +9,11 @@ export default function Home() {
     <section className="hero" id="top">
       <div className="hero-copy">
         <p className="eyebrow"><span /> EPISTEMIC INFRASTRUCTURE FOR AI AGENTS</p>
-        <h1>When agents agree,<br /><em>check the evidence.</em></h1>
-        <p className="lede">Minority Prophet tests whether AI-agent agreement rests on independent evidence or on recorded shared sources, derivations, circularity, and collapsed dissent.</p>
+        <h1>An echo is not<br /><em>a witness.</em></h1>
+        <p className="lede">When AI agents agree, Minority Prophet tests whether the evidence is independent—or whether the crowd is repeating one recorded source.</p>
         <div className="hero-actions">
           <a className="button primary" href="#demo">See the six-agent demo <span>→</span></a>
-          <a className="button secondary" href="/research/mp01-canonical-demo.json">Inspect the result <span>→</span></a>
+          <a className="button secondary" href={paperUrl}>Read the paper <span>→</span></a>
         </div>
       </div>
       <div className="hero-visual lineage-hero" aria-label="Five agents supporting Answer A share one evidence root while one agent supporting Answer B has an independent root">
@@ -50,7 +51,7 @@ export default function Home() {
           <p>Preserve the minority. Request another independent source.</p>
         </article>
       </div>
-      <div className="demo-boundary"><b>What this proves:</b> recorded copies do not become new evidence roots. <b>What it does not prove:</b> that Answer B is true or that hidden copying can always be inferred.</div>
+      <div className="demo-boundary"><span><b>What this proves:</b> recorded copies do not become new evidence roots. <b>What it does not prove:</b> that Answer B is true or that hidden copying can always be inferred.</span><a href="/research/mp01-canonical-demo.json">Machine-readable result (JSON) →</a></div>
     </section>
 
     <section className="product-loop" id="method">

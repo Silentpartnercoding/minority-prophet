@@ -19,8 +19,11 @@ test("server-renders a failure-first landing page with the canonical fixture and
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Minority Prophet/);
-  assert.match(html, /When agents agree/);
-  assert.match(html, /check the evidence/);
+  assert.match(html, /An echo is not/);
+  assert.match(html, /a witness/);
+  assert.match(html, /When AI agents agree/);
+  assert.match(html, /Read the paper/);
+  assert.match(html, /Machine-readable result \(JSON\)/);
   assert.match(html, /MP\.01 · SYNTHETIC FIXTURE/);
   assert.match(html, /Five votes/);
   assert.match(html, /Two evidence roots/);

@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("host") ?? "localhost";
   const protocol = host.includes("localhost") ? "http" : "https";
   const metadataBase = new URL(`${protocol}://${host}`);
-  const title = "Minority Prophet — When Agents Agree, Check the Evidence";
+  const title = "Minority Prophet — An Echo Is Not a Witness";
   const description = "Vendor-neutral epistemic infrastructure for testing recorded consensus, preserving evidence lineage, and keeping independently supported dissent visible.";
   return {
     metadataBase,
