@@ -8,15 +8,15 @@ export function SiteNav() {
       <span>MINORITY PROPHET <small>RESEARCH PROGRAM</small></span>
     </Link>
     <div className="navlinks">
+      <Link href="/#demo">MP.01 Demo</Link>
       <Link href="/experiments/epistemic-lift">Lift Study</Link>
-      <Link href="/experiments/capability-tournament">Tournament</Link>
-      <Link href="/experiments/epistemic-observatory">Observatory</Link>
+      <Link href="/#experiments">Experiments</Link>
       <a href={paperUrl}>Paper</a>
-      <Link className="nav-cta" href="/experiments/epistemic-lift#results">Results ↗</Link>
+      <a className="nav-cta" href="/research/mp01-canonical-demo.json">Run result ↗</a>
     </div>
   </nav>;
 }
 
 export function SiteFooter() {
-  return <footer id="foundations"><div className="mark">MP</div><p>A benchmark for<br />evidence-aware aggregation.</p><span>Public research · lift study v1.1 · 2026</span></footer>;
+  return <footer id="foundations"><div className="mark">MP</div><p>Why should the system<br />believe its answer?</p><span>Public research · synthetic fixtures labeled · 2026</span></footer>;
 }

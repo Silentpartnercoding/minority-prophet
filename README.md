@@ -1,11 +1,35 @@
 # Minority Prophet
 
-**Count independent evidence, not repeated claims.**
+**When AI agents agree, check whether the evidence does.**
+
+Five agents can return the same answer while all relying on one recorded source.
+Minority Prophet uses recorded claim ancestry, collapses dependent support into
+evidence roots, preserves independently supported dissent, and can require new
+evidence before a consequential decision proceeds.
+
+Observability asks **what happened**. Evaluation asks **whether the task
+worked**. Minority Prophet asks **why the system should believe its answer**.
 
 > **Research status:** EXP001–EXP002 are canonical derived records; EXP003R–EXP006R and EXP008R are canonical archived-implementation replays; EXP007R is canonically incomplete; EXP007A is the canonical synthetic adversary completion. None establishes real-world provenance recovery. See the registry and evidence-alignment ledger.
 
 Minority Prophet asks whether grounded evidence can survive an overwhelming
 copied majority.
+
+## Run the canonical failure
+
+MP.01 is a deterministic six-agent teaching fixture. Five agents support Answer
+A, one supports Answer B, and the five A claims descend from one recorded root.
+The apparent 5:1 majority therefore becomes a 1:1 evidence-root tie. The system
+abstains, preserves the minority, and asks for another independent source; it
+does **not** declare Answer B true.
+
+```sh
+python -m experiments.mp01.run_mp01
+```
+
+The committed [machine-readable result](public/research/mp01-canonical-demo.json)
+is checked against the runner in CI. This is a synthetic demonstration under
+declared ancestry, not a claim that hidden real-world copying has been solved.
 
 ## Installable surfaces
 
@@ -56,7 +80,7 @@ root-issuance reference, neutral evidence contract, tests, and dashboard.
 The component and adapter boundaries are summarized in
 [`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md).
 
-## Minority Prophet Test v0.1
+## Benchmark v0.1
 
 A synthetic world has a hidden binary truth. A small set of independent observers receives reliable evidence. A larger population copies a socially dominant but false claim. An aggregation method must recover truth while preserving uncertainty and lineage.
 

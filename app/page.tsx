@@ -1,6 +1,5 @@
 import { SiteFooter, SiteNav } from "./components/site-chrome";
 import { formatPercent, liftModels } from "./lib/lift-study";
-import { paperUrl } from "./lib/tournament";
 
 export default function Home() {
   return <main>
@@ -8,30 +7,65 @@ export default function Home() {
 
     <section className="hero" id="top">
       <div className="hero-copy">
-        <p className="eyebrow"><span /> EVIDENCE-AWARE AGGREGATION</p>
-        <h1>Truth is not<br /><em>popularity.</em></h1>
-        <p className="lede">Minority Prophet tests whether systems can distinguish independent evidence from copied consensus. In a complete 192-cell development study, the same models improved again when provenance was augmented with the MP receipt.</p>
+        <p className="eyebrow"><span /> EPISTEMIC INFRASTRUCTURE FOR AI AGENTS</p>
+        <h1>When agents agree,<br /><em>check the evidence.</em></h1>
+        <p className="lede">Minority Prophet tests whether AI-agent agreement rests on independent evidence or on recorded shared sources, derivations, circularity, and collapsed dissent.</p>
         <div className="hero-actions">
-          <a className="button primary" href="/experiments/epistemic-lift">See the lift study <span>→</span></a>
-          <a className="button secondary" href={paperUrl}>Read the paper <span>→</span></a>
+          <a className="button primary" href="#demo">See the six-agent demo <span>→</span></a>
+          <a className="button secondary" href="/research/mp01-canonical-demo.json">Inspect the result <span>→</span></a>
         </div>
       </div>
-      <div className="hero-visual" aria-label="Three independent true observations opposed by ninety-five copied false claims">
-        <div className="ratio-label"><span>DEMONSTRATION WORLD</span><b>03 : 95</b><small>independent truth / copied falsehood</small></div>
-        <div className="signal-field">{Array.from({ length: 98 }).map((_, index) => <i key={index} className={index < 3 ? "truth-signal" : "copy-signal"} />)}</div>
-        <div className="truth-note">3 independent evidence roots <span>→</span> ground truth</div>
-        <div className="false-note">95 claims <span>→</span> one social root</div>
+      <div className="hero-visual lineage-hero" aria-label="Five agents supporting Answer A share one evidence root while one agent supporting Answer B has an independent root">
+        <div className="lineage-kicker"><span>MP.01 · SYNTHETIC FIXTURE</span><b>5 : 1</b><small>agent votes before lineage</small></div>
+        <div className="lineage-mini">
+          <p><b>A1</b><i>ORIGIN</i><span>Source X</span></p>
+          <p><b>A2</b><i>DERIVED</i><span>A1</span></p>
+          <p><b>A3</b><i>DERIVED</i><span>A1</span></p>
+          <p><b>A4</b><i>SUMMARY</i><span>A2</span></p>
+          <p><b>A5</b><i>PARAPHRASE</i><span>A3</span></p>
+          <p className="minority"><b>B1</b><i>ORIGIN</i><span>Source Y</span></p>
+        </div>
+        <div className="lineage-collapse"><span>5 votes for A</span><i>→</i><strong>1 recorded root</strong></div>
+        <div className="lineage-collapse minority"><span>1 vote for B</span><i>→</i><strong>1 recorded root</strong></div>
       </div>
     </section>
 
-    <section className="question" id="benchmark">
-      <p className="section-index">01 / THE CENTRAL QUESTION</p>
-      <div><h2>Which belief is best<br /><em>supported?</em></h2><p>A hundred voices can still be one copied story. The research asks whether complete ancestry and distinct evidence origins can recover the constructed answer when ordinary vote counts fail.</p></div>
-      <blockquote>“Can evidence-aware aggregation recover truth when vote counts fail?”</blockquote>
+    <section className="canonical-demo" id="demo">
+      <div className="canonical-demo-heading">
+        <p className="section-index">01 / THE FAILURE</p>
+        <div><h2>Five votes.<br /><em>Two evidence roots.</em></h2><p>Everything completed successfully. No tool failed. No agent timed out. Five agents returned Answer A. But their declared ancestry leads back to one source.</p></div>
+        <blockquote>Truth is not popularity. Consensus is not independent evidence.</blockquote>
+      </div>
+      <div className="demo-compare">
+        <article className="vote-view">
+          <span>WHAT A VOTE COUNT SEES</span>
+          <h3>Answer A wins<br />5 to 1.</h3>
+          <div className="vote-stack" aria-label="Five votes for Answer A and one vote for Answer B"><i /><i /><i /><i /><i /><i className="minority" /></div>
+          <p>Six outputs are treated as six signals.</p>
+        </article>
+        <article className="root-view">
+          <span>WHAT LINEAGE REVEALS</span>
+          <h3>The majority<br />disappears.</h3>
+          <div className="root-pair"><div><i>A</i><b>1 root</b><small>claim-a1</small></div><em>=</em><div className="minority"><i>B</i><b>1 root</b><small>claim-b1</small></div></div>
+          <p>Preserve the minority. Request another independent source.</p>
+        </article>
+      </div>
+      <div className="demo-boundary"><b>What this proves:</b> recorded copies do not become new evidence roots. <b>What it does not prove:</b> that Answer B is true or that hidden copying can always be inferred.</div>
+    </section>
+
+    <section className="product-loop" id="method">
+      <p className="section-index">02 / THE LOOP</p>
+      <div className="loop-heading"><h2>Detect. Trace.<br /><em>Challenge. Verify.</em></h2><p>Minority Prophet turns provenance into an inspectable decision process. The assessment can lower confidence, preserve dissent, request evidence, or route the decision onward. It never grants authority.</p></div>
+      <div className="loop-grid">
+        <article><span>01</span><h3>Detect</h3><p>Find recorded consensus collapse, unsupported claims, circularity, and disappearing dissent.</p></article>
+        <article><span>02</span><h3>Trace</h3><p>Reconstruct claims, sources, transformations, agents, and recorded roots.</p></article>
+        <article><span>03</span><h3>Challenge</h3><p>Test whether corroboration is independent and whether more evidence is required.</p></article>
+        <article><span>04</span><h3>Verify</h3><p>Seek a new root, revise the belief, and preserve the failure as a regression test.</p></article>
+      </div>
     </section>
 
     <section className="experiment-index" id="experiments">
-      <div className="experiment-index-heading"><p className="section-index">02 / LIVE EXPERIMENTS</p><h2>See the claim.<br /><em>Measure the lift.</em></h2><p>Three distinct experiments: a same-model causal lift study, a bounded method-conformance tournament, and an interactive synthetic world. Their claims and units stay separate.</p></div>
+      <div className="experiment-index-heading"><p className="section-index">03 / PUBLIC EVIDENCE</p><h2>See the claim.<br /><em>Measure the lift.</em></h2><p>Three distinct experiments: a same-model causal lift study, a bounded method-conformance tournament, and an interactive synthetic world. Their claims and units stay separate.</p></div>
       <div className="experiment-preview-grid">
         <article className="experiment-preview lift-preview">
           <p className="panel-label">EPISTEMIC LIFT v1.1 · COMPLETE DEVELOPMENT STUDY</p>
@@ -70,7 +104,7 @@ export default function Home() {
     </section>
 
     <section className="boundary" id="boundary">
-      <p className="section-index">03 / THE ARCHITECTURAL BOUNDARY</p>
+      <p className="section-index">04 / THE ARCHITECTURAL BOUNDARY</p>
       <div className="boundary-heading"><h2>Evidence is not<br /><em>authority.</em></h2><p>Minority Prophet asks whether the evidence supporting a claim is independently grounded or merely repeated. It never turns that assessment into permission.</p></div>
       <div className="boundary-flow" aria-label="Evidence flows through binding, assessment, and enforcement">
         <article><span>01</span><h3>Evidence arrives</h3><p>A trace, score, test result, or replay bundle records what happened.</p></article>
@@ -81,13 +115,13 @@ export default function Home() {
     </section>
 
     <section className="principles" id="principles">
-      <p className="section-index">04 / NON-NEGOTIABLE PRINCIPLES</p><h2>Never confuse—</h2>
+      <p className="section-index">05 / NON-NEGOTIABLE PRINCIPLES</p><h2>Never confuse—</h2>
       <div className="principle-grid">{["Consensus / Truth", "Popularity / Evidence", "Confidence / Correctness", "Reputation / Competence", "Correlation / Independence", "Majority / Reality"].map((item, index) => { const [left, right] = item.split(" / "); return <article key={item}><span>0{index + 1}</span><p><s>{left}</s><b>{right}</b></p></article>; })}</div>
     </section>
 
     <section className="run" id="run">
-      <div><p className="section-index">05 / REPRODUCIBLE V0.1</p><h2>Run the<br /><em>baselines.</em></h2></div>
-      <div className="terminal"><div><i /><i /><i /><span>minority-prophet / v0.1</span></div><pre><code><b>$</b> python -m benchmark --worlds 500 --seed 7{"\n\n"}<span>Generating synthetic worlds...</span>{"\n"}<span>Evaluating reproducible baselines...</span>{"\n"}<strong>Report ready.</strong></code></pre></div>
+      <div><p className="section-index">06 / REPRODUCIBLE FIXTURE</p><h2>Run the<br /><em>failure.</em></h2></div>
+      <div className="terminal"><div><i /><i /><i /><span>minority-prophet / MP.01</span></div><pre><code><b>$</b> python -m experiments.mp01.run_mp01{"\n\n"}<span>agent votes: A=5, B=1</span>{"\n"}<span>recorded roots: A=1, B=1</span>{"\n"}<strong>ABSTAIN · PRESERVE_MINORITY</strong></code></pre></div>
     </section>
     <SiteFooter />
   </main>;

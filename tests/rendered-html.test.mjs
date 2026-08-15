@@ -13,20 +13,27 @@ async function render(path = "/") {
   );
 }
 
-test("server-renders a concise landing page with the lift study and separate supporting experiments", async () => {
+test("server-renders a failure-first landing page with the canonical fixture and separate studies", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Minority Prophet/);
-  assert.match(html, /Truth is not/);
-  assert.match(html, /THE CENTRAL QUESTION/);
-  assert.match(html, /LIVE EXPERIMENTS/);
+  assert.match(html, /When agents agree/);
+  assert.match(html, /check the evidence/);
+  assert.match(html, /MP\.01 · SYNTHETIC FIXTURE/);
+  assert.match(html, /Five votes/);
+  assert.match(html, /Two evidence roots/);
+  assert.match(html, /The majority/);
+  assert.match(html, /disappears/);
+  assert.match(html, /PRESERVE_MINORITY/);
+  assert.match(html, /What it does not prove/);
+  assert.match(html, /Detect\. Trace/);
+  assert.match(html, /Challenge\. Verify/);
+  assert.match(html, /PUBLIC EVIDENCE/);
   assert.match(html, /EPISTEMIC OBSERVATORY/);
-  assert.match(html, /DEMONSTRATION WORLD/);
   assert.match(html, /Evidence is not/);
   assert.match(html, /Assessment never grants authority/);
-  assert.match(html, /Read the paper/);
   assert.match(html, /papers\/00-CURRENT-PAPER\.md/);
   assert.match(html, /CAPABILITY TOURNAMENT V1/);
   assert.match(html, /EPISTEMIC LIFT v1\.1/);
@@ -63,6 +70,7 @@ test("server-renders a concise landing page with the lift study and separate sup
     access(new URL("../public/research/epistemic-lift-v1.1-results.md", import.meta.url)),
     access(new URL("../public/research/epistemic-lift-v1.1-protocol.md", import.meta.url)),
     access(new URL("../public/research/epistemic-lift-v1.1-summary.json", import.meta.url)),
+    access(new URL("../public/research/mp01-canonical-demo.json", import.meta.url)),
   ]);
 });
 
