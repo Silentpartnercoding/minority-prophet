@@ -57,6 +57,9 @@ test("server-renders a failure-first landing page with the canonical fixture and
   assert.match(html, /href="\/experiments\/capability-tournament"/);
   assert.match(html, /href="\/experiments\/epistemic-lift"/);
   assert.match(html, /href="\/experiments\/epistemic-observatory"/);
+  assert.match(html, /href="\/system"/);
+  assert.match(html, /href="\/research"/);
+  assert.match(html, /href="\/developers"/);
   assert.doesNotMatch(html, /OVERALL LEADERBOARD/);
   assert.doesNotMatch(html, /Claude extension pending/);
   assert.doesNotMatch(html, /Starter Project|react-loading-skeleton/i);
@@ -75,6 +78,59 @@ test("server-renders a failure-first landing page with the canonical fixture and
     access(new URL("../public/research/epistemic-lift-v1.1-summary.json", import.meta.url)),
     access(new URL("../public/research/mp01-canonical-demo.json", import.meta.url)),
   ]);
+});
+
+test("server-renders the system map with explicit component and deployment boundaries", async () => {
+  const response = await render("/system");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /System — Minority Prophet/);
+  assert.match(html, /Know why/);
+  assert.match(html, /before you act/);
+  assert.match(html, /VALUE UP FRONT/);
+  assert.match(html, /THE NERVOUS SYSTEM/);
+  assert.match(html, /Evidence graph/);
+  assert.match(html, /Minority Prophet engine/);
+  assert.match(html, /Knowledge Ledger/);
+  assert.match(html, /Gate and evidence router/);
+  assert.match(html, /WORKING PUBLIC CORE/);
+  assert.match(html, /REFERENCE RUNTIME/);
+  assert.match(html, /SEEDED RESEARCH/);
+  assert.match(html, /Production identity/);
+  assert.match(html, /PUBLIC-CLAIMS\.md/);
+});
+
+test("server-renders the public research map with positive and adverse evidence separated", async () => {
+  const response = await render("/research");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Research — Minority Prophet/);
+  assert.match(html, /Claims are earned/);
+  assert.match(html, /RESEARCH RULES/);
+  assert.match(html, /The Minority Prophet Property/);
+  assert.match(html, /CANONICAL/);
+  assert.match(html, /DEVELOPMENT DEMO/);
+  assert.match(html, /Negative results/);
+  assert.match(html, /5,729 eligible resolved weather markets/);
+  assert.match(html, /Unified auditor candidate/);
+  assert.match(html, /Read the current paper/);
+  assert.match(html, /EVIDENCE-ALIGNMENT\.md/);
+});
+
+test("server-renders a truthful developer path with local commands and maturity labels", async () => {
+  const response = await render("/developers");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Developers — Minority Prophet/);
+  assert.match(html, /one inspectable failure/);
+  assert.match(html, /python -m experiments\.mp01\.run_mp01/);
+  assert.match(html, /local \/ no hosted account/);
+  assert.match(html, /npm --prefix evaluations\/multi-model-v1 install/);
+  assert.match(html, /Python evidence graph \+ benchmark/);
+  assert.match(html, /Automatic framework instrumentation/);
+  assert.match(html, /PLANNED/);
+  assert.match(html, /A passing fixture proves/);
+  assert.match(html, /does not prove hidden real-world lineage/);
 });
 
 test("server-renders the complete same-model epistemic lift study", async () => {
