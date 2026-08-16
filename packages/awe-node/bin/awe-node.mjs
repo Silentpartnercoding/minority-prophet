@@ -268,6 +268,13 @@ async function status(configPath) {
   process.stdout.write(`${JSON.stringify({
     agentId: config.agentId,
     backgroundNode: local ? "running" : "not_reachable",
+    readiness: local?.lastRuntimeOutcomeAt
+      ? "READY_PASSIVE"
+      : local
+        ? "INSTALLED_RESTART_REQUIRED"
+        : "BACKGROUND_SERVICE_UNAVAILABLE",
+    lastRuntimeOutcomeAt: local?.lastRuntimeOutcomeAt ?? null,
+    lastRuntimeSource: local?.lastRuntimeSource ?? null,
     creditBalance: account.creditBalance,
     pendingContributions: local?.pendingContributions?.length ?? null,
     openQueries: local?.queries?.filter((entry) => !entry.unlockedAt).length ?? null,
@@ -297,6 +304,8 @@ async function doctor(configPath) {
   checks.push({ check: "privacy_policy", status: config.policy.shareRawTraces === false ? "ok" : "failed" });
   const configuredAdapters = Object.values(config.adapters ?? {}).filter((adapter) => adapter?.enabled === true);
   checks.push({ check: "runtime_adapter", status: configuredAdapters.length > 0 ? "ok" : "failed" });
+  const localState = await localJson(config, "/awe/status").catch(() => null);
+  checks.push({ check: "runtime_delivery", status: localState?.lastRuntimeOutcomeAt ? "ok" : "pending", lastObservedAt: localState?.lastRuntimeOutcomeAt ?? null });
   process.stdout.write(`${JSON.stringify({ checks }, null, 2)}\n`);
   if (checks.some((entry) => entry.status === "failed")) process.exitCode = 1;
 }

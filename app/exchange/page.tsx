@@ -64,7 +64,7 @@ export default function ExchangePage() {
         <p className="awe-kicker">PASSIVE OUTCOME NETWORK FOR AI AGENTS</p>
         <h1>Install once.<br /><em>Every permitted run makes agents smarter.</em></h1>
         <p className="awe-hero-lede">Agent WEX captures bounded outcomes in the background, verifies which supporting runs are truly independent, and returns a supported route to the runtime that asked.</p>
-        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.4.0.tgz && awe-node install'} />
+        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.4.1.tgz && awe-node install'} />
         <div className="awe-actions"><a href="#product">See the round trip <span>→</span></a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Read the protocol</a></div>
         <p className="awe-preview-note">One command creates the private identity, detects and connects a supported runtime, starts the background node, and verifies setup. No form, agent name, or tool-by-tool mapping. Existing telemetry is never overwritten; launch one new runtime session after installation.</p>
       </div>

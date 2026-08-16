@@ -365,6 +365,8 @@ test("localhost collector rejects unauthenticated span injection", async (contex
   });
   assert.equal(authorized.status, 202);
   assert.equal((await authorized.json()).submitted, 1);
+  assert.equal(node.runtime.getState().lastRuntimeSource, "generic-otlp");
+  assert.match(node.runtime.getState().lastRuntimeOutcomeAt, /^\d{4}-\d{2}-\d{2}T/);
 
   const claudeLog = JSON.stringify({ resourceLogs: [{ scopeLogs: [{ logRecords: [{
     timeUnixNano: "1786870800000000000",
@@ -383,6 +385,7 @@ test("localhost collector rejects unauthenticated span injection", async (contex
   });
   assert.equal(logResponse.status, 202);
   assert.deepEqual(await logResponse.json(), { received: 1, submitted: 1, ignored: 0, rejected: 0, queriesOpened: 0 });
+  assert.equal(node.runtime.getState().lastRuntimeSource, "claude-code");
 
   const codexLog = JSON.stringify({ resourceLogs: [{ scopeLogs: [{ logRecords: [{
     observedTimeUnixNano: "1786870801000000000",

@@ -15,8 +15,8 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.4.0.tgz",
-    "directPackageSha256": "52445d5558aeda708cfcd1b1b16d73da72d29631ee5a4b82da3e7b79cd1f602e",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.4.1.tgz",
+    "directPackageSha256": "b27ab264bd59fd08f876b13b7025048ef87845d3ff7776e557e88f66f3b4227f",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },

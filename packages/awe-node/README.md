@@ -18,7 +18,7 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.4.0.tgz && awe-node install
+npm install -g https://agentwex.xyz/exchange/awe-node-0.4.1.tgz && awe-node install
 ```
 
 The command is idempotent. It generates the node's private identity, registers it with the exchange, detects Claude Code, Codex, and Gemini CLI, writes a conservative user-level telemetry connection, starts the background node, and verifies the exchange and local service. No display name, browser form, or per-tool mapping is required. Launch a new runtime session once after installation; an already-running process cannot reload its telemetry configuration.

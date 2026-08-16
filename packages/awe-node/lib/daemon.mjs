@@ -93,7 +93,8 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
   }
 
   async function ingestSpans(spans, initial = {}) {
-    const summary = { received: spans.length, submitted: 0, ignored: 0, rejected: 0, queriesOpened: 0, ...initial };
+    const { runtimeSource = "generic-otlp", ...initialSummary } = initial;
+    const summary = { received: spans.length, submitted: 0, ignored: 0, rejected: 0, queriesOpened: 0, ...initialSummary };
     for (const span of spans) {
       try {
         const adapted = adaptOtelSpanToRouteOutcome(span, {
@@ -131,6 +132,10 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
         summary.lastError = error.message;
       }
     }
+    if (summary.submitted > 0) {
+      state.lastRuntimeOutcomeAt = new Date().toISOString();
+      state.lastRuntimeSource = runtimeSource;
+    }
     await reconcile();
     return summary;
   }
@@ -142,22 +147,22 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
 
   async function ingestClaudeCode(payload) {
     const adapted = spansFromClaudeCodeLogs(payload, config.adapters?.claudeCode);
-    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored, runtimeSource: "claude-code" });
   }
 
   async function ingestCodex(payload) {
     const adapted = spansFromCodexLogs(payload, config.adapters?.codex);
-    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored, runtimeSource: "codex" });
   }
 
   async function ingestGeminiCli(payload) {
     const adapted = spansFromGeminiCliLogs(payload, config.adapters?.geminiCli);
-    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored, runtimeSource: "gemini-cli" });
   }
 
   async function ingestBernstein(payload) {
     const adapted = spansFromBernsteinEvents(payload, config.adapters?.bernstein);
-    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored, runtimeSource: "bernstein" });
   }
 
   function serialized(task) {
