@@ -19,5 +19,5 @@ export function SiteNav() {
 }
 
 export function SiteFooter() {
-  return <footer id="foundations"><div className="mark">MP</div><p>Why should the system<br />believe its answer?</p><div className="footer-links"><Link href="/exchange">Witness Exchange</Link><Link href="/system">System</Link><Link href="/research">Research</Link><Link href="/developers">Developers</Link><a href={paperUrl}>Paper</a></div><span>Evidence before consensus · 2026</span></footer>;
+  return <footer className="site-footer" id="foundations"><div className="mark">MP</div><p>Evidence that<br />shows its work.</p><div className="footer-links"><Link href="/exchange">Witness Exchange</Link><Link href="/system">System</Link><Link href="/research">Research</Link><Link href="/developers">Developers</Link><a href={paperUrl}>Paper</a></div><span>Evidence before consensus · 2026</span></footer>;
 }

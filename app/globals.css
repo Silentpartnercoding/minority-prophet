@@ -317,6 +317,7 @@ blockquote { margin:90px 0 0; border-left:2px solid var(--orange); padding:0 0 0
 .developer-boundary>div { grid-column:2/-1; display:flex; gap:12px; }
 .developer-boundary a { padding:14px 16px; border:1px solid #55594f; color:var(--acid); font:700 9px monospace; text-transform:uppercase; }
 footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1px solid var(--line); } footer>p { font:14px Georgia,serif; } footer>span { margin-left:auto;font:9px monospace;color:var(--muted);text-transform:uppercase; }
+.site-footer>p { margin:0; font:700 12px/1.35 Arial,sans-serif; letter-spacing:.01em; }
 .footer-links { display:flex; align-items:center; gap:16px; margin-left:32px; }
 .footer-links a { color:#5e6258; font:700 8px monospace; text-transform:uppercase; letter-spacing:.08em; }
 .nexus-hero { background:#f7f6ef; }

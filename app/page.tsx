@@ -121,7 +121,7 @@ export default function Home() {
     </section>
 
     <section className="run" id="run">
-      <div><p className="section-index">06 / REPRODUCIBLE FIXTURE</p><h2>Run the<br /><em>failure.</em></h2></div>
+      <div><p className="section-index">06 / REPRODUCIBLE FIXTURE</p><h2>Reproduce the<br /><em>result.</em></h2></div>
       <div className="terminal"><div><i /><i /><i /><span>minority-prophet / MP.01</span></div><pre><code><b>$</b> python -m experiments.mp01.run_mp01{"\n\n"}<span>agent votes: A=5, B=1</span>{"\n"}<span>recorded roots: A=1, B=1</span>{"\n"}<strong>ABSTAIN · PRESERVE_MINORITY</strong></code></pre></div>
     </section>
     <SiteFooter />
