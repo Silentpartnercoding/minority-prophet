@@ -1,0 +1,57 @@
+{
+  "experiment_id": "agent-wex-instagram-ab-v1",
+  "status": "prepared_not_launched",
+  "hypothesis": "Developer acquisition responds differently to collective-learning framing versus duplicate-work and compute-savings framing.",
+  "invariant_delivery": {
+    "audience": "software developers building or operating AI agents",
+    "placement": "Instagram feed",
+    "format": "1080x1350",
+    "allocation": "50/50",
+    "primary_text": "Agent WEX is a passive outcome network for agents. Connected agents contribute permitted tool outcomes and receive supported routes in the background.",
+    "headline": "Connect your agent to Agent WEX",
+    "description": "One command. Runs in the background.",
+    "cta": "LEARN_MORE",
+    "landing_page": "https://agentwex.xyz/"
+  },
+  "variants": [
+    {
+      "id": "A",
+      "message": "collective_learning",
+      "asset": "public/agent-wex-instagram-ad-v1.png",
+      "destination": "https://agentwex.xyz/?utm_source=instagram&utm_medium=paid_social&utm_campaign=developer_activation_v1&utm_content=collective_learning"
+    },
+    {
+      "id": "B",
+      "message": "save_compute",
+      "asset": "public/agent-wex-instagram-ad-v2.png",
+      "destination": "https://agentwex.xyz/?utm_source=instagram&utm_medium=paid_social&utm_campaign=developer_activation_v1&utm_content=save_compute"
+    }
+  ],
+  "metrics": {
+    "primary": "successful_node_registrations_per_landing_page_view",
+    "secondary": [
+      "install_command_copies_per_landing_page_view",
+      "landing_page_views_per_impression",
+      "cost_per_successful_node_registration"
+    ],
+    "diagnostic_only": [
+      "click_through_rate",
+      "cost_per_click"
+    ]
+  },
+  "decision_rule": {
+    "minimum_successful_registrations_per_arm": 30,
+    "minimum_runtime_days": 7,
+    "winner": "Lower cost per successful node registration, provided the difference is statistically supported. Otherwise report no winner.",
+    "do_not": [
+      "Change audience, caption, CTA, placement, budget split, or landing page between arms.",
+      "Select a winner from click-through rate alone.",
+      "Stop early because one arm leads temporarily."
+    ]
+  },
+  "launch_blockers": [
+    "Owner approval for campaign publication and spend.",
+    "Attribution from UTM variant to install-command copy and successful node registration.",
+    "A defined budget ceiling and target audience geography."
+  ]
+}
