@@ -17,3 +17,9 @@ For external review, use the narrower **[peer-review candidate](./peer-review/mi
 | [`MINORITY-PROPHET-PAPER-v0.9.md`](./MINORITY-PROPHET-PAPER-v0.9.md) | Historical draft; superseded |
 
 [`ERRATA.md`](./ERRATA.md) records corrections without erasing prior versions.
+
+## Publication sequence
+
+1. **Published foundation:** *The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs* isolates the Lean-checked structural guarantee and root-margin bounds. Archival record: https://doi.org/10.5281/zenodo.21965713.
+2. **Paper II working title:** *An Echo Is Not a Witness: Evaluating Provenance-Aware Aggregation Under Copying Pressure*. Its candidate scope is the empirical material intentionally omitted from the focused foundation paper: adversarial lineage inference, conservative hybrid recovery, identity and origin controls, multi-agent comparisons, and their null or rejected results. It must not be submitted until its exact evidence set, comparator implementations, and claim boundaries are frozen.
+3. **Later architecture paper:** the dual evidence/search ledger remains a research direction until the schemas, conclusion-strength rules, incomplete-coverage controls, matched comparisons, and a real-provider test are preregistered and evaluated.
