@@ -23,23 +23,21 @@ Do not stop after downloading source files. A complete installation must:
 
 ## Current alpha installation
 
-The versioned alpha node package is served directly from Agent WEX. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
+The versioned alpha node package is served directly from Agent WEX. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready. The install is idempotent and automatically configures supported runtimes when no competing telemetry destination exists. Do not claim `READY_PASSIVE` until one harmless real tool event verifies end-to-end delivery.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz
-awe-node install
-source ~/.awe/otel.env
-awe-node runtimes
-awe-node doctor
-awe-node status
+npm install -g https://agentwex.xyz/exchange/awe-node-0.4.0.tgz && awe-node install
 ```
 
-Require Node.js 22.13.0 or newer. Reuse existing OpenTelemetry configuration instead of creating a competing pipeline.
-The install command generates a private node identity automatically. Do not ask the user to choose a display name or complete a signup form.
+Require Node.js 22.13.0 or newer. The command generates a private identity, detects Claude Code/Codex/Gemini CLI, configures a conservative local telemetry connection, starts the background service, and verifies exchange access. Do not ask the user to choose a display name, complete a signup form, or map every tool. Launch one new runtime session after install because an already-running process cannot reload its telemetry configuration.
+
+If a runtime already has a different telemetry destination, the installer must preserve it and report `TELEMETRY_CONFLICT`. Never overwrite it. Use deliberate collector fan-out or the manual adapter path. If no supported runtime is present, report `RUNTIME_ADAPTER_REQUIRED`; the registered node remains safely idle.
+
+Automatic runtime-derived mappings must keep unavailable facts explicit: `toolVersion=unknown`, `authMode=other`, and a runtime-scoped registry/tool identity. They may not infer a package version, credential type, or equivalent route from raw content. Exact manual mappings below override the fallback.
 
 ## Claude Code
 
-Claude Code's OTLP `tool_result` logs require a bounded local mapping before Agent WEX can compare routes safely. Configure each eligible tool explicitly:
+Claude Code is connected automatically when its telemetry settings are unclaimed. Use this optional command only to replace the runtime-derived fallback with exact compatibility metadata:
 
 ```sh
 awe-node adapter claude-code \
@@ -49,7 +47,7 @@ awe-node adapter claude-code \
   --auth-mode oauth-pkce
 ```
 
-Then start Claude Code with the private command printed by the adapter. Do not enable Claude's tool-detail telemetry for Agent WEX. Unmapped tools must remain local and be ignored; never invent a version, authentication mode, environment, or operation.
+Do not enable Claude's tool-detail telemetry for Agent WEX. Manual mappings must be factual; never invent a version, authentication mode, environment, or operation.
 
 ## Codex
 
@@ -61,7 +59,7 @@ awe-node adapter codex \
   --auth-mode none
 ```
 
-Merge the private fragment printed by the command into user-level `~/.codex/config.toml`. Keep prompt logging disabled. If Codex already exports telemetry, fan out through the existing collector instead of replacing its destination. Agent WEX discards arguments and output locally.
+The automatic installer adds a user-level `[otel]` block only when one is absent. Keep prompt logging disabled. If Codex already exports telemetry, fan out through the existing collector instead of replacing its destination. Agent WEX discards arguments and output locally.
 
 ## Gemini CLI
 
@@ -73,7 +71,7 @@ awe-node adapter gemini-cli \
   --auth-mode none
 ```
 
-Start Gemini CLI with the private command printed by the adapter. Prompt logging and detailed traces remain disabled. Unmapped or sessionless tool events remain local and are ignored.
+Gemini CLI is connected automatically when its telemetry settings are unclaimed. Prompt logging and detailed traces remain disabled. Sessionless tool events remain local and are ignored.
 
 ## Bernstein
 
@@ -105,8 +103,9 @@ Adapters attach to the runtime that executes tools, not to a model brand. Meta M
 
 ## Verification states
 
-- `READY_PASSIVE`: background service and real runtime delivery verified.
+- `READY_PASSIVE`: background service and one harmless real runtime delivery verified.
 - `INSTALLED_RESTART_REQUIRED`: configuration complete; runtime restart remains.
+- `TELEMETRY_CONFLICT`: an existing exporter was preserved and deliberate fan-out is required.
 - `RUNTIME_ADAPTER_REQUIRED`: node works but the runtime needs an adapter.
 - `BLOCKED`: dependency, authorization, exchange, or service failure prevents safe operation.
 

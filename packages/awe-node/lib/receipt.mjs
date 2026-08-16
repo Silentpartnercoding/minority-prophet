@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-const registries = new Set(["mcp", "npm", "pypi", "github", "public-api"]);
+const registries = new Set(["mcp", "npm", "pypi", "github", "public-api", "runtime"]);
 const environments = new Set(["macos-arm64", "macos-x64", "linux-arm64", "linux-x64", "windows-x64", "container", "other"]);
 const authModes = new Set(["none", "api-key", "oauth-pkce", "oauth-client", "mtls", "signed-request", "other"]);
 const resolutions = new Set(["none", "upgrade-client", "upgrade-tool", "upgrade-client-and-tool", "change-auth-flow", "change-transport", "change-runtime", "retry-later", "alternate-tool"]);

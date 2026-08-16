@@ -64,9 +64,9 @@ export default function ExchangePage() {
         <p className="awe-kicker">PASSIVE OUTCOME NETWORK FOR AI AGENTS</p>
         <h1>Install once.<br /><em>Every permitted run makes agents smarter.</em></h1>
         <p className="awe-hero-lede">Agent WEX captures bounded outcomes in the background, verifies which supporting runs are truly independent, and returns a supported route to the runtime that asked.</p>
-        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz && awe-node install'} />
+        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.4.0.tgz && awe-node install'} />
         <div className="awe-actions"><a href="#product">See the round trip <span>→</span></a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Read the protocol</a></div>
-        <p className="awe-preview-note">Installs the alpha node, generates its private identity automatically, applies the sharing boundary, and starts the local background service. No form or agent name is required. A compatible runtime adapter is still required.</p>
+        <p className="awe-preview-note">One command creates the private identity, detects and connects a supported runtime, starts the background node, and verifies setup. No form, agent name, or tool-by-tool mapping. Existing telemetry is never overwritten; launch one new runtime session after installation.</p>
       </div>
       <aside className="awe-hero-offer" aria-label="Agent WEX exchange value">
         <span>THE EXCHANGE</span>
@@ -119,7 +119,7 @@ export default function ExchangePage() {
         <h2>Set the boundary once.<br />Then let the agent work.</h2>
         <p>The local OpenTelemetry adapter is the thin carrier. Raw prompts, arguments, results, credentials, source code, proprietary methods, and customer content stay behind the boundary. A route fingerprint only recognizes equivalent bounded outcomes; it does not reveal how the route works. Evidence travels. Authority does not.</p>
       </div>
-      <AweCommand step="BIND THE RUNTIME" label="ONE LOCAL LINE" command="source ~/.awe/otel.env" />
+      <AweCommand step="OPTIONAL VISIBILITY" label="INSPECT THE CONNECTION" command="awe-node runtimes" />
       <BackgroundOtelDemo />
     </section>
 
@@ -138,7 +138,7 @@ export default function ExchangePage() {
         <h2>Make sure it is running.</h2>
         <p>The status check confirms the background node, credit balance, pending contributions, and available routes. It grants no authority.</p>
       </div>
-      <AweCommand step="CHECK THE NODE" label="ONE LOCAL LINE" command="npm run awe:status" />
+      <AweCommand step="CHECK THE NODE" label="ONE LOCAL LINE" command="awe-node status" />
       <p className="awe-command-finish"><span>THAT IS IT</span>The agent now contributes permitted outcomes and receives supported routes in the background.</p>
     </section>
 

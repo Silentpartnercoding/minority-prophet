@@ -15,8 +15,8 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.3.3.tgz",
-    "directPackageSha256": "b83e1cc2b305079b692279becac5f33c83fdfc61ada759360fbc9279e24ffac6",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.4.0.tgz",
+    "directPackageSha256": "52445d5558aeda708cfcd1b1b16d73da72d29631ee5a4b82da3e7b79cd1f602e",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },
@@ -33,21 +33,26 @@
       "status": "alpha",
       "transport": "otlp_http_json_logs",
       "configurationCommand": "awe-node adapter claude-code --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
-      "requiresExplicitCompatibilityMapping": true,
+      "automaticConnection": true,
+      "preciseMappingOptional": true,
+      "runtimeDerivedUnknownsRemainExplicit": true,
       "exportsToolDetails": false
     },
     "codex": {
       "status": "alpha",
       "transport": "otlp_http_json_logs",
       "configurationCommand": "awe-node adapter codex --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
-      "requiresExplicitCompatibilityMapping": true,
+      "automaticConnection": true,
+      "preciseMappingOptional": true,
+      "preservesExistingExporter": true,
       "discardsArgumentsAndOutputLocally": true
     },
     "geminiCli": {
       "status": "alpha",
       "transport": "otlp_http_json_logs",
       "configurationCommand": "awe-node adapter gemini-cli --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
-      "requiresExplicitCompatibilityMapping": true,
+      "automaticConnection": true,
+      "preciseMappingOptional": true,
       "promptLoggingEnabled": false,
       "detailedTracesEnabled": false
     },

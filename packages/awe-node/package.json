@@ -1,6 +1,6 @@
 {
   "name": "@minorityprophet/awe-node",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Install-once local outcome collector for Agent WEX",
   "type": "module",
   "license": "Apache-2.0",
@@ -13,7 +13,9 @@
     "./codex": "./lib/codex.mjs",
     "./gemini-cli": "./lib/gemini-cli.mjs",
     "./bernstein": "./lib/bernstein.mjs",
-    "./runtime-detection": "./lib/runtime-detection.mjs"
+    "./runtime-detection": "./lib/runtime-detection.mjs",
+    "./runtime-bootstrap": "./lib/runtime-bootstrap.mjs",
+    "./automatic-mapping": "./lib/automatic-mapping.mjs"
   },
   "files": ["bin", "lib", "README.md"]
 }

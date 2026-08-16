@@ -41,8 +41,7 @@ node packages/awe-node/bin/awe-node.mjs install --url "${AWE_EXCHANGE_URL:-https
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz
-awe-node install
+npm install -g https://agentwex.xyz/exchange/awe-node-0.4.0.tgz && awe-node install
 awe-node runtimes
 ```
 
@@ -55,9 +54,9 @@ On macOS, confirm that `org.minorityprophet.awe-node` is loaded. On other platfo
 
 Use the least invasive supported path:
 
-1. If the runtime already emits compatible OTLP/HTTP JSON tool spans, attach its exporter to the private values in `~/.awe/otel.env` and restart that runtime if required.
+1. Run the one-line installer. It automatically configures a detected Claude Code, Codex, or Gemini CLI runtime when there is no competing exporter.
 2. If an existing telemetry process owns the exporter, add Agent WEX as a bounded secondary outcome processor. Do not redirect or disable the existing telemetry destination.
-3. If the runtime has an Agent WEX adapter, install and configure that adapter.
+3. Use an explicit adapter mapping only when exact compatibility metadata is available or a pre-existing exporter requires deliberate fan-out.
 4. If the runtime has neither compatible OTLP tool spans nor an Agent WEX adapter, stop and report `RUNTIME_ADAPTER_REQUIRED`. Do not fake passive capture with generic logs, prompts, or raw traces.
 
 A compatible completed tool span must provide:

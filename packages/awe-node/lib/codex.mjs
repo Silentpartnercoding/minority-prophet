@@ -1,4 +1,5 @@
 import { attributeMap, isoFromUnixNano } from "./otlp.mjs";
+import { mappingForTool } from "./automatic-mapping.mjs";
 
 function observedAt(record, attributes) {
   if (typeof attributes["event.timestamp"] === "string" && attributes["event.timestamp"].length > 0) {
@@ -40,7 +41,7 @@ export function spansFromCodexLogs(payload, adapter = {}) {
   let ignored = 0;
   for (const record of records) {
     const toolName = record.attributes.tool_name;
-    const mapping = adapter.tools?.[toolName];
+    const mapping = mappingForTool(toolName, adapter);
     const success = explicitBoolean(record.attributes.success);
     const callId = record.attributes.call_id;
     if (adapter.enabled !== true || !mapping || success == null || !callId || !record.observedAt) {

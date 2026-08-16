@@ -1,4 +1,5 @@
 import { attributeMap, isoFromUnixNano } from "./otlp.mjs";
+import { mappingForTool } from "./automatic-mapping.mjs";
 
 function toolCallRecords(payload) {
   const records = [];
@@ -36,7 +37,7 @@ export function spansFromGeminiCliLogs(payload, adapter = {}) {
   let ignored = 0;
   for (const record of records) {
     const toolName = record.attributes.function_name;
-    const mapping = adapter.tools?.[toolName];
+    const mapping = mappingForTool(toolName, adapter);
     const success = explicitBoolean(record.attributes.success);
     const sessionId = record.attributes.sessionId ?? record.attributes["session.id"];
     if (adapter.enabled !== true || !mapping || success == null || !sessionId || !record.observedAt) {

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { execFile } from "node:child_process";
-import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { promisify } from "node:util";
@@ -262,6 +262,38 @@ test("one zero-fill install command creates a generated private node identity wi
   assert.match(bernsteinPlugin, /class AgentWexPlugin/);
   assert.doesNotMatch(bernsteinPlugin, /"result_summary":/);
   assert.doesNotMatch(bernsteinPlugin, /"error":/);
+});
+
+test("one install command auto-connects a detected runtime without a form or tool mapping", async (context) => {
+  const exchange = await startExchange();
+  const directory = await mkdtemp(resolve(tmpdir(), "awe-node-bootstrap-test-"));
+  context.after(async () => { await new Promise((resolveClose) => exchange.server.close(resolveClose)); await rm(directory, { recursive: true, force: true }); });
+  const binDirectory = resolve(directory, "bin");
+  const runtimeHome = resolve(directory, "home");
+  const configPath = resolve(directory, "awe", "config.json");
+  await mkdir(binDirectory, { recursive: true });
+  const fakeClaude = resolve(binDirectory, "claude");
+  await writeFile(fakeClaude, "#!/bin/sh\necho 'Claude Code 1.2.3'\n");
+  await chmod(fakeClaude, 0o755);
+
+  const { stdout, stderr } = await execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"),
+    "install", "--url", exchange.baseUrl, "--config", configPath,
+    "--runtime-home", runtimeHome, "--no-service",
+  ], {
+    cwd: resolve("."), timeout: 10_000,
+    env: { ...process.env, PATH: `${binDirectory}:/usr/bin:/bin` },
+  });
+  assert.equal(stderr, "");
+  assert.match(stdout, /Runtime claude-code: configured/);
+  assert.match(stdout, /STATUS: CONFIGURED_NO_SERVICE/);
+  const installed = JSON.parse(await readFile(configPath, "utf8"));
+  assert.equal(installed.adapters.claudeCode.enabled, true);
+  assert.equal(installed.adapters.claudeCode.autoMap, true);
+  assert.equal(installed.adapters.claudeCode.clientVersion, "1.2.3");
+  const settings = JSON.parse(await readFile(resolve(runtimeHome, ".claude", "settings.json"), "utf8"));
+  assert.equal(settings.env.CLAUDE_CODE_ENABLE_TELEMETRY, "1");
+  assert.equal(settings.env.OTEL_LOG_TOOL_DETAILS, undefined);
 });
 
 test("localhost collector rejects unauthenticated span injection", async (context) => {

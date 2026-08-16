@@ -12,6 +12,7 @@ import { runDaemon } from "../lib/daemon.mjs";
 import { installBackgroundService } from "../lib/service.mjs";
 import { bernsteinPluginSource } from "../lib/bernstein.mjs";
 import { detectRuntimes } from "../lib/runtime-detection.mjs";
+import { bootstrapDetectedRuntimes } from "../lib/runtime-bootstrap.mjs";
 
 const ownPath = fileURLToPath(import.meta.url);
 const execFileAsync = promisify(execFile);
@@ -31,7 +32,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  process.stdout.write(`Agent WEX node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall generates a private node identity automatically and is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
+  process.stdout.write(`Agent WEX node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is idempotent. It creates a private identity, detects and safely connects supported runtimes, starts the local node, and verifies readiness. Runtime-derived mappings keep unknown version/auth fields explicit; precise manual mappings remain available.\n`);
 }
 
 function environmentClass() {
@@ -155,7 +156,7 @@ async function runtimes(configPath) {
       detected: runtime.detected,
       version: runtime.version ?? null,
       adapterConfigured: configured.has(adapterKeys[runtime.id]),
-      status: configured.has(adapterKeys[runtime.id]) ? "ready_to_observe" : runtime.status,
+      status: configured.has(adapterKeys[runtime.id]) ? "ready_to_observe_on_next_launch" : runtime.status,
     })),
     genericOtlpHttpJson: { supported: true, endpoint: config ? `http://${config.collector.host}:${config.collector.port}/v1/traces` : null },
     noRuntimeBehavior: "registered_but_safely_idle",
@@ -173,48 +174,90 @@ async function localJson(config, path) {
 
 async function install(options) {
   const configPath = resolve(options.config ?? defaultConfigPath());
+  let config = null;
+  let account = null;
+  let existingIdentity = false;
   try {
     await access(configPath);
-    throw new Error(`Agent WEX is already configured at ${configPath}. Remove it deliberately before creating a new identity.`);
+    config = await readConfig(configPath);
+    account = await getAccount(config);
+    existingIdentity = true;
   } catch (error) {
-    if (error?.code !== "ENOENT") throw error;
+    if (error?.code !== "ENOENT" && !String(error?.message ?? "").includes("no such file")) throw error;
   }
-  const baseUrl = validateBaseUrl(options.url ?? process.env.AWE_EXCHANGE_URL ?? "https://agentwex.xyz");
-  const port = Number(options.port ?? 4318);
+  const baseUrl = validateBaseUrl(options.url ?? config?.baseUrl ?? process.env.AWE_EXCHANGE_URL ?? "https://agentwex.xyz");
+  const port = Number(options.port ?? config?.collector?.port ?? 4318);
   if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Collector port must be an integer from 1024 to 65535");
-  const displayName = `Agent WEX node ${randomUUID().slice(0, 8)}`;
-  const collectorToken = `awelocal_${randomUUID().replaceAll("-", "")}${randomUUID().replaceAll("-", "")}`;
-  const account = await signup(baseUrl, {
-    agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID() },
-    participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
-  });
-  const detectedRuntimes = (await detectRuntimes()).filter((runtime) => runtime.detected).map(({ id, version }) => ({ id, version }));
-  const config = {
-    schema: "minority-prophet.awe-node-config.v0.1",
-    baseUrl,
-    agentId: account.agentId,
-    apiKey: account.apiKey,
-    policy: { shareToolOutcomes: true, shareRawTraces: false, sharePrompts: false, shareToolArguments: false, shareToolResults: false },
-    collector: { host: "127.0.0.1", port, token: collectorToken },
-    pollSeconds: 60,
-    runtimeDetection: { detected: detectedRuntimes, scannedAt: new Date().toISOString() },
-    createdAt: new Date().toISOString(),
-  };
+  if (!config) {
+    const displayName = `Agent WEX node ${randomUUID().slice(0, 8)}`;
+    const collectorToken = `awelocal_${randomUUID().replaceAll("-", "")}${randomUUID().replaceAll("-", "")}`;
+    account = await signup(baseUrl, {
+      agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID() },
+      participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
+    });
+    config = {
+      schema: "minority-prophet.awe-node-config.v0.1",
+      baseUrl,
+      agentId: account.agentId,
+      apiKey: account.apiKey,
+      policy: { shareToolOutcomes: true, shareRawTraces: false, sharePrompts: false, shareToolArguments: false, shareToolResults: false },
+      collector: { host: "127.0.0.1", port, token: collectorToken },
+      pollSeconds: 60,
+      createdAt: new Date().toISOString(),
+    };
+  }
+  const detected = await detectRuntimes();
+  const detectedRuntimes = detected.filter((runtime) => runtime.detected).map(({ id, version }) => ({ id, version }));
+  config.runtimeDetection = { detected: detectedRuntimes, scannedAt: new Date().toISOString() };
+  config.configPath = configPath;
+  const runtimeBootstrap = options["no-service"] && !options["runtime-home"]
+    ? []
+    : await bootstrapDetectedRuntimes({
+      config,
+      detectedRuntimes: detected,
+      environment: environmentClass(),
+      runtimeHome: options["runtime-home"] ? resolve(options["runtime-home"]) : undefined,
+      backupDir: resolve(configPath, "..", "backups"),
+    });
+  delete config.configPath;
   await writePrivateJson(configPath, config);
   const environmentPath = resolve(configPath, "..", "otel.env");
   await writePrivateText(environmentPath,
-    `export OTEL_EXPORTER_OTLP_ENDPOINT='http://127.0.0.1:${port}'\nexport OTEL_EXPORTER_OTLP_PROTOCOL='http/json'\nexport OTEL_EXPORTER_OTLP_HEADERS='authorization=Bearer ${collectorToken}'\n`);
+    `export OTEL_EXPORTER_OTLP_ENDPOINT='http://127.0.0.1:${port}'\nexport OTEL_EXPORTER_OTLP_PROTOCOL='http/json'\nexport OTEL_EXPORTER_OTLP_HEADERS='authorization=Bearer ${config.collector.token}'\n`);
   let service = null;
   if (!options["no-service"]) service = await installBackgroundService({ binPath: ownPath, configPath });
-  process.stdout.write(`Agent WEX node installed.\nIdentity: ${account.agentId}\nCollector: http://127.0.0.1:${port}/v1/traces\nCredits: ${account.creditBalance}\nRaw prompts, arguments, results, credentials, URLs, and trace IDs are not submitted.\n`);
+  let backgroundReady = false;
+  if (service) {
+    for (let attempt = 0; attempt < 20; attempt += 1) {
+      try { await localJson(config, "/health"); backgroundReady = true; break; }
+      catch { await new Promise((resolveWait) => setTimeout(resolveWait, 100)); }
+    }
+  }
+  account = await getAccount(config);
+  const readyRuntimes = runtimeBootstrap.filter((entry) => entry.status === "configured");
+  const conflicts = runtimeBootstrap.filter((entry) => ["telemetry_conflict", "configuration_failed"].includes(entry.status));
+  const installStatus = options["no-service"]
+    ? "CONFIGURED_NO_SERVICE"
+    : conflicts.length > 0
+      ? "TELEMETRY_CONFLICT"
+      : readyRuntimes.length === 0
+        ? "RUNTIME_ADAPTER_REQUIRED"
+        : backgroundReady
+          ? "INSTALLED_RESTART_REQUIRED"
+          : "BACKGROUND_SERVICE_UNAVAILABLE";
+  process.stdout.write(`Agent WEX node ${existingIdentity ? "rechecked" : "installed"}.\nIdentity: ${account.agentId}\nCollector: http://127.0.0.1:${port}/v1/traces\nCredits: ${account.creditBalance}\nRaw prompts, arguments, results, credentials, URLs, and trace IDs are not submitted.\n`);
   if (service) process.stdout.write(`Background service: ${service.label}\n`);
   else process.stdout.write(`Start locally: awe-node daemon --config ${configPath}\n`);
   process.stdout.write(`Connect an OTLP/HTTP JSON runtime without exposing the local token:\n  source ${environmentPath}\n`);
   if (detectedRuntimes.length > 0) {
-    process.stdout.write(`Detected runtime candidates: ${detectedRuntimes.map((runtime) => `${runtime.id} ${runtime.version}`).join(", ")}\nRun awe-node runtimes to see which adapter still needs configuration.\n`);
+    process.stdout.write(`Detected runtimes: ${detectedRuntimes.map((runtime) => `${runtime.id} ${runtime.version}`).join(", ")}\n`);
+    for (const result of runtimeBootstrap) process.stdout.write(`Runtime ${result.runtime}: ${result.status}\n`);
   } else {
     process.stdout.write("No compatible runtime was detected. The node is registered but safely idle until a runtime adapter or generic OTLP source is connected.\n");
   }
+  process.stdout.write(`STATUS: ${installStatus}\n`);
+  if (installStatus === "INSTALLED_RESTART_REQUIRED") process.stdout.write("Installation is complete. Launch a new configured runtime session; completed tool outcomes then flow automatically.\n");
+  if (!options["no-service"] && !["INSTALLED_RESTART_REQUIRED", "READY_PASSIVE"].includes(installStatus)) process.exitCode = 2;
 }
 
 async function status(configPath) {
@@ -252,6 +295,8 @@ async function doctor(configPath) {
   try { await localJson(config, "/health"); checks.push({ check: "background_node", status: "ok" }); }
   catch (error) { checks.push({ check: "background_node", status: "failed", error: error.message }); }
   checks.push({ check: "privacy_policy", status: config.policy.shareRawTraces === false ? "ok" : "failed" });
+  const configuredAdapters = Object.values(config.adapters ?? {}).filter((adapter) => adapter?.enabled === true);
+  checks.push({ check: "runtime_adapter", status: configuredAdapters.length > 0 ? "ok" : "failed" });
   process.stdout.write(`${JSON.stringify({ checks }, null, 2)}\n`);
   if (checks.some((entry) => entry.status === "failed")) process.exitCode = 1;
 }

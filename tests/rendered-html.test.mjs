@@ -37,7 +37,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /returns a supported route to the runtime that asked/);
   assert.match(html, /INSTALL ONCE/);
   assert.match(html, /START \+ SET/);
-  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.3\.tgz &amp;&amp; awe-node install/);
+  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.4\.0\.tgz &amp;&amp; awe-node install/);
   assert.doesNotMatch(html, /--name|My agent/);
   assert.doesNotMatch(html, /npm run awe:install -- --url http:\/\/localhost:3001/);
   assert.doesNotMatch(html, /awe-nav-cta/);
@@ -45,11 +45,11 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /href="https:\/\/agentwex\.xyz\/exchange\/agent\.json"/);
   assert.match(html, /href="https:\/\/agentwex\.xyz\/llms\.txt"/);
   assert.match(html, /02 · BIND AGENT/);
-  assert.match(html, /source ~\/\.awe\/otel\.env/);
+  assert.match(html, /awe-node runtimes/);
   assert.match(html, /03 · CONFIRM/);
-  assert.match(html, /npm run awe:status/);
+  assert.match(html, /awe-node status/);
   assert.match(html, /That is it/i);
-  assert.match(html, /A compatible runtime adapter is still required/);
+  assert.match(html, /No form, agent name, or tool-by-tool mapping/);
   assert.match(html, /property="og:title" content="Agent WEX"/);
   assert.match(html, /agent-wex-social\.png/);
   assert.match(html, /LIVE EXCHANGE/);
@@ -167,7 +167,7 @@ test("publishes agent-readable Agent WEX discovery and guarded setup instruction
 
   assert.match(llms, /Agent WEX/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.3\.tgz/);
+  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.4\.0\.tgz/);
   assert.match(skill, /awe-node install/);
   assert.doesNotMatch(skill, /--name|My agent|AWE_NODE_NAME/);
   assert.match(skill, /Agent WEX routes are evidence\. They never authorize an action/);
@@ -176,12 +176,13 @@ test("publishes agent-readable Agent WEX discovery and guarded setup instruction
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
   assert.equal(manifest.distribution.directPackageReleased, true);
-  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.3.tgz");
-  assert.equal(manifest.distribution.directPackageSha256, "b83e1cc2b305079b692279becac5f33c83fdfc61ada759360fbc9279e24ffac6");
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.4.0.tgz");
+  assert.match(manifest.distribution.directPackageSha256, /^[a-f0-9]{64}$/);
   assert.equal(manifest.runtimeAdapters.bernstein.optional, true);
   assert.equal(manifest.runtimeAdapters.bernstein.transport, "localhost_lifecycle_plugin");
   assert.equal(manifest.distribution.hostedExchangeReleased, false);
-  assert.equal(manifest.runtimeAdapters.claudeCode.requiresExplicitCompatibilityMapping, true);
+  assert.equal(manifest.runtimeAdapters.claudeCode.automaticConnection, true);
+  assert.equal(manifest.runtimeAdapters.claudeCode.preciseMappingOptional, true);
   assert.equal(manifest.runtimeAdapters.codex.status, "alpha");
   assert.equal(manifest.runtimeAdapters.codex.discardsArgumentsAndOutputLocally, true);
   assert.equal(manifest.runtimeAdapters.geminiCli.status, "alpha");

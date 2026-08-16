@@ -7,7 +7,7 @@
   "required": ["toolRegistry", "toolId", "attemptedToolVersion", "clientId", "attemptedClientVersion", "environment", "authMode", "operation", "localEvidenceStatus", "localEvidenceReceiptHash", "maxAgeDays", "minimumIndependentRoots"],
   "properties": {
     "schema": { "const": "minority-prophet.working-route-query.v0.1" },
-    "toolRegistry": { "enum": ["mcp", "npm", "pypi", "github", "public-api"] },
+    "toolRegistry": { "enum": ["mcp", "npm", "pypi", "github", "public-api", "runtime"] },
     "toolId": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9@][A-Za-z0-9._@/+~-]*$" },
     "attemptedToolVersion": { "type": "string", "minLength": 1, "maxLength": 80, "pattern": "^[A-Za-z0-9][A-Za-z0-9._+~-]*$" },
     "clientId": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[A-Za-z0-9][A-Za-z0-9._+~-]*$" },

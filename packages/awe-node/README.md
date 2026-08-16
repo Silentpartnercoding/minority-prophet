@@ -18,17 +18,16 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz
-awe-node install
+npm install -g https://agentwex.xyz/exchange/awe-node-0.4.0.tgz && awe-node install
 ```
 
-The install command generates the node's private identity automatically. No display name or web signup is required.
+The command is idempotent. It generates the node's private identity, registers it with the exchange, detects Claude Code, Codex, and Gemini CLI, writes a conservative user-level telemetry connection, starts the background node, and verifies the exchange and local service. No display name, browser form, or per-tool mapping is required. Launch a new runtime session once after installation; an already-running process cannot reload its telemetry configuration.
 
-Agent WEX then auto-detects Bernstein, Claude Code, Codex, and Gemini CLI. Detection does not silently grant access or invent a compatibility mapping. Run `awe-node runtimes` to see which installed runtime still needs its bounded adapter configured. A generic OTLP/HTTP JSON runtime can use the canonical local endpoint directly.
+Automatic mappings use only the runtime and tool identity actually emitted. Unknown package versions and authentication modes remain `unknown`/`other`; they are not guessed. This creates narrower runtime-bound route families. A precise manual mapping can replace that fallback whenever exact compatibility metadata is available. Existing non-Agent-WEX telemetry exporters are never overwritten: installation stops with `TELEMETRY_CONFLICT` instead.
 
 ## Claude Code adapter
 
-Claude Code emits real tool-result events, but it does not supply every compatibility field Agent WEX needs to return a safe route. Bind each eligible tool explicitly; unmapped tools are ignored.
+Claude Code is connected automatically when its user telemetry settings are unclaimed. For a more precise route family, optionally bind an eligible tool explicitly:
 
 ```bash
 awe-node adapter claude-code \
@@ -45,7 +44,7 @@ The adapter reads outcome, tool name, correlation ID, time, and error class. It 
 
 ## Codex adapter
 
-Codex emits documented `codex.tool_result` OTLP logs. Agent WEX reads only the event name, tool name, call ID, time, and explicit success flag, then discards arguments and output locally.
+Codex is connected automatically when its user configuration has no competing `[otel]` exporter. Agent WEX reads only the event name, tool name, call ID, time, and explicit success flag, then discards arguments and output locally. Use the manual command below only to supply more precise compatibility metadata:
 
 ```bash
 awe-node adapter codex \
@@ -55,11 +54,11 @@ awe-node adapter codex \
   --auth-mode none
 ```
 
-The command writes a private `~/.awe/codex-otel.toml` fragment. Codex telemetry is user-level configuration, so merge the fragment into `~/.codex/config.toml`. If an exporter already exists, use collector fan-out instead of replacing it. Prompt logging remains disabled.
+The automatic installer writes the user-level `[otel]` block only when safe. If an exporter already exists, it fails closed so an operator can deliberately configure collector fan-out. Prompt logging remains disabled.
 
 ## Gemini CLI adapter
 
-Gemini CLI emits documented `gemini_cli.tool_call` OTLP logs with an explicit success flag. Bind each eligible function explicitly:
+Gemini CLI is connected automatically with prompt logging and detailed traces disabled. The manual command below is an optional precision override:
 
 ```bash
 awe-node adapter gemini-cli \
@@ -91,7 +90,7 @@ This adapter observes the Bernstein task lifecycle. It does not pretend Bernstei
 
 Adapters belong to the runtime that executes a tool, not to the model brand. Meta Muse/Llama, Grok, DeepSeek, and other models are supported through their host runtime (for example LangGraph, an MCP gateway, or a compatible OTLP agent runner) rather than by duplicating model-specific adapters.
 
-The installer creates a private `~/.awe/config.json` and, on macOS, a LaunchAgent that keeps the collector running. It never prints the API key.
+The installer creates a private `~/.awe/config.json`, backs up any runtime settings it changes, and, on macOS, installs a LaunchAgent that keeps the collector running. It never prints the API key or local collector token.
 
 Connect any runtime that already emits OTLP/HTTP JSON:
 
@@ -112,7 +111,7 @@ awe-node doctor
 
 ## Honest boundary
 
-This is not zero-consent surveillance. The operator installs it once and selects a runtime integration. Agent WEX cannot observe software that emits no telemetry or lifecycle hook. Without one, the node can register and hold a ledger but remains safely idle: it contributes no outcomes, earns no evidence credits, opens no route queries, and cannot return a route into that runtime. The background path is automatic only after a compatible connection exists.
+This is not zero-consent surveillance. The one install command is the operator's explicit consent step. Agent WEX cannot observe software that emits no supported telemetry or lifecycle hook. Without one, installation reports `RUNTIME_ADAPTER_REQUIRED` and the registered node remains safely idle. `INSTALLED_RESTART_REQUIRED` means setup is complete and a newly launched runtime will participate; `READY_PASSIVE` is reserved for verified real event delivery.
 
 The initial durable store needs ordinary metadata rows, not a massive trace database. Raw traces remain local. Scale-out storage should be introduced only after measured D1 limits require it.
 
