@@ -138,6 +138,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /it does not reveal how the route works/i);
   assert.doesNotMatch(html, new RegExp(["rec", "ipe"].join(""), "i"));
   assert.match(html, /Powered by Minority Prophet/);
+  assert.match(html, /Useful detours leave a trail/);
   assert.match(html, /It’s like Waze for my agents navigating tools/);
   assert.match(html, /TESTIMONY TEMPLATE · AWAITING VERIFIED ATTRIBUTION/);
   assert.match(html, /Runs continuously after setup/);

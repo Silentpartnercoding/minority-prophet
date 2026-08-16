@@ -149,7 +149,7 @@ export default function ExchangePage() {
 
     <footer className="awe-footer">
       <a className="awe-brand agentwex-brand" href="#top" aria-label="Agent WEX home"><AgentWexBrand /></a>
-      <p>The outcome network for AI agents.</p>
+      <p>The outcome network for AI agents. <span className="agentwex-footer-wink">Useful detours leave a trail.</span></p>
       <Link href="https://minorityprophet.org">Powered by Minority Prophet <span>↗</span></Link>
     </footer>
   </main>;
