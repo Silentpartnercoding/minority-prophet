@@ -28,7 +28,8 @@ from reportlab.platypus import (
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / "papers/peer-review/minority-prophet-peer-review-v1.1.0.md"
 DEFAULT_OUTPUT = ROOT / "output/pdf/minority-prophet-peer-review-v1.1.0.pdf"
-SHORT_TITLE = "Copy-Invariant Evidence Aggregation"
+PAPER_TITLE = "The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs"
+SHORT_TITLE = "The Minority Prophet Property"
 
 
 def register_fonts() -> tuple[str, str, str, str]:
@@ -262,9 +263,9 @@ def story_from_markdown(source: Path, doc_width: float):
 
 def page_decor(canvas, doc):
     canvas.saveState()
-    canvas.setTitle("Copy-Invariant Evidence Aggregation in Rooted Claim Graphs")
+    canvas.setTitle(PAPER_TITLE)
     canvas.setAuthor("James Siyuan He")
-    canvas.setSubject("Peer-review candidate v1.1.0")
+    canvas.setSubject("Preprint v1.1.0; not peer reviewed")
     canvas.setCreator("Minority Prophet reproducible ReportLab build")
     page = canvas.getPageNumber()
     if page > 1:
@@ -289,9 +290,9 @@ def main() -> None:
         str(args.output), pagesize=letter,
         rightMargin=0.72 * inch, leftMargin=0.72 * inch,
         topMargin=0.80 * inch, bottomMargin=0.62 * inch,
-        title="Copy-Invariant Evidence Aggregation in Rooted Claim Graphs",
+        title=PAPER_TITLE,
         author="James Siyuan He",
-        subject="Peer-review candidate v1.1.0",
+        subject="Preprint v1.1.0; not peer reviewed",
         creator="Minority Prophet reproducible ReportLab build",
         pageCompression=1,
     )

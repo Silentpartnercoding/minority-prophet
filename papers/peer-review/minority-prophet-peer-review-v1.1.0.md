@@ -1,9 +1,7 @@
-# Copy-Invariant Evidence Aggregation in Rooted Claim Graphs
-
-**The Minority Prophet Property**
+# The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs
 
 **James Siyuan He**  
-Peer-review candidate v1.1.0, 15 August 2026  
+Preprint v1.1.0; not peer reviewed, 16 August 2026
 Correspondence: https://github.com/Silentpartnercoding  
 Archival DOI: not yet assigned
 

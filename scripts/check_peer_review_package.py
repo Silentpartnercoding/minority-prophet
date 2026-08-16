@@ -47,7 +47,7 @@ def main() -> None:
         fail(f"citation mismatch: cited={sorted(cited)} listed={sorted(listed)}")
     meta = json.loads(METADATA.read_text(encoding="utf-8"))
     title = text.splitlines()[0].removeprefix("# ")
-    if meta["title"] != title or meta["version"] != "1.1.0-review":
+    if meta["title"] != title or meta["version"] != "1.1.0":
         fail("metadata title or version disagrees with manuscript")
     if PDF.stat().st_size < 50_000:
         fail("PDF is unexpectedly small")
@@ -56,4 +56,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
