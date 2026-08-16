@@ -1,0 +1,43 @@
+name: Agent WEX release integrity
+
+on:
+  pull_request:
+    paths:
+      - "packages/awe-node/**"
+      - "scripts/build-awe-release.mjs"
+      - "public/exchange/awe-node-*.tgz"
+      - "public/exchange/SHA256SUMS"
+      - "public/exchange/release.json"
+      - ".github/workflows/agent-wex-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+          cache: npm
+      - run: npm ci
+      - run: npm audit --omit=dev
+      - name: Verify committed release checksum
+        run: cd public/exchange && sha256sum --check SHA256SUMS
+      - run: node --test tests/awe-release.test.mjs tests/exchange-api.test.mjs tests/runtime-bootstrap.test.mjs tests/working-route.test.mjs
+      - name: Install packed node without lifecycle scripts
+        run: |
+          install_dir="$(mktemp -d)"
+          npm install --prefix "$install_dir" ./public/exchange/awe-node-0.6.0.tgz --ignore-scripts
+          "$install_dir/node_modules/.bin/awe-node" help
+      - name: Rebuild and compare package contents
+        run: |
+          cp public/exchange/awe-node-0.6.0.tgz /tmp/awe-node-committed.tgz
+          npm run awe:release
+          mkdir /tmp/awe-node-committed /tmp/awe-node-rebuilt
+          tar -xzf /tmp/awe-node-committed.tgz -C /tmp/awe-node-committed
+          tar -xzf public/exchange/awe-node-0.6.0.tgz -C /tmp/awe-node-rebuilt
+          diff --recursive --unified /tmp/awe-node-committed /tmp/awe-node-rebuilt

@@ -6,7 +6,7 @@ import test from "node:test";
 import { spansFromClaudeCodeLogs } from "../packages/awe-node/lib/claude-code.mjs";
 import { spansFromCodexLogs } from "../packages/awe-node/lib/codex.mjs";
 import { spansFromGeminiCliLogs } from "../packages/awe-node/lib/gemini-cli.mjs";
-import { bootstrapDetectedRuntimes } from "../packages/awe-node/lib/runtime-bootstrap.mjs";
+import { bootstrapDetectedRuntimes, removeAgentWexRuntimeConfig } from "../packages/awe-node/lib/runtime-bootstrap.mjs";
 
 const config = () => ({
   collector: { port: 4318, token: "private-test-token" },
@@ -48,6 +48,22 @@ test("automatic bootstrap safely configures Claude Code, Codex, and Gemini CLI",
   const gemini = JSON.parse(await readFile(resolve(root, ".gemini", "settings.json"), "utf8"));
   assert.equal(gemini.telemetry.logPrompts, false);
   assert.equal(gemini.telemetry.traces, false);
+
+  claude.theme = "dark";
+  gemini.theme = "light";
+  await writeFile(resolve(root, ".claude", "settings.json"), `${JSON.stringify(claude, null, 2)}\n`);
+  await writeFile(resolve(root, ".gemini", "settings.json"), `${JSON.stringify(gemini, null, 2)}\n`);
+  await writeFile(resolve(root, ".codex", "config.toml"), `approval_policy = "never"\n\n${codex}`);
+  const removed = await removeAgentWexRuntimeConfig({ config: value, runtimeHome: root });
+  assert.equal(removed.length, 3);
+  const cleanClaude = JSON.parse(await readFile(resolve(root, ".claude", "settings.json"), "utf8"));
+  const cleanGemini = JSON.parse(await readFile(resolve(root, ".gemini", "settings.json"), "utf8"));
+  const cleanCodex = await readFile(resolve(root, ".codex", "config.toml"), "utf8");
+  assert.equal(cleanClaude.theme, "dark");
+  assert.equal(cleanClaude.env, undefined);
+  assert.equal(cleanGemini.theme, "light");
+  assert.equal(cleanGemini.telemetry, undefined);
+  assert.equal(cleanCodex, 'approval_policy = "never"\n');
 });
 
 test("bootstrap refuses to replace a competing telemetry destination", async (context) => {

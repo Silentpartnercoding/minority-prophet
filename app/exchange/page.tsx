@@ -4,8 +4,8 @@ import { AweCommand } from "./copy-command";
 import { AweNetworkMotion, BackgroundOtelDemo, WorkingRouteDemo } from "./nexus";
 
 export const metadata: Metadata = {
-  title: "Agent WEX — The outcome network for AI agents",
-  description: "Install once. Agent WEX captures permitted outcomes, verifies independent provenance, and returns supported routes to agent runtimes.",
+  title: "Agent WEX — Compatibility evidence for agent tools",
+  description: "A public-preview compatibility index for minimized, signed agent-tool outcomes. Distinct nodes are deduplicated; independence and execution truth are not assumed.",
   icons: {
     icon: [
       { url: "/agent-wex-icon.svg", type: "image/svg+xml" },
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Agent WEX",
-    description: "The passive outcome network for AI agents.",
-    images: [{ url: "/agent-wex-social.png", width: 1200, height: 630 }],
+    description: "Compatibility evidence for agent tools—not another agent runtime.",
+    images: [{ url: "/agent-wex-social-v2.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Agent WEX",
-    description: "The passive outcome network for AI agents.",
-    images: ["/agent-wex-social.png"],
+    description: "Compatibility evidence for agent tools—not another agent runtime.",
+    images: ["/agent-wex-social-v2.png"],
   },
 };
 
@@ -48,11 +48,11 @@ function AgentWexBrand() {
 
 export default function ExchangePage() {
   return <main className="awe-site awe-compact">
-    <a className="awe-launch-strip" href="#quickstart">Connect your agent. Start contributing. <span>Connect Agent WEX →</span></a>
+    <a className="awe-launch-strip" href="#quickstart">PUBLIC PREVIEW · MACOS · NO SENSITIVE WORKLOADS <span>Review before installing →</span></a>
 
     <nav className="awe-nav" aria-label="Agent WEX">
       <a className="awe-brand agentwex-brand" href="#top" aria-label="Agent WEX home"><AgentWexBrand /></a>
-      <div className="awe-nav-links"><a href="#product">How it works</a><a href="#boundary">Privacy</a><a href="#connect">Connect</a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Protocol</a></div>
+      <div className="awe-nav-links"><a href="#product">How it works</a><Link href="/exchange/privacy">Privacy</Link><Link href="/exchange/security">Security</Link><a href="#connect">Install</a><Link href="/exchange/protocol">Protocol</Link></div>
     </nav>
 
     <header className="awe-hero" id="top">
@@ -65,12 +65,12 @@ export default function ExchangePage() {
         <div className="awe-field-equation"><b>FAIL</b><span>share the outcome</span><i>→</i><b>EXCHANGE</b><span>find supported route</span><i>→</i><b>RESUME</b></div>
       </div>
       <div className="awe-hero-copy" id="quickstart">
-        <p className="awe-kicker">PASSIVE OUTCOME NETWORK FOR AI AGENTS</p>
-        <h1>Install once.<br /><em>Every permitted run makes agents smarter.</em></h1>
-        <p className="awe-hero-lede">Agent WEX captures bounded outcomes in the background, verifies which supporting runs are truly independent, and returns a supported route to the runtime that asked.</p>
-        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.5.0.tgz && awe-node install'} />
-        <div className="awe-actions"><a href="#product">See the round trip <span>→</span></a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Read the protocol</a></div>
-        <p className="awe-preview-note">One command creates the private identity, detects and connects a supported runtime, starts the background node, and verifies setup. No form, agent name, or tool-by-tool mapping. Existing telemetry is never overwritten; launch one new runtime session after installation.</p>
+        <p className="awe-kicker">COMPATIBILITY EVIDENCE FOR AGENT TOOLS</p>
+        <h1>Share one bounded outcome.<br /><em>Reuse a route that worked elsewhere.</em></h1>
+        <p className="awe-hero-lede">Agent WEX turns permitted tool outcomes into minimized signed receipts, collapses repeats from the same registered node, and returns recent configuration-shaped evidence when a comparable tool run fails.</p>
+        <AweCommand step="PUBLIC PREVIEW" label="VERIFY + INSTALL" command={'curl -fsSLO https://agentwex.xyz/exchange/awe-node-0.6.0.tgz && curl -fsSLO https://agentwex.xyz/exchange/SHA256SUMS && shasum -a 256 -c SHA256SUMS && npm install -g ./awe-node-0.6.0.tgz && awe-node install'} />
+        <div className="awe-actions"><a href="#product">See the bounded round trip <span>→</span></a><Link href="/exchange/protocol">Read the protocol</Link></div>
+        <p className="awe-preview-note">Public preview for macOS with Node.js 22.13 or newer. Installation creates a pseudonymous node identity, configures an available telemetry slot, and starts a local service. It does not prove that a node is an independent controller or that a reported run genuinely occurred. Existing telemetry destinations are never overwritten.</p>
       </div>
       <aside className="awe-hero-offer" aria-label="Agent WEX exchange value">
         <span>THE EXCHANGE</span>
@@ -78,7 +78,7 @@ export default function ExchangePage() {
         <div>
           <p><b>ROUTE NEEDED</b><small>A preflight gap or real failure opens the search.</small></p>
           <i>→</i>
-          <p><b>ROUTE RETURNED</b><small>The agent receives independently supported recovery.</small></p>
+          <p><b>EVIDENCE RETURNED</b><small>The agent receives a recent route reported by distinct signed nodes.</small></p>
           <i>→</i>
           <p><b>SUCCESS CONFIRMED</b><small>The fresh result strengthens the route for everyone.</small></p>
         </div>
@@ -95,23 +95,23 @@ export default function ExchangePage() {
       <WorkingRouteDemo />
     </section>
 
-    <aside className="awe-testimony-template" aria-label="Template testimony, not an attributed customer claim">
-      <span>TESTIMONY TEMPLATE · AWAITING VERIFIED ATTRIBUTION</span>
-      <blockquote>“It’s like Waze for my agents navigating tools.”</blockquote>
-      <p>Replace this label with a real user’s name and company only after the wording is verified.</p>
+    <aside className="awe-testimony-template" aria-label="Agent WEX product boundary">
+      <span>PRODUCT BOUNDARY</span>
+      <blockquote>Agent runtimes execute work. Agent WEX indexes bounded compatibility outcomes.</blockquote>
+      <p>It does not build, host, orchestrate, or autonomously authorize agents. Returned routes remain advice for the caller&apos;s own policy gate.</p>
     </aside>
 
     <section className="awe-trade-economics" id="economics">
       <div>
         <p>THE TRADE</p>
         <h2>Share an outcome.<br />Access the network.</h2>
-        <p>Useful failures, discoveries, and fresh confirmations keep routes current. Accepted independent evidence earns access; redundant copies do not.</p>
+        <p>Useful failures and fresh confirmations keep routes current. An accepted first support claim from a signed node earns access; repeats from that node do not.</p>
       </div>
       <div className="awe-trade-rule" aria-label="Agent WEX exchange rule">
         <header><span>THE EXCHANGE RULE</span><b>CONTRIBUTION EARNS ACCESS</b></header>
         <ol>
           <li><b>0</b><p><span>Join freely</span><small>No card. No purchased trust.</small></p></li>
-          <li><b>+1–2</b><p><span>Add useful evidence</span><small>Accepted outcome or fresh independent confirmation.</small></p></li>
+          <li><b>+1–2</b><p><span>Add useful evidence</span><small>Accepted first support from a distinct registered node.</small></p></li>
           <li><b>−1</b><p><span>Receive a supported route</span><small>One completed result returns to the requesting agent.</small></p></li>
         </ol>
       </div>
@@ -131,7 +131,7 @@ export default function ExchangePage() {
       <div className="awe-compact-heading">
         <p>LIVE EXCHANGE</p>
         <h2>Recent outcomes become<br />a supported way forward.</h2>
-        <p>A failed attempt opens the search. A copied success first folds into its parent root. Distinct routes remain separate, form a ranked list, and compete on independent confirmation, then freshness—not on version number alone. Only the best supported route returns.</p>
+        <p>A failed attempt opens the search. Repeated receipts first collapse by recorded root and signed node. Distinct routes remain separate, form a ranked list, and compete on distinct-node support, then freshness—not on version number alone. The result remains unverified network evidence.</p>
       </div>
       <AweNetworkMotion />
     </section>
@@ -147,14 +147,14 @@ export default function ExchangePage() {
     </section>
 
     <section className="awe-operating-model" aria-label="Deployment and business models">
-      <article><span>COMMUNITY NETWORK</span><h3>Shared routes.<br />Earned access.</h3><p>The public network grows through useful independent outcomes. Exchange credits coordinate reciprocity; they are not purchased evidence weight.</p></article>
+      <article><span>PUBLIC PREVIEW</span><h3>Shared routes.<br />Bounded claims.</h3><p>The preview counts distinct registered nodes, not proven independent controllers. Exchange credits coordinate reciprocity; they are not purchased evidence weight.</p></article>
       <article><span>PRIVATE NETWORK</span><h3>Private infrastructure.<br />The same evidence rules.</h3><p>Organizations can pay for hosting, retention, identity, controls, support, and dedicated verification. Payment buys service—not epistemic influence.</p></article>
     </section>
 
     <footer className="awe-footer">
       <a className="awe-brand agentwex-brand" href="#top" aria-label="Agent WEX home"><AgentWexBrand /></a>
-      <p>The outcome network for AI agents. <span className="agentwex-footer-wink">Useful detours leave a trail.</span></p>
-      <Link href="https://minorityprophet.org">Powered by Minority Prophet <span>↗</span></Link>
+      <p>Compatibility evidence for agent tools. <span className="agentwex-footer-wink">Useful detours leave a bounded trail.</span></p>
+      <div><Link href="/exchange/privacy">Privacy</Link><Link href="/exchange/security">Security</Link><Link href="/exchange/protocol">Protocol</Link><Link href={repository}>Source</Link><Link href="https://minorityprophet.org">Minority Prophet <span>↗</span></Link></div>
     </footer>
   </main>;
 }

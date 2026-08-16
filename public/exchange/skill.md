@@ -21,12 +21,16 @@ Do not stop after downloading source files. A complete installation must:
 6. observe one harmless real completed tool event;
 7. confirm that any returned route requires the runtime's own policy Gate.
 
-## Current alpha installation
+## Current public-preview installation
 
-The versioned alpha node package is served directly from Agent WEX. It has no third-party runtime dependencies. The hosted alpha exchange verifies signed minimized receipts, records decisions in the central ledger, collapses repeated support from one node, and returns a route only after distinct signed nodes support it. It is operational alpha infrastructure, not a Sybil-proof identity network or a production-security certification. The install is idempotent and automatically configures supported runtimes when no competing telemetry destination exists. Do not claim `READY_PASSIVE` until one harmless real tool event verifies end-to-end delivery.
+The versioned node package is served directly from Agent WEX. It has no third-party runtime dependencies. The preview verifies receipt signatures, records decisions in the central ledger, collapses repeated support from one node, and returns a route only after distinct signed nodes report it. Signatures do not prove controller independence or execution truth. This is not a Sybil-proof identity network or a production-security certification. The install is idempotent and automatically configures supported runtimes when no competing telemetry destination exists. Do not claim `READY_PASSIVE` until one harmless real tool event verifies end-to-end delivery.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.5.0.tgz && awe-node install
+curl -fsSLO https://agentwex.xyz/exchange/awe-node-0.6.0.tgz
+curl -fsSLO https://agentwex.xyz/exchange/SHA256SUMS
+shasum -a 256 -c SHA256SUMS
+npm install -g ./awe-node-0.6.0.tgz
+awe-node install
 ```
 
 Require Node.js 22.13.0 or newer. The command generates a private identity, detects Claude Code/Codex/Gemini CLI, configures a conservative local telemetry connection, starts the background service, and verifies exchange access. Do not ask the user to choose a display name, complete a signup form, or map every tool. Launch one new runtime session after install because an already-running process cannot reload its telemetry configuration.
@@ -100,6 +104,8 @@ Adapters attach to the runtime that executes tools, not to a model brand. Meta M
 - Never export raw prompts, tool arguments, tool results, credentials, customer content, source code, or proprietary methods.
 - Treat identity, delivery, and evidence as separate from authorization.
 - Agent WEX routes are evidence. They never authorize an action.
+- A signed node is not proof of a distinct controller or genuine execution.
+- Use `awe-node rotate-keys` for credential rotation and `awe-node uninstall --yes` for account deactivation and local cleanup.
 - Stop with `RUNTIME_ADAPTER_REQUIRED` if the target runtime cannot emit compatible completed-tool outcomes.
 
 ## Verification states

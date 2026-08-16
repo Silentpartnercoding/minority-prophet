@@ -53,6 +53,50 @@ export async function registerAgentSigningKey(db, agentId, value) {
   return { ok: true, status: 201, signingKey: { keyId: signingKey.keyId, algorithm: signingKey.algorithm, idempotentReplay: false } };
 }
 
+export async function rotateAgentApiKey(db, agentId) {
+  const apiKey = `wex_${crypto.randomUUID().replaceAll("-", "")}${crypto.randomUUID().replaceAll("-", "")}`;
+  const apiKeyHash = await sha256(apiKey);
+  const result = await db.prepare(`UPDATE exchange_agents SET api_key_hash = ?
+    WHERE id = ? AND status = 'active'`).bind(apiKeyHash, agentId).run();
+  if (Number(result?.meta?.changes ?? 0) !== 1) return { ok: false, status: 404, error: "agent_not_found" };
+  return { ok: true, status: 200, apiKey, apiKeyShownOnce: true };
+}
+
+export async function revokeAgentSigningKey(db, agentId, keyId) {
+  if (!/^wexkey_[a-f0-9]{24}$/.test(keyId ?? "")) return { ok: false, status: 400, error: "invalid_agent_signing_key" };
+  const result = await db.prepare(`UPDATE exchange_agent_signing_keys
+    SET status = 'revoked', revoked_at = ? WHERE key_id = ? AND agent_id = ? AND status = 'active'`)
+    .bind(now(), keyId, agentId).run();
+  if (Number(result?.meta?.changes ?? 0) !== 1) return { ok: false, status: 404, error: "active_signing_key_not_found" };
+  return { ok: true, status: 200, keyId, status: "revoked" };
+}
+
+export async function deactivateAgent(db, agentId) {
+  const deactivatedAt = now();
+  const purgeAfter = new Date(Date.parse(deactivatedAt) + (30 * 86_400_000)).toISOString();
+  const result = await db.prepare(`UPDATE exchange_agents SET status = 'deactivated', deactivated_at = ?, purge_after = ?,
+    name = 'deactivated-node', external_subject = id, api_key_hash = 'deactivated:' || id
+    WHERE id = ? AND status = 'active'`).bind(deactivatedAt, purgeAfter, agentId).run();
+  if (Number(result?.meta?.changes ?? 0) !== 1) return { ok: false, status: 404, error: "agent_not_found" };
+  await db.prepare(`UPDATE exchange_agent_signing_keys SET status = 'revoked', revoked_at = ?
+    WHERE agent_id = ? AND status = 'active'`).bind(deactivatedAt, agentId).run();
+  return { ok: true, status: 200, deactivated: true, deactivatedAt, purgeAfter, authorityGranted: false };
+}
+
+export async function consumeRateLimit(db, bucket, limit, windowSeconds, at = Date.now()) {
+  await db.prepare(`DELETE FROM exchange_rate_limits WHERE expires_at < ?`)
+    .bind(new Date(at).toISOString()).run();
+  const windowStart = Math.floor(at / (windowSeconds * 1_000)) * windowSeconds;
+  const expiresAt = new Date((windowStart + windowSeconds) * 1_000).toISOString();
+  await db.prepare(`INSERT INTO exchange_rate_limits (bucket, window_start, request_count, expires_at)
+    VALUES (?, ?, 1, ?) ON CONFLICT(bucket, window_start) DO UPDATE SET request_count = request_count + 1`)
+    .bind(bucket, windowStart, expiresAt).run();
+  const row = await db.prepare(`SELECT request_count AS requestCount FROM exchange_rate_limits
+    WHERE bucket = ? AND window_start = ?`).bind(bucket, windowStart).first();
+  const requestCount = Number(row?.requestCount ?? limit + 1);
+  return { allowed: requestCount <= limit, remaining: Math.max(0, limit - requestCount), retryAfter: Math.max(1, (windowStart + windowSeconds) - Math.floor(at / 1_000)) };
+}
+
 async function contributionByDedupeKey(db, agentId, dedupeKey) {
   return db.prepare(`SELECT c.id AS contributionId, c.status, c.record_kind AS recordKind,
       c.created_at AS createdAt, c.accepted_at AS acceptedAt,
@@ -362,6 +406,8 @@ export async function reserveResultAccess(db, agentId, resultId) {
       creditBalance: updated?.creditBalance ?? account.creditBalance - 1,
       releaseStatus: "READY_FOR_BOUND_AUTHORIZATION",
       authorityGranted: false,
+      controllerIndependenceVerified: false,
+      executionTruthVerified: false,
       routeReceipt: {
         schema: "minority-prophet.working-route-release.v0.1",
         queryId,
@@ -369,6 +415,9 @@ export async function reserveResultAccess(db, agentId, resultId) {
         evidence: assessment.evidence,
         issuedAt: now(),
         gateRequired: true,
+        authorityGranted: false,
+        controllerIndependenceVerified: false,
+        executionTruthVerified: false,
       },
       nextAction: "Return this bounded route receipt to Gate for purpose-bound release.",
     },
