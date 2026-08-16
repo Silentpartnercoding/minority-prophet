@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AweCommand } from "./copy-command";
 import { AweNetworkMotion, BackgroundOtelDemo, WorkingRouteDemo } from "./nexus";
 
 export const metadata: Metadata = {
@@ -33,13 +34,6 @@ function AgentWexBrand() {
     <span className="agentwex-mark" aria-hidden="true"><i>W</i><i>X</i></span>
     <span className="agentwex-wordmark">Agent WEX</span>
   </>;
-}
-
-function AweCommand({ step, label, command }: { step: string; label: string; command: string }) {
-  return <div className="awe-one-command">
-    <header><span>{step}</span><b>{label}</b></header>
-    <code><i>$</i>{command}</code>
-  </div>;
 }
 
 export default function ExchangePage() {

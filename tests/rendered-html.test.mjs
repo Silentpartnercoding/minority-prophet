@@ -38,6 +38,10 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /INSTALL ONCE/);
   assert.match(html, /START \+ SET/);
   assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.5\.0\.tgz &amp;&amp; awe-node install/);
+  assert.equal((html.match(/awe-command-copy/g) ?? []).length, 3);
+  assert.match(html, /aria-label="Copy start \+ set command"/);
+  assert.match(html, /aria-label="Copy inspect the connection command"/);
+  assert.match(html, /aria-label="Copy one local line command"/);
   assert.doesNotMatch(html, /--name|My agent/);
   assert.doesNotMatch(html, /npm run awe:install -- --url http:\/\/localhost:3001/);
   assert.doesNotMatch(html, /awe-nav-cta/);
