@@ -122,3 +122,57 @@ test("first node can submit idempotently, await verification, and earn durable c
   assert.equal(ledger.entries[0].entryType, "earn");
   assert.equal(ledger.entries[0].balanceAfter, 2);
 });
+
+test("private operator stats exclude labeled smoke agents and fail closed without the admin token", async () => {
+  const db = d1TestDatabase();
+  const adminToken = "admin_test_secret_123456789";
+
+  const unconfigured = await handleExchangeApi(apiRequest("/api/exchange/internal/stats"), db, {});
+  assert.equal(unconfigured.status, 503);
+
+  const denied = await handleExchangeApi(apiRequest("/api/exchange/internal/stats", { token: "wrong-token" }), db, { adminToken });
+  assert.equal(denied.status, 401);
+
+  const realSignup = await handleExchangeApi(apiRequest("/api/exchange/signup", {
+    method: "POST",
+    body: {
+      agent: { name: "Agent WEX node real", identityProvider: "custom", externalSubject: "real-node" },
+      participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
+    },
+  }), db, { adminToken });
+  assert.equal(realSignup.status, 201);
+  const real = await realSignup.json();
+
+  const smokeSignup = await handleExchangeApi(apiRequest("/api/exchange/signup", {
+    method: "POST",
+    body: {
+      agent: { name: "Live smoke requester unit", identityProvider: "custom", externalSubject: "live-smoke-unit-requester" },
+      participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
+    },
+  }), db, { adminToken });
+  assert.equal(smokeSignup.status, 201);
+
+  const contribution = await handleExchangeApi(apiRequest("/api/exchange/contributions", {
+    method: "POST",
+    token: real.apiKey,
+    body: {
+      recordKind: "tool-result",
+      topic: "operator-stats-test",
+      provenanceRootId: "real-node-run-1",
+      independenceBasis: "attested",
+      freshnessDays: 0,
+    },
+  }), db, { adminToken });
+  assert.equal(contribution.status, 202);
+
+  const response = await handleExchangeApi(apiRequest("/api/exchange/internal/stats", { token: adminToken }), db, { adminToken });
+  assert.equal(response.status, 200);
+  const stats = await response.json();
+  assert.equal(stats.registeredAgents, 1);
+  assert.equal(stats.testAgents, 1);
+  assert.equal(stats.signedAgents, 0);
+  assert.equal(stats.activeAgents, 1);
+  assert.equal(stats.contributingAgents, 1);
+  assert.equal(stats.supportedRoutesReturned, 0);
+  assert.equal(stats.testTrafficExcluded, true);
+});

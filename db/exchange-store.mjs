@@ -175,6 +175,50 @@ export async function getCreditLedger(db, agentId, limit = 100) {
   return { entries: descending.reverse(), creditBalance: Number(total?.balance ?? 0), immutable: true };
 }
 
+export async function getExchangeOperatorStats(db, activeWindowHours = 24) {
+  const boundedHours = Number.isInteger(activeWindowHours)
+    ? Math.min(24 * 30, Math.max(1, activeWindowHours))
+    : 24;
+  const activeSince = new Date(Date.now() - boundedHours * 60 * 60 * 1000).toISOString();
+  const stats = await db.prepare(`SELECT
+    (SELECT COUNT(*) FROM exchange_agents a
+      WHERE a.status = 'active'
+        AND NOT EXISTS (SELECT 1 FROM exchange_agent_labels l WHERE l.agent_id = a.id AND l.label = 'test')) AS registeredAgents,
+    (SELECT COUNT(*) FROM exchange_agents a
+      WHERE a.status = 'active'
+        AND NOT EXISTS (SELECT 1 FROM exchange_agent_labels l WHERE l.agent_id = a.id AND l.label = 'test')
+        AND EXISTS (SELECT 1 FROM exchange_agent_signing_keys k WHERE k.agent_id = a.id AND k.status = 'active')) AS signedAgents,
+    (SELECT COUNT(*) FROM exchange_agents a
+      WHERE EXISTS (SELECT 1 FROM exchange_agent_labels l WHERE l.agent_id = a.id AND l.label = 'test')) AS testAgents,
+    (SELECT COUNT(*) FROM exchange_agents a
+      WHERE a.status = 'active'
+        AND NOT EXISTS (SELECT 1 FROM exchange_agent_labels l WHERE l.agent_id = a.id AND l.label = 'test')
+        AND (EXISTS (SELECT 1 FROM exchange_contributions c WHERE c.agent_id = a.id AND c.created_at >= ?)
+          OR EXISTS (SELECT 1 FROM exchange_route_queries q WHERE q.agent_id = a.id AND q.created_at >= ?))) AS activeAgents,
+    (SELECT COUNT(*) FROM exchange_agents a
+      WHERE a.status = 'active'
+        AND NOT EXISTS (SELECT 1 FROM exchange_agent_labels l WHERE l.agent_id = a.id AND l.label = 'test')
+        AND EXISTS (SELECT 1 FROM exchange_contributions c WHERE c.agent_id = a.id)) AS contributingAgents,
+    (SELECT COUNT(*) FROM exchange_route_queries q
+      JOIN exchange_agents a ON a.id = q.agent_id
+      WHERE q.status = 'RESULT_AVAILABLE'
+        AND a.status = 'active'
+        AND NOT EXISTS (SELECT 1 FROM exchange_agent_labels l WHERE l.agent_id = a.id AND l.label = 'test')) AS supportedRoutesReturned`)
+    .bind(activeSince, activeSince).first();
+  return {
+    registeredAgents: Number(stats?.registeredAgents ?? 0),
+    signedAgents: Number(stats?.signedAgents ?? 0),
+    testAgents: Number(stats?.testAgents ?? 0),
+    activeAgents: Number(stats?.activeAgents ?? 0),
+    activeWindowHours: boundedHours,
+    contributingAgents: Number(stats?.contributingAgents ?? 0),
+    supportedRoutesReturned: Number(stats?.supportedRoutesReturned ?? 0),
+    generatedAt: now(),
+    testTrafficExcluded: true,
+    identityCaveat: "Registration is self-asserted and is not Sybil-proof human identity.",
+  };
+}
+
 export async function submitContribution(db, agentId, body) {
   if (!recordKinds.has(body?.recordKind) || !body?.topic?.trim() || !body?.provenanceRootId?.trim()) {
     return { ok: false, status: 400, error: "invalid_contribution" };

@@ -1,4 +1,4 @@
-import { acceptContribution, authenticateAgent, createRouteQuery, ensureExchangeSchema, getAgentAccount, getContributionStatus, getCreditLedger, getRouteQueryStatus, listOpenRouteBounties, registerAgentSigningKey, reserveResultAccess, signupAgent, submitContribution, submitWorkingRouteComp } from "./exchange-store.mjs";
+import { acceptContribution, authenticateAgent, createRouteQuery, ensureExchangeSchema, getAgentAccount, getContributionStatus, getCreditLedger, getExchangeOperatorStats, getRouteQueryStatus, listOpenRouteBounties, registerAgentSigningKey, reserveResultAccess, signupAgent, submitContribution, submitWorkingRouteComp } from "./exchange-store.mjs";
 
 const json = (body, status = 200) => Response.json(body, { status, headers: { "cache-control": "no-store" } });
 
@@ -44,6 +44,16 @@ export async function handleExchangeApi(request, db, options = {}) {
       reason: body.reason,
     });
     return json(result.ok ? result : { error: result.error }, result.status);
+  }
+
+  if (url.pathname === "/api/exchange/internal/stats" && request.method === "GET") {
+    if (!options.adminToken) return json({ error: "exchange_admin_unconfigured" }, 503);
+    const bearer = request.headers.get("authorization")?.startsWith("Bearer ")
+      ? request.headers.get("authorization").slice(7).trim()
+      : "";
+    if (!(await secureTokenEqual(bearer, options.adminToken))) return json({ error: "invalid_admin_token" }, 401);
+    const requestedWindow = Number.parseInt(url.searchParams.get("activeWindowHours") ?? "24", 10);
+    return json(await getExchangeOperatorStats(db, requestedWindow));
   }
 
   const agent = await authenticateAgent(db, request.headers.get("authorization"));

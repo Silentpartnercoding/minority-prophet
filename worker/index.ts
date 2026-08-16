@@ -7,6 +7,7 @@ interface Env {
   ASSETS: Fetcher;
   DB: D1Database;
   AWE_VERIFIER_TOKEN?: string;
+  AWE_ADMIN_TOKEN?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -33,10 +34,10 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
-    if (["/api/exchange/signup", "/api/exchange/account", "/api/exchange/ledger", "/api/exchange/signing-keys", "/api/exchange/contributions", "/api/exchange/queries", "/api/exchange/working-route-comps", "/api/exchange/bounties", "/api/exchange/unlock", "/api/exchange/internal/accept"].includes(url.pathname)
+    if (["/api/exchange/signup", "/api/exchange/account", "/api/exchange/ledger", "/api/exchange/signing-keys", "/api/exchange/contributions", "/api/exchange/queries", "/api/exchange/working-route-comps", "/api/exchange/bounties", "/api/exchange/unlock", "/api/exchange/internal/accept", "/api/exchange/internal/stats"].includes(url.pathname)
       || url.pathname.startsWith("/api/exchange/contributions/")
       || url.pathname.startsWith("/api/exchange/queries/")) {
-      return handleExchangeApi(request, env.DB, { verifierToken: env.AWE_VERIFIER_TOKEN });
+      return handleExchangeApi(request, env.DB, { verifierToken: env.AWE_VERIFIER_TOKEN, adminToken: env.AWE_ADMIN_TOKEN });
     }
 
     if (url.pathname === "/_vinext/image") {
