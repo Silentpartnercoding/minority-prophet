@@ -14,6 +14,8 @@
   "distribution": {
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
+    "directPackageReleased": true,
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.1.0.tgz",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },

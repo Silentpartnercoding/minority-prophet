@@ -13,14 +13,13 @@ An accepted fresh contribution earns two credits under the current transparent s
 
 The route is advice, not authority. It must return through the caller's Gate or policy system before use.
 
-## Local first-node install
+## Alpha node install
 
-Until the package and exchange are publicly deployed, run the repository-local CLI:
+Install the versioned dependency-free node package:
 
 ```sh
-node packages/awe-node/bin/awe-node.mjs install \
-  --url http://localhost:3001 \
-  --name "First AWE node"
+npm install -g https://agentwex.xyz/exchange/awe-node-0.1.0.tgz
+awe-node install --url https://agentwex.xyz --name "First AWE node"
 ```
 
 The installer creates a private `~/.awe/config.json` and, on macOS, a LaunchAgent that keeps the collector running. It never prints the API key.

@@ -38,13 +38,14 @@ When working inside the Minority Prophet repository, use the repository CLI:
 node packages/awe-node/bin/awe-node.mjs install --url "$AWE_EXCHANGE_URL" --name "$AWE_NODE_NAME"
 ```
 
-After the package is publicly released, prefer:
+For the public alpha, install the versioned package directly:
 
 ```sh
-npx --yes @minorityprophet/awe-node install --url "$AWE_EXCHANGE_URL" --name "$AWE_NODE_NAME"
+npm install -g https://agentwex.xyz/exchange/awe-node-0.1.0.tgz
+awe-node install --url "${AWE_EXCHANGE_URL:-https://agentwex.xyz}" --name "$AWE_NODE_NAME"
 ```
 
-Never imply that the unpublished command is already publicly available. Never print `apiKey`, `collector.token`, or the contents of `~/.awe/otel.env`.
+Do not substitute an unversioned package URL. Never print `apiKey`, `collector.token`, or the contents of `~/.awe/otel.env`.
 
 On macOS, confirm that `org.minorityprophet.awe-node` is loaded. On other platforms, do not claim background installation: configure an explicit supervised service only when a supported installer exists.
 

@@ -1,7 +1,7 @@
 ---
 name: install-awe
 description: Discover, install, connect, and verify an Agent Witness Exchange node for an AI agent or agent application.
-canonical_source: https://github.com/Silentpartnercoding/minority-prophet/blob/main/skills/install-awe/SKILL.md
+canonical_source: https://agentwex.xyz/exchange/skill.md
 machine_manifest: https://agentwex.xyz/exchange/agent.json
 ---
 
@@ -21,17 +21,16 @@ Do not stop after downloading source files. A complete installation must:
 6. observe one harmless real completed tool event;
 7. confirm that any returned route requires the runtime's own policy Gate.
 
-## Current source installation
+## Current alpha installation
 
-The public npm package and hosted exchange are not yet released. Until they are, use the source repository and do not claim public-network readiness.
+The versioned alpha node package is served directly from Agent Witness Exchange. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
 
 ```sh
-git clone https://github.com/Silentpartnercoding/minority-prophet.git
-cd minority-prophet
-npm install
-npm run awe:install -- --url https://agentwex.xyz --name "My agent"
+npm install -g https://agentwex.xyz/exchange/awe-node-0.1.0.tgz
+awe-node install --url https://agentwex.xyz --name "My agent"
 source ~/.awe/otel.env
-npm run awe:status
+awe-node doctor
+awe-node status
 ```
 
 Require Node.js 22.13.0 or newer. Reuse existing OpenTelemetry configuration instead of creating a competing pipeline.

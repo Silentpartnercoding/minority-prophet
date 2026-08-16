@@ -37,7 +37,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /returns a supported route to the runtime that asked/);
   assert.match(html, /INSTALL ONCE/);
   assert.match(html, /START \+ SET/);
-  assert.match(html, /npm run awe:install -- --name &quot;My agent&quot;/);
+  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.1\.0\.tgz/);
   assert.doesNotMatch(html, /npm run awe:install -- --url http:\/\/localhost:3001/);
   assert.doesNotMatch(html, /awe-nav-cta/);
   assert.match(html, /href="https:\/\/agentwex\.xyz\/exchange\/skill\.md"/);
@@ -48,7 +48,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /03 · CONFIRM/);
   assert.match(html, /npm run awe:status/);
   assert.match(html, /That is it/i);
-  assert.match(html, /Public package and hosted network are not yet shipped/);
+  assert.match(html, /A compatible runtime adapter is still required/);
   assert.match(html, /property="og:title" content="Agent Witness Exchange"/);
   assert.match(html, /LIVE EXCHANGE/);
   assert.match(html, /EXAMPLE EXCHANGE/);
@@ -164,12 +164,14 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
 
   assert.match(llms, /Agent Witness Exchange \(AWE\)/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /npm run awe:install -- --url https:\/\/agentwex\.xyz --name "My agent"/);
+  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.1\.0\.tgz/);
   assert.match(skill, /AWE routes are evidence\. They never authorize an action/);
-  assert.match(skill, /public npm package and hosted exchange are not yet released/i);
+  assert.match(skill, /hosted verification network is not yet production-ready/i);
   assert.equal(manifest.format, "awe.machine-discovery.v1");
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
+  assert.equal(manifest.distribution.directPackageReleased, true);
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.1.0.tgz");
   assert.equal(manifest.distribution.hostedExchangeReleased, false);
   assert.equal(manifest.authorityBoundary.grantsAuthority, false);
   assert.equal(manifest.authorityBoundary.returnedRoutesRequireLocalPolicy, true);
