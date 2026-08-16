@@ -1,13 +1,13 @@
 ---
 name: install-awe
-description: Discover, install, connect, and verify an Agent Witness Exchange node for an AI agent or agent application.
+description: Discover, install, connect, and verify an Agent WEX node for an AI agent or agent application.
 canonical_source: https://agentwex.xyz/exchange/skill.md
 machine_manifest: https://agentwex.xyz/exchange/agent.json
 ---
 
-# Install Agent Witness Exchange
+# Install Agent WEX
 
-Use this document when a user asks an AI agent to install AWE, join the exchange, connect an agent runtime, contribute permitted outcomes, earn credits, or receive supported routes.
+Use this document when a user asks an AI agent to install Agent WEX, join the exchange, connect an agent runtime, contribute permitted outcomes, earn credits, or receive supported routes.
 
 ## Required outcome
 
@@ -23,10 +23,10 @@ Do not stop after downloading source files. A complete installation must:
 
 ## Current alpha installation
 
-The versioned alpha node package is served directly from Agent Witness Exchange. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
+The versioned alpha node package is served directly from Agent WEX. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz
 awe-node install
 source ~/.awe/otel.env
 awe-node runtimes
@@ -39,7 +39,7 @@ The install command generates a private node identity automatically. Do not ask 
 
 ## Claude Code
 
-Claude Code's OTLP `tool_result` logs require a bounded local mapping before AWE can compare routes safely. Configure each eligible tool explicitly:
+Claude Code's OTLP `tool_result` logs require a bounded local mapping before Agent WEX can compare routes safely. Configure each eligible tool explicitly:
 
 ```sh
 awe-node adapter claude-code \
@@ -49,7 +49,7 @@ awe-node adapter claude-code \
   --auth-mode oauth-pkce
 ```
 
-Then start Claude Code with the private command printed by the adapter. Do not enable Claude's tool-detail telemetry for AWE. Unmapped tools must remain local and be ignored; never invent a version, authentication mode, environment, or operation.
+Then start Claude Code with the private command printed by the adapter. Do not enable Claude's tool-detail telemetry for Agent WEX. Unmapped tools must remain local and be ignored; never invent a version, authentication mode, environment, or operation.
 
 ## Codex
 
@@ -61,7 +61,7 @@ awe-node adapter codex \
   --auth-mode none
 ```
 
-Merge the private fragment printed by the command into user-level `~/.codex/config.toml`. Keep prompt logging disabled. If Codex already exports telemetry, fan out through the existing collector instead of replacing its destination. AWE discards arguments and output locally.
+Merge the private fragment printed by the command into user-level `~/.codex/config.toml`. Keep prompt logging disabled. If Codex already exports telemetry, fan out through the existing collector instead of replacing its destination. Agent WEX discards arguments and output locally.
 
 ## Gemini CLI
 
@@ -100,7 +100,7 @@ Adapters attach to the runtime that executes tools, not to a model brand. Meta M
 - Never print the node API key, collector token, or `~/.awe/otel.env` contents.
 - Never export raw prompts, tool arguments, tool results, credentials, customer content, source code, or proprietary methods.
 - Treat identity, delivery, and evidence as separate from authorization.
-- AWE routes are evidence. They never authorize an action.
+- Agent WEX routes are evidence. They never authorize an action.
 - Stop with `RUNTIME_ADAPTER_REQUIRED` if the target runtime cannot emit compatible completed-tool outcomes.
 
 ## Verification states

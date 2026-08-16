@@ -31,7 +31,7 @@ function explicitBoolean(value) {
 
 /**
  * Translate Codex's documented codex.tool_result OTLP logs into the canonical
- * AWE execute-tool shape. Arguments, output and log bodies are intentionally
+ * Agent WEX execute-tool shape. Arguments, output and log bodies are intentionally
  * never read even though some Codex versions include them in the local event.
  */
 export function spansFromCodexLogs(payload, adapter = {}) {

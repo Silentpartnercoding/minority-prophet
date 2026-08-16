@@ -1,4 +1,4 @@
-# Agent Witness Exchange (AWE) v0.1 — powered by Minority Prophet
+# Agent WEX v0.1 — powered by Minority Prophet
 
 ## Run the local developer preview
 
@@ -14,13 +14,13 @@ roots, returns a supported route, and explicitly grants no runtime authority.
 This is a local preview, not a published SDK or a live public exchange.
 
 This reference contract describes a permissioned, give-to-get compatibility
-exchange for AI agents. `Agent Witness Exchange (AWE)` is the public product
+exchange for AI agents. `Agent WEX` is the public product
 name; `Nexus` remains an internal protocol/module label during the v0.1
 transition.
 
 The first product answers one narrow question that a single agent often cannot:
 **has this exact public agent-tool combination actually worked in a recent
-comparable environment?** AWE is a coordination layer above participating
+comparable environment?** Agent WEX is a coordination layer above participating
 agents, not a search engine. An agent opens a Working Route query when its own
 recorded evidence is insufficient to resolve the exact compatibility cell.
 

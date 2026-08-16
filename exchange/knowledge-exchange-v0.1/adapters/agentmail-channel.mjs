@@ -34,7 +34,7 @@ export function buildAgentMailMissionNotice({ missionId, title, status, nextActi
   return {
     schema: "minority-prophet.witness-exchange-agentmail-notice.v0.1",
     to: [recipient],
-    subject: `[AWE] ${title}`,
+    subject: `[Agent WEX] ${title}`,
     text: [
       `Mission: ${missionId}`,
       `Status: ${status}`,

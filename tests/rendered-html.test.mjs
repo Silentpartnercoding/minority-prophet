@@ -15,11 +15,11 @@ async function render(path = "/", origin = "http://localhost") {
   );
 }
 
-test("agentwex.xyz opens the AWE product at the domain root", async () => {
+test("agentwex.xyz opens the Agent WEX product at the domain root", async () => {
   const response = await render("/", "https://agentwex.xyz");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Agent Witness Exchange — The outcome network for AI agents/);
+  assert.match(html, /Agent WEX — The outcome network for AI agents/);
   assert.match(html, /PASSIVE OUTCOME NETWORK FOR AI AGENTS/);
 });
 
@@ -27,9 +27,9 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   const response = await render("/exchange");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Agent Witness Exchange — The outcome network for AI agents/);
+  assert.match(html, /Agent WEX — The outcome network for AI agents/);
   assert.match(html, /PASSIVE OUTCOME NETWORK FOR AI AGENTS/);
-  assert.match(html, /Agent Witness Exchange/);
+  assert.match(html, /Agent WEX/);
   assert.match(html, /Install once/);
   assert.match(html, /Every permitted run makes agents smarter/);
   assert.match(html, /captures bounded outcomes in the background/);
@@ -37,7 +37,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /returns a supported route to the runtime that asked/);
   assert.match(html, /INSTALL ONCE/);
   assert.match(html, /START \+ SET/);
-  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.2\.tgz &amp;&amp; awe-node install/);
+  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.3\.tgz &amp;&amp; awe-node install/);
   assert.doesNotMatch(html, /--name|My agent/);
   assert.doesNotMatch(html, /npm run awe:install -- --url http:\/\/localhost:3001/);
   assert.doesNotMatch(html, /awe-nav-cta/);
@@ -50,7 +50,8 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /npm run awe:status/);
   assert.match(html, /That is it/i);
   assert.match(html, /A compatible runtime adapter is still required/);
-  assert.match(html, /property="og:title" content="Agent Witness Exchange"/);
+  assert.match(html, /property="og:title" content="Agent WEX"/);
+  assert.match(html, /agent-wex-social\.png/);
   assert.match(html, /LIVE EXCHANGE/);
   assert.match(html, /EXAMPLE EXCHANGE/);
   assert.doesNotMatch(html, /SYNTHETIC FIXTURE/);
@@ -80,7 +81,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /Distinct routes remain separate/);
   assert.match(html, /RANK ROUTES/);
   assert.match(html, /version alone never wins/);
-  assert.match(html, /AWE · ROUTE FOUND · −1 CREDIT/);
+  assert.match(html, /AGENT WEX · ROUTE FOUND · −1 CREDIT/);
   assert.match(html, /BALANCE \+1/);
   assert.match(html, /THE COMPLETE LOOP/);
   assert.match(html, /A failed run returns/);
@@ -155,7 +156,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   ]);
 });
 
-test("publishes agent-readable AWE discovery and guarded setup instructions", async () => {
+test("publishes agent-readable Agent WEX discovery and guarded setup instructions", async () => {
   const [llms, skill, manifestSource] = await Promise.all([
     readFile(new URL("../public/llms.txt", import.meta.url), "utf8"),
     readFile(new URL("../public/exchange/skill.md", import.meta.url), "utf8"),
@@ -163,19 +164,19 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
   ]);
   const manifest = JSON.parse(manifestSource);
 
-  assert.match(llms, /Agent Witness Exchange \(AWE\)/);
+  assert.match(llms, /Agent WEX/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.2\.tgz/);
+  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.3\.tgz/);
   assert.match(skill, /awe-node install/);
   assert.doesNotMatch(skill, /--name|My agent|AWE_NODE_NAME/);
-  assert.match(skill, /AWE routes are evidence\. They never authorize an action/);
+  assert.match(skill, /Agent WEX routes are evidence\. They never authorize an action/);
   assert.match(skill, /hosted verification network is not yet production-ready/i);
   assert.equal(manifest.format, "awe.machine-discovery.v1");
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
   assert.equal(manifest.distribution.directPackageReleased, true);
-  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.2.tgz");
-  assert.equal(manifest.distribution.directPackageSha256, "d0cfebec53bb774a6ac610849a7a5d83d0fcea47d78fad6c08fd3ed7938730c5");
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.3.tgz");
+  assert.equal(manifest.distribution.directPackageSha256, "b83e1cc2b305079b692279becac5f33c83fdfc61ada759360fbc9279e24ffac6");
   assert.equal(manifest.runtimeAdapters.bernstein.optional, true);
   assert.equal(manifest.runtimeAdapters.bernstein.transport, "localhost_lifecycle_plugin");
   assert.equal(manifest.distribution.hostedExchangeReleased, false);
@@ -188,7 +189,7 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
   assert.equal(manifest.authorityBoundary.returnedRoutesRequireLocalPolicy, true);
 });
 
-test("the AWE quickstart command executes the real local evaluator", async () => {
+test("the Agent WEX quickstart command executes the real local evaluator", async () => {
   const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   assert.equal(packageJson.scripts["awe:demo"], "node exchange/knowledge-exchange-v0.1/demo.mjs");
 
@@ -200,7 +201,7 @@ test("the AWE quickstart command executes the real local evaluator", async () =>
   assert.match(output, /capture  3 minimized route outcomes/);
   assert.match(output, /verify   2 independent success roots; 1 dependent root collapsed/);
   assert.match(output, /return   tool 3\.2\.0 \+ client 1\.8\.0/);
-  assert.match(output, /authority granted by AWE: false/);
+  assert.match(output, /authority granted by Agent WEX: false/);
 });
 
 test("server-renders a failure-first landing page with the core fixture and separate studies", async () => {

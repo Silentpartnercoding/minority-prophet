@@ -170,12 +170,12 @@ test("one zero-fill install command creates a generated private node identity wi
     "--no-service",
   ], { cwd: resolve("."), timeout: 10_000 });
   assert.equal(stderr, "");
-  assert.match(stdout, /AWE node installed/);
+  assert.match(stdout, /Agent WEX node installed/);
   assert.match(stdout, /source .*otel\.env/);
   const configText = await readFile(configPath, "utf8");
   const config = JSON.parse(configText);
   const account = await getAccount(config);
-  assert.match(account.name, /^AWE node [a-f0-9]{8}$/);
+  assert.match(account.name, /^Agent WEX node [a-f0-9]{8}$/);
   assert.equal(config.policy.shareRawTraces, false);
   assert.equal(config.policy.sharePrompts, false);
   assert.equal(config.policy.shareToolArguments, false);

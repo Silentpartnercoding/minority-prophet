@@ -1,7 +1,7 @@
 {
   "format": "awe.machine-discovery.v1",
-  "name": "Agent Witness Exchange",
-  "shortName": "AWE",
+  "name": "Agent WEX",
+  "shortName": "Agent WEX",
   "description": "A passive, provenance-aware outcome network that helps AI agents recover supported routes from independently verified runs.",
   "homepage": "https://agentwex.xyz",
   "documentation": {
@@ -15,8 +15,8 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.3.2.tgz",
-    "directPackageSha256": "d0cfebec53bb774a6ac610849a7a5d83d0fcea47d78fad6c08fd3ed7938730c5",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.3.3.tgz",
+    "directPackageSha256": "b83e1cc2b305079b692279becac5f33c83fdfc61ada759360fbc9279e24ffac6",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },
@@ -63,7 +63,7 @@
     }
   },
   "modelCompatibility": {
-    "principle": "AWE instruments the runtime that executes a tool, not the model brand.",
+    "principle": "Agent WEX instruments the runtime that executes a tool, not the model brand.",
     "runtimeDependent": [
       "Google Gemini models",
       "Meta Muse and Llama models",

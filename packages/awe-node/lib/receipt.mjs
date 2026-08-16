@@ -29,10 +29,10 @@ export function adaptOtelSpanToRouteOutcome(span, policy) {
   const environment = requiredString(attrs["awe.environment"], "awe.environment");
   const authMode = requiredString(attrs["awe.auth.mode"], "awe.auth.mode");
   const resolutionKind = attrs["awe.resolution.kind"] ?? "none";
-  if (!registries.has(toolRegistry)) throw new Error("Unsupported AWE tool registry");
-  if (!environments.has(environment)) throw new Error("Unsupported AWE environment class");
-  if (!authModes.has(authMode)) throw new Error("Unsupported AWE authentication mode");
-  if (!resolutions.has(resolutionKind)) throw new Error("Unsupported AWE resolution kind");
+  if (!registries.has(toolRegistry)) throw new Error("Unsupported Agent WEX tool registry");
+  if (!environments.has(environment)) throw new Error("Unsupported Agent WEX environment class");
+  if (!authModes.has(authMode)) throw new Error("Unsupported Agent WEX authentication mode");
+  if (!resolutions.has(resolutionKind)) throw new Error("Unsupported Agent WEX resolution kind");
   const toolId = requiredString(attrs["gen_ai.tool.name"], "gen_ai.tool.name");
   const toolVersion = requiredString(attrs["awe.tool.version"], "awe.tool.version");
   const clientId = requiredString(attrs["awe.client.id"], "awe.client.id");

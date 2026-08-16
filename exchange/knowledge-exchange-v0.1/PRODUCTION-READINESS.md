@@ -1,4 +1,4 @@
-# AWE production-readiness boundary
+# Agent WEX production-readiness boundary
 
 ## What the first node stores
 

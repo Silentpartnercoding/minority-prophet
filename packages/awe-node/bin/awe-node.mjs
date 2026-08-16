@@ -31,7 +31,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall generates a private node identity automatically and is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
+  process.stdout.write(`Agent WEX node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall generates a private node identity automatically and is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
 }
 
 function environmentClass() {
@@ -106,7 +106,7 @@ async function configureCodex(configPath, options) {
   const fragmentPath = resolve(configPath, "..", "codex-otel.toml");
   await writePrivateText(fragmentPath,
     `[otel]\nenvironment = "dev"\nlog_user_prompt = false\nexporter = { otlp-http = { endpoint = "http://127.0.0.1:${config.collector.port}/v1/codex/logs", protocol = "json", headers = { authorization = "Bearer ${config.collector.token}" } } }\n`);
-  process.stdout.write(`Codex adapter configured for ${options.tool}.\nA private user-level OTEL fragment was written to ${fragmentPath}.\nMerge it into ~/.codex/config.toml without replacing an existing exporter; use collector fan-out when one already exists.\nAWE discards Codex arguments and output locally and never submits them.\n`);
+  process.stdout.write(`Codex adapter configured for ${options.tool}.\nA private user-level OTEL fragment was written to ${fragmentPath}.\nMerge it into ~/.codex/config.toml without replacing an existing exporter; use collector fan-out when one already exists.\nAgent WEX discards Codex arguments and output locally and never submits them.\n`);
 }
 
 async function configureGeminiCli(configPath, options) {
@@ -167,7 +167,7 @@ async function localJson(config, path) {
     headers: { authorization: `Bearer ${config.collector.token}` },
     signal: AbortSignal.timeout(2_000),
   });
-  if (!response.ok) throw new Error(`Local AWE node returned ${response.status}`);
+  if (!response.ok) throw new Error(`Local Agent WEX node returned ${response.status}`);
   return response.json();
 }
 
@@ -175,14 +175,14 @@ async function install(options) {
   const configPath = resolve(options.config ?? defaultConfigPath());
   try {
     await access(configPath);
-    throw new Error(`AWE is already configured at ${configPath}. Remove it deliberately before creating a new identity.`);
+    throw new Error(`Agent WEX is already configured at ${configPath}. Remove it deliberately before creating a new identity.`);
   } catch (error) {
     if (error?.code !== "ENOENT") throw error;
   }
   const baseUrl = validateBaseUrl(options.url ?? process.env.AWE_EXCHANGE_URL ?? "https://agentwex.xyz");
   const port = Number(options.port ?? 4318);
   if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Collector port must be an integer from 1024 to 65535");
-  const displayName = `AWE node ${randomUUID().slice(0, 8)}`;
+  const displayName = `Agent WEX node ${randomUUID().slice(0, 8)}`;
   const collectorToken = `awelocal_${randomUUID().replaceAll("-", "")}${randomUUID().replaceAll("-", "")}`;
   const account = await signup(baseUrl, {
     agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID() },
@@ -206,7 +206,7 @@ async function install(options) {
     `export OTEL_EXPORTER_OTLP_ENDPOINT='http://127.0.0.1:${port}'\nexport OTEL_EXPORTER_OTLP_PROTOCOL='http/json'\nexport OTEL_EXPORTER_OTLP_HEADERS='authorization=Bearer ${collectorToken}'\n`);
   let service = null;
   if (!options["no-service"]) service = await installBackgroundService({ binPath: ownPath, configPath });
-  process.stdout.write(`AWE node installed.\nIdentity: ${account.agentId}\nCollector: http://127.0.0.1:${port}/v1/traces\nCredits: ${account.creditBalance}\nRaw prompts, arguments, results, credentials, URLs, and trace IDs are not submitted.\n`);
+  process.stdout.write(`Agent WEX node installed.\nIdentity: ${account.agentId}\nCollector: http://127.0.0.1:${port}/v1/traces\nCredits: ${account.creditBalance}\nRaw prompts, arguments, results, credentials, URLs, and trace IDs are not submitted.\n`);
   if (service) process.stdout.write(`Background service: ${service.label}\n`);
   else process.stdout.write(`Start locally: awe-node daemon --config ${configPath}\n`);
   process.stdout.write(`Connect an OTLP/HTTP JSON runtime without exposing the local token:\n  source ${environmentPath}\n`);
@@ -275,6 +275,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  process.stderr.write(`AWE node error: ${error.message}\n`);
+  process.stderr.write(`Agent WEX node error: ${error.message}\n`);
   process.exitCode = 1;
 });

@@ -12,9 +12,9 @@ const assessment = evaluateWorkingRoute(
 
 const route = assessment.workingRoute;
 
-console.log("AWE local developer preview");
+console.log("Agent WEX local developer preview");
 console.log("capture  3 minimized route outcomes");
 console.log(`verify   ${assessment.evidence.successfulIndependentRoots} independent success roots; ${assessment.evidence.copiesCollapsed} dependent root collapsed`);
 console.log(`return   ${route ? `tool ${route.toolVersion} + client ${route.clientVersion}` : "no supported route"}`);
 console.log(`runtime  ${assessment.nextAction}`);
-console.log(`authority granted by AWE: ${assessment.authorityGranted}`);
+console.log(`authority granted by Agent WEX: ${assessment.authorityGranted}`);

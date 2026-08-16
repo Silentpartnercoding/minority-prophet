@@ -14,7 +14,7 @@ async function exchangeRequest(config, path, { method = "GET", body, authenticat
   });
   const payload = await response.json().catch(() => ({ error: "invalid_exchange_response" }));
   if (!response.ok) {
-    const error = new Error(payload.error ?? `AWE request failed (${response.status})`);
+    const error = new Error(payload.error ?? `Agent WEX request failed (${response.status})`);
     error.status = response.status;
     error.payload = payload;
     throw error;

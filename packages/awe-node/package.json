@@ -1,7 +1,7 @@
 {
   "name": "@minorityprophet/awe-node",
-  "version": "0.3.2",
-  "description": "Install-once local outcome collector for Agent Witness Exchange",
+  "version": "0.3.3",
+  "description": "Install-once local outcome collector for Agent WEX",
   "type": "module",
   "license": "Apache-2.0",
   "engines": { "node": ">=22.13.0" },

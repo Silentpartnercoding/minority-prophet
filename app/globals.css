@@ -2339,3 +2339,47 @@ footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1p
 .awe-compact .awe-terminal-copy h3 {
   margin:28px 0 14px;
 }
+
+/* Agent WEX public lockup. Technical `awe-*` selectors remain stable. */
+.awe-brand.agentwex-brand {
+  gap:12px;
+  color:inherit;
+}
+.awe-brand.agentwex-brand .agentwex-mark {
+  width:42px;
+  height:42px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  place-items:center;
+  gap:0;
+  overflow:hidden;
+  border-radius:8px;
+  background:var(--awe-accent);
+  color:#07100c;
+  box-shadow:none;
+}
+.awe-brand.agentwex-brand .agentwex-mark i {
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+  font:850 12px/1 ui-sans-serif,system-ui,sans-serif;
+  font-style:normal;
+  letter-spacing:-.08em;
+}
+.awe-brand.agentwex-brand .agentwex-mark i + i {
+  border-left:1px solid #07100c55;
+}
+.awe-brand.agentwex-brand .agentwex-wordmark {
+  display:block;
+  color:#d7dbd7;
+  font:760 14px/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:-.01em;
+  text-transform:none;
+  white-space:nowrap;
+}
+.awe-footer .awe-brand.agentwex-brand .agentwex-wordmark { color:#f4f6f2; }
+@media(max-width:660px){
+  .awe-brand.agentwex-brand .agentwex-mark{display:grid}
+  .awe-brand.agentwex-brand .agentwex-wordmark{display:none}
+}

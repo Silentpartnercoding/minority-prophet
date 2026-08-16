@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://minorityprophet.org/schemas/working-route-comp-v0.1.json",
-  "title": "Agent Witness Exchange Route Outcome Comp v0.1",
+  "title": "Agent WEX Route Outcome Comp v0.1",
   "type": "object",
   "additionalProperties": false,
   "required": ["toolRegistry", "toolId", "toolVersion", "clientId", "clientVersion", "environment", "authMode", "operation", "outcome", "resolutionKind", "routeFingerprint", "observedAt", "provenanceRootId", "independenceBasis"],

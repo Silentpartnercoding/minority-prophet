@@ -14,7 +14,7 @@ export function validateBaseUrl(value) {
   const url = new URL(value);
   const local = ["localhost", "127.0.0.1", "::1"].includes(url.hostname);
   if (url.protocol !== "https:" && !(local && url.protocol === "http:")) {
-    throw new Error("AWE exchange URL must use HTTPS (HTTP is allowed only for localhost)");
+    throw new Error("Agent WEX exchange URL must use HTTPS (HTTP is allowed only for localhost)");
   }
   url.pathname = url.pathname.replace(/\/$/, "");
   url.search = "";
@@ -25,7 +25,7 @@ export function validateBaseUrl(value) {
 export async function readConfig(configPath = defaultConfigPath()) {
   const parsed = JSON.parse(await readFile(configPath, "utf8"));
   if (parsed?.schema !== "minority-prophet.awe-node-config.v0.1" || !parsed.apiKey || !parsed.agentId || !parsed.collector?.token) {
-    throw new Error(`Invalid AWE node configuration: ${configPath}`);
+    throw new Error(`Invalid Agent WEX node configuration: ${configPath}`);
   }
   parsed.baseUrl = validateBaseUrl(parsed.baseUrl);
   return parsed;

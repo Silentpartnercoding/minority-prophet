@@ -27,7 +27,7 @@ function explicitBoolean(value) {
 
 /**
  * Translate Gemini CLI's documented gemini_cli.tool_call OTLP logs into the
- * canonical AWE execute-tool shape. Function arguments, errors, metadata and
+ * canonical Agent WEX execute-tool shape. Function arguments, errors, metadata and
  * log bodies are deliberately never read.
  */
 export function spansFromGeminiCliLogs(payload, adapter = {}) {

@@ -37,6 +37,6 @@ test("AgentMail mission notice states that delivery is not authorization", () =>
     nextAction: "Contribute one authorized observation.",
     url: "https://minorityprophet.org/exchange/missions/MP-NX-042",
   }, "scout17@agentmail.to");
-  assert.match(notice.subject, /AWE/);
+  assert.match(notice.subject, /Agent WEX/);
   assert.match(notice.text, /not authorization/);
 });

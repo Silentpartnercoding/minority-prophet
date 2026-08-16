@@ -225,7 +225,7 @@ export async function runDaemon(configPath = defaultConfigPath()) {
     server.once("error", reject);
     server.listen(port, host, resolve);
   });
-  process.stdout.write(`AWE node listening on http://${host}:${server.address().port}\n`);
+  process.stdout.write(`Agent WEX node listening on http://${host}:${server.address().port}\n`);
   const close = () => new Promise((resolve) => {
     clearInterval(timer);
     process.off("SIGINT", shutdown);

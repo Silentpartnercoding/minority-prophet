@@ -1,9 +1,9 @@
 ---
 name: install-awe
-description: Install, connect, and verify an Agent Witness Exchange node for an AI agent or agent application. Use when a user asks to install AWE, join the exchange, run the passive outcome collector, earn AWE credits, connect agent telemetry, or make AWE operate automatically in the background.
+description: Install, connect, and verify an Agent WEX node for an AI agent or agent application. Use when a user asks to install Agent WEX, join the exchange, run the passive outcome collector, earn Agent WEX credits, connect agent telemetry, or make Agent WEX operate automatically in the background.
 ---
 
-# Install AWE
+# Install Agent WEX
 
 Create a working passive node, not merely package files. Minimize user interaction while preserving explicit consent and privacy.
 
@@ -11,7 +11,7 @@ Create a working passive node, not merely package files. Minimize user interacti
 
 Complete all applicable steps:
 
-1. install the provider-neutral AWE node;
+1. install the provider-neutral Agent WEX node;
 2. create its private identity and localhost collector credential;
 3. start its background service;
 4. connect the target runtime's completed tool outcomes;
@@ -26,9 +26,9 @@ Do not say installation is complete if only the package exists or if the runtime
 2. Run `node --version`. Require Node.js `22.13.0` or newer.
 3. Prefer an existing supported Node installation. Do not silently install or replace a system runtime. If Node is missing or too old, use the project's existing version manager; otherwise request approval for the smallest reversible installation.
 4. Inspect existing OpenTelemetry configuration before changing anything. Reuse it rather than adding a second telemetry pipeline.
-5. Treat invocation of this skill as permission to install AWE for the named agent/project, but explain the minimized outcome-sharing policy before enabling it.
+5. Treat invocation of this skill as permission to install Agent WEX for the named agent/project, but explain the minimized outcome-sharing policy before enabling it.
 
-The AWE package has no third-party runtime dependencies. Do not install unrelated observability stacks.
+The Agent WEX package has no third-party runtime dependencies. Do not install unrelated observability stacks.
 
 ## Install
 
@@ -41,7 +41,7 @@ node packages/awe-node/bin/awe-node.mjs install --url "${AWE_EXCHANGE_URL:-https
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz
 awe-node install
 awe-node runtimes
 ```
@@ -56,9 +56,9 @@ On macOS, confirm that `org.minorityprophet.awe-node` is loaded. On other platfo
 Use the least invasive supported path:
 
 1. If the runtime already emits compatible OTLP/HTTP JSON tool spans, attach its exporter to the private values in `~/.awe/otel.env` and restart that runtime if required.
-2. If an existing telemetry process owns the exporter, add AWE as a bounded secondary outcome processor. Do not redirect or disable the existing telemetry destination.
-3. If the runtime has an AWE adapter, install and configure that adapter.
-4. If the runtime has neither compatible OTLP tool spans nor an AWE adapter, stop and report `RUNTIME_ADAPTER_REQUIRED`. Do not fake passive capture with generic logs, prompts, or raw traces.
+2. If an existing telemetry process owns the exporter, add Agent WEX as a bounded secondary outcome processor. Do not redirect or disable the existing telemetry destination.
+3. If the runtime has an Agent WEX adapter, install and configure that adapter.
+4. If the runtime has neither compatible OTLP tool spans nor an Agent WEX adapter, stop and report `RUNTIME_ADAPTER_REQUIRED`. Do not fake passive capture with generic logs, prompts, or raw traces.
 
 A compatible completed tool span must provide:
 
@@ -75,7 +75,7 @@ The local minimizer must omit prompts, tool arguments, tool results, credentials
 
 ### Claude Code adapter
 
-Claude Code's OTLP `tool_result` logs require a bounded local mapping before AWE can compare routes safely. Configure each eligible tool explicitly:
+Claude Code's OTLP `tool_result` logs require a bounded local mapping before Agent WEX can compare routes safely. Configure each eligible tool explicitly:
 
 ```sh
 awe-node adapter claude-code \
@@ -99,7 +99,7 @@ awe-node adapter codex \
   --auth-mode none
 ```
 
-Merge the generated private `~/.awe/codex-otel.toml` fragment into the user-level `~/.codex/config.toml`. Do not replace an existing exporter; use collector fan-out. Keep `log_user_prompt = false`. Codex may include arguments and output in its local OTLP event; the AWE adapter must discard both before receipt construction.
+Merge the generated private `~/.awe/codex-otel.toml` fragment into the user-level `~/.codex/config.toml`. Do not replace an existing exporter; use collector fan-out. Keep `log_user_prompt = false`. Codex may include arguments and output in its local OTLP event; the Agent WEX adapter must discard both before receipt construction.
 
 ### Gemini CLI adapter
 

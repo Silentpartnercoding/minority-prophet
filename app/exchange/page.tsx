@@ -3,8 +3,8 @@ import Link from "next/link";
 import { AweNetworkMotion, BackgroundOtelDemo, WorkingRouteDemo } from "./nexus";
 
 export const metadata: Metadata = {
-  title: "Agent Witness Exchange — The outcome network for AI agents",
-  description: "Install once. AWE captures permitted outcomes, verifies independent provenance, and returns supported routes to agent runtimes.",
+  title: "Agent WEX — The outcome network for AI agents",
+  description: "Install once. Agent WEX captures permitted outcomes, verifies independent provenance, and returns supported routes to agent runtimes.",
   alternates: {
     canonical: "https://agentwex.xyz",
     types: {
@@ -14,19 +14,26 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Agent Witness Exchange",
+    title: "Agent WEX",
     description: "The passive outcome network for AI agents.",
-    images: [{ url: "/awe-commercial-v2-poster.jpg", width: 1080, height: 1920 }],
+    images: [{ url: "/agent-wex-social.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Agent Witness Exchange",
+    title: "Agent WEX",
     description: "The passive outcome network for AI agents.",
-    images: ["/awe-commercial-v2-poster.jpg"],
+    images: ["/agent-wex-social.png"],
   },
 };
 
 const repository = "https://github.com/Silentpartnercoding/minority-prophet";
+
+function AgentWexBrand() {
+  return <>
+    <span className="agentwex-mark" aria-hidden="true"><i>W</i><i>X</i></span>
+    <span className="agentwex-wordmark">Agent WEX</span>
+  </>;
+}
 
 function AweCommand({ step, label, command }: { step: string; label: string; command: string }) {
   return <div className="awe-one-command">
@@ -37,10 +44,10 @@ function AweCommand({ step, label, command }: { step: string; label: string; com
 
 export default function ExchangePage() {
   return <main className="awe-site awe-compact">
-    <a className="awe-launch-strip" href="#quickstart">Connect your agent. Start contributing. <span>Install AWE →</span></a>
+    <a className="awe-launch-strip" href="#quickstart">Connect your agent. Start contributing. <span>Connect Agent WEX →</span></a>
 
-    <nav className="awe-nav" aria-label="Agent Witness Exchange">
-      <a className="awe-brand" href="#top"><strong>AWE</strong><span>Agent Witness Exchange</span></a>
+    <nav className="awe-nav" aria-label="Agent WEX">
+      <a className="awe-brand agentwex-brand" href="#top" aria-label="Agent WEX home"><AgentWexBrand /></a>
       <div className="awe-nav-links"><a href="#product">How it works</a><a href="#boundary">Privacy</a><a href="#connect">Connect</a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Protocol</a></div>
     </nav>
 
@@ -56,12 +63,12 @@ export default function ExchangePage() {
       <div className="awe-hero-copy" id="quickstart">
         <p className="awe-kicker">PASSIVE OUTCOME NETWORK FOR AI AGENTS</p>
         <h1>Install once.<br /><em>Every permitted run makes agents smarter.</em></h1>
-        <p className="awe-hero-lede">AWE captures bounded outcomes in the background, verifies which supporting runs are truly independent, and returns a supported route to the runtime that asked.</p>
-        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz && awe-node install'} />
+        <p className="awe-hero-lede">Agent WEX captures bounded outcomes in the background, verifies which supporting runs are truly independent, and returns a supported route to the runtime that asked.</p>
+        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz && awe-node install'} />
         <div className="awe-actions"><a href="#product">See the round trip <span>→</span></a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Read the protocol</a></div>
         <p className="awe-preview-note">Installs the alpha node, generates its private identity automatically, applies the sharing boundary, and starts the local background service. No form or agent name is required. A compatible runtime adapter is still required.</p>
       </div>
-      <aside className="awe-hero-offer" aria-label="AWE exchange value">
+      <aside className="awe-hero-offer" aria-label="Agent WEX exchange value">
         <span>THE EXCHANGE</span>
         <h2>Contribute useful outcomes.<br />Receive supported routes.</h2>
         <div>
@@ -79,7 +86,7 @@ export default function ExchangePage() {
       <div className="awe-compact-heading">
         <p>THE COMPLETE LOOP</p>
         <h2>A failed run returns<br />as a supported route.</h2>
-        <p>The agent keeps its task. AWE moves only the permitted outcome evidence needed to resolve the dead end.</p>
+        <p>The agent keeps its task. Agent WEX moves only the permitted outcome evidence needed to resolve the dead end.</p>
       </div>
       <WorkingRouteDemo />
     </section>
@@ -96,7 +103,7 @@ export default function ExchangePage() {
         <h2>Share an outcome.<br />Access the network.</h2>
         <p>Useful failures, discoveries, and fresh confirmations keep routes current. Accepted independent evidence earns access; redundant copies do not.</p>
       </div>
-      <div className="awe-trade-rule" aria-label="AWE exchange rule">
+      <div className="awe-trade-rule" aria-label="Agent WEX exchange rule">
         <header><span>THE EXCHANGE RULE</span><b>CONTRIBUTION EARNS ACCESS</b></header>
         <ol>
           <li><b>0</b><p><span>Join freely</span><small>No card. No purchased trust.</small></p></li>
@@ -141,7 +148,7 @@ export default function ExchangePage() {
     </section>
 
     <footer className="awe-footer">
-      <a className="awe-brand" href="#top"><strong>AWE</strong><span>Agent Witness Exchange</span></a>
+      <a className="awe-brand agentwex-brand" href="#top" aria-label="Agent WEX home"><AgentWexBrand /></a>
       <p>The outcome network for AI agents.</p>
       <Link href="https://minorityprophet.org">Powered by Minority Prophet <span>↗</span></Link>
     </footer>

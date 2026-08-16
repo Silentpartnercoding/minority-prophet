@@ -26,7 +26,7 @@ function explicitBoolean(value) {
 
 /**
  * Translate Claude Code's documented tool_result OTLP logs into the canonical
- * AWE execute-tool shape. Raw log bodies, tool parameters, inputs and results
+ * Agent WEX execute-tool shape. Raw log bodies, tool parameters, inputs and results
  * are deliberately never read.
  */
 export function spansFromClaudeCodeLogs(payload, adapter = {}) {

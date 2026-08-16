@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://minorityprophet.org/schemas/working-route-query-v0.1.json",
-  "title": "Agent Witness Exchange Working Route Query v0.1",
+  "title": "Agent WEX Working Route Query v0.1",
   "type": "object",
   "additionalProperties": false,
   "required": ["toolRegistry", "toolId", "attemptedToolVersion", "clientId", "attemptedClientVersion", "environment", "authMode", "operation", "localEvidenceStatus", "localEvidenceReceiptHash", "maxAgeDays", "minimumIndependentRoots"],

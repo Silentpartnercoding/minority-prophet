@@ -1,6 +1,6 @@
-# Agent Witness Exchange node
+# Agent WEX node
 
-The AWE node is an install-once, localhost-only collector for minimized tool outcomes. After the explicit installation/consent step, it runs in the background:
+The Agent WEX node is an install-once, localhost-only collector for minimized tool outcomes. After the explicit installation/consent step, it runs in the background:
 
 1. receives completed tool spans over OTLP/HTTP JSON;
 2. removes prompts, tool arguments, tool results, credentials, URLs, and raw trace identifiers;
@@ -18,7 +18,7 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.3.tgz
 awe-node install
 ```
 
@@ -28,7 +28,7 @@ Agent WEX then auto-detects Bernstein, Claude Code, Codex, and Gemini CLI. Detec
 
 ## Claude Code adapter
 
-Claude Code emits real tool-result events, but it does not supply every compatibility field AWE needs to return a safe route. Bind each eligible tool explicitly; unmapped tools are ignored.
+Claude Code emits real tool-result events, but it does not supply every compatibility field Agent WEX needs to return a safe route. Bind each eligible tool explicitly; unmapped tools are ignored.
 
 ```bash
 awe-node adapter claude-code \
@@ -45,7 +45,7 @@ The adapter reads outcome, tool name, correlation ID, time, and error class. It 
 
 ## Codex adapter
 
-Codex emits documented `codex.tool_result` OTLP logs. AWE reads only the event name, tool name, call ID, time, and explicit success flag, then discards arguments and output locally.
+Codex emits documented `codex.tool_result` OTLP logs. Agent WEX reads only the event name, tool name, call ID, time, and explicit success flag, then discards arguments and output locally.
 
 ```bash
 awe-node adapter codex \
