@@ -29,6 +29,9 @@ export async function signup(baseUrl, body) {
 export const getAccount = (config) => exchangeRequest(config, "/api/exchange/account");
 export const getLedger = (config) => exchangeRequest(config, "/api/exchange/ledger");
 export const registerSigningKey = (config, signingKey) => exchangeRequest(config, "/api/exchange/signing-keys", { method: "POST", body: signingKey });
+export const revokeSigningKey = (config, keyId) => exchangeRequest(config, "/api/exchange/signing-keys/revoke", { method: "POST", body: { keyId } });
+export const rotateApiKey = (config) => exchangeRequest(config, "/api/exchange/api-keys/rotate", { method: "POST" });
+export const deactivateAccount = (config) => exchangeRequest(config, "/api/exchange/account", { method: "DELETE" });
 export const getContribution = (config, id) => exchangeRequest(config, `/api/exchange/contributions/${encodeURIComponent(id)}`);
 export const submitRouteOutcome = (config, receipt) => exchangeRequest(config, "/api/exchange/working-route-comps", { method: "POST", body: receipt });
 export const createRouteQuery = (config, query) => exchangeRequest(config, "/api/exchange/queries", { method: "POST", body: query });

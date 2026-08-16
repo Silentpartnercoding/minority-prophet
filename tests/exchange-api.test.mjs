@@ -122,3 +122,45 @@ test("first node can submit idempotently, await verification, and earn durable c
   assert.equal(ledger.entries[0].entryType, "earn");
   assert.equal(ledger.entries[0].balanceAfter, 2);
 });
+
+test("public API bounds bodies, throttles signup fingerprints, rotates keys, and deactivates accounts", async () => {
+  const db = d1TestDatabase();
+  const oversized = await handleExchangeApi(new Request("https://awe.test/api/exchange/signup", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ padding: "x".repeat(70_000) }),
+  }), db, { clientFingerprint: "oversized-test", requireClientFingerprint: true });
+  assert.equal(oversized.status, 413);
+
+  let account;
+  for (let index = 0; index < 6; index += 1) {
+    const response = await handleExchangeApi(apiRequest("/api/exchange/signup", {
+      method: "POST",
+      body: {
+        agent: { name: `Rate Node ${index}`, identityProvider: "custom", externalSubject: `rate-node-${index}` },
+        participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
+      },
+    }), db, { clientFingerprint: "same-network-client", requireClientFingerprint: true });
+    if (index < 5) {
+      assert.equal(response.status, 201);
+      if (index === 0) account = await response.json();
+    } else {
+      assert.equal(response.status, 429);
+      assert.ok(Number(response.headers.get("retry-after")) > 0);
+    }
+  }
+
+  const rotatedResponse = await handleExchangeApi(apiRequest("/api/exchange/api-keys/rotate", {
+    method: "POST", token: account.apiKey,
+  }), db);
+  assert.equal(rotatedResponse.status, 200);
+  const rotated = await rotatedResponse.json();
+  assert.notEqual(rotated.apiKey, account.apiKey);
+  assert.equal((await handleExchangeApi(apiRequest("/api/exchange/account", { token: account.apiKey }), db)).status, 401);
+  assert.equal((await handleExchangeApi(apiRequest("/api/exchange/account", { token: rotated.apiKey }), db)).status, 200);
+
+  const deactivated = await handleExchangeApi(apiRequest("/api/exchange/account", { method: "DELETE", token: rotated.apiKey }), db);
+  assert.equal(deactivated.status, 200);
+  assert.equal((await deactivated.json()).deactivated, true);
+  assert.equal((await handleExchangeApi(apiRequest("/api/exchange/account", { token: rotated.apiKey }), db)).status, 401);
+});

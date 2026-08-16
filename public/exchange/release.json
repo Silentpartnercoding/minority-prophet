@@ -1,0 +1,11 @@
+{
+  "package": "@minorityprophet/awe-node",
+  "version": "0.6.0",
+  "filename": "awe-node-0.6.0.tgz",
+  "sha256": "11498074999798090d85819d4d7a9ea16259c97354151bd882c5dccd6d4f6ea6",
+  "size": 24962,
+  "node": ">=22.13.0",
+  "dependencies": 0,
+  "lifecycleScripts": false,
+  "source": "git+https://github.com/Silentpartnercoding/minority-prophet.git"
+}

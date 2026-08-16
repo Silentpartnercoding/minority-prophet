@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { evaluateWorkingRoute, sampleRouteQuery, sampleRouteRecords } from "../exchange/knowledge-exchange-v0.1/working-route.mjs";
 
-test("working-route exchange returns a route only after independent successful runs", () => {
+test("working-route exchange returns a route only after distinct signed-node support", () => {
   const assessment = evaluateWorkingRoute(sampleRouteRecords, sampleRouteQuery, "2026-08-15T19:00:00.000Z");
   assert.equal(assessment.status, "RESULT_AVAILABLE");
   assert.equal(assessment.evidence.compatibleReceipts, 4);
@@ -13,6 +13,9 @@ test("working-route exchange returns a route only after independent successful r
   assert.equal(assessment.workingRoute.toolVersion, "3.2.0");
   assert.equal(assessment.workingRoute.clientVersion, "1.8.0");
   assert.equal(assessment.workingRoute.independentRootCount, 2);
+  assert.equal(assessment.workingRoute.distinctSignedNodeCount, 2);
+  assert.equal(assessment.workingRoute.controllerIndependenceVerified, false);
+  assert.equal(assessment.workingRoute.executionTruthVerified, false);
   assert.equal(assessment.workingRoute.evidenceWindowDays, 7);
   assert.equal(assessment.workingRoute.routeFingerprint, "sha256:a1b2c3d4");
   assert.equal(Object.hasOwn(assessment.workingRoute, ["rec", "ipeFingerprint"].join("")), false);
@@ -21,8 +24,9 @@ test("working-route exchange returns a route only after independent successful r
   assert.equal(assessment.candidateRoutes[0].selected, true);
   assert.deepEqual(assessment.selectionPolicy, {
     compatibility: "exact tool, client, environment, auth mode, and operation cell",
-    primaryRank: "distinct verified node count after provenance-root collapse",
-    tieBreak: "latest independent successful observation",
+    supportUnit: "distinct-signed-node",
+    primaryRank: "distinct signed node count after provenance-root collapse",
+    tieBreak: "latest signed successful observation",
     versionPreference: "none",
     evidenceWindowDays: 7,
   });

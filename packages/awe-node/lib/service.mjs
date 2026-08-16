@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -35,4 +35,13 @@ export async function installBackgroundService({ binPath, configPath }) {
   await execFileAsync("launchctl", ["bootstrap", domain, plistPath]);
   await execFileAsync("launchctl", ["kickstart", "-k", `${domain}/${label}`]);
   return { label, plistPath };
+}
+
+export async function uninstallBackgroundService() {
+  if (process.platform !== "darwin") return { removed: false, reason: "manual_daemon_only" };
+  const plistPath = resolve(homedir(), "Library", "LaunchAgents", `${label}.plist`);
+  const domain = `gui/${process.getuid()}`;
+  await execFileAsync("launchctl", ["bootout", domain, plistPath]).catch(() => {});
+  await rm(plistPath, { force: true });
+  return { removed: true, label, plistPath };
 }

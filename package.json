@@ -13,6 +13,7 @@
     "awe:demo": "node exchange/knowledge-exchange-v0.1/demo.mjs",
     "awe:install": "node packages/awe-node/bin/awe-node.mjs install",
     "awe:status": "node packages/awe-node/bin/awe-node.mjs status",
+    "awe:release": "node scripts/build-awe-release.mjs",
     "test": "npm run build && node --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },

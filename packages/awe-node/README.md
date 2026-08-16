@@ -7,18 +7,22 @@ The Agent WEX node is an install-once, localhost-only collector for minimized to
 3. submits a compact success/failure compatibility receipt;
 4. tracks verification and credits;
 5. opens a working-route query after a failure;
-6. returns a verified route receipt to the local agent when one becomes available.
+6. returns a signed-node-supported route receipt to the local agent when one becomes available.
 
 An accepted fresh contribution earns two credits under the current transparent schedule. Unlocking a completed working-route result spends one credit. Duplicate retries and additional roots from the same signed node do not earn again. Credits live in one exchange-owned append-only ledger; `~/.awe/state.json` is only a local cache and cannot change the server balance.
 
-The route is advice, not authority. It must return through the caller's Gate or policy system before use.
+The route is advice, not authority. It must return through the caller's Gate or policy system before use. A registered signing key authenticates a pseudonymous node. It does not prove that a different human or organization controls that node, or that a reported execution genuinely happened. Returned routes are explicitly labeled unverified network evidence.
 
-## Alpha node install
+## Public-preview node install
 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.5.0.tgz && awe-node install
+curl -fsSLO https://agentwex.xyz/exchange/awe-node-0.6.0.tgz
+curl -fsSLO https://agentwex.xyz/exchange/SHA256SUMS
+shasum -a 256 -c SHA256SUMS
+npm install -g ./awe-node-0.6.0.tgz
+awe-node install
 ```
 
 The command is idempotent. It generates the node's private identity, registers it with the exchange, detects Claude Code, Codex, and Gemini CLI, writes a conservative user-level telemetry connection, starts the background node, and verifies the exchange and local service. No display name, browser form, or per-tool mapping is required. Launch a new runtime session once after installation; an already-running process cannot reload its telemetry configuration.
@@ -108,6 +112,8 @@ awe-node ledger
 awe-node routes
 awe-node doctor
 ```
+
+Rotate both the API credential and local Ed25519 identity with `awe-node rotate-keys`. Remove the background service, exact Agent WEX runtime settings, local config, and remote pseudonymous account with `awe-node uninstall --yes`. Add `--keep-account` or `--keep-local` only when you deliberately want those retained. Runtime-setting backups are kept locally.
 
 ## Honest boundary
 

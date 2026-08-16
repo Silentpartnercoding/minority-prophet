@@ -161,3 +161,53 @@ export async function bootstrapDetectedRuntimes({ config, detectedRuntimes, envi
   }
   return results;
 }
+
+export async function removeAgentWexRuntimeConfig({ config, runtimeHome = config.runtimeHome ?? homedir() }) {
+  const results = [];
+  const claudePath = resolve(runtimeHome, ".claude", "settings.json");
+  const claudeText = await exists(claudePath);
+  if (claudeText != null) {
+    const settings = JSON.parse(claudeText);
+    const expected = {
+      CLAUDE_CODE_ENABLE_TELEMETRY: "1",
+      OTEL_LOGS_EXPORTER: "otlp",
+      OTEL_EXPORTER_OTLP_LOGS_PROTOCOL: "http/json",
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: `http://127.0.0.1:${config.collector.port}/v1/logs`,
+      OTEL_EXPORTER_OTLP_HEADERS: `authorization=Bearer ${config.collector.token}`,
+    };
+    for (const [key, value] of Object.entries(expected)) if (sameValue(settings.env?.[key], value)) delete settings.env[key];
+    if (settings.env && Object.keys(settings.env).length === 0) delete settings.env;
+    await writePrivateText(claudePath, `${JSON.stringify(settings, null, 2)}\n`);
+    results.push({ runtime: "claude-code", path: claudePath, status: "agent_wex_keys_removed" });
+  }
+
+  const geminiPath = resolve(runtimeHome, ".gemini", "settings.json");
+  const geminiText = await exists(geminiPath);
+  if (geminiText != null) {
+    const settings = JSON.parse(geminiText);
+    const expected = {
+      enabled: true,
+      target: "local",
+      otlpEndpoint: `http://127.0.0.1:${config.collector.port}/gemini/${config.collector.token}`,
+      otlpProtocol: "http",
+      logPrompts: false,
+      traces: false,
+    };
+    for (const [key, value] of Object.entries(expected)) if (sameValue(settings.telemetry?.[key], value)) delete settings.telemetry[key];
+    if (settings.telemetry && Object.keys(settings.telemetry).length === 0) delete settings.telemetry;
+    await writePrivateText(geminiPath, `${JSON.stringify(settings, null, 2)}\n`);
+    results.push({ runtime: "gemini-cli", path: geminiPath, status: "agent_wex_keys_removed" });
+  }
+
+  const codexPath = resolve(runtimeHome, ".codex", "config.toml");
+  const codexText = await exists(codexPath);
+  if (codexText != null) {
+    const exact = codexOtelBlock(config);
+    const updated = codexText.replace(`${exact}\n`, "").replace(exact, "").trimEnd();
+    if (updated !== codexText.trimEnd()) {
+      await writePrivateText(codexPath, updated ? `${updated}\n` : "");
+      results.push({ runtime: "codex", path: codexPath, status: "agent_wex_block_removed" });
+    }
+  }
+  return results;
+}

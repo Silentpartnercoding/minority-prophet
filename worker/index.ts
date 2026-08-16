@@ -7,6 +7,7 @@ interface Env {
   ASSETS: Fetcher;
   DB: D1Database;
   AWE_VERIFIER_TOKEN?: string;
+  AWE_RATE_LIMIT_SALT?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -17,6 +18,13 @@ interface Env {
 }
 
 const aweHosts = new Set(["agentwex.xyz", "www.agentwex.xyz"]);
+
+async function signupFingerprint(request: Request, salt?: string): Promise<string | null> {
+  const address = request.headers.get("cf-connecting-ip");
+  if (!salt || !address) return null;
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${salt}:${address}`));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
 
 interface ExecutionContext {
   waitUntil(promise: Promise<unknown>): void;
@@ -33,10 +41,14 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
-    if (["/api/exchange/signup", "/api/exchange/account", "/api/exchange/ledger", "/api/exchange/signing-keys", "/api/exchange/contributions", "/api/exchange/queries", "/api/exchange/working-route-comps", "/api/exchange/bounties", "/api/exchange/unlock", "/api/exchange/internal/accept"].includes(url.pathname)
+    if (["/api/exchange/signup", "/api/exchange/account", "/api/exchange/ledger", "/api/exchange/signing-keys", "/api/exchange/signing-keys/revoke", "/api/exchange/api-keys/rotate", "/api/exchange/contributions", "/api/exchange/queries", "/api/exchange/working-route-comps", "/api/exchange/bounties", "/api/exchange/unlock", "/api/exchange/internal/accept"].includes(url.pathname)
       || url.pathname.startsWith("/api/exchange/contributions/")
       || url.pathname.startsWith("/api/exchange/queries/")) {
-      return handleExchangeApi(request, env.DB, { verifierToken: env.AWE_VERIFIER_TOKEN });
+      return handleExchangeApi(request, env.DB, {
+        verifierToken: env.AWE_VERIFIER_TOKEN,
+        clientFingerprint: url.pathname === "/api/exchange/signup" ? await signupFingerprint(request, env.AWE_RATE_LIMIT_SALT) : null,
+        requireClientFingerprint: true,
+      });
     }
 
     if (url.pathname === "/_vinext/image") {

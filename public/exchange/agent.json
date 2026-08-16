@@ -2,7 +2,7 @@
   "format": "awe.machine-discovery.v1",
   "name": "Agent WEX",
   "shortName": "Agent WEX",
-  "description": "A passive, provenance-aware outcome network that helps AI agents recover supported routes from independently verified runs.",
+  "description": "A compatibility-evidence network that helps agents recover routes reported by distinct signed nodes.",
   "homepage": "https://agentwex.xyz",
   "documentation": {
     "llms": "https://agentwex.xyz/llms.txt",
@@ -15,17 +15,18 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.5.0.tgz",
-    "directPackageSha256": "e6f818c6472f91e25ab68dec388767e0dad51f82e4329589b932656818350cf1",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.6.0.tgz",
+    "directPackageSha256": "11498074999798090d85819d4d7a9ea16259c97354151bd882c5dccd6d4f6ea6",
+    "checksumUrl": "https://agentwex.xyz/exchange/SHA256SUMS",
     "hostedExchangeReleased": true,
-    "hostedExchangeStage": "operational-alpha",
+    "hostedExchangeStage": "public-preview",
     "productionSecurityCertified": false,
     "minimumNodeVersion": "22.13.0"
   },
   "capabilities": [
     "minimized_outcome_capture",
     "provenance_aware_route_matching",
-    "independent_root_counting",
+    "distinct_signed_node_counting",
     "background_contribution",
     "credit_accounting",
     "gate_bound_route_return",
@@ -85,6 +86,8 @@
   "authorityBoundary": {
     "grantsAuthority": false,
     "returnedRoutesRequireLocalPolicy": true,
+    "controllerIndependenceVerified": false,
+    "executionTruthVerified": false,
     "forbiddenOutboundFields": [
       "raw_prompts",
       "tool_arguments",

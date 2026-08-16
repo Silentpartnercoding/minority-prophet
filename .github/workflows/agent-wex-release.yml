@@ -1,0 +1,35 @@
+name: Agent WEX release integrity
+
+on:
+  pull_request:
+    paths:
+      - "packages/awe-node/**"
+      - "scripts/build-awe-release.mjs"
+      - "public/exchange/awe-node-*.tgz"
+      - "public/exchange/SHA256SUMS"
+      - "public/exchange/release.json"
+      - ".github/workflows/agent-wex-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+          cache: npm
+      - run: npm ci
+      - run: npm audit --omit=dev
+      - run: npm run awe:release
+      - run: git diff --exit-code -- public/exchange/awe-node-0.6.0.tgz public/exchange/SHA256SUMS public/exchange/release.json
+      - run: node --test tests/awe-release.test.mjs tests/exchange-api.test.mjs tests/runtime-bootstrap.test.mjs tests/working-route.test.mjs
+      - name: Install packed node without lifecycle scripts
+        run: |
+          install_dir="$(mktemp -d)"
+          npm install --prefix "$install_dir" ./public/exchange/awe-node-0.6.0.tgz --ignore-scripts
+          "$install_dir/node_modules/.bin/awe-node" help

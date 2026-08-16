@@ -1,7 +1,7 @@
 {
   "name": "@minorityprophet/awe-node",
-  "version": "0.5.0",
-  "description": "Install-once local outcome collector for Agent WEX",
+  "version": "0.6.0",
+  "description": "Privacy-minimizing local compatibility-evidence node for Agent WEX",
   "type": "module",
   "license": "Apache-2.0",
   "engines": { "node": ">=22.13.0" },
@@ -18,5 +18,9 @@
     "./automatic-mapping": "./lib/automatic-mapping.mjs",
     "./attestation": "./lib/attestation.mjs"
   },
-  "files": ["bin", "lib", "README.md"]
+  "files": ["bin", "lib", "README.md", "LICENSE", "NOTICE"],
+  "repository": { "type": "git", "url": "git+https://github.com/Silentpartnercoding/minority-prophet.git", "directory": "packages/awe-node" },
+  "homepage": "https://agentwex.xyz/exchange",
+  "bugs": { "url": "https://github.com/Silentpartnercoding/minority-prophet/issues" },
+  "publishConfig": { "access": "public", "provenance": true }
 }

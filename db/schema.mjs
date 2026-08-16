@@ -11,6 +11,8 @@ export const exchangeSchemaStatements = [
     daily_credit_spend_limit INTEGER NOT NULL DEFAULT 0,
     status TEXT NOT NULL DEFAULT 'active',
     created_at TEXT NOT NULL,
+    deactivated_at TEXT,
+    purge_after TEXT,
     UNIQUE(identity_provider, external_subject),
     UNIQUE(api_key_hash)
   )`,
@@ -117,6 +119,13 @@ export const exchangeSchemaStatements = [
     created_at TEXT NOT NULL,
     PRIMARY KEY(agent_id, candidate_key)
   )`,
+  `CREATE TABLE IF NOT EXISTS exchange_rate_limits (
+    bucket TEXT NOT NULL,
+    window_start INTEGER NOT NULL,
+    request_count INTEGER NOT NULL,
+    expires_at TEXT NOT NULL,
+    PRIMARY KEY(bucket, window_start)
+  )`,
   `CREATE INDEX IF NOT EXISTS idx_exchange_contributions_agent_status
    ON exchange_contributions(agent_id, status)`,
   `CREATE INDEX IF NOT EXISTS idx_exchange_contributions_topic_status
@@ -133,4 +142,6 @@ export const exchangeSchemaStatements = [
    ON exchange_verification_records(created_at)`,
   `CREATE INDEX IF NOT EXISTS idx_exchange_signing_keys_agent
    ON exchange_agent_signing_keys(agent_id, status)`,
+  `CREATE INDEX IF NOT EXISTS idx_exchange_rate_limits_expiry
+   ON exchange_rate_limits(expires_at)`,
 ];

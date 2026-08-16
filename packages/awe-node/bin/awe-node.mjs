@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto";
 import { execFile } from "node:child_process";
-import { access } from "node:fs/promises";
+import { access, rm } from "node:fs/promises";
 import { arch, platform } from "node:os";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 import { promisify } from "node:util";
-import { signup, getAccount, getLedger, registerSigningKey } from "../lib/client.mjs";
+import { deactivateAccount, signup, getAccount, getLedger, registerSigningKey, revokeSigningKey, rotateApiKey } from "../lib/client.mjs";
 import { defaultConfigPath, readConfig, validateBaseUrl, writePrivateJson, writePrivateText } from "../lib/config.mjs";
 import { runDaemon } from "../lib/daemon.mjs";
-import { installBackgroundService } from "../lib/service.mjs";
+import { installBackgroundService, uninstallBackgroundService } from "../lib/service.mjs";
 import { bernsteinPluginSource } from "../lib/bernstein.mjs";
 import { detectRuntimes } from "../lib/runtime-detection.mjs";
-import { bootstrapDetectedRuntimes } from "../lib/runtime-bootstrap.mjs";
+import { bootstrapDetectedRuntimes, removeAgentWexRuntimeConfig } from "../lib/runtime-bootstrap.mjs";
 import { generateSigningIdentity, publicSigningIdentity } from "../lib/attestation.mjs";
 
 const ownPath = fileURLToPath(import.meta.url);
@@ -26,14 +26,14 @@ function parseArgs(argv) {
     const value = rest[index];
     if (!value.startsWith("--")) { positional.push(value); continue; }
     const [rawKey, inline] = value.slice(2).split("=", 2);
-    if (["no-service", "yes"].includes(rawKey)) options[rawKey] = true;
+    if (["no-service", "yes", "keep-account", "keep-local"].includes(rawKey)) options[rawKey] = true;
     else options[rawKey] = inline ?? rest[++index];
   }
   return { command, options, positional };
 }
 
 function printHelp() {
-  process.stdout.write(`Agent WEX node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is idempotent. It creates a private identity, detects and safely connects supported runtimes, starts the local node, and verifies readiness. Runtime-derived mappings keep unknown version/auth fields explicit; precise manual mappings remain available.\n`);
+  process.stdout.write(`Agent WEX node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  uninstall --yes [--keep-account] [--keep-local] [--config PATH]\n  rotate-keys [--config PATH]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is idempotent. It creates a pseudonymous signing identity, detects and safely connects supported runtimes, starts the local node, and verifies readiness. A signed node is not proof of an independently controlled operator or genuine execution.\n`);
 }
 
 function environmentClass() {
@@ -216,15 +216,18 @@ async function install(options) {
   const detectedRuntimes = detected.filter((runtime) => runtime.detected).map(({ id, version }) => ({ id, version }));
   config.runtimeDetection = { detected: detectedRuntimes, scannedAt: new Date().toISOString() };
   config.configPath = configPath;
+  const runtimeHome = options["runtime-home"] ? resolve(options["runtime-home"]) : config.runtimeHome;
   const runtimeBootstrap = options["no-service"] && !options["runtime-home"]
     ? []
     : await bootstrapDetectedRuntimes({
       config,
       detectedRuntimes: detected,
       environment: environmentClass(),
-      runtimeHome: options["runtime-home"] ? resolve(options["runtime-home"]) : undefined,
+      runtimeHome,
       backupDir: resolve(configPath, "..", "backups"),
     });
+  config.runtimeHome = runtimeHome;
+  config.runtimeBootstrap = runtimeBootstrap;
   delete config.configPath;
   await writePrivateJson(configPath, config);
   const environmentPath = resolve(configPath, "..", "otel.env");
@@ -264,6 +267,30 @@ async function install(options) {
   process.stdout.write(`STATUS: ${installStatus}\n`);
   if (installStatus === "INSTALLED_RESTART_REQUIRED") process.stdout.write("Installation is complete. Launch a new configured runtime session; completed tool outcomes then flow automatically.\n");
   if (!options["no-service"] && !["INSTALLED_RESTART_REQUIRED", "READY_PASSIVE"].includes(installStatus)) process.exitCode = 2;
+}
+
+async function rotateKeys(configPath) {
+  const config = await readConfig(configPath);
+  const previousKeyId = config.signing?.keyId;
+  const signing = generateSigningIdentity();
+  await registerSigningKey(config, publicSigningIdentity(signing));
+  const rotated = await rotateApiKey(config);
+  config.apiKey = rotated.apiKey;
+  config.signing = signing;
+  await writePrivateJson(configPath, config);
+  if (previousKeyId) await revokeSigningKey(config, previousKeyId);
+  process.stdout.write(`Agent WEX API and signing keys rotated. New credentials were written privately to ${configPath}.\n`);
+}
+
+async function uninstall(configPath, options) {
+  if (!options.yes) throw new Error("Uninstall requires --yes because it deactivates the remote pseudonymous account by default");
+  const config = await readConfig(configPath);
+  const service = await uninstallBackgroundService();
+  const runtimes = await removeAgentWexRuntimeConfig({ config });
+  let remote = { kept: true };
+  if (!options["keep-account"]) remote = await deactivateAccount(config);
+  if (!options["keep-local"]) await rm(configPath, { force: true });
+  process.stdout.write(`${JSON.stringify({ uninstalled: true, remote, service, runtimes, localConfigKept: Boolean(options["keep-local"]), backupsRetained: true }, null, 2)}\n`);
 }
 
 async function status(configPath) {
@@ -321,6 +348,8 @@ async function main() {
   const configPath = resolve(options.config ?? defaultConfigPath());
   if (command === "help" || command === "--help" || command === "-h") return printHelp();
   if (command === "install") return install(options);
+  if (command === "uninstall") return uninstall(configPath, options);
+  if (command === "rotate-keys") return rotateKeys(configPath);
   if (command === "runtimes") return runtimes(configPath);
   if (command === "adapter" && positional[0] === "claude-code") return configureClaudeCode(configPath, options);
   if (command === "adapter" && positional[0] === "codex") return configureCodex(configPath, options);

@@ -60,6 +60,12 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
     authMode: candidate.records[0].authMode,
     resolutionKind: candidate.records[0].resolutionKind,
     routeFingerprint: candidate.records[0].routeFingerprint,
+    distinctSignedNodeCount: candidate.records.length,
+    controllerIndependenceVerified: false,
+    executionTruthVerified: false,
+    evidenceStatus: "unverified-network-evidence",
+    // Legacy wire name retained through v0.1. It counts deduplicated signed nodes,
+    // not independently controlled operators.
     independentRootCount: candidate.records.length,
     minimumIndependentRoots: query.minimumIndependentRoots,
     firstObservedAt: candidate.records.at(-1).observedAt,
@@ -96,11 +102,15 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
       repeatedNodeReceiptsCollapsed: successfulRootRecords.length - [...successfulRoutes.values()].reduce((total, route) => total + route.records.length, 0),
       successfulIndependentRoots: winner?.records.length ?? rankedRoutes[0]?.records.length ?? 0,
       minimumIndependentRoots: query.minimumIndependentRoots,
+      distinctSignedNodeSupport: winner?.records.length ?? rankedRoutes[0]?.records.length ?? 0,
+      controllerIndependenceVerified: false,
+      executionTruthVerified: false,
     },
     selectionPolicy: {
       compatibility: "exact tool, client, environment, auth mode, and operation cell",
-      primaryRank: "distinct verified node count after provenance-root collapse",
-      tieBreak: "latest independent successful observation",
+      supportUnit: "distinct-signed-node",
+      primaryRank: "distinct signed node count after provenance-root collapse",
+      tieBreak: "latest signed successful observation",
       versionPreference: "none",
       evidenceWindowDays: query.maxAgeDays,
     },
@@ -112,6 +122,10 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
       authMode: winner.records[0].authMode,
       resolutionKind: winner.records[0].resolutionKind,
       routeFingerprint: winner.records[0].routeFingerprint,
+      distinctSignedNodeCount: winner.records.length,
+      controllerIndependenceVerified: false,
+      executionTruthVerified: false,
+      evidenceStatus: "unverified-network-evidence",
       independentRootCount: winner.records.length,
       evidenceWindowDays: query.maxAgeDays,
       lastObservedAt: winner.records[0].observedAt,
@@ -121,14 +135,14 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
     } : null,
     bounty: status === "RESULT_AVAILABLE" ? null : {
       requestedIndependentRuns: Math.max(1, query.minimumIndependentRoots - (rankedRoutes[0]?.records.length ?? 0)),
-      reward: "Standard credits are issued only for accepted, independently additive Working Route Comps.",
+      reward: "Standard credits are issued only for accepted, additive Working Route Comps from a distinct signed node.",
       arbitraryExecutionAuthorized: false,
     },
     nextAction: status === "RESULT_AVAILABLE"
       ? "Reserve one earned credit, then return the bounded route to Gate before acting."
       : status === "BOUNTY_OPEN"
         ? "Publish the missing compatibility cell to eligible agents; do not authorize arbitrary execution."
-        : "Keep the bounty open until enough independent successful runs support one route.",
+        : "Keep the bounty open until enough distinct signed nodes support one route.",
     authorityGranted: false,
   };
 }
