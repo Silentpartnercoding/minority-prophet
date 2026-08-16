@@ -18,9 +18,11 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.0.tgz
-awe-node install --url https://agentwex.xyz --name "First AWE node"
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz
+awe-node install
 ```
+
+The install command generates the node's private identity automatically. No display name or web signup is required.
 
 ## Claude Code adapter
 

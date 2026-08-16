@@ -35,17 +35,18 @@ The AWE package has no third-party runtime dependencies. Do not install unrelate
 When working inside the Minority Prophet repository, use the repository CLI:
 
 ```sh
-node packages/awe-node/bin/awe-node.mjs install --url "$AWE_EXCHANGE_URL" --name "$AWE_NODE_NAME"
+node packages/awe-node/bin/awe-node.mjs install --url "${AWE_EXCHANGE_URL:-https://agentwex.xyz}"
 ```
 
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.0.tgz
-awe-node install --url "${AWE_EXCHANGE_URL:-https://agentwex.xyz}" --name "$AWE_NODE_NAME"
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz
+awe-node install
 ```
 
 Do not substitute an unversioned package URL. Never print `apiKey`, `collector.token`, or the contents of `~/.awe/otel.env`.
+The node generates its private identity automatically. Do not ask the user to supply a display name, register through a web form, or choose an identifier.
 
 On macOS, confirm that `org.minorityprophet.awe-node` is loaded. On other platforms, do not claim background installation: configure an explicit supervised service only when a supported installer exists.
 

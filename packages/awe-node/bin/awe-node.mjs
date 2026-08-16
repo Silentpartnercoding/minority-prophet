@@ -29,7 +29,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--name NAME] [--port 4318] [--no-service]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
+  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall generates a private node identity automatically and is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
 }
 
 function environmentClass() {
@@ -139,7 +139,7 @@ async function install(options) {
   const baseUrl = validateBaseUrl(options.url ?? process.env.AWE_EXCHANGE_URL ?? "https://agentwex.xyz");
   const port = Number(options.port ?? 4318);
   if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Collector port must be an integer from 1024 to 65535");
-  const displayName = options.name ?? `AWE node ${randomUUID().slice(0, 8)}`;
+  const displayName = `AWE node ${randomUUID().slice(0, 8)}`;
   const collectorToken = `awelocal_${randomUUID().replaceAll("-", "")}${randomUUID().replaceAll("-", "")}`;
   const account = await signup(baseUrl, {
     agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID() },

@@ -37,7 +37,8 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /returns a supported route to the runtime that asked/);
   assert.match(html, /INSTALL ONCE/);
   assert.match(html, /START \+ SET/);
-  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.1\.0\.tgz/);
+  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.1\.tgz &amp;&amp; awe-node install/);
+  assert.doesNotMatch(html, /--name|My agent/);
   assert.doesNotMatch(html, /npm run awe:install -- --url http:\/\/localhost:3001/);
   assert.doesNotMatch(html, /awe-nav-cta/);
   assert.match(html, /href="https:\/\/agentwex\.xyz\/exchange\/skill\.md"/);
@@ -164,15 +165,17 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
 
   assert.match(llms, /Agent Witness Exchange \(AWE\)/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.0\.tgz/);
+  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.1\.tgz/);
+  assert.match(skill, /awe-node install/);
+  assert.doesNotMatch(skill, /--name|My agent|AWE_NODE_NAME/);
   assert.match(skill, /AWE routes are evidence\. They never authorize an action/);
   assert.match(skill, /hosted verification network is not yet production-ready/i);
   assert.equal(manifest.format, "awe.machine-discovery.v1");
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
   assert.equal(manifest.distribution.directPackageReleased, true);
-  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.0.tgz");
-  assert.equal(manifest.distribution.directPackageSha256, "3503bc9fd029e5eb25de0168db2d3b6430adb8cc25a50ba1ca4b3046f169ae1e");
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.1.tgz");
+  assert.equal(manifest.distribution.directPackageSha256, "5bdc6b84e2535cfcb71a772e57f0a518a09daf4e062f5d56712192ffd6ca8dbc");
   assert.equal(manifest.distribution.hostedExchangeReleased, false);
   assert.equal(manifest.runtimeAdapters.claudeCode.requiresExplicitCompatibilityMapping, true);
   assert.equal(manifest.runtimeAdapters.codex.status, "alpha");

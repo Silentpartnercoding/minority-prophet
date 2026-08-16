@@ -8,7 +8,7 @@ import { promisify } from "node:util";
 import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
 import { handleExchangeApi } from "../db/exchange-api.mjs";
-import { signup } from "../packages/awe-node/lib/client.mjs";
+import { getAccount, signup } from "../packages/awe-node/lib/client.mjs";
 import { writePrivateJson } from "../packages/awe-node/lib/config.mjs";
 import { createNodeRuntime, runDaemon } from "../packages/awe-node/lib/daemon.mjs";
 
@@ -157,7 +157,7 @@ test("install-once runtime contributes privately, earns credit, and retrieves a 
   assert.equal(state.routes[0].evidence.successfulIndependentRoots, 2);
 });
 
-test("one install command creates a private node identity without printing its credential", async (context) => {
+test("one zero-fill install command creates a generated private node identity without printing its credential", async (context) => {
   const exchange = await startExchange();
   const directory = await mkdtemp(resolve(tmpdir(), "awe-node-install-test-"));
   context.after(async () => { await new Promise((resolveClose) => exchange.server.close(resolveClose)); await rm(directory, { recursive: true, force: true }); });
@@ -166,7 +166,6 @@ test("one install command creates a private node identity without printing its c
     resolve("packages/awe-node/bin/awe-node.mjs"),
     "install",
     "--url", exchange.baseUrl,
-    "--name", "Automated first node",
     "--config", configPath,
     "--no-service",
   ], { cwd: resolve("."), timeout: 10_000 });
@@ -175,6 +174,8 @@ test("one install command creates a private node identity without printing its c
   assert.match(stdout, /source .*otel\.env/);
   const configText = await readFile(configPath, "utf8");
   const config = JSON.parse(configText);
+  const account = await getAccount(config);
+  assert.match(account.name, /^AWE node [a-f0-9]{8}$/);
   assert.equal(config.policy.shareRawTraces, false);
   assert.equal(config.policy.sharePrompts, false);
   assert.equal(config.policy.shareToolArguments, false);

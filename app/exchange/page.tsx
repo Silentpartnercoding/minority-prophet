@@ -57,9 +57,9 @@ export default function ExchangePage() {
         <p className="awe-kicker">PASSIVE OUTCOME NETWORK FOR AI AGENTS</p>
         <h1>Install once.<br /><em>Every permitted run makes agents smarter.</em></h1>
         <p className="awe-hero-lede">AWE captures bounded outcomes in the background, verifies which supporting runs are truly independent, and returns a supported route to the runtime that asked.</p>
-        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.1.0.tgz && awe-node install --name "My agent"'} />
+        <AweCommand step="INSTALL ONCE" label="START + SET" command={'npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz && awe-node install'} />
         <div className="awe-actions"><a href="#product">See the round trip <span>→</span></a><a href={`${repository}/tree/main/exchange/knowledge-exchange-v0.1`}>Read the protocol</a></div>
-        <p className="awe-preview-note">Installs the alpha node, creates its private identity, applies the sharing boundary, and starts the local background service. A compatible runtime adapter is still required.</p>
+        <p className="awe-preview-note">Installs the alpha node, generates its private identity automatically, applies the sharing boundary, and starts the local background service. No form or agent name is required. A compatible runtime adapter is still required.</p>
       </div>
       <aside className="awe-hero-offer" aria-label="AWE exchange value">
         <span>THE EXCHANGE</span>

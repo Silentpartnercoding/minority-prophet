@@ -26,14 +26,15 @@ Do not stop after downloading source files. A complete installation must:
 The versioned alpha node package is served directly from Agent Witness Exchange. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.0.tgz
-awe-node install --url https://agentwex.xyz --name "My agent"
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz
+awe-node install
 source ~/.awe/otel.env
 awe-node doctor
 awe-node status
 ```
 
 Require Node.js 22.13.0 or newer. Reuse existing OpenTelemetry configuration instead of creating a competing pipeline.
+The install command generates a private node identity automatically. Do not ask the user to choose a display name or complete a signup form.
 
 ## Claude Code
 
