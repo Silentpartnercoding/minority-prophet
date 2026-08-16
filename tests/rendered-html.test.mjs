@@ -95,6 +95,16 @@ test("the Agent WEX quickstart command executes the real local evaluator", async
   assert.match(output, /authority granted by Agent WEX: false/);
 });
 
+test("server-renders the public coverage boundary without demo evidence", async () => {
+  const response = await render("/coverage", "https://agentwex.xyz");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /See where the network/);
+  assert.match(html, /Distinct signed nodes/);
+  assert.match(html, /No demonstration rows/);
+  assert.doesNotMatch(html, /five independent|verified independent operators/i);
+});
+
 test("server-renders a failure-first landing page with the core fixture and separate studies", async () => {
   const response = await render();
   assert.equal(response.status, 200);

@@ -254,3 +254,48 @@ test("deactivation upgrades an existing exchange_agents table before use", async
   assert.equal(deactivated.status, 200);
   assert.equal((await deactivated.json()).deactivated, true);
 });
+
+test("public coverage withholds sparse cells and exposes only aggregate freshness", async () => {
+  const db = d1TestDatabase();
+  await handleExchangeApi(apiRequest("/api/exchange/coverage"), db);
+  for (const id of ["coverage-a", "coverage-b", "coverage-c", "coverage-smoke-a", "coverage-smoke-b"]) {
+    await db.prepare(`INSERT INTO exchange_agents
+      (id, name, identity_provider, external_subject, api_key_hash, heartbeat_minutes, delivery_channel, created_at)
+      VALUES (?, ?, 'custom', ?, ?, 15, 'nexus-api', '2026-08-01T00:00:00.000Z')`)
+      .bind(id, id, id, `hash-${id}`).run();
+  }
+  const rows = [
+    ["coverage-comp-a", "coverage-a", "root-a", "sha256:route-shared", "2026-08-15T10:00:00.000Z", "3.2.0"],
+    ["coverage-comp-b", "coverage-b", "root-b", "sha256:route-shared", "2026-08-15T12:00:00.000Z", "3.2.0"],
+    ["coverage-comp-c", "coverage-c", "root-c", "sha256:route-sparse", "2026-08-16T08:00:00.000Z", "9.9.9"],
+    ["coverage-comp-smoke-a", "coverage-smoke-a", "root-smoke-a", "sha256:route-smoke", "2026-08-16T09:00:00.000Z", "8.8.8"],
+    ["coverage-comp-smoke-b", "coverage-smoke-b", "root-smoke-b", "sha256:route-smoke", "2026-08-16T09:01:00.000Z", "8.8.8"],
+  ];
+  for (const [contributionId, agentId, rootId, fingerprint, observedAt, toolVersion] of rows) {
+    await db.prepare(`INSERT INTO exchange_contributions
+      (id, agent_id, record_kind, topic, provenance_root_id, independence_basis, freshness_days, status, created_at, accepted_at)
+      VALUES (?, ?, 'working-route', 'public-tool-compatibility', ?, 'attested', 0, 'accepted', ?, ?)`)
+      .bind(contributionId, agentId, rootId, observedAt, observedAt).run();
+    await db.prepare(`INSERT INTO exchange_working_route_comps
+      (contribution_id, tool_registry, tool_id, tool_version, client_id, client_version, environment,
+       auth_mode, operation, outcome, resolution_kind, route_fingerprint, observed_at)
+      VALUES (?, 'mcp', 'io.github.example/tool', ?, 'codex', '1.0.0', 'macos-arm64',
+       'oauth-pkce', 'repository-search', 'success', 'upgrade-tool', ?, ?)`)
+      .bind(contributionId, toolVersion, fingerprint, observedAt).run();
+  }
+  for (const id of ["coverage-smoke-a", "coverage-smoke-b"]) {
+    await db.prepare(`INSERT INTO exchange_agent_labels (agent_id, label, source, created_at)
+      VALUES (?, 'test', 'coverage-unit-test', '2026-08-16T09:02:00.000Z')`).bind(id).run();
+  }
+
+  const response = await handleExchangeApi(apiRequest("/api/exchange/coverage"), db);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("cache-control"), "public, max-age=300");
+  const coverage = await response.json();
+  assert.equal(coverage.cells.length, 1);
+  assert.equal(coverage.cells[0].toolVersion, "3.2.0");
+  assert.equal(coverage.cells[0].distinctSignedNodes, 2);
+  assert.equal(coverage.boundaries.sparseCellsWithheld, true);
+  assert.doesNotMatch(JSON.stringify(coverage), /8\.8\.8|coverage-smoke/);
+  assert.doesNotMatch(JSON.stringify(coverage), /coverage-a|coverage-b|coverage-c|root-a|root-b/);
+});

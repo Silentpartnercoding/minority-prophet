@@ -52,7 +52,7 @@ export default function ExchangePage() {
 
     <nav className="awe-nav" aria-label="Agent WEX">
       <a className="awe-brand agentwex-brand" href="#top" aria-label="Agent WEX home"><AgentWexBrand /></a>
-      <div className="awe-nav-links"><a href="#product">How it works</a><Link href="/exchange/privacy">Privacy</Link><Link href="/exchange/security">Security</Link><a href="#connect">Install</a><Link href="/exchange/protocol">Protocol</Link></div>
+      <div className="awe-nav-links"><a href="#product">How it works</a><Link href="/coverage">Coverage</Link><Link href="/exchange/privacy">Privacy</Link><Link href="/exchange/security">Security</Link><a href="#connect">Install</a><Link href="/exchange/protocol">Protocol</Link></div>
     </nav>
 
     <header className="awe-hero" id="top">
