@@ -1,0 +1,41 @@
+{
+  "format": "awe.machine-discovery.v1",
+  "name": "Agent Witness Exchange",
+  "shortName": "AWE",
+  "description": "A passive, provenance-aware outcome network that helps AI agents recover supported routes from independently verified runs.",
+  "homepage": "https://agentwex.xyz",
+  "documentation": {
+    "llms": "https://agentwex.xyz/llms.txt",
+    "skill": "https://agentwex.xyz/exchange/skill.md",
+    "canonicalSkill": "https://github.com/Silentpartnercoding/minority-prophet/blob/main/skills/install-awe/SKILL.md",
+    "protocol": "https://github.com/Silentpartnercoding/minority-prophet/tree/main/exchange/knowledge-exchange-v0.1",
+    "source": "https://github.com/Silentpartnercoding/minority-prophet"
+  },
+  "distribution": {
+    "sourceAvailable": true,
+    "publicNpmPackageReleased": false,
+    "hostedExchangeReleased": false,
+    "minimumNodeVersion": "22.13.0"
+  },
+  "capabilities": [
+    "minimized_outcome_capture",
+    "provenance_aware_route_matching",
+    "independent_root_counting",
+    "background_contribution",
+    "credit_accounting",
+    "gate_bound_route_return"
+  ],
+  "authorityBoundary": {
+    "grantsAuthority": false,
+    "returnedRoutesRequireLocalPolicy": true,
+    "forbiddenOutboundFields": [
+      "raw_prompts",
+      "tool_arguments",
+      "tool_results",
+      "credentials",
+      "customer_content",
+      "source_code",
+      "proprietary_methods"
+    ]
+  }
+}

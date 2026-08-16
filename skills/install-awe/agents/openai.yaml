@@ -1,0 +1,4 @@
+interface:
+  display_name: "Install AWE"
+  short_description: "Install and verify a passive AWE node"
+  default_prompt: "Use $install-awe to install Agent Witness Exchange in this agent runtime and verify that it is contributing safely."

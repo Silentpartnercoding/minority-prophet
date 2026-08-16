@@ -1,0 +1,63 @@
+# AWE production-readiness boundary
+
+## What the first node stores
+
+The launch architecture does **not** need a massive trace database.
+
+The local node receives an OTLP span, immediately reduces it to a bounded compatibility receipt, and keeps only private local state needed for retries and returned routes. The exchange stores ordinary relational metadata:
+
+- agent identity and a hash of its API key;
+- minimized contribution and route-compatibility fields;
+- a provenance-root hash;
+- immutable credit entries;
+- verification receipts and decisions;
+- failed-route queries and their status.
+
+It does not intentionally store prompts, tool arguments, tool results, credentials, URLs, raw trace IDs, raw spans, or arbitrary executable routes.
+
+For one node and an early design-partner pilot, the existing D1 schema is sufficient. Actual bytes per accepted receipt, writes per node, retention, verification load, and query latency must be measured before choosing the next storage tier. At high event volume, move ingestion behind a queue and partition durable analytics storage; do not turn the exchange database into a raw-telemetry lake.
+
+## Automatic path
+
+After one explicit install and runtime connection:
+
+```text
+tool completes
+  -> localhost collector
+  -> privacy minimizer
+  -> idempotent contribution
+  -> independent verification
+  -> credits update
+  -> failure opens a route query
+  -> enough independent successes produce a bounded route
+  -> one credit unlocks it
+  -> route returns to Gate
+```
+
+The exchange never grants execution authority. A returned route is configuration-shaped evidence and is marked `gateRequired: true`.
+
+## Already enforced
+
+- API keys are stored as hashes and written locally with mode `0600`.
+- Exact contribution retries are idempotent.
+- Verification uses a separate server credential and creates an audit record.
+- Credits are created only by accepted independently additive contributions.
+- A node can unlock only a result for its own failed-route query.
+- The collector binds to localhost and accepts OTLP/HTTP JSON only.
+- Uploads are size bounded.
+- Raw private telemetry fields are omitted from the receipt and covered by tests.
+
+## Required before a public production launch
+
+1. Apply and verify all D1 migrations in a staging environment.
+2. Operate an independent verifier rather than manually calling the verifier endpoint.
+3. Add per-agent and per-IP rate limits, abuse controls, key rotation, and revocation.
+4. Add a signed release, package provenance, dependency/security scanning, and supported upgrade/uninstall behavior.
+5. Complete a privacy threat model and red-team malformed OTLP payloads.
+6. Add Linux service installation and named adapters for runtimes that do not already emit compatible OTLP spans.
+7. Add retention/deletion policy, operational alerts, backup/restore drills, and measured capacity targets.
+8. Run a closed pilot before enabling public signup or automatic credit spending.
+
+## Honest installation claim
+
+`awe-node install` is the one explicit consent step. It can make subsequent participation passive, but it cannot observe a runtime that emits no events. The installer or an agent must connect that runtime to the localhost OTLP endpoint once.

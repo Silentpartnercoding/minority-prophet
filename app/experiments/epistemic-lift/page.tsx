@@ -17,12 +17,12 @@ export default function EpistemicLiftPage() {
   return <main>
     <SiteNav />
     <header className="experiment-hero lift-page-hero">
-      <div><p className="eyebrow"><span /> EPISTEMIC LIFT v1.1 · DEVELOPMENT STUDY</p><h1>Same model.<br />Same world.<br /><em>Measure the lift.</em></h1><p className="lede">Every model faced the same 32 frozen worlds three ways: claims alone, claims plus provenance, and the identical provenance plus Minority Prophet&apos;s deterministic evidence-structure receipt.</p></div>
-      <div className="lift-hero-result"><span>COMPLETE LOCAL REPLICATION</span><strong>{liftStudy.trials}/{liftStudy.trials}</strong><small>model × world × condition cells</small><p>0 failures · 0 parse errors · all integrity checks passed</p></div>
+      <div><p className="eyebrow"><span /> EPISTEMIC LIFT · CONTROLLED SYNTHETIC STUDY</p><h1>Same model.<br />Same world.<br /><em>Measure the lift.</em></h1><p className="lede">Two models faced the same 32 worlds three ways: claims alone, provenance, and provenance plus a Minority Prophet evidence receipt.</p></div>
+      <div className="lift-hero-result"><span>192 MATCHED CELLS</span><strong>{liftStudy.trials}/{liftStudy.trials}</strong><small>model × world × condition</small><p>0 failures · 0 parse errors · integrity checks passed</p></div>
     </header>
 
     <section className="lift-result-section" id="results">
-      <div className="lift-heading"><p className="section-index">01 / PRIMARY RESULT</p><h2>Provenance helped.<br /><em>The MP receipt helped again.</em></h2><p>Both tested configurations exceeded the frozen requirement: at least 15 percentage points of C-over-B lift and an exact paired p-value below 0.05.</p></div>
+      <div className="lift-heading"><p className="section-index">01 / PRIMARY RESULT</p><h2>Provenance helped.<br /><em>The MP receipt helped again.</em></h2><p>Both tested models cleared the pre-set threshold for C-over-B lift and paired significance.</p></div>
       <div className="lift-models">
         {liftModels.map((model) => <article className="lift-model" key={model.name}>
           <header><div><span>{model.provider}</span><h3>{model.name}</h3></div><div className="lift-badge">C − B <b>+{formatPercent(model.mpGain)}</b></div></header>
@@ -34,7 +34,7 @@ export default function EpistemicLiftPage() {
           <footer><span>B − A <b>+{formatPercent(model.provenanceGain)}</b></span><span>C − B <b>+{formatPercent(model.mpGain)}</b></span><span>Exact paired p <b>{model.pairedP}</b></span><span>Transitions <b>{model.improvements} better · {model.regressions} worse</b></span></footer>
         </article>)}
       </div>
-      <p className="lift-claim">On this frozen 32-world development candidate, both models showed more than 20 percentage points of paired truth-recovery lift from B to C, with zero regressions.</p>
+      <p className="lift-claim">Across these 32 frozen worlds, both models gained more than 20 percentage points from B to C, with no B-to-C regressions.</p>
     </section>
 
     <section className="lift-design-section">
@@ -46,10 +46,10 @@ export default function EpistemicLiftPage() {
     <section className="lift-integrity-section">
       <div><p className="section-index">03 / INTEGRITY</p><h2>Measured,<br /><em>not inferred.</em></h2></div>
       <div className="integrity-grid"><article><strong>192/192</strong><span>responses captured and parsed</span></article><article><strong>64/64</strong><span>model-world A/B/C groups matched</span></article><article><strong>0</strong><span>failed trials or B→C regressions</span></article><article><strong>6</strong><span>condition orders counterbalanced</span></article></div>
-      <div className="integrity-copy"><h3>What the tool received</h3><p>Only the exact bytes already visible in B: claims, sources, declared provenance edges, and context. Hidden truth labels were rejected. The receipt reported roots, correlation, current evidence units, and uncertainty—but never a correct answer or permission.</p><h3>What this result does not establish</h3><p>These are synthetic development worlds co-designed with the analysis. The earlier transport run exposed outcomes on the same worlds. This is therefore a complete transport-controlled replication, not an independent confirmation or real-world truth claim.</p></div>
+      <div className="integrity-copy"><h3>What the tool received</h3><p>The same claims, sources, provenance, and context already visible in B. It returned roots, dependence, and uncertainty—never the answer key or permission to act.</p><h3>Where the evidence ends</h3><p>These are synthetic worlds designed with the method. They show controlled lift here, not independent confirmation or real-world truth recovery.</p></div>
     </section>
 
-    <section className="lift-next-section"><p className="section-index">04 / EVIDENCE BOUNDARY</p><h2>Supported here.<br /><em>Not universal yet.</em></h2><p>The next scientific step is a larger hidden benchmark generated or audited independently of the MP engine, with contamination controls and prospective power. Until then, this result remains a validated DEMO development study—not an official leaderboard entry.</p><div className="lift-links"><a href="/research/epistemic-lift-v1.1-results.md">Full result ↗</a><a href="/research/epistemic-lift-v1.1-protocol.md">Frozen protocol ↗</a><a href="/research/epistemic-lift-v1.1-summary.json">Machine-readable summary ↗</a><a href="/experiments/capability-tournament">Separate conformance study ↗</a></div></section>
+    <section className="lift-next-section"><p className="section-index">04 / EVIDENCE BOUNDARY</p><h2>Strong here.<br /><em>Unproven elsewhere.</em></h2><p>A hidden, independently audited benchmark is the next test. Until then, these numbers belong to this study alone.</p><div className="lift-links"><a href="/research/epistemic-lift-v1.1-results.md">Full result ↗</a><a href="/research/epistemic-lift-v1.1-protocol.md">Frozen protocol ↗</a><a href="/research/epistemic-lift-v1.1-summary.json">Machine-readable summary ↗</a><a href="/experiments/capability-tournament">Separate method study ↗</a></div></section>
     <SiteFooter />
   </main>;
 }

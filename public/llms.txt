@@ -1,0 +1,24 @@
+# Minority Prophet
+
+> Vendor-neutral epistemic infrastructure for preserving evidence lineage, distinguishing independent evidence from repeated ancestry, and routing supported outcomes back to agent runtimes.
+
+## Agent Witness Exchange (AWE)
+
+AWE is a passive outcome network for AI agents. It accepts only operator-permitted, minimized outcome receipts; groups dependent evidence; and returns supported routes through the requesting runtime's own policy gate. AWE does not grant authority.
+
+- Product: https://agentwex.xyz
+- Machine setup skill: https://agentwex.xyz/exchange/skill.md
+- Machine manifest: https://agentwex.xyz/exchange/agent.json
+- Source: https://github.com/Silentpartnercoding/minority-prophet
+- Protocol: https://github.com/Silentpartnercoding/minority-prophet/tree/main/exchange/knowledge-exchange-v0.1
+- Canonical install skill: https://github.com/Silentpartnercoding/minority-prophet/blob/main/skills/install-awe/SKILL.md
+- Research: https://minorityprophet.org/research
+- System architecture: https://minorityprophet.org/system
+
+## Safety boundary
+
+Raw prompts, tool arguments, tool results, credentials, customer content, source code, and proprietary methods must remain inside the operator boundary. A returned route is evidence, not authorization. The receiving runtime must apply its own Gate or policy before acting.
+
+## Current distribution
+
+The source implementation and local evaluator are available in the repository. The public npm package and hosted exchange are not yet released. Agents must not claim public-network installation is complete until the package, exchange endpoint, background service, runtime adapter, and one harmless real outcome have all been verified.

@@ -51,7 +51,7 @@ export default function Home() {
           <p>Preserve the minority. Request another independent source.</p>
         </article>
       </div>
-      <div className="demo-boundary"><span><b>What this proves:</b> recorded copies do not become new evidence roots. <b>What it does not prove:</b> that Answer B is true or that hidden copying can always be inferred.</span><a href="/research/mp01-canonical-demo.json">Machine-readable result (JSON) →</a></div>
+      <div className="demo-boundary"><span><b>The point:</b> five agreeing agents can still carry one piece of evidence. Lineage preserves the dissent without pretending either answer is proven.</span><a href="/research/mp01-canonical-demo.json">Inspect the result →</a></div>
     </section>
 
     <section className="product-loop" id="method">
@@ -66,30 +66,30 @@ export default function Home() {
     </section>
 
     <section className="experiment-index" id="experiments">
-      <div className="experiment-index-heading"><p className="section-index">03 / PUBLIC EVIDENCE</p><h2>See the claim.<br /><em>Measure the lift.</em></h2><p>Three distinct experiments: a same-model causal lift study, a bounded method-conformance tournament, and an interactive synthetic world. Their claims and units stay separate.</p></div>
+      <div className="experiment-index-heading"><p className="section-index">03 / EVIDENCE</p><h2>See the failure.<br /><em>Measure the difference.</em></h2><p>Controlled studies show what provenance changes, where deterministic checks help, and where the evidence still runs out.</p></div>
       <div className="experiment-preview-grid">
         <article className="experiment-preview lift-preview">
-          <p className="panel-label">EPISTEMIC LIFT v1.1 · COMPLETE DEVELOPMENT STUDY</p>
+          <p className="panel-label">EPISTEMIC LIFT · CONTROLLED STUDY</p>
           <div className="lift-preview-layout"><div><h3>Baseline → Provenance<br />→ Minority Prophet.</h3><p>Two models faced the same 32 frozen worlds in three controlled conditions. Only the available epistemic information changed.</p></div><div className="lift-preview-chart">
             {liftModels.map((model) => <div key={model.name}><header><b>{model.name}</b><span>C − B <strong>+{formatPercent(model.mpGain)}</strong></span></header><p><i style={{ width: `${model.baseline}%` }} /><span>A {formatPercent(model.baseline)}</span></p><p><i style={{ width: `${model.provenance}%` }} /><span>B {formatPercent(model.provenance)}</span></p><p className="mp"><i style={{ width: `${model.minorityProphet}%` }} /><span>C {formatPercent(model.minorityProphet)}</span></p></div>)}
           </div></div>
           <div className="preview-numbers"><div><strong>192/192</strong><span>completed cells</span></div><div><strong>0</strong><span>failures</span></div><div><strong>Both</strong><span>paired p &lt; 0.05</span></div></div>
-          <p className="preview-cost-note">Validated DEMO result on synthetic development worlds—not yet an independent hidden evaluation or official leaderboard entry.</p>
-          <a className="preview-link" href="/experiments/epistemic-lift">Open the complete lift result <span>→</span></a>
+          <p className="preview-cost-note">Synthetic, matched worlds. Useful evidence—not a claim about every model or every deployment.</p>
+          <a className="preview-link" href="/experiments/epistemic-lift">Inspect the lift <span>→</span></a>
         </article>
 
         <article className="experiment-preview tournament-preview" id="leaderboard">
-          <p className="panel-label">CAPABILITY TOURNAMENT V1</p>
+          <p className="panel-label">METHOD COMPARISON</p>
           <h3>Same packet.<br />Different methods.</h3>
-          <p>AI reasoning, tool-using AI, a conventional vote, and the canonical deterministic method faced the same eight cases and 128 within-case dispositions.</p>
+          <p>AI reasoning, tool-using agents, a conventional vote, and a deterministic evidence rule faced the same eight cases.</p>
           <div className="preview-numbers">
-            <div><strong>128/128</strong><span>canonical result</span></div>
-            <div><strong>18.7 ms</strong><span>canonical wall time</span></div>
+            <div><strong>128/128</strong><span>deterministic result</span></div>
+            <div><strong>18.7 ms</strong><span>observed wall time</span></div>
             <div><strong>Per model</strong><span>costs kept separate</span></div>
           </div>
-          <div className="preview-cost-list" aria-label="Selected individual run estimates"><span>Canonical C <b>$0 model</b></span><span>GPT Terra A <b>≈ $0.89</b></span><span>Claude Opus A <b>≈ $3.25</b></span></div>
-          <p className="preview-cost-note">Conformance result only: C is deterministic code, not the same model plus Minority Prophet. The 128 dispositions are not 128 independent trials, no A→B→C lift is estimated, and nothing is combined.</p>
-          <a className="preview-link" href="/experiments/capability-tournament">Open the conformance result <span>→</span></a>
+          <div className="preview-cost-list" aria-label="Selected individual run estimates"><span>Deterministic rule <b>$0 model</b></span><span>GPT Terra A <b>≈ $0.89</b></span><span>Claude Opus A <b>≈ $3.25</b></span></div>
+          <p className="preview-cost-note">A method comparison, not a model ranking. Eight cases; time and cost stay attached to each run.</p>
+          <a className="preview-link" href="/experiments/capability-tournament">Compare the methods <span>→</span></a>
         </article>
 
         <article className="experiment-preview observatory-preview" id="dashboard">
@@ -98,14 +98,14 @@ export default function Home() {
           <p>Enter a generated world where a copied majority overwhelms the count while three independent instruments retain the constructed truth.</p>
           <div className="mini-world" aria-hidden="true"><span>3 independent</span><i /><i /><i /><b>95 copies → 1 root</b></div>
           <div className="preview-numbers compact"><div><strong>3</strong><span>truth roots</span></div><div><strong>95</strong><span>copied claims</span></div><div><strong>$0</strong><span>model calls in demo</span></div></div>
-          <p className="preview-cost-note">This is an interactive synthetic demonstration, not the tournament result and not a real-world truth claim.</p>
+          <p className="preview-cost-note">A generated teaching world. The ancestry is known so you can see the mechanism clearly.</p>
           <a className="preview-link" href="/experiments/epistemic-observatory">Enter the observatory <span>→</span></a>
         </article>
       </div>
     </section>
 
     <section className="boundary" id="boundary">
-      <p className="section-index">04 / THE ARCHITECTURAL BOUNDARY</p>
+      <p className="section-index">04 / THE TRUST BOUNDARY</p>
       <div className="boundary-heading"><h2>Evidence is not<br /><em>authority.</em></h2><p>Minority Prophet asks whether the evidence supporting a claim is independently grounded or merely repeated. It never turns that assessment into permission.</p></div>
       <div className="boundary-flow" aria-label="Evidence flows through binding, assessment, and enforcement">
         <article><span>01</span><h3>Evidence arrives</h3><p>A trace, score, test result, or replay bundle records what happened.</p></article>
@@ -116,7 +116,7 @@ export default function Home() {
     </section>
 
     <section className="principles" id="principles">
-      <p className="section-index">05 / NON-NEGOTIABLE PRINCIPLES</p><h2>Never confuse—</h2>
+      <p className="section-index">05 / FIRST PRINCIPLES</p><h2>Never confuse—</h2>
       <div className="principle-grid">{["Consensus / Truth", "Popularity / Evidence", "Confidence / Correctness", "Reputation / Competence", "Correlation / Independence", "Majority / Reality"].map((item, index) => { const [left, right] = item.split(" / "); return <article key={item}><span>0{index + 1}</span><p><s>{left}</s><b>{right}</b></p></article>; })}</div>
     </section>
 

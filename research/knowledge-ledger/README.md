@@ -25,6 +25,31 @@ outputs, simulations, and failed runs are not results.
 - Every claimed result is reproducible from immutable inputs, code, environment,
   and a recorded commit.
 
+## What the reference receipt preserves
+
+The v0.2 reference evaluator exists because a knowledge record must be able to
+carry doubt, not merely a confident conclusion. Its receipt keeps these fields
+together:
+
+- declared search coverage and unsearched locations;
+- supporting and opposing evidence roots, with repeated records collapsed;
+- the root margin;
+- `flipBudget`, measured in units of net per-side root gain (`p0 - p1`);
+- `conversionsToReverse`, measured in modeled side-conversion actions;
+- unattributed records and declared shared dependencies;
+- side-separation status and the reason for abstention.
+
+`flipBudget` and `conversionsToReverse` are deliberately reported together.
+They price different modeled changes: one side conversion moves a root off one
+side and onto the other, changing the margin by two units. Neither number is a
+count of real-world incidents, compromised keys, or attackers.
+
+The receipt therefore preserves not only what the evaluator concluded, but how
+close the declared evidence state is to losing that conclusion and which
+unknowns remain. It does not prove that a root is true or independent, establish
+that discovery was complete beyond the declared search space, or authorize an
+action.
+
 ## Current milestone
 
 `reference-conformance-001` is a local conformance artifact. It demonstrates that four

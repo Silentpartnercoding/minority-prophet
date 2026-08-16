@@ -1,0 +1,11 @@
+{
+  "name": "awe-commercial-render",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node src/render.mjs"
+  },
+  "dependencies": {
+    "sharp": "0.35.3"
+  }
+}
