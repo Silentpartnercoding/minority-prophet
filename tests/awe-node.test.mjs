@@ -185,6 +185,25 @@ test("one install command creates a private node identity without printing its c
   const environmentPath = resolve(directory, "otel.env");
   assert.equal((await stat(environmentPath)).mode & 0o777, 0o600);
   assert.match(await readFile(environmentPath, "utf8"), /OTEL_EXPORTER_OTLP_HEADERS/);
+
+  const configured = await execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"),
+    "adapter", "claude-code",
+    "--config", configPath,
+    "--tool", "mcp__github__search_repositories",
+    "--tool-registry", "mcp",
+    "--tool-version", "3.2.0",
+    "--auth-mode", "oauth-pkce",
+    "--operation", "repository-search",
+    "--client-version", "1.0.77",
+  ], { cwd: resolve("."), timeout: 10_000 });
+  assert.match(configured.stdout, /Claude Code adapter configured/);
+  const claudeEnvironment = await readFile(resolve(directory, "claude-code.env"), "utf8");
+  assert.match(claudeEnvironment, /CLAUDE_CODE_ENABLE_TELEMETRY/);
+  assert.match(claudeEnvironment, /\/v1\/logs/);
+  assert.doesNotMatch(claudeEnvironment, /OTEL_LOG_TOOL_DETAILS/);
+  const updated = JSON.parse(await readFile(configPath, "utf8"));
+  assert.equal(updated.adapters.claudeCode.tools.mcp__github__search_repositories.toolVersion, "3.2.0");
 });
 
 test("localhost collector rejects unauthenticated span injection", async (context) => {
@@ -208,6 +227,22 @@ test("localhost collector rejects unauthenticated span injection", async (contex
     apiKey: account.apiKey,
     policy: { shareToolOutcomes: true, shareRawTraces: false },
     collector: { host: "127.0.0.1", port: 0, token: "private-local-token" },
+    adapters: {
+      claudeCode: {
+        enabled: true,
+        clientVersion: "1.0.77",
+        environment: "macos-arm64",
+        tools: {
+          mcp__github__search_repositories: {
+            toolRegistry: "mcp",
+            toolId: "io.github.example/github-mcp",
+            toolVersion: "3.2.0",
+            authMode: "oauth-pkce",
+            operation: "repository-search",
+          },
+        },
+      },
+    },
     pollSeconds: 60,
   });
   node = await runDaemon(configPath);
@@ -222,4 +257,22 @@ test("localhost collector rejects unauthenticated span injection", async (contex
   });
   assert.equal(authorized.status, 202);
   assert.equal((await authorized.json()).submitted, 1);
+
+  const claudeLog = JSON.stringify({ resourceLogs: [{ scopeLogs: [{ logRecords: [{
+    timeUnixNano: "1786870800000000000",
+    body: { stringValue: "PRIVATE RESULT" },
+    attributes: [
+      { key: "event.name", value: { stringValue: "tool_result" } },
+      { key: "tool_name", value: { stringValue: "mcp__github__search_repositories" } },
+      { key: "tool_use_id", value: { stringValue: "private-tool-use-id" } },
+      { key: "success", value: { stringValue: "true" } },
+    ],
+  }] }] }] });
+  const logResponse = await fetch(`http://127.0.0.1:${port}/v1/logs`, {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: "Bearer private-local-token" },
+    body: claudeLog,
+  });
+  assert.equal(logResponse.status, 202);
+  assert.deepEqual(await logResponse.json(), { received: 1, submitted: 1, ignored: 0, rejected: 0, queriesOpened: 0 });
 });

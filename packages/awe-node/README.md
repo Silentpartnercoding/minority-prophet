@@ -18,9 +18,26 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.1.0.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.2.0.tgz
 awe-node install --url https://agentwex.xyz --name "First AWE node"
 ```
+
+## Claude Code adapter
+
+Claude Code emits real tool-result events, but it does not supply every compatibility field AWE needs to return a safe route. Bind each eligible tool explicitly; unmapped tools are ignored.
+
+```bash
+awe-node adapter claude-code \
+  --tool mcp__github__search_repositories \
+  --tool-registry mcp \
+  --tool-version 3.2.0 \
+  --auth-mode oauth-pkce \
+  --operation repository-search
+```
+
+The command writes a private `~/.awe/claude-code.env`. It enables Claude Code's documented OTLP `tool_result` logs without enabling tool-detail export. Start Claude Code with the printed `source ... && claude` command.
+
+The adapter reads outcome, tool name, correlation ID, time, and error class. It never reads or submits prompts, tool parameters, tool inputs, tool results, credentials, URLs, or raw correlation IDs.
 
 The installer creates a private `~/.awe/config.json` and, on macOS, a LaunchAgent that keeps the collector running. It never prints the API key.
 

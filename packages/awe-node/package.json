@@ -1,6 +1,6 @@
 {
   "name": "@minorityprophet/awe-node",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Install-once local outcome collector for Agent Witness Exchange",
   "type": "module",
   "license": "Apache-2.0",
@@ -8,7 +8,8 @@
   "bin": { "awe-node": "./bin/awe-node.mjs" },
   "exports": {
     ".": "./lib/receipt.mjs",
-    "./otlp": "./lib/otlp.mjs"
+    "./otlp": "./lib/otlp.mjs",
+    "./claude-code": "./lib/claude-code.mjs"
   },
   "files": ["bin", "lib", "README.md"]
 }

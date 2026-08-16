@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto";
+import { execFile } from "node:child_process";
 import { access } from "node:fs/promises";
+import { arch, platform } from "node:os";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { promisify } from "node:util";
 import { signup, getAccount, getLedger } from "../lib/client.mjs";
 import { defaultConfigPath, readConfig, validateBaseUrl, writePrivateJson, writePrivateText } from "../lib/config.mjs";
 import { runDaemon } from "../lib/daemon.mjs";
 import { installBackgroundService } from "../lib/service.mjs";
 
 const ownPath = fileURLToPath(import.meta.url);
+const execFileAsync = promisify(execFile);
 
 function parseArgs(argv) {
   const [command = "help", ...rest] = argv;
@@ -25,7 +29,50 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--name NAME] [--port 4318] [--no-service]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background.\n`);
+  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--name NAME] [--port 4318] [--no-service]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
+}
+
+function environmentClass() {
+  const key = `${platform()}-${arch()}`;
+  return ({ "darwin-arm64": "macos-arm64", "darwin-x64": "macos-x64", "linux-arm64": "linux-arm64", "linux-x64": "linux-x64", "win32-x64": "windows-x64" })[key] ?? "other";
+}
+
+async function detectedClaudeVersion(explicit) {
+  if (explicit) return explicit;
+  try {
+    const { stdout } = await execFileAsync("claude", ["--version"], { timeout: 2_000 });
+    const match = stdout.match(/\d+(?:\.\d+){1,3}/);
+    if (match) return match[0];
+  } catch {}
+  throw new Error("Claude Code version was not detectable; pass --client-version explicitly");
+}
+
+async function configureClaudeCode(configPath, options) {
+  const tool = options.tool;
+  for (const required of ["tool", "tool-registry", "tool-version", "auth-mode"]) {
+    if (!options[required]) throw new Error(`Claude Code adapter requires --${required}`);
+  }
+  const config = await readConfig(configPath);
+  const clientVersion = await detectedClaudeVersion(options["client-version"]);
+  config.adapters ??= {};
+  config.adapters.claudeCode ??= { enabled: true, clientVersion, environment: environmentClass(), tools: {} };
+  config.adapters.claudeCode.enabled = true;
+  config.adapters.claudeCode.clientVersion = clientVersion;
+  config.adapters.claudeCode.environment = options.environment ?? config.adapters.claudeCode.environment ?? environmentClass();
+  config.adapters.claudeCode.tools ??= {};
+  config.adapters.claudeCode.tools[tool] = {
+    toolRegistry: options["tool-registry"],
+    toolId: options["tool-id"] ?? tool,
+    toolVersion: options["tool-version"],
+    authMode: options["auth-mode"],
+    operation: options.operation ?? tool,
+    resolutionKind: options.resolution ?? "none",
+  };
+  await writePrivateJson(configPath, config);
+  const environmentPath = resolve(configPath, "..", "claude-code.env");
+  await writePrivateText(environmentPath,
+    `export CLAUDE_CODE_ENABLE_TELEMETRY='1'\nexport OTEL_LOGS_EXPORTER='otlp'\nexport OTEL_EXPORTER_OTLP_LOGS_PROTOCOL='http/json'\nexport OTEL_EXPORTER_OTLP_LOGS_ENDPOINT='http://127.0.0.1:${config.collector.port}/v1/logs'\nexport OTEL_EXPORTER_OTLP_HEADERS='authorization=Bearer ${config.collector.token}'\n`);
+  process.stdout.write(`Claude Code adapter configured for ${tool}.\nNo prompts, tool parameters, tool inputs, or tool results are requested.\nStart Claude Code with:\n  source ${environmentPath} && claude\n`);
 }
 
 async function localJson(config, path) {
@@ -116,10 +163,11 @@ async function doctor(configPath) {
 }
 
 async function main() {
-  const { command, options } = parseArgs(process.argv.slice(2));
+  const { command, options, positional } = parseArgs(process.argv.slice(2));
   const configPath = resolve(options.config ?? defaultConfigPath());
   if (command === "help" || command === "--help" || command === "-h") return printHelp();
   if (command === "install") return install(options);
+  if (command === "adapter" && positional[0] === "claude-code") return configureClaudeCode(configPath, options);
   if (command === "daemon") return runDaemon(configPath);
   if (command === "status") return status(configPath);
   if (command === "ledger") return ledger(configPath);

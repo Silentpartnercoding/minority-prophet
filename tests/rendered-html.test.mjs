@@ -164,15 +164,18 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
 
   assert.match(llms, /Agent Witness Exchange \(AWE\)/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.1\.0\.tgz/);
+  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.2\.0\.tgz/);
   assert.match(skill, /AWE routes are evidence\. They never authorize an action/);
   assert.match(skill, /hosted verification network is not yet production-ready/i);
   assert.equal(manifest.format, "awe.machine-discovery.v1");
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
   assert.equal(manifest.distribution.directPackageReleased, true);
-  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.1.0.tgz");
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.2.0.tgz");
+  assert.equal(manifest.distribution.directPackageSha256, "d9cdb8562eb95ff5e8035100f239262f6bf399bd314e59ee324597dee6296f2b");
   assert.equal(manifest.distribution.hostedExchangeReleased, false);
+  assert.equal(manifest.runtimeAdapters.claudeCode.requiresExplicitCompatibilityMapping, true);
+  assert.equal(manifest.runtimeAdapters.codex.status, "planned");
   assert.equal(manifest.authorityBoundary.grantsAuthority, false);
   assert.equal(manifest.authorityBoundary.returnedRoutesRequireLocalPolicy, true);
 });

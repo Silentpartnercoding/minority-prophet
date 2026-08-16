@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { adaptOtelSpanToRouteOutcome } from "./receipt.mjs";
 import { spansFromOtlpJson } from "./otlp.mjs";
+import { spansFromClaudeCodeLogs } from "./claude-code.mjs";
 import { createRouteQuery, getAccount, getContribution, getRouteQuery, submitRouteOutcome, unlockRoute } from "./client.mjs";
 import { defaultConfigPath, readConfig, readState, writeState } from "./config.mjs";
 
@@ -88,9 +89,8 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
     return state;
   }
 
-  async function ingest(payload) {
-    const spans = spansFromOtlpJson(payload);
-    const summary = { received: spans.length, submitted: 0, ignored: 0, rejected: 0, queriesOpened: 0 };
+  async function ingestSpans(spans, initial = {}) {
+    const summary = { received: spans.length, submitted: 0, ignored: 0, rejected: 0, queriesOpened: 0, ...initial };
     for (const span of spans) {
       try {
         const adapted = adaptOtelSpanToRouteOutcome(span, {
@@ -132,12 +132,28 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
     return summary;
   }
 
+  async function ingest(payload) {
+    const spans = spansFromOtlpJson(payload);
+    return ingestSpans(spans);
+  }
+
+  async function ingestClaudeCode(payload) {
+    const adapted = spansFromClaudeCodeLogs(payload, config.adapters?.claudeCode);
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+  }
+
   function serialized(task) {
     operation = operation.then(task, task);
     return operation;
   }
 
-  return { config, getState: () => state, ingest: (payload) => serialized(() => ingest(payload)), reconcile: () => serialized(reconcile) };
+  return {
+    config,
+    getState: () => state,
+    ingest: (payload) => serialized(() => ingest(payload)),
+    ingestClaudeCode: (payload) => serialized(() => ingestClaudeCode(payload)),
+    reconcile: () => serialized(reconcile),
+  };
 }
 
 export async function runDaemon(configPath = defaultConfigPath()) {
@@ -155,6 +171,10 @@ export async function runDaemon(configPath = defaultConfigPath()) {
       if (request.method === "POST" && url.pathname === "/v1/traces") {
         if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "otlp_json_required" });
         return json(response, 202, await runtime.ingest(await readJsonBody(request)));
+      }
+      if (request.method === "POST" && url.pathname === "/v1/logs") {
+        if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "otlp_json_required" });
+        return json(response, 202, await runtime.ingestClaudeCode(await readJsonBody(request)));
       }
       return json(response, 404, { error: "awe_node_route_not_found" });
     } catch (error) {

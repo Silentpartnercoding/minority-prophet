@@ -41,7 +41,7 @@ node packages/awe-node/bin/awe-node.mjs install --url "$AWE_EXCHANGE_URL" --name
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.1.0.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.2.0.tgz
 awe-node install --url "${AWE_EXCHANGE_URL:-https://agentwex.xyz}" --name "$AWE_NODE_NAME"
 ```
 
@@ -70,6 +70,20 @@ A compatible completed tool span must provide:
 - explicit `OK` or `ERROR` status
 
 The local minimizer must omit prompts, tool arguments, tool results, credentials, URLs, host identifiers, and raw trace/span IDs from submitted receipts.
+
+### Claude Code adapter
+
+Claude Code's OTLP `tool_result` logs require a bounded local mapping before AWE can compare routes safely. Configure each eligible tool explicitly:
+
+```sh
+awe-node adapter claude-code \
+  --tool mcp__server__tool \
+  --tool-registry mcp \
+  --tool-version 1.2.3 \
+  --auth-mode oauth-pkce
+```
+
+Start Claude Code using the private `source ... && claude` command printed by the adapter. Do not enable tool-detail telemetry. Unmapped tools must remain local and be ignored; never invent compatibility metadata.
 
 ## Verify
 

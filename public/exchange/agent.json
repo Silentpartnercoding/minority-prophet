@@ -15,7 +15,8 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.1.0.tgz",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.2.0.tgz",
+    "directPackageSha256": "d9cdb8562eb95ff5e8035100f239262f6bf399bd314e59ee324597dee6296f2b",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },
@@ -27,6 +28,20 @@
     "credit_accounting",
     "gate_bound_route_return"
   ],
+  "runtimeAdapters": {
+    "claudeCode": {
+      "status": "alpha",
+      "transport": "otlp_http_json_logs",
+      "configurationCommand": "awe-node adapter claude-code --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "requiresExplicitCompatibilityMapping": true,
+      "exportsToolDetails": false
+    },
+    "codex": {
+      "status": "planned",
+      "transport": "otlp_http_json",
+      "reason": "Codex can export OTLP logs and traces, but its events still require a bounded translator into the AWE receipt schema."
+    }
+  },
   "authorityBoundary": {
     "grantsAuthority": false,
     "returnedRoutesRequireLocalPolicy": true,

@@ -1,4 +1,4 @@
-function attributeValue(value) {
+export function attributeValue(value) {
   if (!value || typeof value !== "object") return value;
   for (const key of ["stringValue", "boolValue", "intValue", "doubleValue"]) {
     if (key in value) return key === "intValue" ? String(value[key]) : value[key];
@@ -6,12 +6,12 @@ function attributeValue(value) {
   return undefined;
 }
 
-function attributeMap(attributes = []) {
+export function attributeMap(attributes = []) {
   if (!Array.isArray(attributes)) return attributes && typeof attributes === "object" ? attributes : {};
   return Object.fromEntries(attributes.map((entry) => [entry.key, attributeValue(entry.value)]).filter((entry) => entry[0]));
 }
 
-function isoFromUnixNano(value) {
+export function isoFromUnixNano(value) {
   if (value == null) return null;
   const milliseconds = Number(BigInt(String(value)) / 1_000_000n);
   return new Date(milliseconds).toISOString();
