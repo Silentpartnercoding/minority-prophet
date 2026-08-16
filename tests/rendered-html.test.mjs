@@ -37,7 +37,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /returns a supported route to the runtime that asked/);
   assert.match(html, /INSTALL ONCE/);
   assert.match(html, /START \+ SET/);
-  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.1\.tgz &amp;&amp; awe-node install/);
+  assert.match(html, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.2\.tgz &amp;&amp; awe-node install/);
   assert.doesNotMatch(html, /--name|My agent/);
   assert.doesNotMatch(html, /npm run awe:install -- --url http:\/\/localhost:3001/);
   assert.doesNotMatch(html, /awe-nav-cta/);
@@ -165,7 +165,7 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
 
   assert.match(llms, /Agent Witness Exchange \(AWE\)/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.1\.tgz/);
+  assert.match(skill, /npm install -g https:\/\/agentwex\.xyz\/exchange\/awe-node-0\.3\.2\.tgz/);
   assert.match(skill, /awe-node install/);
   assert.doesNotMatch(skill, /--name|My agent|AWE_NODE_NAME/);
   assert.match(skill, /AWE routes are evidence\. They never authorize an action/);
@@ -174,8 +174,10 @@ test("publishes agent-readable AWE discovery and guarded setup instructions", as
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
   assert.equal(manifest.distribution.directPackageReleased, true);
-  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.1.tgz");
-  assert.equal(manifest.distribution.directPackageSha256, "5bdc6b84e2535cfcb71a772e57f0a518a09daf4e062f5d56712192ffd6ca8dbc");
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.3.2.tgz");
+  assert.equal(manifest.distribution.directPackageSha256, "d0cfebec53bb774a6ac610849a7a5d83d0fcea47d78fad6c08fd3ed7938730c5");
+  assert.equal(manifest.runtimeAdapters.bernstein.optional, true);
+  assert.equal(manifest.runtimeAdapters.bernstein.transport, "localhost_lifecycle_plugin");
   assert.equal(manifest.distribution.hostedExchangeReleased, false);
   assert.equal(manifest.runtimeAdapters.claudeCode.requiresExplicitCompatibilityMapping, true);
   assert.equal(manifest.runtimeAdapters.codex.status, "alpha");

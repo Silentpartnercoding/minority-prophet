@@ -1,6 +1,6 @@
 {
   "name": "@minorityprophet/awe-node",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Install-once local outcome collector for Agent Witness Exchange",
   "type": "module",
   "license": "Apache-2.0",
@@ -11,7 +11,9 @@
     "./otlp": "./lib/otlp.mjs",
     "./claude-code": "./lib/claude-code.mjs",
     "./codex": "./lib/codex.mjs",
-    "./gemini-cli": "./lib/gemini-cli.mjs"
+    "./gemini-cli": "./lib/gemini-cli.mjs",
+    "./bernstein": "./lib/bernstein.mjs",
+    "./runtime-detection": "./lib/runtime-detection.mjs"
   },
   "files": ["bin", "lib", "README.md"]
 }

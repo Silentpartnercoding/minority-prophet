@@ -187,6 +187,14 @@ test("one zero-fill install command creates a generated private node identity wi
   assert.equal((await stat(environmentPath)).mode & 0o777, 0o600);
   assert.match(await readFile(environmentPath, "utf8"), /OTEL_EXPORTER_OTLP_HEADERS/);
 
+  const detected = await execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"), "runtimes", "--config", configPath,
+  ], { cwd: resolve("."), timeout: 10_000 });
+  const runtimeStatus = JSON.parse(detected.stdout);
+  assert.equal(runtimeStatus.noRuntimeBehavior, "registered_but_safely_idle");
+  assert.equal(runtimeStatus.genericOtlpHttpJson.supported, true);
+  assert.ok(runtimeStatus.runtimes.some((runtime) => runtime.id === "bernstein"));
+
   const configured = await execFileAsync(process.execPath, [
     resolve("packages/awe-node/bin/awe-node.mjs"),
     "adapter", "claude-code",
@@ -229,6 +237,31 @@ test("one zero-fill install command creates a generated private node identity wi
   assert.match(geminiEnvironment, /GEMINI_TELEMETRY_LOG_PROMPTS='0'/);
   assert.match(geminiEnvironment, /GEMINI_TELEMETRY_TRACES_ENABLED='0'/);
   assert.match(geminiEnvironment, new RegExp(updated.collector.token));
+
+  await assert.rejects(execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"),
+    "adapter", "bernstein", "--config", configPath,
+    "--tool", "repository_migration", "--tool-registry", "github", "--tool-version", "1.0.0",
+    "--auth-mode", "none", "--client-version", "3.12.0",
+  ], { cwd: resolve("."), timeout: 10_000 }), /requires --task-role/);
+
+  const bernsteinConfigured = await execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"),
+    "adapter", "bernstein", "--config", configPath,
+    "--task-role", "migration",
+    "--tool", "repository_migration", "--tool-registry", "github", "--tool-version", "1.0.0",
+    "--auth-mode", "none", "--operation", "repository-migration", "--client-version", "3.12.0",
+  ], { cwd: resolve("."), timeout: 10_000 });
+  assert.match(bernsteinConfigured.stdout, /Bernstein adapter configured/);
+  assert.match(await readFile(resolve(directory, "bernstein-plugin.yaml"), "utf8"), /awe_bernstein_plugin:AgentWexPlugin/);
+  const bernsteinEnvironment = await readFile(resolve(directory, "bernstein.env"), "utf8");
+  assert.match(bernsteinEnvironment, /AGENT_WEX_BERNSTEIN_ENDPOINT/);
+  assert.match(bernsteinEnvironment, /AGENT_WEX_BERNSTEIN_TOOL='repository_migration'/);
+  assert.match(bernsteinEnvironment, /AGENT_WEX_BERNSTEIN_ROLE='migration'/);
+  const bernsteinPlugin = await readFile(resolve(directory, "awe_bernstein_plugin.py"), "utf8");
+  assert.match(bernsteinPlugin, /class AgentWexPlugin/);
+  assert.doesNotMatch(bernsteinPlugin, /"result_summary":/);
+  assert.doesNotMatch(bernsteinPlugin, /"error":/);
 });
 
 test("localhost collector rejects unauthenticated span injection", async (context) => {
@@ -278,6 +311,12 @@ test("localhost collector rejects unauthenticated span injection", async (contex
         clientVersion: "0.3.0",
         environment: "macos-arm64",
         tools: { run_shell_command: { toolRegistry: "github", toolId: "io.agentwex/gemini-shell", toolVersion: "1.1.0", authMode: "none", operation: "repository-check" } },
+      },
+      bernstein: {
+        enabled: true,
+        clientVersion: "3.12.0",
+        environment: "macos-arm64",
+        tools: { repository_migration: { toolRegistry: "github", toolId: "io.agentwex/repository-migration", toolVersion: "1.0.0", authMode: "none", operation: "repository-migration" } },
       },
     },
     pollSeconds: 60,
@@ -329,6 +368,14 @@ test("localhost collector rejects unauthenticated span injection", async (contex
   });
   assert.equal(codexResponse.status, 202);
   assert.equal((await codexResponse.json()).submitted, 1);
+
+  const bernsteinResponse = await fetch(`http://127.0.0.1:${port}/v1/bernstein/events`, {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: "Bearer private-local-token" },
+    body: JSON.stringify({ schema: "agentwex.bernstein-hook.v0.1", events: [{ event: "task_completed", taskId: "private-bernstein-task", toolName: "repository_migration", observedAt: "2026-08-16T10:00:00.000Z", result_summary: "PRIVATE RESULT" }] }),
+  });
+  assert.equal(bernsteinResponse.status, 202);
+  assert.equal((await bernsteinResponse.json()).submitted, 1);
 
   const geminiLog = JSON.stringify({ resourceLogs: [{ resource: { attributes: [{ key: "sessionId", value: { stringValue: "gemini-session" } }] }, scopeLogs: [{ logRecords: [{
     timeUnixNano: "1786870802000000000",

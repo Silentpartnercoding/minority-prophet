@@ -4,6 +4,7 @@ import { spansFromOtlpJson } from "./otlp.mjs";
 import { spansFromClaudeCodeLogs } from "./claude-code.mjs";
 import { spansFromCodexLogs } from "./codex.mjs";
 import { spansFromGeminiCliLogs } from "./gemini-cli.mjs";
+import { spansFromBernsteinEvents } from "./bernstein.mjs";
 import { createRouteQuery, getAccount, getContribution, getRouteQuery, submitRouteOutcome, unlockRoute } from "./client.mjs";
 import { defaultConfigPath, readConfig, readState, writeState } from "./config.mjs";
 
@@ -154,6 +155,11 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
     return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
   }
 
+  async function ingestBernstein(payload) {
+    const adapted = spansFromBernsteinEvents(payload, config.adapters?.bernstein);
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+  }
+
   function serialized(task) {
     operation = operation.then(task, task);
     return operation;
@@ -166,6 +172,7 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
     ingestClaudeCode: (payload) => serialized(() => ingestClaudeCode(payload)),
     ingestCodex: (payload) => serialized(() => ingestCodex(payload)),
     ingestGeminiCli: (payload) => serialized(() => ingestGeminiCli(payload)),
+    ingestBernstein: (payload) => serialized(() => ingestBernstein(payload)),
     reconcile: () => serialized(reconcile),
   };
 }
@@ -199,6 +206,10 @@ export async function runDaemon(configPath = defaultConfigPath()) {
       if (request.method === "POST" && url.pathname === `${geminiBase}/v1/logs`) {
         if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "otlp_json_required" });
         return json(response, 202, await runtime.ingestGeminiCli(await readJsonBody(request)));
+      }
+      if (request.method === "POST" && url.pathname === "/v1/bernstein/events") {
+        if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "json_required" });
+        return json(response, 202, await runtime.ingestBernstein(await readJsonBody(request)));
       }
       if (request.method === "POST" && [`${geminiBase}/v1/metrics`, `${geminiBase}/v1/traces`].includes(url.pathname)) {
         return json(response, 202, { received: 0, ignored: true });

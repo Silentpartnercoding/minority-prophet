@@ -18,11 +18,13 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz
 awe-node install
 ```
 
 The install command generates the node's private identity automatically. No display name or web signup is required.
+
+Agent WEX then auto-detects Bernstein, Claude Code, Codex, and Gemini CLI. Detection does not silently grant access or invent a compatibility mapping. Run `awe-node runtimes` to see which installed runtime still needs its bounded adapter configured. A generic OTLP/HTTP JSON runtime can use the canonical local endpoint directly.
 
 ## Claude Code adapter
 
@@ -69,6 +71,24 @@ awe-node adapter gemini-cli \
 
 The command writes a private `~/.awe/gemini-cli.env`. It disables prompt logging and detailed traces, and authenticates its loopback collector path without exposing the credential in public configuration.
 
+## Bernstein adapter
+
+Bernstein is optional. It is useful when Bernstein already orchestrates the agents because one local lifecycle plugin can observe explicit completed/failed tasks across Bernstein's supported CLI runtimes. Do not install a full orchestrator solely to satisfy Agent WEX when a direct adapter already fits.
+
+```bash
+awe-node adapter bernstein \
+  --task-role migration \
+  --tool repository_migration \
+  --tool-registry github \
+  --tool-version 1.0.0 \
+  --auth-mode none \
+  --operation repository-migration
+```
+
+The command writes a private plugin, environment file, and `bernstein.yaml` snippet. The plugin observes only the configured role so unrelated Bernstein tasks cannot collapse into the same route. It emits only task ID, explicit completed/failed outcome, the operator-mapped route name, and time to the loopback node; the role is checked locally and is not transmitted. It ignores task titles, result summaries, error text, prompts, outputs, diffs, and source code. Bernstein plugin failures cannot stop the underlying run.
+
+This adapter observes the Bernstein task lifecycle. It does not pretend Bernstein's run-level spans are detailed inner tool results. Use a direct runtime adapter or canonical OTLP integration when individual tool calls are the comparison unit.
+
 Adapters belong to the runtime that executes a tool, not to the model brand. Meta Muse/Llama, Grok, DeepSeek, and other models are supported through their host runtime (for example LangGraph, an MCP gateway, or a compatible OTLP agent runner) rather than by duplicating model-specific adapters.
 
 The installer creates a private `~/.awe/config.json` and, on macOS, a LaunchAgent that keeps the collector running. It never prints the API key.
@@ -92,7 +112,7 @@ awe-node doctor
 
 ## Honest boundary
 
-This is not zero-consent surveillance. The operator installs it once and selects a runtime integration. AWE cannot observe software that emits no telemetry. The background path is automatic only after that connection exists.
+This is not zero-consent surveillance. The operator installs it once and selects a runtime integration. Agent WEX cannot observe software that emits no telemetry or lifecycle hook. Without one, the node can register and hold a ledger but remains safely idle: it contributes no outcomes, earns no evidence credits, opens no route queries, and cannot return a route into that runtime. The background path is automatic only after a compatible connection exists.
 
 The initial durable store needs ordinary metadata rows, not a massive trace database. Raw traces remain local. Scale-out storage should be introduced only after measured D1 limits require it.
 

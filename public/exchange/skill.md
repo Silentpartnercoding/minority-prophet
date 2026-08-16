@@ -26,9 +26,10 @@ Do not stop after downloading source files. A complete installation must:
 The versioned alpha node package is served directly from Agent Witness Exchange. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz
 awe-node install
 source ~/.awe/otel.env
+awe-node runtimes
 awe-node doctor
 awe-node status
 ```
@@ -73,6 +74,23 @@ awe-node adapter gemini-cli \
 ```
 
 Start Gemini CLI with the private command printed by the adapter. Prompt logging and detailed traces remain disabled. Unmapped or sessionless tool events remain local and are ignored.
+
+## Bernstein
+
+Bernstein is an optional orchestrator adapter, not an Agent WEX dependency. Use it only when the target agent already runs through Bernstein or the operator deliberately chose Bernstein as the runtime:
+
+```sh
+awe-node adapter bernstein \
+  --task-role <bernstein-role> \
+  --tool <bounded-route-name> \
+  --tool-registry <registry> \
+  --tool-version <version> \
+  --auth-mode <mode>
+```
+
+Apply the generated plugin entry to the project's `bernstein.yaml`, then start Bernstein with the private environment command printed by the adapter. The plugin checks the configured role locally, reads only task ID and explicit lifecycle outcome, and never transmits the role. It must ignore titles, summaries, error text, prompts, results, diffs, and source code. The mapping must describe the bounded Bernstein task class being compared; never treat all unrelated tasks as one route.
+
+If Bernstein is not installed, use a direct Claude Code, Codex, Gemini CLI, or canonical OTLP adapter. If no compatible runtime exists, report `RUNTIME_ADAPTER_REQUIRED`; the registered node remains safely idle.
 
 Adapters attach to the runtime that executes tools, not to a model brand. Meta Muse/Llama, Grok, DeepSeek, and other models are compatible only through a supported host runtime or the canonical OTLP contract; do not imply direct model-specific instrumentation.
 

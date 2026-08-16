@@ -41,8 +41,9 @@ node packages/awe-node/bin/awe-node.mjs install --url "${AWE_EXCHANGE_URL:-https
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.3.1.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.2.tgz
 awe-node install
+awe-node runtimes
 ```
 
 Do not substitute an unversioned package URL. Never print `apiKey`, `collector.token`, or the contents of `~/.awe/otel.env`.
@@ -113,6 +114,21 @@ awe-node adapter gemini-cli \
 ```
 
 Start Gemini CLI using the private `source ... && gemini` command printed by the adapter. Prompt logging and detailed traces must remain disabled. The adapter must ignore unmapped or sessionless events.
+
+### Bernstein adapter
+
+Bernstein is optional. If it is already the orchestrator, configure a bounded task-lifecycle mapping:
+
+```sh
+awe-node adapter bernstein \
+  --task-role <bernstein-role> \
+  --tool <bounded-route-name> \
+  --tool-registry <registry> \
+  --tool-version <version> \
+  --auth-mode <mode>
+```
+
+Apply the generated plugin entry to `bernstein.yaml` and launch Bernstein through the generated private environment command. The plugin must filter to the configured role locally and may send only task ID, explicit completed/failed outcome, mapped route name, and time to the loopback node. It must not transmit the role or read titles, summaries, error text, prompts, results, diffs, or source code. Do not install Bernstein merely to satisfy Agent WEX when a direct runtime adapter is available.
 
 Model vendors are not runtime adapters. A Meta Muse/Llama, Grok, DeepSeek, or other model running inside a supported framework is covered by that framework's tool-outcome adapter. Do not claim direct support merely because its inference API is compatible.
 

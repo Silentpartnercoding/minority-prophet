@@ -15,8 +15,8 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.3.1.tgz",
-    "directPackageSha256": "5bdc6b84e2535cfcb71a772e57f0a518a09daf4e062f5d56712192ffd6ca8dbc",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.3.2.tgz",
+    "directPackageSha256": "d0cfebec53bb774a6ac610849a7a5d83d0fcea47d78fad6c08fd3ed7938730c5",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },
@@ -50,6 +50,16 @@
       "requiresExplicitCompatibilityMapping": true,
       "promptLoggingEnabled": false,
       "detailedTracesEnabled": false
+    },
+    "bernstein": {
+      "status": "alpha",
+      "optional": true,
+      "transport": "localhost_lifecycle_plugin",
+      "configurationCommand": "awe-node adapter bernstein --task-role <bernstein-role> --tool <bounded-route-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "requiresExplicitCompatibilityMapping": true,
+      "requiresLocalRoleFilter": true,
+      "observes": ["task_completed", "task_failed"],
+      "forbiddenFields": ["task_title", "result_summary", "error_text", "prompt", "result", "diff", "source_code"]
     }
   },
   "modelCompatibility": {

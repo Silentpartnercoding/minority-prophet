@@ -10,6 +10,8 @@ import { signup, getAccount, getLedger } from "../lib/client.mjs";
 import { defaultConfigPath, readConfig, validateBaseUrl, writePrivateJson, writePrivateText } from "../lib/config.mjs";
 import { runDaemon } from "../lib/daemon.mjs";
 import { installBackgroundService } from "../lib/service.mjs";
+import { bernsteinPluginSource } from "../lib/bernstein.mjs";
+import { detectRuntimes } from "../lib/runtime-detection.mjs";
 
 const ownPath = fileURLToPath(import.meta.url);
 const execFileAsync = promisify(execFile);
@@ -29,7 +31,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall generates a private node identity automatically and is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
+  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--port 4318] [--no-service]\n  runtimes [--config PATH]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter bernstein --task-role ROLE --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall generates a private node identity automatically and is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
 }
 
 function environmentClass() {
@@ -119,6 +121,47 @@ async function configureGeminiCli(configPath, options) {
   process.stdout.write(`Gemini CLI adapter configured for ${options.tool}.\nPrompts and detailed traces are disabled.\nStart Gemini CLI with:\n  source ${environmentPath} && gemini\n`);
 }
 
+function shellQuote(value) {
+  return `'${String(value).replaceAll("'", `'\\''`)}'`;
+}
+
+async function configureBernstein(configPath, options) {
+  requiredToolOptions(options, "Bernstein");
+  if (!options["task-role"]) throw new Error("Bernstein adapter requires --task-role so unrelated tasks are not collapsed into one route");
+  const config = await readConfig(configPath);
+  const clientVersion = await detectedRuntimeVersion("bernstein", options["client-version"], "Bernstein");
+  bindTool(config, "bernstein", clientVersion, options);
+  await writePrivateJson(configPath, config);
+  const directory = resolve(configPath, "..");
+  const pluginPath = resolve(directory, "awe_bernstein_plugin.py");
+  const environmentPath = resolve(directory, "bernstein.env");
+  const snippetPath = resolve(directory, "bernstein-plugin.yaml");
+  await writePrivateText(pluginPath, bernsteinPluginSource());
+  await writePrivateText(environmentPath,
+    `export PYTHONPATH=${shellQuote(directory)}\${PYTHONPATH:+:\$PYTHONPATH}\nexport AGENT_WEX_BERNSTEIN_ENDPOINT='http://127.0.0.1:${config.collector.port}/v1/bernstein/events'\nexport AGENT_WEX_BERNSTEIN_TOKEN='${config.collector.token}'\nexport AGENT_WEX_BERNSTEIN_TOOL=${shellQuote(options.tool)}\nexport AGENT_WEX_BERNSTEIN_ROLE=${shellQuote(options["task-role"])}\n`);
+  await writePrivateText(snippetPath, "plugins:\n  - awe_bernstein_plugin:AgentWexPlugin\n");
+  process.stdout.write(`Bernstein adapter configured for ${options.tool}.\nThe plugin sends only task id, explicit completed/failed outcome, mapped route name, and time to the loopback Agent WEX node.\nIt ignores task titles, summaries, errors, prompts, results, diffs, and source code.\nAdd the plugin entry from ${snippetPath} to the project's bernstein.yaml, then run:\n  source ${environmentPath} && bernstein <your normal command>\n`);
+}
+
+async function runtimes(configPath) {
+  let config = null;
+  try { config = await readConfig(configPath); } catch {}
+  const detected = await detectRuntimes();
+  const configured = new Set(Object.entries(config?.adapters ?? {}).filter(([, value]) => value?.enabled === true).map(([key]) => key));
+  const adapterKeys = { bernstein: "bernstein", "claude-code": "claudeCode", codex: "codex", "gemini-cli": "geminiCli" };
+  process.stdout.write(`${JSON.stringify({
+    runtimes: detected.map((runtime) => ({
+      id: runtime.id,
+      detected: runtime.detected,
+      version: runtime.version ?? null,
+      adapterConfigured: configured.has(adapterKeys[runtime.id]),
+      status: configured.has(adapterKeys[runtime.id]) ? "ready_to_observe" : runtime.status,
+    })),
+    genericOtlpHttpJson: { supported: true, endpoint: config ? `http://${config.collector.host}:${config.collector.port}/v1/traces` : null },
+    noRuntimeBehavior: "registered_but_safely_idle",
+  }, null, 2)}\n`);
+}
+
 async function localJson(config, path) {
   const response = await fetch(`http://${config.collector.host}:${config.collector.port}${path}`, {
     headers: { authorization: `Bearer ${config.collector.token}` },
@@ -145,6 +188,7 @@ async function install(options) {
     agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID() },
     participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
   });
+  const detectedRuntimes = (await detectRuntimes()).filter((runtime) => runtime.detected).map(({ id, version }) => ({ id, version }));
   const config = {
     schema: "minority-prophet.awe-node-config.v0.1",
     baseUrl,
@@ -153,6 +197,7 @@ async function install(options) {
     policy: { shareToolOutcomes: true, shareRawTraces: false, sharePrompts: false, shareToolArguments: false, shareToolResults: false },
     collector: { host: "127.0.0.1", port, token: collectorToken },
     pollSeconds: 60,
+    runtimeDetection: { detected: detectedRuntimes, scannedAt: new Date().toISOString() },
     createdAt: new Date().toISOString(),
   };
   await writePrivateJson(configPath, config);
@@ -165,6 +210,11 @@ async function install(options) {
   if (service) process.stdout.write(`Background service: ${service.label}\n`);
   else process.stdout.write(`Start locally: awe-node daemon --config ${configPath}\n`);
   process.stdout.write(`Connect an OTLP/HTTP JSON runtime without exposing the local token:\n  source ${environmentPath}\n`);
+  if (detectedRuntimes.length > 0) {
+    process.stdout.write(`Detected runtime candidates: ${detectedRuntimes.map((runtime) => `${runtime.id} ${runtime.version}`).join(", ")}\nRun awe-node runtimes to see which adapter still needs configuration.\n`);
+  } else {
+    process.stdout.write("No compatible runtime was detected. The node is registered but safely idle until a runtime adapter or generic OTLP source is connected.\n");
+  }
 }
 
 async function status(configPath) {
@@ -211,9 +261,11 @@ async function main() {
   const configPath = resolve(options.config ?? defaultConfigPath());
   if (command === "help" || command === "--help" || command === "-h") return printHelp();
   if (command === "install") return install(options);
+  if (command === "runtimes") return runtimes(configPath);
   if (command === "adapter" && positional[0] === "claude-code") return configureClaudeCode(configPath, options);
   if (command === "adapter" && positional[0] === "codex") return configureCodex(configPath, options);
   if (command === "adapter" && positional[0] === "gemini-cli") return configureGeminiCli(configPath, options);
+  if (command === "adapter" && positional[0] === "bernstein") return configureBernstein(configPath, options);
   if (command === "daemon") return runDaemon(configPath);
   if (command === "status") return status(configPath);
   if (command === "ledger") return ledger(configPath);
