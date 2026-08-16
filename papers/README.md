@@ -2,6 +2,8 @@
 
 Start with **[the current paper](./minority-prophet-v1.0.7.md)**.
 
+For external review, use the narrower **[peer-review candidate](./peer-review/minority-prophet-peer-review-v1.1.0.md)**. It isolates the Lean-checked copy-invariance core, includes a complete literature audit for retained claims, and deliberately omits the broader v1.0.7 programs that require separate papers or comparison work.
+
 | File | Status |
 | --- | --- |
 | [`minority-prophet-v1.0.7.md`](./minority-prophet-v1.0.7.md) | Current reader-first, evidence-aligned pre-submission manuscript |
