@@ -2370,40 +2370,49 @@ footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1p
   width:42px;
   height:42px;
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(3,1fr);
   place-items:center;
-  gap:0;
+  gap:3px;
+  padding:9px;
   overflow:hidden;
   border-radius:8px;
-  background:var(--awe-accent);
-  color:#07100c;
+  background:#07100c;
+  border:1px solid #7cf0bd40;
+  color:var(--awe-accent);
   box-shadow:none;
 }
 .awe-brand.agentwex-brand .agentwex-mark::after {
   content:"";
   position:absolute;
-  left:5px;
+  left:50%;
   top:50%;
-  width:3px;
-  height:3px;
+  width:9px;
+  height:9px;
   border-radius:50%;
-  background:#f8fff9;
-  box-shadow:0 0 7px #f8fff9;
-  opacity:0;
+  background:#7cf0bd24;
+  box-shadow:0 0 8px #7cf0bd38;
+  opacity:1;
   pointer-events:none;
   animation:agentwex-route-wink 11s ease-in-out infinite;
 }
 .awe-brand.agentwex-brand .agentwex-mark i {
-  width:100%;
-  height:100%;
-  display:grid;
-  place-items:center;
-  font:850 12px/1 ui-sans-serif,system-ui,sans-serif;
-  font-style:normal;
-  letter-spacing:-.08em;
+  position:relative;
+  z-index:1;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:#7cf0bd73;
 }
-.awe-brand.agentwex-brand .agentwex-mark i + i {
-  border-left:1px solid #07100c55;
+.awe-brand.agentwex-brand .agentwex-mark i:nth-child(5) {
+  width:5px;
+  height:5px;
+  background:#f3fff8;
+  box-shadow:0 0 6px #7cf0bd;
+}
+.awe-brand.agentwex-brand .agentwex-mark i:nth-child(3),
+.awe-brand.agentwex-brand .agentwex-mark i:nth-child(7) {
+  background:#7cf0bd;
 }
 .awe-brand.agentwex-brand .agentwex-wordmark {
   display:block;
@@ -2421,10 +2430,9 @@ footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1p
   white-space:nowrap;
 }
 @keyframes agentwex-route-wink {
-  0%,82%,100%{opacity:0;transform:translate(0,-50%) scale(.65)}
-  85%{opacity:.8;transform:translate(0,-50%) scale(1)}
-  91%{opacity:.95;transform:translate(29px,-50%) scale(1)}
-  94%{opacity:0;transform:translate(29px,-50%) scale(.65)}
+  0%,78%,100%{opacity:.18;transform:translate(-50%,-50%) scale(.7)}
+  83%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}
+  88%{opacity:.3;transform:translate(-50%,-50%) scale(.82)}
 }
 @media(prefers-reduced-motion:reduce){
   .awe-brand.agentwex-brand .agentwex-mark::after{display:none}

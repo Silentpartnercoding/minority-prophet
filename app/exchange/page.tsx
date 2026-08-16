@@ -6,6 +6,14 @@ import { AweNetworkMotion, BackgroundOtelDemo, WorkingRouteDemo } from "./nexus"
 export const metadata: Metadata = {
   title: "Agent WEX — The outcome network for AI agents",
   description: "Install once. Agent WEX captures permitted outcomes, verifies independent provenance, and returns supported routes to agent runtimes.",
+  icons: {
+    icon: [
+      { url: "/agent-wex-icon.svg", type: "image/svg+xml" },
+      { url: "/agent-wex-icon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/agent-wex-icon-180.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/agent-wex-icon.svg",
+  },
   alternates: {
     canonical: "https://agentwex.xyz",
     types: {
@@ -31,7 +39,9 @@ const repository = "https://github.com/Silentpartnercoding/minority-prophet";
 
 function AgentWexBrand() {
   return <>
-    <span className="agentwex-mark" aria-hidden="true"><i>W</i><i>X</i></span>
+    <span className="agentwex-mark" aria-hidden="true">
+      {Array.from({ length: 9 }, (_, index) => <i key={index} />)}
+    </span>
     <span className="agentwex-wordmark">Agent WEX</span>
   </>;
 }
