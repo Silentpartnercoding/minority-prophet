@@ -3,12 +3,15 @@ BOOTSTRAP_PYTHON ?= python3
 BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEAD^)
 HEAD_REF ?= HEAD
 
-.PHONY: help setup verify verify-python verify-integrity verify-site verify-evaluation \
+.PHONY: help setup paper-setup paper-pdf paper-check verify verify-python verify-integrity verify-site verify-evaluation \
 	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
 	check-research-integrity
 
 help:
 	@echo "make setup       Create local Python and Node development dependencies"
+	@echo "make paper-setup Install the pinned peer-review PDF dependency"
+	@echo "make paper-pdf   Build the peer-review manuscript PDF"
+	@echo "make paper-check Validate the peer-review source, metadata, citations, and PDF"
 	@echo "make verify      Run every required local check"
 	@echo "make verify-python"
 	@echo "make verify-integrity BASE=origin/main HEAD_REF=HEAD"
@@ -19,6 +22,16 @@ setup:
 	"$(BOOTSTRAP_PYTHON)" -m venv .venv
 	.venv/bin/python -m pip install --upgrade pip pytest
 	npm ci
+
+paper-setup:
+	"$(PYTHON)" -m pip install -r requirements-paper.txt
+
+paper-pdf:
+	"$(PYTHON)" scripts/build_peer_review_pdf.py
+
+paper-check: paper-pdf
+	"$(PYTHON)" scripts/check_peer_review_package.py
+	pdfinfo output/pdf/minority-prophet-peer-review-v1.1.0.pdf | rg "^(Pages|Page size|PDF version):"
 
 verify: verify-python verify-integrity verify-site verify-evaluation
 

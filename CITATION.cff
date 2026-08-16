@@ -1,10 +1,22 @@
 cff-version: 1.2.0
 title: "Minority Prophet: evidence-aware aggregation research"
+type: software
 authors:
   - family-names: "He"
     given-names: "James Siyuan"
     alias: "Silentpartnercoding"
 version: 0.1.0
-date-released: 2026-08-03
+date-released: 2026-08-07
 repository-code: "https://github.com/Silentpartnercoding/minority-prophet"
-message: "If you use this research, please cite it."
+license: Apache-2.0
+message: "If you use the formal research claim, cite the preferred paper below; if you use the software, cite this repository record."
+preferred-citation:
+  type: article
+  title: "The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs"
+  authors:
+    - family-names: "He"
+      given-names: "James Siyuan"
+      alias: "Silentpartnercoding"
+  year: 2026
+  version: "1.1.0"
+  url: "https://github.com/Silentpartnercoding/minority-prophet/tree/main/papers/peer-review"

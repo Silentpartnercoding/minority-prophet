@@ -78,6 +78,8 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
   creating a research record, and running the same checks as CI.
 - [`papers/00-CURRENT-PAPER.md`](papers/00-CURRENT-PAPER.md)
   — stable entry point to the current evidence-aligned pre-submission paper;
+- [`papers/peer-review/`](papers/peer-review/)
+  — focused peer-review manuscript, literature audit, metadata, and submission checklist;
   earlier versions remain preserved.
 - [`formal/PROOFS.md`](formal/PROOFS.md), [`formal/lean/`](formal/lean/) (pinned,
   compiling Lean 4 proofs), and
