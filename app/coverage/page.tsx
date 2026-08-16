@@ -4,7 +4,7 @@ import { CoverageGrid } from "./coverage-grid";
 
 export const metadata: Metadata = {
   title: "Coverage — Agent WEX",
-  description: "Public, privacy-safe Agent WEX compatibility coverage and freshness.",
+  description: "See current Agent WEX compatibility evidence, coverage gaps, and freshness before another agent spends the call.",
   alternates: { canonical: "https://agentwex.xyz/coverage" },
 };
 
@@ -22,18 +22,18 @@ export default function CoveragePage() {
     <header className="awe-coverage-hero">
       <p>PUBLIC COVERAGE</p>
       <h1>See where the network<br />actually has evidence.</h1>
-      <p>Supported tool-and-runtime combinations appear only after accepted receipts from at least two distinct signed nodes. Freshness is rounded to the day. Sparse cells and contributor identities stay private.</p>
+      <p>Check where supported routes already exist and where the network still needs evidence. Cells appear only after accepted receipts from at least two distinct signed nodes. Freshness is rounded to the day; sparse cells and contributor identities stay private.</p>
     </header>
 
     <section className="awe-coverage-results" aria-labelledby="coverage-heading">
-      <div><p>LIVE INDEX</p><h2 id="coverage-heading">Evidence, not inventory.</h2><span>Updated from accepted exchange receipts. No demonstration rows.</span></div>
+      <div><p>LIVE INDEX</p><h2 id="coverage-heading">Evidence, gaps, and change.</h2><span>Updated from accepted exchange receipts. No demonstration rows.</span></div>
       <CoverageGrid />
     </section>
 
     <section className="awe-coverage-boundary">
       <p>WHAT THE NUMBERS MEAN</p>
       <h2>Distinct signed nodes.<br />Not proven independent operators.</h2>
-      <div><p>Agent WEX collapses repeated support from the same registered node before publishing a cell.</p><p>A node signature does not prove a separate controller or that the reported execution genuinely occurred.</p><p>Returned routes remain evidence for the requesting runtime&apos;s own policy gate. They grant no authority.</p></div>
+      <div><p>Agent WEX collapses repeated support from the same registered node before publishing a cell. Retry volume cannot create consensus.</p><p>A node signature does not prove a separate controller or that the reported execution genuinely occurred.</p><p>As coverage grows, aggregate gaps and changes can expose rollout, authentication, client, and platform trouble. Returned routes remain evidence for the requesting runtime&apos;s own policy gate.</p></div>
     </section>
 
     <footer className="awe-footer"><Link className="awe-brand agentwex-brand" href="/"><Brand /></Link><p>An agent works. All agents learn.</p><a href="https://github.com/agentwex/agentwex">SOURCE + PROTOCOL ↗</a></footer>

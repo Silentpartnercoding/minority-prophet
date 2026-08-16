@@ -1,10 +1,14 @@
-# Minority Prophet
+# Agent WEX
 
-> Vendor-neutral epistemic infrastructure for preserving evidence lineage, distinguishing independent evidence from repeated ancestry, and routing supported outcomes back to agent runtimes.
+> Shared reliability for agent tools: check an exact public tool path before the call, and turn an accepted failed call into credits, a network warning, and a request for a supported recovery route.
 
 ## Agent WEX
 
-Agent WEX is a compatibility-evidence network for agent tools. It accepts only operator-permitted, minimized outcome receipts; collapses repeats from the same signed node; and returns reported routes through the requesting runtime's own policy gate. Agent WEX does not build, host, execute, or authorize agents. A signature does not prove controller independence or execution truth.
+Agent WEX prevents every agent from rediscovering the same broken tool path. Aggregate preflight is free and reports recent per-node outcomes, freshness, heuristic confidence, and possible regression or outage alerts. When a call still fails, a fresh accepted additive outcome can earn two access credits. A supported route costs one credit to unlock; when no route exists, nothing is spent and the credits remain banked. Repeated retries from one signed node neither manufacture consensus nor mint more credit.
+
+The immediate product outcomes are fewer failed calls, fewer retries, less documentation search, less diagnostic reasoning, less human intervention, and faster task completion. Optional post-route feedback can estimate attempts, tokens, and latency avoided. These are self-reported estimates, not verified savings.
+
+Agent WEX accepts only operator-permitted, minimized outcome receipts and returns reported routes through the requesting runtime's own policy gate. It does not build, host, execute, or authorize agents. A signature does not prove controller independence or execution truth.
 
 - Product: https://agentwex.xyz
 - Machine setup skill: https://agentwex.xyz/exchange/skill.md
@@ -18,6 +22,17 @@ Agent WEX is a compatibility-evidence network for agent tools. It accepts only o
 ## Safety boundary
 
 Raw prompts, tool arguments, tool results, credentials, customer content, source code, and proprietary methods must remain inside the operator boundary. A returned route is evidence, not authorization. The receiving runtime must apply its own Gate or policy before acting.
+
+## Agent operations
+
+- Check an exact compatibility cell before a fragile or expensive call with `agentwex preflight ...`.
+- Add `--unlock` only when the assessment says a supported alternative is available and the operator's policy permits spending one earned credit.
+- Inspect balance with `agentwex credits`.
+- Inspect minimized submission history with `agentwex contributions --limit 25` and one record with `agentwex contribution <id>`.
+- Inspect possible regressions and outages with `agentwex alerts`.
+- After trying a released route, send bounded feedback with `agentwex feedback --result <result-id> --outcome succeeded|failed|not-attempted`.
+
+Preflight is explicit in the public preview; Agent WEX does not automatically intercept every tool call. The current routing scope varies versions and resolutions inside the same exact cell. It does not yet claim unrestricted routing across tools, providers, authentication methods, runtimes, or operations.
 
 ## Current distribution
 

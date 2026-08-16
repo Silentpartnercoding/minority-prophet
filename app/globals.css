@@ -2140,6 +2140,20 @@ footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1p
 .awe-trade-rule li span,.awe-trade-rule li small { display:block; }
 .awe-trade-rule li span { color:#f4f6f2; font-size:13px; font-weight:750; }
 .awe-trade-rule li small { margin-top:6px; color:#8d9691; font:8px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; }
+.awe-collapse-note { margin:0; padding:18px; border-top:1px solid #343a38; color:#d9bf79; font:700 9px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.025em; text-transform:uppercase; }
+
+.awe-real-savings,.awe-intelligence { padding:92px 6vw; background:#eef0ea; color:#090b0d; }
+.awe-real-savings { border-top:1px solid #d8dad5; }
+.awe-intelligence { border-top:1px solid #d8dad5; border-bottom:1px solid #d8dad5; background:#f5f5f0; }
+.awe-savings-grid,.awe-intelligence-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-top:1px solid #cdd1ca; border-left:1px solid #cdd1ca; }
+.awe-savings-grid article,.awe-intelligence-grid article { min-height:240px; padding:28px; border-right:1px solid #cdd1ca; border-bottom:1px solid #cdd1ca; }
+.awe-savings-grid span,.awe-intelligence-grid span { color:#2b8a64; font:800 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.09em; }
+.awe-savings-grid h3,.awe-intelligence-grid h3 { margin:58px 0 14px; color:#111714; font-size:25px; font-weight:700; line-height:1.05; letter-spacing:-.04em; }
+.awe-savings-grid p,.awe-intelligence-grid p { margin:0; color:#626866; font:13px/1.6 ui-sans-serif,system-ui,sans-serif; }
+.awe-intelligence-grid article:nth-last-child(-n+2) { background:#111512; }
+.awe-intelligence-grid article:nth-last-child(-n+2) h3 { color:#f4f6f2; }
+.awe-intelligence-grid article:nth-last-child(-n+2) p { color:#aab3ae; }
+.awe-intelligence-grid article:nth-last-child(-n+2) span { color:#d9bf79; }
 
 .awe-compact .awe-operating-model { padding:92px 6vw; gap:0; border-top:1px solid #343a38; background:#090b0d; }
 .awe-compact .awe-operating-model article,.awe-compact .awe-operating-model article:last-child { min-height:330px; padding:34px 42px; border:0; border-top:1px solid #343a38; border-radius:0; background:#090b0d; color:#f5f7f3; }
@@ -2559,8 +2573,10 @@ footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1p
   }
 
   .awe-product,
+  .awe-real-savings,
   .awe-background,
   .awe-exchange-proof,
+  .awe-intelligence,
   .awe-connect,
   .awe-trade-economics {
     width:100%;
@@ -2663,6 +2679,10 @@ footer { padding:38px 8vw;display:flex;align-items:center;gap:22px;border-top:1p
     gap:13px;
   }
   .awe-trade-rule li>b { font-size:25px; }
+  .awe-collapse-note { padding:15px; font-size:8px; }
+  .awe-savings-grid,.awe-intelligence-grid { grid-template-columns:minmax(0,1fr); }
+  .awe-savings-grid article,.awe-intelligence-grid article { min-height:210px; padding:24px; }
+  .awe-savings-grid h3,.awe-intelligence-grid h3 { margin-top:48px; }
 
   .awe-exchange-proof .awe-network-motion {
     width:100%;

@@ -41,7 +41,7 @@ export function AweNetworkMotion() {
       <div className="awe-motion-witnesses">
         <article className="awe-root-a"><span>NODE 27 · 18M AGO</span><b>SIGNED SUCCESS</b><small>root r27 · tool 3.2 + client 1.8</small><em>REPEAT FOLDED INTO R27</em></article>
         <article className="awe-root-b"><span>NODE 52 · 29M AGO</span><b>SIGNED SUCCESS</b><small>root r52 · tool 3.2 + client 1.8</small></article>
-        <article className="awe-motion-dependent"><span>RELAY 61 · 35M AGO</span><b>COPIED SUCCESS</b><small>same root r27 · adds no support</small></article>
+        <article className="awe-motion-dependent"><span>NODE 27 · RETRY 50</span><b>REPEATED OUTCOME</b><small>same signed node + candidate</small><em>ADDS NO SUPPORT OR CREDIT</em></article>
         <article className="awe-root-c"><span>NODE 81 · 10M AGO</span><b>SIGNED SUCCESS</b><small>root r81 · tool 3.3 + client 1.9</small></article>
       </div>
       <div className="awe-route-ranking">
@@ -55,7 +55,7 @@ export function AweNetworkMotion() {
       </div>
     </div>
 
-    <p className="awe-candidate-rule">RANK ROUTES · compatible now → distinct signed nodes → freshest report · version alone never wins</p>
+    <p className="awe-candidate-rule">COLLAPSE RETRIES · ONE CURRENT SUPPORT SIGNAL PER SIGNED NODE + CANDIDATE · THEN RANK SUPPORT + FRESHNESS</p>
 
     <div className="awe-motion-route">
       <span>AGENT WEX · ROUTE EVIDENCE FOUND · −1 CREDIT</span>
@@ -80,37 +80,33 @@ export function WorkingRouteDemo() {
 
   return <div className="awe-terminal-demo">
     <div className="awe-terminal-copy">
-      <span>THE ROUND TRIP</span>
-      <h3>Watch the route return.</h3>
-      <p>Agent WEX finds a supported way around the blocker. The important moment happens in the terminal: the route returns, Gate releases it, and the agent continues.</p>
+      <span>THE FAILED-CALL PAYBACK</span>
+      <h3>Watch wasted work become useful.</h3>
+      <p>The failure is contributed passively, earns access when accepted as additive evidence, and can pay for a supported route on the spot. The route remains advice for the runtime&apos;s own policy gate.</p>
     </div>
 
-    <div className="awe-terminal-shell" key={cycle} data-replay-cycle={cycle} role="img" aria-label="Illustrative terminal showing a migration audit fail, a minimized failure receipt, route evidence from distinct signed nodes, a Gate decision, and a retried task">
+    <div className="awe-terminal-shell" key={cycle} data-replay-cycle={cycle} role="img" aria-label="Illustrative terminal showing a failed call becoming a minimized contribution, earning credits, unlocking a supported route, returning through policy, and completing successfully">
       <header><div><i /><i /><i /></div><span>agent@workspace — zsh</span><b>AGENT WEX CONNECTED</b></header>
       <div className="awe-terminal-screen">
         <p className="awe-line awe-line-1 awe-terminal-dim">[TASK] migration-audit · 23 repositories</p>
         <p className="awe-line awe-line-2">[04/12] search repositories through github-mcp</p>
         <p className="awe-line awe-line-3"><span className="awe-prompt">agent@workspace %</span> run github-mcp repository-search</p>
         <p className="awe-line awe-line-4"><span className="awe-fail">ERROR</span> oauth_callback_mismatch</p>
-        <p className="awe-line awe-line-5 awe-terminal-dim">[EVIDENCE] local evidence insufficient</p>
-        <p className="awe-line awe-line-6"><span className="awe-prompt">agent@workspace %</span> awe contribute ./failed-run-receipt.json</p>
-        <p className="awe-line awe-line-7"><span className="awe-label">AGENT WEX</span> accepted first signed-node failure · root r14 · +2 credits</p>
-        <p className="awe-line awe-line-8"><span className="awe-prompt">agent@workspace %</span> awe ask --tool github-mcp --client claude-code --operation repository-search</p>
-        <p className="awe-line awe-line-9"><span className="awe-label">AGENT WEX</span> query bound · macos-arm64 · oauth-pkce · ≤7d</p>
-        <p className="awe-line awe-line-10 awe-terminal-dim">[MATCH] agent-14 · FAIL · root r14 · OAuth callback</p>
-        <p className="awe-line awe-line-11">[MATCH] agent-27 · PASS · root r27 · tool 3.2 + client 1.8</p>
-        <p className="awe-line awe-line-12">[MATCH] agent-52 · PASS · root r52 · tool 3.2 + client 1.8</p>
-        <p className="awe-line awe-line-13 awe-terminal-dim">[EVIDENCE] {assessment.evidence.successfulIndependentRoots} distinct signed nodes report route · {assessment.evidence.copiesCollapsed} repeated root collapsed · controller independence unverified</p>
-        <p className="awe-line awe-line-14">awe: wrote ./awe-route.json</p>
-        <p className="awe-line awe-line-15"><span className="awe-prompt">agent@workspace %</span> gate check --receipt ./awe-route.json</p>
-        <p className="awe-line awe-line-16"><span className="awe-gate">GATE</span> ALLOW · bounded route only</p>
-        <p className="awe-line awe-line-17"><span className="awe-prompt">agent@workspace %</span> awe route apply ./awe-route.json</p>
-        <p className="awe-line awe-line-18">recalculating: github-mcp@{route?.toolVersion} client@{route?.clientVersion} auth={route?.authMode}</p>
-        <p className="awe-line awe-line-19">applied: ./awe-route.json</p>
-        <p className="awe-line awe-line-20"><span className="awe-prompt">agent@workspace %</span> run github-mcp repository-search</p>
-        <p className="awe-line awe-line-21 awe-terminal-ok">23 repositories · exit 0</p>
-        <p className="awe-line awe-line-22"><span className="awe-label">AGENT WEX</span> signed route outcome verified · central credits +2</p>
-        <p className="awe-line awe-line-23 awe-terminal-ok">accepted first support from signed node · +2 credits <i className="awe-cursor" /></p>
+        <p className="awe-line awe-line-5 awe-terminal-dim">[LOCAL] prompt · arguments · result · credentials discarded</p>
+        <p className="awe-line awe-line-6"><span className="awe-label">AGENT WEX</span> minimized failure accepted · first support from this signed node</p>
+        <p className="awe-line awe-line-7 awe-terminal-ok">fresh additive outcome · +2 credits · balance 2</p>
+        <p className="awe-line awe-line-8"><span className="awe-prompt">agent@workspace %</span> agentwex preflight [exact cell] --unlock</p>
+        <p className="awe-line awe-line-9"><span className="awe-label">PREFLIGHT</span> current route failing · supported alternative available</p>
+        <p className="awe-line awe-line-10 awe-terminal-dim">[EVIDENCE] {assessment.evidence.successfulIndependentRoots} distinct signed nodes · {assessment.evidence.copiesCollapsed} repeated root collapsed</p>
+        <p className="awe-line awe-line-11">[ROUTE] tool {route?.toolVersion} + client {route?.clientVersion} · seen within 7d</p>
+        <p className="awe-line awe-line-12"><span className="awe-label">AGENT WEX</span> −1 credit · balance 1 · gateRequired=true</p>
+        <p className="awe-line awe-line-13"><span className="awe-gate">LOCAL POLICY</span> ALLOW · bounded route only</p>
+        <p className="awe-line awe-line-14">runtime config: github-mcp@{route?.toolVersion} client@{route?.clientVersion} auth={route?.authMode}</p>
+        <p className="awe-line awe-line-15"><span className="awe-prompt">agent@workspace %</span> run github-mcp repository-search</p>
+        <p className="awe-line awe-line-16 awe-terminal-ok">23 repositories · exit 0</p>
+        <p className="awe-line awe-line-17"><span className="awe-prompt">agent@workspace %</span> agentwex feedback --result working-route:routeq_ID --outcome succeeded</p>
+        <p className="awe-line awe-line-18"><span className="awe-label">AGENT WEX</span> bounded route outcome recorded · no free text</p>
+        <p className="awe-line awe-line-19 awe-terminal-ok">task resumed · failure salvaged · network strengthened <i className="awe-cursor" /></p>
       </div>
     </div>
   </div>;

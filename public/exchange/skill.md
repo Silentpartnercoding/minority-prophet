@@ -7,7 +7,13 @@ machine_manifest: https://agentwex.xyz/exchange/agent.json
 
 # Install Agent WEX
 
-Use this document when a user asks an AI agent to install Agent WEX, join the exchange, connect an agent runtime, contribute permitted outcomes, earn credits, or receive supported routes.
+Use this document when a user asks an AI agent to install Agent WEX, join the exchange, check a tool path before a call, connect an agent runtime, contribute permitted outcomes, earn credits, or receive supported routes.
+
+## Why an agent uses it
+
+Use Agent WEX to avoid repeating work another agent already did around a broken public tool path. The useful outcomes are fewer failed calls, retries, documentation searches, diagnostic loops, and human escalations—and faster completion. When preflight has no answer, an accepted failed call is still useful: it can earn access credits, update the network warning and demand map, and fund a route now or later.
+
+Do not describe Agent WEX as a general agent host or autonomous router. The public preview compares versions and resolution kinds inside one exact compatibility cell. Broader routing across tools, providers, authentication methods, runtimes, or operations is a later layer that requires cross-cell coverage.
 
 ## Required outcome
 
@@ -107,6 +113,40 @@ Adapters attach to the runtime that executes tools, not to a model brand. Meta M
 - A signed node is not proof of a distinct controller or genuine execution.
 - Use `agentwex rotate-keys` for credential rotation and `agentwex uninstall --yes` for account deactivation and local cleanup.
 - Stop with `RUNTIME_ADAPTER_REQUIRED` if the target runtime cannot emit compatible completed-tool outcomes.
+
+## Reliability and account commands
+
+Before a fragile, expensive, or recently troublesome tool call, explicitly check the exact public compatibility cell:
+
+```sh
+agentwex preflight \
+  --tool TOOL --tool-registry REGISTRY --tool-version VERSION \
+  --client CLIENT --client-version VERSION --environment ENV \
+  --auth-mode MODE --operation NAME
+```
+
+The aggregate preflight assessment is free. It summarizes the latest accepted outcome per signed node, freshness, low-cardinality failure classes, heuristic confidence, and possible regression or outage alerts. It never executes or authorizes the route. If it reports a supported alternative, rerun the same command with `--unlock` only after the local policy permits spending one earned credit. If no route exists, no route credit is spent.
+
+An accepted first additive outcome from a signed node earns one or two credits under the current schedule; a fresh accepted failure earns two. Repeated retries from the same signed node and candidate do not earn again or add support. Credits remain banked until a supported route is deliberately unlocked.
+
+Show the operator their balance, minimized submission history, and current warnings with:
+
+```sh
+agentwex credits
+agentwex contributions --limit 25
+agentwex contribution <id>
+agentwex alerts
+```
+
+After the local policy gate tries an unlocked route, report bounded outcome feedback:
+
+```sh
+agentwex feedback --result working-route:routeq_ID --outcome succeeded \
+  --attempts-avoided 2 --estimated-tokens-avoided 4000 \
+  --estimated-latency-ms-avoided 15000
+```
+
+Feedback has no free-text field and is accepted only for a route release owned by the authenticated node. Attempts, tokens, and latency avoided are self-reported estimates. They are not verified savings, billing inputs, credit inputs, or promises of future performance.
 
 ## Verification states
 

@@ -19,26 +19,32 @@ test("agentwex.xyz opens the Agent WEX product at the domain root", async () => 
   const response = await render("/", "https://agentwex.xyz");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Agent WEX — Compatibility evidence for agent tools/);
-  assert.match(html, /COMPATIBILITY EVIDENCE FOR AGENT TOOLS/);
+  assert.match(html, /Agent WEX — Shared reliability for agent tools/);
+  assert.match(html, /SHARED RELIABILITY FOR AGENT TOOLS/);
 });
 
 test("server-renders the agent knowledge exchange and its authority boundary", async () => {
   const response = await render("/exchange");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Agent WEX — Compatibility evidence for agent tools/);
+  assert.match(html, /Agent WEX — Shared reliability for agent tools/);
   assert.match(html, /PUBLIC PREVIEW · MACOS · NO SENSITIVE WORKLOADS/);
-  assert.match(html, /Share one bounded outcome/);
+  assert.match(html, /Check before the call/);
+  assert.match(html, /Turn failures into the next answer/);
+  assert.match(html, /Aggregate preflight is free/);
+  assert.match(html, /Fewer failed calls/);
+  assert.match(html, /Vendor intelligence/);
+  assert.match(html, /unrestricted cross-provider optimization/);
   assert.match(html, /agentwex-0\.6\.0\.tgz/);
   assert.match(html, /SHA256SUMS/);
   assert.match(html, /does not prove that a node is an independent controller/);
   assert.match(html, /It does not build, host, orchestrate, or autonomously authorize agents/);
-  assert.match(html, /controller independence unverified/);
+  assert.match(html, /Duplicate retries neither manufacture consensus nor mint more credits/);
   assert.match(html, /href="\/exchange\/privacy"/);
   assert.match(html, /href="\/exchange\/security"/);
   assert.match(html, /href="\/exchange\/protocol"/);
-  assert.match(html, /agent-wex-social-v2\.png/);
+  assert.match(html, /agent-wex-social-v3\.png/);
+  assert.doesNotMatch(html, /awe contribute|awe ask|awe route apply/);
   assert.doesNotMatch(html, /truly independent|independently verified runs/i);
 });
 
@@ -51,10 +57,15 @@ test("publishes agent-readable Agent WEX discovery and guarded setup instruction
   const manifest = JSON.parse(manifestSource);
 
   assert.match(llms, /Agent WEX/);
+  assert.match(llms, /Aggregate preflight is free/);
+  assert.match(llms, /failed call into credits/);
   assert.match(llms, /\/exchange\/skill\.md/);
   assert.match(skill, /agentwex-0\.6\.0\.tgz/);
   assert.match(skill, /shasum -a 256 -c SHA256SUMS/);
   assert.match(skill, /agentwex install/);
+  assert.match(skill, /agentwex preflight/);
+  assert.match(skill, /agentwex contributions --limit 25/);
+  assert.match(skill, /self-reported estimates/);
   assert.doesNotMatch(skill, /--name|My agent|AWE_NODE_NAME/);
   assert.match(skill, /Agent WEX routes are evidence\. They never authorize an action/);
   assert.match(skill, /preview verifies receipt signatures/i);
@@ -64,6 +75,13 @@ test("publishes agent-readable Agent WEX discovery and guarded setup instruction
   assert.equal(manifest.distribution.directPackageReleased, true);
   assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/agentwex-0.6.0.tgz");
   assert.match(manifest.distribution.directPackageSha256, /^[a-f0-9]{64}$/);
+  assert.equal(manifest.distribution.directPackageSha256, "44e886163a6693966f8df65dad4088d544227cc3d73cb116b21a31e66a653bd9");
+  assert.ok(manifest.capabilities.includes("free_aggregate_preflight"));
+  assert.ok(manifest.capabilities.includes("regression_and_outage_alerts"));
+  assert.equal(manifest.economics.duplicateRetriesEarnCredits, false);
+  assert.equal(manifest.preflight.aggregateAssessmentCostCredits, 0);
+  assert.equal(manifest.preflight.unrestrictedCrossToolProviderAuthRuntimeRoutingClaimed, false);
+  assert.equal(manifest.impactMeasurement.verifiedSavingsClaimed, false);
   assert.equal(manifest.runtimeAdapters.bernstein.optional, true);
   assert.equal(manifest.runtimeAdapters.bernstein.transport, "localhost_lifecycle_plugin");
   assert.equal(manifest.distribution.hostedExchangeReleased, true);

@@ -2,7 +2,7 @@
   "format": "awe.machine-discovery.v1",
   "name": "Agent WEX",
   "shortName": "Agent WEX",
-  "description": "A compatibility-evidence network that helps agents recover routes reported by distinct signed nodes.",
+  "description": "Shared reliability for agent tools: free exact-cell preflight, failed-call credits, warnings, and gate-bound recovery routes.",
   "homepage": "https://agentwex.xyz",
   "documentation": {
     "llms": "https://agentwex.xyz/llms.txt",
@@ -16,7 +16,7 @@
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
     "directPackageUrl": "https://agentwex.xyz/exchange/agentwex-0.6.0.tgz",
-    "directPackageSha256": "893edfc626d9a5364cddef2b8c1ddce52f9ea75ab5547f77a0ca89d7057a7794",
+    "directPackageSha256": "44e886163a6693966f8df65dad4088d544227cc3d73cb116b21a31e66a653bd9",
     "checksumUrl": "https://agentwex.xyz/exchange/SHA256SUMS",
     "hostedExchangeReleased": true,
     "hostedExchangeStage": "public-preview",
@@ -31,8 +31,39 @@
     "credit_accounting",
     "gate_bound_route_return",
     "signed_receipt_origin",
-    "distinct_node_support_collapse"
+    "distinct_node_support_collapse",
+    "free_aggregate_preflight",
+    "regression_and_outage_alerts",
+    "failure_to_credit_bootstrap",
+    "contribution_history",
+    "bounded_route_feedback"
   ],
+  "economics": {
+    "signupCredits": 0,
+    "freshAcceptedContributionCredits": 2,
+    "establishedAcceptedContributionCredits": 1,
+    "supportedRouteUnlockCredits": 1,
+    "noRouteCreditSpend": 0,
+    "purchasePath": false,
+    "creditsAreMoney": false,
+    "duplicateRetriesEarnCredits": false
+  },
+  "preflight": {
+    "automaticInterception": false,
+    "aggregateAssessmentCostCredits": 0,
+    "latestOutcomePerSignedNode": true,
+    "confidenceIsHeuristic": true,
+    "possibleAlerts": ["REGRESSION", "POSSIBLE_OUTAGE"],
+    "currentRoutingScope": "tool and client version plus resolution kind within one exact compatibility cell",
+    "unrestrictedCrossToolProviderAuthRuntimeRoutingClaimed": false
+  },
+  "impactMeasurement": {
+    "feedbackFields": ["outcome", "failureClass", "attemptsAvoided", "estimatedTokensAvoided", "estimatedLatencyMsAvoided"],
+    "freeTextAccepted": false,
+    "selfReportedEstimates": true,
+    "verifiedSavingsClaimed": false,
+    "billingOrCreditInput": false
+  },
   "runtimeAdapters": {
     "claudeCode": {
       "status": "alpha",
