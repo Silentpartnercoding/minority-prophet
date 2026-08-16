@@ -7,6 +7,47 @@
 Minority Prophet asks whether grounded evidence can survive an overwhelming
 copied majority.
 
+## What is actually established
+
+The repository is large. The established claims are not, and separating the two
+is the point of this section. Full detail: [`formal/CLAIM-SCOPE.md`](formal/CLAIM-SCOPE.md),
+statuses in [`formal/THEOREM-LEDGER.json`](formal/THEOREM-LEDGER.json).
+
+**Proved** — compiled in Lean 4.32.2 against pinned Mathlib, zero `sorry`, no
+added axioms. Checkable by anyone, no trust in us required.
+
+- Under side-consistency, `S_a` is exactly the `a`-asserting roots.
+- Lineage may be arbitrarily wrong without moving a verdict, provided no edge
+  crosses sides, no root is created or destroyed, and assertions are unchanged.
+- Copies **whose parent edge is recorded** are free.
+- A verdict flips only if net per-side root flow reaches the margin; flow equal
+  to the margin abstains; reversal needs margin + 1.
+- With assertions fixed, `k` units of root-set change cannot move a verdict of
+  margin > `k`.
+- Conversions preserve the margin's parity, so an odd margin cannot be driven to
+  abstention by conversion alone.
+
+**Measured** — one number about the world, at scale, no labelling.
+
+- Among 60.8M journal articles (2015–2024), **46.2%** record no ancestry. Each
+  becomes an evidence root. So in the copy-dominant regime this project is
+  about, over-count ≥ `u × N` — with `u` from **33%** (medicine) to **74%**
+  (arts and humanities). A floor, not an average.
+
+**Not established** — and not on a roadmap to being established without people.
+
+- Whether one evidence root corresponds to one real observation in the typical
+  case. This is blocked *structurally*, not for want of effort: the over-count
+  lives only among works that record no ancestry, so the ground truth needed to
+  measure it is the very data whose absence constitutes it. See
+  [`HRI1-BLOCKER-20260816.md`](research/knowledge-ledger/experiments/KL-014/HRI1-BLOCKER-20260816.md).
+- Accordingly `flip_budget` is publishable as a count of root-set units, which
+  is what it provably is, and **not** as an operational security budget.
+
+**Not claimed at all.** That the system discovers truth, that agreement implies
+independence, or that any of this has been demonstrated outside synthetic worlds
+and public bibliographic metadata.
+
 ## Installable surfaces
 
 The repository deliberately separates research code from the deterministic
