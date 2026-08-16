@@ -204,6 +204,30 @@ test("one install command creates a private node identity without printing its c
   assert.doesNotMatch(claudeEnvironment, /OTEL_LOG_TOOL_DETAILS/);
   const updated = JSON.parse(await readFile(configPath, "utf8"));
   assert.equal(updated.adapters.claudeCode.tools.mcp__github__search_repositories.toolVersion, "3.2.0");
+
+  const codexConfigured = await execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"),
+    "adapter", "codex", "--config", configPath,
+    "--tool", "exec_command", "--tool-registry", "github", "--tool-version", "1.0.0",
+    "--auth-mode", "none", "--client-version", "0.145.0",
+  ], { cwd: resolve("."), timeout: 10_000 });
+  assert.match(codexConfigured.stdout, /Codex adapter configured/);
+  const codexFragment = await readFile(resolve(directory, "codex-otel.toml"), "utf8");
+  assert.match(codexFragment, /log_user_prompt = false/);
+  assert.match(codexFragment, /\/v1\/codex\/logs/);
+  assert.match(codexFragment, /protocol = "json"/);
+
+  const geminiConfigured = await execFileAsync(process.execPath, [
+    resolve("packages/awe-node/bin/awe-node.mjs"),
+    "adapter", "gemini-cli", "--config", configPath,
+    "--tool", "run_shell_command", "--tool-registry", "github", "--tool-version", "1.1.0",
+    "--auth-mode", "none", "--client-version", "0.3.0",
+  ], { cwd: resolve("."), timeout: 10_000 });
+  assert.match(geminiConfigured.stdout, /Gemini CLI adapter configured/);
+  const geminiEnvironment = await readFile(resolve(directory, "gemini-cli.env"), "utf8");
+  assert.match(geminiEnvironment, /GEMINI_TELEMETRY_LOG_PROMPTS='0'/);
+  assert.match(geminiEnvironment, /GEMINI_TELEMETRY_TRACES_ENABLED='0'/);
+  assert.match(geminiEnvironment, new RegExp(updated.collector.token));
 });
 
 test("localhost collector rejects unauthenticated span injection", async (context) => {
@@ -242,6 +266,18 @@ test("localhost collector rejects unauthenticated span injection", async (contex
           },
         },
       },
+      codex: {
+        enabled: true,
+        clientVersion: "0.145.0",
+        environment: "macos-arm64",
+        tools: { exec_command: { toolRegistry: "github", toolId: "io.agentwex/codex-exec", toolVersion: "1.0.0", authMode: "none", operation: "repository-check" } },
+      },
+      geminiCli: {
+        enabled: true,
+        clientVersion: "0.3.0",
+        environment: "macos-arm64",
+        tools: { run_shell_command: { toolRegistry: "github", toolId: "io.agentwex/gemini-shell", toolVersion: "1.1.0", authMode: "none", operation: "repository-check" } },
+      },
     },
     pollSeconds: 60,
   });
@@ -275,4 +311,37 @@ test("localhost collector rejects unauthenticated span injection", async (contex
   });
   assert.equal(logResponse.status, 202);
   assert.deepEqual(await logResponse.json(), { received: 1, submitted: 1, ignored: 0, rejected: 0, queriesOpened: 0 });
+
+  const codexLog = JSON.stringify({ resourceLogs: [{ scopeLogs: [{ logRecords: [{
+    observedTimeUnixNano: "1786870801000000000",
+    attributes: [
+      { key: "event.name", value: { stringValue: "codex.tool_result" } },
+      { key: "tool_name", value: { stringValue: "exec_command" } },
+      { key: "call_id", value: { stringValue: "codex-call" } },
+      { key: "success", value: { stringValue: "true" } },
+    ],
+  }] }] }] });
+  const codexResponse = await fetch(`http://127.0.0.1:${port}/v1/codex/logs`, {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: "Bearer private-local-token" },
+    body: codexLog,
+  });
+  assert.equal(codexResponse.status, 202);
+  assert.equal((await codexResponse.json()).submitted, 1);
+
+  const geminiLog = JSON.stringify({ resourceLogs: [{ resource: { attributes: [{ key: "sessionId", value: { stringValue: "gemini-session" } }] }, scopeLogs: [{ logRecords: [{
+    timeUnixNano: "1786870802000000000",
+    attributes: [
+      { key: "event.name", value: { stringValue: "gemini_cli.tool_call" } },
+      { key: "function_name", value: { stringValue: "run_shell_command" } },
+      { key: "success", value: { boolValue: true } },
+    ],
+  }] }] }] });
+  const geminiResponse = await fetch(`http://127.0.0.1:${port}/gemini/private-local-token/v1/logs`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: geminiLog,
+  });
+  assert.equal(geminiResponse.status, 202);
+  assert.equal((await geminiResponse.json()).submitted, 1);
 });

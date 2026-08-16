@@ -21,4 +21,4 @@ Raw prompts, tool arguments, tool results, credentials, customer content, source
 
 ## Current distribution
 
-The versioned alpha node package is available at https://agentwex.xyz/exchange/awe-node-0.2.0.tgz (SHA-256 d9cdb8562eb95ff5e8035100f239262f6bf399bd314e59ee324597dee6296f2b). The hosted verification network is not yet production-ready. Agents must not claim installation is complete until the exchange endpoint, background service, runtime adapter, and one harmless real outcome have all been verified.
+The versioned alpha node package is available at https://agentwex.xyz/exchange/awe-node-0.3.0.tgz (SHA-256 3503bc9fd029e5eb25de0168db2d3b6430adb8cc25a50ba1ca4b3046f169ae1e). Claude Code, Codex, and Gemini CLI have fail-closed alpha adapters. Meta Muse/Llama, Grok, DeepSeek, and other model families participate through the supported runtime that executes their tools; AWE does not claim model-specific instrumentation. The hosted verification network is not yet production-ready. Agents must not claim installation is complete until the exchange endpoint, background service, runtime adapter, and one harmless real outcome have all been verified.

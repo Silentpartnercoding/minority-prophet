@@ -18,7 +18,7 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.2.0.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.0.tgz
 awe-node install --url https://agentwex.xyz --name "First AWE node"
 ```
 
@@ -38,6 +38,36 @@ awe-node adapter claude-code \
 The command writes a private `~/.awe/claude-code.env`. It enables Claude Code's documented OTLP `tool_result` logs without enabling tool-detail export. Start Claude Code with the printed `source ... && claude` command.
 
 The adapter reads outcome, tool name, correlation ID, time, and error class. It never reads or submits prompts, tool parameters, tool inputs, tool results, credentials, URLs, or raw correlation IDs.
+
+## Codex adapter
+
+Codex emits documented `codex.tool_result` OTLP logs. AWE reads only the event name, tool name, call ID, time, and explicit success flag, then discards arguments and output locally.
+
+```bash
+awe-node adapter codex \
+  --tool exec_command \
+  --tool-registry github \
+  --tool-version 1.0.0 \
+  --auth-mode none
+```
+
+The command writes a private `~/.awe/codex-otel.toml` fragment. Codex telemetry is user-level configuration, so merge the fragment into `~/.codex/config.toml`. If an exporter already exists, use collector fan-out instead of replacing it. Prompt logging remains disabled.
+
+## Gemini CLI adapter
+
+Gemini CLI emits documented `gemini_cli.tool_call` OTLP logs with an explicit success flag. Bind each eligible function explicitly:
+
+```bash
+awe-node adapter gemini-cli \
+  --tool run_shell_command \
+  --tool-registry github \
+  --tool-version 1.1.0 \
+  --auth-mode none
+```
+
+The command writes a private `~/.awe/gemini-cli.env`. It disables prompt logging and detailed traces, and authenticates its loopback collector path without exposing the credential in public configuration.
+
+Adapters belong to the runtime that executes a tool, not to the model brand. Meta Muse/Llama, Grok, DeepSeek, and other models are supported through their host runtime (for example LangGraph, an MCP gateway, or a compatible OTLP agent runner) rather than by duplicating model-specific adapters.
 
 The installer creates a private `~/.awe/config.json` and, on macOS, a LaunchAgent that keeps the collector running. It never prints the API key.
 

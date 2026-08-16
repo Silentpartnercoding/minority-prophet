@@ -15,8 +15,8 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.2.0.tgz",
-    "directPackageSha256": "d9cdb8562eb95ff5e8035100f239262f6bf399bd314e59ee324597dee6296f2b",
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.3.0.tgz",
+    "directPackageSha256": "3503bc9fd029e5eb25de0168db2d3b6430adb8cc25a50ba1ca4b3046f169ae1e",
     "hostedExchangeReleased": false,
     "minimumNodeVersion": "22.13.0"
   },
@@ -37,10 +37,31 @@
       "exportsToolDetails": false
     },
     "codex": {
-      "status": "planned",
-      "transport": "otlp_http_json",
-      "reason": "Codex can export OTLP logs and traces, but its events still require a bounded translator into the AWE receipt schema."
+      "status": "alpha",
+      "transport": "otlp_http_json_logs",
+      "configurationCommand": "awe-node adapter codex --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "requiresExplicitCompatibilityMapping": true,
+      "discardsArgumentsAndOutputLocally": true
+    },
+    "geminiCli": {
+      "status": "alpha",
+      "transport": "otlp_http_json_logs",
+      "configurationCommand": "awe-node adapter gemini-cli --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "requiresExplicitCompatibilityMapping": true,
+      "promptLoggingEnabled": false,
+      "detailedTracesEnabled": false
     }
+  },
+  "modelCompatibility": {
+    "principle": "AWE instruments the runtime that executes a tool, not the model brand.",
+    "runtimeDependent": [
+      "Google Gemini models",
+      "Meta Muse and Llama models",
+      "xAI Grok models",
+      "DeepSeek models",
+      "other models hosted by a supported runtime"
+    ],
+    "directModelAdapterClaimed": false
   },
   "authorityBoundary": {
     "grantsAuthority": false,

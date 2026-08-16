@@ -41,7 +41,7 @@ node packages/awe-node/bin/awe-node.mjs install --url "$AWE_EXCHANGE_URL" --name
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.2.0.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.0.tgz
 awe-node install --url "${AWE_EXCHANGE_URL:-https://agentwex.xyz}" --name "$AWE_NODE_NAME"
 ```
 
@@ -84,6 +84,36 @@ awe-node adapter claude-code \
 ```
 
 Start Claude Code using the private `source ... && claude` command printed by the adapter. Do not enable tool-detail telemetry. Unmapped tools must remain local and be ignored; never invent compatibility metadata.
+
+### Codex adapter
+
+Configure each eligible Codex tool explicitly:
+
+```sh
+awe-node adapter codex \
+  --tool exec_command \
+  --tool-registry github \
+  --tool-version 1.0.0 \
+  --auth-mode none
+```
+
+Merge the generated private `~/.awe/codex-otel.toml` fragment into the user-level `~/.codex/config.toml`. Do not replace an existing exporter; use collector fan-out. Keep `log_user_prompt = false`. Codex may include arguments and output in its local OTLP event; the AWE adapter must discard both before receipt construction.
+
+### Gemini CLI adapter
+
+Configure each eligible Gemini CLI function explicitly:
+
+```sh
+awe-node adapter gemini-cli \
+  --tool run_shell_command \
+  --tool-registry github \
+  --tool-version 1.1.0 \
+  --auth-mode none
+```
+
+Start Gemini CLI using the private `source ... && gemini` command printed by the adapter. Prompt logging and detailed traces must remain disabled. The adapter must ignore unmapped or sessionless events.
+
+Model vendors are not runtime adapters. A Meta Muse/Llama, Grok, DeepSeek, or other model running inside a supported framework is covered by that framework's tool-outcome adapter. Do not claim direct support merely because its inference API is compatible.
 
 ## Verify
 

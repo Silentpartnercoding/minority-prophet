@@ -2,6 +2,8 @@ import { createServer } from "node:http";
 import { adaptOtelSpanToRouteOutcome } from "./receipt.mjs";
 import { spansFromOtlpJson } from "./otlp.mjs";
 import { spansFromClaudeCodeLogs } from "./claude-code.mjs";
+import { spansFromCodexLogs } from "./codex.mjs";
+import { spansFromGeminiCliLogs } from "./gemini-cli.mjs";
 import { createRouteQuery, getAccount, getContribution, getRouteQuery, submitRouteOutcome, unlockRoute } from "./client.mjs";
 import { defaultConfigPath, readConfig, readState, writeState } from "./config.mjs";
 
@@ -142,6 +144,16 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
     return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
   }
 
+  async function ingestCodex(payload) {
+    const adapted = spansFromCodexLogs(payload, config.adapters?.codex);
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+  }
+
+  async function ingestGeminiCli(payload) {
+    const adapted = spansFromGeminiCliLogs(payload, config.adapters?.geminiCli);
+    return ingestSpans(adapted.spans, { received: adapted.received, ignored: adapted.ignored });
+  }
+
   function serialized(task) {
     operation = operation.then(task, task);
     return operation;
@@ -152,6 +164,8 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
     getState: () => state,
     ingest: (payload) => serialized(() => ingest(payload)),
     ingestClaudeCode: (payload) => serialized(() => ingestClaudeCode(payload)),
+    ingestCodex: (payload) => serialized(() => ingestCodex(payload)),
+    ingestGeminiCli: (payload) => serialized(() => ingestGeminiCli(payload)),
     reconcile: () => serialized(reconcile),
   };
 }
@@ -164,7 +178,9 @@ export async function runDaemon(configPath = defaultConfigPath()) {
   const server = createServer(async (request, response) => {
     const url = new URL(request.url, `http://${host}:${port}`);
     try {
-      if (!locallyAuthorized(request, runtime.config.collector.token)) return json(response, 401, { error: "invalid_local_collector_token" });
+      const geminiBase = `/gemini/${runtime.config.collector.token}`;
+      const geminiPathAuthorized = url.pathname.startsWith(`${geminiBase}/`);
+      if (!locallyAuthorized(request, runtime.config.collector.token) && !geminiPathAuthorized) return json(response, 401, { error: "invalid_local_collector_token" });
       if (request.method === "GET" && url.pathname === "/health") return json(response, 200, { status: "ok", agentId: runtime.config.agentId, authorityGranted: false });
       if (request.method === "GET" && url.pathname === "/awe/status") return json(response, 200, runtime.getState());
       if (request.method === "GET" && url.pathname === "/awe/routes") return json(response, 200, { routes: runtime.getState().routes, authorityGranted: false });
@@ -175,6 +191,17 @@ export async function runDaemon(configPath = defaultConfigPath()) {
       if (request.method === "POST" && url.pathname === "/v1/logs") {
         if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "otlp_json_required" });
         return json(response, 202, await runtime.ingestClaudeCode(await readJsonBody(request)));
+      }
+      if (request.method === "POST" && url.pathname === "/v1/codex/logs") {
+        if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "otlp_json_required" });
+        return json(response, 202, await runtime.ingestCodex(await readJsonBody(request)));
+      }
+      if (request.method === "POST" && url.pathname === `${geminiBase}/v1/logs`) {
+        if (!(request.headers["content-type"] ?? "").includes("application/json")) return json(response, 415, { error: "otlp_json_required" });
+        return json(response, 202, await runtime.ingestGeminiCli(await readJsonBody(request)));
+      }
+      if (request.method === "POST" && [`${geminiBase}/v1/metrics`, `${geminiBase}/v1/traces`].includes(url.pathname)) {
+        return json(response, 202, { received: 0, ignored: true });
       }
       return json(response, 404, { error: "awe_node_route_not_found" });
     } catch (error) {

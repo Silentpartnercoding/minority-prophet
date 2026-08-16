@@ -29,7 +29,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--name NAME] [--port 4318] [--no-service]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
+  process.stdout.write(`Agent Witness Exchange node\n\nCommands:\n  install [--url URL] [--name NAME] [--port 4318] [--no-service]\n  adapter claude-code --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter codex --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  adapter gemini-cli --tool TOOL --tool-registry REGISTRY --tool-version VERSION --auth-mode MODE [--operation NAME]\n  daemon [--config PATH]\n  status [--config PATH]\n  ledger [--config PATH]\n  routes [--config PATH]\n  doctor [--config PATH]\n\nInstall is the one explicit consent step. After it, the node submits only minimized tool-outcome receipts in the background. Runtime adapters fail closed when compatibility metadata is missing.\n`);
 }
 
 function environmentClass() {
@@ -47,20 +47,32 @@ async function detectedClaudeVersion(explicit) {
   throw new Error("Claude Code version was not detectable; pass --client-version explicitly");
 }
 
-async function configureClaudeCode(configPath, options) {
-  const tool = options.tool;
+async function detectedRuntimeVersion(command, explicit, displayName) {
+  if (explicit) return explicit;
+  try {
+    const { stdout } = await execFileAsync(command, ["--version"], { timeout: 2_000 });
+    const match = stdout.match(/\d+(?:\.\d+){1,3}/);
+    if (match) return match[0];
+  } catch {}
+  throw new Error(`${displayName} version was not detectable; pass --client-version explicitly`);
+}
+
+function requiredToolOptions(options, displayName) {
   for (const required of ["tool", "tool-registry", "tool-version", "auth-mode"]) {
-    if (!options[required]) throw new Error(`Claude Code adapter requires --${required}`);
+    if (!options[required]) throw new Error(`${displayName} adapter requires --${required}`);
   }
-  const config = await readConfig(configPath);
-  const clientVersion = await detectedClaudeVersion(options["client-version"]);
+}
+
+function bindTool(config, adapterKey, clientVersion, options) {
+  const tool = options.tool;
   config.adapters ??= {};
-  config.adapters.claudeCode ??= { enabled: true, clientVersion, environment: environmentClass(), tools: {} };
-  config.adapters.claudeCode.enabled = true;
-  config.adapters.claudeCode.clientVersion = clientVersion;
-  config.adapters.claudeCode.environment = options.environment ?? config.adapters.claudeCode.environment ?? environmentClass();
-  config.adapters.claudeCode.tools ??= {};
-  config.adapters.claudeCode.tools[tool] = {
+  config.adapters[adapterKey] ??= { enabled: true, clientVersion, environment: environmentClass(), tools: {} };
+  const adapter = config.adapters[adapterKey];
+  adapter.enabled = true;
+  adapter.clientVersion = clientVersion;
+  adapter.environment = options.environment ?? adapter.environment ?? environmentClass();
+  adapter.tools ??= {};
+  adapter.tools[tool] = {
     toolRegistry: options["tool-registry"],
     toolId: options["tool-id"] ?? tool,
     toolVersion: options["tool-version"],
@@ -68,11 +80,43 @@ async function configureClaudeCode(configPath, options) {
     operation: options.operation ?? tool,
     resolutionKind: options.resolution ?? "none",
   };
+}
+
+async function configureClaudeCode(configPath, options) {
+  const tool = options.tool;
+  requiredToolOptions(options, "Claude Code");
+  const config = await readConfig(configPath);
+  const clientVersion = await detectedClaudeVersion(options["client-version"]);
+  bindTool(config, "claudeCode", clientVersion, options);
   await writePrivateJson(configPath, config);
   const environmentPath = resolve(configPath, "..", "claude-code.env");
   await writePrivateText(environmentPath,
     `export CLAUDE_CODE_ENABLE_TELEMETRY='1'\nexport OTEL_LOGS_EXPORTER='otlp'\nexport OTEL_EXPORTER_OTLP_LOGS_PROTOCOL='http/json'\nexport OTEL_EXPORTER_OTLP_LOGS_ENDPOINT='http://127.0.0.1:${config.collector.port}/v1/logs'\nexport OTEL_EXPORTER_OTLP_HEADERS='authorization=Bearer ${config.collector.token}'\n`);
   process.stdout.write(`Claude Code adapter configured for ${tool}.\nNo prompts, tool parameters, tool inputs, or tool results are requested.\nStart Claude Code with:\n  source ${environmentPath} && claude\n`);
+}
+
+async function configureCodex(configPath, options) {
+  requiredToolOptions(options, "Codex");
+  const config = await readConfig(configPath);
+  const clientVersion = await detectedRuntimeVersion("codex", options["client-version"], "Codex");
+  bindTool(config, "codex", clientVersion, options);
+  await writePrivateJson(configPath, config);
+  const fragmentPath = resolve(configPath, "..", "codex-otel.toml");
+  await writePrivateText(fragmentPath,
+    `[otel]\nenvironment = "dev"\nlog_user_prompt = false\nexporter = { otlp-http = { endpoint = "http://127.0.0.1:${config.collector.port}/v1/codex/logs", protocol = "json", headers = { authorization = "Bearer ${config.collector.token}" } } }\n`);
+  process.stdout.write(`Codex adapter configured for ${options.tool}.\nA private user-level OTEL fragment was written to ${fragmentPath}.\nMerge it into ~/.codex/config.toml without replacing an existing exporter; use collector fan-out when one already exists.\nAWE discards Codex arguments and output locally and never submits them.\n`);
+}
+
+async function configureGeminiCli(configPath, options) {
+  requiredToolOptions(options, "Gemini CLI");
+  const config = await readConfig(configPath);
+  const clientVersion = await detectedRuntimeVersion("gemini", options["client-version"], "Gemini CLI");
+  bindTool(config, "geminiCli", clientVersion, options);
+  await writePrivateJson(configPath, config);
+  const environmentPath = resolve(configPath, "..", "gemini-cli.env");
+  await writePrivateText(environmentPath,
+    `export GEMINI_TELEMETRY_ENABLED='1'\nexport GEMINI_TELEMETRY_TARGET='local'\nexport GEMINI_TELEMETRY_OTLP_PROTOCOL='http'\nexport GEMINI_TELEMETRY_OTLP_ENDPOINT='http://127.0.0.1:${config.collector.port}/gemini/${config.collector.token}'\nexport GEMINI_TELEMETRY_LOG_PROMPTS='0'\nexport GEMINI_TELEMETRY_TRACES_ENABLED='0'\n`);
+  process.stdout.write(`Gemini CLI adapter configured for ${options.tool}.\nPrompts and detailed traces are disabled.\nStart Gemini CLI with:\n  source ${environmentPath} && gemini\n`);
 }
 
 async function localJson(config, path) {
@@ -168,6 +212,8 @@ async function main() {
   if (command === "help" || command === "--help" || command === "-h") return printHelp();
   if (command === "install") return install(options);
   if (command === "adapter" && positional[0] === "claude-code") return configureClaudeCode(configPath, options);
+  if (command === "adapter" && positional[0] === "codex") return configureCodex(configPath, options);
+  if (command === "adapter" && positional[0] === "gemini-cli") return configureGeminiCli(configPath, options);
   if (command === "daemon") return runDaemon(configPath);
   if (command === "status") return status(configPath);
   if (command === "ledger") return ledger(configPath);

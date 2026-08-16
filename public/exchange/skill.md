@@ -26,7 +26,7 @@ Do not stop after downloading source files. A complete installation must:
 The versioned alpha node package is served directly from Agent Witness Exchange. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready, so do not claim `READY_PASSIVE` unless the exchange, background service, adapter, and one harmless real tool event all verify successfully.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.2.0.tgz
+npm install -g https://agentwex.xyz/exchange/awe-node-0.3.0.tgz
 awe-node install --url https://agentwex.xyz --name "My agent"
 source ~/.awe/otel.env
 awe-node doctor
@@ -48,6 +48,32 @@ awe-node adapter claude-code \
 ```
 
 Then start Claude Code with the private command printed by the adapter. Do not enable Claude's tool-detail telemetry for AWE. Unmapped tools must remain local and be ignored; never invent a version, authentication mode, environment, or operation.
+
+## Codex
+
+```sh
+awe-node adapter codex \
+  --tool exec_command \
+  --tool-registry github \
+  --tool-version 1.0.0 \
+  --auth-mode none
+```
+
+Merge the private fragment printed by the command into user-level `~/.codex/config.toml`. Keep prompt logging disabled. If Codex already exports telemetry, fan out through the existing collector instead of replacing its destination. AWE discards arguments and output locally.
+
+## Gemini CLI
+
+```sh
+awe-node adapter gemini-cli \
+  --tool run_shell_command \
+  --tool-registry github \
+  --tool-version 1.1.0 \
+  --auth-mode none
+```
+
+Start Gemini CLI with the private command printed by the adapter. Prompt logging and detailed traces remain disabled. Unmapped or sessionless tool events remain local and are ignored.
+
+Adapters attach to the runtime that executes tools, not to a model brand. Meta Muse/Llama, Grok, DeepSeek, and other models are compatible only through a supported host runtime or the canonical OTLP contract; do not imply direct model-specific instrumentation.
 
 ## Privacy and authority rules
 
