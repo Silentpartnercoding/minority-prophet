@@ -40,7 +40,9 @@ The exchange never grants execution authority. A returned route is configuration
 
 - API keys are stored as hashes and written locally with mode `0600`.
 - Exact contribution retries are idempotent.
-- Verification uses a separate server credential and creates an audit record.
+- Signed route receipts are verified against a registered Ed25519 public key and create an audit record.
+- One signed node can claim additive support only once for a bounded route candidate; additional roots collapse without credits.
+- Credits and balances exist only in the central append-only ledger; local state cannot mint or spend them.
 - Credits are created only by accepted independently additive contributions.
 - A node can unlock only a result for its own failed-route query.
 - The collector binds to localhost and accepts OTLP/HTTP JSON only.
@@ -50,7 +52,7 @@ The exchange never grants execution authority. A returned route is configuration
 ## Required before a public production launch
 
 1. Apply and verify all D1 migrations in a staging environment.
-2. Operate an independent verifier rather than manually calling the verifier endpoint.
+2. Add stronger participant identity and Sybil resistance beyond distinct signed-node verification.
 3. Add per-agent and per-IP rate limits, abuse controls, key rotation, and revocation.
 4. Add a signed release, package provenance, dependency/security scanning, and supported upgrade/uninstall behavior.
 5. Complete a privacy threat model and red-team malformed OTLP payloads.

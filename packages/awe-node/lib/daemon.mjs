@@ -5,6 +5,7 @@ import { spansFromClaudeCodeLogs } from "./claude-code.mjs";
 import { spansFromCodexLogs } from "./codex.mjs";
 import { spansFromGeminiCliLogs } from "./gemini-cli.mjs";
 import { spansFromBernsteinEvents } from "./bernstein.mjs";
+import { signRouteReceipt } from "./attestation.mjs";
 import { createRouteQuery, getAccount, getContribution, getRouteQuery, submitRouteOutcome, unlockRoute } from "./client.mjs";
 import { defaultConfigPath, readConfig, readState, writeState } from "./config.mjs";
 
@@ -103,8 +104,9 @@ export async function createNodeRuntime(configPath = defaultConfigPath()) {
           agentId: config.agentId,
         });
         if (adapted.status !== "READY_TO_SUBMIT") { summary.ignored += 1; continue; }
-        const contribution = await submitRouteOutcome(config, adapted.receipt);
-        if (!state.pendingContributions.some((entry) => entry.contributionId === contribution.contributionId)) {
+        const signedReceipt = signRouteReceipt(adapted.receipt, config.signing);
+        const contribution = await submitRouteOutcome(config, signedReceipt);
+        if (contribution.status === "pending" && !state.pendingContributions.some((entry) => entry.contributionId === contribution.contributionId)) {
           state.pendingContributions.push({
             contributionId: contribution.contributionId,
             outcome: adapted.receipt.outcome,

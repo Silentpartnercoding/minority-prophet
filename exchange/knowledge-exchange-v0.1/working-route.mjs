@@ -36,10 +36,14 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
     if (!byRoot.has(record.provenanceRootId)) byRoot.set(record.provenanceRootId, record);
   }
   const rootRecords = [...byRoot.values()].filter((record) => record.independenceBasis !== "unknown");
+  const successfulRootRecords = rootRecords.filter((candidate) => candidate.outcome === "success");
   const successfulRoutes = new Map();
-  for (const record of rootRecords.filter((candidate) => candidate.outcome === "success")) {
+  for (const record of successfulRootRecords) {
     const key = routeKey(record);
-    const route = successfulRoutes.get(key) ?? { records: [], key };
+    const route = successfulRoutes.get(key) ?? { records: [], agents: new Set(), key };
+    const agentKey = record.agentId ?? `legacy-root:${record.provenanceRootId}`;
+    if (route.agents.has(agentKey)) continue;
+    route.agents.add(agentKey);
     route.records.push(record);
     successfulRoutes.set(key, route);
   }
@@ -89,12 +93,13 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
       staleReceipts: matching.length - compatible.length,
       recordedIndependentRoots: rootRecords.length,
       copiesCollapsed: compatible.length - byRoot.size,
+      repeatedNodeReceiptsCollapsed: successfulRootRecords.length - [...successfulRoutes.values()].reduce((total, route) => total + route.records.length, 0),
       successfulIndependentRoots: winner?.records.length ?? rankedRoutes[0]?.records.length ?? 0,
       minimumIndependentRoots: query.minimumIndependentRoots,
     },
     selectionPolicy: {
       compatibility: "exact tool, client, environment, auth mode, and operation cell",
-      primaryRank: "independent root count",
+      primaryRank: "distinct verified node count after provenance-root collapse",
       tieBreak: "latest independent successful observation",
       versionPreference: "none",
       evidenceWindowDays: query.maxAgeDays,
@@ -110,6 +115,9 @@ export function evaluateWorkingRoute(records, query, evaluatedAt = new Date().to
       independentRootCount: winner.records.length,
       evidenceWindowDays: query.maxAgeDays,
       lastObservedAt: winner.records[0].observedAt,
+      verificationLevel: winner.records.every((record) => record.verificationLevel === "distinct-signed-node-v1")
+        ? "distinct-signed-node-v1"
+        : "mixed-exchange-verification",
     } : null,
     bounty: status === "RESULT_AVAILABLE" ? null : {
       requestedIndependentRuns: Math.max(1, query.minimumIndependentRoots - (rankedRoutes[0]?.records.length ?? 0)),

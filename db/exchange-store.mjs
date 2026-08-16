@@ -1,6 +1,7 @@
 import { creditsForAcceptedContribution } from "./credits.mjs";
 import { exchangeSchemaStatements } from "./schema.mjs";
 import { evaluateWorkingRoute } from "../exchange/knowledge-exchange-v0.1/working-route.mjs";
+import { base64UrlToBytes, canonicalJson, receiptHash, receiptSigningBytes } from "../exchange/knowledge-exchange-v0.1/receipt-attestation.mjs";
 
 const recordKinds = new Set(["observation", "measurement", "tool-result", "task-outcome", "transaction"]);
 const identityProviders = new Set(["moltbook", "agentmail", "custom"]);
@@ -10,7 +11,7 @@ const authModes = new Set(["none", "api-key", "oauth-pkce", "oauth-client", "mtl
 const toolRegistries = new Set(["mcp", "npm", "pypi", "github", "public-api", "runtime"]);
 const resolutionKinds = new Set(["none", "upgrade-client", "upgrade-tool", "upgrade-client-and-tool", "change-auth-flow", "change-transport", "change-runtime", "retry-later", "alternate-tool"]);
 const routeQueryFields = new Set(["schema", "toolRegistry", "toolId", "attemptedToolVersion", "clientId", "attemptedClientVersion", "environment", "authMode", "operation", "localEvidenceStatus", "localEvidenceReceiptHash", "maxAgeDays", "minimumIndependentRoots"]);
-const workingRouteCompFields = new Set(["schema", "queryId", "toolRegistry", "toolId", "toolVersion", "clientId", "clientVersion", "environment", "authMode", "operation", "outcome", "errorClass", "resolutionKind", "routeFingerprint", "observedAt", "provenanceRootId", "independenceBasis"]);
+const workingRouteCompFields = new Set(["schema", "queryId", "toolRegistry", "toolId", "toolVersion", "clientId", "clientVersion", "environment", "authMode", "operation", "outcome", "errorClass", "resolutionKind", "routeFingerprint", "observedAt", "provenanceRootId", "independenceBasis", "attestation"]);
 
 const now = () => new Date().toISOString();
 const newId = (prefix) => `${prefix}_${crypto.randomUUID().replaceAll("-", "")}`;
@@ -20,16 +21,36 @@ async function sha256(value) {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-function canonicalJson(value) {
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
-  if (value && typeof value === "object") {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
-  }
-  return JSON.stringify(value);
-}
-
 async function contributionDedupeKey(agentId, kind, normalized) {
   return sha256(canonicalJson({ agentId, kind, normalized }));
+}
+
+function validateSigningKey(value) {
+  if (!value || value.algorithm !== "Ed25519") return null;
+  if (!/^wexkey_[a-f0-9]{24}$/.test(value.keyId ?? "")) return null;
+  if (!/^[A-Za-z0-9_-]{40,160}$/.test(value.publicKeySpki ?? "")) return null;
+  return { algorithm: "Ed25519", keyId: value.keyId, publicKeySpki: value.publicKeySpki };
+}
+
+export async function registerAgentSigningKey(db, agentId, value) {
+  const signingKey = validateSigningKey(value);
+  if (!signingKey) return { ok: false, status: 400, error: "invalid_agent_signing_key" };
+  try {
+    await db.prepare(`INSERT INTO exchange_agent_signing_keys
+      (key_id, agent_id, algorithm, public_key_spki, status, created_at)
+      VALUES (?, ?, ?, ?, 'active', ?)`).bind(signingKey.keyId, agentId, signingKey.algorithm, signingKey.publicKeySpki, now()).run();
+  } catch (error) {
+    if (String(error).toLowerCase().includes("unique")) {
+      const existing = await db.prepare(`SELECT agent_id AS agentId, public_key_spki AS publicKeySpki, status
+        FROM exchange_agent_signing_keys WHERE key_id = ?`).bind(signingKey.keyId).first();
+      if (existing?.agentId === agentId && existing.publicKeySpki === signingKey.publicKeySpki && existing.status === "active") {
+        return { ok: true, status: 200, signingKey: { keyId: signingKey.keyId, algorithm: signingKey.algorithm, idempotentReplay: true } };
+      }
+      return { ok: false, status: 409, error: "signing_key_already_registered" };
+    }
+    throw error;
+  }
+  return { ok: true, status: 201, signingKey: { keyId: signingKey.keyId, algorithm: signingKey.algorithm, idempotentReplay: false } };
 }
 
 async function contributionByDedupeKey(db, agentId, dedupeKey) {
@@ -55,6 +76,8 @@ export function validateSignup(body) {
   if (!Number.isInteger(participation?.heartbeatMinutes) || participation.heartbeatMinutes < 1) return null;
   if (!deliveryChannels.has(participation.deliveryChannel)) return null;
   if (!Number.isInteger(participation.dailyCreditSpendLimit) || participation.dailyCreditSpendLimit < 0) return null;
+  const signingKey = agent.signingKey == null ? null : validateSigningKey(agent.signingKey);
+  if (agent.signingKey != null && !signingKey) return null;
   return {
     name: agent.name.trim().slice(0, 120),
     identityProvider: agent.identityProvider,
@@ -62,6 +85,7 @@ export function validateSignup(body) {
     heartbeatMinutes: participation.heartbeatMinutes,
     deliveryChannel: participation.deliveryChannel,
     dailyCreditSpendLimit: participation.dailyCreditSpendLimit,
+    signingKey,
   };
 }
 
@@ -73,11 +97,18 @@ export async function signupAgent(db, body) {
   const apiKey = `wex_${crypto.randomUUID().replaceAll("-", "")}${crypto.randomUUID().replaceAll("-", "")}`;
   const apiKeyHash = await sha256(apiKey);
   try {
-    await db.prepare(`INSERT INTO exchange_agents
+    const createdAt = now();
+    const statements = [db.prepare(`INSERT INTO exchange_agents
       (id, name, identity_provider, external_subject, api_key_hash, heartbeat_minutes, delivery_channel, daily_credit_spend_limit, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-      .bind(agentId, input.name, input.identityProvider, input.externalSubject, apiKeyHash, input.heartbeatMinutes, input.deliveryChannel, input.dailyCreditSpendLimit, now())
-      .run();
+      .bind(agentId, input.name, input.identityProvider, input.externalSubject, apiKeyHash, input.heartbeatMinutes, input.deliveryChannel, input.dailyCreditSpendLimit, createdAt)];
+    if (input.signingKey) {
+      statements.push(db.prepare(`INSERT INTO exchange_agent_signing_keys
+        (key_id, agent_id, algorithm, public_key_spki, status, created_at)
+        VALUES (?, ?, ?, ?, 'active', ?)`)
+        .bind(input.signingKey.keyId, agentId, input.signingKey.algorithm, input.signingKey.publicKeySpki, createdAt));
+    }
+    await db.batch(statements);
   } catch (error) {
     if (String(error).toLowerCase().includes("unique")) return { ok: false, status: 409, error: "identity_already_registered" };
     throw error;
@@ -95,6 +126,8 @@ export async function signupAgent(db, body) {
       creditBalance: 0,
       apiKey,
       apiKeyShownOnce: true,
+      signingKeyId: input.signingKey?.keyId ?? null,
+      receiptVerification: input.signingKey ? "distinct-signed-node-v1" : "manual-verification-required",
       authorityGranted: false,
     },
   };
@@ -111,11 +144,14 @@ export async function authenticateAgent(db, authorization) {
 
 export async function getAgentAccount(db, agentId) {
   const agent = await db.prepare(`SELECT id, name, identity_provider, identity_status, delivery_channel,
-    heartbeat_minutes, daily_credit_spend_limit FROM exchange_agents WHERE id = ?`).bind(agentId).first();
+    heartbeat_minutes, daily_credit_spend_limit,
+    EXISTS(SELECT 1 FROM exchange_agent_signing_keys k WHERE k.agent_id = exchange_agents.id AND k.status = 'active') AS signing_key_registered
+    FROM exchange_agents WHERE id = ?`).bind(agentId).first();
   if (!agent) return null;
   const balance = await db.prepare(`SELECT COALESCE(SUM(credits), 0) AS balance
     FROM exchange_credit_entries WHERE agent_id = ?`).bind(agentId).first();
-  return { ...agent, creditBalance: Number(balance?.balance ?? 0) };
+  const { signing_key_registered: signingKeyRegistered, ...account } = agent;
+  return { ...account, signingKeyRegistered: Boolean(signingKeyRegistered), creditBalance: Number(balance?.balance ?? 0) };
 }
 
 export async function getCreditLedger(db, agentId, limit = 100) {
@@ -331,6 +367,7 @@ export function validateRouteQuery(body) {
 
 async function routeRecordsForQuery(db, query) {
   const response = await db.prepare(`SELECT
+      c.agent_id AS agentId,
       c.status AS status,
       c.provenance_root_id AS provenanceRootId,
       c.independence_basis AS independenceBasis,
@@ -346,13 +383,98 @@ async function routeRecordsForQuery(db, query) {
       r.error_class AS errorClass,
       r.resolution_kind AS resolutionKind,
       r.route_fingerprint AS routeFingerprint,
-      r.observed_at AS observedAt
+      r.observed_at AS observedAt,
+      COALESCE(a.verification_level, 'exchange-verifier-v0') AS verificationLevel
     FROM exchange_working_route_comps r
     JOIN exchange_contributions c ON c.id = r.contribution_id
+    LEFT JOIN exchange_working_route_attestations a ON a.contribution_id = c.id
     WHERE c.status = 'accepted' AND r.tool_registry = ? AND r.tool_id = ? AND r.client_id = ?
       AND r.environment = ? AND r.auth_mode = ? AND r.operation = ?`)
     .bind(query.toolRegistry, query.toolId, query.clientId, query.environment, query.authMode, query.operation).all();
   return response?.results ?? [];
+}
+
+function validateAttestation(value) {
+  if (!value || value.algorithm !== "Ed25519") return null;
+  if (!/^wexkey_[a-f0-9]{24}$/.test(value.keyId ?? "")) return null;
+  if (!/^[A-Za-z0-9_-]{64,160}$/.test(value.signature ?? "")) return null;
+  return { algorithm: "Ed25519", keyId: value.keyId, signature: value.signature };
+}
+
+async function verifyWorkingRouteAttestation(db, agentId, body) {
+  const attestation = validateAttestation(body?.attestation);
+  if (!attestation) return { ok: false, error: "signed_route_receipt_required" };
+  const key = await db.prepare(`SELECT key_id AS keyId, algorithm, public_key_spki AS publicKeySpki
+    FROM exchange_agent_signing_keys WHERE key_id = ? AND agent_id = ? AND status = 'active'`)
+    .bind(attestation.keyId, agentId).first();
+  if (!key || key.algorithm !== "Ed25519") return { ok: false, error: "unrecognized_agent_signing_key" };
+  try {
+    const publicKey = await crypto.subtle.importKey("spki", base64UrlToBytes(key.publicKeySpki), { name: "Ed25519" }, false, ["verify"]);
+    const valid = await crypto.subtle.verify({ name: "Ed25519" }, publicKey, base64UrlToBytes(attestation.signature), receiptSigningBytes(body));
+    if (!valid) return { ok: false, error: "invalid_route_receipt_signature" };
+  } catch {
+    return { ok: false, error: "invalid_route_receipt_signature" };
+  }
+  return { ok: true, attestation, receiptHash: await receiptHash(body), verificationLevel: "distinct-signed-node-v1" };
+}
+
+async function routeSupportCandidateKey(input) {
+  return sha256(canonicalJson({
+    toolRegistry: input.toolRegistry,
+    toolId: input.toolId,
+    toolVersion: input.toolVersion,
+    clientId: input.clientId,
+    clientVersion: input.clientVersion,
+    environment: input.environment,
+    authMode: input.authMode,
+    operation: input.operation,
+    outcome: input.outcome,
+    resolutionKind: input.resolutionKind,
+    routeFingerprint: input.routeFingerprint,
+  }));
+}
+
+async function recordCollapsedVerification(db, contributionId, verifierReceiptId, reason) {
+  const verifiedAt = now();
+  await db.batch([
+    db.prepare(`UPDATE exchange_contributions SET status = 'collapsed' WHERE id = ? AND status = 'pending'`).bind(contributionId),
+    db.prepare(`INSERT INTO exchange_verification_records
+      (id, contribution_id, verifier_receipt_id, decision, independently_additive, reason, created_at)
+      VALUES (?, ?, ?, 'collapsed', 0, ?, ?)`).bind(newId("verification"), contributionId, verifierReceiptId, reason, verifiedAt),
+  ]);
+  return { ok: true, status: 200, creditsAwarded: 0, verificationDecision: "collapsed", independentlyAdditive: false };
+}
+
+async function acceptSignedRouteContribution(db, { contributionId, agentId, candidateKey, verifierReceiptId }) {
+  const contribution = await db.prepare(`SELECT freshness_days AS freshnessDays FROM exchange_contributions
+    WHERE id = ? AND agent_id = ? AND status = 'pending'`).bind(contributionId, agentId).first();
+  if (!contribution) return { ok: false, status: 409, error: "contribution_not_pending" };
+  const credits = creditsForAcceptedContribution({ accepted: true, independentlyAdditive: true, freshnessDays: Number(contribution.freshnessDays) });
+  const acceptedAt = now();
+  try {
+    await db.batch([
+      db.prepare(`INSERT INTO exchange_route_support_claims
+        (agent_id, candidate_key, contribution_id, created_at) VALUES (?, ?, ?, ?)`)
+        .bind(agentId, candidateKey, contributionId, acceptedAt),
+      db.prepare(`UPDATE exchange_contributions SET status = 'accepted', verifier_receipt_id = ?, accepted_at = ?
+        WHERE id = ? AND status = 'pending'`).bind(verifierReceiptId, acceptedAt, contributionId),
+      db.prepare(`INSERT INTO exchange_verification_records
+        (id, contribution_id, verifier_receipt_id, decision, independently_additive, reason, created_at)
+        VALUES (?, ?, ?, 'accepted', 1, 'distinct_signed_node_first_support_for_candidate', ?)`)
+        .bind(newId("verification"), contributionId, verifierReceiptId, acceptedAt),
+      db.prepare(`INSERT INTO exchange_credit_entries
+        (id, agent_id, contribution_id, verifier_receipt_id, entry_type, credits, created_at)
+        VALUES (?, ?, ?, ?, 'earn', ?, ?)`)
+        .bind(newId("credit"), agentId, contributionId, verifierReceiptId, credits, acceptedAt),
+    ]);
+  } catch (error) {
+    if (!String(error).toLowerCase().includes("unique")) throw error;
+    return recordCollapsedVerification(db, contributionId, verifierReceiptId, "same_signed_node_already_supports_candidate");
+  }
+  const linkedRoute = await db.prepare(`SELECT query_id AS queryId FROM exchange_working_route_comps WHERE contribution_id = ?`)
+    .bind(contributionId).first();
+  const queryStatus = linkedRoute?.queryId ? await reassessStoredRouteQuery(db, linkedRoute.queryId) : null;
+  return { ok: true, status: 201, creditsAwarded: credits, verificationDecision: "accepted", independentlyAdditive: true, queryStatus };
 }
 
 async function storedRouteQuery(db, queryId) {
@@ -446,7 +568,7 @@ export async function createRouteQuery(db, agentId, body) {
 
 export function validateWorkingRouteComp(body) {
   if (!body || Object.keys(body).some((key) => !workingRouteCompFields.has(key))) return null;
-  if (body.schema != null && body.schema !== "minority-prophet.working-route-comp.v0.1") return null;
+  if (body.schema != null && !["minority-prophet.working-route-comp.v0.1", "agentwex.working-route-comp.v0.2"].includes(body.schema)) return null;
   const toolId = safeIdentifier(body.toolId, 200, true);
   const toolVersion = safeIdentifier(body.toolVersion, 80);
   const clientId = safeIdentifier(body.clientId, 120);
@@ -460,12 +582,18 @@ export function validateWorkingRouteComp(body) {
   if (!["success", "failure"].includes(body.outcome) || !["attested", "declared", "inferred", "unknown"].includes(body.independenceBasis)) return null;
   if (!/^sha256:[a-fA-F0-9-]{8,128}$/.test(routeFingerprint ?? "") || Number.isNaN(Date.parse(body.observedAt))) return null;
   if (body.outcome === "failure" && !errorClass) return null;
-  return { queryId: safeIdentifier(body.queryId, 240), toolRegistry: body.toolRegistry, toolId, toolVersion, clientId, clientVersion, environment: body.environment, authMode: body.authMode, operation, outcome: body.outcome, errorClass, resolutionKind: body.resolutionKind, routeFingerprint, observedAt: new Date(body.observedAt).toISOString(), provenanceRootId, independenceBasis: body.independenceBasis };
+  const attestation = body.attestation == null ? null : validateAttestation(body.attestation);
+  if (body.attestation != null && !attestation) return null;
+  if (body.schema === "agentwex.working-route-comp.v0.2" && !attestation) return null;
+  return { schema: body.schema ?? "minority-prophet.working-route-comp.v0.1", queryId: safeIdentifier(body.queryId, 240), toolRegistry: body.toolRegistry, toolId, toolVersion, clientId, clientVersion, environment: body.environment, authMode: body.authMode, operation, outcome: body.outcome, errorClass, resolutionKind: body.resolutionKind, routeFingerprint, observedAt: new Date(body.observedAt).toISOString(), provenanceRootId, independenceBasis: body.independenceBasis, attestation };
 }
 
 export async function submitWorkingRouteComp(db, agentId, body) {
   const input = validateWorkingRouteComp(body);
   if (!input) return { ok: false, status: 400, error: "invalid_or_sensitive_working_route_comp" };
+  const signedReceipt = input.schema === "agentwex.working-route-comp.v0.2";
+  const verified = signedReceipt ? await verifyWorkingRouteAttestation(db, agentId, body) : null;
+  if (signedReceipt && !verified?.ok) return { ok: false, status: 401, error: verified?.error ?? "route_receipt_verification_failed" };
   if (body.queryId && !input.queryId) return { ok: false, status: 400, error: "invalid_query_id" };
   if (input.queryId && !(await storedRouteQuery(db, input.queryId))) {
     return { ok: false, status: 404, error: "working_route_query_not_found" };
@@ -481,7 +609,7 @@ export async function submitWorkingRouteComp(db, agentId, body) {
   if (prior) return { ok: true, status: 200, contribution: { ...prior, kind: "working-route", idempotentReplay: true, sensitivePayloadStored: false, authorityGranted: false } };
   const createdAt = now();
   try {
-    await db.batch([
+    const statements = [
       db.prepare(`INSERT INTO exchange_contributions
         (id, agent_id, record_kind, topic, provenance_root_id, independence_basis, freshness_days, status, created_at)
         VALUES (?, ?, 'working-route', ?, ?, ?, ?, 'pending', ?)`)
@@ -496,13 +624,33 @@ export async function submitWorkingRouteComp(db, agentId, body) {
       db.prepare(`INSERT INTO exchange_submission_keys
         (agent_id, dedupe_key, contribution_id, created_at) VALUES (?, ?, ?, ?)`)
         .bind(agentId, dedupeKey, contributionId, createdAt),
-    ]);
+    ];
+    if (verified?.ok) {
+      statements.push(db.prepare(`INSERT INTO exchange_working_route_attestations
+        (contribution_id, agent_id, key_id, receipt_hash, signature, verification_level, verified_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`)
+        .bind(contributionId, agentId, verified.attestation.keyId, verified.receiptHash,
+          verified.attestation.signature, verified.verificationLevel, createdAt));
+    }
+    await db.batch(statements);
   } catch (error) {
     if (String(error).toLowerCase().includes("unique")) {
       const replay = await contributionByDedupeKey(db, agentId, dedupeKey);
       if (replay) return { ok: true, status: 200, contribution: { ...replay, kind: "working-route", idempotentReplay: true, sensitivePayloadStored: false, authorityGranted: false } };
     }
     throw error;
+  }
+  if (verified?.ok) {
+    const candidateKey = await routeSupportCandidateKey(input);
+    const verifierReceiptId = `wex:auto:v1:${verified.receiptHash.slice("sha256:".length, 37)}`;
+    const accepted = await acceptSignedRouteContribution(db, { contributionId, agentId, candidateKey, verifierReceiptId });
+    if (!accepted.ok) return accepted;
+    const acceptedStatus = accepted.verificationDecision === "collapsed" ? "collapsed" : "accepted";
+    return { ok: true, status: accepted.status, contribution: {
+      contributionId, kind: "working-route", status: acceptedStatus, creditsAwarded: accepted.creditsAwarded,
+      verificationDecision: accepted.verificationDecision, verificationLevel: verified.verificationLevel,
+      queryStatus: accepted.queryStatus, sensitivePayloadStored: false, authorityGranted: false,
+    } };
   }
   return { ok: true, status: 202, contribution: { contributionId, kind: "working-route", status: "pending", creditsAwarded: 0, sensitivePayloadStored: false, authorityGranted: false } };
 }

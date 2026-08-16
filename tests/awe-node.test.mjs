@@ -11,6 +11,7 @@ import { handleExchangeApi } from "../db/exchange-api.mjs";
 import { getAccount, signup } from "../packages/awe-node/lib/client.mjs";
 import { writePrivateJson } from "../packages/awe-node/lib/config.mjs";
 import { createNodeRuntime, runDaemon } from "../packages/awe-node/lib/daemon.mjs";
+import { generateSigningIdentity, publicSigningIdentity, signRouteReceipt } from "../packages/awe-node/lib/attestation.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -91,12 +92,13 @@ function toolSpan({ traceId, outcome, toolVersion = "3.1.0", clientVersion = "1.
   };
 }
 
-async function accept(baseUrl, verifierToken, contributionId, suffix) {
-  return exchangeJson(baseUrl, "/api/exchange/internal/accept", {
-    method: "POST",
-    token: verifierToken,
-    body: { contributionId, verifierReceiptId: `verifier:${suffix}:accepted`, independentlyAdditive: true, reason: "independent_test_reproduction" },
+async function signupSigned(baseUrl, agent) {
+  const signing = generateSigningIdentity();
+  const account = await signup(baseUrl, {
+    agent: { ...agent, signingKey: publicSigningIdentity(signing) },
+    participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
   });
+  return { account, signing };
 }
 
 test("install-once runtime contributes privately, earns credit, and retrieves a Gate-bound route", async (context) => {
@@ -104,16 +106,15 @@ test("install-once runtime contributes privately, earns credit, and retrieves a 
   const directory = await mkdtemp(resolve(tmpdir(), "awe-node-test-"));
   context.after(async () => { await new Promise((resolveClose) => exchange.server.close(resolveClose)); await rm(directory, { recursive: true, force: true }); });
 
-  const first = await signup(exchange.baseUrl, {
-    agent: { name: "First node", identityProvider: "custom", externalSubject: "first-node" },
-    participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
-  });
+  const { account: first, signing: firstSigning } = await signupSigned(exchange.baseUrl,
+    { name: "First node", identityProvider: "custom", externalSubject: "first-node" });
   const configPath = resolve(directory, "config.json");
   await writePrivateJson(configPath, {
     schema: "minority-prophet.awe-node-config.v0.1",
     baseUrl: exchange.baseUrl,
     agentId: first.agentId,
     apiKey: first.apiKey,
+    signing: firstSigning,
     policy: { shareToolOutcomes: true, shareRawTraces: false },
     collector: { host: "127.0.0.1", port: 4318, token: "local-test-token" },
     pollSeconds: 60,
@@ -125,7 +126,7 @@ test("install-once runtime contributes privately, earns credit, and retrieves a 
   const retry = await runtime.ingest(failure);
   assert.equal(retry.submitted, 1);
   assert.equal(retry.queriesOpened, 0);
-  assert.equal(runtime.getState().pendingContributions.length, 1);
+  assert.equal(runtime.getState().pendingContributions.length, 0);
   assert.equal(runtime.getState().queries.length, 1);
 
   const serializedState = await readFile(resolve(directory, "state.json"), "utf8");
@@ -133,19 +134,14 @@ test("install-once runtime contributes privately, earns credit, and retrieves a 
     assert.doesNotMatch(serializedState, new RegExp(secret.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
 
-  const failureContribution = runtime.getState().pendingContributions[0].contributionId;
-  await accept(exchange.baseUrl, exchange.verifierToken, failureContribution, "failure-root");
-
   for (const suffix of ["b", "c"]) {
-    const contributor = await signup(exchange.baseUrl, {
-      agent: { name: `Contributor ${suffix}`, identityProvider: "custom", externalSubject: `contributor-${suffix}` },
-      participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
-    });
+    const { account: contributor, signing } = await signupSigned(exchange.baseUrl,
+      { name: `Contributor ${suffix}`, identityProvider: "custom", externalSubject: `contributor-${suffix}` });
     const span = toolSpan({ traceId: `independent-${suffix}`, outcome: "success", toolVersion: "3.2.0", clientVersion: "1.8.0", resolutionKind: "upgrade-client-and-tool" });
     const receiptRuntimePath = await import("../packages/awe-node/lib/receipt.mjs");
-    const receipt = receiptRuntimePath.adaptOtelSpanToRouteOutcome(span, { enabled: true, shareToolOutcomes: true, agentId: contributor.agentId }).receipt;
+    const receipt = signRouteReceipt(receiptRuntimePath.adaptOtelSpanToRouteOutcome(span, { enabled: true, shareToolOutcomes: true, agentId: contributor.agentId }).receipt, signing);
     const contribution = await exchangeJson(exchange.baseUrl, "/api/exchange/working-route-comps", { method: "POST", token: contributor.apiKey, body: receipt });
-    await accept(exchange.baseUrl, exchange.verifierToken, contribution.contributionId, `success-${suffix}`);
+    assert.equal(contribution.status, "accepted");
   }
 
   await runtime.reconcile();
@@ -155,6 +151,40 @@ test("install-once runtime contributes privately, earns credit, and retrieves a 
   assert.equal(state.routes[0].gateRequired, true);
   assert.equal(state.routes[0].workingRoute.toolVersion, "3.2.0");
   assert.equal(state.routes[0].evidence.successfulIndependentRoots, 2);
+});
+
+test("signed receipts reject tampering and one node cannot manufacture independent support", async (context) => {
+  const exchange = await startExchange();
+  context.after(async () => { await new Promise((resolveClose) => exchange.server.close(resolveClose)); });
+  const { account, signing } = await signupSigned(exchange.baseUrl,
+    { name: "Signed node", identityProvider: "custom", externalSubject: "signed-node" });
+  const receiptRuntimePath = await import("../packages/awe-node/lib/receipt.mjs");
+  const makeReceipt = (traceId) => signRouteReceipt(receiptRuntimePath.adaptOtelSpanToRouteOutcome(
+    toolSpan({ traceId, outcome: "success", toolVersion: "3.2.0", clientVersion: "1.8.0", resolutionKind: "upgrade-client-and-tool" }),
+    { enabled: true, shareToolOutcomes: true, agentId: account.agentId },
+  ).receipt, signing);
+
+  const first = await exchangeJson(exchange.baseUrl, "/api/exchange/working-route-comps", {
+    method: "POST", token: account.apiKey, body: makeReceipt("signed-root-a"),
+  });
+  assert.equal(first.status, "accepted");
+  assert.equal(first.creditsAwarded, 2);
+
+  const second = await exchangeJson(exchange.baseUrl, "/api/exchange/working-route-comps", {
+    method: "POST", token: account.apiKey, body: makeReceipt("signed-root-b"),
+  });
+  assert.equal(second.status, "collapsed");
+  assert.equal(second.creditsAwarded, 0);
+  assert.equal((await getAccount({ baseUrl: exchange.baseUrl, apiKey: account.apiKey })).creditBalance, 2);
+
+  const tampered = { ...makeReceipt("signed-root-c"), toolVersion: "9.9.9" };
+  const response = await fetch(`${exchange.baseUrl}/api/exchange/working-route-comps`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${account.apiKey}`, "content-type": "application/json" },
+    body: JSON.stringify(tampered),
+  });
+  assert.equal(response.status, 401);
+  assert.deepEqual(await response.json(), { error: "invalid_route_receipt_signature" });
 });
 
 test("one zero-fill install command creates a generated private node identity without printing its credential", async (context) => {
@@ -305,16 +335,15 @@ test("localhost collector rejects unauthenticated span injection", async (contex
     await new Promise((resolveClose) => exchange.server.close(resolveClose));
     await rm(directory, { recursive: true, force: true });
   });
-  const account = await signup(exchange.baseUrl, {
-    agent: { name: "Authenticated node", identityProvider: "custom", externalSubject: "authenticated-node" },
-    participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
-  });
+  const { account, signing } = await signupSigned(exchange.baseUrl,
+    { name: "Authenticated node", identityProvider: "custom", externalSubject: "authenticated-node" });
   const configPath = resolve(directory, "config.json");
   await writePrivateJson(configPath, {
     schema: "minority-prophet.awe-node-config.v0.1",
     baseUrl: exchange.baseUrl,
     agentId: account.agentId,
     apiKey: account.apiKey,
+    signing,
     policy: { shareToolOutcomes: true, shareRawTraces: false },
     collector: { host: "127.0.0.1", port: 0, token: "private-local-token" },
     adapters: {

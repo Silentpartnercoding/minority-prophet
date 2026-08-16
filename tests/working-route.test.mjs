@@ -21,7 +21,7 @@ test("working-route exchange returns a route only after independent successful r
   assert.equal(assessment.candidateRoutes[0].selected, true);
   assert.deepEqual(assessment.selectionPolicy, {
     compatibility: "exact tool, client, environment, auth mode, and operation cell",
-    primaryRank: "independent root count",
+    primaryRank: "distinct verified node count after provenance-root collapse",
     tieBreak: "latest independent successful observation",
     versionPreference: "none",
     evidenceWindowDays: 7,
@@ -56,6 +56,17 @@ test("distinct route fingerprints never merge just because versions match", () =
   assert.equal(assessment.workingRoute, null);
   assert.equal(assessment.candidateRoutes.length, 2);
   assert.deepEqual(assessment.candidateRoutes.map((route) => route.independentRootCount), [1, 1]);
+});
+
+test("multiple roots from one authenticated node remain one support signal", () => {
+  const records = [
+    { ...sampleRouteRecords[0], agentId: "agent-one", provenanceRootId: "root-a" },
+    { ...sampleRouteRecords[1], agentId: "agent-one", provenanceRootId: "root-b" },
+  ];
+  const assessment = evaluateWorkingRoute(records, sampleRouteQuery, "2026-08-15T19:00:00.000Z");
+  assert.equal(assessment.status, "SEEK_MORE_INDEPENDENT_RUNS");
+  assert.equal(assessment.evidence.successfulIndependentRoots, 1);
+  assert.equal(assessment.evidence.repeatedNodeReceiptsCollapsed, 1);
 });
 
 test("receipts outside the requested evidence window cannot support a route", () => {

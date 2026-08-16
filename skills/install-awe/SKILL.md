@@ -41,7 +41,7 @@ node packages/awe-node/bin/awe-node.mjs install --url "${AWE_EXCHANGE_URL:-https
 For the public alpha, install the versioned package directly:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.4.1.tgz && awe-node install
+npm install -g https://agentwex.xyz/exchange/awe-node-0.5.0.tgz && awe-node install
 awe-node runtimes
 ```
 

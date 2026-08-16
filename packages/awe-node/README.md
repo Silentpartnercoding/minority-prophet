@@ -9,7 +9,7 @@ The Agent WEX node is an install-once, localhost-only collector for minimized to
 5. opens a working-route query after a failure;
 6. returns a verified route receipt to the local agent when one becomes available.
 
-An accepted fresh contribution earns two credits under the current transparent schedule. Unlocking a completed working-route result spends one credit. Duplicate retries do not earn again.
+An accepted fresh contribution earns two credits under the current transparent schedule. Unlocking a completed working-route result spends one credit. Duplicate retries and additional roots from the same signed node do not earn again. Credits live in one exchange-owned append-only ledger; `~/.awe/state.json` is only a local cache and cannot change the server balance.
 
 The route is advice, not authority. It must return through the caller's Gate or policy system before use.
 
@@ -18,7 +18,7 @@ The route is advice, not authority. It must return through the caller's Gate or 
 Install the versioned dependency-free node package:
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.4.1.tgz && awe-node install
+npm install -g https://agentwex.xyz/exchange/awe-node-0.5.0.tgz && awe-node install
 ```
 
 The command is idempotent. It generates the node's private identity, registers it with the exchange, detects Claude Code, Codex, and Gemini CLI, writes a conservative user-level telemetry connection, starts the background node, and verifies the exchange and local service. No display name, browser form, or per-tool mapping is required. Launch a new runtime session once after installation; an already-running process cannot reload its telemetry configuration.
@@ -90,7 +90,7 @@ This adapter observes the Bernstein task lifecycle. It does not pretend Bernstei
 
 Adapters belong to the runtime that executes a tool, not to the model brand. Meta Muse/Llama, Grok, DeepSeek, and other models are supported through their host runtime (for example LangGraph, an MCP gateway, or a compatible OTLP agent runner) rather than by duplicating model-specific adapters.
 
-The installer creates a private `~/.awe/config.json`, backs up any runtime settings it changes, and, on macOS, installs a LaunchAgent that keeps the collector running. It never prints the API key or local collector token.
+The installer creates a private `~/.awe/config.json`, including an Ed25519 receipt-signing key, backs up any runtime settings it changes, and, on macOS, installs a LaunchAgent that keeps the collector running. The API key authenticates the account; the signing key proves which registered node emitted a minimized receipt; the localhost collector token prevents local injection. None is a private credit balance. The installer never prints these credentials.
 
 Connect any runtime that already emits OTLP/HTTP JSON:
 

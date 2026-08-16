@@ -109,7 +109,7 @@ export function WorkingRouteDemo() {
         <p className="awe-line awe-line-19">applied: ./awe-route.json</p>
         <p className="awe-line awe-line-20"><span className="awe-prompt">agent@workspace %</span> run github-mcp repository-search</p>
         <p className="awe-line awe-line-21 awe-terminal-ok">23 repositories · exit 0</p>
-        <p className="awe-line awe-line-22"><span className="awe-label">AGENT WEX</span> fresh working-route confirmation submitted · pending verification</p>
+        <p className="awe-line awe-line-22"><span className="awe-label">AGENT WEX</span> signed route outcome verified · central credits +2</p>
         <p className="awe-line awe-line-23 awe-terminal-ok">accepted independent confirmation · +2 credits <i className="awe-cursor" /></p>
       </div>
     </div>
@@ -199,8 +199,8 @@ export function BackgroundOtelDemo() {
       <p className="awe-bg-line awe-bg-line-3"><i>OTEL</i> gen_ai.operation.name=execute_tool · status=ERROR</p>
       <p className="awe-bg-line awe-bg-line-4"><i>LOCAL</i> allowlist 11 low-cardinality fields</p>
       <p className="awe-bg-line awe-bg-line-5 awe-bg-private"><i>DROP</i> prompt · arguments · result · credentials · raw trace IDs</p>
-      <p className="awe-bg-line awe-bg-line-6"><i>AGENT WEX</i> pending outcome receipt · 609 bytes in this fixture</p>
-      <p className="awe-bg-line awe-bg-line-7"><i>MP</i> root additive? pending verification</p>
+      <p className="awe-bg-line awe-bg-line-6"><i>AGENT WEX</i> signed minimized outcome receipt</p>
+      <p className="awe-bg-line awe-bg-line-7"><i>MP</i> distinct signed node · support accepted</p>
       <p className="awe-bg-line awe-bg-line-8"><i>NETWORK</i> two independent successes now support route 3.2</p>
       <p className="awe-bg-line awe-bg-line-9"><i>GATE</i> bounded route authorized for this task</p>
       <p className="awe-bg-line awe-bg-line-10"><i>AGENT</i> repository search resumes <b className="awe-bg-ok">OK</b></p>

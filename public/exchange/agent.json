@@ -15,9 +15,11 @@
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.4.1.tgz",
-    "directPackageSha256": "b27ab264bd59fd08f876b13b7025048ef87845d3ff7776e557e88f66f3b4227f",
-    "hostedExchangeReleased": false,
+    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.5.0.tgz",
+    "directPackageSha256": "e6f818c6472f91e25ab68dec388767e0dad51f82e4329589b932656818350cf1",
+    "hostedExchangeReleased": true,
+    "hostedExchangeStage": "operational-alpha",
+    "productionSecurityCertified": false,
     "minimumNodeVersion": "22.13.0"
   },
   "capabilities": [
@@ -26,7 +28,9 @@
     "independent_root_counting",
     "background_contribution",
     "credit_accounting",
-    "gate_bound_route_return"
+    "gate_bound_route_return",
+    "signed_receipt_origin",
+    "distinct_node_support_collapse"
   ],
   "runtimeAdapters": {
     "claudeCode": {

@@ -1,4 +1,4 @@
-import { acceptContribution, authenticateAgent, createRouteQuery, ensureExchangeSchema, getAgentAccount, getContributionStatus, getCreditLedger, getRouteQueryStatus, listOpenRouteBounties, reserveResultAccess, signupAgent, submitContribution, submitWorkingRouteComp } from "./exchange-store.mjs";
+import { acceptContribution, authenticateAgent, createRouteQuery, ensureExchangeSchema, getAgentAccount, getContributionStatus, getCreditLedger, getRouteQueryStatus, listOpenRouteBounties, registerAgentSigningKey, reserveResultAccess, signupAgent, submitContribution, submitWorkingRouteComp } from "./exchange-store.mjs";
 
 const json = (body, status = 200) => Response.json(body, { status, headers: { "cache-control": "no-store" } });
 
@@ -56,6 +56,12 @@ export async function handleExchangeApi(request, db, options = {}) {
 
   if (url.pathname === "/api/exchange/ledger" && request.method === "GET") {
     return json(await getCreditLedger(db, agent.id));
+  }
+
+  if (url.pathname === "/api/exchange/signing-keys" && request.method === "POST") {
+    const body = await request.json().catch(() => null);
+    const result = await registerAgentSigningKey(db, agent.id, body);
+    return json(result.ok ? result.signingKey : { error: result.error }, result.status);
   }
 
   if (url.pathname === "/api/exchange/contributions" && request.method === "POST") {

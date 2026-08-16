@@ -6,13 +6,14 @@ import { arch, platform } from "node:os";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 import { promisify } from "node:util";
-import { signup, getAccount, getLedger } from "../lib/client.mjs";
+import { signup, getAccount, getLedger, registerSigningKey } from "../lib/client.mjs";
 import { defaultConfigPath, readConfig, validateBaseUrl, writePrivateJson, writePrivateText } from "../lib/config.mjs";
 import { runDaemon } from "../lib/daemon.mjs";
 import { installBackgroundService } from "../lib/service.mjs";
 import { bernsteinPluginSource } from "../lib/bernstein.mjs";
 import { detectRuntimes } from "../lib/runtime-detection.mjs";
 import { bootstrapDetectedRuntimes } from "../lib/runtime-bootstrap.mjs";
+import { generateSigningIdentity, publicSigningIdentity } from "../lib/attestation.mjs";
 
 const ownPath = fileURLToPath(import.meta.url);
 const execFileAsync = promisify(execFile);
@@ -188,11 +189,12 @@ async function install(options) {
   const baseUrl = validateBaseUrl(options.url ?? config?.baseUrl ?? process.env.AWE_EXCHANGE_URL ?? "https://agentwex.xyz");
   const port = Number(options.port ?? config?.collector?.port ?? 4318);
   if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Collector port must be an integer from 1024 to 65535");
+  const signing = config?.signing ?? generateSigningIdentity();
   if (!config) {
     const displayName = `Agent WEX node ${randomUUID().slice(0, 8)}`;
     const collectorToken = `awelocal_${randomUUID().replaceAll("-", "")}${randomUUID().replaceAll("-", "")}`;
     account = await signup(baseUrl, {
-      agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID() },
+      agent: { name: displayName, identityProvider: "custom", externalSubject: randomUUID(), signingKey: publicSigningIdentity(signing) },
       participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
     });
     config = {
@@ -200,11 +202,15 @@ async function install(options) {
       baseUrl,
       agentId: account.agentId,
       apiKey: account.apiKey,
+      signing,
       policy: { shareToolOutcomes: true, shareRawTraces: false, sharePrompts: false, shareToolArguments: false, shareToolResults: false },
       collector: { host: "127.0.0.1", port, token: collectorToken },
       pollSeconds: 60,
       createdAt: new Date().toISOString(),
     };
+  } else if (!config.signing) {
+    config.signing = signing;
+    await registerSigningKey(config, publicSigningIdentity(signing));
   }
   const detected = await detectRuntimes();
   const detectedRuntimes = detected.filter((runtime) => runtime.detected).map(({ id, version }) => ({ id, version }));

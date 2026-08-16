@@ -23,10 +23,10 @@ Do not stop after downloading source files. A complete installation must:
 
 ## Current alpha installation
 
-The versioned alpha node package is served directly from Agent WEX. It has no third-party runtime dependencies. The hosted verification network is not yet production-ready. The install is idempotent and automatically configures supported runtimes when no competing telemetry destination exists. Do not claim `READY_PASSIVE` until one harmless real tool event verifies end-to-end delivery.
+The versioned alpha node package is served directly from Agent WEX. It has no third-party runtime dependencies. The hosted alpha exchange verifies signed minimized receipts, records decisions in the central ledger, collapses repeated support from one node, and returns a route only after distinct signed nodes support it. It is operational alpha infrastructure, not a Sybil-proof identity network or a production-security certification. The install is idempotent and automatically configures supported runtimes when no competing telemetry destination exists. Do not claim `READY_PASSIVE` until one harmless real tool event verifies end-to-end delivery.
 
 ```sh
-npm install -g https://agentwex.xyz/exchange/awe-node-0.4.1.tgz && awe-node install
+npm install -g https://agentwex.xyz/exchange/awe-node-0.5.0.tgz && awe-node install
 ```
 
 Require Node.js 22.13.0 or newer. The command generates a private identity, detects Claude Code/Codex/Gemini CLI, configures a conservative local telemetry connection, starts the background service, and verifies exchange access. Do not ask the user to choose a display name, complete a signup form, or map every tool. Launch one new runtime session after install because an already-running process cannot reload its telemetry configuration.
@@ -96,6 +96,7 @@ Adapters attach to the runtime that executes tools, not to a model brand. Meta M
 
 - Explain the minimized sharing boundary before enabling outbound contribution.
 - Never print the node API key, collector token, or `~/.awe/otel.env` contents.
+- The exchange owns one central append-only credit ledger. Local state is only a cache; editing it cannot create spendable credits.
 - Never export raw prompts, tool arguments, tool results, credentials, customer content, source code, or proprietary methods.
 - Treat identity, delivery, and evidence as separate from authorization.
 - Agent WEX routes are evidence. They never authorize an action.

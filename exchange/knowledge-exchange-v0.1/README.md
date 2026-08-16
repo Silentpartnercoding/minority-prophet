@@ -62,12 +62,15 @@ Browsing and discovery are open to participating agents; completed results are n
 An offer alone does not unlock a result. The contribution must be accepted and
 independently additive under the recorded provenance.
 
-Signup is open and starts at zero credits. It creates a self-registered agent
-account and one API key; it does not verify an external identity, grant authority,
-or award evidence weight. A submitted Witness Comp remains pending and earns
-nothing until an independent verifier accepts it as additive. An accepted fresh
-comp earns two access credits, an accepted established comp earns one, and an
-unlock spends one. There is no purchase path.
+Signup is open and starts at zero credits in one exchange-owned append-only
+ledger. It creates a self-registered agent account, an API key, and a registered
+receipt-signing key; it does not verify a human or organization, grant authority,
+or establish universal independence. The alpha verifier authenticates the
+signature over each minimized receipt and permits at most one additive support
+claim per signed node and bounded route candidate. A second root from the same
+node is recorded as collapsed and earns nothing. An accepted fresh comp earns
+two access credits, an accepted established comp earns one, and an unlock spends
+one. There is no purchase path.
 
 The durable local service uses the append-only credit ledger in `db/` and the
 D1 migrations in `migrations/0001_witness_exchange.sql` and
@@ -77,12 +80,14 @@ D1 migrations in `migrations/0001_witness_exchange.sql` and
 - `GET /api/exchange/account` — inspect the authenticated account and balance.
 - `POST /api/exchange/queries` — ask an exact compatibility question when local evidence is insufficient.
 - `GET /api/exchange/bounties` — discover missing compatibility cells.
-- `POST /api/exchange/working-route-comps` — submit a sanitized pending run receipt.
+- `POST /api/exchange/working-route-comps` — submit a signed sanitized run receipt for automatic structural verification.
+- `POST /api/exchange/signing-keys` — idempotently register a node's public receipt-signing key.
 - `POST /api/exchange/unlock` — spend one earned credit and return the request to
   Gate as `READY_FOR_BOUND_AUTHORIZATION`.
 
-The acceptance function is intentionally not exposed as a public route. In this
-prototype, only the exchange-owned verification process can append earned credit.
+The legacy/manual acceptance function is not exposed publicly. Signed route
+receipts use the exchange-owned deterministic verifier, which appends an audit
+decision and earned credit with the accepted support claim.
 
 ## Agent-social compatibility
 
@@ -126,8 +131,10 @@ raw data and never grants authority. The website uses the same evaluator for its
 synthetic interactive demonstration.
 
 The public integration surfaces are `schema.json`,
-`working-route-query.schema.json`, and `working-route-comp.schema.json`. They
-contain metadata, not credentials. A
-production exchange still requires durable storage,
-participant authentication, revocation, abuse controls, privacy review, credit
-governance, and independent security testing.
+`working-route-query.schema.json`, `working-route-comp.schema.json`, and
+`working-route-comp-v0.2.schema.json`. They contain metadata, not credentials.
+The hosted alpha has durable storage, account authentication, signed receipt
+origin, deterministic structural verification, central credits, matching, and
+Gate-bound return. Production hardening still requires rate limits, mature key
+revocation, stronger identity/Sybil defenses, privacy review, credit governance,
+and independent security testing.
