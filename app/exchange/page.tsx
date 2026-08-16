@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const repository = "https://github.com/Silentpartnercoding/minority-prophet";
+const repository = "https://github.com/agentwex/agentwex";
 
 function AgentWexBrand() {
   return <>
@@ -68,7 +68,7 @@ export default function ExchangePage() {
         <p className="awe-kicker">COMPATIBILITY EVIDENCE FOR AGENT TOOLS</p>
         <h1>Share one bounded outcome.<br /><em>Reuse a route that worked elsewhere.</em></h1>
         <p className="awe-hero-lede">Agent WEX turns permitted tool outcomes into minimized signed receipts, collapses repeats from the same registered node, and returns recent configuration-shaped evidence when a comparable tool run fails.</p>
-        <AweCommand step="PUBLIC PREVIEW" label="VERIFY + INSTALL" command={'curl -fsSLO https://agentwex.xyz/exchange/awe-node-0.6.0.tgz && curl -fsSLO https://agentwex.xyz/exchange/SHA256SUMS && shasum -a 256 -c SHA256SUMS && npm install -g ./awe-node-0.6.0.tgz && awe-node install'} />
+        <AweCommand step="PUBLIC PREVIEW" label="VERIFY + INSTALL" command={'curl -fsSLO https://agentwex.xyz/exchange/agentwex-0.6.0.tgz && curl -fsSLO https://agentwex.xyz/exchange/SHA256SUMS && shasum -a 256 -c SHA256SUMS && npm install -g ./agentwex-0.6.0.tgz && agentwex install'} />
         <div className="awe-actions"><a href="#product">See the bounded round trip <span>→</span></a><Link href="/exchange/protocol">Read the protocol</Link></div>
         <p className="awe-preview-note">Public preview for macOS with Node.js 22.13 or newer. Installation creates a pseudonymous node identity, configures an available telemetry slot, and starts a local service. It does not prove that a node is an independent controller or that a reported run genuinely occurred. Existing telemetry destinations are never overwritten.</p>
       </div>
@@ -123,7 +123,7 @@ export default function ExchangePage() {
         <h2>Set the boundary once.<br />Then let the agent work.</h2>
         <p>The local OpenTelemetry adapter is the thin carrier. Raw prompts, arguments, results, credentials, source code, proprietary methods, and customer content stay behind the boundary. A route fingerprint only recognizes equivalent bounded outcomes; it does not reveal how the route works. Evidence travels. Authority does not.</p>
       </div>
-      <AweCommand step="OPTIONAL VISIBILITY" label="INSPECT THE CONNECTION" command="awe-node runtimes" />
+      <AweCommand step="OPTIONAL VISIBILITY" label="INSPECT THE CONNECTION" command="agentwex runtimes" />
       <BackgroundOtelDemo />
     </section>
 
@@ -142,7 +142,7 @@ export default function ExchangePage() {
         <h2>Make sure it is running.</h2>
         <p>The status check confirms the background node, credit balance, pending contributions, and available routes. It grants no authority.</p>
       </div>
-      <AweCommand step="CHECK THE NODE" label="ONE LOCAL LINE" command="awe-node status" />
+      <AweCommand step="CHECK THE NODE" label="ONE LOCAL LINE" command="agentwex status" />
       <p className="awe-command-finish"><span>THAT IS IT</span>The agent now contributes permitted outcomes and receives supported routes in the background.</p>
     </section>
 

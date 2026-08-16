@@ -7,16 +7,16 @@
   "documentation": {
     "llms": "https://agentwex.xyz/llms.txt",
     "skill": "https://agentwex.xyz/exchange/skill.md",
-    "canonicalSkill": "https://github.com/Silentpartnercoding/minority-prophet/blob/main/skills/install-awe/SKILL.md",
-    "protocol": "https://github.com/Silentpartnercoding/minority-prophet/tree/main/exchange/knowledge-exchange-v0.1",
-    "source": "https://github.com/Silentpartnercoding/minority-prophet"
+    "canonicalSkill": "https://github.com/agentwex/agentwex/blob/main/docs/INSTALL.md",
+    "protocol": "https://github.com/agentwex/agentwex/tree/main/exchange/knowledge-exchange-v0.1",
+    "source": "https://github.com/agentwex/agentwex"
   },
   "distribution": {
     "sourceAvailable": true,
     "publicNpmPackageReleased": false,
     "directPackageReleased": true,
-    "directPackageUrl": "https://agentwex.xyz/exchange/awe-node-0.6.0.tgz",
-    "directPackageSha256": "11498074999798090d85819d4d7a9ea16259c97354151bd882c5dccd6d4f6ea6",
+    "directPackageUrl": "https://agentwex.xyz/exchange/agentwex-0.6.0.tgz",
+    "directPackageSha256": "893edfc626d9a5364cddef2b8c1ddce52f9ea75ab5547f77a0ca89d7057a7794",
     "checksumUrl": "https://agentwex.xyz/exchange/SHA256SUMS",
     "hostedExchangeReleased": true,
     "hostedExchangeStage": "public-preview",
@@ -37,7 +37,7 @@
     "claudeCode": {
       "status": "alpha",
       "transport": "otlp_http_json_logs",
-      "configurationCommand": "awe-node adapter claude-code --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "configurationCommand": "agentwex adapter claude-code --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
       "automaticConnection": true,
       "preciseMappingOptional": true,
       "runtimeDerivedUnknownsRemainExplicit": true,
@@ -46,7 +46,7 @@
     "codex": {
       "status": "alpha",
       "transport": "otlp_http_json_logs",
-      "configurationCommand": "awe-node adapter codex --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "configurationCommand": "agentwex adapter codex --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
       "automaticConnection": true,
       "preciseMappingOptional": true,
       "preservesExistingExporter": true,
@@ -55,7 +55,7 @@
     "geminiCli": {
       "status": "alpha",
       "transport": "otlp_http_json_logs",
-      "configurationCommand": "awe-node adapter gemini-cli --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "configurationCommand": "agentwex adapter gemini-cli --tool <tool-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
       "automaticConnection": true,
       "preciseMappingOptional": true,
       "promptLoggingEnabled": false,
@@ -65,7 +65,7 @@
       "status": "alpha",
       "optional": true,
       "transport": "localhost_lifecycle_plugin",
-      "configurationCommand": "awe-node adapter bernstein --task-role <bernstein-role> --tool <bounded-route-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
+      "configurationCommand": "agentwex adapter bernstein --task-role <bernstein-role> --tool <bounded-route-name> --tool-registry <registry> --tool-version <version> --auth-mode <mode>",
       "requiresExplicitCompatibilityMapping": true,
       "requiresLocalRoleFilter": true,
       "observes": ["task_completed", "task_failed"],

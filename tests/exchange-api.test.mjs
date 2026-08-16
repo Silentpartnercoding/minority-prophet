@@ -3,8 +3,25 @@ import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
 import { handleExchangeApi } from "../db/exchange-api.mjs";
 
-function d1TestDatabase() {
+function d1TestDatabase({ legacyAgentSchema = false } = {}) {
   const sqlite = new DatabaseSync(":memory:");
+  if (legacyAgentSchema) {
+    sqlite.exec(`CREATE TABLE exchange_agents (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      identity_provider TEXT NOT NULL,
+      external_subject TEXT NOT NULL,
+      identity_status TEXT NOT NULL DEFAULT 'self-registered',
+      api_key_hash TEXT NOT NULL,
+      heartbeat_minutes INTEGER NOT NULL,
+      delivery_channel TEXT NOT NULL,
+      daily_credit_spend_limit INTEGER NOT NULL DEFAULT 0,
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TEXT NOT NULL,
+      UNIQUE(identity_provider, external_subject),
+      UNIQUE(api_key_hash)
+    )`);
+  }
   const prepare = (sql) => ({
     _values: [],
     bind(...values) { this._values = values; return this; },
@@ -217,4 +234,23 @@ test("public API bounds bodies, throttles signup fingerprints, rotates keys, and
   assert.equal(deactivated.status, 200);
   assert.equal((await deactivated.json()).deactivated, true);
   assert.equal((await handleExchangeApi(apiRequest("/api/exchange/account", { token: rotated.apiKey }), db)).status, 401);
+});
+
+test("deactivation upgrades an existing exchange_agents table before use", async () => {
+  const db = d1TestDatabase({ legacyAgentSchema: true });
+  const signupResponse = await handleExchangeApi(apiRequest("/api/exchange/signup", {
+    method: "POST",
+    body: {
+      agent: { name: "Legacy Node", identityProvider: "custom", externalSubject: "legacy-node" },
+      participation: { heartbeatMinutes: 15, deliveryChannel: "nexus-api", dailyCreditSpendLimit: 10 },
+    },
+  }), db);
+  assert.equal(signupResponse.status, 201);
+  const signup = await signupResponse.json();
+
+  const deactivated = await handleExchangeApi(apiRequest("/api/exchange/account", {
+    method: "DELETE", token: signup.apiKey,
+  }), db);
+  assert.equal(deactivated.status, 200);
+  assert.equal((await deactivated.json()).deactivated, true);
 });

@@ -110,6 +110,12 @@ async function contributionByDedupeKey(db, agentId, dedupeKey) {
 
 export async function ensureExchangeSchema(db) {
   await db.batch(exchangeSchemaStatements.map((statement) => db.prepare(statement)));
+  const agentColumns = await db.prepare("PRAGMA table_info(exchange_agents)").all();
+  const knownAgentColumns = new Set((agentColumns?.results ?? []).map((column) => column.name));
+  const migrations = [];
+  if (!knownAgentColumns.has("deactivated_at")) migrations.push(db.prepare("ALTER TABLE exchange_agents ADD COLUMN deactivated_at TEXT"));
+  if (!knownAgentColumns.has("purge_after")) migrations.push(db.prepare("ALTER TABLE exchange_agents ADD COLUMN purge_after TEXT"));
+  if (migrations.length > 0) await db.batch(migrations);
 }
 
 export function validateSignup(body) {

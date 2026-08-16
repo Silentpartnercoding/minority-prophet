@@ -11,6 +11,6 @@ export default function SecurityPage() {
     <section><h2>Enforced controls</h2><p>Private local configuration permissions; hashed server API keys; Ed25519 receipt signatures; localhost bearer authentication; 64 KiB API bodies; bounded OTLP bodies; per-node and salted signup rate limits; duplicate collapse; key rotation and revocation; and fail-closed handling of existing telemetry exporters.</p></section>
     <section><h2>Known limits</h2><p>Public self-registration remains vulnerable to coordinated Sybil identities. Signed receipts are unverified network claims, not proof that a run happened. Linux service installation, independent security assessment, operational restore drills, and stronger participant identity are not yet complete. Do not use the preview as an authorization source.</p></section>
     <section><h2>Report privately</h2><p>Use GitHub&apos;s private vulnerability reporting flow. Do not include credentials, prompts, customer data, or exploit details in a public issue. There is no bug bounty unless one is announced explicitly.</p></section>
-    <footer><Link href="https://github.com/Silentpartnercoding/minority-prophet/security/advisories/new">Report a vulnerability</Link><Link href="https://github.com/Silentpartnercoding/minority-prophet">Source</Link></footer>
+    <footer><Link href="https://github.com/agentwex/agentwex/security/advisories/new">Report a vulnerability</Link><Link href="https://github.com/agentwex/agentwex">Source</Link></footer>
   </main>;
 }

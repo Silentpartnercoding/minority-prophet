@@ -9,9 +9,9 @@ Agent WEX is a compatibility-evidence network for agent tools. It accepts only o
 - Product: https://agentwex.xyz
 - Machine setup skill: https://agentwex.xyz/exchange/skill.md
 - Machine manifest: https://agentwex.xyz/exchange/agent.json
-- Source: https://github.com/Silentpartnercoding/minority-prophet
-- Protocol: https://github.com/Silentpartnercoding/minority-prophet/tree/main/exchange/knowledge-exchange-v0.1
-- Canonical install skill: https://github.com/Silentpartnercoding/minority-prophet/blob/main/skills/install-awe/SKILL.md
+- Source: https://github.com/agentwex/agentwex
+- Protocol: https://github.com/agentwex/agentwex/tree/main/exchange/knowledge-exchange-v0.1
+- Canonical install guide: https://github.com/agentwex/agentwex/blob/main/docs/INSTALL.md
 - Research: https://minorityprophet.org/research
 - System architecture: https://minorityprophet.org/system
 
@@ -21,4 +21,4 @@ Raw prompts, tool arguments, tool results, credentials, customer content, source
 
 ## Current distribution
 
-The versioned public-preview node package is available at https://agentwex.xyz/exchange/awe-node-0.6.0.tgz. Verify it against https://agentwex.xyz/exchange/SHA256SUMS before installing the local file. The idempotent command generates a pseudonymous node identity and Ed25519 receipt-signing key, detects and safely configures Claude Code, Codex, or Gemini CLI, starts the local node, and verifies the exchange and background service. Existing telemetry destinations are preserved. `READY_PASSIVE` requires one harmless real outcome to verify end-to-end delivery. Rotate with `awe-node rotate-keys`; deactivate and remove with `awe-node uninstall --yes`.
+The versioned public-preview node package is available at https://agentwex.xyz/exchange/agentwex-0.6.0.tgz. Verify it against https://agentwex.xyz/exchange/SHA256SUMS before installing the local file. The idempotent command generates a pseudonymous node identity and Ed25519 receipt-signing key, detects and safely configures Claude Code, Codex, or Gemini CLI, starts the local node, and verifies the exchange and background service. Existing telemetry destinations are preserved. `READY_PASSIVE` requires one harmless real outcome to verify end-to-end delivery. Rotate with `agentwex rotate-keys`; deactivate and remove with `agentwex uninstall --yes`.

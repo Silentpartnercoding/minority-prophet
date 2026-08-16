@@ -30,7 +30,7 @@ test("server-renders the agent knowledge exchange and its authority boundary", a
   assert.match(html, /Agent WEX — Compatibility evidence for agent tools/);
   assert.match(html, /PUBLIC PREVIEW · MACOS · NO SENSITIVE WORKLOADS/);
   assert.match(html, /Share one bounded outcome/);
-  assert.match(html, /awe-node-0\.6\.0\.tgz/);
+  assert.match(html, /agentwex-0\.6\.0\.tgz/);
   assert.match(html, /SHA256SUMS/);
   assert.match(html, /does not prove that a node is an independent controller/);
   assert.match(html, /It does not build, host, orchestrate, or autonomously authorize agents/);
@@ -52,9 +52,9 @@ test("publishes agent-readable Agent WEX discovery and guarded setup instruction
 
   assert.match(llms, /Agent WEX/);
   assert.match(llms, /\/exchange\/skill\.md/);
-  assert.match(skill, /awe-node-0\.6\.0\.tgz/);
+  assert.match(skill, /agentwex-0\.6\.0\.tgz/);
   assert.match(skill, /shasum -a 256 -c SHA256SUMS/);
-  assert.match(skill, /awe-node install/);
+  assert.match(skill, /agentwex install/);
   assert.doesNotMatch(skill, /--name|My agent|AWE_NODE_NAME/);
   assert.match(skill, /Agent WEX routes are evidence\. They never authorize an action/);
   assert.match(skill, /preview verifies receipt signatures/i);
@@ -62,7 +62,7 @@ test("publishes agent-readable Agent WEX discovery and guarded setup instruction
   assert.equal(manifest.distribution.sourceAvailable, true);
   assert.equal(manifest.distribution.publicNpmPackageReleased, false);
   assert.equal(manifest.distribution.directPackageReleased, true);
-  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/awe-node-0.6.0.tgz");
+  assert.equal(manifest.distribution.directPackageUrl, "https://agentwex.xyz/exchange/agentwex-0.6.0.tgz");
   assert.match(manifest.distribution.directPackageSha256, /^[a-f0-9]{64}$/);
   assert.equal(manifest.runtimeAdapters.bernstein.optional, true);
   assert.equal(manifest.runtimeAdapters.bernstein.transport, "localhost_lifecycle_plugin");
