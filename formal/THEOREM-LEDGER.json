@@ -481,7 +481,7 @@
         "tests/test_asymmetric_claims.py::test_python_agrees_with_lean_on_the_ce14_worlds"
       ],
       "security_interpretation": "Counting fails in both directions. Roots reporting an unsuccessful search are absence of evidence and cannot out-vote a find.",
-      "prohibited_overstatement": "Whether knowledge_ledger's presence branch is DEFECTIVE depends on an unmade semantic decision about what 'oppose' means for a presence claim. This theorem does not settle it and must not be cited as settling it. asymmetric_verdict now decides this shape correctly, but that does not settle the ledger question: evaluate_transaction_v2's presence branch still counts, and whether that is defective remains the unmade semantic decision.",
+      "prohibited_overstatement": "Whether knowledge_ledger's presence branch is DEFECTIVE depends on an unmade semantic decision about what 'oppose' means for a presence claim. This theorem does not settle it and must not be cited as settling it. asymmetric_verdict decides this shape correctly. The related ledger question is settled separately as owner decision A3 (oppose on a presence claim means positive evidence against, not an unsuccessful search), which makes evaluate_transaction_v2's presence counting correct as written. A3 is a semantic decision, not a consequence of this theorem, and must not be cited as proved by it.",
       "implementation": "aggregation/root_vote.py::asymmetric_verdict"
     }
   ],

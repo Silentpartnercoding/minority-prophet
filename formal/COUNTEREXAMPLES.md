@@ -24,7 +24,7 @@ as is CE-14 and its mirror
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |
 | CE-12 | **fixed in new module; legacy retained** | explicit `unattributed_policy`, defaulting to fail-closed |
 | CE-13 | **fixed** | canonical manifests are now tracked; clean clone passes 40/40 |
-| CE-14 | **fixed in a new function; `verdict` fenced** | `asymmetric_verdict` implements the compiled rule (AC1–AC5); `verdict(..., claim_shape=)` refuses these shapes. The ledger's `presence` branch is an open semantic question, not a pending fix |
+| CE-14 | **fixed** | `asymmetric_verdict` implements the compiled rule (AC1–AC5); `verdict(..., claim_shape=)` refuses these shapes; the ledger's `presence` semantics settled as owner decision A3 |
 
 Two witnesses (CE-09, CE-10) no longer reproduce: `audit/falsify.py` now emits
 **10** witnesses rather than 12, and `audit/test_counterexamples.py` pins the
@@ -450,15 +450,31 @@ found-it roots   looked-didn't-find   -> conclusion
              1                  999   -> not_established
 ```
 
-**This is registered as an open question, not as a defect.** Whether it is wrong
-depends on what `oppose` means for a presence claim: *positive evidence that the
-thing does not exist* (in which case counting is defensible) or *an unsuccessful
-search* (in which case it is not). The evaluator does not distinguish the two,
-and that ambiguity is the finding. It is the same kind of semantic decision the
-owner made explicitly as A2 for the absence branch and has not made for this
-one. Pinned by
-`tests/test_asymmetric_claims.py::test_the_ledger_presence_branch_counts_pinned_as_an_open_question`
-so that settling it is a visible change rather than a silent one.
+**Settled as owner decision A3 (2026-08-18): `oppose` on a presence claim means
+positive evidence that the claim is false — not an unsuccessful search.**
+
+The ambiguity was the finding, and it is now removed. Under A3 the counting
+above is correct as written: 999 opposing roots each holding positive evidence
+against genuinely do outweigh one supporting root, and no behaviour changes.
+
+What the decision moves is the *other* reading. **An unsuccessful search is
+recorded in the search ledger, as a location with status `searched`** — which is
+what the search ledger is for. Filing it as an oppose record entered the same
+fact twice, once as coverage and once as a vote, and that double entry was the
+defect rather than the counting. An existential question whose only opposing
+evidence is empty searches therefore has, under A3, no opposing evidence at all:
+decide it with `asymmetric_verdict` and record the searches as coverage.
+
+**The evaluator cannot enforce this.** Nothing in a record distinguishes the two
+readings, so conformance is a caller obligation of exactly the same class as
+"root identity and independence are declared operationally, not proved
+semantically". Making it checkable requires a record-kind field, which is a
+schema change and was deliberately not smuggled in with the decision. The
+receipt states the interpretation in `limits` so that a consumer cannot read the
+count the other way. Registered in `knowledge_ledger/transaction_v2.py` beside
+A2 and pinned by
+`test_the_ledger_presence_branch_counts_and_a3_says_that_is_correct` and
+`test_a3_routes_empty_searches_away_from_the_evidence_ledger`.
 
 **Repair, in two halves.**
 

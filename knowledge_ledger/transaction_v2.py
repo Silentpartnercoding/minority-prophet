@@ -43,6 +43,42 @@ ambiguity that let two conforming implementations disagree. The asymmetry with
 absence is deliberate and is stated in `limits`: absence requires complete
 coverage, presence does not, because absence is a claim about everything that was
 not found and presence is a claim about something that was.
+
+OWNER DECISION A3, REGISTERED HERE.
+
+*What does a record on the `oppose` side of a PRESENCE claim mean?* **Positive
+evidence that the thing is not there.** Not "I looked and did not find it".
+
+Raised by CE-14's mirror note. The presence branch counts opposing roots against
+supporting ones, and that is only defensible under one of the two readings the
+field admitted:
+
+  proof against    a test that rules the thing out. Genuinely contradicts a
+                   find, and counting it is correct.
+  unsuccessful     a search that came back empty. Absence of evidence. It does
+  search           NOT contradict a find -- the searcher may simply have looked
+                   somewhere else -- and counting it lets 999 empty searches
+                   out-vote one verified find.
+
+The second reading is now PROHIBITED. **An unsuccessful search is recorded in the
+SEARCH ledger, as a location with status `searched`, which is what the search
+ledger exists for.** Filing it as an oppose record enters the same fact twice --
+once as coverage, once as a vote -- and that double entry, not the counting, was
+the defect. With A3 fixed, the counting on presence claims is correct as written
+and no behaviour changes.
+
+WHAT THIS DECISION DOES NOT DO. The evaluator cannot check it. Nothing in a
+record distinguishes "proof against" from "empty search"; conformance is a
+caller obligation, of the same kind and the same weakness as "root identity and
+independence are declared operationally, not proved semantically". Making it
+checkable needs a record-kind field, which is a schema change and is deliberately
+NOT smuggled in here. Until then the receipt states the interpretation so a
+consumer cannot read the count the other way.
+
+An existential question whose opposing evidence is empty searches is not a
+presence claim under A3 at all -- it has no opposing evidence. Decide it with
+`aggregation.root_vote.asymmetric_verdict`, which implements the compiled rule
+(AC1-AC5), and record the searches as coverage.
 """
 
 from __future__ import annotations
@@ -174,6 +210,10 @@ def evaluate_transaction_v2(payload: dict[str, Any]) -> dict[str, Any]:
             "Owner decision A2.",
             "Unattributed records are counted and never silently dropped, but "
             "they join no side and move no margin.",
+            "An opposing record is positive evidence that the claim is false, "
+            "not an unsuccessful search; where a search looked belongs in the "
+            "search ledger. The evaluator cannot check this, so it is a caller "
+            "obligation. Owner decision A3.",
         ],
     }
     result["contentDigest"] = f"sha256:{hashlib.sha256(canonical_bytes(result)).hexdigest()}"
