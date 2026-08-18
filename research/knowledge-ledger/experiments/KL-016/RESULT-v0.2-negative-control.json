@@ -1,0 +1,35 @@
+{
+  "control": "kl016.v0.2.negative-control",
+  "seed": 42,
+  "samples": [
+    {
+      "era": "2002-2010",
+      "requested": 200,
+      "returned": 200,
+      "root_ratio": 1.0,
+      "internal_edges": 0
+    },
+    {
+      "era": "2011-2019",
+      "requested": 88,
+      "returned": 88,
+      "root_ratio": 1.0,
+      "internal_edges": 0
+    },
+    {
+      "era": "2011-2019",
+      "requested": 84,
+      "returned": 84,
+      "root_ratio": 1.0,
+      "internal_edges": 0
+    },
+    {
+      "era": "2012-2020",
+      "requested": 200,
+      "returned": 200,
+      "root_ratio": 1.0,
+      "internal_edges": 0
+    }
+  ],
+  "interpretation": "Root ratio 1.0 with zero internal edges means an unrelated sample is entirely roots. A conjecture's citing set measured far below that is therefore a property of that literature, not of how mathematics cites in general."
+}

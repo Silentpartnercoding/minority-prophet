@@ -22,8 +22,8 @@
     "mathlib_rev": "905b95818eb32af7874a58b427f50c1711a5e96c",
     "mathlib_input_rev": "v4.32.2",
     "build_command": "lake exe cache get && lake build",
-    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs",
-    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none",
+    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added",
+    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]",
     "sorry_count": 0,
     "native_decide_count": 0
   },
@@ -377,6 +377,112 @@
       "implementation_tests": [],
       "security_interpretation": "None available.",
       "prohibited_overstatement": "Do not cite T1/T2/T4/T5 in support of any weighted aggregation result. See EXTENSION-SOCKETS.md section 2."
+    },
+    {
+      "definition_version": "core-v3-dag",
+      "proof_status": "proved_compiled",
+      "lean_file": "formal/lean/MinorityProphetCore/Asymmetric.lean",
+      "id": "AC1",
+      "short": "One counterexample suffices",
+      "statement": "For a universal claim, if any root asserts the counterexample side then the verdict is refuted, whatever the confirming root count.",
+      "assumptions": [
+        "finite claim set",
+        "acyclicity via strict time order on indices",
+        "CONVENTION: for a universal claim side true is a confirming observation and side false a counterexample; for an existential claim side true is a find and side false an unsuccessful search. Not recoverable from the types."
+      ],
+      "lean_theorem": "MinorityProphet.universal_one_counterexample_suffices",
+      "security_interpretation": "The falsifier is singular. No confirming count and therefore no margin defends against it.",
+      "prohibited_overstatement": "Implemented as of 2026-08-17 in aggregation/root_vote.py::asymmetric_verdict, which is a SEPARATE function from verdict, mirroring the Lean where universalF is a separate definition from F. Do not read the implementation as carrying the proof: the INDETERMINATE outcome (conflicting roots, or an unattributed claim that could itself be the decisive root) is OUTSIDE the compiled rule entirely -- the Lean assumes side-consistency and an attributed root set, and no theorem here says what to do when those fail. That branch is an implementation policy, of the same evidence class as unattributed_policy, and it fails closed.",
+      "implementation": "aggregation/root_vote.py::asymmetric_verdict",
+      "implementation_tests": [
+        "tests/test_asymmetric_claims.py::test_python_agrees_with_lean_on_the_ce14_worlds"
+      ]
+    },
+    {
+      "definition_version": "core-v3-dag",
+      "proof_status": "proved_compiled",
+      "lean_file": "formal/lean/MinorityProphetCore/Asymmetric.lean",
+      "id": "AC2",
+      "short": "Indifference to the other side",
+      "statement": "universalF depends only on the counterexample-side roots and existentialF only on the find-side roots; worlds agreeing on that one side have equal verdicts.",
+      "assumptions": [
+        "finite claim set",
+        "acyclicity via strict time order on indices",
+        "CONVENTION: for a universal claim side true is a confirming observation and side false a counterexample; for an existential claim side true is a find and side false an unsuccessful search. Not recoverable from the types."
+      ],
+      "lean_theorem": "MinorityProphet.universal_indifferent_to_confirming_side; MinorityProphet.existential_indifferent_to_unsuccessful_search",
+      "security_interpretation": "This is the formal content of CE-14. F is a function of both sides; these are functions of one. So margin, flip_budget and conversions_to_reverse are not merely imprecise for these claims -- they are inputs the verdict does not read. Immunity for these verdicts needs only one side's roots preserved, strictly weaker than T1's hypothesis.",
+      "prohibited_overstatement": "Does not say F is wrong. F answers a different question correctly. The implementation expresses this by OMITTING margin, flip_budget and conversions_to_reverse from AsymmetricVerdict rather than computing and ignoring them, so the CE-14 misreading has no field to attach to.",
+      "implementation": "aggregation/root_vote.py::asymmetric_verdict",
+      "implementation_tests": [
+        "tests/test_asymmetric_claims.py::test_python_agrees_with_lean_on_the_ce14_worlds"
+      ]
+    },
+    {
+      "definition_version": "core-v3-dag",
+      "proof_status": "proved_compiled",
+      "lean_file": "formal/lean/MinorityProphetCore/Asymmetric.lean",
+      "id": "AC3",
+      "short": "Non-vacuity of AC2",
+      "statement": "For every k there is a world with margin exactly k whose universal verdict is refuted.",
+      "assumptions": [
+        "finite claim set",
+        "acyclicity via strict time order on indices",
+        "CONVENTION: for a universal claim side true is a confirming observation and side false a counterexample; for an existential claim side true is a find and side false an unsuccessful search. Not recoverable from the types.",
+        "explicit construction wideWorld k: k+1 confirming roots and one counterexample root"
+      ],
+      "lean_theorem": "MinorityProphet.universal_refuted_at_arbitrarily_large_margin",
+      "security_interpretation": "AC2 alone is satisfied by a rule that never refutes. This proves the refuted case coexists with arbitrarily large margin, so the indifference is content rather than vacuity.",
+      "prohibited_overstatement": "Constructed worlds are flat (no recorded lineage). It shows reachability, not typicality.",
+      "implementation": "aggregation/root_vote.py::asymmetric_verdict",
+      "implementation_tests": [
+        "tests/test_asymmetric_claims.py::test_python_agrees_with_lean_on_the_ce14_worlds"
+      ]
+    },
+    {
+      "definition_version": "core-v3-dag",
+      "proof_status": "proved_compiled",
+      "lean_file": "formal/lean/MinorityProphetCore/Asymmetric.lean",
+      "id": "AC4",
+      "short": "CE-14 machine-checked",
+      "statement": "There is a world where F reports the confirming side with margin 2 while the universal verdict is refuted.",
+      "assumptions": [
+        "finite claim set",
+        "acyclicity via strict time order on indices",
+        "CONVENTION: for a universal claim side true is a confirming observation and side false a counterexample; for an existential claim side true is a find and side false an unsuccessful search. Not recoverable from the types.",
+        "explicit 4-claim flat world [true,true,true,false]"
+      ],
+      "lean_theorem": "MinorityProphet.CE14_counting_reports_the_confirming_side",
+      "implementation_tests": [
+        "tests/test_asymmetric_claims.py::test_ce14_the_two_verdict_paths_still_disagree",
+        "audit/ce14_asymmetric_claims.py",
+        "tests/test_asymmetric_claims.py::test_python_agrees_with_lean_on_the_ce14_worlds"
+      ],
+      "security_interpretation": "The divergence recorded in COUNTEREXAMPLES.md CE-14, now compiled rather than only demonstrated in Python.",
+      "prohibited_overstatement": "Do not cite as evidence that either verdict rule is the correct one for a given deployment. It shows only that they differ.",
+      "implementation": "aggregation/root_vote.py::asymmetric_verdict"
+    },
+    {
+      "definition_version": "core-v3-dag",
+      "proof_status": "proved_compiled",
+      "lean_file": "formal/lean/MinorityProphetCore/Asymmetric.lean",
+      "id": "AC5",
+      "short": "CE-14 mirror, machine-checked",
+      "statement": "There is a world where F reports the claim false with margin -2 while the existential verdict is established.",
+      "assumptions": [
+        "finite claim set",
+        "acyclicity via strict time order on indices",
+        "CONVENTION: for a universal claim side true is a confirming observation and side false a counterexample; for an existential claim side true is a find and side false an unsuccessful search. Not recoverable from the types.",
+        "explicit 4-claim flat world [true,false,false,false]"
+      ],
+      "lean_theorem": "MinorityProphet.CE14_mirror_counting_reports_absence",
+      "implementation_tests": [
+        "tests/test_asymmetric_claims.py::test_existential_claims_are_refused_in_the_mirror_direction",
+        "tests/test_asymmetric_claims.py::test_python_agrees_with_lean_on_the_ce14_worlds"
+      ],
+      "security_interpretation": "Counting fails in both directions. Roots reporting an unsuccessful search are absence of evidence and cannot out-vote a find.",
+      "prohibited_overstatement": "Whether knowledge_ledger's presence branch is DEFECTIVE depends on an unmade semantic decision about what 'oppose' means for a presence claim. This theorem does not settle it and must not be cited as settling it. asymmetric_verdict decides this shape correctly. The related ledger question is settled separately as owner decision A3 (oppose on a presence claim means positive evidence against, not an unsuccessful search), which makes evaluate_transaction_v2's presence counting correct as written. A3 is a semantic decision, not a consequence of this theorem, and must not be cited as proved by it.",
+      "implementation": "aggregation/root_vote.py::asymmetric_verdict"
     }
   ],
   "remediation": {

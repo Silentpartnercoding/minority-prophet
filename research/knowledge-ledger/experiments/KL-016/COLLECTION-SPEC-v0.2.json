@@ -1,0 +1,87 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-016",
+  "hypothesis": "HAC-1",
+  "version": "v0.2",
+  "title": "How much of a mathematical conjecture's apparent support is independent, at the moment before it is resolved?",
+  "status": "collection-rule-frozen",
+  "frozenBefore": "any query about any named conjecture was issued. The only prior query is the era-level reference-coverage probe recorded in FEASIBILITY-v0.2-probe.json, which touches no conjecture and is reported in full.",
+
+  "relationshipToV01": {
+    "v01Status": "stopped-unanswerable-on-this-corpus",
+    "why": "Three of four refuted cases fell below the registered ancestry threshold; li-crossing (1914) records ancestry for 5.5% of its era. See AMENDMENT-v0.1-ancestry-threshold.md.",
+    "whatChanged": "The ERA, not the field. Mathematics is the best-documented field measured (62.6% in 2005-2015, against medicine 47.6% and psychology 38.7%). v0.1 failed by choosing famous OLD conjectures, not by choosing mathematics.",
+    "whatIsNotRevived": "v0.1's case list is not carried forward, reweighted, or partially reused. This is a new registration with a new case list, and v0.1 remains reported as stopped. mertens (1985, 57.3%) passed the threshold and is STILL EXCLUDED here, because retaining the one case that survived would be selecting on the outcome of the v0.1 screening."
+  },
+
+  "questionRestated": {
+    "whatV01AssumedAndWasWrong": "v0.1 asked whether aggregation preserved a DISSENTING POSITION at the cutoff. For these conjectures there is usually no published dissent before the refutation -- nobody wrote 'I believe Hedetniemi is false' in 2018. The dissent and the refutation arrive together, so there is nothing to preserve beforehand and the question as posed is close to vacuous.",
+    "whatIsActuallyMeasurable": "Whether the APPARENT SUPPORT for a conjecture, at the moment before it is resolved, is independent or derived. This is the copying-pressure question the programme is actually about, asked of real literature instead of a generated world.",
+    "question": "At the cutoff, how many distinct citation-graph roots does a conjecture's supporting literature reduce to, relative to the raw count of works citing it?",
+    "null": "The distinct-root count is proportional to the raw citing count, i.e. root-aware aggregation reports the same relative support as claim counting, and collapsing changes nothing."
+  },
+
+  "primaryEndpoint": {
+    "measure": "root ratio = distinct citation-graph roots among pre-cutoff works citing the conjecture's originating work, divided by the raw count of those works",
+    "reportedAs": "a per-case table. NEVER as a rate, mean, or test statistic over the seven cases.",
+    "whyNotARate": "n=7, chosen by us. KL-001/DESIGN-v0.4 established that a rate over a corpus the researcher composed reads back composition. Seven cases cannot support a statistic and this design does not compute one.",
+    "mechanicalOnly": "The primary endpoint uses the citation graph and nothing else. No judgement about what a work says, no classification of its content, no labeller. This is deliberate: KL-014 is blocked precisely because its measure needs human labelling, and the primary endpoint here is designed to be answerable without any."
+  },
+
+  "secondaryEndpoint": {
+    "measure": "share of pre-cutoff citing works that are CONDITIONAL DEPENDENTS ('assuming C, we prove X') rather than CONFIRMING EVIDENCE (verification of C in cases not previously verified)",
+    "whyItMatters": "A conditional result is not support for C at all -- it is a work DERIVED FROM C. If conditional dependents dominate, then the apparent support was never evidence, which is a stronger statement than that it was copied.",
+    "requiresLabelling": true,
+    "protocol": "Two labellers, blinded to the conjecture's outcome and to the root identifiers, classify a registered sample. Inter-rater agreement threshold is registered below.",
+    "failureCondition": "If inter-rater agreement falls below the registered threshold, this endpoint is reported as UNASSIGNABLE and the primary endpoint stands alone. It is not retried on a sample chosen because it agrees better.",
+    "agreementThreshold": "Cohen's kappa >= 0.7, fixed here, before any labelling"
+  },
+
+  "riskierQuestionRegisteredButNotPrimary": {
+    "question": "Does the root ratio differ between conjectures later REFUTED and conjectures later PROVED?",
+    "status": "hypothesis-generating only",
+    "why": "This is the interesting question and it is underpowered by construction at n=7. Registered so that observing a difference cannot later be presented as a confirmatory finding, and so that observing none is also recorded.",
+    "prohibited": "No p-value, no effect size, no claim of predictive value may be reported from seven cases."
+  },
+
+  "caseList": {
+    "inclusionRule": "A named conjecture in mathematics, open for at least fifteen years, with (a) an identifiable originating publication, (b) a definitive resolution published between 1990 and 2024 with an identifiable primary publication, and (c) era reference coverage at or above the registered 50% ancestry threshold. Fixed here; not extended, substituted, or reweighted after any case is scored.",
+    "refuted": [
+      {"id": "borsuk", "conjectureYear": 1933, "resolvedBy": "Kahn and Kalai, 1993", "eraCoverage": 0.572},
+      {"id": "hirsch", "conjectureYear": 1957, "resolvedBy": "Santos, 2010", "eraCoverage": 0.614},
+      {"id": "hedetniemi", "conjectureYear": 1966, "resolvedBy": "Shitov, 2019", "eraCoverage": 0.625},
+      {"id": "connes-embedding", "conjectureYear": 1976, "resolvedBy": "Ji, Natarajan, Vidick, Wright and Yuen (MIP*=RE), 2020", "eraCoverage": 0.629}
+    ],
+    "provedNegativeControls": [
+      {"id": "fermat", "resolvedBy": "Wiles, 1995", "eraCoverage": 0.565},
+      {"id": "poincare", "resolvedBy": "Perelman, 2003", "eraCoverage": 0.580},
+      {"id": "sensitivity", "resolvedBy": "Huang, 2019", "eraCoverage": 0.625}
+    ],
+    "balanceNote": "Four refuted against three proved. A design containing only refuted cases is satisfied by any measure that reports low independence everywhere. The proved cases are the only thing that can produce a result against the hypothesis.",
+    "selectionOnOutcomeIsDISCLOSEDNotSolved": "Every case here is known to us because it was resolved. There is no way to sample conjectures blind to their resolution, because an unresolved conjecture has no resolution to compare against. This is a permanent limitation of the design, not an oversight, and it is the reason the refuted/proved comparison is registered as hypothesis-generating rather than confirmatory."
+  },
+
+  "cutoffRule": "Each case is evaluated at the publication date of its resolution minus one day. Works published after the cutoff are excluded. The cutoff is computed from the resolution date and is not tunable per case.",
+
+  "effectRequires": {
+    "note": "BL-060 declaration, required before any run by scripts/check_effect_reachability.py.",
+    "mechanism": "root-aware aggregation reports fewer independent sources than claim counting when the citing literature shares ancestry",
+    "populationProperty": "a pre-cutoff citing work whose own references include another pre-cutoff citing work of the same conjecture -- i.e. support that descends from other support rather than arising independently",
+    "minimum": 1,
+    "negativeControlPopulation": "a size-matched random sample of mathematics works from the same era with no citation relationship to the conjecture; the probe must report below the minimum there",
+    "ifUnsatisfied": "the run does not start and that is reported. If no case has internally-dependent support, root collapse has nothing to act on and the measurement would return the claim count by construction."
+  },
+
+  "invalidationCondition": "If the originating publication of a conjecture cannot be identified in the index, or its pre-cutoff citing set is smaller than 30 works, that case is reported as unassignable and is NOT replaced. If three or more of the four refuted cases are unassignable, the experiment is reported as unanswerable and stops, as v0.1 was.",
+
+  "stopRule": "The case list is closed at seven. It is not extended, substituted, or reweighted after any case has been scored. The threshold, the cutoff rule, and the agreement threshold are fixed in this document and are not revised in light of results.",
+
+  "prohibitedOverstatement": [
+    "Do not describe a low root ratio as showing that a conjecture was believed for bad reasons. It shows that the citing literature shares ancestry, which is a fact about citation, not about belief.",
+    "Do not report a rate, mean, or test statistic over the seven cases.",
+    "Do not present the refuted-versus-proved comparison as confirmatory, predictive, or as evidence that root ratios forecast anything.",
+    "Do not treat conditional dependents as support merely because they cite the conjecture.",
+    "This experiment says nothing about the Riemann Hypothesis and must not be presented as bearing on it.",
+    "A measurement on real literature establishes that the instrument runs on real literature. It does not establish that evidence roots correspond to independent observations, which remains blocked by KL-014."
+  ]
+}

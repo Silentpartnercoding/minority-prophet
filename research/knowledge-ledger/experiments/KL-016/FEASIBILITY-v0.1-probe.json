@@ -1,0 +1,49 @@
+{
+  "probe": "kl016.reference-coverage.v1",
+  "source": "OpenAlex works API, has_references filter",
+  "field": "Mathematics (OpenAlex fields/26)",
+  "results": [
+    {
+      "era": "1910-1918",
+      "works": 10234,
+      "works_recording_references": 566,
+      "share_recording_references": 0.0553,
+      "case": "li-crossing",
+      "cutoff_year": 1914
+    },
+    {
+      "era": "1954-1962",
+      "works": 48047,
+      "works_recording_references": 16301,
+      "share_recording_references": 0.3393,
+      "case": "polya",
+      "cutoff_year": 1958
+    },
+    {
+      "era": "1962-1970",
+      "works": 100578,
+      "works_recording_references": 42838,
+      "share_recording_references": 0.4259,
+      "case": "euler-sum-of-powers",
+      "cutoff_year": 1966
+    },
+    {
+      "era": "1981-1989",
+      "works": 201588,
+      "works_recording_references": 115498,
+      "share_recording_references": 0.5729,
+      "case": "mertens",
+      "cutoff_year": 1985
+    },
+    {
+      "era": "2005-2015",
+      "works": 949560,
+      "works_recording_references": 594018,
+      "share_recording_references": 0.6256,
+      "case": "modern-ceiling",
+      "cutoff_year": 2010
+    }
+  ],
+  "modern_ceiling_share": 0.6256,
+  "note": "share_recording_references is the share of works recording ANY reference. The complement is the no-ancestry population of HRI1-BLOCKER-20260816.md, where the method has nothing to consume. The modern ceiling is reported because no era can exceed what the index records today; a case is not weak merely by being below 100%, it is weak by being far below the ceiling."
+}

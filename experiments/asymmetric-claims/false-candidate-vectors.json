@@ -1,0 +1,123 @@
+{
+  "schema": "minority-prophet.asymmetric-claims.false-candidate-vectors.v1",
+  "status": "vectors-registered-no-implementation-under-test",
+  "statusNote": "There is no admission function in this repository yet. These vectors are a frozen specification of required behaviour, not a measurement. Nothing here may be reported as a result until an implementation exists and the vectors are executed against it.",
+  "whyNotARate": "Each vector is a named case with a required decision, scored pass or fail. A percentage over these seven -- 'false-prophet rejection 86%' -- would be a fact about which faults were injected, not about the system. KL-001 DESIGN-v0.4 cancelled frozen-v3 for exactly that: 'the rates were not measured; they were chosen and read back.' Counts of violations are admissible; rates over an authored fault mix are not.",
+  "unitUnderTest": "admission of a candidate counterexample as an OPPOSING EVIDENCE ROOT for a universal claim. Under CE-14 this is where the entire burden sits: one admitted opposing root carries the conclusion regardless of margin, so admission -- not aggregation -- is the decision worth testing.",
+  "scopeWarning": "Every vector here is decidable by the evidence layer from the report alone. Faults that require recomputing the underlying result are OUT OF SCOPE and are listed under droppedClasses, not scored here. Keeping them would specify behaviour for a numerical subsystem this repository does not contain.",
+  "decisions": {
+    "ADMIT": "becomes an opposing evidence root; the conclusion moves to `present`",
+    "REFUSE": "never becomes a root; recorded with reason",
+    "ESCALATE": "no root yet; verification required before any decision. Not an answer."
+  },
+  "vectors": [
+    {
+      "id": "FP5-copied-minority",
+      "faultClass": "FP5",
+      "description": "Twenty agents report the SAME candidate, all descending from one ancestor.",
+      "observableToEvidenceLayer": [
+        "parentEvidenceIds",
+        "sourceDependencies"
+      ],
+      "expected": {
+        "beforeVerification": "ESCALATE",
+        "afterVerification": "REFUSE"
+      },
+      "requiredReceiptProperty": {
+        "distinctOpposingRoots": 1,
+        "repeatedRecordsCollapsed": 19
+      },
+      "inertOnTheConclusion": true,
+      "inertNote": "CE-14, measured: 1 record and 20 records of one opposing root yield the identical conclusion. Collapse must still appear in the receipt, and a vector asserting the receipt property is the only way this fault class can fail a test at all. Do not present this vector as evidence that copy discounting changed an outcome here. It cannot.",
+      "catchesRegression": "counting twenty repetitions as twenty independent observations in the receipt",
+      "faultKind": "duplication"
+    },
+    {
+      "id": "FP6-confident-hallucination",
+      "faultClass": "FP6",
+      "description": "Exact-looking coordinates and persuasive prose, with no reproducible computation attached.",
+      "observableToEvidenceLayer": [
+        "rawResultHash",
+        "software",
+        "randomSeed",
+        "reproducibilityStatus"
+      ],
+      "expected": {
+        "beforeVerification": "REFUSE",
+        "afterVerification": "REFUSE"
+      },
+      "refusalReason": "no reproducible computation artifact; an assertion is not an observation",
+      "catchesRegression": "admitting a model's textual statement as an evidence root",
+      "boundaryCited": "AGENTS.md: no LLM-generated numerical value is trusted until recomputed",
+      "faultKind": "fabrication"
+    },
+    {
+      "id": "FP7-malicious-fabrication",
+      "faultClass": "FP7",
+      "description": "A report whose own content digest does not bind the values it reports: the record contradicts itself.",
+      "observableToEvidenceLayer": [
+        "rawResultHash",
+        "inputs"
+      ],
+      "expected": {
+        "beforeVerification": "REFUSE",
+        "afterVerification": "REFUSE"
+      },
+      "refusalReason": "content digest does not bind the reported values",
+      "catchesRegression": "accepting a self-inconsistent record because its prose is confident",
+      "faultKind": "fabrication"
+    }
+  ],
+  "negativeControls": [
+    {
+      "id": "TP1-genuine-verified-counterexample",
+      "description": "A candidate that converges under precision escalation, reproduces under an independent implementation, and carries certified interval bounds excluding the line.",
+      "expected": {
+        "beforeVerification": "ESCALATE",
+        "afterVerification": "ADMIT"
+      },
+      "whyRequired": "Without this the whole file is satisfiable by a layer that refuses everything, which is the vacuity BL-060 rejects. A refuse-everything layer passes all seven fault vectors and fails this one."
+    },
+    {
+      "id": "TP2-three-independent-reproductions",
+      "description": "The same verified candidate independently recomputed by three separate control domains.",
+      "expected": {
+        "afterVerification": "ADMIT"
+      },
+      "requiredReceiptProperty": {
+        "distinctOpposingRoots": 3
+      },
+      "whyRequired": "Distinguishes genuine independent reproduction from FP5, which must yield 1. If a layer reports the same root count for both, it is not measuring independence.",
+      "boundaryCited": "AGENTS.md #2: separate processes/keys/models do not by themselves establish separate control domains; the three domains here are stipulated by the vector, not inferred."
+    }
+  ],
+  "passCondition": "Every vector's required decision is produced, and every requiredReceiptProperty holds exactly. Five of five, or the suite fails and names which vectors failed. No threshold, no percentage, no tolerance.",
+  "faultKinds": {
+    "duplication": "The report may be perfectly correct; there is simply only one of it. Copying is not evidence of falsity, so a duplicated candidate is NEVER refused for being duplicated -- it is collapsed to one root and escalated like any other unverified candidate. A layer that refuses on duplication alone would discard a genuine lone counterexample, which is the exact failure this project exists to prevent.",
+    "fabrication": "No observation exists behind the report -- no reproducible artifact (FP6), or an internally inconsistent one (FP7). Observable from the report alone. Required decision: REFUSE, before and after verification."
+  },
+  "droppedClasses": {
+    "classes": [
+      {
+        "faultClass": "FP1",
+        "description": "A candidate whose off-line real part appears only at low working precision and vanishes when precision is raised."
+      },
+      {
+        "faultClass": "FP2",
+        "description": "|zeta(s)| appears tiny because of catastrophic cancellation in an unstable evaluation."
+      },
+      {
+        "faultClass": "FP3",
+        "description": "Insufficient series truncation manufactures a near-zero."
+      },
+      {
+        "faultClass": "FP4",
+        "description": "Reported coordinates wander rather than converge as precision increases."
+      }
+    ],
+    "origin": "Section 6 of a proposed Riemann Hypothesis falsification benchmark, where search agents evaluated zeta numerically and these were the ways that computation could go wrong.",
+    "whyDropped": "The live numerical search arm was dropped in favour of KL-016, which evaluates historical literature and computes nothing. These four faults are caught by recomputing the result correctly -- a verifier's job, not this layer's -- and no such verifier exists here or is planned. A vector specifying required behaviour for a subsystem that does not exist cannot pass or fail, so it is not a test.",
+    "whatSurvivedThem": "The three-way fault-kind distinction they forced: observability does not imply refusal. That principle is load-bearing for FP5 and is recorded in faultKinds.",
+    "ifReinstated": "If a numerical plane is ever built, these return as verifier conformance vectors in that component, not here."
+  }
+}

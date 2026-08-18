@@ -3,9 +3,11 @@
 Workstream C. Every witness below is reproducible by
 `python3 audit/falsify.py` and pinned by a regression test in
 `audit/test_counterexamples.py`. CE-01, CE-02 and CE-06 are additionally
-**machine-checked in Lean** (`formal/lean/MinorityProphetCore/Counterexamples.lean`).
+**machine-checked in Lean** (`formal/lean/MinorityProphetCore/Counterexamples.lean`),
+as is CE-14 and its mirror
+(`formal/lean/MinorityProphetCore/Asymmetric.lean`, ledger AC4/AC5).
 
-## Fix status as of 2026-08-05
+## Fix status as of 2026-08-17
 
 | ID | Status | Where the repair landed |
 |---|---|---|
@@ -22,6 +24,7 @@ Workstream C. Every witness below is reproducible by
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |
 | CE-12 | **fixed in new module; legacy retained** | explicit `unattributed_policy`, defaulting to fail-closed |
 | CE-13 | **fixed** | canonical manifests are now tracked; clean clone passes 40/40 |
+| CE-14 | **fixed** | `asymmetric_verdict` implements the compiled rule (AC1–AC5); `verdict(..., claim_shape=)` refuses these shapes; the ledger's `presence` semantics settled as owner decision A3 |
 
 Two witnesses (CE-09, CE-10) no longer reproduce: `audit/falsify.py` now emits
 **10** witnesses rather than 12, and `audit/test_counterexamples.py` pins the
@@ -382,6 +385,150 @@ unreproducible outside one machine.
 
 **Repair: infrastructure** — commit the manifests, or make the test skip
 explicitly and loudly when they are absent. Do not weaken the assertion.
+
+---
+
+## CE-14 — The counting aggregator returns the wrong side on a universal claim
+**kind:** `refutes_doctrine` · **target:** `aggregation/root_vote.verdict` applied
+to universal claims, and every `flip_budget` presented beside an absence verdict
+
+A universal claim — *every* member of a scope has property P — is falsified by
+**one** counterexample, whatever the confirming count. The repository ships two
+verdict paths and only one of them knows this.
+
+```
+PYTHONPATH=. python3 audit/ce14_asymmetric_claims.py
+
+One ATTESTED counterexample against 999 confirmations of a universal claim:
+  aggregation/root_vote  -> verdict='true'    margin=998 flip_budget=998
+                            attested_margin=998 immunity_applicable=True
+  knowledge_ledger v0.2  -> conclusion='present'  opposing_roots=1
+```
+
+Two shipped components, one input, opposite sides. `root_vote` is the aggregator
+the compiled theorems are about (`formal/CLAIM-SCOPE.md`); it holds an **attested**
+counterexample, reports the crowd's side, and attaches `immunity_applicable=True`
+— which is not a claim that the verdict is right, but reads as one.
+
+**Nothing here refutes a theorem.** T4 and T5 are about margins over root counts
+and they are correct. What does not follow is the doctrine attached to them:
+that `flip_budget` measures what it costs to overturn the verdict. On an
+absence claim the margin decides nothing. Every branch of the rule reads
+`(opposing evidence present, coverage complete)` and consults the margin in none
+of them — so the number describes a quantity that did not determine the outcome,
+and in the `present` case describes **the side that lost**. Measured on the run
+above: `flipBudget: 998` presented for a conclusion carried by **one** root.
+
+**Why no existing check caught it.** Every synthetic world in the programme is a
+symmetric binary proposition where more roots is the right answer, so a
+counting aggregator and an asymmetric rule never disagree. The divergence needs
+a claim whose falsifier is singular, and the corpus contains none. This is
+BL-060's failure shape one level up: not a population that cannot exhibit the
+effect, but a **claim type** that cannot.
+
+**Consequence for the copy-collapse result.** On an absence claim, copy collapse
+is recorded and cannot reach the conclusion — 1 record and 20 records of the same
+opposing root both yield `present`, differing only in
+`repeatedRecordsCollapsed`. The repository's central mechanism is inert on
+exactly the claim shape where a lone dissenter matters most. That is a scope
+statement, not a defect in the mechanism.
+
+### The mirror: existential claims fail the same way, in the other direction
+
+"Does ANY member of the scope satisfy P?" is settled by **one verified find**,
+and roots reporting an *unsuccessful search* are absence of evidence — they
+cannot out-vote a find. `F` counts them, so it fails here too, symmetrically.
+Compiled as AC5: three unsuccessful searches out-count one find, `F` reports
+the claim false at margin −2, and the existential verdict is established.
+
+Measured in `knowledge_ledger` v0.2's `presence` branch, which also counts:
+
+```
+found-it roots   looked-didn't-find   -> conclusion
+             1                    0   -> supported
+             1                    2   -> not_established
+             1                  999   -> not_established
+```
+
+**Settled as owner decision A3 (2026-08-18): `oppose` on a presence claim means
+positive evidence that the claim is false — not an unsuccessful search.**
+
+The ambiguity was the finding, and it is now removed. Under A3 the counting
+above is correct as written: 999 opposing roots each holding positive evidence
+against genuinely do outweigh one supporting root, and no behaviour changes.
+
+What the decision moves is the *other* reading. **An unsuccessful search is
+recorded in the search ledger, as a location with status `searched`** — which is
+what the search ledger is for. Filing it as an oppose record entered the same
+fact twice, once as coverage and once as a vote, and that double entry was the
+defect rather than the counting. An existential question whose only opposing
+evidence is empty searches therefore has, under A3, no opposing evidence at all:
+decide it with `asymmetric_verdict` and record the searches as coverage.
+
+**The evaluator cannot enforce this.** Nothing in a record distinguishes the two
+readings, so conformance is a caller obligation of exactly the same class as
+"root identity and independence are declared operationally, not proved
+semantically". Making it checkable requires a record-kind field, which is a
+schema change and was deliberately not smuggled in with the decision. The
+receipt states the interpretation in `limits` so that a consumer cannot read the
+count the other way. Registered in `knowledge_ledger/transaction_v2.py` beside
+A2 and pinned by
+`test_the_ledger_presence_branch_counts_and_a3_says_that_is_correct` and
+`test_a3_routes_empty_searches_away_from_the_evidence_ledger`.
+
+**Repair, in two halves.**
+
+*Done — the fence.* `aggregation.root_vote.verdict` takes `claim_shape` and
+raises `AsymmetricClaimError` for `universal` and `existential`, before any
+counting. The message names the evaluator that decides the universal direction
+correctly, and states that no evaluator here decides the existential direction
+correctly yet. Presentation is gated too (`knowledge_ledger/presentation.py`:
+`budgetApplies`, `decidedByRootCount`).
+
+**The fence is a declaration, not a detector.** Nothing in a claim iterable
+reveals which question it answers, so a caller who mislabels a universal claim
+as symmetric still gets the wrong answer and this does not catch it. The default
+is `symmetric` because that is what every existing caller asks — it is not a
+claim that an undeclared proposition has been checked. Pinned by
+`test_the_fence_is_a_declaration_not_a_detector`.
+
+*Done — the rule, proved.* `universalF` and `existentialF` are defined and
+proved in `formal/lean/MinorityProphetCore/Asymmetric.lean` (AC1–AC5): one
+counterexample suffices; the verdict is indifferent to the other side; and the
+indifference is non-vacuous, since a refuted verdict coexists with an
+arbitrarily large margin. Zero `sorry`, axioms `[propext, Classical.choice,
+Quot.sound]` only, rebuilt clean at 3005 jobs.
+
+*Done — the implementation.* `aggregation.root_vote.asymmetric_verdict`
+implements AC1–AC5. It is a **separate function**, not a mode of `verdict`,
+mirroring the Lean where `universalF` is a separate definition from `F` rather
+than a special case of it — so no public signature changed, and the cost
+originally quoted for this repair did not materialise. `verdict` still refuses
+these shapes, because it is *proved* that counting does not answer them.
+
+`AsymmetricVerdict` has no `margin`, no `flip_budget` and no
+`conversions_to_reverse`. AC2 proves the outcome does not read the other side,
+so those fields are **omitted rather than computed and ignored** — the CE-14
+misreading has nothing to attach to. In their place, `roots_to_reverse`: every
+decisive root must be removed to undo a positive outcome, and one new root
+creates one.
+
+`test_python_agrees_with_lean_on_the_ce14_worlds` encodes the two worlds AC4 and
+AC5 are proved about and asserts the Python matches, so the ledger's
+`lean_theorem` reference cannot drift into decoration.
+
+**One branch is outside the proof, and is labelled as such.** `INDETERMINATE` —
+returned for conflicting roots, and for a negative outcome when an unattributed
+claim could itself be the decisive root — has no theorem behind it. The Lean
+assumes side-consistency and an attributed root set. That branch is
+implementation policy of the same evidence class as `unattributed_policy`, and
+it fails closed. Note the asymmetry it encodes: an unattributed claim can create
+a refutation but can never undo one, which is AC1 read in the direction of
+missing data.
+
+*Still open — the ledger's presence branch.* Unchanged by this repair. See the
+mirror note above: it is an unmade semantic decision, not a defect awaiting
+code.
 
 ---
 
