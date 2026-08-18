@@ -1,0 +1,247 @@
+{
+  "model": "gpt-4.1",
+  "question": "What thermal drift has been reported for Kestrel-7 sensor arrays under extended hold at elevated temperature, and what is the evidence for it?",
+  "section": "### Reported Thermal Drift of Kestrel-7 Sensor Arrays Under Extended Elevated Temperature Hold\n\nThe only reported measurement of thermal drift for Kestrel-7 sensor arrays under extended hold at elevated temperature comes from a single-site study by Meridian Instrumentation Laboratory. In this study, one Kestrel-7 array was held at 41\u202f\u00b0C for 300 hours, resulting in a mean output drift of 0.42% of full scale, with drift observed to be monotonic for the first 180 hours and stable thereafter[^1][^2][^3]. This result has been cited in both trade press and review literature, but all secondary sources derive their data from the original Meridian note and did not conduct independent measurements[^2][^3]. The laboratory explicitly cautioned that this finding is based on a single array at a single site, with no independent calibration of the reference cell during the hold, and does not establish a general population rate or temperature dependence[^1][^2][^3]. No additional or corroborating measurements have been reported in the literature to date. Thus, while a sub-percent drift has been observed, the evidence is limited to a single, narrowly scoped experiment.\n\n[^1]: 01-root-observation.md  \n[^2]: 02-derivative-trade-press.md  \n[^3]: 03-derivative-review.md",
+  "probes": [
+    {
+      "probe": "citation_faithfulness",
+      "mean_score": 0.8181818181818182,
+      "summary": {
+        "num_supported": 8,
+        "num_partially_supported": 2,
+        "num_not_supported": 1,
+        "num_citations_checked": 11
+      },
+      "verdicts": [
+        {
+          "citation_id": 1,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The sentence accurately summarizes the key findings of the source: the temperature (41\u202f\u00b0C), the duration (300 hours), the mean drift (0.42% of full scale), and the drift behavior (monotonic for the first 180 hours, flat thereafter). The source states: 'One Kestrel-7 sensor array, serial K7-0442, was held at 41 \u00b0C for 300 hours... Mean drift over the 300-hour hold was 0.42 % of full scale... Drift "
+        },
+        {
+          "citation_id": 2,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The source passage states: 'Meridian Instrumentation Laboratory has reported thermal drift of 0.42 % of full scale for a Kestrel-7 sensor array held at 41 \u00b0C for 300 hours... The laboratory recorded drift as monotonic through roughly the first 180 hours of the hold, after which output remained flat.' This directly supports the claim in the sentence regarding the experimental conditions (one array,"
+        },
+        {
+          "citation_id": 3,
+          "verdict": "PARTIALLY_SUPPORTED",
+          "score": 0.5,
+          "rationale": "The source supports the claim that a 0.42% drift over 300 hours at 41\u202f\u00b0C was reported for a single array by Meridian Instrumentation Laboratory. However, the source does not mention that the drift was monotonic for the first 180 hours and stable thereafter. This additional detail is not present in the cited source passage. Therefore, while the core measurement and context are supported, the specif"
+        },
+        {
+          "citation_id": 2,
+          "verdict": "NOT_SUPPORTED",
+          "score": 0.0,
+          "rationale": "The source passage provides details about the original measurement and notes that Sensor Industry Weekly did not conduct its own measurement, but it does not state or imply that the result has been cited in other trade press or review literature, nor does it discuss the provenance of secondary sources. The claim in the marked sentence goes beyond what is stated in the source passage by asserting t"
+        },
+        {
+          "citation_id": 3,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The source passage confirms that the 0.42% drift figure comes from the Meridian Instrumentation Laboratory and that it has been 'subsequently summarised in the trade press.' The passage also clarifies that Section 4.3 is a literature summary and that no new measurements were performed for the review, with all content derived from the original Meridian note. This supports the claim that secondary s"
+        },
+        {
+          "citation_id": 1,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The claim in the marked sentence is that the laboratory explicitly cautioned about the limitations of the measurement: that it was based on a single array at a single site, with no independent calibration of the reference cell, and that it does not establish a general population rate or temperature dependence. The source passage directly states all these points: it notes the single array, single s"
+        },
+        {
+          "citation_id": 2,
+          "verdict": "PARTIALLY_SUPPORTED",
+          "score": 0.5,
+          "rationale": "The source passage states: \"Meridian notes that the figure comes from a single array at a single site and that the chamber reference cell was not independently calibrated during the hold. The laboratory does not present the result as a population rate.\" This directly supports the claim that the finding is based on a single array at a single site, with no independent calibration of the reference ce"
+        },
+        {
+          "citation_id": 3,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The source passage directly supports the claim that the laboratory cautioned about the limitations of the finding: it was based on one array, one site, and a reference cell not independently calibrated. The source does not explicitly mention that the result 'does not establish a general population rate or temperature dependence,' but the context ('Readers should note the reporting laboratory's own"
+        },
+        {
+          "citation_id": 1,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The source passage (01-root-observation.md) directly supports all the factual claims made in the preceding paragraph, which the marked citation is attached to. Specifically, it reports the single-site, single-array measurement at 41\u00b0C for 300 hours, the mean drift of 0.42% of full scale, the monotonic then flat drift pattern, and the explicit cautions about the limitations of the result (single ar"
+        },
+        {
+          "citation_id": 2,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The source passage (02-derivative-trade-press.md) directly supports the claims attributed to it in the preceding sentences: it reports the 0.42% drift at 41\u00b0C for 300 hours, describes the monotonic then stable drift, notes the single-site/single-array limitation, the lack of independent calibration, and that the result is not a population rate. The passage also clarifies that Sensor Industry Weekl"
+        },
+        {
+          "citation_id": 3,
+          "verdict": "SUPPORTED",
+          "score": 1.0,
+          "rationale": "The source passage directly supports the claims made in the paragraph: it reports the 0.42% drift over 300 hours at 41\u00b0C from Meridian Instrumentation Laboratory, notes that this is the most frequently cited figure, and highlights the limitations (single array, single site, no independent calibration). It also clarifies that the review itself did not perform measurements and is summarizing literat"
+        }
+      ]
+    },
+    {
+      "probe": "citation_completeness",
+      "mean_score": 0.9454545454545454,
+      "summary": {
+        "num_complete": 9,
+        "num_minor_omission": 2,
+        "num_significant_omission": 0,
+        "num_misrepresentation": 0,
+        "num_not_found": 0,
+        "num_parse_error": 0,
+        "num_citations_checked": 11
+      },
+      "verdicts": [
+        {
+          "citation_id": 1,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text and its adjacent context faithfully represent the source's findings, limitations, and epistemic boundaries. The core result and its narrow scope are both clearly conveyed, and the reader is not misled about the generalizability or certainty of the finding. No material nuance or caveat from the source is omitted in the local context."
+        },
+        {
+          "citation_id": 2,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text and its immediate context accurately and completely represent the source's findings, limitations, and epistemic boundaries. There is no flattening of uncertainty, erasure of scope, or omission of important caveats. The reader is not misled about the strength, generalizability, or provenance of the result."
+        },
+        {
+          "citation_id": 3,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text accurately represents the source's main findings, limitations, and epistemic boundaries, and the surrounding context addresses all key caveats and scope conditions. The only minor difference is the mention of the drift being monotonic for 180 hours and stable thereafter, which is not in the provided source passage, but this does not materially change the reader's understanding. No "
+        },
+        {
+          "citation_id": 2,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The marked sentence and its surrounding context accurately represent the source's message regarding the provenance of the data, the lack of independent measurements by secondary sources, and the limitations of the original finding. All key epistemic boundaries and limitations are present in the local context. There is no material omission or distortion."
+        },
+        {
+          "citation_id": 3,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text and its context accurately and completely represent the source's message, including the provenance of the data, the lack of independent measurements, and the explicit limitations and scope. There is no material omission or distortion. The epistemic weight and boundaries are preserved, and the reader is not misled about the strength or generalizability of the finding."
+        },
+        {
+          "citation_id": 1,
+          "verdict": "MINOR_OMISSION",
+          "score": 0.7,
+          "rationale": "The citing text and its context capture all the major limitations and epistemic boundaries stated in the source, including the single-unit, single-site, lack of independent calibration, and lack of generalizability. The only minor omissions are the explicit mention that a single unit does not characterize a production lot and that no failure threshold is established. These are secondary to the mai"
+        },
+        {
+          "citation_id": 2,
+          "verdict": "MINOR_OMISSION",
+          "score": 0.7,
+          "rationale": "The citing text and its context faithfully represent the source's findings, limitations, and epistemic caution. The only very minor stretch is the explicit mention of 'temperature dependence,' which is not directly stated in the source but is implied by the fact that only one temperature was tested. This does not materially alter the reader's understanding, as the main limitations (single array, s"
+        },
+        {
+          "citation_id": 3,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text and its context accurately and completely represent the source's message, including all key limitations, epistemic hedges, and scope boundaries. There is no material omission or distortion. The reader is not misled about the strength, generalizability, or limitations of the finding."
+        },
+        {
+          "citation_id": 1,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text and its immediate context faithfully represent the source's findings, limitations, and epistemic boundaries. There is no flattening of uncertainty, erasure of scope, or omission of key caveats. The reader is clearly informed of the narrowness and limitations of the evidence. No material nuance or condition is missing."
+        },
+        {
+          "citation_id": 2,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "All material details, limitations, and epistemic boundaries from the source are preserved in the citing text and its context. There is no flattening of uncertainty, erasure of scope, or omission of important caveats. The representation is faithful and complete."
+        },
+        {
+          "citation_id": 3,
+          "verdict": "COMPLETE",
+          "score": 1.0,
+          "rationale": "The citing text, together with its immediate context, faithfully and completely represents the source's message, including all key limitations, epistemic hedges, and scope boundaries. There is no material omission or distortion. The only minor addition is the mention of monotonic drift for 180 hours and stability thereafter, which is not present in the source but does not misrepresent or overstate"
+        }
+      ]
+    },
+    {
+      "probe": "citation_sufficiency",
+      "mean_score": 0.8545454545454546,
+      "summary": {
+        "num_fully_sufficient": 7,
+        "num_minor_overreach": 3,
+        "num_significant_overreach": 1,
+        "num_unsupported_fig_leaf": 0,
+        "num_not_found": 0,
+        "num_parse_error": 0,
+        "num_citations_checked": 11
+      },
+      "verdicts": [
+        {
+          "citation_id": 1,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "The claim in the citing sentence is carefully limited to the scope of the source: it describes the results of a single study, with no attempt to generalize or extrapolate. The language matches the evidence, and all sub-assertions are directly supported by the source. There is no inflation of magnitude, no causal escalation, and no orphaned sub-assertions. The sentence does not overreach the eviden"
+        },
+        {
+          "citation_id": 2,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "There is no evidentiary gap. The claim is carefully limited to the scope of the source: it describes the result as coming from 'this study' and does not generalize. All sub-assertions (duration, temperature, drift value, drift behavior) are directly supported by the source. There is no overreach, inflation, or extrapolation beyond what the source provides."
+        },
+        {
+          "citation_id": 3,
+          "verdict": "SIGNIFICANT_OVERREACH",
+          "score": 0.3,
+          "rationale": "The claim's first two sub-assertions (experimental setup and drift magnitude) are directly supported by the source. However, the third sub-assertion\u2014that drift was monotonic for the first 180 hours and stable thereafter\u2014is not present in the source passage. The source only reports the total drift over 300 hours, not the time-course behavior. Thus, the citation does not fully support the claim rega"
+        },
+        {
+          "citation_id": 2,
+          "verdict": "MINOR_OVERREACH",
+          "score": 0.7,
+          "rationale": "The source fully supports the assertion that the trade press article (Sensor Industry Weekly) is a secondary source that derives its data from the original Meridian note and did not conduct independent measurements. However, the claim also refers to 'review literature,' and the source passage does not mention review literature or provide evidence about the practices of review articles. Thus, the s"
+        },
+        {
+          "citation_id": 3,
+          "verdict": "MINOR_OVERREACH",
+          "score": 0.7,
+          "rationale": "The source directly supports the claim that the result has been cited in review literature (this review) and in the trade press, and that these secondary sources derive their data from the original Meridian note. The source also explicitly states that it performed no new measurements. The only potential gap is that the claim refers to 'all secondary sources,' which is a broad assertion. The source"
+        },
+        {
+          "citation_id": 1,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "The claim in the citing sentence is a faithful and accurate summary of the limitations explicitly stated in the source. Each sub-assertion in the claim is directly supported by the source's own language. There is no extrapolation, rhetorical inflation, or unsupported sub-assertion. The claim does not go beyond the evidence; rather, it mirrors the source's caution."
+        },
+        {
+          "citation_id": 2,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "There is no evidentiary gap. The claim in the citing sentence is a faithful and accurate restatement of the explicit limitations and caveats provided in the source. The claim does not overreach, extrapolate, or inflate the evidence. Each sub-assertion is directly supported by the source's own language and framing."
+        },
+        {
+          "citation_id": 3,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "There is no evidentiary gap. The claim is a careful restatement of the limitations explicitly described in the source. The source directly supports all sub-assertions: the single array, single site, lack of independent calibration, and the lack of generalizability. There is no overreach, inflation, or extrapolation beyond the evidence provided by the source."
+        },
+        {
+          "citation_id": 1,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "There is no evidentiary gap. The claim in the sentence is a direct, faithful, and complete restatement of the source's findings, with no extrapolation, inflation, or causal escalation. The sentence does not generalize beyond the evidence, and all sub-assertions (the experimental setup, the result, and the observed drift pattern) are directly supported by the source."
+        },
+        {
+          "citation_id": 2,
+          "verdict": "FULLY_SUFFICIENT",
+          "score": 1.0,
+          "rationale": "There is no evidentiary gap. The claim in the sentence is strictly limited to the scope of the source: it does not generalize, exaggerate, or escalate the findings. All sub-assertions are directly supported by the source. The sentence does not attempt to draw broader conclusions or causal inferences beyond what the source provides."
+        },
+        {
+          "citation_id": 3,
+          "verdict": "MINOR_OVERREACH",
+          "score": 0.7,
+          "rationale": "There is no significant evidentiary gap. The claim in the citing sentence is carefully limited to the scope of the evidence provided by the source: it describes the result as coming from a single-site study, with a single array, and gives the specific drift figure and conditions. The sentence does not generalize or overstate the evidence. The only minor potential gap is the mention of the drift be"
+        }
+      ]
+    }
+  ]
+}
