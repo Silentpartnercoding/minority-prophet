@@ -245,13 +245,18 @@ def test_existential_claims_are_refused_in_the_mirror_direction():
     assert "absence of evidence" in str(raised.value)
 
 
-def test_the_ledger_presence_branch_counts_pinned_as_an_open_question():
-    """Measured, not asserted. One verified find against 999 unsuccessful
-    searches returns not_established. Whether that is wrong depends on what
-    'oppose' means for a presence claim -- positive evidence of absence, or an
-    unsuccessful search. The evaluator does not distinguish them, and that
-    ambiguity is the finding. Pinned so a later semantic decision is a visible
-    change, not a silent one.
+def test_the_ledger_presence_branch_counts_and_a3_says_that_is_correct():
+    """Owner decision A3, pinned. The presence branch counts opposing roots
+    against supporting ones. That was ambiguous while `oppose` could mean either
+    proof-against or an unsuccessful search; A3 fixes it to proof-against, which
+    makes the counting correct as written.
+
+    So this test asserts the SAME numbers it did when the question was open --
+    what changed is that they are now the right answer rather than an
+    unresolved one. Under A3 the 1-against-999 reading means 999 roots each
+    holding positive evidence that the claim is false, and being outvoted is
+    correct. An unsuccessful search may no longer be recorded here at all; it
+    belongs in the search ledger.
     """
     from knowledge_ledger.transaction_v2 import evaluate_transaction_v2
 
@@ -263,11 +268,46 @@ def test_the_ledger_presence_branch_counts_pinned_as_an_open_question():
             "claim": {"id": "c", "type": "presence"},
             "searchLedger": {"locations": [{"id": "L", "status": "searched"}]},
             "evidenceLedger": {"records": records},
-        })["conclusion"]
+        })
 
-    assert presence(1, 0) == "supported"
-    assert presence(1, 2) == "not_established"
-    assert presence(1, 999) == "not_established"
+    assert presence(1, 0)["conclusion"] == "supported"
+    assert presence(1, 2)["conclusion"] == "not_established"
+    assert presence(1, 999)["conclusion"] == "not_established"
+
+    limits = presence(1, 0)["limits"]
+    assert any("Owner decision A3" in line for line in limits), (
+        "the receipt must state the interpretation, since the evaluator "
+        "cannot enforce it")
+    a3 = next(line for line in limits if "Owner decision A3" in line)
+    assert "not an unsuccessful search" in a3
+    assert "search ledger" in a3
+
+
+def test_a3_routes_empty_searches_away_from_the_evidence_ledger():
+    """The decision's operational content: an existential question whose only
+    opposing evidence is unsuccessful searches has, under A3, NO opposing
+    evidence. It is decided by the compiled rule, and the searches are
+    coverage.
+    """
+    from aggregation.root_vote import AsymmetricOutcome, asymmetric_verdict
+    from knowledge_ledger.transaction_v2 import evaluate_transaction_v2
+
+    # One find. The 999 empty searches are coverage, not records.
+    result = asymmetric_verdict([_Claim(True, "find", "attested")],
+                                claim_shape="existential")
+    assert result.outcome is AsymmetricOutcome.ESTABLISHED
+    assert result.ignored_root_count == 0
+
+    receipt = evaluate_transaction_v2({
+        "transactionId": "a3-routing",
+        "claim": {"id": "c", "type": "presence"},
+        "searchLedger": {"locations": [
+            {"id": f"loc-{i}", "status": "searched"} for i in range(999)]},
+        "evidenceLedger": {"records": [{"rootId": "find", "side": "support"}]},
+    })
+    assert receipt["conclusion"] == "supported"
+    assert receipt["search"]["searched"] == 999
+    assert receipt["evidence"]["opposingRoots"] == []
 
 
 # --- CE-14 repair B: the compiled rule, implemented ------------------------
