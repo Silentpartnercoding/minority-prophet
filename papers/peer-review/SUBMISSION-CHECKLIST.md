@@ -22,7 +22,7 @@ The focused preprint is publicly archived. The record below separates completed 
 - [x] Create the immutable `paper-v1.1.0` tag and GitHub release.
 - [x] Publish the Zenodo preprint record with the release archive and manuscript PDF.
 - [x] Record version DOI `10.5281/zenodo.21965713` in the manuscript source, repository paper metadata, and `CITATION.cff`.
-- [x] Prepare the arXiv upload artifact, form metadata, category recommendation, and endorsement instructions in `papers/peer-review/arxiv/`.
+- [x] Prepare the arXiv upload artifact and classification rationale. Recorded in `papers/peer-review/arxiv/README.md`; the how-to was removed as a personal task list rather than a repository artifact.
 - [x] ~~Publish the DOI-bearing PDF as a metadata-only `v1.1.1` archival version~~ — superseded by `v1.2.0`, a content revision adding the CE-14 scope limitation. See `ARCHIVAL-INTEGRITY.md`.
 - [x] Create a Zenodo version for `v1.2.0` and record its version DOI `10.5281/zenodo.21997434`. **Published automatically by the GitHub integration on release creation — there was no draft and no approval step.** See the process defect recorded in `ARCHIVAL-INTEGRITY.md`.
 - [x] Decide where the approval gate lives. **Owner decision, 18 August 2026: auto-publication stays on.** Creating a GitHub release for this repository publishes a Zenodo DOI immediately and irreversibly. The gate is therefore the **release itself**, and there is no later one. Any wording implying a reviewable Zenodo draft has been corrected.
