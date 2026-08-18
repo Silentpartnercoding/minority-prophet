@@ -73,29 +73,29 @@ Deterministic, no model, no network:
 
 The independence side of the proposed dimension needs no judge.
 
-## What is NOT demonstrated
+## The discriminating experiment — run, see `RESULTS.md`
 
-**The three existing probes have not been run on this corpus.** They are
-LM-judge probes and require an OpenAI-compatible endpoint. No such run has been
-performed, so this directory does not claim that faithfulness, completeness and
-sufficiency score well here. It claims only that they are structurally unable to
-see the derivation, which follows from their per-citation design.
+Run on 18 August 2026 with NIST's probe code unmodified, judge `gpt-4.1`:
 
-This is the discriminating experiment and it is outstanding:
+| Probe | Mean score |
+|---|---|
+| Citation faithfulness | 0.82 |
+| Citation completeness | 0.95 |
+| Citation sufficiency | 0.86 |
 
-1. Ingest `corpus/` with NIST's pipeline.
-2. Ask a question that pulls all three documents into one section.
-3. Run the three probes unchanged.
+Root count over the same three citations: **1**. That is the outcome that
+supports a fourth dimension, and it was named in advance.
 
-**The result that supports a fourth probe:** all three score well while the root
-count is 1. **The result that refutes it:** any of the three flags the
-derivative citations. In that case one of the existing probes already covers
-this and no fourth dimension is warranted — and that finding should be recorded
-here rather than discarded.
+**One claim above needed correcting.** An earlier version of this file said the
+probes are *structurally unable to see* the derivation. That is too strong. 8 of
+the 33 verdict rationales explicitly discuss it — the judges read the derivation
+and report it back. What none of them do is act on it: every deduction is a
+scope mismatch inside a single citation, because each probe scores one citation
+against one source and no probe emits a count of independent sources.
 
-Until that run happens, the argument above is structural, not empirical. A
-proposal to NIST on this basis would be asserting a measurement nobody made,
-which is the failure this project exists to catch.
+The accurate statement is narrower and less comfortable: a judge can notice
+derivation and still have nowhere to put it. `RESULTS.md` carries the evidence,
+the weaknesses, and what would still refute the case.
 
 ## Provenance of the claims here
 

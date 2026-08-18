@@ -80,8 +80,10 @@ def main() -> int:
     assert len(result.support_true) == 1, result.support_true
     assert len(CITATIONS) == 3
 
-    print("\nthree citations, one root. No citation is unfaithful, incomplete or")
-    print("overreaching; the count is simply not three.")
+    print("\nthree citations, one root.")
+    print("Measured 18 Aug 2026: NIST's probes score this corpus 0.82 / 0.95 /")
+    print("0.86, and not one of their deductions is about the shared root.")
+    print("See RESULTS.md -- including where they DO remark on the derivation.")
     return 0
 
 
