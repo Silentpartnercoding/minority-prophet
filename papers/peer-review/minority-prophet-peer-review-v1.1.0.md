@@ -3,7 +3,7 @@
 **James Siyuan He**  
 Preprint v1.1.0; not peer reviewed, 16 August 2026
 Correspondence: https://github.com/Silentpartnercoding  
-Archival DOI: https://doi.org/10.5281/zenodo.21965713
+Archival DOI: not yet assigned
 
 ## Abstract
 
@@ -219,7 +219,7 @@ In a finite binary rooted-claim graph, counting declared roots rather than claim
 
 ## Data and code availability
 
-All manuscript source, formal definitions and proofs, validation registrations, reference implementations, adverse findings, and result records are publicly available at https://github.com/Silentpartnercoding/minority-prophet. The reviewed source and PDF are fixed by the immutable `paper-v1.1.0` release tag. The archival preprint record, including the PDF and release archive, is available at https://doi.org/10.5281/zenodo.21965713.
+All manuscript source, formal definitions and proofs, validation registrations, reference implementations, adverse findings, and result records are publicly available at https://github.com/Silentpartnercoding/minority-prophet. The peer-review candidate is versioned in `papers/peer-review/`. An immutable release tag and archival DOI will be assigned only after maintainer approval of the candidate; the absence of an assigned DOI does not affect review of the repository record.
 
 ## Ethics statement
 

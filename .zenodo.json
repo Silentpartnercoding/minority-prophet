@@ -2,9 +2,9 @@
   "title": "The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "publication_date": "2026-08-16",
-  "version": "1.1.0",
-  "description": "A peer-review candidate establishing conditional copy-invariance and root-margin sensitivity results for evidence aggregation over finite rooted claim graphs, with Lean-checked proofs and preregistered bounded validation.",
+  "publication_date": "2026-08-18",
+  "version": "1.2.0",
+  "description": "A peer-review candidate establishing conditional copy-invariance and root-margin sensitivity results for evidence aggregation over finite rooted claim graphs, with Lean-checked proofs and preregistered bounded validation. v1.2.0 adds one scope limitation: the aggregator answers a symmetric question and does not decide universal or existential claims. No result, proof, or validation number of v1.1.0 is retracted.",
   "creators": [
     {
       "name": "He, James Siyuan"
@@ -24,6 +24,11 @@
     {
       "identifier": "https://github.com/Silentpartnercoding/minority-prophet",
       "relation": "isSupplementTo"
+    },
+    {
+      "identifier": "10.5281/zenodo.21965713",
+      "relation": "isNewVersionOf",
+      "scheme": "doi"
     }
   ]
 }

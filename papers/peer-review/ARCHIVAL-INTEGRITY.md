@@ -44,7 +44,42 @@ File     minority-prophet-peer-review-v1.2.0.pdf
 DOI      not yet assigned; no v1.2.0 deposit exists
 ```
 
-## Open item for the owner: the tracked v1.1.0 PDF is not the deposited one
+## RESOLVED: the tracked v1.1.0 artifacts are now the deposited ones
+
+The v1.1.0 slot holds exactly what the v1.1.0 DOI resolves to. Both files were
+restored from their published state, and the restoration was **verified, not
+asserted**:
+
+```text
+manuscript   restored from tag paper-v1.1.0
+             sha256 bffb546cfc8375c94fd64017f567d1708adc3df8eaeff4bd669c6dabce056998
+PDF          downloaded from the Zenodo deposit
+             sha256 10413b41a2e87a527e2f01a29ed0cdfe17245a61eb0d9a6ce0bf334ca096d3da
+rebuild      building the restored manuscript on a different machine reproduces
+             the deposited PDF BYTE-FOR-BYTE, same sha256 10413b41...
+```
+
+That third line is the one that matters. It shows the restoration is correct,
+that the ReportLab build is deterministic across machines, and that the
+version-derived build change introduced with v1.2.0 does **not** disturb the
+reproduction of v1.1.0 — a hardcoded version string would have produced a
+different PDF here and the check would have failed.
+
+The DOI-bearing text that had drifted into the v1.1.0 slot now lives where it
+belongs, in **v1.2.0**. The previously recorded `bb948d25…` regeneration is
+superseded and is not tracked.
+
+### The problem this closes, kept visible
+
+> A reader of the repository's `v1.1.0` PDF was not reading the artifact the
+> `v1.1.0` DOI resolved to.
+
+The cause was benign and worth naming: the DOI was assigned *after* the artifact
+was frozen, and the natural repair — regenerate the PDF with the DOI in it — was
+applied to the version slot that must not change. The correct home for a
+post-publication correction is the next version, never the published one.
+
+## Superseded: open item for the owner (retained)
 
 The repository's tracked `output/pdf/minority-prophet-peer-review-v1.1.0.pdf`
 hashes to `bb948d25…` — the DOI-bearing regeneration. The **Zenodo deposit**
