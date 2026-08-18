@@ -37,6 +37,10 @@ The validator uses only Python's standard library. It validates examples from
 negative fixtures. A conforming producer may add vendor fields outside the
 `evidence_profile` object, but must not reinterpret fields inside it.
 
+`W3C-MEMORY-CROSSWALK.md` maps the published scope of the W3C AI Agent Memory
+Interoperability Community Group onto these fields, and names the failure that
+becomes unobservable when one is absent. It is a crosswalk, not a proposal.
+
 Consumers decide whether an authentication method, controller assertion,
 clock, revocation source, or conclusion method is acceptable. Invalid,
 expired, revoked, replayed, incompletely searched, or insufficiently
