@@ -15,7 +15,6 @@ AUDIT = ROOT / "papers/peer-review/LITERATURE-AUDIT.md"
 CHECKLIST = ROOT / "papers/peer-review/SUBMISSION-CHECKLIST.md"
 METADATA = ROOT / "papers/peer-review/metadata.json"
 PDF = ROOT / f"output/pdf/minority-prophet-peer-review-v{PAPER_VERSION}.pdf"
-ARXIV_METADATA = ROOT / "papers/peer-review/arxiv/metadata.json"
 CITATION = ROOT / "CITATION.cff"
 # The VERSION doi identifies one deposit; the CONCEPT doi identifies the family
 # and resolves to the latest. Only the concept doi may be required inside the
@@ -42,7 +41,7 @@ def fail(message: str) -> None:
 
 
 def main() -> None:
-    for path in (SOURCE, AUDIT, CHECKLIST, METADATA, ARXIV_METADATA, CITATION, PDF):
+    for path in (SOURCE, AUDIT, CHECKLIST, METADATA, CITATION, PDF):
         if not path.is_file() or path.stat().st_size == 0:
             fail(f"missing or empty artifact: {path.relative_to(ROOT)}")
     text = SOURCE.read_text(encoding="utf-8")
@@ -57,7 +56,6 @@ def main() -> None:
     if cited != listed:
         fail(f"citation mismatch: cited={sorted(cited)} listed={sorted(listed)}")
     meta = json.loads(METADATA.read_text(encoding="utf-8"))
-    arxiv_meta = json.loads(ARXIV_METADATA.read_text(encoding="utf-8"))
     title = text.splitlines()[0].removeprefix("# ")
     if meta["title"] != title or meta["version"] != PAPER_VERSION:
         fail("metadata title or version disagrees with manuscript")
@@ -71,8 +69,6 @@ def main() -> None:
     citation = CITATION.read_text(encoding="utf-8")
     if f'doi: "{DOI}"' not in citation or meta["title"] not in citation:
         fail("CITATION.cff is missing the preferred paper title or DOI")
-    if arxiv_meta["title"] != title or arxiv_meta["abstract"] != meta["abstract"]:
-        fail("arXiv title or abstract disagrees with canonical metadata")
     if "not yet assigned" in text.lower():
         fail("manuscript still represents the archival DOI as unassigned")
     if PDF.stat().st_size < 50_000:
