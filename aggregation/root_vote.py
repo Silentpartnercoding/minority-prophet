@@ -170,10 +170,20 @@ class RootVerdict:
 def _basis_of(claim: RootedClaim) -> IndependenceBasis:
     """A claim that does not say how its independence was established has not
     established it. Absent, unrecognised and explicitly-unknown all read as
-    UNKNOWN, which is the conservative direction."""
+    UNKNOWN, which is the conservative direction.
+
+    A member of this enum is accepted as itself. `IndependenceBasis` mixes in
+    `str`, but `str()` on a member of a `(str, Enum)` returns
+    "IndependenceBasis.ATTESTED" rather than "attested", so coercing first would
+    reject the vocabulary's own values. Callers annotate this field as `str`, so
+    the string path remains the normal one -- but a caller who reaches for the
+    enum should not have their basis silently downgraded to UNKNOWN.
+    """
     raw = getattr(claim, "independence_basis", None)
     if raw is None:
         return IndependenceBasis.UNKNOWN
+    if isinstance(raw, IndependenceBasis):
+        return raw
     try:
         return IndependenceBasis(str(raw))
     except ValueError:
