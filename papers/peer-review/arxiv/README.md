@@ -27,6 +27,38 @@ Confirm that the title, author, abstract, page count, DOI, and rendered pages ma
 
 The author chooses the category in the arXiv form, and moderators may reclassify it.
 
+## Endorsement is REQUIRED here, not conditional — policy changed 21 Jan 2026
+
+Checked against `blog.arxiv.org/2026/01/21/attention-authors-updated-endorsement-policy`
+and `info.arxiv.org/help/endorsement.html`.
+
+> "As of January 21, 2026, arXiv will no longer accept institutional email
+> addresses ... as the sole qualifier of endorsement for new authors."
+
+There are exactly two paths for a new submitter to a category:
+
+1. **institutional email AND previous authorship on an existing arXiv paper in
+   the same endorsement domain** — both, not either;
+2. **personal endorsement** from an established arXiv author in that domain.
+
+**Path 1 is closed for this submission.** It would be the author's first arXiv
+paper, so there is no prior paper in the `cs` domain to claim ownership of. An
+institutional address — including an alumni address — does not change this,
+because the address was never the whole requirement.
+
+**Therefore path 2 is the route: personal endorsement.** Plan for it rather than
+discovering it at the form. arXiv also states that staff cannot waive the
+requirement or supply an endorsement.
+
+An institutional email is still worth associating with the account: arXiv
+recommends it and says it expedites the process. It is not sufficient on its own.
+
+**Affiliation honesty.** Registering with an institutional address is an identity
+and contact matter. It is not a claim of current affiliation, and the manuscript
+must not assert one that does not hold. This paper lists an author name and a
+repository, with no institutional affiliation, which is the correct state and
+should stay that way unless the affiliation is real.
+
 ## What endorsement actually requires
 
 Checked against `info.arxiv.org/help/endorsement.html` rather than assumed.
@@ -51,7 +83,8 @@ bypass it. Confirm at registration; do not assume an account alone is enough.
 
 1. Register or sign in at arXiv and start a new submission.
 2. Select the category before seeking endorsement; endorsement is category-dependent.
-3. If arXiv requests endorsement, use the request link it emails to the author. One positive endorsement is required for the relevant endorsement domain.
+3. **Expect arXiv to request endorsement** (see the policy note above). Use the request link it emails to the author. One positive endorsement is required for the relevant endorsement domain.
+   To find eligible endorsers, open the abstract page of a related arXiv paper and use its **"Which authors of this paper are endorsers?"** link; the contact address appears under *Submission history*. Note that this paper's own reference list contains no arXiv-hosted work, so search the `cs.LO` listings for adjacent formal-methods papers rather than the bibliography.
 4. Upload the PDF alone and review arXiv's processed preview.
 5. Paste the fields from `metadata.json` into the submission form.
 6. Select a distribution license after checking any intended venue's preprint policy.
