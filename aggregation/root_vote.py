@@ -85,6 +85,46 @@ class RootedClaim(Protocol):
 
 UnattributedPolicy = Literal["abstain_if_decisive", "ignore", "treat_as_root"]
 
+ClaimShape = Literal["symmetric", "universal", "existential"]
+"""Which question the roots are being counted to answer.
+
+`symmetric` -- "which side has more independent evidence?" Both sides can win by
+    accumulating roots. This is every synthetic world in the programme and every
+    proposition the compiled theorems are about.
+`universal` -- "does EVERY member of a scope satisfy P?" One counterexample root
+    settles it against, whatever the confirming count. Counting is the wrong
+    operation and this function REFUSES it (CE-14).
+`existential` -- "does ANY member of a scope satisfy P?" The mirror: one verified
+    root settles it FOR, and roots reporting an unsuccessful search are absence
+    of evidence, not evidence of absence. They cannot out-vote a find. Counting
+    is wrong in the opposite direction and is REFUSED for the same reason.
+
+This is a DECLARATION BY THE CALLER, not a detection. Nothing in a claim
+iterable reveals which question it answers, so a caller who mislabels a
+universal claim as symmetric gets the wrong answer and this fence does not
+catch it. The fence converts a silent wrong answer into a loud one for callers
+who say what they are asking; it is not a classifier.
+"""
+
+
+class AsymmetricClaimError(ValueError):
+    """Raised when an asymmetric claim is passed to the counting aggregator.
+
+    CE-14: handed 999 confirmations and one ATTESTED counterexample, this
+    function returns `true` with margin 998 and `immunity_applicable=True`. The
+    counting is correct; counting is simply not how an asymmetric claim is
+    decided. For the universal direction,
+    `knowledge_ledger.evaluate_transaction_v2` answers correctly today as an
+    `absence` claim. For the existential direction its `presence` branch also
+    counts -- see CE-14's mirror note, which is an open semantic question
+    rather than a settled defect.
+    """
+
+
+UniversalClaimError = AsymmetricClaimError
+"""Retained name. The universal direction was found first; the fence covers
+both directions and the error is one type."""
+
 
 @dataclass(frozen=True)
 class RootVerdict:
@@ -174,8 +214,16 @@ def verdict(
     claims: Iterable[RootedClaim],
     *,
     unattributed_policy: UnattributedPolicy = "abstain_if_decisive",
+    claim_shape: ClaimShape = "symmetric",
 ) -> RootVerdict:
     """Count distinct evidence roots per side and compare.
+
+    `claim_shape` declares which question is being asked. `universal` raises
+    `UniversalClaimError`: one counterexample settles such a claim regardless of
+    the confirming count, so no margin over root counts answers it (CE-14). The
+    default is `symmetric` because that is what every existing caller asks and
+    what the compiled theorems cover -- it is not a claim that an undeclared
+    proposition has been checked.
 
     `unattributed_policy` decides what a claim with no recorded root means. The
     repository previously contained BOTH of the rejected answers, in different
@@ -190,6 +238,23 @@ def verdict(
       "treat_as_root" -- each becomes its own root, as formal/PROOFS.md's model
           implies. Overstates support: an undetected copy has full influence.
     """
+    if claim_shape == "universal":
+        raise AsymmetricClaimError(
+            "a universal claim is settled by one counterexample root, not by a "
+            "margin over root counts; this function counts and would report the "
+            "confirming side (CE-14). Use "
+            "knowledge_ledger.transaction_v2.evaluate_transaction_v2 with "
+            "claim.type='absence', which decides it correctly."
+        )
+    if claim_shape == "existential":
+        raise AsymmetricClaimError(
+            "an existential claim is settled by one verified root, not by a "
+            "margin over root counts; roots reporting an unsuccessful search "
+            "are absence of evidence and cannot out-vote a find (CE-14 mirror "
+            "note). No evaluator in this repository decides this correctly yet: "
+            "evaluate_transaction_v2's 'presence' branch also counts."
+        )
+
     by_root, unattributed, basis, values = _sides(
         claims, promote_unattributed=unattributed_policy == "treat_as_root"
     )

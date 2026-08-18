@@ -3,7 +3,9 @@
 Workstream C. Every witness below is reproducible by
 `python3 audit/falsify.py` and pinned by a regression test in
 `audit/test_counterexamples.py`. CE-01, CE-02 and CE-06 are additionally
-**machine-checked in Lean** (`formal/lean/MinorityProphetCore/Counterexamples.lean`).
+**machine-checked in Lean** (`formal/lean/MinorityProphetCore/Counterexamples.lean`),
+as is CE-14 and its mirror
+(`formal/lean/MinorityProphetCore/Asymmetric.lean`, ledger AC4/AC5).
 
 ## Fix status as of 2026-08-17
 
@@ -22,7 +24,7 @@ Workstream C. Every witness below is reproducible by
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |
 | CE-12 | **fixed in new module; legacy retained** | explicit `unattributed_policy`, defaulting to fail-closed |
 | CE-13 | **fixed** | canonical manifests are now tracked; clean clone passes 40/40 |
-| CE-14 | **open — definition decision required** | presentation gated (`budgetApplies`); the aggregator's claim-type scope is unresolved |
+| CE-14 | **fenced; rule proved, not implemented** | `verdict(..., claim_shape=)` refuses asymmetric claims; `universalF`/`existentialF` compiled in Lean (AC1–AC5). Implementing them in Python remains an owner decision |
 
 Two witnesses (CE-09, CE-10) no longer reproduce: `audit/falsify.py` now emits
 **10** witnesses rather than 12, and `audit/test_counterexamples.py` pins the
@@ -431,13 +433,62 @@ opposing root both yield `present`, differing only in
 exactly the claim shape where a lone dissenter matters most. That is a scope
 statement, not a defect in the mechanism.
 
-**Repair: implementation and a definition decision.** Presentation is gated now
-(`knowledge_ledger/presentation.py`: `budgetApplies`, `decidedByRootCount`,
-CE-14 note; `tests/test_asymmetric_claims.py`). The open half is `root_vote`,
-which accepts a bare claim iterable and has no notion of claim type. It should
-either refuse universal claims or take the falsifier's polarity as an argument.
-Both change a public signature and neither should be chosen by an agent — the
-owner decides, as with A2 in `transaction_v2`.
+### The mirror: existential claims fail the same way, in the other direction
+
+"Does ANY member of the scope satisfy P?" is settled by **one verified find**,
+and roots reporting an *unsuccessful search* are absence of evidence — they
+cannot out-vote a find. `F` counts them, so it fails here too, symmetrically.
+Compiled as AC5: three unsuccessful searches out-count one find, `F` reports
+the claim false at margin −2, and the existential verdict is established.
+
+Measured in `knowledge_ledger` v0.2's `presence` branch, which also counts:
+
+```
+found-it roots   looked-didn't-find   -> conclusion
+             1                    0   -> supported
+             1                    2   -> not_established
+             1                  999   -> not_established
+```
+
+**This is registered as an open question, not as a defect.** Whether it is wrong
+depends on what `oppose` means for a presence claim: *positive evidence that the
+thing does not exist* (in which case counting is defensible) or *an unsuccessful
+search* (in which case it is not). The evaluator does not distinguish the two,
+and that ambiguity is the finding. It is the same kind of semantic decision the
+owner made explicitly as A2 for the absence branch and has not made for this
+one. Pinned by
+`tests/test_asymmetric_claims.py::test_the_ledger_presence_branch_counts_pinned_as_an_open_question`
+so that settling it is a visible change rather than a silent one.
+
+**Repair, in two halves.**
+
+*Done — the fence.* `aggregation.root_vote.verdict` takes `claim_shape` and
+raises `AsymmetricClaimError` for `universal` and `existential`, before any
+counting. The message names the evaluator that decides the universal direction
+correctly, and states that no evaluator here decides the existential direction
+correctly yet. Presentation is gated too (`knowledge_ledger/presentation.py`:
+`budgetApplies`, `decidedByRootCount`).
+
+**The fence is a declaration, not a detector.** Nothing in a claim iterable
+reveals which question it answers, so a caller who mislabels a universal claim
+as symmetric still gets the wrong answer and this does not catch it. The default
+is `symmetric` because that is what every existing caller asks — it is not a
+claim that an undeclared proposition has been checked. Pinned by
+`test_the_fence_is_a_declaration_not_a_detector`.
+
+*Done — the rule, proved.* `universalF` and `existentialF` are defined and
+proved in `formal/lean/MinorityProphetCore/Asymmetric.lean` (AC1–AC5): one
+counterexample suffices; the verdict is indifferent to the other side; and the
+indifference is non-vacuous, since a refuted verdict coexists with an
+arbitrarily large margin. Zero `sorry`, axioms `[propext, Classical.choice,
+Quot.sound]` only, rebuilt clean at 3005 jobs.
+
+*Open — the implementation.* Whether `root_vote` should go beyond refusing and
+actually decide asymmetric claims changes a public signature and is an owner
+decision, as A2 was in `transaction_v2`. The proof now exists, so that decision
+can be made against a compiled rule instead of against a proposal — which is
+this repository's stated order of work, and the reason the proof was written
+first.
 
 ---
 

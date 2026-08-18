@@ -13,12 +13,29 @@ from __future__ import annotations
 import json
 import pathlib
 import sys
+from dataclasses import dataclass
+
+import pytest
 
 sys.path.insert(0, pathlib.Path(__file__).resolve().parents[1].as_posix())
 
 from audit.ce14_asymmetric_claims import counting_path, ledger_path  # noqa: E402
 from knowledge_ledger.presentation import reversal_metrics  # noqa: E402
 from knowledge_ledger.transaction import evaluate_transaction  # noqa: E402
+
+@dataclass
+class _Claim:
+    value: bool
+    root_id: str | None
+    independence_basis: str | None = None
+
+
+def _universal_claims():
+    """999 confirmations and one attested counterexample -- the CE-14 witness."""
+    for i in range(999):
+        yield _Claim(True, f"conf-{i}", "attested")
+    yield _Claim(False, "counterexample", "attested")
+
 
 FIXTURES = (pathlib.Path(__file__).resolve().parents[1]
             / "research/knowledge-ledger/experiments/KL-000/fixtures")
@@ -172,3 +189,82 @@ def test_fp5_is_recorded_as_inert_on_the_conclusion():
 def test_pass_condition_states_no_threshold():
     condition = VECTORS["passCondition"]
     assert "No threshold, no percentage, no tolerance." in condition
+
+
+# --- CE-14 repair A: the counting aggregator refuses universal claims --------
+
+def test_universal_claims_are_refused_by_the_counting_aggregator():
+    from aggregation.root_vote import UniversalClaimError, verdict
+
+    claims = list(_universal_claims())
+    with pytest.raises(UniversalClaimError) as raised:
+        verdict(claims, claim_shape="universal")
+    message = str(raised.value)
+    assert "CE-14" in message
+    assert "evaluate_transaction_v2" in message, "the refusal must name the tool that works"
+
+
+def test_the_refusal_happens_before_any_counting():
+    """A guard that runs after the work is a report, not a fence. Conflicting
+    roots would otherwise be raised first and mask the refusal."""
+    from aggregation.root_vote import UniversalClaimError, verdict
+
+    conflicting = [_Claim(True, "r"), _Claim(False, "r")]
+    with pytest.raises(UniversalClaimError):
+        verdict(conflicting, claim_shape="universal")
+
+
+def test_symmetric_claims_are_unchanged_by_the_fence():
+    """Every existing caller asks a symmetric question and must be unaffected."""
+    from aggregation.root_vote import verdict
+
+    claims = list(_universal_claims())
+    assert verdict(claims).verdict.value == "true"
+    assert verdict(claims, claim_shape="symmetric").verdict.value == "true"
+    assert verdict(claims).margin == verdict(claims, claim_shape="symmetric").margin
+
+
+def test_the_fence_is_a_declaration_not_a_detector():
+    """Pinned because it is the honest limit of repair A, and a later reader
+    must not mistake it for classification. The identical claim iterable that
+    raises when declared universal returns a verdict when declared symmetric --
+    nothing in the claims themselves says which question is being asked."""
+    from aggregation.root_vote import UniversalClaimError, verdict
+
+    claims = list(_universal_claims())
+    with pytest.raises(UniversalClaimError):
+        verdict(claims, claim_shape="universal")
+    assert verdict(claims, claim_shape="symmetric").verdict.value == "true"
+
+
+def test_existential_claims_are_refused_in_the_mirror_direction():
+    from aggregation.root_vote import AsymmetricClaimError, verdict
+
+    with pytest.raises(AsymmetricClaimError) as raised:
+        verdict(list(_universal_claims()), claim_shape="existential")
+    assert "absence of evidence" in str(raised.value)
+
+
+def test_the_ledger_presence_branch_counts_pinned_as_an_open_question():
+    """Measured, not asserted. One verified find against 999 unsuccessful
+    searches returns not_established. Whether that is wrong depends on what
+    'oppose' means for a presence claim -- positive evidence of absence, or an
+    unsuccessful search. The evaluator does not distinguish them, and that
+    ambiguity is the finding. Pinned so a later semantic decision is a visible
+    change, not a silent one.
+    """
+    from knowledge_ledger.transaction_v2 import evaluate_transaction_v2
+
+    def presence(supporting, opposing):
+        records = [{"rootId": f"s{i}", "side": "support"} for i in range(supporting)]
+        records += [{"rootId": f"o{i}", "side": "oppose"} for i in range(opposing)]
+        return evaluate_transaction_v2({
+            "transactionId": "mirror",
+            "claim": {"id": "c", "type": "presence"},
+            "searchLedger": {"locations": [{"id": "L", "status": "searched"}]},
+            "evidenceLedger": {"records": records},
+        })["conclusion"]
+
+    assert presence(1, 0) == "supported"
+    assert presence(1, 2) == "not_established"
+    assert presence(1, 999) == "not_established"

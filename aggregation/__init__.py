@@ -17,10 +17,13 @@ and do not describe it as the aggregator the theorems are about.
 from .baselines import AggregationResult, majority_vote, weighted_vote
 from .root_vote import (
     BASIS_RANK,
+    ClaimShape,
     IndependenceBasis,
     RootVerdict,
     RootedClaim,
+    AsymmetricClaimError,
     UnattributedPolicy,
+    UniversalClaimError,
     Verdict,
     tolerated_root_errors,
     verdict,
@@ -35,11 +38,14 @@ from .semantic import (
 __all__ = [
     "AggregationResult",
     "BASIS_RANK",
+    "ClaimShape",
     "IndependenceBasis",
     "RootVerdict",
     "RootedClaim",
     "SemanticResult",
+    "AsymmetricClaimError",
     "UnattributedPolicy",
+    "UniversalClaimError",
     "Verdict",
     "evidence_root_vote",
     "majority_vote",
