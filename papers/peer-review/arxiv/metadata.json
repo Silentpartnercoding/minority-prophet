@@ -4,8 +4,8 @@
     "James Siyuan He"
   ],
   "abstract": "When claims can be copied at negligible cost, a large apparent majority may contain only one underlying observation. This paper defines a root-counting aggregator over finite binary claim graphs and proves that, under side consistency, its verdict is invariant to lineage changes preserving assertions and the root set and to copies with recorded parents. Tight root-margin bounds expose decision sensitivity. The Lean-checked results concern correct counting of declared provenance, not truth, authenticity, causal independence, discovery completeness, or authority.",
-  "comments": "Preprint v1.1.0; not peer reviewed. Lean 4 proofs and reproducibility artifacts are available from the linked repository. Archival DOI: 10.5281/zenodo.21965713.",
-  "doi": "10.5281/zenodo.21965713",
+  "comments": "Preprint v1.2.0; not peer reviewed. Lean 4 proofs and reproducibility artifacts are available from the linked repository. Archival DOI: 10.5281/zenodo.21997434 (all versions: 10.5281/zenodo.21965712).",
+  "doi": "10.5281/zenodo.21997434",
   "primary_category_recommendation": "cs.LO",
   "cross_list_recommendations": [
     "cs.AI"

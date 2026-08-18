@@ -25,7 +25,7 @@ The focused preprint is publicly archived. The record below separates completed 
 - [x] Prepare the arXiv upload artifact, form metadata, category recommendation, and endorsement instructions in `papers/peer-review/arxiv/`.
 - [x] ~~Publish the DOI-bearing PDF as a metadata-only `v1.1.1` archival version~~ — superseded by `v1.2.0`, a content revision adding the CE-14 scope limitation. See `ARCHIVAL-INTEGRITY.md`.
 - [x] Create a Zenodo version for `v1.2.0` and record its version DOI `10.5281/zenodo.21997434`. **Published automatically by the GitHub integration on release creation — there was no draft and no approval step.** See the process defect recorded in `ARCHIVAL-INTEGRITY.md`.
-- [ ] Decide where the approval gate now lives, given that creating a GitHub release here publishes a DOI immediately: gate the release itself, or disable auto-publication in the Zenodo integration.
+- [x] Decide where the approval gate lives. **Owner decision, 18 August 2026: auto-publication stays on.** Creating a GitHub release for this repository publishes a Zenodo DOI immediately and irreversibly. The gate is therefore the **release itself**, and there is no later one. Any wording implying a reviewable Zenodo draft has been corrected.
 - [x] ~~Decide the open item: the tracked `v1.1.0` PDF is not byte-identical to the deposited one.~~ Resolved: both v1.1.0 artifacts restored to the deposited bytes, verified by a byte-identical rebuild.
 - [ ] Submit the single PDF to arXiv from the author's own account.
 - [ ] Record venue, submission identifier, date, and manuscript status without describing the preprint as peer reviewed.
@@ -40,4 +40,4 @@ The focused preprint is publicly archived. The record below separates completed 
 
 ## Blocking conditions
 
-Do not publish a release if the PDF differs from the reviewed source, repository checks fail, citation metadata disagrees with the title/author/version, or a DOI/status is represented as assigned before the external archive assigns it.
+Do not publish a release if the PDF differs from the reviewed source, repository checks fail, citation metadata disagrees with the title/author/version, or a DOI/status is represented as assigned before the external archive assigns it. **Creating the release IS the irreversible step**: Zenodo publishes automatically and a published record cannot be withdrawn. Everything to be checked must be checked before `gh release create`, not after.
