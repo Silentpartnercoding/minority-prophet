@@ -128,6 +128,12 @@ the system it describes. The correct reading is that **creating a GitHub release
 here IS publishing a DOI**, and the approval gate must move earlier — to the
 release, or to disabling the integration — because there is no later gate.
 
+**Owner decision, 18 August 2026: auto-publication stays on, and the release is
+the gate.** The documentation is corrected to match the mechanism rather than
+the mechanism changed to match the documentation. Consequence, stated so no
+future reader re-derives it: every check must pass *before* `gh release create`,
+because nothing after it can be undone.
+
 The deposit itself is correct: right version, right relation to v1.1.0, open
 access. Nothing needs retracting. A Zenodo record cannot be unpublished in any
 case, which is why the gate mattered.
