@@ -24,7 +24,7 @@ as is CE-14 and its mirror
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |
 | CE-12 | **fixed in new module; legacy retained** | explicit `unattributed_policy`, defaulting to fail-closed |
 | CE-13 | **fixed** | canonical manifests are now tracked; clean clone passes 40/40 |
-| CE-14 | **fenced; rule proved, not implemented** | `verdict(..., claim_shape=)` refuses asymmetric claims; `universalF`/`existentialF` compiled in Lean (AC1–AC5). Implementing them in Python remains an owner decision |
+| CE-14 | **fixed in a new function; `verdict` fenced** | `asymmetric_verdict` implements the compiled rule (AC1–AC5); `verdict(..., claim_shape=)` refuses these shapes. The ledger's `presence` branch is an open semantic question, not a pending fix |
 
 Two witnesses (CE-09, CE-10) no longer reproduce: `audit/falsify.py` now emits
 **10** witnesses rather than 12, and `audit/test_counterexamples.py` pins the
@@ -483,12 +483,36 @@ indifference is non-vacuous, since a refuted verdict coexists with an
 arbitrarily large margin. Zero `sorry`, axioms `[propext, Classical.choice,
 Quot.sound]` only, rebuilt clean at 3005 jobs.
 
-*Open — the implementation.* Whether `root_vote` should go beyond refusing and
-actually decide asymmetric claims changes a public signature and is an owner
-decision, as A2 was in `transaction_v2`. The proof now exists, so that decision
-can be made against a compiled rule instead of against a proposal — which is
-this repository's stated order of work, and the reason the proof was written
-first.
+*Done — the implementation.* `aggregation.root_vote.asymmetric_verdict`
+implements AC1–AC5. It is a **separate function**, not a mode of `verdict`,
+mirroring the Lean where `universalF` is a separate definition from `F` rather
+than a special case of it — so no public signature changed, and the cost
+originally quoted for this repair did not materialise. `verdict` still refuses
+these shapes, because it is *proved* that counting does not answer them.
+
+`AsymmetricVerdict` has no `margin`, no `flip_budget` and no
+`conversions_to_reverse`. AC2 proves the outcome does not read the other side,
+so those fields are **omitted rather than computed and ignored** — the CE-14
+misreading has nothing to attach to. In their place, `roots_to_reverse`: every
+decisive root must be removed to undo a positive outcome, and one new root
+creates one.
+
+`test_python_agrees_with_lean_on_the_ce14_worlds` encodes the two worlds AC4 and
+AC5 are proved about and asserts the Python matches, so the ledger's
+`lean_theorem` reference cannot drift into decoration.
+
+**One branch is outside the proof, and is labelled as such.** `INDETERMINATE` —
+returned for conflicting roots, and for a negative outcome when an unattributed
+claim could itself be the decisive root — has no theorem behind it. The Lean
+assumes side-consistency and an attributed root set. That branch is
+implementation policy of the same evidence class as `unattributed_policy`, and
+it fails closed. Note the asymmetry it encodes: an unattributed claim can create
+a refutation but can never undo one, which is AC1 read in the direction of
+missing data.
+
+*Still open — the ledger's presence branch.* Unchanged by this repair. See the
+mirror note above: it is an unmade semantic decision, not a defect awaiting
+code.
 
 ---
 

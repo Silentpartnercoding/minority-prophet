@@ -268,3 +268,118 @@ def test_the_ledger_presence_branch_counts_pinned_as_an_open_question():
     assert presence(1, 0) == "supported"
     assert presence(1, 2) == "not_established"
     assert presence(1, 999) == "not_established"
+
+
+# --- CE-14 repair B: the compiled rule, implemented ------------------------
+
+def test_universal_one_decisive_root_settles_it_whatever_the_other_side():
+    """AC1, in Python. 999 confirmations do not outweigh one counterexample."""
+    from aggregation.root_vote import AsymmetricOutcome, asymmetric_verdict
+
+    result = asymmetric_verdict(list(_universal_claims()), claim_shape="universal")
+    assert result.outcome is AsymmetricOutcome.REFUTED
+    assert result.decisive_roots == frozenset({"counterexample"})
+    assert result.ignored_root_count == 999
+    assert result.roots_to_reverse == 1
+
+
+def test_the_outcome_does_not_read_the_other_side():
+    """AC2, in Python: vary the confirming side arbitrarily, outcome is fixed."""
+    from aggregation.root_vote import asymmetric_verdict
+
+    outcomes = set()
+    for confirmations in (0, 1, 50, 999):
+        claims = [_Claim(True, f"conf-{i}", "attested") for i in range(confirmations)]
+        claims.append(_Claim(False, "counterexample", "attested"))
+        outcomes.add(asymmetric_verdict(claims, claim_shape="universal").outcome)
+    assert len(outcomes) == 1
+
+
+def test_no_margin_or_flip_budget_is_reported_for_an_asymmetric_claim():
+    """AC2's consequence. Reporting a margin here is the CE-14 misreading; the
+    field does not exist rather than existing and being ignored."""
+    from aggregation.root_vote import AsymmetricVerdict, asymmetric_verdict
+
+    result = asymmetric_verdict(list(_universal_claims()), claim_shape="universal")
+    fields = set(AsymmetricVerdict.__dataclass_fields__)
+    assert not fields & {"margin", "flip_budget", "conversions_to_reverse"}
+    assert not hasattr(result, "margin")
+
+
+def test_not_refuted_is_never_presented_as_proof():
+    """The RH lesson, enforced: no counterexample found is not a proof, because
+    this function has no search-coverage input at all."""
+    from aggregation.root_vote import AsymmetricOutcome, asymmetric_verdict
+
+    result = asymmetric_verdict([_Claim(True, "conf", "attested")],
+                                claim_shape="universal")
+    assert result.outcome is AsymmetricOutcome.NOT_REFUTED
+    assert any("NOT a proof" in note for note in result.notes)
+    assert result.roots_to_reverse == 1
+
+
+def test_existential_mirror_one_find_beats_any_number_of_empty_searches():
+    from aggregation.root_vote import AsymmetricOutcome, asymmetric_verdict
+
+    claims = [_Claim(True, "find", "attested")]
+    claims += [_Claim(False, f"searched-{i}", "attested") for i in range(999)]
+    result = asymmetric_verdict(claims, claim_shape="existential")
+    assert result.outcome is AsymmetricOutcome.ESTABLISHED
+    assert result.decisive_roots == frozenset({"find"})
+    assert result.ignored_root_count == 999
+
+
+def test_preconditions_fail_closed_and_say_no_theorem_covers_them():
+    """Side separation and attribution are hypotheses of the compiled rule.
+    Where they fail the implementation must not invent an answer."""
+    from aggregation.root_vote import AsymmetricOutcome, asymmetric_verdict
+
+    conflicting = asymmetric_verdict([_Claim(True, "r"), _Claim(False, "r")],
+                                     claim_shape="universal")
+    assert conflicting.outcome is AsymmetricOutcome.INDETERMINATE
+    assert any("R2" in note for note in conflicting.notes)
+
+    # An unattributed claim could BE the decisive root, so a negative outcome
+    # must be withheld -- but it cannot undo one that already exists.
+    withheld = asymmetric_verdict([_Claim(True, "conf", "attested"), _Claim(False, None)],
+                                  claim_shape="universal")
+    assert withheld.outcome is AsymmetricOutcome.INDETERMINATE
+
+    already = asymmetric_verdict([_Claim(False, "ce", "attested"), _Claim(True, None)],
+                                 claim_shape="universal")
+    assert already.outcome is AsymmetricOutcome.REFUTED
+
+
+def test_symmetric_shape_is_rejected_by_the_asymmetric_function():
+    """The fence points both ways; neither function silently answers the
+    other's question."""
+    from aggregation.root_vote import asymmetric_verdict
+
+    with pytest.raises(ValueError, match="root_vote.verdict"):
+        asymmetric_verdict([], claim_shape="symmetric")
+
+
+# --- Python must agree with the compiled Lean on the pinned worlds ---------
+
+def test_python_agrees_with_lean_on_the_ce14_worlds():
+    """AC4 and AC5 are proved about two explicit flat worlds. The same worlds,
+    encoded here, must produce the same answers -- otherwise the compiled rule
+    and the shipped code have drifted apart and the ledger's lean_theorem
+    reference is misleading.
+
+        AC4  flatWorld [true, true, true, false]  -> F=one,  universalF=refuted
+        AC5  flatWorld [true, false, false, false] -> F=zero, existentialF=established
+    """
+    from aggregation.root_vote import AsymmetricOutcome, Verdict, asymmetric_verdict, verdict
+
+    ce14 = [_Claim(v, f"root-{i}") for i, v in enumerate([True, True, True, False])]
+    assert verdict(ce14).verdict is Verdict.TRUE
+    assert verdict(ce14).margin == 2
+    assert asymmetric_verdict(ce14, claim_shape="universal").outcome \
+        is AsymmetricOutcome.REFUTED
+
+    mirror = [_Claim(v, f"root-{i}") for i, v in enumerate([True, False, False, False])]
+    assert verdict(mirror).verdict is Verdict.FALSE
+    assert verdict(mirror).margin == -2
+    assert asymmetric_verdict(mirror, claim_shape="existential").outcome \
+        is AsymmetricOutcome.ESTABLISHED

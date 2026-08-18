@@ -244,15 +244,17 @@ def verdict(
             "margin over root counts; this function counts and would report the "
             "confirming side (CE-14). Use "
             "knowledge_ledger.transaction_v2.evaluate_transaction_v2 with "
-            "claim.type='absence', which decides it correctly."
+            "claim.type='absence', or aggregation.root_vote.asymmetric_verdict, "
+            "which implements the compiled rule (AC1-AC5)."
         )
     if claim_shape == "existential":
         raise AsymmetricClaimError(
             "an existential claim is settled by one verified root, not by a "
             "margin over root counts; roots reporting an unsuccessful search "
             "are absence of evidence and cannot out-vote a find (CE-14 mirror "
-            "note). No evaluator in this repository decides this correctly yet: "
-            "evaluate_transaction_v2's 'presence' branch also counts."
+            "note). Use aggregation.root_vote.asymmetric_verdict, which "
+            "implements the compiled rule (AC1-AC5); evaluate_transaction_v2's "
+            "'presence' branch counts and does not decide this shape."
         )
 
     by_root, unattributed, basis, values = _sides(
@@ -370,3 +372,194 @@ def tolerated_root_errors(result: RootVerdict) -> int:
     PROVENANCE-REQUIREMENTS.md and is not enforced by this library.
     """
     return max(result.flip_budget - 1, 0)
+
+
+# ---------------------------------------------------------------------------
+# Asymmetric claims (CE-14). The rule implemented here is COMPILED, not
+# proposed: `formal/lean/MinorityProphetCore/Asymmetric.lean`, ledger AC1-AC5.
+#
+# It is a SEPARATE FUNCTION rather than a mode of `verdict`, mirroring the Lean,
+# where `universalF` and `existentialF` are separate definitions from `F` and
+# not special cases of it. `verdict` keeps refusing these shapes, because it is
+# proved that counting does not answer them.
+# ---------------------------------------------------------------------------
+
+
+class AsymmetricOutcome(str, Enum):
+    """Outcomes for claims whose falsifier or verifier is singular.
+
+    REFUTED / NOT_REFUTED     -- universal claims ("every member satisfies P")
+    ESTABLISHED / NOT_ESTABLISHED -- existential claims ("some member does")
+    INDETERMINATE             -- a precondition of the compiled rule failed.
+        NO THEOREM COVERS THIS OUTCOME. The Lean assumes side-consistency and
+        an attributed root set; this is what the implementation does when those
+        hypotheses do not hold, and it fails closed rather than guessing.
+    """
+
+    REFUTED = "refuted"
+    NOT_REFUTED = "not_refuted"
+    ESTABLISHED = "established"
+    NOT_ESTABLISHED = "not_established"
+    INDETERMINATE = "indeterminate"
+
+
+@dataclass(frozen=True)
+class AsymmetricVerdict:
+    """The result of a rule that reads ONE side and ignores the other.
+
+    There is deliberately no `margin`, no `flip_budget` and no
+    `conversions_to_reverse`. AC2 proves the outcome does not read the other
+    side at all, so a margin over both sides is not an input to this decision
+    and reporting one would invite exactly the misreading CE-14 records.
+    """
+
+    outcome: AsymmetricOutcome
+    claim_shape: ClaimShape
+    decisive_roots: frozenset[str]
+    """The roots that carry the outcome. AC1: one is enough."""
+    ignored_root_count: int
+    """Roots on the other side. Reported so the indifference is VISIBLE rather
+    than merely true; this number had no influence on `outcome` (AC2)."""
+    roots_to_reverse: int
+    """Roots that must be removed or added to change `outcome`. For a positive
+    outcome, every decisive root must go; for a negative one, a single new root
+    suffices. This replaces `flip_budget`, which is not defined here."""
+    unattributed: int
+    conflicting_roots: frozenset[str]
+    weakest_basis: str
+    """Weakest independence basis among the DECISIVE roots. A refutation resting
+    on one UNKNOWN root is one assertion, not a proof."""
+    notes: tuple[str, ...] = field(default_factory=tuple)
+
+
+_DECISIVE_SIDE: dict[str, bool] = {"universal": False, "existential": True}
+"""Which assertion carries the outcome. For a universal claim it is the
+counterexample (False); for an existential claim it is the find (True)."""
+
+
+def asymmetric_verdict(
+    claims: Iterable[RootedClaim],
+    *,
+    claim_shape: ClaimShape,
+) -> AsymmetricVerdict:
+    """Decide a universal or existential claim from its decisive side alone.
+
+    Implements `universalF` / `existentialF` (AC1-AC5). One decisive root
+    settles the claim regardless of how many roots assert the other side.
+
+    `NOT_REFUTED` IS NOT "PROVED". This function has no search-coverage input,
+    so it cannot distinguish "the scope was searched and nothing was found" from
+    "nothing was found yet". Only `knowledge_ledger` can, because only it
+    carries a search ledger. Read alone, `NOT_REFUTED` means exactly "no
+    counterexample root is present here". The same applies to
+    `NOT_ESTABLISHED`.
+    """
+    if claim_shape == "symmetric":
+        raise ValueError(
+            "symmetric claims are decided by counting roots per side; use "
+            "aggregation.root_vote.verdict"
+        )
+    if claim_shape not in _DECISIVE_SIDE:
+        raise ValueError(f"unknown claim_shape: {claim_shape!r}")
+
+    decisive_value = _DECISIVE_SIDE[claim_shape]
+    by_root, unattributed, basis, values = _sides(claims, promote_unattributed=False)
+
+    conflicting = frozenset(r for r, vals in by_root.items() if len(vals) > 1)
+    decisive = frozenset(r for r, vals in by_root.items() if vals == {decisive_value})
+    ignored = frozenset(r for r, vals in by_root.items() if vals == {not decisive_value})
+
+    notes: list[str] = []
+    positive = AsymmetricOutcome.REFUTED if claim_shape == "universal" \
+        else AsymmetricOutcome.ESTABLISHED
+    negative = AsymmetricOutcome.NOT_REFUTED if claim_shape == "universal" \
+        else AsymmetricOutcome.NOT_ESTABLISHED
+
+    def _weakest(roots: frozenset[str]) -> str:
+        return min((basis.get(r, IndependenceBasis.UNKNOWN) for r in roots),
+                   key=lambda b: BASIS_RANK[b],
+                   default=IndependenceBasis.UNKNOWN).value
+
+    if conflicting:
+        # R2 (side separation) fails, which is a hypothesis of the compiled
+        # rule. Outside the theorem; fail closed.
+        notes.append(
+            f"{len(conflicting)} root(s) carry conflicting assertions: "
+            + ", ".join(sorted(conflicting))
+            + " -- R2 (side separation) is violated, which the compiled rule "
+            "assumes; failing closed"
+        )
+        return AsymmetricVerdict(
+            outcome=AsymmetricOutcome.INDETERMINATE,
+            claim_shape=claim_shape,
+            decisive_roots=decisive,
+            ignored_root_count=len(ignored),
+            roots_to_reverse=0,
+            unattributed=unattributed,
+            conflicting_roots=conflicting,
+            weakest_basis=_weakest(decisive),
+            notes=tuple(notes),
+        )
+
+    if decisive:
+        # AC1: one decisive root settles it, whatever the other side holds.
+        # Unattributed claims cannot undo this -- nothing un-refutes a claim.
+        if ignored:
+            notes.append(
+                f"{len(ignored)} root(s) assert the other side and did not "
+                "influence this outcome (AC2: the verdict does not read them)"
+            )
+        weakest = _weakest(decisive)
+        if weakest != IndependenceBasis.ATTESTED.value:
+            notes.append(
+                f"decisive evidence rests on a {weakest} root; a singular "
+                "falsifier is only as strong as its weakest decisive root"
+            )
+        return AsymmetricVerdict(
+            outcome=positive,
+            claim_shape=claim_shape,
+            decisive_roots=decisive,
+            ignored_root_count=len(ignored),
+            roots_to_reverse=len(decisive),
+            unattributed=unattributed,
+            conflicting_roots=conflicting,
+            weakest_basis=weakest,
+            notes=tuple(notes),
+        )
+
+    # No decisive root. Here unattributed claims DO matter: one of them could be
+    # the decisive root, and a single one is enough to flip the outcome.
+    if unattributed:
+        notes.append(
+            f"{unattributed} unattributed claim(s) present and no decisive root "
+            "found; a single unattributed claim on the decisive side would "
+            "settle this claim, so the outcome is withheld"
+        )
+        return AsymmetricVerdict(
+            outcome=AsymmetricOutcome.INDETERMINATE,
+            claim_shape=claim_shape,
+            decisive_roots=decisive,
+            ignored_root_count=len(ignored),
+            roots_to_reverse=1,
+            unattributed=unattributed,
+            conflicting_roots=conflicting,
+            weakest_basis=_weakest(decisive),
+            notes=tuple(notes),
+        )
+
+    notes.append(
+        "no decisive root is present. This is NOT a proof of the claim: this "
+        "function has no search-coverage input and cannot distinguish a "
+        "searched scope from an unsearched one. Use knowledge_ledger for that."
+    )
+    return AsymmetricVerdict(
+        outcome=negative,
+        claim_shape=claim_shape,
+        decisive_roots=decisive,
+        ignored_root_count=len(ignored),
+        roots_to_reverse=1,
+        unattributed=unattributed,
+        conflicting_roots=conflicting,
+        weakest_basis=_weakest(decisive),
+        notes=tuple(notes),
+    )
