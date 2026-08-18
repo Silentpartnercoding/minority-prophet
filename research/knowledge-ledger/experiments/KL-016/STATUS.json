@@ -2,7 +2,7 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-016",
   "status": "stopped-unanswerable-on-this-corpus",
-  "statusNote": "The registered invalidationCondition fired on measurement, before any case was scored. Not cancelled for convenience and not deferred.",
+  "statusNote": "v0.1 is stopped and stays stopped. v0.2 is a separate registration; see versions. DESIGN-v0.2.md records a SECOND defect in v0.1, found while drafting v0.2 and not caught by any check: its endpoint asked whether a dissenting position was preserved, and for these conjectures no dissent is published before the refutation, so the endpoint could not have moved even with perfect ancestry data.",
   "amendment": "AMENDMENT-v0.1-ancestry-threshold.md",
   "threshold": {
     "rule": "a case is reconstructable only if >=50% of works in its era record any ancestry",
@@ -20,5 +20,20 @@
   },
   "claimAllowed": "KL-016 v0.1 is unanswerable on its declared corpus. No claim about root-aware aggregation, dissent preservation, or any listed conjecture may cite this experiment.",
   "reusableFinding": "A lineage-aware method requires a literature recording lineage for a majority of its confirming works. No field measured clears 50% before roughly 1980; medicine (47.6%) and psychology (38.7%) do not clear it today.",
-  "questionStatus": "unanswered, not answered negatively"
+  "questionStatus": "unanswered, not answered negatively",
+  "versions": {
+    "v0.1": {
+      "status": "stopped-unanswerable-on-this-corpus",
+      "claimAllowed": "KL-016 v0.1 is unanswerable on its declared corpus. No claim about root-aware aggregation, dissent preservation, or any listed conjecture may cite this experiment."
+    },
+    "v0.2": {
+      "status": "collection-rule-frozen",
+      "statusNote": "New registration with a new case list and a new question. Not a revival of v0.1: v0.1's case list is not carried forward, and mertens is excluded although it passed v0.1's screen, because retaining the survivor of a screen selects on that screen's outcome.",
+      "spec": "COLLECTION-SPEC-v0.2.json",
+      "design": "DESIGN-v0.2.md",
+      "feasibility": "FEASIBILITY-v0.2-probe.json",
+      "allCasesClearThreshold": true,
+      "claimAllowed": "Nothing. The collection rule is frozen and no data has been collected."
+    }
+  }
 }

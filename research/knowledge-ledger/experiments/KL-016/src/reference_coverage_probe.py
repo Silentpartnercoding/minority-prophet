@@ -43,6 +43,19 @@ CASE_ERAS = [
 ]
 MODERN_CEILING = ("modern-ceiling", "2005-2015", 2010)
 
+# v0.2 case list. Same instrument, modern eras. Each entry is the eight years
+# preceding the case's resolution, which is the window its pre-cutoff citing
+# literature sits in.
+CASE_ERAS_V02 = [
+    ("borsuk", "1985-1993", 1993),
+    ("hirsch", "2002-2010", 2010),
+    ("hedetniemi", "2011-2019", 2019),
+    ("connes-embedding", "2012-2020", 2020),
+    ("fermat", "1987-1995", 1995),
+    ("poincare", "1995-2003", 2003),
+    ("sensitivity", "2011-2019", 2019),
+]
+
 
 def _count(mailto: str, filter_expr: str) -> int:
     url = f"{API}?" + urllib.parse.urlencode({"filter": filter_expr, "per_page": 1})
@@ -68,19 +81,25 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mailto", default="silentpartnerholdings@gmail.com")
     parser.add_argument("--out", default="-")
+    parser.add_argument("--cases", choices=("v01", "v02"), default="v01")
     args = parser.parse_args()
 
+    selected = CASE_ERAS if args.cases == "v01" else CASE_ERAS_V02
     results = []
-    for case_id, era, cutoff_year in CASE_ERAS + [MODERN_CEILING]:
+    for case_id, era, cutoff_year in selected + [MODERN_CEILING]:
         row = coverage(args.mailto, era)
         row["case"] = case_id
         row["cutoff_year"] = cutoff_year
+        row["clears_threshold"] = row["share_recording_references"] >= 0.50
         results.append(row)
         time.sleep(0.4)
 
     ceiling = next(r for r in results if r["case"] == "modern-ceiling")
     payload = {
         "probe": "kl016.reference-coverage.v1",
+        "caseList": args.cases,
+        "threshold": {"rule": "a case is reconstructable only if >=50% of works in its era record any ancestry",
+                      "registeredIn": "AMENDMENT-v0.1-ancestry-threshold.md"},
         "source": "OpenAlex works API, has_references filter",
         "field": "Mathematics (OpenAlex fields/26)",
         "results": results,
