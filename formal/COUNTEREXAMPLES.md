@@ -5,7 +5,7 @@ Workstream C. Every witness below is reproducible by
 `audit/test_counterexamples.py`. CE-01, CE-02 and CE-06 are additionally
 **machine-checked in Lean** (`formal/lean/MinorityProphetCore/Counterexamples.lean`).
 
-## Fix status as of 2026-08-05
+## Fix status as of 2026-08-17
 
 | ID | Status | Where the repair landed |
 |---|---|---|
@@ -22,6 +22,7 @@ Workstream C. Every witness below is reproducible by
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |
 | CE-12 | **fixed in new module; legacy retained** | explicit `unattributed_policy`, defaulting to fail-closed |
 | CE-13 | **fixed** | canonical manifests are now tracked; clean clone passes 40/40 |
+| CE-14 | **open — definition decision required** | presentation gated (`budgetApplies`); the aggregator's claim-type scope is unresolved |
 
 Two witnesses (CE-09, CE-10) no longer reproduce: `audit/falsify.py` now emits
 **10** witnesses rather than 12, and `audit/test_counterexamples.py` pins the
@@ -382,6 +383,61 @@ unreproducible outside one machine.
 
 **Repair: infrastructure** — commit the manifests, or make the test skip
 explicitly and loudly when they are absent. Do not weaken the assertion.
+
+---
+
+## CE-14 — The counting aggregator returns the wrong side on a universal claim
+**kind:** `refutes_doctrine` · **target:** `aggregation/root_vote.verdict` applied
+to universal claims, and every `flip_budget` presented beside an absence verdict
+
+A universal claim — *every* member of a scope has property P — is falsified by
+**one** counterexample, whatever the confirming count. The repository ships two
+verdict paths and only one of them knows this.
+
+```
+PYTHONPATH=. python3 audit/ce14_asymmetric_claims.py
+
+One ATTESTED counterexample against 999 confirmations of a universal claim:
+  aggregation/root_vote  -> verdict='true'    margin=998 flip_budget=998
+                            attested_margin=998 immunity_applicable=True
+  knowledge_ledger v0.2  -> conclusion='present'  opposing_roots=1
+```
+
+Two shipped components, one input, opposite sides. `root_vote` is the aggregator
+the compiled theorems are about (`formal/CLAIM-SCOPE.md`); it holds an **attested**
+counterexample, reports the crowd's side, and attaches `immunity_applicable=True`
+— which is not a claim that the verdict is right, but reads as one.
+
+**Nothing here refutes a theorem.** T4 and T5 are about margins over root counts
+and they are correct. What does not follow is the doctrine attached to them:
+that `flip_budget` measures what it costs to overturn the verdict. On an
+absence claim the margin decides nothing. Every branch of the rule reads
+`(opposing evidence present, coverage complete)` and consults the margin in none
+of them — so the number describes a quantity that did not determine the outcome,
+and in the `present` case describes **the side that lost**. Measured on the run
+above: `flipBudget: 998` presented for a conclusion carried by **one** root.
+
+**Why no existing check caught it.** Every synthetic world in the programme is a
+symmetric binary proposition where more roots is the right answer, so a
+counting aggregator and an asymmetric rule never disagree. The divergence needs
+a claim whose falsifier is singular, and the corpus contains none. This is
+BL-060's failure shape one level up: not a population that cannot exhibit the
+effect, but a **claim type** that cannot.
+
+**Consequence for the copy-collapse result.** On an absence claim, copy collapse
+is recorded and cannot reach the conclusion — 1 record and 20 records of the same
+opposing root both yield `present`, differing only in
+`repeatedRecordsCollapsed`. The repository's central mechanism is inert on
+exactly the claim shape where a lone dissenter matters most. That is a scope
+statement, not a defect in the mechanism.
+
+**Repair: implementation and a definition decision.** Presentation is gated now
+(`knowledge_ledger/presentation.py`: `budgetApplies`, `decidedByRootCount`,
+CE-14 note; `tests/test_asymmetric_claims.py`). The open half is `root_vote`,
+which accepts a bare claim iterable and has no notion of claim type. It should
+either refuse universal claims or take the falsifier's polarity as an argument.
+Both change a public signature and neither should be chosen by an agent — the
+owner decides, as with A2 in `transaction_v2`.
 
 ---
 
