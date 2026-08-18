@@ -1,0 +1,24 @@
+{
+  "schema": "minority-prophet.experiment-status.v0.1",
+  "experimentId": "KL-016",
+  "status": "stopped-unanswerable-on-this-corpus",
+  "statusNote": "The registered invalidationCondition fired on measurement, before any case was scored. Not cancelled for convenience and not deferred.",
+  "amendment": "AMENDMENT-v0.1-ancestry-threshold.md",
+  "threshold": {
+    "rule": "a case is reconstructable only if >=50% of works in its era record any ancestry",
+    "setBy": "precedent (KL-001 DESIGN-v0.4 direction; BL-060 negative-control separation)",
+    "disclosedWeakness": "derived after the era coverages were measured; mitigations recorded in the amendment"
+  },
+  "evaluation": {
+    "li-crossing": 0.0553,
+    "polya": 0.3393,
+    "euler-sum-of-powers": 0.4259,
+    "mertens": 0.5729,
+    "failing": 3,
+    "stopRuleThreshold": 3,
+    "fired": true
+  },
+  "claimAllowed": "KL-016 v0.1 is unanswerable on its declared corpus. No claim about root-aware aggregation, dissent preservation, or any listed conjecture may cite this experiment.",
+  "reusableFinding": "A lineage-aware method requires a literature recording lineage for a majority of its confirming works. No field measured clears 50% before roughly 1980; medicine (47.6%) and psychology (38.7%) do not clear it today.",
+  "questionStatus": "unanswered, not answered negatively"
+}
