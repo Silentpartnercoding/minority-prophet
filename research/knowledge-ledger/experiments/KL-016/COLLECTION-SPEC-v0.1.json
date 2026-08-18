@@ -1,0 +1,85 @@
+{
+  "schema": "minority-prophet.collection-spec.v0.1",
+  "experimentId": "KL-016",
+  "hypothesis": "HAC-1",
+  "version": "v0.1",
+  "title": "Did root-aware aggregation preserve the dissent that later overturned a mathematical consensus?",
+  "status": "collection-rule-frozen",
+  "frozenBefore": "any bibliographic query was issued and any case was scored for this experiment",
+  "whyFrozenFirst": "The case list is the entire experiment. Choosing conjectures after seeing which ones make the method look good is the same defect as choosing a corpus after seeing the rate, and it is undetectable afterwards. The inclusion rule, the case list, the negative controls and the endpoints are fixed here.",
+
+  "question": "For universal mathematical claims that a numerically supported consensus held and a lone dissenting result later refuted, does root-aware aggregation preserve the dissenting evidence at the point before the refutation was accepted, where head-count and citation-weighted aggregation suppress it?",
+  "null": "At the pre-refutation cutoff, root-aware aggregation assigns the dissenting position no more surviving evidential standing than citation-weighted aggregation does.",
+
+  "whyThisCorpusAndNotASyntheticOne": {
+   "blockerAddressed": "EXPERIMENT-REGISTRY.json applies one sharedBlocker to KL-002 through KL-010: a rate measured over a corpus the researcher composed reads back generator settings, so those questions cannot be settled synthetically at any corpus size. They need real data with independently established ground truth.",
+   "whyMathematicsSupplies_it": "A refutation of a universal mathematical claim is certified externally, is permanent, and requires no labeller and no inter-rater agreement -- unlike the defect ground truth KL-001 could not obtain (C2) and the same-observation judgement KL-014 is blocked on (HRI1-BLOCKER-20260816). The answer key is not ours.",
+   "whatItStillDoesNotSupply": "The pre-refutation literature is real but its ancestry is recorded unevenly, and the ancestry is what the method consumes. This is the live risk, registered below as the invalidation condition rather than discovered during the run."
+  },
+
+  "groundTruth": [
+   {
+    "id": "G1-refuted",
+    "signal": "a published refutation accepted by the mathematical community",
+    "rule": "the universal claim is FALSE; the dissenting position was correct and the consensus was wrong",
+    "noJudgementRequired": true
+   },
+   {
+    "id": "G2-proved",
+    "signal": "a published proof accepted by the mathematical community",
+    "rule": "the universal claim is TRUE; any dissent was wrong. These are the negative controls and they are not optional",
+    "noJudgementRequired": true
+   }
+  ],
+
+  "caseList": {
+   "inclusionRule": "A universal claim over an infinite domain, stated before 1970, that (a) was supported by published finite numerical verification, (b) was resolved after that support existed, and (c) has a resolution with an identifiable primary publication. Fixed here; not extended after any result is seen.",
+   "refuted": [
+    {"id": "mertens", "claim": "|M(x)| < sqrt(x) for all x > 1", "resolvedBy": "Odlyzko and te Riele, 1985", "resolutionKind": "non-constructive disproof", "note": "No explicit counterexample was exhibited. This case tests whether the pipeline can carry a refutation that is not a witness, which the RH spec's Level 0-6 ladder assumes always exists."},
+    {"id": "polya", "claim": "L(x) <= 0 for all x > 1", "resolvedBy": "Haselgrove 1958; explicit counterexample Lehman 1960, least value Tanaka 1980", "resolutionKind": "disproof then explicit witness", "note": "The one case where disproof and witness are separated in time, so the evidential standing of each can be scored independently."},
+    {"id": "euler-sum-of-powers", "claim": "no n-th power is a sum of fewer than n positive n-th powers", "resolvedBy": "Lander and Parkin, 1966", "resolutionKind": "explicit counterexample", "note": "27^5 + 84^5 + 110^5 + 133^5 = 144^5. A single decisive line against roughly two centuries of consensus; the cleanest instance of the asymmetry."},
+    {"id": "li-crossing", "claim": "pi(x) < li(x) for all x > 1", "resolvedBy": "Littlewood, 1914", "resolutionKind": "non-constructive; sign changes infinitely often", "note": "The consensus rested entirely on numerical verification within reach, exactly the epistemic position the RH search agents would occupy."}
+   ],
+   "provedNegativeControls": [
+    {"id": "fermat-last-theorem", "resolvedBy": "Wiles, 1995", "whyIncluded": "consensus was right; dissenting claims of counterexamples existed and were wrong"},
+    {"id": "catalan-mihailescu", "resolvedBy": "Mihailescu, 2002", "whyIncluded": "consensus was right"},
+    {"id": "four-colour", "resolvedBy": "Appel and Haken, 1976", "whyIncluded": "consensus was right; a computer-assisted proof that itself drew principled dissent, which must not be scored as evidence of falsity"}
+   ],
+   "balanceNote": "Four refuted against three proved. A design containing only refuted cases is satisfied by a method that always favours the dissenter, which is the 'believe every dissenter' engine RESEARCH-DIRECTION warns against. The negative controls are the only thing that can produce a failing result."
+  },
+
+  "cutoffRule": "Each case is evaluated at a cutoff fixed at the publication date of its resolution minus one day. Evidence published after the cutoff is excluded. The cutoff is computed from the resolution date and is not tunable per case.",
+
+  "endpoints": {
+   "primary": "Per case, pass or fail: at the cutoff, does the method retain the dissenting position as a live, non-suppressed root while the comparators do not? Reported as a per-case table, never as a rate over the seven cases.",
+   "whyNotARate": "Seven authored cases cannot support a percentage. 'Preserved 4 of 4' is a table; '100% counterexample recall' is the KL-001 defect with a different corpus.",
+   "secondary": "Whether the refuting work's own ancestry is recoverable at all from the pre-cutoff record, reported per case.",
+   "H0": "the per-case table is identical between root-aware and citation-weighted aggregation"
+  },
+
+  "effectRequires": {
+   "note": "BL-060 declaration, required before any run by scripts/check_effect_reachability.py.",
+   "mechanism": "root-aware aggregation retains a minority position when the opposing majority collapses to fewer independent roots than its head count",
+   "populationProperty": "a case whose pre-cutoff confirming literature contains at least one copied or shared-dependency chain -- that is, works whose support descends from a common prior computation rather than from independent computation",
+   "minimum": 1,
+   "negativeControlPopulation": "a case whose pre-cutoff confirming literature is entirely independent recomputation with no shared ancestry; the probe must report below the minimum there",
+   "ifUnsatisfied": "the run does not start, and that is reported. If no case has a copied confirming chain, the mechanism has nothing to act on and the experiment would measure the comparator, not the method."
+  },
+
+  "dependsOn": {
+   "item": "CE-14 definition decision",
+   "what": "aggregation/root_vote.verdict returns the confirming side on a universal claim with an attested counterexample present (formal/COUNTEREXAMPLES.md CE-14, audit/ce14_asymmetric_claims.py). Every case in this experiment is a universal claim.",
+   "ifThatIsUnresolved": "this experiment cannot run, because the aggregator under test would report the consensus side on all seven cases for reasons unrelated to the evidence. Registered now so the dependency cannot be quietly dropped."
+  },
+
+  "invalidationCondition": "If the pre-cutoff ancestry needed by the method cannot be reconstructed for a case, that case is reported as unassignable and is NOT replaced by a more tractable one. Pre-1970 mathematical bibliographic coverage is poor and this is expected to bite hardest on li-crossing (1914) and euler-sum-of-powers (1966). If it bites on three or more of the four refuted cases, the experiment is reported as unanswerable on this corpus and stops.",
+
+  "stopRule": "The case list is closed at seven. It is not extended, substituted, or reweighted after any case has been scored.",
+
+  "prohibitedOverstatement": [
+   "Do not describe a preserved dissent as the method having found the counterexample. The mathematician found it; the question is only whether the aggregation would have kept it visible.",
+   "Do not report a rate over these seven cases.",
+   "Do not treat the three proved cases as filler. A failure there -- promoting a dissent that was wrong -- is a result and is reported with equal prominence.",
+   "This experiment says nothing about the Riemann Hypothesis and must not be presented as bearing on it."
+  ]
+}
