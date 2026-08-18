@@ -3,7 +3,7 @@
 **James Siyuan He**  
 Preprint v1.2.0; not peer reviewed, 18 August 2026
 Correspondence: https://github.com/Silentpartnercoding  
-Archival DOI (v1.1.0 deposit): https://doi.org/10.5281/zenodo.21965713 — a v1.2.0 deposit has not been created
+Archival DOI (all versions): https://doi.org/10.5281/zenodo.21965712 — resolves to the latest deposited version
 
 ## Abstract
 
@@ -223,7 +223,7 @@ In a finite binary rooted-claim graph, counting declared roots rather than claim
 
 **v1.2.0 (18 August 2026)** — adds one limitation to Section 7: the aggregator answers a symmetric question and does not decide universal or existential claims. No result, proof, validation number, or claim of v1.1.0 is retracted or changed. This is a **content revision**, not the metadata-only `v1.1.1` correction described in `ARCHIVAL-INTEGRITY.md`; that correction is superseded by this version rather than published separately, because a version that changes what the paper claims about its own scope must not be labelled metadata-only.
 
-**v1.1.0 (16 August 2026)** — archived at `10.5281/zenodo.21965713`. That deposit is immutable and is not replaced.
+**v1.1.0 (16 August 2026)** — archived; that deposit is immutable and is not replaced. Per-version DOIs are recorded in `papers/peer-review/ARCHIVAL-INTEGRITY.md` rather than in this manuscript, so that the deposited artifact and the repository source cannot diverge.
 
 ## Data and code availability
 

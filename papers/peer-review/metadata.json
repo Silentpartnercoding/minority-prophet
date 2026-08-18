@@ -19,7 +19,7 @@
     "Sybil resistance"
   ],
   "repository": "https://github.com/Silentpartnercoding/minority-prophet",
-  "doi": "10.5281/zenodo.21965713",
+  "doi": "10.5281/zenodo.21997434",
   "abstract": "When claims can be copied at negligible cost, a large apparent majority may contain only one underlying observation. This paper defines a root-counting aggregator over finite binary claim graphs and proves that, under side consistency, its verdict is invariant to lineage changes preserving assertions and the root set and to copies with recorded parents. Tight root-margin bounds expose decision sensitivity. The Lean-checked results concern correct counting of declared provenance, not truth, authenticity, causal independence, discovery completeness, or authority.",
-  "doiNote": "Version DOI of the immutable v1.1.0 deposit. v1.2.0 has not been deposited; cite the v1.1.0 DOI for that exact artifact, or the concept DOI 10.5281/zenodo.21965712 for the version family."
+  "doiNote": "Version DOI of the v1.2.0 deposit. The immutable v1.1.0 deposit remains 10.5281/zenodo.21965713; the concept DOI 10.5281/zenodo.21965712 resolves to the latest version."
 }

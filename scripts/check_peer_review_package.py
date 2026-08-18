@@ -17,7 +17,14 @@ METADATA = ROOT / "papers/peer-review/metadata.json"
 PDF = ROOT / f"output/pdf/minority-prophet-peer-review-v{PAPER_VERSION}.pdf"
 ARXIV_METADATA = ROOT / "papers/peer-review/arxiv/metadata.json"
 CITATION = ROOT / "CITATION.cff"
-DOI = "10.5281/zenodo.21965713"
+# The VERSION doi identifies one deposit; the CONCEPT doi identifies the family
+# and resolves to the latest. Only the concept doi may be required inside the
+# manuscript: a version doi is minted FROM the document, so demanding the
+# document contain it forces either a false statement or an artifact that
+# differs from the deposit. Both happened before this split existed --
+# see papers/peer-review/ARCHIVAL-INTEGRITY.md.
+CONCEPT_DOI = "10.5281/zenodo.21965712"
+DOI = "10.5281/zenodo.21997434"
 
 REQUIRED_SECTIONS = [
     "## Abstract", "## 1. Introduction", "## 2. Related work", "## 3. Model",
@@ -54,8 +61,13 @@ def main() -> None:
     title = text.splitlines()[0].removeprefix("# ")
     if meta["title"] != title or meta["version"] != PAPER_VERSION:
         fail("metadata title or version disagrees with manuscript")
-    if meta.get("doi") != DOI or DOI not in text:
-        fail("assigned DOI is missing or inconsistent")
+    if meta.get("doi") != DOI:
+        fail("metadata does not record the assigned version DOI")
+    if CONCEPT_DOI not in text:
+        fail("manuscript does not cite the concept DOI")
+    if DOI in text:
+        fail("manuscript cites its own version DOI; use the concept DOI so the "
+             "deposited artifact and the repository source cannot diverge")
     citation = CITATION.read_text(encoding="utf-8")
     if f'doi: "{DOI}"' not in citation or meta["title"] not in citation:
         fail("CITATION.cff is missing the preferred paper title or DOI")
