@@ -9,11 +9,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "papers/peer-review/minority-prophet-peer-review-v1.1.0.md"
+PAPER_VERSION = "1.2.0"
+SOURCE = ROOT / f"papers/peer-review/minority-prophet-peer-review-v{PAPER_VERSION}.md"
 AUDIT = ROOT / "papers/peer-review/LITERATURE-AUDIT.md"
 CHECKLIST = ROOT / "papers/peer-review/SUBMISSION-CHECKLIST.md"
 METADATA = ROOT / "papers/peer-review/metadata.json"
-PDF = ROOT / "output/pdf/minority-prophet-peer-review-v1.1.0.pdf"
+PDF = ROOT / f"output/pdf/minority-prophet-peer-review-v{PAPER_VERSION}.pdf"
 ARXIV_METADATA = ROOT / "papers/peer-review/arxiv/metadata.json"
 CITATION = ROOT / "CITATION.cff"
 DOI = "10.5281/zenodo.21965713"
@@ -51,7 +52,7 @@ def main() -> None:
     meta = json.loads(METADATA.read_text(encoding="utf-8"))
     arxiv_meta = json.loads(ARXIV_METADATA.read_text(encoding="utf-8"))
     title = text.splitlines()[0].removeprefix("# ")
-    if meta["title"] != title or meta["version"] != "1.1.0":
+    if meta["title"] != title or meta["version"] != PAPER_VERSION:
         fail("metadata title or version disagrees with manuscript")
     if meta.get("doi") != DOI or DOI not in text:
         fail("assigned DOI is missing or inconsistent")

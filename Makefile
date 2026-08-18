@@ -31,7 +31,7 @@ paper-pdf:
 
 paper-check: paper-pdf
 	"$(PYTHON)" scripts/check_peer_review_package.py
-	pdfinfo output/pdf/minority-prophet-peer-review-v1.1.0.pdf | rg "^(Pages|Page size|PDF version):"
+	pdfinfo output/pdf/minority-prophet-peer-review-v1.2.0.pdf | rg "^(Pages|Page size|PDF version):"
 
 verify: verify-python verify-integrity verify-site verify-evaluation
 

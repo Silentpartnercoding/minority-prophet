@@ -26,8 +26,10 @@ from reportlab.platypus import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_SOURCE = ROOT / "papers/peer-review/minority-prophet-peer-review-v1.1.0.md"
-DEFAULT_OUTPUT = ROOT / "output/pdf/minority-prophet-peer-review-v1.1.0.pdf"
+PAPER_VERSION = "1.2.0"
+CURRENT_VERSION = PAPER_VERSION
+DEFAULT_SOURCE = ROOT / f"papers/peer-review/minority-prophet-peer-review-v{PAPER_VERSION}.md"
+DEFAULT_OUTPUT = ROOT / f"output/pdf/minority-prophet-peer-review-v{PAPER_VERSION}.pdf"
 PAPER_TITLE = "The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs"
 SHORT_TITLE = "The Minority Prophet Property"
 
@@ -261,11 +263,18 @@ def story_from_markdown(source: Path, doc_width: float):
     return story
 
 
+def _version_of(source: Path) -> str:
+    """Version taken from the source filename, so the stamped metadata cannot
+    disagree with the document it describes."""
+    match = re.search(r"-v(\d+\.\d+\.\d+)\.md$", source.name)
+    return match.group(1) if match else PAPER_VERSION
+
+
 def page_decor(canvas, doc):
     canvas.saveState()
     canvas.setTitle(PAPER_TITLE)
     canvas.setAuthor("James Siyuan He")
-    canvas.setSubject("Preprint v1.1.0; not peer reviewed")
+    canvas.setSubject(f"Preprint v{CURRENT_VERSION}; not peer reviewed")
     canvas.setCreator("Minority Prophet reproducible ReportLab build")
     page = canvas.getPageNumber()
     if page > 1:
@@ -284,6 +293,8 @@ def main() -> None:
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
+    global CURRENT_VERSION
+    CURRENT_VERSION = _version_of(args.source)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     rl_config.invariant = 1
     doc = SimpleDocTemplate(
@@ -292,7 +303,7 @@ def main() -> None:
         topMargin=0.80 * inch, bottomMargin=0.62 * inch,
         title=PAPER_TITLE,
         author="James Siyuan He",
-        subject="Preprint v1.1.0; not peer reviewed",
+        subject=f"Preprint v{CURRENT_VERSION}; not peer reviewed",
         creator="Minority Prophet reproducible ReportLab build",
         pageCompression=1,
     )

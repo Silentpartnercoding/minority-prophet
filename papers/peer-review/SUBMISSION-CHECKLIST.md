@@ -23,7 +23,9 @@ The focused preprint is publicly archived. The record below separates completed 
 - [x] Publish the Zenodo preprint record with the release archive and manuscript PDF.
 - [x] Record version DOI `10.5281/zenodo.21965713` in the manuscript source, repository paper metadata, and `CITATION.cff`.
 - [x] Prepare the arXiv upload artifact, form metadata, category recommendation, and endorsement instructions in `papers/peer-review/arxiv/`.
-- [ ] Publish the DOI-bearing PDF as a metadata-only `v1.1.1` archival version; do not overwrite the immutable `v1.1.0` artifacts. See `ARCHIVAL-INTEGRITY.md`.
+- [x] ~~Publish the DOI-bearing PDF as a metadata-only `v1.1.1` archival version~~ — superseded by `v1.2.0`, a content revision adding the CE-14 scope limitation. See `ARCHIVAL-INTEGRITY.md`.
+- [ ] Create a Zenodo version for `v1.2.0` and record its version DOI. **Not done by any agent**: publishing to an external archive is an owner action.
+- [ ] Decide the open item in `ARCHIVAL-INTEGRITY.md`: the tracked `v1.1.0` PDF is not byte-identical to the deposited one.
 - [ ] Submit the single PDF to arXiv from the author's own account.
 - [ ] Record venue, submission identifier, date, and manuscript status without describing the preprint as peer reviewed.
 
