@@ -1,0 +1,126 @@
+{
+  "gate": "kl016.v0.2.origin-identification",
+  "findings": [
+    {
+      "case": "borsuk",
+      "registered_search": "Drei Satze uber die n-dimensionale euklidische Sphare",
+      "expected_year": 1933,
+      "note": "Borsuk 1933, Fundamenta Mathematicae",
+      "identified": false,
+      "match": null,
+      "top_non_matching": [
+        {
+          "title": "From abstract topology to real thermodynamic brain activity",
+          "year": 2017
+        },
+        {
+          "title": "Continuous functions defined on a sphere",
+          "year": 1961
+        },
+        {
+          "title": "An almost classification of compact Lie groups with Borsuk-Ulam properties",
+          "year": 1990
+        }
+      ]
+    },
+    {
+      "case": "hirsch",
+      "registered_search": "Linear Programming and Extensions",
+      "expected_year": 1963,
+      "note": "Hirsch stated the conjecture in a 1957 letter; its first published appearance is Dantzig's 1963 monograph",
+      "identified": true,
+      "match": {
+        "id": "https://openalex.org/W2127470768",
+        "doi": "https://doi.org/10.7249/r366",
+        "title": "Linear Programming and Extensions",
+        "year": 1963,
+        "cited_by_count": 5829
+      },
+      "top_non_matching": []
+    },
+    {
+      "case": "hedetniemi",
+      "registered_search": "Homomorphisms of graphs and automata",
+      "expected_year": 1966,
+      "note": "Hedetniemi 1966, University of Michigan technical report",
+      "identified": true,
+      "match": {
+        "id": "https://openalex.org/W1559046348",
+        "doi": "https://doi.org/10.7302/14840",
+        "title": "Homomorphisms Of Graphs And Automata.",
+        "year": 1966,
+        "cited_by_count": 106
+      },
+      "top_non_matching": []
+    },
+    {
+      "case": "connes-embedding",
+      "registered_search": "Classification of injective factors",
+      "expected_year": 1976,
+      "note": "Connes 1976, Annals of Mathematics",
+      "identified": true,
+      "match": {
+        "id": "https://openalex.org/W2328912295",
+        "doi": "https://doi.org/10.2307/1971057",
+        "title": "Classification of Injective Factors Cases II 1 , II \u221e , III \u03bb , \u03bb \ufffd 1",
+        "year": 1976,
+        "cited_by_count": 810
+      },
+      "top_non_matching": []
+    },
+    {
+      "case": "fermat",
+      "registered_search": "",
+      "expected_year": 1637,
+      "note": "NO PUBLICATION EXISTS. A marginal note in Fermat's copy of Diophantus, published posthumously in 1670 by his son. Registered as a known-null case: it tests that the gate reports unassignable rather than substituting a proxy.",
+      "identified": false,
+      "match": null,
+      "top_non_matching": []
+    },
+    {
+      "case": "poincare",
+      "registered_search": "Cinquieme complement a l'analysis situs",
+      "expected_year": 1904,
+      "note": "Poincare 1904, Rendiconti del Circolo Matematico di Palermo",
+      "identified": false,
+      "match": null,
+      "top_non_matching": [
+        {
+          "title": "Poincare's conjecture and the homeotopy group of a closed, orientable 2-manifold",
+          "year": 1974
+        },
+        {
+          "title": "Some simple cases of Poincar\\'e conjecture",
+          "year": 1980
+        }
+      ]
+    },
+    {
+      "case": "sensitivity",
+      "registered_search": "On the degree of boolean functions as real polynomials",
+      "expected_year": 1992,
+      "note": "Nisan and Szegedy 1992, where the conjecture is posed",
+      "identified": true,
+      "match": {
+        "id": "https://openalex.org/W2023834316",
+        "doi": "https://doi.org/10.1145/129712.129757",
+        "title": "On the degree of Boolean functions as real polynomials",
+        "year": 1992,
+        "cited_by_count": 104
+      },
+      "top_non_matching": []
+    }
+  ],
+  "identified": [
+    "hirsch",
+    "hedetniemi",
+    "connes-embedding",
+    "sensitivity"
+  ],
+  "unassignable": [
+    "borsuk",
+    "fermat",
+    "poincare"
+  ],
+  "note": "Search strings are registered in this file and were not revised after seeing results. A case identified only by a search invented afterwards would be selection, not identification."
+}

@@ -1,0 +1,86 @@
+{
+  "probe": "kl016.reference-coverage.v1",
+  "caseList": "v02",
+  "threshold": {
+    "rule": "a case is reconstructable only if >=50% of works in its era record any ancestry",
+    "registeredIn": "AMENDMENT-v0.1-ancestry-threshold.md"
+  },
+  "source": "OpenAlex works API, has_references filter",
+  "field": "Mathematics (OpenAlex fields/26)",
+  "results": [
+    {
+      "era": "1985-1993",
+      "works": 235515,
+      "works_recording_references": 134705,
+      "share_recording_references": 0.572,
+      "case": "borsuk",
+      "cutoff_year": 1993,
+      "clears_threshold": true
+    },
+    {
+      "era": "2002-2010",
+      "works": 607013,
+      "works_recording_references": 372601,
+      "share_recording_references": 0.6138,
+      "case": "hirsch",
+      "cutoff_year": 2010,
+      "clears_threshold": true
+    },
+    {
+      "era": "2011-2019",
+      "works": 964496,
+      "works_recording_references": 602486,
+      "share_recording_references": 0.6247,
+      "case": "hedetniemi",
+      "cutoff_year": 2019,
+      "clears_threshold": true
+    },
+    {
+      "era": "2012-2020",
+      "works": 1015785,
+      "works_recording_references": 638903,
+      "share_recording_references": 0.629,
+      "case": "connes-embedding",
+      "cutoff_year": 2020,
+      "clears_threshold": true
+    },
+    {
+      "era": "1987-1995",
+      "works": 256896,
+      "works_recording_references": 145047,
+      "share_recording_references": 0.5646,
+      "case": "fermat",
+      "cutoff_year": 1995,
+      "clears_threshold": true
+    },
+    {
+      "era": "1995-2003",
+      "works": 381389,
+      "works_recording_references": 221140,
+      "share_recording_references": 0.5798,
+      "case": "poincare",
+      "cutoff_year": 2003,
+      "clears_threshold": true
+    },
+    {
+      "era": "2011-2019",
+      "works": 964496,
+      "works_recording_references": 602486,
+      "share_recording_references": 0.6247,
+      "case": "sensitivity",
+      "cutoff_year": 2019,
+      "clears_threshold": true
+    },
+    {
+      "era": "2005-2015",
+      "works": 949560,
+      "works_recording_references": 594018,
+      "share_recording_references": 0.6256,
+      "case": "modern-ceiling",
+      "cutoff_year": 2010,
+      "clears_threshold": true
+    }
+  ],
+  "modern_ceiling_share": 0.6256,
+  "note": "share_recording_references is the share of works recording ANY reference. The complement is the no-ancestry population of HRI1-BLOCKER-20260816.md, where the method has nothing to consume. The modern ceiling is reported because no era can exceed what the index records today; a case is not weak merely by being below 100%, it is weak by being far below the ceiling."
+}
