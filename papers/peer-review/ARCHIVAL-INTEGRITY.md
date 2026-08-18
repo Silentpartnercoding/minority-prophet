@@ -94,3 +94,86 @@ This was left as-is rather than repaired, because both available repairs are
 owner decisions with archival consequences: restoring the deposited bytes as the
 tracked file, or removing the tracked v1.1.0 PDF now that v1.2.0 exists.
 Overwriting or retagging the deposit is not among them.
+
+## v1.2.0 is deposited — and Zenodo auto-published rather than drafting
+
+```text
+DOI      10.5281/zenodo.21997434     (version DOI, v1.2.0)
+concept  10.5281/zenodo.21965712     (resolves to latest)
+files    Silentpartnercoding/minority-prophet-paper-v1.2.0.zip
+relation isNewVersionOf 10.5281/zenodo.21965713
+```
+
+**The manuscript source is NOT being edited to carry this DOI.** Doing so is
+exactly what produced the v1.1.0 drift closed above: the deposited artifact was
+built from the source as it stood, and changing that source afterwards makes the
+repository's v1.2.0 differ from the deposited v1.2.0. The DOI is recorded in
+`metadata.json`, `CITATION.cff` and here, which is where a post-publication fact
+belongs. If a future version wants the DOI in the manuscript text, it is v1.3.0's
+header that carries it, never v1.2.0's.
+
+### Process defect, demonstrated rather than hypothesised
+
+`SUBMISSION-CHECKLIST.md` describes the archival step as *"inspect the draft
+deposit, and publish it only after metadata approval"*, and the v1.2.0 checklist
+line said publishing was an owner action.
+
+**The GitHub–Zenodo integration does not work that way for this repository.** It
+published automatically, five seconds after the release was created. There was no
+draft and no approval step. The documented gate does not exist in the mechanism.
+
+This is worth stating plainly because it is the same failure class the repository
+studies: a control believed to be in place, described in writing, and absent in
+the system it describes. The correct reading is that **creating a GitHub release
+here IS publishing a DOI**, and the approval gate must move earlier — to the
+release, or to disabling the integration — because there is no later gate.
+
+The deposit itself is correct: right version, right relation to v1.1.0, open
+access. Nothing needs retracting. A Zenodo record cannot be unpublished in any
+case, which is why the gate mattered.
+
+### One difference from the v1.1.0 deposit
+
+The v1.1.0 record carries both the source zip and the standalone PDF; the v1.2.0
+record carries the zip only, because the integration archives the repository
+tarball and the v1.1.0 PDF had been attached by hand. The PDF is inside the zip
+at `output/pdf/`, and is attached to the GitHub release
+`paper-v1.2.0`. Adding a file to a published Zenodo record is an owner action and
+was not attempted.
+
+### The structural cause, and the fix that ends it
+
+Twice now the repository source has drifted from a deposit, for the same reason:
+**a version DOI is minted FROM the document, so a document cannot contain its own
+version DOI.** Requiring it forces a choice between a false statement and an
+artifact that differs from what was deposited. v1.1.0 took the second horn;
+v1.2.0's transitional text took the first.
+
+`check_peer_review_package.py` previously *enforced* the impossible version by
+requiring the version DOI to appear in the manuscript. It now enforces the
+opposite:
+
+- the manuscript must cite the **concept DOI** `10.5281/zenodo.21965712`, which
+  is assigned once, never changes, and always resolves to the latest version;
+- the manuscript must **not** cite its own version DOI;
+- the **version DOI** is recorded in `metadata.json`, `CITATION.cff` and here.
+
+From v1.3.0 onward the manuscript needs no post-deposit edit, so repository and
+deposit cannot diverge again.
+
+### One-time discrepancy in the v1.2.0 deposit, recorded not repaired
+
+The v1.2.0 deposit `10.5281/zenodo.21997434` archives the tree as it stood at tag
+`paper-v1.2.0`, whose manuscript header read *"Archival DOI (v1.1.0 deposit) …
+a v1.2.0 deposit has not been created"* — true when built, false five seconds
+later. The repository's v1.2.0 manuscript now cites the concept DOI instead.
+
+```text
+deposited v1.2.0 PDF   sha256 487dfe143b4db3102e2e9e97c2830b3f48f5378cdff12866fcda3bbd142cf38b
+repository v1.2.0 PDF  sha256 e1cee6b3abee5b6d1b5f0aac232ce276a6fff58b58a663b6e1035b9050d2c599
+```
+
+**No new version is cut to close this gap**, because doing so would mint another
+DOI, which would date another header, which would require another version. That
+regress is the thing the concept-DOI rule exists to stop. The discrepancy is one
+transitional sentence, it is recorded here, and it terminates with v1.2.0.
