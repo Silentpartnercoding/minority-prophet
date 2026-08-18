@@ -27,13 +27,39 @@
       "claimAllowed": "KL-016 v0.1 is unanswerable on its declared corpus. No claim about root-aware aggregation, dissent preservation, or any listed conjecture may cite this experiment."
     },
     "v0.2": {
-      "status": "collection-rule-frozen",
+      "status": "primary-endpoint-measured; secondary endpoint not run",
       "statusNote": "New registration with a new case list and a new question. Not a revival of v0.1: v0.1's case list is not carried forward, and mertens is excluded although it passed v0.1's screen, because retaining the survivor of a screen selects on that screen's outcome.",
       "spec": "COLLECTION-SPEC-v0.2.json",
       "design": "DESIGN-v0.2.md",
       "feasibility": "FEASIBILITY-v0.2-probe.json",
       "allCasesClearThreshold": true,
-      "claimAllowed": "Nothing. The collection rule is frozen and no data has been collected."
+      "claimAllowed": "The instrument runs on real literature and reproduces; a conjecture's citing literature is 57-87% internally derived where a matched unrelated sample is 0%; root collapse here is not an indexing artefact (zero blind roots). NOT allowed: any predictive claim, any claim about belief, any claim that roots correspond to independent observations, anything about RH.",
+      "finding": "FINDING-v0.2.md",
+      "results": [
+        "RESULT-v0.2-gate1-origins.json",
+        "RESULT-v0.2-root-ratio.json",
+        "RESULT-v0.2-negative-control.json"
+      ],
+      "unassignable": [
+        "borsuk",
+        "fermat",
+        "poincare"
+      ],
+      "measured": {
+        "hirsch": 0.4295,
+        "hedetniemi": 0.2955,
+        "connes-embedding": 0.1315,
+        "sensitivity": 0.2976
+      },
+      "negativeControl": {
+        "root_ratio": 1.0,
+        "internal_edges": 0
+      },
+      "openGaps": [
+        "control arm collapsed to one case and no registered rule covers it",
+        "construct validity weak for hirsch and connes-embedding: the origin works are cited mostly for other reasons; not caught when the case list was frozen",
+        "secondary endpoint requires blinded labellers and was not run"
+      ]
     }
   }
 }
