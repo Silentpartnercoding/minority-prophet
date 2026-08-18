@@ -115,17 +115,21 @@ def test_vector_file_does_not_claim_to_be_a_measurement():
     assert "not a measurement" in VECTORS["statusNote"]
 
 
-def test_every_fault_class_fp1_to_fp7_is_present_exactly_once():
-    classes = [v["faultClass"] for v in VECTORS["vectors"]]
-    assert sorted(classes) == [f"FP{i}" for i in range(1, 8)]
+def test_only_evidence_layer_decidable_faults_are_scored():
+    """Scope, pinned. A vector for a subsystem that does not exist cannot pass
+    or fail, so it is not a test. The four numerical classes from the original
+    RH spec are recorded as dropped, with their reason, rather than deleted."""
+    assert sorted(v["faultClass"] for v in VECTORS["vectors"]) == ["FP5", "FP6", "FP7"]
+    dropped = [c["faultClass"] for c in VECTORS["droppedClasses"]["classes"]]
+    assert sorted(dropped) == ["FP1", "FP2", "FP3", "FP4"]
+    assert VECTORS["droppedClasses"]["whatSurvivedThem"]
 
 
-def test_undetectable_faults_never_demand_refusal_before_verification():
-    """A layer that REFUSES a fault it cannot observe is guessing, and would
-    pass this suite for the wrong reason."""
+def test_no_vector_requires_recomputation_to_decide():
+    """Every surviving vector is decidable from the report alone."""
     for vector in VECTORS["vectors"]:
-        if not vector["detectableWithoutRecomputation"]:
-            assert vector["expected"]["beforeVerification"] == "ESCALATE", vector["id"]
+        assert vector["observableToEvidenceLayer"], vector["id"]
+        assert "detectableWithoutRecomputation" not in vector, vector["id"]
 
 
 def test_only_fabrication_is_refused_before_verification():

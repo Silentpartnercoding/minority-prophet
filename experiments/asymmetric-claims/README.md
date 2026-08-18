@@ -23,34 +23,47 @@ PYTHONPATH=. python3 audit/ce14_asymmetric_claims.py
 
 | File | What it is | Status |
 |---|---|---|
-| `false-candidate-vectors.json` | Required admission decisions for seven false-candidate fault classes and two true-candidate controls | **specification only — no implementation under test** |
+| `false-candidate-vectors.json` | Required admission decisions for three false-candidate fault classes and two true-candidate controls | **specification only — no implementation under test** |
 
 `tests/test_asymmetric_claims.py` pins both the CE-14 divergence and this file's
 structure.
 
-## The three fault kinds, and why the distinction is load-bearing
+## What is scored, and what was cut
 
-- **numerical** (FP1–FP4) — the computation is wrong. Not observable from the
-  report; only recomputation settles it. Required decision before verification
-  is `ESCALATE`, never `REFUSE`. A layer that refuses these is guessing.
+The vectors began as section 6 of a proposed Riemann Hypothesis falsification
+benchmark, where search agents evaluated zeta numerically and seven fault classes
+described how a candidate counterexample could be bogus.
+
+Four of them — wrong precision, cancellation, truncation, drift — are faults in
+*that computation*. They are caught by recomputing the result correctly, which is
+a verifier's job, and this repository contains no numerical verifier and plans
+none. **A vector specifying required behaviour for a subsystem that does not
+exist cannot pass or fail, so it is not a test.** They are recorded under
+`droppedClasses` with their reason rather than deleted, and would return as
+verifier conformance vectors in that component if it is ever built.
+
+Three survive, because the evidence layer can decide them from the report alone:
+
 - **duplication** (FP5) — the report may be perfectly correct; there is simply
   only one of it. **Copying is not evidence of falsity.** A duplicated candidate
   is collapsed to one root and escalated like any other unverified candidate,
   never refused for being duplicated. Refusing on duplication alone discards a
   genuine lone counterexample, which is the failure this project exists to
   prevent.
-- **fabrication** (FP6–FP7) — no observation exists behind the report. Observable
-  from the report alone, so `REFUSE`.
+- **fabrication** (FP6, FP7) — no observation exists behind the report. Either no
+  reproducible artifact is attached (FP6), or the record's own digest does not
+  bind the values it reports (FP7). Both are `REFUSE`.
 
-That split is the file's main content. Five of the seven fault classes are
-caught by recomputation rather than by anything this project contributes, and
-saying so is more useful than a score that blurs them together.
+That distinction is what the four dropped classes were worth: **observability
+does not imply refusal.** FP5 is fully observable and must never be refused; FP6
+and FP7 are observable and must always be. Getting this backwards was a real
+error during construction, caught by the suite rather than by review.
 
 ## Two things this directory deliberately does not do
 
 **It reports no rate.** Each vector is a named case with a required decision,
-scored pass or fail. A percentage over seven authored fault types would be a
-fact about which faults were authored. `KL-001/DESIGN-v0.4.md` cancelled
+scored pass or fail. A percentage over a handful of authored fault types would
+be a fact about which faults were authored. `KL-001/DESIGN-v0.4.md` cancelled
 `frozen-v3` for exactly that — *"the rates were not measured; they were chosen
 and read back"* — and the reasoning transfers unchanged.
 

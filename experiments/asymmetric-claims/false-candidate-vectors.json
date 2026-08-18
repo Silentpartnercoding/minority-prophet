@@ -4,80 +4,13 @@
   "statusNote": "There is no admission function in this repository yet. These vectors are a frozen specification of required behaviour, not a measurement. Nothing here may be reported as a result until an implementation exists and the vectors are executed against it.",
   "whyNotARate": "Each vector is a named case with a required decision, scored pass or fail. A percentage over these seven -- 'false-prophet rejection 86%' -- would be a fact about which faults were injected, not about the system. KL-001 DESIGN-v0.4 cancelled frozen-v3 for exactly that: 'the rates were not measured; they were chosen and read back.' Counts of violations are admissible; rates over an authored fault mix are not.",
   "unitUnderTest": "admission of a candidate counterexample as an OPPOSING EVIDENCE ROOT for a universal claim. Under CE-14 this is where the entire burden sits: one admitted opposing root carries the conclusion regardless of margin, so admission -- not aggregation -- is the decision worth testing.",
-  "scopeWarning": "Five of the seven fault classes below are NOT detectable by the evidence layer from the report alone; they are detectable only by recomputation. For those the required decision is ESCALATE, never REFUSE. A layer that REFUSES them is guessing, and a layer that ADMITS them is credulous. Recording this split is the point of the file: it says out loud which faults this project's mechanism can and cannot catch.",
+  "scopeWarning": "Every vector here is decidable by the evidence layer from the report alone. Faults that require recomputing the underlying result are OUT OF SCOPE and are listed under droppedClasses, not scored here. Keeping them would specify behaviour for a numerical subsystem this repository does not contain.",
   "decisions": {
     "ADMIT": "becomes an opposing evidence root; the conclusion moves to `present`",
     "REFUSE": "never becomes a root; recorded with reason",
     "ESCALATE": "no root yet; verification required before any decision. Not an answer."
   },
   "vectors": [
-    {
-      "id": "FP1-floating-point-artifact",
-      "faultClass": "FP1",
-      "description": "A candidate whose off-line real part appears only at low working precision and vanishes when precision is raised.",
-      "observableToEvidenceLayer": [
-        "precisionBits",
-        "convergenceUnderEscalation"
-      ],
-      "detectableWithoutRecomputation": false,
-      "expected": {
-        "beforeVerification": "ESCALATE",
-        "afterVerification": "REFUSE"
-      },
-      "refusalReason": "candidate did not survive precision escalation",
-      "catchesRegression": "a layer that admits any reported candidate as a root",
-      "faultKind": "numerical"
-    },
-    {
-      "id": "FP2-cancellation-error",
-      "faultClass": "FP2",
-      "description": "|zeta(s)| appears tiny because of catastrophic cancellation in an unstable evaluation.",
-      "observableToEvidenceLayer": [
-        "method",
-        "estimatedNumericalError"
-      ],
-      "detectableWithoutRecomputation": false,
-      "expected": {
-        "beforeVerification": "ESCALATE",
-        "afterVerification": "REFUSE"
-      },
-      "refusalReason": "reported magnitude is within the method's own error bound",
-      "catchesRegression": "treating a small floating-point magnitude as a zero",
-      "faultKind": "numerical"
-    },
-    {
-      "id": "FP3-truncated-series",
-      "faultClass": "FP3",
-      "description": "Insufficient series truncation manufactures a near-zero.",
-      "observableToEvidenceLayer": [
-        "method",
-        "inputs.truncationOrder"
-      ],
-      "detectableWithoutRecomputation": false,
-      "expected": {
-        "beforeVerification": "ESCALATE",
-        "afterVerification": "REFUSE"
-      },
-      "refusalReason": "candidate not reproduced at a higher truncation order",
-      "catchesRegression": "accepting a candidate whose method parameters were never recorded",
-      "faultKind": "numerical"
-    },
-    {
-      "id": "FP4-precision-drift",
-      "faultClass": "FP4",
-      "description": "Reported coordinates wander rather than converge as precision increases.",
-      "observableToEvidenceLayer": [
-        "convergenceUnderEscalation"
-      ],
-      "detectableWithoutRecomputation": false,
-      "expected": {
-        "beforeVerification": "ESCALATE",
-        "afterVerification": "REFUSE"
-      },
-      "refusalReason": "coordinates did not converge across the precision ladder",
-      "catchesRegression": "collapsing several drifting candidates into one root by rounding",
-      "faultKind": "numerical"
-    },
     {
       "id": "FP5-copied-minority",
       "faultClass": "FP5",
@@ -86,7 +19,6 @@
         "parentEvidenceIds",
         "sourceDependencies"
       ],
-      "detectableWithoutRecomputation": true,
       "expected": {
         "beforeVerification": "ESCALATE",
         "afterVerification": "REFUSE"
@@ -110,7 +42,6 @@
         "randomSeed",
         "reproducibilityStatus"
       ],
-      "detectableWithoutRecomputation": true,
       "expected": {
         "beforeVerification": "REFUSE",
         "afterVerification": "REFUSE"
@@ -123,12 +54,11 @@
     {
       "id": "FP7-malicious-fabrication",
       "faultClass": "FP7",
-      "description": "Internally inconsistent numerics: the reported hash does not match the reported values.",
+      "description": "A report whose own content digest does not bind the values it reports: the record contradicts itself.",
       "observableToEvidenceLayer": [
         "rawResultHash",
         "inputs"
       ],
-      "detectableWithoutRecomputation": true,
       "expected": {
         "beforeVerification": "REFUSE",
         "afterVerification": "REFUSE"
@@ -161,10 +91,33 @@
       "boundaryCited": "AGENTS.md #2: separate processes/keys/models do not by themselves establish separate control domains; the three domains here are stipulated by the vector, not inferred."
     }
   ],
-  "passCondition": "Every vector's required decision is produced, and every requiredReceiptProperty holds exactly. Nine of nine, or the suite fails and names which vectors failed. No threshold, no percentage, no tolerance.",
+  "passCondition": "Every vector's required decision is produced, and every requiredReceiptProperty holds exactly. Five of five, or the suite fails and names which vectors failed. No threshold, no percentage, no tolerance.",
   "faultKinds": {
-    "numerical": "The reported computation is wrong. Not observable from the report; only recomputation settles it. Required pre-verification decision: ESCALATE.",
     "duplication": "The report may be perfectly correct; there is simply only one of it. Copying is not evidence of falsity, so a duplicated candidate is NEVER refused for being duplicated -- it is collapsed to one root and escalated like any other unverified candidate. A layer that refuses on duplication alone would discard a genuine lone counterexample, which is the exact failure this project exists to prevent.",
     "fabrication": "No observation exists behind the report -- no reproducible artifact (FP6), or an internally inconsistent one (FP7). Observable from the report alone. Required decision: REFUSE, before and after verification."
+  },
+  "droppedClasses": {
+    "classes": [
+      {
+        "faultClass": "FP1",
+        "description": "A candidate whose off-line real part appears only at low working precision and vanishes when precision is raised."
+      },
+      {
+        "faultClass": "FP2",
+        "description": "|zeta(s)| appears tiny because of catastrophic cancellation in an unstable evaluation."
+      },
+      {
+        "faultClass": "FP3",
+        "description": "Insufficient series truncation manufactures a near-zero."
+      },
+      {
+        "faultClass": "FP4",
+        "description": "Reported coordinates wander rather than converge as precision increases."
+      }
+    ],
+    "origin": "Section 6 of a proposed Riemann Hypothesis falsification benchmark, where search agents evaluated zeta numerically and these were the ways that computation could go wrong.",
+    "whyDropped": "The live numerical search arm was dropped in favour of KL-016, which evaluates historical literature and computes nothing. These four faults are caught by recomputing the result correctly -- a verifier's job, not this layer's -- and no such verifier exists here or is planned. A vector specifying required behaviour for a subsystem that does not exist cannot pass or fail, so it is not a test.",
+    "whatSurvivedThem": "The three-way fault-kind distinction they forced: observability does not imply refusal. That principle is load-bearing for FP5 and is recorded in faultKinds.",
+    "ifReinstated": "If a numerical plane is ever built, these return as verifier conformance vectors in that component, not here."
   }
 }
