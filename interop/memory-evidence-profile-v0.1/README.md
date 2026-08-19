@@ -15,7 +15,11 @@ It keeps seven distinctions explicit:
 3. Digests and `binding` connect the evidence to the exact proposition, memory
    object, and optional request or action without granting authority.
 4. Freshness, nonce, and revocation fields make replay and stale evidence
-   visible to the consumer.
+   visible to the consumer — **for the cell**. They date the cell, not the
+   observation a derived claim rests on. A restatement of an older observation
+   therefore carries the freshness of the restatement, and a consumer cannot age
+   the root. `stale-derived-status.json` is that boundary, stated as a runnable
+   case rather than left implicit.
 5. `search` records the searched scope and its coverage; partial coverage
    cannot support absence.
 6. `verifiers` records asserted controller identity; verifiers under common
@@ -25,8 +29,8 @@ It keeps seven distinctions explicit:
    result, not a universal score produced by this profile.
 
 `schema.json` defines the exchange shape. The examples demonstrate copied
-consensus, incomplete search, shared verifier control, and embedding the
-profile in a generic opaque memory cell. Run:
+consensus, incomplete search, shared verifier control, stale derived status,
+and embedding the profile in a generic opaque memory cell. Run:
 
 ```sh
 python3 interop/memory-evidence-profile-v0.1/validate.py
