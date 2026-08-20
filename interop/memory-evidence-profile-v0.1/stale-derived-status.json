@@ -1,0 +1,63 @@
+{
+  "profile": "memory-evidence-profile-v0.1",
+  "proposition": "task T has not yet been performed",
+  "claims": [
+    {
+      "id": "observation-1",
+      "value": true,
+      "source": "system-of-record",
+      "derived_from": [],
+      "claim_digest": "sha256:7171717171717171717171717171717171717171717171717171717171717171",
+      "root_authentication": {
+        "status": "authenticated",
+        "issuer": "record-keeper",
+        "key_id": "key-7",
+        "method": "external-receipt"
+      }
+    },
+    {
+      "id": "restatement-1",
+      "value": true,
+      "source": "working-notes",
+      "derived_from": [
+        "observation-1"
+      ],
+      "claim_digest": "sha256:7272727272727272727272727272727272727272727272727272727272727272",
+      "root_authentication": {
+        "status": "declared",
+        "issuer": null,
+        "key_id": null,
+        "method": null
+      }
+    }
+  ],
+  "search": {
+    "scope": "the working notes for task T",
+    "coverage": "complete",
+    "queried": 1,
+    "total_known": 1
+  },
+  "verifiers": [],
+  "binding": {
+    "proposition_digest": "sha256:7373737373737373737373737373737373737373737373737373737373737373",
+    "memory_object_digest": "sha256:7474747474747474747474747474747474747474747474747474747474747474",
+    "request_digest": null,
+    "action_digest": null
+  },
+  "lifecycle": {
+    "observed_at": "2026-08-08T10:00:00Z",
+    "expires_at": "2026-08-09T10:00:00Z",
+    "nonce": "stale-status-example-0001",
+    "revocation_status": "active"
+  },
+  "conclusion": {
+    "kind": "support",
+    "strength": 0.4,
+    "uncertainty": "The cell records when it was written, not when its root was observed. A restatement of an older observation is indistinguishable from a fresh one, so a proposition about a current state cannot be aged.",
+    "method": "authenticated-root-ratio-v0.1",
+    "input_claims": [
+      "observation-1",
+      "restatement-1"
+    ]
+  }
+}

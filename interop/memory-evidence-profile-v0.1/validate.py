@@ -131,7 +131,12 @@ def apply_mutation(document: dict[str, Any], mutation: dict[str, Any]) -> None:
 
 def main() -> None:
     schema = load("schema.json")
-    names = ["copied-consensus.json", "incomplete-search.json", "shared-control-verifier.json"]
+    names = [
+        "copied-consensus.json",
+        "incomplete-search.json",
+        "shared-control-verifier.json",
+        "stale-derived-status.json",
+    ]
     documents = [load(name) for name in names]
     documents.append(load("opaque-memory-cell.json")["evidence_profile"])
     for document in documents:
@@ -142,6 +147,24 @@ def main() -> None:
     all_roots = set().union(*(roots(copied, claim["id"]) for claim in copied["claims"]))
     assert all_roots == {"observation-1"}, "copies inflated roots"
     assert len({item["controller"] for item in documents[2]["verifiers"]}) == 1
+
+    # stale-derived-status: a restatement of an older observation, carried in a
+    # cell whose only recorded time is its own. The roots collapse correctly --
+    # that part the profile already handles -- but nothing in the document dates
+    # the observation the restatement rests on, so a proposition about a CURRENT
+    # state cannot be aged by a consumer.
+    #
+    # The assertion below is deliberately an assertion of absence. A claim-level
+    # observation time would resolve this case; that it does not exist is the
+    # finding, and this test exists so that adding one is a visible change here
+    # rather than a silent improvement nobody notices.
+    stale = documents[3]
+    stale_roots = set().union(*(roots(stale, claim["id"]) for claim in stale["claims"]))
+    assert stale_roots == {"observation-1"}, "restatement inflated roots"
+    assert all("observed_at" not in claim for claim in stale["claims"]), (
+        "a claim-level observation time would let a consumer age the root; "
+        "its absence is what this case reports"
+    )
 
     adversarial = load("adversarial-cases.json")["cases"]
     for case in adversarial:
