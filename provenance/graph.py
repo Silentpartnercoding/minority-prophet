@@ -59,6 +59,9 @@ _RESOLVABLE_FORMS: tuple[tuple[str, "re.Pattern[str]"], ...] = (
 )
 
 
+WARRANT_KEY = "claim_warrant"
+
+
 def resolvable_reference(evidence: dict[str, Any]) -> str | None:
     """The first value in `evidence` that has the FORM of a dereferenceable reference.
 
@@ -69,8 +72,18 @@ def resolvable_reference(evidence: dict[str, Any]) -> str | None:
     call at ingest, which is a different trade-off and is not made here. The
     guarantee is narrow and deliberate: the claim named something that could in
     principle be checked, rather than prose that could not.
+
+    The reserved `claim_warrant` key is skipped. A warrant describes how a claim
+    could be checked; it is not itself evidence that the claim named anything,
+    and its `source_digest` is a hex string matching the `hash` form. Letting it
+    satisfy this function would move `UnattributedRootError` as a side effect of
+    attaching metadata. Nested dicts are already skipped by the isinstance guard,
+    so this is explicit rather than load-bearing today -- it keeps the guarantee
+    if this function ever learns to recurse.
     """
-    for value in evidence.values():
+    for key, value in evidence.items():
+        if key == WARRANT_KEY:
+            continue
         if not isinstance(value, str):
             continue
         candidate = value.strip()

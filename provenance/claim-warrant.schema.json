@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Silentpartnercoding/minority-prophet/provenance/claim-warrant.schema.json",
+  "title": "Minority Prophet Claim Warrant",
+  "description": "A typed warrant attached to a ledger node's `evidence` object. It records how a node's assertion could be checked, not whether it is true. Deliberately local: no field is imported from any external package, and nothing here is fetched at runtime. The four-way typology follows the classical pramanas (perception, inference, comparison, testimony); the modern formulation borrowed from is Kadaboina 2026, Zenodo DOI 10.5281/zenodo.20283647, Apache-2.0. Nothing in this schema validates that work's formal claims. PLACEMENT IS NORMATIVE: this object is stored under the single reserved key `claim_warrant` inside a node's `evidence` object, never flattened into it. `resolvable_reference()` inspects `evidence` values to decide whether a parentless claim names anything checkable, and `UnattributedRootError` is a hard gate on that result. A warrant's `source_digest` is a hex string matching the accepted `hash` form, so a flattened warrant could satisfy that gate and admit a root that was previously refused. A warrant describes how a claim could be checked; it is not itself evidence that the claim named anything. Metadata must never satisfy the gate.",
+  "type": "object",
+  "required": [
+    "warrant_version",
+    "claim_type",
+    "verify_determinism"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "warrant_version": {
+      "const": 1,
+      "description": "Schema version of this warrant object."
+    },
+    "claim_type": {
+      "enum": [
+        "measured",
+        "inferred",
+        "analogized",
+        "cited"
+      ],
+      "description": "The epistemic ground the node's assertion rests on."
+    },
+    "verify_determinism": {
+      "enum": [
+        "deterministic",
+        "oracle_conditional"
+      ],
+      "description": "DERIVED, never author-supplied. `measured` and `cited` are deterministic: re-checkable mechanically without a judge. `inferred` and `analogized` are oracle_conditional: checking requires a theorem prover, structural matcher, fixed-metric oracle, or LLM. A producer that sets this inconsistently with claim_type is malformed; consumers recompute rather than trust it."
+    },
+    "verify_outcome": {
+      "description": "Result of an actual re-check, if one was performed. THREE-VALUED BY DESIGN. `unverifiable` must never be collapsed into `rejected`: a claim whose source has become unreachable is not a claim that failed, and the difference is exactly the signal false-prophet screening depends on. A prophet can make claims unverifiable at no cost.",
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "result": {
+          "enum": [
+            "verified",
+            "rejected",
+            "unverifiable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why. For `unverifiable`, the distinguishing detail: fetch_failed, not_decodable, digest_malformed, oracle_absent, sla_timeout."
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checked_by": {
+          "type": "string",
+          "description": "Identifier of the checker. Not necessarily the node's observer."
+        }
+      }
+    },
+    "source_digest": {
+      "type": "string",
+      "description": "Hash of the source bytes as observed when the assertion was made, if any. Optional and frequently absent: presence is what makes an offline re-check possible, so its absence must be recorded rather than assumed away. Never surfaced to resolvable_reference(): see the normative placement rule above."
+    },
+    "recheck_reference": {
+      "type": "string",
+      "description": "Where a re-check would go. A URI for a citation, a method identifier for a measurement. Free-form: this schema does not constrain external vocabularies."
+    },
+    "external_attestation": {
+      "type": "object",
+      "description": "Opaque passthrough for an externally-produced attestation the warrant was derived from. Stored for audit, never interpreted by the ledger. Kept unconstrained so no external schema becomes a dependency of this one.",
+      "additionalProperties": true
+    }
+  }
+}
