@@ -3,7 +3,7 @@
   "client_name": "Minority Prophet Border OpenID AIIM Sandbox",
   "client_uri": "https://minorityprophet.org",
   "redirect_uris": [
-    "https://garden-broken-organization-opposite.trycloudflare.com/oauth/callback"
+    "https://minorityprophet.org/oauth/callback"
   ],
   "grant_types": [
     "authorization_code"
