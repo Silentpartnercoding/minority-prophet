@@ -169,9 +169,10 @@ function reportPage(title: string, report: Record<string, unknown>, status = 200
 async function fetchJson<T>(url: string): Promise<{ response: Response; data: T }> {
   const response = await fetch(url, {
     headers: { accept: "application/json" },
-    redirect: "error",
+    redirect: "manual",
     signal: AbortSignal.timeout(10_000),
   });
+  if (response.status >= 300 && response.status < 400) throw new Error(`${url} attempted to redirect`);
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
   return { response, data: await response.json() as T };
 }
@@ -319,7 +320,9 @@ async function mcpPost(accessToken: string, body: Record<string, unknown>, sessi
   };
   if (sessionId) headers["Mcp-Session-Id"] = sessionId;
   if (protocolVersion) headers["MCP-Protocol-Version"] = protocolVersion;
-  return fetch(RESOURCE, { method: "POST", headers, body: JSON.stringify(body), redirect: "error", signal: AbortSignal.timeout(15_000) });
+  const response = await fetch(RESOURCE, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual", signal: AbortSignal.timeout(15_000) });
+  if (response.status >= 300 && response.status < 400) throw new Error("MCP endpoint attempted to redirect a bearer-token request");
+  return response;
 }
 
 async function callback(request: Request, env?: AiimEnv): Promise<Response> {
@@ -376,9 +379,10 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         code_verifier: flow.verifier,
         resource: RESOURCE,
       }),
-      redirect: "error",
+      redirect: "manual",
       signal: AbortSignal.timeout(15_000),
     });
+    if (tokenResponse.status >= 300 && tokenResponse.status < 400) throw new Error("Token endpoint attempted to redirect the authorization-code exchange");
     const tokenBody = await tokenResponse.json() as Record<string, unknown>;
     if (!tokenResponse.ok || typeof tokenBody.access_token !== "string") {
       return reportPage("Token exchange failed", {
