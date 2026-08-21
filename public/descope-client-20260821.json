@@ -1,0 +1,15 @@
+{
+  "client_id": "https://minorityprophet.org/descope-client-20260821.json",
+  "client_name": "Minority Prophet Border OpenID AIIM Sandbox",
+  "client_uri": "https://minorityprophet.org",
+  "redirect_uris": [
+    "https://minorityprophet.org/oauth/callback"
+  ],
+  "grant_types": [
+    "authorization_code"
+  ],
+  "response_types": [
+    "code"
+  ],
+  "token_endpoint_auth_method": "none"
+}
