@@ -2,6 +2,7 @@
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
 import { handleExchangeApi } from "../db/exchange-api.mjs";
+import { handleOpenIdAiim } from "./openid-aiim";
 
 interface Env {
   ASSETS: Fetcher;
@@ -9,6 +10,7 @@ interface Env {
   AWE_VERIFIER_TOKEN?: string;
   AWE_ADMIN_TOKEN?: string;
   AWE_RATE_LIMIT_SALT?: string;
+  MP_AIIM_STATE_SECRET?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -41,6 +43,9 @@ interface ExecutionContext {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    const openIdAiimResponse = await handleOpenIdAiim(request, env);
+    if (openIdAiimResponse) return openIdAiimResponse;
 
     if (["/api/exchange/signup", "/api/exchange/account", "/api/exchange/ledger", "/api/exchange/preflight", "/api/exchange/alerts", "/api/exchange/route-feedback", "/api/exchange/signing-keys", "/api/exchange/signing-keys/revoke", "/api/exchange/api-keys/rotate", "/api/exchange/contributions", "/api/exchange/queries", "/api/exchange/working-route-comps", "/api/exchange/bounties", "/api/exchange/unlock", "/api/exchange/coverage", "/api/exchange/internal/accept", "/api/exchange/internal/stats"].includes(url.pathname)
       || url.pathname.startsWith("/api/exchange/contributions/")
