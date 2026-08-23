@@ -13,12 +13,12 @@ import math
 import random
 import time
 from collections import defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from provenance.decision_relative import DecisionContext, DecisionEvidence, assess_decision
-
 
 CONFIG_SHA256 = "42078e86815cd5b806e1a44f23aaff4b002f94af7193b5c422adf0c948bb7d1b"
 PREREGISTRATION_SHA256 = "6f47faa5aaa3d856e7d9e990b40b086288a9d05507a2b7ec053f85ef720248ce"

@@ -146,6 +146,23 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+### DRI-1A candidate result
+
+The declared-policy arm ran 8,192 frozen synthetic worlds and **failed** its
+joint preregistered criterion. This is a noncanonical candidate diagnostic: its
+pre-run record omitted uncertainty, multiple-testing, lifecycle, and environment
+fields required by the repository's canonical standard. The relevant-cut policy was materially more
+accurate than every fixed cut and recovered all registered minority reversals,
+but a globally deepest cut bought a lower false-settlement rate by abstaining on
+40.23% of worlds. Several coarse baselines could not be matched to the oracle's
+zero-abstention operating point, so the registered matched comparison failed.
+The deterministic five-cut assessment remained below 0.7 ms p99 on the test
+machine. See `results/dri1a-v1/README.md` for the complete bounded result.
+
+The next open question is DRI-1B: can blinded humans or models select the right
+cut on externally authored cases? DRI-1A cannot answer it because its rules
+engine received the explicit failure-domain label.
+
 ## Falsification and kill criteria
 
 Reject or sharply narrow the proposal if any of the following survives matched

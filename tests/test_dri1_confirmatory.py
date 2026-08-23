@@ -9,7 +9,6 @@ from experiments.dri1.run_confirmatory import (
     load_frozen_config,
 )
 
-
 ROOT = Path(__file__).parents[1]
 CONFIG = ROOT / "experiments" / "dri1" / "EXECUTION-CONFIG.json"
 PREREGISTRATION = ROOT / "experiments" / "dri1" / "PREREGISTRATION.md"

@@ -59,9 +59,19 @@ simultaneous failure domains, discover undisclosed causal structure, or grant
 action authority. A positive oracle result with a failed selector supports the
 concept but not runtime deployability.
 
-**Current evidence:** Three constructed conformance fixtures exist in
-`benchmark/decision-relative-independence-v0.1.json`. They validate evaluator
-semantics only and are not evidence for DRI-1.
+**Current evidence:** A noncanonical DRI-1A candidate run evaluated all 8,192
+preregistered synthetic worlds and failed its joint success criterion. The
+decision-relative oracle achieved
+90.99% correct settlement versus 60.78% for agent headcount and 68.32% for the
+best fixed-cut correct-settlement rate, and recovered 100% of registered
+minority reversals. But it did not reduce false settlement by the required 15
+points against every fixed cut: the coarsest fixed cut reached 3.26% false
+settlement by abstaining 40.23% of the time, and three fixed cuts could not be
+abstention-matched within tolerance. The explicit rules engine equalled the
+oracle by construction and therefore demonstrates deterministic execution in
+this fixture, not causal cut inference or deployment readiness. The protocol
+lacked several fields required for canonical promotion, so this result remains
+a content-bound candidate diagnostic. See `results/dri1a-v1/`.
 
 ## HVI-1 — verifier independence under shared control
 
