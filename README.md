@@ -75,6 +75,15 @@ cannot resolve an evidence-sensitive question. Gate separately interprets that
 assessment as proceed, block, or escalate, and the runtime enforces the exact
 effect. Evidence assessment never grants authority.
 
+Root identity may also be **decision-relative**. Three machine executions can
+be sufficient replication for a machine-specific compatibility question while
+remaining one controller for operator consensus, and ten agents can remain one
+information source. Minority Prophet now carries a proposed adapter and
+constructed falsification fixtures that make the failure domain, independence
+cut, sufficiency threshold and material sensitivity explicit. This does not
+extend the proved kernel or authorize an action. See
+[`research/decision-relative-independence/`](research/decision-relative-independence/).
+
 The repository contains the benchmark, formal model, canonical record registry,
 root-issuance reference, neutral evidence contract, tests, and dashboard.
 The component and adapter boundaries are summarized in
@@ -127,6 +136,7 @@ Example output includes truth accuracy, minority-truth recovery, Brier score, ab
   independence or truth recovery; LIR-4 shows that bridge does not degrade
   gracefully under substantial identity missingness
 - [`provenance/`](provenance/) — evidence graph implementation and JSON Schema
+- [`research/decision-relative-independence/`](research/decision-relative-independence/) — proposed decision-relative root model, invariants, falsification plan, and constructed fixtures
 - [`results/resolved-weather-v0.1.manifest.json`](results/resolved-weather-v0.1.manifest.json) — canonical derived-record hashes and reproducibility boundary
 - [`results/hes1-v1/`](results/hes1-v1/) — blind evidence-seeking result: strong coverage recovery with a material false-negative software limitation
 - [`research/field-evidence/2026-08-06/`](research/field-evidence/2026-08-06/) — sanitized field observation showing why root identity and dependency matter

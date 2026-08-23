@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minorityprophet.org/schemas/decision-context-v0.1.json",
+  "title": "Minority Prophet decision-relative independence context v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "decision_id",
+    "proposition_id",
+    "failure_domain",
+    "independence_cut",
+    "minimum_winning_roots",
+    "consequence",
+    "reversibility",
+    "cut_selection_basis"
+  ],
+  "properties": {
+    "schema": {"const": "minority-prophet.decision-context.v0.1"},
+    "decision_id": {"type": "string", "minLength": 1, "maxLength": 240},
+    "proposition_id": {"type": "string", "minLength": 1, "maxLength": 240},
+    "failure_domain": {"type": "string", "minLength": 1, "maxLength": 240},
+    "independence_cut": {"type": "string", "minLength": 1, "maxLength": 120},
+    "minimum_winning_roots": {"type": "integer", "minimum": 1},
+    "consequence": {"type": "string", "minLength": 1, "maxLength": 120},
+    "reversibility": {"type": "string", "minLength": 1, "maxLength": 120},
+    "cut_selection_basis": {
+      "enum": ["preregistered", "rules-engine", "model-selected", "human-reviewed", "declared", "unknown"]
+    },
+    "candidate_cuts": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 120},
+      "uniqueItems": true
+    }
+  }
+}

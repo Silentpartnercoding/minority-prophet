@@ -12,6 +12,14 @@
 
 **Independence** — Absence of relevant shared causal ancestry under a stated model; never inferred solely from different agent names.
 
+**Decision-relative independence** — Independence evaluated at an explicit lineage cut selected for a stated decision and failure domain. The underlying lineage does not change; only the root identity relevant to the assessment changes. This is an adapter-level research primitive, not part of the proved aggregation kernel.
+
+**Independence cut** — The declared causal boundary at which observations are collapsed for one decision, such as evidence origin, machine, controller, or upstream component. Every reported independent count must name its cut.
+
+**Proximal root** — An observation's root at the independence cut relevant to the current decision. It can settle an operational question without being the observation's ultimate human, organizational, or causal ancestor.
+
+**Decision materiality** — A counterfactual property: an alternative independence cut is material when it changes the decision disposition among settled true, settled false, and unsettled under the declared sufficiency standard.
+
 **Minority-truth recovery** — Accuracy restricted to worlds where the true-belief coalition is numerically smaller than the false-belief coalition.
 
 **Mimetic pressure** — Tendency to adopt beliefs, desires, goals, trust, status, or curiosity from others.

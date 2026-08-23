@@ -20,6 +20,14 @@ This separates three operations that must not be collapsed:
 3. **Decision:** what the resulting roots support, what could reverse the
    verdict, and when the system must abstain.
 
+Decision also determines which shared ancestry is material. Root identity must
+therefore be reported at an explicit **independence cut** rather than treated as
+one universal agent property. The evidence ledger preserves all available
+lineage resolutions; the decision policy selects the proximal root relevant to
+its stated failure domain. Changing that cut is material only when it changes
+whether the proposition is settled under the declared threshold. See
+[`research/decision-relative-independence/`](research/decision-relative-independence/).
+
 The current theorems reduce the provenance burden under R1–R3. They do not
 reduce discovery coverage for a universal negative. One valid counterexample
 can establish presence; absence requires complete coverage of the claim's
@@ -39,6 +47,8 @@ Records the evidence used by a decision:
 - declared shared dependencies and side-separation status;
 - supporting and opposing root counts;
 - `flip_budget` and `conversions_to_reverse` in their correct units;
+- multi-resolution root identities and the selected decision-relative cut;
+- alternative-cut sensitivity when it changes settlement;
 - unattributed evidence, uncertainty, and the reason for abstention.
 
 ### Search ledger

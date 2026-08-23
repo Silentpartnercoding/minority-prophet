@@ -1,0 +1,49 @@
+{
+  "schema": "minority-prophet.decision-relative-independence.v0.1",
+  "status": "constructed-falsification-fixtures",
+  "fixture_assumptions": {"root_identity": "attested constructed ground truth", "cut_selection": "preregistered by fixture"},
+  "cases": [
+    {
+      "id": "same-owner-three-machine-success",
+      "description": "Three successful machine executions share one controller. Machine diversity settles compatibility; it cannot establish controller consensus.",
+      "evidence": [
+        {"observation_id": "m1-run", "proposition_id": "route-works", "value": true, "roots": {"agent": "agent-a", "machine": "m1", "controller": "owner-j", "evidence_origin": "execution-m1"}},
+        {"observation_id": "m4-run", "proposition_id": "route-works", "value": true, "roots": {"agent": "agent-b", "machine": "m4", "controller": "owner-j", "evidence_origin": "execution-m4"}},
+        {"observation_id": "osmo-run", "proposition_id": "route-works", "value": true, "roots": {"agent": "agent-c", "machine": "osmo", "controller": "owner-j", "evidence_origin": "execution-osmo"}}
+      ],
+      "contexts": [
+        {"decision_id": "runtime-compatibility", "failure_domain": "machine-specific-runtime-failure", "independence_cut": "machine", "minimum_winning_roots": 3, "candidate_cuts": ["controller"], "expected_settlement": "settled_true", "expected_material_cuts": ["controller"]},
+        {"decision_id": "independent-operator-consensus", "failure_domain": "shared-operator-control", "independence_cut": "controller", "minimum_winning_roots": 2, "candidate_cuts": ["machine"], "expected_settlement": "unsettled", "expected_material_cuts": ["machine"]}
+      ]
+    },
+    {
+      "id": "copied-majority-independent-minority",
+      "description": "Four apparent agents repeat one source while one minority observation has a separate origin.",
+      "evidence": [
+        {"observation_id": "copy-1", "proposition_id": "claim-p", "value": false, "roots": {"agent": "a1", "evidence_origin": "social-root"}},
+        {"observation_id": "copy-2", "proposition_id": "claim-p", "value": false, "roots": {"agent": "a2", "evidence_origin": "social-root"}},
+        {"observation_id": "copy-3", "proposition_id": "claim-p", "value": false, "roots": {"agent": "a3", "evidence_origin": "social-root"}},
+        {"observation_id": "copy-4", "proposition_id": "claim-p", "value": false, "roots": {"agent": "a4", "evidence_origin": "social-root"}},
+        {"observation_id": "minority", "proposition_id": "claim-p", "value": true, "roots": {"agent": "minority-agent", "evidence_origin": "independent-sensor"}}
+      ],
+      "contexts": [
+        {"decision_id": "agent-headcount", "failure_domain": "none-declared", "independence_cut": "agent", "minimum_winning_roots": 2, "candidate_cuts": ["evidence_origin"], "expected_settlement": "settled_false", "expected_material_cuts": ["evidence_origin"]},
+        {"decision_id": "source-sensitive-verdict", "failure_domain": "source-copying", "independence_cut": "evidence_origin", "minimum_winning_roots": 2, "candidate_cuts": ["agent"], "expected_settlement": "unsettled", "expected_material_cuts": ["agent"]}
+      ]
+    },
+    {
+      "id": "correlated-sensor-failure",
+      "description": "Three device readings share one upstream component and disagree with one independently sourced reading.",
+      "evidence": [
+        {"observation_id": "sensor-1", "proposition_id": "machine-safe", "value": true, "roots": {"sensor_device": "s1", "upstream_component": "shared-bus"}},
+        {"observation_id": "sensor-2", "proposition_id": "machine-safe", "value": true, "roots": {"sensor_device": "s2", "upstream_component": "shared-bus"}},
+        {"observation_id": "sensor-3", "proposition_id": "machine-safe", "value": true, "roots": {"sensor_device": "s3", "upstream_component": "shared-bus"}},
+        {"observation_id": "independent-stop", "proposition_id": "machine-safe", "value": false, "roots": {"sensor_device": "s4", "upstream_component": "independent-channel"}}
+      ],
+      "contexts": [
+        {"decision_id": "unsafe-device-majority", "failure_domain": "device-only", "independence_cut": "sensor_device", "minimum_winning_roots": 2, "candidate_cuts": ["upstream_component"], "expected_settlement": "settled_true", "expected_material_cuts": ["upstream_component"]},
+        {"decision_id": "safety-common-cause", "failure_domain": "shared-upstream-component", "independence_cut": "upstream_component", "minimum_winning_roots": 2, "candidate_cuts": ["sensor_device"], "expected_settlement": "unsettled", "expected_material_cuts": ["sensor_device"]}
+      ]
+    }
+  ]
+}

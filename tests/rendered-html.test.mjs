@@ -147,6 +147,9 @@ test("server-renders a failure-first landing page with the core fixture and sepa
   assert.match(html, /EPISTEMIC OBSERVATORY/);
   assert.match(html, /Evidence is not/);
   assert.match(html, /Assessment never grants authority/);
+  assert.match(html, /causal boundary relevant to a stated decision/);
+  assert.match(html, /failure domain, independence cut, threshold/);
+  assert.match(html, /declared proximal boundary/);
   assert.match(html, /papers\/00-CURRENT-PAPER\.md/);
   assert.match(html, /METHOD COMPARISON/);
   assert.match(html, /EPISTEMIC LIFT · CONTROLLED STUDY/);
