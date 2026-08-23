@@ -262,6 +262,16 @@ test("server-renders a vendor-neutral developer integration path", async () => {
   assert.match(html, /never authenticates an actor/);
 });
 
+test("publishes the focused mobile source-family test without answer leakage", async () => {
+  const html = await readFile(new URL("../public/source-family-test.html", import.meta.url), "utf8");
+  assert.match(html, /MP Source-Family Test/);
+  assert.match(html, /Mobile-first · five minutes/);
+  assert.match(html, /Nothing was rerun and history did not change/);
+  assert.match(html, /questions_asked_identically_before_and_after|exact same questions/i);
+  assert.doesNotMatch(html, /supporting_source_family_count[^<]{0,80}["']2["']/i);
+  assert.doesNotMatch(html, /contradicting_source_family_count[^<]{0,80}["']1["']/i);
+});
+
 test("server-renders the complete same-model epistemic lift study", async () => {
   const response = await render("/experiments/epistemic-lift");
   assert.equal(response.status, 200);
