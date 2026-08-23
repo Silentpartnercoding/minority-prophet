@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minorityprophet.org/schemas/dri1b-case-v1.json",
+  "title": "DRI-1B authored decision case",
+  "type": "object",
+  "required": ["schema", "public", "withheld"],
+  "properties": {
+    "schema": {"const": "minority-prophet.dri1b-case.v1"},
+    "public": {
+      "type": "object",
+      "required": [
+        "case_id", "proposition", "proposed_action", "consequence",
+        "reversibility", "deadline_class", "minimum_winning_roots", "observations"
+      ],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$"},
+        "proposition": {"type": "string", "minLength": 20, "maxLength": 2000},
+        "proposed_action": {"type": "string", "minLength": 10, "maxLength": 1000},
+        "consequence": {"enum": ["low", "high"]},
+        "reversibility": {"enum": ["reversible", "irreversible"]},
+        "deadline_class": {"enum": ["none", "seconds", "minutes", "hours", "days"]},
+        "minimum_winning_roots": {"enum": [2, 3]},
+        "observations": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 100,
+          "items": {"$ref": "#/$defs/observation"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "withheld": {
+      "type": "object",
+      "required": [
+        "author_id", "target_label", "material_failure", "causal_rationale",
+        "cut_dispositions", "nearest_rejected_alternative", "minority_class"
+      ],
+      "properties": {
+        "author_id": {"type": "string", "pattern": "^author-[a-z0-9-]{4,64}$"},
+        "target_label": {"$ref": "#/$defs/label"},
+        "material_failure": {"type": "string", "minLength": 20, "maxLength": 2000},
+        "causal_rationale": {"type": "string", "minLength": 50, "maxLength": 5000},
+        "cut_dispositions": {
+          "type": "object",
+          "required": [
+            "agent", "machine", "controller", "evidence_origin", "upstream_component"
+          ],
+          "properties": {
+            "agent": {"$ref": "#/$defs/disposition"},
+            "machine": {"$ref": "#/$defs/disposition"},
+            "controller": {"$ref": "#/$defs/disposition"},
+            "evidence_origin": {"$ref": "#/$defs/disposition"},
+            "upstream_component": {"$ref": "#/$defs/disposition"}
+          },
+          "additionalProperties": false
+        },
+        "nearest_rejected_alternative": {"type": "string", "minLength": 20, "maxLength": 2000},
+        "minority_class": {
+          "enum": ["material_reversal", "false_rescue_trap", "no_headcount_minority"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "label": {
+      "enum": [
+        "agent", "machine", "controller", "evidence_origin",
+        "upstream_component", "joint_or_insufficient"
+      ]
+    },
+    "disposition": {
+      "type": "object",
+      "required": ["value", "rationale"],
+      "properties": {
+        "value": {"enum": ["settled_true", "settled_false", "unsettled"]},
+        "rationale": {"type": "string", "minLength": 10, "maxLength": 2000}
+      },
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "required": ["observation_id", "value", "statement", "roots", "basis"],
+      "properties": {
+        "observation_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{3,127}$"},
+        "value": {"type": "boolean"},
+        "statement": {"type": "string", "minLength": 5, "maxLength": 2000},
+        "roots": {
+          "type": "object",
+          "required": [
+            "agent", "machine", "controller", "evidence_origin", "upstream_component"
+          ],
+          "properties": {
+            "agent": {"type": "string", "minLength": 1, "maxLength": 200},
+            "machine": {"type": "string", "minLength": 1, "maxLength": 200},
+            "controller": {"type": "string", "minLength": 1, "maxLength": 200},
+            "evidence_origin": {"type": "string", "minLength": 1, "maxLength": 200},
+            "upstream_component": {"type": "string", "minLength": 1, "maxLength": 200}
+          },
+          "additionalProperties": false
+        },
+        "basis": {
+          "type": "object",
+          "required": [
+            "agent", "machine", "controller", "evidence_origin", "upstream_component"
+          ],
+          "properties": {
+            "agent": {"$ref": "#/$defs/basis"},
+            "machine": {"$ref": "#/$defs/basis"},
+            "controller": {"$ref": "#/$defs/basis"},
+            "evidence_origin": {"$ref": "#/$defs/basis"},
+            "upstream_component": {"$ref": "#/$defs/basis"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "basis": {"enum": ["attested", "declared", "inferred", "unknown"]}
+  },
+  "additionalProperties": false
+}

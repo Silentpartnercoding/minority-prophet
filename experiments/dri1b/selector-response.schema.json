@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minorityprophet.org/schemas/dri1b-selector-response-v1.json",
+  "title": "DRI-1B blinded reviewer response",
+  "type": "object",
+  "required": [
+    "schema", "case_id", "reviewer_id", "selected_label", "confidence",
+    "material_failure_citation", "rejected_alternative_reason", "authority_effect"
+  ],
+  "properties": {
+    "schema": {"const": "minority-prophet.dri1b-selector-response.v1"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$"},
+    "reviewer_id": {"type": "string", "pattern": "^reviewer-[a-z0-9-]{4,64}$"},
+    "selected_label": {
+      "enum": [
+        "agent", "machine", "controller", "evidence_origin",
+        "upstream_component", "joint_or_insufficient"
+      ]
+    },
+    "confidence": {"type": "integer", "minimum": 0, "maximum": 100},
+    "material_failure_citation": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "rejected_alternative_reason": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "authority_effect": {"const": "none"}
+  },
+  "additionalProperties": false
+}
