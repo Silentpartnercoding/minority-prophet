@@ -89,6 +89,13 @@ untheorised in the DAG kernel. Any claim that the system measures genuine
 evidential independence is a claim about the identity criterion, which is
 currently an opaque caller-supplied string.
 
+The adapter in `provenance/decision_relative.py` does not close this gap. It
+requires a caller to name the decision, failure domain and lineage cut, then
+reports whether alternative declared cuts materially change settlement. That
+makes root-identity policy visible and testable; it neither proves that the
+selected cut is causally correct nor extends a theorem. Its constructed fixtures
+are implementation invariants, not empirical evidence.
+
 ### It does not survive its own headline slogan
 
 **"Adding copied claims cannot change the verdict" is FALSE.** The proved

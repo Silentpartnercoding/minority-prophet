@@ -180,6 +180,12 @@ edge_confidence, inferred  lineage schema extensions, backward compatible
 - Binary assertions only; multi-proposition and continuous claims unformalized.
 - "Independence" is modeled as **disjoint root sets** — all-or-nothing. Graded
   independence (partially correlated observers) is unrepresentable and untheorised.
+- Root identity is also decision-sensitive outside the kernel. A machine,
+  controller and evidence origin can each be the relevant proximal root for a
+  different failure domain. The proposed adapter in
+  `provenance/decision_relative.py` makes one selected cut and its material
+  alternatives explicit, but no theorem establishes how to select that cut.
+  Joint independence across multiple simultaneous failure domains remains open.
 - Weights are not in the core at all: `F` is a pure cardinality comparison. No
   theorem covers any weighted aggregator. Ledger `U3`.
 - No time: expiry and revocation are outside every theorem.

@@ -71,11 +71,11 @@ export default function Home() {
 
     <section className="boundary" id="boundary">
       <p className="section-index">03 / THE ARCHITECTURAL BOUNDARY</p>
-      <div className="boundary-heading"><h2>Evidence is not<br /><em>authority.</em></h2><p>Minority Prophet asks whether the evidence supporting a claim is independently grounded or merely repeated. It never turns that assessment into permission.</p></div>
+      <div className="boundary-heading"><h2>Evidence is not<br /><em>authority.</em></h2><p>Minority Prophet asks whether evidence is independently grounded at the causal boundary relevant to a stated decision. It preserves deeper lineage, exposes when another reasonable cut materially changes settlement, and never turns that assessment into permission.</p></div>
       <div className="boundary-flow" aria-label="Evidence flows through binding, assessment, and enforcement">
         <article><span>01</span><h3>Evidence arrives</h3><p>A trace, score, test result, or replay bundle records what happened.</p></article>
-        <article><span>02</span><h3>Context binds</h3><p>Identity, delegated authority, policy, evidence, and the proposed action are joined.</p></article>
-        <article><span>03</span><h3>Prophet assesses</h3><p>Independent roots are distinguished from copies and manufactured agreement.</p></article>
+        <article><span>02</span><h3>Context binds</h3><p>The proposition, failure domain, independence cut, threshold, policy, and proposed action are joined.</p></article>
+        <article><span>03</span><h3>Prophet assesses</h3><p>Roots are counted at the declared proximal boundary while the full ancestry and minority signal remain visible.</p></article>
         <article><span>04</span><h3>Policy enforces</h3><p>A separate policy proceeds, blocks, or escalates. Assessment never grants authority.</p></article>
       </div>
     </section>

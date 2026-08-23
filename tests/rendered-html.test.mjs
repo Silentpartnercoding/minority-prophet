@@ -26,6 +26,9 @@ test("server-renders a concise landing page with the lift study and separate sup
   assert.match(html, /DEMONSTRATION WORLD/);
   assert.match(html, /Evidence is not/);
   assert.match(html, /Assessment never grants authority/);
+  assert.match(html, /causal boundary relevant to a stated decision/);
+  assert.match(html, /failure domain, independence cut, threshold/);
+  assert.match(html, /declared proximal boundary/);
   assert.match(html, /Read the paper/);
   assert.match(html, /papers\/00-CURRENT-PAPER\.md/);
   assert.match(html, /CAPABILITY TOURNAMENT V1/);

@@ -14,6 +14,55 @@
 
 The exploratory v0.1 pilot satisfied this criterion only in constructed worlds with declared correct lineage and failed under lineage corruption. It was not a blinded or fully preregistered confirmatory experiment. H1 therefore remains open for v0.2.
 
+## DRI-1 — decision-relative independence cuts
+
+**Question:** Does selecting an evidence-independence cut from a declared
+decision and failure domain reduce false settlement relative to agent headcount
+or one fixed global root definition, without causing prohibitive unnecessary
+abstention?
+
+**Null hypothesis:** At matched abstention, a decision-relative cut has no lower
+false-settlement rate than the best fixed-cut baseline.
+
+**Unit of independence:** The proximal root at the preregistered causal boundary
+relevant to the decision's failure domain. The complete lineage is retained and
+the proximal root is not asserted to be the ultimate causal or human root.
+
+**Experimental design:** Freeze evidence graphs that each support multiple
+decision contexts: machine-specific compatibility versus controller consensus;
+agent diversity versus source diversity; device diversity versus common-cause
+sensor failure; and low-consequence reversible action versus high-consequence
+irreversible action. Compare agent headcount, a fixed evidence-origin cut, a
+fixed controller cut, an oracle preregistered cut, and a model or rules engine
+selecting the cut from decision context. Score cut selection before aggregation.
+
+**Metrics:** False-settlement rate; unnecessary abstention; minority
+preservation; selected-cut accuracy; material-sensitivity precision and recall;
+decision error at matched abstention; latency; and the fraction of cases where
+reasonable alternative cuts change settlement.
+
+**Failure condition:** The best fixed-cut baseline matches the oracle policy;
+the selector fails to beat a trivial most-common-cut baseline; expert agreement
+on the registered failure domain and cut falls below the preregistered bound; or
+required metadata is predominantly self-reported and cannot support the claimed
+distinction.
+
+**Success condition:** On held-out matched contexts, the oracle cut reduces
+false settlement by at least 15 percentage points against every fixed-cut
+baseline, and an implementable selector retains at least 80% of that reduction
+without increasing unnecessary abstention by more than 10 percentage points.
+These thresholds are proposals and must be frozen before data generation.
+
+**Boundary:** This experiment tests a single selected cut and sensitivity to
+declared alternatives. It does not establish joint independence across multiple
+simultaneous failure domains, discover undisclosed causal structure, or grant
+action authority. A positive oracle result with a failed selector supports the
+concept but not runtime deployability.
+
+**Current evidence:** Three constructed conformance fixtures exist in
+`benchmark/decision-relative-independence-v0.1.json`. They validate evaluator
+semantics only and are not evidence for DRI-1.
+
 ## HVI-1 — verifier independence under shared control
 
 **Question:** Can explicit creator, verifier, and controller provenance prevent
