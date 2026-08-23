@@ -1,1522 +1,210 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>Mp Source Family Test V3</title>
-<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1014">
+  <title>Minority Prophet — Source-family explainer</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1014;
+      --panel: #151a20;
+      --panel-2: #1b222a;
+      --text: #f6f7f8;
+      --muted: #aab2bd;
+      --line: #2c3540;
+      --blue: #64b5ff;
+      --green: #67d18e;
+      --pink: #f08bc2;
+      --amber: #efc469;
+      --danger: #ff887f;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 85% -5%, rgba(100,181,255,.18), transparent 35%),
+        var(--bg);
+      font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button { font: inherit; }
+    .shell { width: min(880px, 100%); margin: 0 auto; padding: 20px 16px 56px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 13px; letter-spacing: .08em; font-weight: 800; }
+    .mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--text); color: var(--bg); letter-spacing: -.05em; }
+    .badge { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+    .hero { padding: 48px 0 30px; }
+    .eyebrow { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+    h1 { max-width: 720px; margin: 10px 0 14px; font-size: clamp(38px, 8vw, 70px); line-height: .98; letter-spacing: -.055em; }
+    .hero p { max-width: 660px; margin: 0; color: var(--muted); font-size: clamp(17px, 2.5vw, 21px); }
+    .not-test { margin-top: 22px; padding: 14px 16px; border-left: 4px solid var(--green); background: rgba(103,209,142,.08); border-radius: 0 12px 12px 0; }
+    .not-test strong { display: block; }
+    .not-test span { color: var(--muted); }
+    .panel { margin-top: 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(21,26,32,.92); overflow: hidden; }
+    .panel-head { padding: 18px; border-bottom: 1px solid var(--line); }
+    .step { color: var(--blue); font-size: 11px; font-weight: 800; letter-spacing: .1em; }
+    h2 { margin: 5px 0 4px; font-size: 25px; letter-spacing: -.03em; }
+    .panel-head p { margin: 0; color: var(--muted); }
+    .automatic { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px; background: var(--line); border-bottom: 1px solid var(--line); }
+    .metric { padding: 15px; background: var(--panel); }
+    .metric small { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+    .metric strong { display: block; margin-top: 2px; font-size: 27px; }
+    .metric.proceed strong { color: var(--blue); }
+    .metric.stop strong { color: var(--danger); }
+    .feed { display: grid; gap: 8px; padding: 14px; }
+    .event { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 10px; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); transition: border-color .35s, transform .35s, background .35s; }
+    .actor { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: #29323d; font-weight: 800; }
+    .event b { display: block; }
+    .event code { color: var(--muted); font-size: 12px; }
+    .stance { font-size: 11px; font-weight: 900; letter-spacing: .06em; }
+    .event.proceed .stance { color: var(--blue); }
+    .event.stop .stance { color: var(--danger); }
+    .event[data-family="weather"].mapped { border-color: var(--blue); background: rgba(100,181,255,.09); }
+    .event[data-family="route"].mapped { border-color: var(--green); background: rgba(103,209,142,.09); }
+    .event[data-family="maintenance"].mapped { border-color: var(--pink); background: rgba(240,139,194,.09); }
+    .source-label { display: none; grid-column: 2 / -1; color: var(--muted); font-size: 12px; }
+    .mapped .source-label { display: block; animation: enter .35s ease both; }
+    .action-area { padding: 0 14px 16px; }
+    .primary { width: 100%; min-height: 52px; border: 0; border-radius: 13px; color: #091018; background: var(--blue); font-weight: 850; cursor: pointer; }
+    .primary:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+    .primary[disabled] { opacity: .65; cursor: default; }
+    #reconstruction { display: none; }
+    #reconstruction.visible { display: block; animation: enter .45s ease both; }
+    .invariant { margin: 16px; padding: 15px; border: 1px solid var(--green); border-radius: 13px; background: rgba(103,209,142,.08); }
+    .invariant b { color: var(--green); }
+    .count-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; padding: 0 16px 16px; }
+    .count { min-width: 0; padding: 14px 10px; border-radius: 12px; background: var(--panel-2); text-align: center; }
+    .count strong { display: block; font-size: 27px; }
+    .count span { display: block; color: var(--muted); font-size: 11px; line-height: 1.25; }
+    .flow-summary { margin: 0 16px 16px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 9px; }
+    .flow-box { padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); text-align: center; }
+    .flow-box strong { display: block; font-size: 22px; }
+    .flow-box small { color: var(--muted); }
+    .arrow { color: var(--amber); font-weight: 900; }
+    .families { display: grid; gap: 10px; padding: 0 16px 18px; }
+    .family { padding: 15px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 12px; background: var(--panel-2); }
+    .family.weather { border-left-color: var(--blue); }
+    .family.route { border-left-color: var(--green); }
+    .family.maintenance { border-left-color: var(--pink); }
+    .family-head { display: flex; justify-content: space-between; gap: 12px; }
+    .family-head span { color: var(--muted); font-size: 12px; }
+    .voices { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+    .voice { padding: 7px 9px; border-radius: 8px; background: #2a333e; font-size: 12px; }
+    .voice em { color: var(--muted); font-style: normal; }
+    .meaning { padding: 18px; border-top: 1px solid var(--line); background: #10151a; }
+    .meaning h3 { margin: 0 0 12px; font-size: 20px; }
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .comparison article { padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
+    .comparison small { color: var(--muted); }
+    .comparison strong { display: block; margin-top: 5px; }
+    .boundary { margin-top: 12px; color: var(--muted); font-size: 13px; }
+    .study-note { margin-top: 18px; padding: 16px; border: 1px dashed #46515e; border-radius: 13px; color: var(--muted); font-size: 13px; }
+    .study-note b { color: var(--text); }
+    footer { padding: 28px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
+    @keyframes enter { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+    @media (max-width: 560px) {
+      .shell { padding-left: 13px; padding-right: 13px; }
+      .hero { padding-top: 36px; }
+      .event { grid-template-columns: 34px 1fr auto; padding: 11px; }
+      .actor { width: 34px; height: 34px; }
+      .count-grid { gap: 6px; }
+      .count { padding: 12px 5px; }
+      .flow-summary { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); justify-self: center; }
+      .comparison { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Mp Source Family Test V3" srcdoc="&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
-&lt;title&gt;Mp Source Family Test V3&lt;/title&gt;
-&lt;style&gt;:root {
-  color-scheme: light dark;
-  background-color: var(
-    --background,
-    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
-  ) !important;
-
-  /* Agent-facing contract; keep in sync with SKILL.md. */
-  --background: var(
-    --color-background-primary,
-    light-dark(rgb(255 255 255), rgb(24 24 24))
-  );
-  --foreground: var(
-    --color-text-primary,
-    light-dark(rgb(26 28 31), rgb(255 255 255))
-  );
-  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
-  --card-foreground: var(
-    --color-text-primary,
-    light-dark(rgb(26 28 31), rgb(255 255 255))
-  );
-  --popover: var(
-    --color-background-secondary,
-    light-dark(rgb(255 255 255), rgb(45 45 45))
-  );
-  --popover-foreground: var(
-    --color-text-primary,
-    light-dark(rgb(26 28 31), rgb(255 255 255))
-  );
-  --primary: var(
-    --color-text-info,
-    light-dark(rgb(51 156 255), rgb(131 195 255))
-  );
-  --primary-foreground: var(
-    --color-text-inverse,
-    light-dark(rgb(255 255 255), rgb(13 13 13))
-  );
-  --secondary: var(
-    --color-background-secondary,
-    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
-  );
-  --secondary-foreground: var(
-    --color-text-primary,
-    light-dark(rgb(26 28 31), rgb(255 255 255))
-  );
-  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
-  --muted-foreground: var(
-    --color-text-secondary,
-    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
-  );
-  --accent: var(
-    --color-background-info,
-    light-dark(rgb(229 242 255), rgb(13 39 63))
-  );
-  --accent-foreground: var(
-    --color-text-info,
-    light-dark(rgb(51 156 255), rgb(131 195 255))
-  );
-  --destructive: var(
-    --color-text-warning,
-    light-dark(rgb(226 85 7), rgb(255 133 73))
-  );
-  --border: var(
-    --color-border-secondary,
-    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
-  );
-  --input: var(
-    --color-border-primary,
-    light-dark(
-      rgb(26 28 31 / 11.8%),
-      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
-    )
-  );
-  --ring: var(
-    --color-ring-primary,
-    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
-  );
-  --font-size-base: var(--font-text-md-size, 14px);
-  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
-  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
-  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
-  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
-  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
-  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
-  --viz-series-1: var(--primary);
-  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
-  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
-  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
-  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
-  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
-
-  /* Internal implementation variables; not part of the agent contract. */
-  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
-    monospace;
-  --font-size-normal: max(11px, var(--font-size-base));
-  --font-size-tooltip: calc(var(--font-size-base) - 1px);
-  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
-  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
-  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
-  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
-  --font-weight-normal: 430;
-  --font-weight-medium: 500;
-  --line-height-normal: calc(var(--font-size-normal) * 1.5);
-  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
-  --line-height-small: calc(var(--font-size-small) + 4px);
-  --radius: var(--border-radius-lg, 12.5px);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-2xl: calc(var(--radius) * 1.6);
-  --radius-full: 9999px;
-  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
-  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
-
-  /* Legacy aliases; not part of the current agent contract. */
-  --viz-bg: transparent;
-  --viz-panel: var(--card);
-  --viz-border: var(--border);
-  --viz-text: var(--foreground);
-  --viz-muted: var(--muted-foreground);
-  --viz-accent: var(--primary);
-  --viz-accent-text: var(--primary-foreground);
-  --viz-accent-bg: var(--accent);
-  --viz-font-size: var(--font-size-base);
-  --viz-warning: var(--destructive);
-}
-
-:root[data-theme=&quot;light&quot;] {
-  color-scheme: light;
-}
-
-:root[data-theme=&quot;dark&quot;] {
-  color-scheme: dark;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html &gt; body {
-  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
-  --color-background-primary: var(
-    --background,
-    light-dark(rgb(255 255 255), rgb(24 24 24))
-  );
-  --color-text-primary: var(
-    --foreground,
-    light-dark(rgb(26 28 31), rgb(255 255 255))
-  );
-  --color-border-secondary: var(
-    --border,
-    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
-  );
-
-  margin: 0;
-  padding: 5px;
-  color: var(--foreground);
-  background: transparent !important;
-  font-family: var(--font-sans);
-  font-size: var(--font-size-normal);
-  font-weight: var(--font-weight-normal);
-  line-height: var(--line-height-normal);
-}
-
-a {
-  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
-  cursor: pointer;
-  font-weight: var(--font-weight-medium, 500);
-  text-decoration: none;
-  text-underline-offset: 2px;
-}
-
-a:is(:hover, :focus-visible) {
-  text-decoration-line: underline;
-  text-decoration-style: dashed;
-  text-decoration-thickness: 0.5px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin-block: 0;
-}
-
-h1 {
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-}
-
-h2 {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-}
-
-h3,
-h4,
-h5,
-h6 {
-  font-size: var(--font-size-h3);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.3;
-}
-
-b,
-strong,
-th {
-  font-weight: var(--font-weight-medium);
-}
-
-code:not(pre code) {
-  display: inline;
-  padding: 1px 6px;
-  border-radius: var(--radius-sm);
-  corner-shape: superellipse(1.5);
-  background: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.92em;
-  overflow-wrap: anywhere;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  word-break: break-word;
-}
-
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  color: var(--foreground);
-  font: inherit;
-  text-align: start;
-}
-
-.table :is(th, td) {
-  padding-block: 10px;
-  padding-inline: 0 24px;
-  overflow-wrap: anywhere;
-  border-bottom: 1px solid var(--border);
-  text-align: start;
-  vertical-align: top;
-}
-
-.table-responsive &gt; .table :is(th, td) {
-  overflow-wrap: break-word;
-}
-
-.table :is(th, td):last-child {
-  padding-inline-end: 0;
-}
-
-.table :is(caption, thead th) {
-  font-weight: 600;
-}
-
-.table thead th {
-  padding-block: 8px;
-  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
-}
-
-.table tbody tr:last-child :is(th, td) {
-  border-bottom: 0;
-}
-
-.table.table-sm :is(th, td) {
-  padding-block: 6px;
-}
-
-.table.table-sm :is(th, td):not(:last-child) {
-  padding-inline-end: 16px;
-}
-
-.table :is(.text-end, [align=&quot;right&quot;]) {
-  text-align: end;
-  font-variant-numeric: tabular-nums;
-}
-
-.table :is(.text-center, [align=&quot;center&quot;]) {
-  text-align: center;
-}
-
-.table .text-nowrap {
-  white-space: nowrap;
-}
-
-#widget {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  padding: 0;
-  background: transparent !important;
-}
-
-.card {
-  min-width: 0;
-  padding: 12px;
-  overflow: hidden;
-  overflow-wrap: break-word;
-  border-radius: var(--radius-2xl);
-  corner-shape: superellipse(1.5);
-  color: var(--card-foreground);
-  background: var(--card);
-}
-
-#widget &gt; :not(.card) {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.tooltip {
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  left: 0;
-  width: max-content;
-  max-width: min(
-    20rem,
-    var(--tooltip-available-width, calc(100vw - 10px)),
-    calc(100vw - 10px)
-  );
-  max-height: min(
-    var(--tooltip-available-height, calc(100vh - 10px)),
-    calc(100vh - 10px)
-  );
-  padding: 4px 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  corner-shape: superellipse(1.5);
-  color: var(--popover-foreground);
-  background: var(--popover);
-  box-shadow: none;
-  font-size: var(--font-size-tooltip);
-  line-height: var(--line-height-tooltip);
-  overflow-wrap: break-word;
-  white-space: normal;
-  pointer-events: none;
-  user-select: none;
-}
-
-.viz-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
-  gap: 10px;
-}
-
-.viz-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.viz-stat-value {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-}
-
-.viz-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
-.viz-badge {
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-  color: var(--accent-foreground);
-  background: var(--accent);
-  font-weight: var(--font-weight-medium);
-}
-
-small,
-.text-small,
-.viz-badge {
-  font-size: var(--font-size-small);
-  line-height: var(--line-height-small);
-}
-
-.text-muted {
-  color: var(--muted-foreground);
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.viz-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.viz-controls &gt; .form-label {
-  display: grid;
-  min-width: min(100%, 260px);
-  flex: 1 1 280px;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 2px 12px;
-  margin-bottom: 0;
-}
-
-.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
-  grid-column: 1 / -1;
-}
-
-.btn,
-.form-check-input,
-.form-control,
-.form-range,
-.form-select {
-  font: inherit;
-}
-
-.btn {
-  appearance: button;
-  display: inline-flex;
-  inline-size: fit-content;
-  max-inline-size: 100%;
-  min-height: 28px;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin: 0;
-  padding: 0 8px;
-  -webkit-app-region: no-drag;
-  border: 1px solid var(--input);
-  border-radius: var(--radius-lg);
-  corner-shape: superellipse(1.5);
-  color: var(--secondary-foreground);
-  background: var(--secondary);
-  cursor: var(--cursor-interaction, pointer);
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  user-select: none;
-  -webkit-font-smoothing: antialiased;
-}
-
-.btn:is(.btn-block, .viz-tile) {
-  inline-size: 100%;
-}
-
-.btn.viz-tile {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  white-space: normal;
-}
-
-a.btn {
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.btn:not(:disabled):hover {
-  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
-}
-
-.btn-primary {
-  border-color: transparent;
-  color: var(--primary-foreground);
-  background: var(--foreground);
-  background-clip: padding-box;
-}
-
-.btn-primary .text-muted {
-  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
-}
-
-.btn-primary:not(:disabled):hover {
-  background: color-mix(in srgb, var(--foreground) 80%, transparent);
-  background-clip: padding-box;
-}
-
-.btn-ghost {
-  border-color: transparent;
-  color: var(--muted-foreground);
-  background: transparent;
-}
-
-.btn-ghost:not(:disabled):hover {
-  color: var(--foreground);
-  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
-}
-
-.btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
-}
-
-[data-lucide] {
-  stroke-width: 1.6;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--foreground);
-}
-
-.form-control {
-  display: block;
-  width: 100%;
-  min-height: 28px;
-  padding: 0 8px;
-  outline: none;
-  border: 1px solid var(--input);
-  border-radius: var(--radius-lg);
-  corner-shape: superellipse(1.5);
-  color: var(--foreground);
-  background: var(--secondary);
-}
-
-.form-control::placeholder {
-  color: var(--muted-foreground);
-}
-
-.form-control[type=&quot;file&quot;] {
-  padding: 0;
-  overflow: hidden;
-  cursor: var(--cursor-interaction, pointer);
-}
-
-.form-control[type=&quot;file&quot;]::file-selector-button {
-  min-height: 26px;
-  margin-right: 8px;
-  padding: 0 8px;
-  border: 0;
-  border-right: 1px solid var(--input);
-  color: var(--secondary-foreground);
-  background: var(--secondary);
-  cursor: inherit;
-  font: inherit;
-}
-
-.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
-  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
-}
-
-.form-control-color[type=&quot;color&quot;] {
-  width: 40px;
-  height: 28px;
-  padding: 3px;
-  cursor: var(--cursor-interaction, pointer);
-}
-
-.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
-  border: 0;
-  border-radius: calc(var(--radius-lg) - 4px);
-  corner-shape: superellipse(1.5);
-}
-
-textarea.form-control {
-  height: auto;
-  min-height: 72px;
-  padding: 8px 10px;
-  resize: vertical;
-}
-
-.form-control:focus-visible {
-  border-color: var(--ring);
-  box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.form-control:disabled,
-.form-select:disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
-}
-
-.form-select {
-  appearance: none;
-  display: block;
-  width: 100%;
-  min-height: 28px;
-  margin: 0;
-  padding: 0 32px 0 8px;
-  outline: none;
-  border: 1px solid var(--input);
-  border-radius: var(--radius-lg);
-  corner-shape: superellipse(1.5);
-  color: var(--foreground);
-  background-color: var(--secondary);
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
-    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
-  background-position:
-    calc(100% - 14px) 50%,
-    calc(100% - 10px) 50%;
-  background-repeat: no-repeat;
-  background-size: 4px 4px;
-  cursor: var(--cursor-interaction, default);
-}
-
-.form-select:not(:disabled):hover {
-  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
-}
-
-.form-select:focus-visible {
-  border-color: var(--ring);
-  box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.form-check {
-  display: flex;
-  min-height: 20px;
-  align-items: center;
-  gap: 6px;
-}
-
-.form-check-input {
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  flex: 0 0 auto;
-  margin: 0;
-  border: 1px solid var(--input);
-  color: var(--primary-foreground);
-  background-color: transparent;
-  cursor: var(--cursor-interaction, default);
-  transition:
-    background-color 150ms,
-    border-color 150ms,
-    box-shadow 150ms;
-}
-
-.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
-  border-color: var(--input);
-  border-radius: var(--radius-sm);
-  corner-shape: superellipse(1.5);
-  background-color: var(--secondary);
-  box-shadow: var(--shadow-sm);
-}
-
-.form-check:not(.form-switch)
-  .form-check-input:not(:disabled):not(:checked):hover {
-  background-color: var(--card);
-}
-
-.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
-  border-color: var(--primary);
-  background-color: var(--primary);
-}
-
-.form-check:not(.form-switch)
-  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--primary-foreground);
-  content: &quot;&quot;;
-  mask: var(--checkmark-image) center / 12px 12px no-repeat;
-}
-
-.form-check-input[type=&quot;radio&quot;] {
-  width: 14px;
-  height: 14px;
-  border-radius: var(--radius-full);
-}
-
-.form-check-input[type=&quot;radio&quot;]:checked {
-  border: 2px solid var(--primary);
-  background:
-    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
-    var(--primary);
-}
-
-.form-check:not(.form-switch) .form-check-input:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-.form-check:not(.form-switch) .form-check-input:disabled {
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
-  cursor: not-allowed;
-}
-
-.form-switch .form-check-input:disabled,
-.form-switch .form-check-input:disabled + .form-check-label {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.form-check-label {
-  color: var(--foreground);
-  cursor: var(--cursor-interaction, default);
-}
-
-.form-switch .form-check-input {
-  position: relative;
-  width: 32px;
-  height: 20px;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: var(--muted);
-  box-shadow: none;
-  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.form-switch .form-check-input::before {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  box-sizing: border-box;
-  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
-  border-radius: var(--radius-full);
-  background: light-dark(var(--primary-foreground), var(--foreground));
-  box-shadow: var(--shadow-sm);
-  content: &quot;&quot;;
-  transform: translate(2px, -50%);
-  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.form-switch .form-check-input:checked {
-  background: var(--primary);
-}
-
-.form-switch .form-check-input:checked::before {
-  transform: translate(14px, -50%);
-}
-
-.form-switch .form-check-input:focus-visible {
-  box-shadow: 0 0 0 2px var(--ring);
-}
-
-.form-range {
-  appearance: none;
-  display: block;
-  width: 100%;
-  height: 28px;
-  flex: 1;
-  margin: 0;
-  padding: 0;
-  outline: none;
-  border: 0;
-  accent-color: var(--primary);
-  background: linear-gradient(
-      color-mix(in srgb, var(--foreground) 7%, transparent),
-      color-mix(in srgb, var(--foreground) 7%, transparent)
-    )
-    center / 100% 2px no-repeat;
-}
-
-.form-range::-webkit-slider-runnable-track {
-  height: 28px;
-  background: transparent;
-}
-
-.form-range::-webkit-slider-thumb {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  margin-top: 4px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  background: light-dark(var(--primary-foreground), var(--foreground));
-}
-
-.form-range:focus-visible::-webkit-slider-thumb {
-  border-color: var(--ring);
-  box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.form-range::-moz-range-track {
-  height: 28px;
-  background: transparent;
-}
-
-.form-range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  background: light-dark(var(--primary-foreground), var(--foreground));
-}
-
-.form-range:focus-visible::-moz-range-thumb {
-  border-color: var(--ring);
-  box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.form-range:disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
-}
-
-.btn:not(.btn-primary, .viz-tile):is(
-    [aria-pressed=&quot;true&quot;],
-    [aria-selected=&quot;true&quot;],
-    .is-selected
-  ) {
-  border-color: var(--primary);
-  color: var(--primary-foreground);
-  background: var(--primary);
-}
-
-.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
-  border-color: var(--primary);
-  box-shadow: inset 0 0 0 1px var(--primary);
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-#widget &gt; svg {
-  width: 100%;
-}
-
-/* Model-authored chart rules can otherwise stretch icons after these styles load. */
-svg.lucide {
-  display: block;
-  width: 16px !important;
-  height: 16px !important;
-  flex: none;
-  margin: 0 !important;
-  stroke-width: 1.6;
-}
-
-.text-warning,
-.text-destructive {
-  color: var(--destructive);
-}
-
-html&gt;body{padding:0}&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;div id=&quot;mp-source-test-v3&quot;&gt;
-  &lt;style&gt;
-    #mp-source-test-v3 {
-      color: var(--foreground);
-      width: 100%;
-    }
-    #mp-source-test-v3 .v3-head,
-    #mp-source-test-v3 .v3-meta,
-    #mp-source-test-v3 .v3-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    #mp-source-test-v3 .v3-meta {
-      justify-content: flex-start;
-      margin: 8px 0 16px;
-    }
-    #mp-source-test-v3 .v3-section {
-      margin-top: 18px;
-    }
-    #mp-source-test-v3 .v3-note {
-      color: var(--muted-foreground);
-      margin: 7px 0;
-    }
-    #mp-source-test-v3 .v3-objective {
-      border-left: 4px solid var(--primary);
-      padding-left: 12px;
-      margin-bottom: 16px;
-    }
-    #mp-source-test-v3 .v3-terms,
-    #mp-source-test-v3 .v3-voices,
-    #mp-source-test-v3 .v3-fields,
-    #mp-source-test-v3 .v3-family-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    #mp-source-test-v3 .v3-term,
-    #mp-source-test-v3 .v3-voice,
-    #mp-source-test-v3 .v3-family {
-      border-left: 3px solid var(--border);
-      padding: 8px 10px;
-    }
-    #mp-source-test-v3 .v3-term strong,
-    #mp-source-test-v3 .v3-voice strong,
-    #mp-source-test-v3 .v3-family strong {
-      display: block;
-      font-weight: 500;
-    }
-    #mp-source-test-v3 .v3-voice.proceed,
-    #mp-source-test-v3 .v3-lane.proceed .v3-family {
-      border-left-color: var(--viz-series-1);
-    }
-    #mp-source-test-v3 .v3-voice.stop,
-    #mp-source-test-v3 .v3-lane.stop .v3-family {
-      border-left-color: var(--viz-series-4);
-    }
-    #mp-source-test-v3 .v3-lineage {
-      margin: 10px 0 0;
-      padding-left: 20px;
-    }
-    #mp-source-test-v3 .v3-lineage li {
-      margin: 6px 0;
-    }
-    #mp-source-test-v3 .v3-fields label {
-      display: block;
-    }
-    #mp-source-test-v3 .v3-fields select {
-      width: 100%;
-    }
-    #mp-source-test-v3 .v3-hidden {
-      display: none;
-    }
-    #mp-source-test-v3 .v3-history-banner {
-      border-left: 4px solid var(--viz-series-3);
-      padding-left: 12px;
-      margin-bottom: 14px;
-    }
-    #mp-source-test-v3 .v3-lane {
-      margin-top: 14px;
-    }
-    #mp-source-test-v3 .v3-lane h3 {
-      margin-bottom: 8px;
-    }
-    #mp-source-test-v3 .v3-family-stack {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      margin-top: 7px;
-    }
-    #mp-source-test-v3 .v3-node {
-      padding: 4px 7px;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--family-color) 20%, var(--card));
-      transition: transform 650ms ease, opacity 300ms ease;
-    }
-    #mp-source-test-v3 .v3-lane.proceed { --family-color: var(--viz-series-1); }
-    #mp-source-test-v3 .v3-lane.stop { --family-color: var(--viz-series-4); }
-    #mp-source-test-v3 .v3-source-map.clearing .v3-node.copy {
-      transform: translateX(-12px) scale(0.82);
-    }
-    #mp-source-test-v3 .v3-source-map.settled .v3-node.copy {
-      opacity: 0;
-      transform: translateX(-24px) scale(0.2);
-    }
-    #mp-source-test-v3 .v3-after-label {
-      display: none;
-    }
-    #mp-source-test-v3 .v3-source-map.settled .v3-after-label {
-      display: inline;
-    }
-    #mp-source-test-v3 .v3-source-map.settled .v3-before-label {
-      display: none;
-    }
-    #mp-source-test-v3 .v3-result-line {
-      min-height: 22px;
-      margin-top: 8px;
-    }
-    #mp-source-test-v3 pre {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-    @media (min-width: 600px) {
-      #mp-source-test-v3 .v3-terms,
-      #mp-source-test-v3 .v3-voices,
-      #mp-source-test-v3 .v3-fields,
-      #mp-source-test-v3 .v3-family-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #mp-source-test-v3 .v3-node {
-        transition: none;
-      }
-    }
-  &lt;/style&gt;
-
-  &lt;div class=&quot;v3-head&quot;&gt;
-    &lt;h2&gt;MP Source-Family Test&lt;/h2&gt;
-    &lt;span class=&quot;viz-badge&quot; id=&quot;v3-timer&quot;&gt;Ready&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;v3-meta&quot;&gt;
-    &lt;span class=&quot;viz-badge&quot; id=&quot;v3-phase&quot;&gt;Instructions&lt;/span&gt;
-    &lt;span class=&quot;text-muted&quot;&gt;Mobile-first · five minutes&lt;/span&gt;
-  &lt;/div&gt;
-
-  &lt;section id=&quot;v3-intro&quot; aria-labelledby=&quot;v3-intro-heading&quot;&gt;
-    &lt;div class=&quot;v3-objective&quot;&gt;
-      &lt;h3 id=&quot;v3-intro-heading&quot;&gt;Your only job&lt;/h3&gt;
-      &lt;p&gt;Count agent voices and count the separate original sources behind them. Nothing about policy, authority, causation, or what should have happened is being tested.&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;v3-terms&quot;&gt;
-      &lt;div class=&quot;v3-term&quot;&gt;&lt;strong&gt;Reviewer voice&lt;/strong&gt;One agent’s answer. Count every agent separately.&lt;/div&gt;
-      &lt;div class=&quot;v3-term&quot;&gt;&lt;strong&gt;Original source family&lt;/strong&gt;One starting source plus every copy or summary made from it. Count the whole family once.&lt;/div&gt;
-      &lt;div class=&quot;v3-term&quot;&gt;&lt;strong&gt;Supporting family&lt;/strong&gt;An original source family that says proceed.&lt;/div&gt;
-      &lt;div class=&quot;v3-term&quot;&gt;&lt;strong&gt;Contradicting family&lt;/strong&gt;An original source family that says stop.&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;card v3-section&quot;&gt;
-      Practice only: two people recommend a book, but both quote the same newspaper review.&lt;br&gt;
-      &lt;strong&gt;Two voices · one original source family.&lt;/strong&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;v3-actions v3-section&quot;&gt;
-      &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; id=&quot;v3-start&quot;&gt;Start five-minute test&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/section&gt;
-
-  &lt;div id=&quot;v3-test&quot; class=&quot;v3-hidden&quot;&gt;
-    &lt;section class=&quot;v3-section&quot; aria-labelledby=&quot;v3-feed-heading&quot;&gt;
-      &lt;h3 id=&quot;v3-feed-heading&quot;&gt;DD-041 · Regular evidence feed&lt;/h3&gt;
-      &lt;p class=&quot;v3-note&quot;&gt;Read the six agent answers and four source-lineage records.&lt;/p&gt;
-      &lt;div class=&quot;v3-voices&quot;&gt;
-        &lt;div class=&quot;v3-voice proceed&quot;&gt;&lt;strong&gt;A · PROCEED&lt;/strong&gt;Used &lt;code&gt;weather-17&lt;/code&gt;&lt;/div&gt;
-        &lt;div class=&quot;v3-voice proceed&quot;&gt;&lt;strong&gt;B · PROCEED&lt;/strong&gt;Used &lt;code&gt;weather-cache&lt;/code&gt;&lt;/div&gt;
-        &lt;div class=&quot;v3-voice proceed&quot;&gt;&lt;strong&gt;C · PROCEED&lt;/strong&gt;Used &lt;code&gt;route-clearance-9&lt;/code&gt;&lt;/div&gt;
-        &lt;div class=&quot;v3-voice stop&quot;&gt;&lt;strong&gt;D · STOP&lt;/strong&gt;Used &lt;code&gt;maintenance-alert-4&lt;/code&gt;&lt;/div&gt;
-        &lt;div class=&quot;v3-voice stop&quot;&gt;&lt;strong&gt;E · STOP&lt;/strong&gt;Used &lt;code&gt;maintenance-summary&lt;/code&gt;&lt;/div&gt;
-        &lt;div class=&quot;v3-voice proceed&quot;&gt;&lt;strong&gt;F · PROCEED&lt;/strong&gt;Used &lt;code&gt;weather-brief&lt;/code&gt;&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;ul class=&quot;v3-lineage&quot;&gt;
-        &lt;li&gt;&lt;code&gt;weather-cache&lt;/code&gt; was copied from &lt;code&gt;weather-17&lt;/code&gt;.&lt;/li&gt;
-        &lt;li&gt;&lt;code&gt;weather-brief&lt;/code&gt; was summarized from &lt;code&gt;weather-cache&lt;/code&gt;.&lt;/li&gt;
-        &lt;li&gt;&lt;code&gt;maintenance-summary&lt;/code&gt; was derived from &lt;code&gt;maintenance-alert-4&lt;/code&gt;.&lt;/li&gt;
-        &lt;li&gt;&lt;code&gt;route-clearance-9&lt;/code&gt; has no recorded parent.&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/section&gt;
-
-    &lt;section class=&quot;v3-section&quot; aria-labelledby=&quot;v3-first-heading&quot;&gt;
-      &lt;h3 id=&quot;v3-first-heading&quot;&gt;Your counts from the regular feed&lt;/h3&gt;
-      &lt;div id=&quot;v3-initial-fields&quot;&gt;&lt;/div&gt;
-      &lt;div class=&quot;v3-actions v3-section&quot;&gt;
-        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; id=&quot;v3-lock&quot;&gt;Lock counts and show MP&lt;/button&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;v3-result-line text-destructive&quot; id=&quot;v3-initial-error&quot; role=&quot;alert&quot;&gt;&lt;/div&gt;
-    &lt;/section&gt;
-
-    &lt;section class=&quot;v3-section v3-hidden&quot; id=&quot;v3-mp-section&quot; aria-labelledby=&quot;v3-mp-heading&quot;&gt;
-      &lt;div class=&quot;v3-history-banner&quot;&gt;
-        &lt;h3 id=&quot;v3-mp-heading&quot;&gt;Same evidence, regrouped&lt;/h3&gt;
-        &lt;p&gt;Nothing was rerun and history did not change. MP only groups copies and summaries with their original source.&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;v3-source-map&quot; id=&quot;v3-source-map&quot; role=&quot;img&quot; aria-label=&quot;Evidence regrouped by proceed and stop source families&quot;&gt;
-        &lt;div class=&quot;v3-lane proceed&quot;&gt;
-          &lt;h3&gt;PROCEED source families&lt;/h3&gt;
-          &lt;div class=&quot;v3-family-grid&quot;&gt;
-            &lt;div class=&quot;v3-family&quot;&gt;
-              &lt;strong&gt;&lt;code&gt;weather-17&lt;/code&gt; family&lt;/strong&gt;
-              &lt;span class=&quot;v3-before-label&quot;&gt;Original and derived records&lt;/span&gt;
-              &lt;span class=&quot;v3-after-label&quot;&gt;Voices A, B and F share this family&lt;/span&gt;
-              &lt;div class=&quot;v3-family-stack&quot;&gt;
-                &lt;span class=&quot;v3-node root&quot;&gt;A · original&lt;/span&gt;
-                &lt;span class=&quot;v3-node copy&quot;&gt;B · copy&lt;/span&gt;
-                &lt;span class=&quot;v3-node copy&quot;&gt;F · summary&lt;/span&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class=&quot;v3-family&quot;&gt;
-              &lt;strong&gt;&lt;code&gt;route-clearance-9&lt;/code&gt; family&lt;/strong&gt;
-              &lt;span&gt;Voice C&lt;/span&gt;
-              &lt;div class=&quot;v3-family-stack&quot;&gt;&lt;span class=&quot;v3-node root&quot;&gt;C · original&lt;/span&gt;&lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;v3-lane stop&quot;&gt;
-          &lt;h3&gt;STOP source families&lt;/h3&gt;
-          &lt;div class=&quot;v3-family-grid&quot;&gt;
-            &lt;div class=&quot;v3-family&quot;&gt;
-              &lt;strong&gt;&lt;code&gt;maintenance-alert-4&lt;/code&gt; family&lt;/strong&gt;
-              &lt;span class=&quot;v3-before-label&quot;&gt;Original and derived record&lt;/span&gt;
-              &lt;span class=&quot;v3-after-label&quot;&gt;Voices D and E share this family&lt;/span&gt;
-              &lt;div class=&quot;v3-family-stack&quot;&gt;
-                &lt;span class=&quot;v3-node root&quot;&gt;D · original&lt;/span&gt;
-                &lt;span class=&quot;v3-node copy&quot;&gt;E · summary&lt;/span&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-
-      &lt;div class=&quot;v3-section&quot;&gt;
-        &lt;h3&gt;Your counts after MP&lt;/h3&gt;
-        &lt;p class=&quot;v3-note&quot;&gt;Answer the exact same questions. Change an answer only if this grouping clarified it.&lt;/p&gt;
-        &lt;div id=&quot;v3-final-fields&quot;&gt;&lt;/div&gt;
-        &lt;div class=&quot;v3-actions v3-section&quot;&gt;
-          &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; id=&quot;v3-submit&quot;&gt;Submit sealed response&lt;/button&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;v3-result-line text-destructive&quot; id=&quot;v3-final-error&quot; role=&quot;alert&quot;&gt;&lt;/div&gt;
-        &lt;pre id=&quot;v3-output&quot; hidden&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
-      &lt;/div&gt;
-    &lt;/section&gt;
-  &lt;/div&gt;
-
-  &lt;script&gt;
-    (() =&gt; {
-      const test = document.getElementById(&#x27;v3-test&#x27;);
-      const timer = document.getElementById(&#x27;v3-timer&#x27;);
-      const phase = document.getElementById(&#x27;v3-phase&#x27;);
-      const mpSection = document.getElementById(&#x27;v3-mp-section&#x27;);
-      const sourceMap = document.getElementById(&#x27;v3-source-map&#x27;);
-      const sessionId = &#x27;H-&#x27; + Math.random().toString(36).slice(2, 8).toUpperCase();
-      let startedAt = null;
-      let timerHandle = null;
-      let initialElapsed = null;
-      let initialAnswers = null;
-
-      const questions = [
-        {key:&#x27;proceed_voice_count&#x27;, label:&#x27;How many reviewer voices said PROCEED?&#x27;, options:[&#x27;0&#x27;,&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;5&#x27;,&#x27;6&#x27;,&#x27;indeterminate&#x27;]},
-        {key:&#x27;stop_voice_count&#x27;, label:&#x27;How many reviewer voices said STOP?&#x27;, options:[&#x27;0&#x27;,&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;5&#x27;,&#x27;6&#x27;,&#x27;indeterminate&#x27;]},
-        {key:&#x27;total_source_family_count&#x27;, label:&#x27;How many original source families existed altogether?&#x27;, options:[&#x27;0&#x27;,&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;5&#x27;,&#x27;6&#x27;,&#x27;indeterminate&#x27;]},
-        {key:&#x27;supporting_source_family_count&#x27;, label:&#x27;How many original source families supported PROCEED?&#x27;, options:[&#x27;0&#x27;,&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;5&#x27;,&#x27;6&#x27;,&#x27;indeterminate&#x27;]},
-        {key:&#x27;contradicting_source_family_count&#x27;, label:&#x27;How many original source families supported STOP?&#x27;, options:[&#x27;0&#x27;,&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;5&#x27;,&#x27;6&#x27;,&#x27;indeterminate&#x27;]},
-        {key:&#x27;shared_family_detected&#x27;, label:&#x27;Did two or more reviewer voices rely on the same original source family?&#x27;, options:[&#x27;yes&#x27;,&#x27;no&#x27;,&#x27;indeterminate&#x27;]},
-        {key:&#x27;confidence_percent&#x27;, label:&#x27;How confident are you?&#x27;, options:[&#x27;25&#x27;,&#x27;50&#x27;,&#x27;75&#x27;,&#x27;95&#x27;]}
-      ];
-      const labels = {yes:&#x27;Yes&#x27;, no:&#x27;No&#x27;, indeterminate:&#x27;Cannot determine&#x27;};
-
-      const renderQuestions = (containerId, prefix) =&gt; {
-        const fields = document.createElement(&#x27;div&#x27;);
-        fields.className = &#x27;v3-fields&#x27;;
-        for (const question of questions) {
-          const label = document.createElement(&#x27;label&#x27;);
-          label.className = &#x27;form-label&#x27;;
-          label.htmlFor = prefix + &#x27;-&#x27; + question.key;
-          label.append(document.createTextNode(question.label));
-          const select = document.createElement(&#x27;select&#x27;);
-          select.className = &#x27;form-select&#x27;;
-          select.id = prefix + &#x27;-&#x27; + question.key;
-          const placeholder = document.createElement(&#x27;option&#x27;);
-          placeholder.value = &#x27;&#x27;;
-          placeholder.textContent = &#x27;Choose…&#x27;;
-          select.append(placeholder);
-          for (const optionValue of question.options) {
-            const option = document.createElement(&#x27;option&#x27;);
-            option.value = optionValue;
-            option.textContent = labels[optionValue] || (question.key === &#x27;confidence_percent&#x27; ? optionValue + &#x27;%&#x27; : optionValue);
-            select.append(option);
-          }
-          label.append(select);
-          fields.append(label);
-        }
-        document.getElementById(containerId).append(fields);
-      };
-      renderQuestions(&#x27;v3-initial-fields&#x27;, &#x27;initial&#x27;);
-      renderQuestions(&#x27;v3-final-fields&#x27;, &#x27;final&#x27;);
-
-      const elapsed = () =&gt; Math.round((Date.now() - startedAt) / 1000);
-      const tick = () =&gt; {
-        const remaining = Math.max(0, 300 - elapsed());
-        timer.textContent = String(Math.floor(remaining / 60)).padStart(2, &#x27;0&#x27;) + &#x27;:&#x27; + String(remaining % 60).padStart(2, &#x27;0&#x27;);
-        if (remaining === 0) timer.classList.add(&#x27;text-destructive&#x27;);
-      };
-      const collect = prefix =&gt; {
-        const answer = {};
-        for (const question of questions) {
-          const current = document.getElementById(prefix + &#x27;-&#x27; + question.key).value;
-          if (!current) return null;
-          answer[question.key] = question.key === &#x27;confidence_percent&#x27; ? Number(current) : current;
-        }
-        return answer;
-      };
-      const disable = prefix =&gt; {
-        for (const question of questions) {
-          document.getElementById(prefix + &#x27;-&#x27; + question.key).disabled = true;
-        }
-      };
-
-      document.getElementById(&#x27;v3-start&#x27;).addEventListener(&#x27;click&#x27;, event =&gt; {
-        startedAt = Date.now();
-        test.classList.remove(&#x27;v3-hidden&#x27;);
-        event.currentTarget.disabled = true;
-        phase.textContent = &#x27;1 · Regular feed&#x27;;
-        timer.textContent = &#x27;05:00&#x27;;
-        timerHandle = setInterval(tick, 1000);
-        document.getElementById(&#x27;v3-feed-heading&#x27;).scrollIntoView({behavior:&#x27;smooth&#x27;, block:&#x27;start&#x27;});
+  <main class="shell">
+    <header>
+      <div class="brand"><span class="mark">MP</span><span>MINORITY PROPHET</span></div>
+      <span class="badge">DEMO · NOT A TEST</span>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">SOURCE INDEPENDENCE · 90-SECOND EXPLAINER</div>
+      <h1>Six claims.<br>Three actual source families.</h1>
+      <p>Ordinary logs count what agents said. Minority Prophet preserves that count, then reconstructs where their evidence actually came from.</p>
+      <div class="not-test"><strong>You are not being graded.</strong><span>There are no questions and nothing to submit. Tap once to reveal the reconstruction.</span></div>
+    </section>
+
+    <section class="panel" aria-labelledby="ordinary-title">
+      <div class="panel-head">
+        <span class="step">01 · ORDINARY LOG VIEW</span>
+        <h2 id="ordinary-title">Who said what?</h2>
+        <p>The log viewer can count claims and actors. It does not yet group copied or summarized sources.</p>
+      </div>
+      <div class="automatic" aria-label="Automatically computed ordinary log counts">
+        <div class="metric proceed"><small>PROCEED claims</small><strong>4</strong></div>
+        <div class="metric stop"><small>STOP claims</small><strong>2</strong></div>
+        <div class="metric"><small>Total claim events</small><strong>6</strong></div>
+        <div class="metric"><small>Unique actors</small><strong>6</strong></div>
+      </div>
+      <div class="feed" id="feed">
+        <div class="event proceed" data-family="weather"><span class="actor">A</span><div><b>Reviewer A</b><code>weather-17</code></div><span class="stance">PROCEED</span><span class="source-label">Original record · weather family</span></div>
+        <div class="event proceed" data-family="weather"><span class="actor">B</span><div><b>Reviewer B</b><code>weather-cache</code></div><span class="stance">PROCEED</span><span class="source-label">Copy of weather-17 · same family</span></div>
+        <div class="event proceed" data-family="route"><span class="actor">C</span><div><b>Reviewer C</b><code>route-clearance-9</code></div><span class="stance">PROCEED</span><span class="source-label">Independent original · route family</span></div>
+        <div class="event stop" data-family="maintenance"><span class="actor">D</span><div><b>Reviewer D</b><code>maintenance-alert-4</code></div><span class="stance">STOP</span><span class="source-label">Original record · maintenance family</span></div>
+        <div class="event stop" data-family="maintenance"><span class="actor">E</span><div><b>Reviewer E</b><code>maintenance-summary</code></div><span class="stance">STOP</span><span class="source-label">Summary of maintenance-alert-4 · same family</span></div>
+        <div class="event proceed" data-family="weather"><span class="actor">F</span><div><b>Reviewer F</b><code>weather-brief</code></div><span class="stance">PROCEED</span><span class="source-label">Summary of weather-cache · same family</span></div>
+      </div>
+      <div class="action-area"><button class="primary" id="reveal" type="button">Reveal source ancestry</button></div>
+    </section>
+
+    <section class="panel" id="reconstruction" aria-labelledby="mp-title" aria-live="polite">
+      <div class="panel-head">
+        <span class="step">02 · MINORITY PROPHET VIEW</span>
+        <h2 id="mp-title">Where did the evidence come from?</h2>
+        <p>The same six claims are now grouped by recorded ancestry.</p>
+      </div>
+      <div class="invariant"><b>Nothing was deleted or rerun.</b> All 6 claim events and all 6 actors remain visible below. Only the counting unit changed.</div>
+      <div class="count-grid" aria-label="Explicit forensic counting units">
+        <div class="count"><strong>6</strong><span>claim events</span></div>
+        <div class="count"><strong>6</strong><span>unique actors</span></div>
+        <div class="count"><strong>3</strong><span>source families</span></div>
+      </div>
+      <div class="flow-summary">
+        <div class="flow-box"><small>Ordinary count</small><strong>4 PROCEED claims</strong></div>
+        <span class="arrow">→</span>
+        <div class="flow-box"><small>Evidence-aware count</small><strong>2 supporting roots</strong></div>
+      </div>
+      <div class="families">
+        <article class="family weather"><div class="family-head"><div><b>Weather source family</b><br><span>1 original → 1 copy → 1 summary</span></div><strong>PROCEED</strong></div><div class="voices"><span class="voice">A <em>original</em></span><span class="voice">B <em>copy</em></span><span class="voice">F <em>summary</em></span></div></article>
+        <article class="family route"><div class="family-head"><div><b>Route-clearance family</b><br><span>1 independent original</span></div><strong>PROCEED</strong></div><div class="voices"><span class="voice">C <em>original</em></span></div></article>
+        <article class="family maintenance"><div class="family-head"><div><b>Maintenance source family</b><br><span>1 original → 1 summary</span></div><strong>STOP</strong></div><div class="voices"><span class="voice">D <em>original</em></span><span class="voice">E <em>summary</em></span></div></article>
+      </div>
+      <div class="meaning">
+        <h3>What MP actually added</h3>
+        <div class="comparison">
+          <article><small>Ordinary telemetry</small><strong>4 agents said PROCEED; 2 said STOP.</strong></article>
+          <article><small>Epistemic reconstruction</small><strong>Those claims came from 2 supporting roots and 1 contradictory root.</strong></article>
+        </div>
+        <p class="boundary">This does not decide what action should be authorized. Policy and authority remain separate from evidence reconstruction.</p>
+      </div>
+    </section>
+
+    <aside class="study-note"><b>About human testing:</b> this page is an explainer, not an efficacy study. Any future human baseline must use previously unseen, randomized incidents with independent participants. A trained project author is useful for usability review, not as a blinded effect estimate.</aside>
+    <footer>Minority Prophet · explicit claims, actors, roots and limitations</footer>
+  </main>
+  <script>
+    const reveal = document.getElementById('reveal');
+    const reconstruction = document.getElementById('reconstruction');
+    reveal.addEventListener('click', () => {
+      document.querySelectorAll('.event').forEach((event, index) => {
+        window.setTimeout(() => event.classList.add('mapped'), index * 70);
       });
-
-      document.getElementById(&#x27;v3-lock&#x27;).addEventListener(&#x27;click&#x27;, event =&gt; {
-        const error = document.getElementById(&#x27;v3-initial-error&#x27;);
-        initialAnswers = collect(&#x27;initial&#x27;);
-        if (!initialAnswers) {
-          error.textContent = &#x27;Answer every count before showing MP.&#x27;;
-          return;
-        }
-        error.textContent = &#x27;&#x27;;
-        initialElapsed = elapsed();
-        disable(&#x27;initial&#x27;);
-        event.currentTarget.disabled = true;
-        mpSection.classList.remove(&#x27;v3-hidden&#x27;);
-        phase.textContent = &#x27;2 · Same evidence grouped by MP&#x27;;
-        sourceMap.classList.add(&#x27;clearing&#x27;);
-        setTimeout(() =&gt; sourceMap.classList.add(&#x27;settled&#x27;), 700);
-        document.getElementById(&#x27;v3-mp-heading&#x27;).scrollIntoView({behavior:&#x27;smooth&#x27;, block:&#x27;start&#x27;});
-      });
-
-      document.getElementById(&#x27;v3-submit&#x27;).addEventListener(&#x27;click&#x27;, async event =&gt; {
-        const error = document.getElementById(&#x27;v3-final-error&#x27;);
-        const finalAnswers = collect(&#x27;final&#x27;);
-        if (!finalAnswers) {
-          error.textContent = &#x27;Answer every final count.&#x27;;
-          return;
-        }
-        error.textContent = &#x27;&#x27;;
-        const submission = {
-          schema:&#x27;mp.human-collapse-study.v0.3&#x27;, incident_id:&#x27;DD-041&#x27;, participant_id:sessionId,
-          initial_elapsed_seconds:initialElapsed, total_elapsed_seconds:elapsed(),
-          initial:initialAnswers, final:finalAnswers
-        };
-        disable(&#x27;final&#x27;);
-        event.currentTarget.disabled = true;
-        clearInterval(timerHandle);
-        phase.textContent = &#x27;Response sealed&#x27;;
-        if (window.openai &amp;&amp; window.openai.sendFollowUpMessage) {
-          await window.openai.sendFollowUpMessage({
-            title:&#x27;Submit the focused MP test&#x27;,
-            prompt:&#x27;Score this sealed v0.3 response for DD-041 against the committed ground truth. Preserve both phases and timing. Before interpreting, ask only whether the four definitions and the statement that MP did not rerun history were clear. Submission: &#x27; + JSON.stringify(submission)
-          });
-        } else {
-          const output = document.getElementById(&#x27;v3-output&#x27;);
-          output.querySelector(&#x27;code&#x27;).textContent = JSON.stringify(submission);
-          output.hidden = false;
-          phase.textContent = &#x27;Copy sealed response into Codex&#x27;;
-        }
-      });
-    })();
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-(() =&gt; {
-  if (window.FloatingUIDOM == null) {
-    return;
-  }
-  const { autoUpdate, computePosition, flip, offset, shift, size } =
-    window.FloatingUIDOM;
-  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
-  const tooltipId = `codex-visualization-tooltip-${
-    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
-  }`;
-  const tooltipGap = 5;
-  const hoverDelay = 700;
-  const skipDelay = 300;
-  let activeTrigger = null;
-  let pendingTrigger = null;
-  let tooltip = null;
-  let openTimeout = null;
-  let autoUpdateCleanup = null;
-  let positionRequest = 0;
-  let skipDelayUntil = 0;
-
-  const getTrigger = (target) =&gt;
-    target?.nodeType === Node.ELEMENT_NODE
-      ? target.closest(&quot;[data-tooltip]&quot;)
-      : null;
-  const containsTarget = (trigger, target) =&gt;
-    target?.nodeType != null &amp;&amp; trigger.contains(target);
-  const getContent = (trigger) =&gt;
-    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
-  const getPlacement = (trigger) =&gt; {
-    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
-    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
-  };
-  const getTooltip = () =&gt; {
-    if (tooltip == null) {
-      tooltip = document.createElement(&quot;div&quot;);
-      tooltip.id = tooltipId;
-      tooltip.className = &quot;tooltip&quot;;
-      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
-    }
-    return tooltip;
-  };
-  const setDescribedBy = (trigger, described) =&gt; {
-    const ids = new Set(
-      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
-        .split(/\s+/)
-        .filter(Boolean),
-    );
-    if (described) {
-      ids.add(tooltipId);
-    } else {
-      ids.delete(tooltipId);
-    }
-    if (ids.size === 0) {
-      trigger.removeAttribute(&quot;aria-describedby&quot;);
-    } else {
-      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
-    }
-  };
-  const clearOpenTimeout = () =&gt; {
-    if (openTimeout != null) {
-      window.clearTimeout(openTimeout);
-      openTimeout = null;
-    }
-    pendingTrigger = null;
-  };
-  const closeTooltip = (activateSkipDelay = true) =&gt; {
-    clearOpenTimeout();
-    positionRequest += 1;
-    autoUpdateCleanup?.();
-    autoUpdateCleanup = null;
-    if (activeTrigger == null) {
-      return;
-    }
-    setDescribedBy(activeTrigger, false);
-    activeTrigger = null;
-    tooltip?.remove();
-    if (activateSkipDelay) {
-      skipDelayUntil = Date.now() + skipDelay;
-    }
-  };
-  const updatePosition = (trigger, floating) =&gt; {
-    const request = ++positionRequest;
-    void computePosition(trigger, floating, {
-      middleware: [
-        offset(tooltipGap),
-        flip({ padding: tooltipGap }),
-        shift({ padding: tooltipGap }),
-        size({
-          padding: tooltipGap,
-          apply({ availableHeight, availableWidth, elements }) {
-            elements.floating.style.setProperty(
-              &quot;--tooltip-available-width&quot;,
-              `${Math.max(0, availableWidth)}px`,
-            );
-            elements.floating.style.setProperty(
-              &quot;--tooltip-available-height&quot;,
-              `${Math.max(0, availableHeight)}px`,
-            );
-          },
-        }),
-      ],
-      placement: getPlacement(trigger),
-      strategy: &quot;fixed&quot;,
-    })
-      .then(({ x, y }) =&gt; {
-        if (activeTrigger !== trigger || request !== positionRequest) {
-          return;
-        }
-        const scale = window.devicePixelRatio || 1;
-        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
-        floating.style.visibility = &quot;visible&quot;;
-      })
-      .catch(() =&gt; {
-        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
-          closeTooltip(false);
-        }
-      });
-  };
-  const openTooltip = (trigger) =&gt; {
-    const content = getContent(trigger);
-    if (!trigger.isConnected || content.length === 0) {
-      return;
-    }
-    clearOpenTimeout();
-    if (activeTrigger === trigger) {
-      return;
-    }
-    closeTooltip();
-    const floating = getTooltip();
-    floating.textContent = content;
-    floating.style.visibility = &quot;hidden&quot;;
-    floating.style.transform = &quot;translate(0, 0)&quot;;
-    document.body.appendChild(floating);
-    activeTrigger = trigger;
-    setDescribedBy(trigger, true);
-    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
-      updatePosition(trigger, floating);
+      window.setTimeout(() => {
+        reconstruction.classList.add('visible');
+        reveal.textContent = 'Source ancestry revealed';
+        reveal.disabled = true;
+        reconstruction.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }, 520);
     });
-  };
-  const requestOpen = (trigger, immediate = false) =&gt; {
-    if (
-      getContent(trigger).length === 0 ||
-      activeTrigger === trigger ||
-      pendingTrigger === trigger
-    ) {
-      return;
-    }
-    clearOpenTimeout();
-    pendingTrigger = trigger;
-    const delay =
-      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
-        ? 0
-        : hoverDelay;
-    if (delay === 0) {
-      openTooltip(trigger);
-      return;
-    }
-    openTimeout = window.setTimeout(() =&gt; {
-      openTimeout = null;
-      pendingTrigger = null;
-      openTooltip(trigger);
-    }, delay);
-  };
-  const handlePointerOpen = (event) =&gt; {
-    if (event.pointerType === &quot;touch&quot;) {
-      return;
-    }
-    const trigger = getTrigger(event.target);
-    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
-      return;
-    }
-    requestOpen(trigger);
-  };
-  const handleLeave = (event) =&gt; {
-    const trigger = getTrigger(event.target);
-    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
-      return;
-    }
-    if (activeTrigger === trigger || pendingTrigger === trigger) {
-      closeTooltip();
-    }
-  };
-  const handleFocusIn = (event) =&gt; {
-    const trigger = getTrigger(event.target);
-    if (trigger?.matches(&quot;:focus-visible&quot;)) {
-      requestOpen(trigger, true);
-    }
-  };
-  const handleKeyDown = (event) =&gt; {
-    if (event.key === &quot;Escape&quot;) {
-      closeTooltip();
-    }
-  };
-  const handleContextMenu = (event) =&gt; {
-    const trigger = getTrigger(event.target);
-    if (activeTrigger === trigger || pendingTrigger === trigger) {
-      closeTooltip();
-    }
-  };
-  const destroy = () =&gt; {
-    closeTooltip(false);
-    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
-    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
-    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
-    document.removeEventListener(&quot;focusout&quot;, handleLeave);
-    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
-    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
-    tooltip = null;
-  };
-
-  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
-  document.addEventListener(&quot;pointerout&quot;, handleLeave);
-  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
-  document.addEventListener(&quot;focusout&quot;, handleLeave);
-  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
-  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
-  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
-})();
-&lt;/script&gt;
-&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-(() =&gt; {
-  const initialize = () =&gt; {
-    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
-  };
-  if (globalThis.lucide != null) {
-    initialize();
-    return;
-  }
-  document
-    .getElementById(&quot;codex-visualization-lucide&quot;)
-    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
-})();
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-"></iframe>
+  </script>
 </body>
 </html>

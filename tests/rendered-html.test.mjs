@@ -262,14 +262,17 @@ test("server-renders a vendor-neutral developer integration path", async () => {
   assert.match(html, /never authenticates an actor/);
 });
 
-test("publishes the focused mobile source-family test without answer leakage", async () => {
+test("publishes a source-family explainer without testing the viewer", async () => {
   const html = await readFile(new URL("../public/source-family-test.html", import.meta.url), "utf8");
-  assert.match(html, /MP Source-Family Test/);
-  assert.match(html, /Mobile-first · five minutes/);
-  assert.match(html, /Nothing was rerun and history did not change/);
-  assert.match(html, /questions_asked_identically_before_and_after|exact same questions/i);
-  assert.doesNotMatch(html, /supporting_source_family_count[^<]{0,80}["']2["']/i);
-  assert.doesNotMatch(html, /contradicting_source_family_count[^<]{0,80}["']1["']/i);
+  assert.match(html, /DEMO · NOT A TEST/);
+  assert.match(html, /You are not being graded/);
+  assert.match(html, /Nothing was deleted or rerun/);
+  assert.match(html, /claim events/);
+  assert.match(html, /unique actors/);
+  assert.match(html, /source families/);
+  assert.match(html, /2 supporting roots/);
+  assert.match(html, /1 contradictory root/);
+  assert.doesNotMatch(html, /<select|Submit sealed response/);
 });
 
 test("server-renders the complete same-model epistemic lift study", async () => {
