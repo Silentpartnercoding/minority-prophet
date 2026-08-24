@@ -16,6 +16,7 @@ const records = [
   { tag: "METHOD TEST", title: "Capability comparison", copy: "Model reasoning, tool use, voting, and a deterministic evidence rule meet the same bounded packet.", href: "/experiments/capability-tournament", link: "Compare the methods" },
   { tag: "KNOWLEDGE LEDGER", title: "Keep the doubt", copy: "Receipts carry evidence roots, coverage, uncertainty, flip budget, and the conditions that would reverse a conclusion.", href: `${repository}/tree/main/research/knowledge-ledger`, link: "Explore the ledger" },
   { tag: "LINEAGE", title: "Where inference breaks", copy: "The lineage series shows what can be reconstructed—and what disappears when identity and provenance are missing.", href: `${repository}/tree/main/experiments/lir1`, link: "Read the lineage series" },
+  { tag: "HUMAN STUDY · SETUP", title: "Decision-relative independence", copy: "A local-only participant workspace prepares authored cases, independent adjudication, and blinded proximal-root review without starting the confirmatory study.", href: "/studies/dri1b", link: "Open the DRI-1B workspace" },
 ];
 
 export default function ResearchPage() {

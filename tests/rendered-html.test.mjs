@@ -244,6 +244,25 @@ test("server-renders the public research map with positive and adverse evidence 
   assert.match(html, /Complexity without gain/);
   assert.match(html, /Read the scientific claim/);
   assert.match(html, /EVIDENCE-ALIGNMENT\.md/);
+  assert.match(html, /Open the DRI-1B workspace/);
+});
+
+test("server-renders the local-only DRI-1B participant workspace without claiming execution", async () => {
+  const response = await render("/studies/dri1b");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /DRI-1B Human Study Workspace — Minority Prophet/);
+  assert.match(html, /Where does shared/);
+  assert.match(html, /failure really end/);
+  assert.match(html, /Frozen protocol only/);
+  assert.match(html, /No confirmatory collection authorized/);
+  assert.match(html, /No study data is uploaded/);
+  assert.match(html, /Development setup only/);
+  assert.match(html, /Case author/);
+  assert.match(html, /Adjudicator/);
+  assert.match(html, /Blinded reviewer/);
+  assert.match(html, /Send a role/);
+  assert.doesNotMatch(html, /study complete|confirmed result/i);
 });
 
 test("server-renders a vendor-neutral developer integration path", async () => {
