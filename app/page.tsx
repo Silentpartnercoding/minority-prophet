@@ -54,6 +54,34 @@ export default function Home() {
       <div className="demo-boundary"><span><b>The point:</b> five agreeing agents can still carry one piece of evidence. Lineage preserves the dissent without pretending either answer is proven.</span><a href="/research/mp01-canonical-demo.json">Inspect the result →</a></div>
     </section>
 
+    <section className="source-family-home" id="source-families">
+      <div className="source-family-heading">
+        <p className="section-index">01B / SOURCE-FAMILY RECONSTRUCTION</p>
+        <div><h2>Six claims.<br /><em>Three actual sources.</em></h2><p>The original human explainer asked whether people could distinguish the number of voices from the number of underlying evidence families.</p></div>
+        <a href="/source-family-test.html">Open the 90-second explainer <span>→</span></a>
+      </div>
+      <div className="source-family-graphic" aria-label="Six agent claims collapse into three source families">
+        <div className="source-family-claims">
+          <header><span>ORDINARY LOG VIEW</span><strong>6 agent claims</strong></header>
+          <article className="weather"><b>A</b><p>weather-17 <small>original</small></p><span>PROCEED</span></article>
+          <article className="weather"><b>B</b><p>weather-cache <small>copy of A</small></p><span>PROCEED</span></article>
+          <article className="route"><b>C</b><p>route-clearance-9 <small>original</small></p><span>PROCEED</span></article>
+          <article className="maintenance"><b>D</b><p>maintenance-alert-4 <small>original</small></p><span>STOP</span></article>
+          <article className="maintenance"><b>E</b><p>maintenance-summary <small>summary of D</small></p><span>STOP</span></article>
+          <article className="weather"><b>F</b><p>weather-brief <small>summary of B</small></p><span>PROCEED</span></article>
+        </div>
+        <div className="source-family-collapse"><span>TRACE<br />ANCESTRY</span><b>→</b><small>Nothing deleted.<br />Counting unit changed.</small></div>
+        <div className="source-family-roots">
+          <header><span>MINORITY PROPHET VIEW</span><strong>3 source families</strong></header>
+          <article className="weather"><div><b>Weather source</b><small>1 original → 1 copy → 1 summary</small></div><p><i>A</i><i>B</i><i>F</i></p><span>PROCEED</span></article>
+          <article className="route"><div><b>Route-clearance source</b><small>1 independent original</small></div><p><i>C</i></p><span>PROCEED</span></article>
+          <article className="maintenance"><div><b>Maintenance source</b><small>1 original → 1 summary</small></div><p><i>D</i><i>E</i></p><span>STOP</span></article>
+          <footer><b>4 : 2</b><span>agent vote</span><em>→</em><b>2 : 1</b><span>source-family count</span></footer>
+        </div>
+      </div>
+      <p className="source-family-boundary"><b>What it shows:</b> agreement can shrink when copies are grouped by ancestry. It preserves the minority record; it does not automatically make the minority correct or authorize an action.</p>
+    </section>
+
     <section className="product-loop" id="method">
       <p className="section-index">02 / THE LOOP</p>
       <div className="loop-heading"><h2>Detect. Trace.<br /><em>Challenge. Verify.</em></h2><p>Minority Prophet turns provenance into an inspectable decision process. The assessment can lower confidence, preserve dissent, request evidence, or route the decision onward. It never grants authority.</p></div>

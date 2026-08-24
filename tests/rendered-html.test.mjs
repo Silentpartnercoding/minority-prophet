@@ -141,6 +141,15 @@ test("server-renders a failure-first landing page with the core fixture and sepa
   assert.match(html, /disappears/);
   assert.match(html, /Preserve the minority/);
   assert.match(html, /without pretending either answer is proven/);
+  assert.match(html, /SOURCE-FAMILY RECONSTRUCTION/);
+  assert.match(html, /Six claims/);
+  assert.match(html, /Three actual sources/);
+  assert.match(html, /6 agent claims/);
+  assert.match(html, /3 source families/);
+  assert.match(html, /weather-cache/);
+  assert.match(html, /maintenance-summary/);
+  assert.match(html, /Open the 90-second explainer/);
+  assert.match(html, /does not automatically make the minority correct/);
   assert.match(html, /Detect\. Trace/);
   assert.match(html, /Challenge\. Verify/);
   assert.match(html, /03 \/ EVIDENCE/);
