@@ -58,7 +58,7 @@ export default function Home() {
       <div className="source-family-heading">
         <p className="section-index">01B / SOURCE-FAMILY RECONSTRUCTION</p>
         <div><h2>Six claims.<br /><em>Three actual sources.</em></h2><p>The original human explainer asked whether people could distinguish the number of voices from the number of underlying evidence families.</p></div>
-        <a href="/source-family-test.html">Open the 90-second explainer <span>→</span></a>
+        <a href="/source-family-test">Open the 90-second explainer <span>→</span></a>
       </div>
       <div className="source-family-graphic" aria-label="Six agent claims collapse into three source families">
         <div className="source-family-claims">

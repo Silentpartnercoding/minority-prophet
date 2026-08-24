@@ -271,17 +271,21 @@ test("server-renders a vendor-neutral developer integration path", async () => {
   assert.match(html, /never authenticates an actor/);
 });
 
-test("publishes a source-family explainer without testing the viewer", async () => {
-  const html = await readFile(new URL("../public/source-family-test.html", import.meta.url), "utf8");
+test("server-renders the source-family explainer in the Minority Prophet site system", async () => {
+  const response = await render("/source-family-test");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Source-Family Explainer — Minority Prophet/);
+  assert.match(html, /MINORITY PROPHET/);
+  assert.match(html, /SOURCE INDEPENDENCE · 90-SECOND EXPLAINER/);
   assert.match(html, /DEMO · NOT A TEST/);
   assert.match(html, /You are not being graded/);
+  assert.match(html, /Reveal source ancestry/);
   assert.match(html, /Nothing was deleted or rerun/);
-  assert.match(html, /claim events/);
-  assert.match(html, /unique actors/);
-  assert.match(html, /source families/);
-  assert.match(html, /2 supporting roots/);
-  assert.match(html, /1 contradictory root/);
-  assert.doesNotMatch(html, /<select|Submit sealed response/);
+  assert.match(html, /Reconstruction is not/);
+  assert.match(html, /authorization/);
+  assert.match(html, /Evidence before consensus/);
+  assert.doesNotMatch(html, /Submit sealed response|<select/);
 });
 
 test("server-renders the complete same-model epistemic lift study", async () => {
