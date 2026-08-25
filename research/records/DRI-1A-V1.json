@@ -1,0 +1,23 @@
+{
+  "schema": "minority-prophet.research-record.v1",
+  "id": "DRI-1A-V1",
+  "stage": "candidate",
+  "authorityEffect": "none",
+  "origin": {
+    "mode": "repository-native",
+    "controlRelationship": "same-control-domain"
+  },
+  "protocol": {
+    "path": "experiments/dri1/PREREGISTRATION.md",
+    "sha256": "6f47faa5aaa3d856e7d9e990b40b086288a9d05507a2b7ec053f85ef720248ce",
+    "commit": "59c83ff948ddfccf279d8b07c16caba63ae1ddf6"
+  },
+  "result": null,
+  "manifest": null,
+  "verdict": null,
+  "artifacts": [
+    "results/dri1a-v1/README.md",
+    "results/dri1a-v1/result.json"
+  ],
+  "independenceClaims": []
+}

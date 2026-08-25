@@ -230,7 +230,49 @@ def test_rejects_new_result_directory_without_record(tmp_path):
     _write(root / "results/unregistered-v1/result.json", "{}\n")
     head = _commit(root, "add unregistered result")
     problems = check(root, base, head)
-    assert any("lacks a canonical or imported research record" in problem for problem in problems)
+    assert any(
+        "lacks a candidate, canonical, or imported research record" in problem
+        for problem in problems
+    )
+
+
+def test_candidate_record_covers_a_new_result_directory(tmp_path):
+    """An adverse candidate is bound to a record but never promoted.
+
+    Requiring a canonical record here would force a false promotion onto an
+    honest negative result, which is the failure this repository exists to
+    prevent. A candidate binding is the honest coverage.
+    """
+    root, base = _repo(tmp_path)
+    protocol_path = "experiments/CAND-1/PROTOCOL.md"
+    _write(root / protocol_path, "frozen protocol\n")
+    protocol_commit = _commit(root, "freeze candidate protocol")
+
+    _write(root / "results/cand-1-v1/result.json", "{}\n")
+    document = _record("CAND-1", stage="candidate")
+    document["protocol"] = _artifact(root, protocol_path, protocol_commit)
+    document["artifacts"] = ["results/cand-1-v1/result.json"]
+    _write(root / "research/records/CAND-1.json", json.dumps(document, indent=2) + "\n")
+    head = _commit(root, "record adverse candidate result")
+
+    problems = check(root, base, head)
+    assert not any("lacks a candidate" in problem for problem in problems), problems
+
+
+def test_exploratory_record_does_not_cover_a_new_result_directory(tmp_path):
+    """Widening to candidate must not widen to everything."""
+    root, base = _repo(tmp_path)
+    _write(root / "results/expl-1-v1/result.json", "{}\n")
+    document = _record("EXPL-1", stage="exploratory")
+    document["artifacts"] = ["results/expl-1-v1/result.json"]
+    _write(root / "research/records/EXPL-1.json", json.dumps(document, indent=2) + "\n")
+    head = _commit(root, "add exploratory result")
+
+    problems = check(root, base, head)
+    assert any(
+        "lacks a candidate, canonical, or imported research record" in problem
+        for problem in problems
+    ), problems
 
 
 def test_rejects_new_canonical_index_row_without_record(tmp_path):

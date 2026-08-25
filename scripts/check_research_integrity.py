@@ -25,6 +25,11 @@ SHA256 = re.compile(r"^[0-9a-f]{64}$")
 COMMIT = re.compile(r"^[0-9a-f]{7,40}$")
 IDENTIFIER = re.compile(r"^[A-Z0-9][A-Z0-9._/-]*$")
 STAGES = {"exploratory", "candidate", "canonical", "imported"}
+# A result directory must be bound to a record, but need not be promoted:
+# an adverse candidate is preserved as a diagnostic and is deliberately never
+# added to the canonical registry. Requiring promotion here would force a
+# false canonical record onto an honest negative result.
+COVERING_STAGES = {"candidate", "canonical", "imported"}
 VERDICTS = {"supported", "rejected", "incomplete", "invalidated"}
 CONTROL_RELATIONSHIPS = {"same-control-domain", "external-control", "unknown"}
 ASSESSMENTS = {"dependent", "partially-dependent", "unknown", "independent"}
@@ -424,12 +429,15 @@ def check(root: pathlib.Path, base: str, head: str) -> list[str]:
                 added_result_dirs.add(directory)
     for directory in sorted(added_result_dirs):
         covered = any(
-            record.get("stage") in {"canonical", "imported"}
+            record.get("stage") in COVERING_STAGES
             and any(str(artifact).startswith(directory + "/") for artifact in record.get("artifacts", []))
             for record in records.values()
         )
         if not covered:
-            problems.append(f"new result directory {directory} lacks a canonical or imported research record")
+            problems.append(
+                f"new result directory {directory} lacks a candidate, canonical, "
+                "or imported research record"
+            )
     return problems
 
 
