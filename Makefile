@@ -4,6 +4,7 @@ BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEA
 HEAD_REF ?= HEAD
 
 .PHONY: help setup paper-setup paper-pdf paper-check verify verify-python verify-integrity verify-site verify-evaluation \
+	check-doc-navigation \
 	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
 	check-research-integrity
 
@@ -17,6 +18,7 @@ help:
 	@echo "make verify-integrity BASE=origin/main HEAD_REF=HEAD"
 	@echo "make verify-site"
 	@echo "make verify-evaluation"
+	@echo "make check-doc-navigation"
 
 setup:
 	"$(BOOTSTRAP_PYTHON)" -m venv .venv
@@ -38,7 +40,10 @@ verify: verify-python verify-integrity verify-site verify-evaluation
 verify-python:
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q
 
-verify-integrity: check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity
+verify-integrity: check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity
+
+check-doc-navigation:
+	"$(PYTHON)" scripts/check_documentation_navigation.py
 
 check-public-boundary:
 	"$(PYTHON)" scripts/check_public_boundary.py --base "$(BASE)" --head "$(HEAD_REF)"

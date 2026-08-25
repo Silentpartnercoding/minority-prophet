@@ -2,180 +2,111 @@
 
 **Count independent evidence, not repeated claims.**
 
-> **Research status:** EXP001–EXP002 are canonical derived records; EXP003R–EXP006R and EXP008R are canonical archived-implementation replays; EXP007R is canonically incomplete; EXP007A is the canonical synthetic adversary completion. None establishes real-world provenance recovery. See the registry and evidence-alignment ledger.
+![Minority Prophet: truth is not popularity](public/og.png)
 
-Minority Prophet asks whether grounded evidence can survive an overwhelming
-copied majority.
+Five agents repeating one source are still one source. Minority Prophet is a
+research project, benchmark, and deterministic evidence-structure engine for
+testing whether independently grounded minority evidence survives a copied
+majority.
 
-## What is actually established
+It does **not** decide truth, certify sources, or authorize actions. It counts
+recorded evidence roots, preserves uncertainty, and exposes where the answer
+depends on missing or unreliable lineage.
 
-The repository is large. The established claims are not, and separating the two
-is the point of this section. Full detail: [`formal/CLAIM-SCOPE.md`](formal/CLAIM-SCOPE.md),
-statuses in [`formal/THEOREM-LEDGER.json`](formal/THEOREM-LEDGER.json).
+## Start here
 
-**Proved** — compiled in Lean 4.32.2 against pinned Mathlib, zero `sorry`, no
-added axioms. Checkable by anyone, no trust in us required.
+| If you want to… | Go to… |
+|---|---|
+| Understand the idea in five minutes | [Public claims](PUBLIC-CLAIMS.md) |
+| See exactly what is proved, measured, and still unknown | [Evidence status](docs/evidence/STATUS.md) |
+| Run the benchmark or engine | [Using Minority Prophet](docs/use/README.md) |
+| Inspect the research and preserved results | [Research map](docs/research/README.md) |
+| Understand the components and boundaries | [Architecture map](docs/architecture/README.md) |
+| Audit claim-to-evidence alignment | [Evidence map](docs/evidence/README.md) |
+| Contribute | [Contributor guide](docs/contributing/README.md) |
+| Find anything else | [Complete repository map](docs/repository-map.md) |
 
-- Under side-consistency, `S_a` is exactly the `a`-asserting roots.
-- Lineage may be arbitrarily wrong without moving a verdict, provided no edge
-  crosses sides, no root is created or destroyed, and assertions are unchanged.
-- Copies **whose parent edge is recorded** are free.
-- A verdict flips only if net per-side root flow reaches the margin; flow equal
-  to the margin abstains; reversal needs margin + 1.
-- With assertions fixed, `k` units of root-set change cannot move a verdict of
-  margin > `k`.
-- Conversions preserve the margin's parity, so an odd margin cannot be driven to
-  abstention by conversion alone.
+The [documentation hub](docs/README.md) explains which files are introductions,
+which are current sources of truth, and which are immutable historical records.
 
-**Measured** — one number about the world, at scale, no labelling.
+## The core invariant
 
-- Among 60.8M journal articles (2015–2024), **46.2%** record no ancestry. Each
-  becomes an evidence root. So in the copy-dominant regime this project is
-  about, over-count ≥ `u × N` — with `u` from **33%** (medicine) to **74%**
-  (arts and humanities). A floor, not an average.
+> A recorded copy must not gain a new vote.
 
-**Not established** — and not on a roadmap to being established without people.
+Photocopying one witness statement does not create more witnesses. In a copied
+majority, naive voting sees five votes against one. Root-aware aggregation sees
+one recorded source against one independent source and reports the unresolved
+structure instead of manufacturing confidence.
 
-- Whether one evidence root corresponds to one real observation in the typical
-  case. This is blocked *structurally*, not for want of effort: the over-count
-  lives only among works that record no ancestry, so the ground truth needed to
-  measure it is the very data whose absence constitutes it. See
-  [`HRI1-BLOCKER-20260816.md`](research/knowledge-ledger/experiments/KL-014/HRI1-BLOCKER-20260816.md).
-- Accordingly `flip_budget` is publishable as a count of root-set units, which
-  is what it provably is, and **not** as an operational security budget.
+This guarantee is conditional. Roots must not be freely forged, opposing claims
+must not be merged, and missing lineage must remain unknown. Root identity can
+also be [decision-relative](research/decision-relative-independence/README.md):
+separate machines may be independent for a compatibility test while sharing one
+controller for an operator-consensus question.
 
-**Not claimed at all.** That the system discovers truth, that agreement implies
-independence, or that any of this has been demonstrated outside synthetic worlds
-and public bibliographic metadata.
+## What exists today
 
-## Installable surfaces
+| Surface | What it is | Maturity |
+|---|---|---|
+| [Synthetic benchmark](benchmark/) | Copied-majority worlds and evaluation metrics | Research implementation |
+| [Aggregation methods](aggregation/) | Majority, weighted, root-aware, and experimental comparators | Mixed; see each experiment |
+| [Provenance graph](provenance/) | Evidence ancestry and root-counting primitives | Tested reference implementation |
+| [Formal model](formal/) | Lean proofs and theorem/claim scope | Compiled, narrowly scoped proofs |
+| [Research records](research/records/) | Content-bound lifecycle records for experiments | Canonical registry mechanism |
+| [Engine runtime](evaluations/multi-model-v1/) | Provider-neutral, read-only MCP/HTTP analysis service | Reference runtime |
+| [Website and dashboard](website/) | Public explanation and result views | Public interface |
 
-The repository deliberately separates research code from the deterministic
-agent runtime.
+The shortest honest status is: narrow invariants are proved; large synthetic and
+bibliographic measurements exist; real-world provenance recovery and general
+truth discovery are **not** established. See [Evidence status](docs/evidence/STATUS.md)
+and [Public claims](PUBLIC-CLAIMS.md) before quoting results.
 
-```sh
-# Python benchmark, aggregation, and provenance primitives
-python -m pip install .
-
-# Provider-neutral read-only MCP/HTTP engine
-npm --prefix evaluations/multi-model-v1 install
-MP_ENGINE_ALLOW_INSECURE_LOCAL=1 npm --prefix evaluations/multi-model-v1 exec mp-engine -- doctor
-```
-
-The engine package exposes only versioned runtime modules in its publish
-allowlist. See
-[`evaluations/multi-model-v1/RUNTIME-README.md`](evaluations/multi-model-v1/RUNTIME-README.md).
-Installation does not authorize an agent to execute protected actions.
-
-## Core invariant
-
-**A recorded copy must not gain a new vote.** In plain language: photocopying one
-witness statement does not create more witnesses.
-
-This holds only when evidence roots cannot be freely forged, claims do not cross
-between opposing roots, and the surviving root margin is large enough. See
-[`PUBLIC-CLAIMS.md`](PUBLIC-CLAIMS.md) for the shortest supported claim set.
-
-## Decision-quality boundary
-
-Decision-quality and reputation systems ask whether an agent's recorded
-behavior supports more or less future authority. Minority Prophet asks a
-different question: whether the evidence supporting a present claim is
-independently grounded or merely repeated. A behavioral score or replay bundle
-may be an evidence input; it does not become authority or an independent root
-by itself.
-
-In the wider neutral architecture, Border binds identity, delegated authority,
-declaration, policy, and evidence to one exact proposed action. Minority Prophet
-assesses the structure and strength of evidence only when deterministic policy
-cannot resolve an evidence-sensitive question. Gate separately interprets that
-assessment as proceed, block, or escalate, and the runtime enforces the exact
-effect. Evidence assessment never grants authority.
-
-Root identity may also be **decision-relative**. Three machine executions can
-be sufficient replication for a machine-specific compatibility question while
-remaining one controller for operator consensus, and ten agents can remain one
-information source. Minority Prophet now carries a proposed adapter and
-constructed falsification fixtures that make the failure domain, independence
-cut, sufficiency threshold and material sensitivity explicit. This does not
-extend the proved kernel or authorize an action. See
-[`research/decision-relative-independence/`](research/decision-relative-independence/).
-
-The repository contains the benchmark, formal model, canonical record registry,
-root-issuance reference, neutral evidence contract, tests, and dashboard.
-The component and adapter boundaries are summarized in
-[`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md).
-
-## Minority Prophet Test v0.1
-
-A synthetic world has a hidden binary truth. A small set of independent observers receives reliable evidence. A larger population copies a socially dominant but false claim. An aggregation method must recover truth while preserving uncertainty and lineage.
+## Try it
 
 ```bash
+git clone https://github.com/Silentpartnercoding/minority-prophet.git
+cd minority-prophet
+python -m pip install .
 python -m benchmark --worlds 500 --seed 7
 python -m experiments.los_inspired_v01
-python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-Example output includes truth accuracy, minority-truth recovery, Brier score, abstention rate, and average compute time for:
+For the read-only MCP/HTTP engine:
 
-- simple majority voting
-- competence-weighted voting
+```bash
+npm --prefix evaluations/multi-model-v1 install
+MP_ENGINE_ALLOW_INSECURE_LOCAL=1 \
+  npm --prefix evaluations/multi-model-v1 exec mp-engine -- doctor
+```
 
-## Repository map
+The runtime assesses evidence structure only. Installation never authorizes an
+agent to perform protected actions. Full setup, API, and verification commands
+are in [Using Minority Prophet](docs/use/README.md).
 
-- [`CONTRIBUTOR-QUICKSTART.md`](CONTRIBUTOR-QUICKSTART.md) and
-  [`CONTRIBUTING.md`](CONTRIBUTING.md) — the shortest path to choosing a lane,
-  creating a research record, and running the same checks as CI.
-- [`papers/00-CURRENT-PAPER.md`](papers/00-CURRENT-PAPER.md)
-  — stable entry point to the current evidence-aligned pre-submission paper;
-- [`papers/peer-review/`](papers/peer-review/)
-  — focused peer-review manuscript, literature audit, metadata, and submission checklist;
-  earlier versions remain preserved.
-- [`formal/PROOFS.md`](formal/PROOFS.md), [`formal/lean/`](formal/lean/) (pinned,
-  compiling Lean 4 proofs), and
-  [`verification/r1_degradation_curve.py`](verification/r1_degradation_curve.py)
-  — formal and verification tracks, not canonical experiments.
+## Research discipline
 
-- [`FOUNDATIONS.md`](FOUNDATIONS.md) — problem, philosophy, program, and mathematical framing
-- [`ROADMAP.md`](ROADMAP.md) — current public research sequence
-- [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — authorship and independent-verification credit
-- [`CANONICAL-RECORDS.md`](CANONICAL-RECORDS.md) — canonical record registry and promotion rules
-- [`EVIDENCE-ALIGNMENT.md`](EVIDENCE-ALIGNMENT.md) — claim-to-record ledger, corrections, and remaining release blockers
-- [`RESEARCH-DIRECTION.md`](RESEARCH-DIRECTION.md) — proposed dual evidence/search ledger program and absence-claim boundary
-- [`research/knowledge-ledger/`](research/knowledge-ledger/) — public research method, experiment registry, interoperability fixtures, and results
-- [`RESEARCH-HYPOTHESES.md`](RESEARCH-HYPOTHESES.md) — falsifiable hypotheses using the required template
-- [`contracts/authority-evidence-v0.1/`](contracts/authority-evidence-v0.1/) — vendor-neutral authorization/evidence draft and semantic conformance rules
-- [`benchmark/`](benchmark/) — synthetic worlds, evaluation metrics, and CLI
-- [`aggregation/`](aggregation/) — public baseline algorithms
-- [`experiments/resolved_weather_v01.py`](experiments/resolved_weather_v01.py) — Experiment 002 acquisition and scoring runner
-- [`experiments/lir1/`](experiments/lir1/), [`experiments/lir2/`](experiments/lir2/),
-  [`experiments/lir3/`](experiments/lir3/), and [`experiments/lir4/`](experiments/lir4/)
-  — lineage-inference boundary track;
-  LIR-3 supports a narrow recorded-reply provenance bridge, not causal evidence
-  independence or truth recovery; LIR-4 shows that bridge does not degrade
-  gracefully under substantial identity missingness
-- [`provenance/`](provenance/) — evidence graph implementation and JSON Schema
-- [`research/decision-relative-independence/`](research/decision-relative-independence/) — proposed decision-relative root model, invariants, falsification plan, and constructed fixtures
-- [`results/resolved-weather-v0.1.manifest.json`](results/resolved-weather-v0.1.manifest.json) — canonical derived-record hashes and reproducibility boundary
-- [`results/hes1-v1/`](results/hes1-v1/) — blind evidence-seeking result: strong coverage recovery with a material false-negative software limitation
-- [`research/field-evidence/2026-08-06/`](research/field-evidence/2026-08-06/) — sanitized field observation showing why root identity and dependency matter
-- [`results/eaa-p5-out-of-tree-v1/`](results/eaa-p5-out-of-tree-v1/) — imported out-of-tree test of a unified dependence auditor; the frozen gate rejected the candidate, which did not displace the simpler comparators
-- [`evaluations/multi-model-v1/`](evaluations/multi-model-v1/) — exploratory,
-  dependency-free A/B/C model-evaluation and provenance-formation harness;
-  its DEMO studies are preserved but are not canonical or independently
-  validated records
-- [Minority Prophet Gate](https://github.com/Silentpartnercoding/minority-prophet-gate) — reference implementation of evidence-root aggregation
-- [`website/`](website/) and [`app/`](app/) — dashboard specification and implementation
+Negative, incomplete, superseded, and adverse results remain visible. Current
+claim authority comes from the [canonical record registry](CANONICAL-RECORDS.md),
+[claim-to-record ledger](EVIDENCE-ALIGNMENT.md), and machine-readable
+[research records](research/records/), not from how prominent or recent a file
+looks.
 
-## Research rules
+The current manuscript is available through the stable
+[current-paper entry point](papers/00-CURRENT-PAPER.md). Every research
+hypothesis must state a null, metric, failure condition, and success condition.
 
-Every hypothesis states a question, null hypothesis, metric, failure condition, and success condition. Consensus is never treated as truth; confidence is never treated as correctness; correlation is never treated as independence.
+## Project boundaries
 
-## Pilot result
+Minority Prophet assesses evidence dependence. It does not replace:
 
-The first finite Łoś-inspired pilot is complete. Under correct declared lineage, evidence-root and semantic aggregation recovered all copied-majority worlds in the frozen synthetic run. Semantic aggregation also preserved a three-proposition logical constraint that proposition-wise voting violated. All methods failed under sufficiently corrupted lineage. See [`experiments/EXPERIMENT-001.md`](experiments/EXPERIMENT-001.md) and [`results/los-inspired-v0.1.md`](results/los-inspired-v0.1.md).
+- identity, authorization, or action policy;
+- world-state verification;
+- general agent observability;
+- a truth oracle; or
+- human judgment about the consequences of acting.
 
-This is an exploratory implementation check on constructed data—not evidence that real-world provenance can be recovered, not a literal ultraproduct, and not a general truth-discovery result.
+Those boundaries and the relationship to Gate, Border, AgentWEX, and a possible
+larger epistemic stack are documented in [System architecture](SYSTEM-ARCHITECTURE.md).
 
-Licensed under Apache License 2.0. See [`LICENSE`](LICENSE) and
-[`NOTICE`](NOTICE).
+Licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) and
+[contributors](CONTRIBUTORS.md).
