@@ -1,7 +1,7 @@
 """The stated check count must match epistemic-ci, not merely itself.
 
 EPISTEMIC-CI-LOG.md exists to stop local findings quietly failing to travel. It
-has stated the wrong number three times.
+has stated the wrong number four times.
 
 The first version of this test compared the number word against the check names
 in the same sentence. That cannot catch the failure that actually recurs: when
@@ -43,7 +43,7 @@ def stated_count() -> tuple[int, int]:
     # \s not " ": markdown reflows, and a bold name split across two lines
     # ("**Executable\nPass Condition**") is still one name. The first version of
     # this test used " " and silently undercounted six of eight.
-    named = len(re.findall(r"\*\*([A-Z][A-Za-z\s]+?)\*\*", sentence.group(2), re.S))
+    named = len(re.findall(r"\*\*([A-Z][A-Za-z\s-]+?)\*\*", sentence.group(2), re.S))
     return WORDS[sentence.group(1).lower()], named
 
 
@@ -86,7 +86,7 @@ class EpistemicCiLogTests(unittest.TestCase):
         self.assertEqual(
             stated, upstream,
             f"EPISTEMIC-CI-LOG.md states {stated} checks; epistemic-ci defines "
-            f"{upstream}. The log has lagged upstream three times -- update it, "
+            f"{upstream}. The log has lagged upstream four times -- update it, "
             "including which entries moved from proposed to merged.",
         )
 

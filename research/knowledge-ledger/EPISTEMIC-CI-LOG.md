@@ -1,14 +1,14 @@
 # What this programme has contributed to Epistemic CI, and what it has not
 
 `Silentpartnercoding/epistemic-ci` is a vendor-neutral meta-validation gate: a
-test for the tests. Its v0 has **eight** checks — **Vacuous Test**, **Executable
+test for the tests. Its v0 has **nine** checks — **Vacuous Test**, **Executable
 Pass Condition**, **Observation Surface**, **Final Artifact Binding**, **Pinned
-Input Binding**, **Control Discrimination**, **Evidential Independence** and
-**Effect Reachability**.
+Input Binding**, **Control Discrimination**, **Evidential Independence**,
+**Effect Reachability**, and **Reason-Bound Conformance**.
 
-This file has now stated the wrong number three times — three, four, and five —
-each after checks had already shipped. Twice the cause was this programme's own
-contribution landing upstream without the summary following it.
+This file has now stated the wrong number four times — three, four, five, and
+eight — each after checks had already shipped. Twice the cause was this
+programme's own contribution landing upstream without the summary following it.
 
 This programme's failure modes are the obvious source of candidate checks, so
 this file records which have been logged there, which are already covered, and
@@ -104,6 +104,19 @@ generically. *Sensitivity* — that corrupting what the pin resolves to makes th
 run fail — depends on the pin mechanism and is checked only where a
 `tamper_command` is supplied; otherwise it is reported not established. Pins are
 counted separately from mutations so they cannot inflate the assurance bound.
+
+## Merged upstream — check 9
+
+| change | failure mode | how it was found |
+|---|---|---|
+| [#19](https://github.com/Silentpartnercoding/epistemic-ci/pull/19) **Reason-Bound Conformance** | a negative vector returns the expected verdict because an earlier, unrelated guard rejected it | a verdict-only conformance suite could stay green while never reaching the property its vector claimed to test |
+
+The check binds a negative vector to causal observations including whether the
+target property was reached and why evaluation stopped. A reference must match
+the declared observations; short-circuit mutants preserve the ordinary verdict
+while changing the reason-bound contract. The evidence is produced by the
+harness or auditor and does not require a protocol peer to disclose an internal
+stop reason on the wire.
 
 ## Already covered by v0 — deliberately not proposed
 
