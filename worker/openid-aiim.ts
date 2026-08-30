@@ -1,11 +1,13 @@
-const RESOURCE = "https://mcp.descope.com";
-const RESOURCE_METADATA = `${RESOURCE}/.well-known/oauth-protected-resource`;
-const EXPECTED_ISSUER = "https://api.descope.com/v1/apps/agentic/P2DA3QqyF3N3BlmIqn1nr0LMFhrw/MS3AebdnI1nLELsiorZz77KmIleWt";
-const AUTHORIZATION_ENDPOINT = "https://api.descope.com/oauth2/v1/apps/agentic/P2DA3QqyF3N3BlmIqn1nr0LMFhrw/MS3AebdnI1nLELsiorZz77KmIleWt/authorize";
-const TOKEN_ENDPOINT = "https://api.descope.com/oauth2/v1/apps/agentic/P2DA3QqyF3N3BlmIqn1nr0LMFhrw/MS3AebdnI1nLELsiorZz77KmIleWt/token";
+const RESOURCE = "https://mp-interop-referee.tradearmory.workers.dev/mcp";
+const RESOURCE_METADATA = "https://mp-interop-referee.tradearmory.workers.dev/.well-known/oauth-protected-resource/mcp";
+const EXPECTED_ISSUER = "https://api.descope.com/v1/apps/agentic/P3IEQH7e0pGsj5aPR5PQPZQI6pfA/RS3IQSxDIjEhYYhuVkuey7uly21NB";
+const AUTHORIZATION_ENDPOINT = "https://api.descope.com/oauth2/v1/apps/agentic/P3IEQH7e0pGsj5aPR5PQPZQI6pfA/RS3IQSxDIjEhYYhuVkuey7uly21NB/authorize";
+const TOKEN_ENDPOINT = "https://api.descope.com/oauth2/v1/apps/agentic/P3IEQH7e0pGsj5aPR5PQPZQI6pfA/RS3IQSxDIjEhYYhuVkuey7uly21NB/token";
 const CLIENT_ID = "https://minorityprophet.org/openid-aiim/client.json";
+const JWKS_URI = "https://minorityprophet.org/openid-aiim/jwks.json";
+const CLIENT_KEY_ID = "f35c5d1f-b07b-4525-9587-c0f21295a972";
 const REDIRECT_URI = "https://minorityprophet.org/openid-aiim/callback";
-const REQUESTED_SCOPE = "project:read";
+const REQUESTED_SCOPE = "mcp:tools";
 const COOKIE_NAME = "mp_aiim_oauth";
 const MCP_VERSION = "2026-07-28";
 const SUPPORTED_MCP_VERSIONS = new Set(["2026-07-28", "2025-11-25", "2025-06-18"]);
@@ -13,11 +15,25 @@ const FLOW_TTL_MS = 10 * 60 * 1000;
 
 interface AiimEnv {
   MP_AIIM_STATE_SECRET?: string;
+  MP_AIIM_CLIENT_PRIVATE_KEY?: string;
 }
 
 function stateSecret(env?: AiimEnv): string | undefined {
   return env?.MP_AIIM_STATE_SECRET ?? process.env.MP_AIIM_STATE_SECRET;
 }
+
+function clientPrivateKey(env?: AiimEnv): string | undefined {
+  return env?.MP_AIIM_CLIENT_PRIVATE_KEY ?? process.env.MP_AIIM_CLIENT_PRIVATE_KEY;
+}
+
+const CLIENT_PUBLIC_JWK = {
+  kty: "RSA",
+  n: "0zEN2inprOGQFnM6TJnhDNUj0T1tXcbC7h6n-ZbAw5Vu3xDk9bjZt00GIfeYVCwYPpPVP7beCvErx8Wf_rgKc0WhGkoW0PbfTJjD2FNx3tS6BicZps_qkyu7T3q82o75q3YhZCeTbR06-_MSfMpuhrOxy4Romdn5UdWRL5GbIRddlOKQ7B7jZOJpZNTq1u6VlhDPiKkmTkg2GxdUkY4B88tJ8jd4vUyjJvuEsd7EAk29kIJBtLP3bqGT043yvGQD86PqvZFsUkzoMbRtP3t0KeoGWd2XDmv29662OQu32qcBa7FNmmxS0x4ouaoq7CHIgGdJDJLMiLLbp7s6IWNmhQ",
+  e: "AQAB",
+  use: "sig",
+  alg: "RS256",
+  kid: CLIENT_KEY_ID,
+};
 
 interface FlowState {
   state: string;
@@ -78,6 +94,38 @@ function randomValue(byteLength = 32): string {
 async function sha256(value: string): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
   return b64url(new Uint8Array(digest));
+}
+
+function pemBody(pem: string): ArrayBuffer {
+  const base64 = pem.replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|\s/gu, "");
+  const binary = atob(base64);
+  return arrayBuffer(Uint8Array.from(binary, (character) => character.charCodeAt(0)));
+}
+
+async function privateKey(pem: string): Promise<CryptoKey> {
+  return crypto.subtle.importKey(
+    "pkcs8",
+    pemBody(pem),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+}
+
+async function clientAssertion(pem: string): Promise<string> {
+  const issuedAt = Math.floor(Date.now() / 1000);
+  const header = b64url(new TextEncoder().encode(JSON.stringify({ alg: "RS256", kid: CLIENT_KEY_ID, typ: "JWT" })));
+  const payload = b64url(new TextEncoder().encode(JSON.stringify({
+    iss: CLIENT_ID,
+    sub: CLIENT_ID,
+    aud: TOKEN_ENDPOINT,
+    iat: issuedAt,
+    exp: issuedAt + 300,
+    jti: crypto.randomUUID(),
+  })));
+  const signingInput = `${header}.${payload}`;
+  const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", await privateKey(pem), new TextEncoder().encode(signingInput));
+  return `${signingInput}.${b64url(new Uint8Array(signature))}`;
 }
 
 async function signingKey(secret: string): Promise<CryptoKey> {
@@ -192,7 +240,7 @@ async function validateDiscovery(): Promise<{
   if (authorizationServer.token_endpoint !== TOKEN_ENDPOINT) throw new Error("Unexpected token endpoint");
   if (authorizationServer.client_id_metadata_document_supported !== true) throw new Error("Authorization server does not advertise CIMD");
   if (!authorizationServer.code_challenge_methods_supported?.includes("S256")) throw new Error("Authorization server does not advertise PKCE S256");
-  if (!authorizationServer.token_endpoint_auth_methods_supported?.includes("none")) throw new Error("Authorization server does not advertise a public client");
+  if (!authorizationServer.token_endpoint_auth_methods_supported?.includes("private_key_jwt")) throw new Error("Authorization server does not advertise private_key_jwt");
   return { protectedResource, authorizationServer };
 }
 
@@ -204,21 +252,24 @@ function clientMetadata(): Record<string, unknown> {
     redirect_uris: [REDIRECT_URI],
     grant_types: ["authorization_code"],
     response_types: ["code"],
-    token_endpoint_auth_method: "none",
+    token_endpoint_auth_method: "private_key_jwt",
+    token_endpoint_auth_signing_alg: "RS256",
+    jwks_uri: JWKS_URI,
   };
 }
 
 function reproducePage(): Response {
   return page("Reproduce the Descope CIMD test", `<p class="kicker">OpenID AIIM · read-only test surface</p>
 <h1>One stable client. One exact rerun.</h1>
-<p class="lede">This page runs a standards-shaped public-client authorization attempt against Descope's OpenID AIIM MCP sandbox. It requests only <code>${REQUESTED_SCOPE}</code>. If authorization succeeds, it initializes MCP and lists tool names; it never calls a tool.</p>
+<p class="lede">This page runs a standards-shaped confidential-client authorization attempt against the Minority Prophet MCP server protected by Descope. It requests only <code>${REQUESTED_SCOPE}</code>. If authorization succeeds, it proves the client's identity with <code>private_key_jwt</code>, initializes MCP, and lists tool names; it never calls a tool.</p>
 <section class="card"><p class="label">Fixed inputs</p><dl>
 <dt>MCP resource</dt><dd>${RESOURCE}</dd><dt>Client ID / metadata</dt><dd><a href="${CLIENT_ID}">${CLIENT_ID}</a></dd>
-<dt>Callback</dt><dd>${REDIRECT_URI}</dd><dt>OAuth shape</dt><dd>Authorization Code + PKCE S256 · public client · token auth none</dd>
-<dt>Requested scope</dt><dd>${REQUESTED_SCOPE} (deliberately least privilege)</dd><dt>MCP action ceiling</dt><dd>initialize → notifications/initialized → tools/list only</dd>
+<dt>Public JWKS</dt><dd><a href="${JWKS_URI}">${JWKS_URI}</a></dd><dt>Callback</dt><dd>${REDIRECT_URI}</dd>
+<dt>OAuth shape</dt><dd>Authorization Code + PKCE S256 · confidential client · private_key_jwt (RS256)</dd>
+<dt>Requested scope</dt><dd>${REQUESTED_SCOPE}</dd><dt>MCP action ceiling</dt><dd>initialize → notifications/initialized → tools/list only</dd>
 </dl><form method="get" action="/openid-aiim/start"><button type="submit">Start read-only CIMD attempt →</button></form>
 <a class="button secondary" href="/openid-aiim/diagnostics.json">View live discovery checks</a></section>
-<p class="boundary">If the validator issue is present, Descope will show <code>invalid_client</code> before login. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only. No project/company write scope is requested and no MCP tool call is permitted by this harness.</p>`);
+<p class="boundary">The private signing key remains a hosted secret; only the matching public key is published. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only, and no MCP tool call is permitted by this harness.</p>`);
 }
 
 async function diagnostics(): Promise<Response> {
@@ -238,9 +289,10 @@ async function diagnostics(): Promise<Response> {
         issuer_exact_match: authorizationServer.issuer === EXPECTED_ISSUER,
         cimd_advertised: authorizationServer.client_id_metadata_document_supported === true,
         pkce_s256_advertised: authorizationServer.code_challenge_methods_supported?.includes("S256") === true,
-        public_client_auth_advertised: authorizationServer.token_endpoint_auth_methods_supported?.includes("none") === true,
+        private_key_jwt_advertised: authorizationServer.token_endpoint_auth_methods_supported?.includes("private_key_jwt") === true,
+        public_jwks_configured: true,
       },
-      fixed_inputs: { resource: RESOURCE, client_id: CLIENT_ID, redirect_uri: REDIRECT_URI, scope: REQUESTED_SCOPE },
+      fixed_inputs: { resource: RESOURCE, client_id: CLIENT_ID, jwks_uri: JWKS_URI, redirect_uri: REDIRECT_URI, scope: REQUESTED_SCOPE },
       authority_granted: false,
       tool_invocation_performed: false,
     }, { headers: { ...jsonHeaders, "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" } });
@@ -329,8 +381,12 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   const runId = crypto.randomUUID();
   const completedAt = new Date().toISOString();
   const secret = stateSecret(env);
+  const signingPem = clientPrivateKey(env);
   if (!secret || secret.length < 32) {
     return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "State-signing secret is unavailable" }, 503);
+  }
+  if (!signingPem?.includes("-----BEGIN PRIVATE KEY-----")) {
+    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "Client signing key is unavailable" }, 503);
   }
   const url = new URL(request.url);
   const encodedFlow = readCookie(request, COOKIE_NAME);
@@ -368,6 +424,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   }
 
   try {
+    const assertion = await clientAssertion(signingPem);
     const tokenResponse = await fetch(TOKEN_ENDPOINT, {
       method: "POST",
       headers: { accept: "application/json", "content-type": "application/x-www-form-urlencoded" },
@@ -378,6 +435,8 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         redirect_uri: REDIRECT_URI,
         code_verifier: flow.verifier,
         resource: RESOURCE,
+        client_assertion_type: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+        client_assertion: assertion,
       }),
       redirect: "manual",
       signal: AbortSignal.timeout(15_000),
@@ -490,6 +549,8 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
       requested_scope: REQUESTED_SCOPE,
+      token_endpoint_auth_method: "private_key_jwt",
+      client_assertion_signing_alg: "RS256",
       response_issuer: responseIssuer ?? "not_returned",
       negotiated_protocol_version: negotiatedVersion,
       mcp_session_id_returned: Boolean(sessionId),
@@ -516,6 +577,9 @@ export async function handleOpenIdAiim(request: Request, env?: AiimEnv): Promise
   const url = new URL(request.url);
   if (url.pathname === "/openid-aiim/client.json" && request.method === "GET") {
     return new Response(JSON.stringify(clientMetadata()), { headers: jsonHeaders });
+  }
+  if (url.pathname === "/openid-aiim/jwks.json" && request.method === "GET") {
+    return new Response(JSON.stringify({ keys: [CLIENT_PUBLIC_JWK] }), { headers: jsonHeaders });
   }
   if (url.pathname === "/openid-aiim/reproduce" && request.method === "GET") return reproducePage();
   if (url.pathname === "/openid-aiim/diagnostics.json" && request.method === "GET") return diagnostics();

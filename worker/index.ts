@@ -11,6 +11,7 @@ interface Env {
   AWE_ADMIN_TOKEN?: string;
   AWE_RATE_LIMIT_SALT?: string;
   MP_AIIM_STATE_SECRET?: string;
+  MP_AIIM_CLIENT_PRIVATE_KEY?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
