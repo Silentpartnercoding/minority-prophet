@@ -3,6 +3,7 @@ import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } fr
 import handler from "vinext/server/app-router-entry";
 import { handleExchangeApi } from "../db/exchange-api.mjs";
 import { handleOpenIdAiim } from "./openid-aiim";
+import { handleOpenIdAiimCk } from "./openid-aiim-ck";
 
 interface Env {
   ASSETS: Fetcher;
@@ -44,6 +45,9 @@ interface ExecutionContext {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    const openIdAiimCkResponse = await handleOpenIdAiimCk(request, env);
+    if (openIdAiimCkResponse) return openIdAiimCkResponse;
 
     const openIdAiimResponse = await handleOpenIdAiim(request, env);
     if (openIdAiimResponse) return openIdAiimResponse;
