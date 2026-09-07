@@ -6,3 +6,4 @@ import MinorityProphetCore.Copy
 import MinorityProphetCore.Counterexamples
 import MinorityProphetCore.Asymmetric
 import MinorityProphetCore.NarrowGate
+import MinorityProphetCore.RootIdentity
