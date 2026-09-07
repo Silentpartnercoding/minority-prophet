@@ -26,26 +26,25 @@ The fire does not care whose gold it is. That indifference is the product.
 
 ## 2. Why a verifier must be of different substance
 
-The tempting metaphor is the Trinity — a third person completing two that
-already exist. It is the wrong shape, and the reason is worth stating exactly.
+A verifier that is built from, funded by, or reasoning inside the thing it
+verifies inherits that thing's errors — including, especially, the errors it
+cannot see in itself.
 
-The doctrine is *homoousios*: one substance. The Spirit **proceeds from** the
-Father and the Son. Whatever else that is, it is not independence.
+This is not a claim about honesty. A scrupulously sincere self-evaluation still
+fails, because sincerity does not create the outside view that the evaluation
+requires. Shared substance means shared blind spots, and a shared blind spot is
+invisible from the inside by construction. No amount of care fixes it, because
+care is applied from the inside too.
 
-A verifier that proceeds from the thing it verifies inherits that thing's
-errors — including, especially, the errors it cannot see in itself. This is not
-a claim about honesty. A scrupulously sincere self-evaluation still fails,
-because sincerity does not create the outside view that the evaluation requires.
-Shared substance means shared blind spots, and shared blind spots are invisible
-from the inside by construction.
+This is the bootstrap problem. You cannot lift yourself by your own straps. What
+works is never more effort applied from within — it is growth into something you
+were not, until the straps burst. Every real advance in verification has this
+shape. It is never "reason harder about yourself." It is always "admit something
+you are not."
 
-So: **take the third position, refuse the third nature.**
-
-This is the same structure as the bootstrap problem. You cannot lift yourself by
-your own straps. What works is not more effort applied from inside — it is
-growth into something you were not, until the straps burst. Every real advance
-in verification has this shape. It is never "reason harder about yourself." It
-is always "admit something you are not."
+So the third seat between capability and action is real, but it can only be
+occupied from outside. **Take the position; refuse to be made of the same
+material.**
 
 ---
 
