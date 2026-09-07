@@ -48,7 +48,81 @@ material.**
 
 ---
 
-## 3. What the assay actually tests
+## 3. Expansion — the only move that works
+
+Section 2 says what you cannot do. This section says what to do instead, because
+"you can't bootstrap" is useless advice on its own.
+
+The trap always has the same shape: **you are trying to measure something using
+only the record that the thing keeps about itself.** Trying to measure the
+provenance gap from the provenance record. Trying to establish a model's
+reliability by asking the model. Trying to prove a gate works by reading the
+gate. In each case the missing information is precisely the information the
+record does not contain — that is *why* there is a gap — so no amount of
+additional care, compute or cleverness inside that record will produce it.
+
+The straps do not break by pulling. They break by the thing inside them getting
+bigger.
+
+Concretely, that means **adding a dimension the original record does not span**.
+There are four that keep working:
+
+**E1 — Move into content.**
+Metadata cannot tell you whether two sources copied each other. Their substance
+can: a shared idiosyncratic error has no innocent explanation. You leave the
+record and enter the thing the record describes. (This is the trout of §5, and
+it is why our independence tests are content tests, not citation tests.)
+
+**E2 — Move outside the control domain.**
+No number of agents under one operator can validate each other; they are one
+opinion repeated. Three labellers who have never met, working from published
+instructions, who could each have returned a different answer and had no reason
+to prefer ours — that is a new dimension, because their errors are not drawn
+from the same distribution as ours.
+
+**E3 — Move forward in time.**
+Ancestry that was never recorded cannot be recovered. That question is closed.
+But it is a *different* question whether the gap keeps growing, and that one is
+open: refuse to accept new claims without the record attached. You cannot repair
+the past, so you make the measurement possible for everything after today. A
+permanently unanswerable question about history becomes a routine one about the
+future.
+
+**E4 — Move to the adversary.**
+Inspecting your own gate tells you what you thought of. It cannot tell you what
+you did not think of. Paying someone to break it produces information the gate
+is structurally incapable of producing about itself — because their model of the
+gate is not ours, which is the entire point.
+
+### The test for a fake expansion
+
+Most proposed escapes are not expansions. The check is one question:
+
+> **Is the new thing downstream of the old thing?**
+
+"Have a second model check the first model" *feels* like adding a dimension. It
+is not, if both models were trained on overlapping data — they will agree
+confidently on their shared errors, which is the failure mode you were trying to
+detect. Same substance, louder.
+
+"Add a longer reasoning chain," "raise the confidence threshold," "run it three
+times and vote" — none of these are expansions. They are more pulling.
+
+An expansion introduces something whose **errors are uncorrelated with yours**.
+If you cannot say why the new thing would fail differently, you have not
+expanded; you have added weight.
+
+### How to use this
+
+Whenever a verification plan starts to feel circular, do not look for a cleverer
+argument. Name the dimension you are trapped inside, then pick the one you are
+not using: content, control domain, time, or adversary.
+
+The answer is always a dimension. It is never more effort.
+
+---
+
+## 4. What the assay actually tests
 
 Four properties, in the order they fail:
 
@@ -64,7 +138,7 @@ honest form of every report we issue.
 
 ---
 
-## 4. The trout in the milk — what an assay can and cannot say
+## 5. The trout in the milk — what an assay can and cannot say
 
 > "Some circumstantial evidence is very strong, as when you find a trout in the
 > milk."
@@ -100,7 +174,7 @@ than by pretending otherwise.
 
 ---
 
-## 5. What this forbids us
+## 6. What this forbids us
 
 These are binding. Each is stated so that a violation is observable by someone
 outside the project.
@@ -129,7 +203,7 @@ premises an outsider corrected. A verification record with no failures in it is
 itself a finding, and not a good one.
 
 **A5 — No positive claims of absence.**
-Per §4. Report what the test found, name the test, name the sample, state the
+Per §5. Report what the test found, name the test, name the sample, state the
 coverage. Silence in the instrument is reported as silence in the instrument.
 
 **A6 — Our own instruments are auditable, including by the people we assay.**
@@ -143,7 +217,7 @@ else.
 
 ---
 
-## 6. How you would know we had broken it
+## 7. How you would know we had broken it
 
 The doctrine is falsifiable, and here is how to falsify it:
 
@@ -165,7 +239,7 @@ another bootstrap.
 
 ---
 
-## 7. Why this is worth doing
+## 8. Why this is worth doing
 
 The current evaluation ecosystem has a structural problem that is nobody's
 fault: the parties with the capability to evaluate frontier systems are, almost
