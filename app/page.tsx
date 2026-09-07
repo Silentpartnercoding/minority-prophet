@@ -1,6 +1,6 @@
 import { SiteFooter, SiteNav } from "./components/site-chrome";
 import { formatPercent, liftModels } from "./lib/lift-study";
-import { paperUrl } from "./lib/tournament";
+import { doiLabel, doiUrl, paperUrl } from "./lib/tournament";
 
 export default function Home() {
   return <main>
@@ -15,6 +15,7 @@ export default function Home() {
           <a className="button primary" href="/experiments/epistemic-lift">See the lift study <span>→</span></a>
           <a className="button secondary" href={paperUrl}>Read the paper <span>→</span></a>
         </div>
+        <p className="hero-citation">Archived foundation paper · DOI <a href={doiUrl}>{doiLabel}</a> (all versions) · preprint, not peer reviewed</p>
       </div>
       <div className="hero-visual" aria-label="Three independent true observations opposed by ninety-five copied false claims">
         <div className="ratio-label"><span>DEMONSTRATION WORLD</span><b>03 : 95</b><small>independent truth / copied falsehood</small></div>

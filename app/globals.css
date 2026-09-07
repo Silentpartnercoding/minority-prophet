@@ -22,6 +22,8 @@ h1 { font-size:clamp(72px,8.1vw,126px); line-height:.8; }
 h1 em,h2 em { color:var(--orange); font-weight:400; }
 .lede { max-width:585px; margin:44px 0 36px; font:400 19px/1.55 Georgia, serif; color:#4d5148; }
 .hero-actions { display:flex; gap:12px; }
+.hero-citation { margin:22px 0 0; font:400 11px/1.6 monospace; letter-spacing:.03em; color:#5e6258; }
+.hero-citation a { border-bottom:1px solid #b9bbb2; }
 .button { min-width:190px; padding:17px 20px; font:700 11px/1 monospace; letter-spacing:.07em; text-transform:uppercase; display:flex; justify-content:space-between; }
 .button.primary { background:var(--ink); color:white; }.button.primary span { color:var(--acid); }
 .button.secondary { border:1px solid var(--ink); }
