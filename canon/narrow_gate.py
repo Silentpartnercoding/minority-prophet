@@ -1,5 +1,16 @@
 """Reference implementation of the MP Canon Narrow Gate.
 
+SUPERSEDED AS A PROPOSAL 2026-09-08. See `canon/PLACEMENT.md`.
+
+Deny-by-default, bounded undertaking, receipts and at-most-once effects are all
+present in `minority-prophet-gate`'s `decide()` and `minority-prophet-border`'s
+admission binding, in stronger form than here. Nothing in this module should be
+ported.
+
+It is retained as the executable form of the laws audited in `NOVELTY-AUDIT.md`
+-- the record of how the rules were derived and which were rejected -- and not
+as a component anyone should adopt.
+
 Deliberately small and dependency-free. This is the executable form of the laws
 audited in ``canon/NOVELTY-AUDIT.md``; it is a specification artifact, not a
 production component, and nothing in production MP imports it.

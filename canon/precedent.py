@@ -1,5 +1,25 @@
 """No threshold. A three-outcome gate and accumulated precedent.
 
+RETRACTED 2026-09-08 — SUPERSEDED BY SHIPPED WORK. See `canon/PLACEMENT.md`.
+
+`minority-prophet-gate` already implements a gate with **four** outcomes --
+proceed, block, escalate, request_evidence -- which escalates on abstention and
+on thin margins ("no independent evidence is a reason to ask a human, never a
+reason to proceed"), fails closed when a theorem's precondition does not hold,
+and prices attacks in both forged and compromised roots. `minority-prophet-border`
+carries the signed `human-control/v1` record, with approval, override and
+manual_control modes and an authority check on the intervener, which this module
+lacks entirely.
+
+The dominance model here is also not an improvement on Gate's `min_flip_budget`:
+a scalar threshold over a priced attack budget is simpler, and Gate applies it
+only on the proceed path. The claim that a sufficiency threshold could be
+eliminated was wrong, and sufficiency belongs to the strategic governor rather
+than to a gate.
+
+Retained, not deleted, as the record that this programme re-derived shipped work
+without reading it first. Do not build on this module.
+
 The previous position -- that one irreducible number was owed by the owner, the
 false-allow/false-deny exchange rate -- was wrong, and owner review is what
 showed it. The argument was: every case differs, the laws already pin the

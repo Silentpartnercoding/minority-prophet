@@ -128,7 +128,10 @@ production MP before candidate laws pass their tests.
 
 ## Status
 
-Phase I, tranche 1. Prior-art audit of the ten seed candidates complete
+Phase I, tranche 1. **Placement and retractions recorded in `PLACEMENT.md`**
+after reading the shipped Border / MP / Gate / stack architecture: the gate and
+precedent modules re-derived work that already exists in stronger form, and are
+retained as evidence of that rather than as proposals. Prior-art audit of the ten seed candidates complete
 (`NOVELTY-AUDIT.md`). Formal core in progress (`formal/lean/MinorityProphetCore/NarrowGate.lean`).
 No extraction from source texts has been performed yet — the seed candidates were
 supplied directly by the owner and are being audited first, on the principle that
