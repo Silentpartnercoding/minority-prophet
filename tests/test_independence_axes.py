@@ -108,3 +108,40 @@ class WireCompatibilityTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MissingTopTests(unittest.TestCase):
+    """The hole owner review found: the vocabulary has no word for 'I was there'.
+
+    `inferred` is the only legacy value carrying a depth, and it carries the
+    *shallowest* one. There is no encoding for a root that reached reality, so
+    the strongest possible evidence has nowhere to go.
+    """
+
+    def test_no_legacy_value_means_observed_reality(self):
+        for basis in IndependenceBasis:
+            self.assertNotEqual(decompose(basis).depth, WitnessDepth.REALITY,
+                                f"{basis.value} unexpectedly encodes REALITY")
+
+    def test_the_only_stated_depth_is_the_worst_one(self):
+        stated = [decompose(b).depth for b in IndependenceBasis
+                  if decompose(b).depth is not WitnessDepth.UNSTATED]
+        self.assertEqual(stated, [WitnessDepth.TEXT])
+
+    def test_an_eyewitness_and_a_reasoning_model_encode_identically(self):
+        """The collapse, stated as a fact.
+
+        Someone who was in the room and a model that reasoned over text both
+        become `inferred`, rank 1. The wire format cannot tell them apart.
+        """
+        eyewitness = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE)
+        reasoning = IndependenceAxes(WitnessDepth.TEXT, Attestation.NONE)
+        self.assertEqual(legacy_basis(eyewitness), legacy_basis(reasoning))
+        self.assertEqual(legacy_basis(eyewitness), "inferred")
+
+    def test_witnessing_reality_is_not_expressible_at_any_attestation(self):
+        """Adding a testament does not rescue it -- it overwrites the depth."""
+        for attestation in Attestation:
+            axes = IndependenceAxes(WitnessDepth.REALITY, attestation)
+            recovered = decompose(legacy_basis(axes))
+            self.assertNotEqual(recovered.depth, WitnessDepth.REALITY)
