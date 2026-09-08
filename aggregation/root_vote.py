@@ -33,6 +33,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Iterable, Literal, Protocol
 
+from aggregation.independence_axes import (
+    IndependenceAxes,
+    decompose,
+    minimal_axes,
+)
+
 
 class IndependenceBasis(str, Enum):
     """How a root's independence was established.
@@ -179,6 +185,19 @@ class RootVerdict:
     """False means Theorem 1 says NOTHING about this input. It is not a claim
     that the verdict is wrong -- it is the absence of a guarantee."""
     notes: tuple[str, ...] = field(default_factory=tuple)
+    weakest_axes: tuple[IndependenceAxes, ...] = ()
+    """The weakest independence positions among counted roots, as an antichain.
+
+    `weakest_basis` assumes independence is a single ranked scale. It is two
+    axes -- how far toward the world a root reached, and who vouched for it --
+    and under a partial order there may be several weakest members that no
+    ordering can rank against each other. See `aggregation/independence_axes.py`."""
+    weakest_basis_well_defined: bool = True
+    """False when `weakest_axes` holds more than one element.
+
+    When false, `weakest_basis` reports one value where no single weakest
+    exists -- an anonymous eyewitness and a notarised hearsay are both weakest,
+    in different ways. Treat as a signal to escalate, not as a ranking."""
 
 
 def _basis_of(claim: RootedClaim) -> IndependenceBasis:
@@ -299,6 +318,9 @@ def verdict(
         key=lambda b: BASIS_RANK[b],
         default=IndependenceBasis.UNKNOWN,
     ).value
+    weakest_axes = minimal_axes(
+        decompose(basis.get(r, IndependenceBasis.UNKNOWN)) for r in counted)
+    weakest_well_defined = len(weakest_axes) <= 1
     attested = [r for r in counted
                 if basis.get(r, IndependenceBasis.UNKNOWN) is IndependenceBasis.ATTESTED]
     attested_margin = (sum(1 for r in attested if values.get(r))
@@ -336,6 +358,8 @@ def verdict(
             conflicting_roots=conflicting,
             basis_counts=basis_counts,
             weakest_basis=weakest,
+            weakest_axes=weakest_axes,
+            weakest_basis_well_defined=weakest_well_defined,
             attested_margin=attested_margin,
             immunity_applicable=False,
             notes=tuple(notes),
@@ -377,6 +401,8 @@ def verdict(
         conflicting_roots=conflicting,
         basis_counts=basis_counts,
         weakest_basis=weakest,
+        weakest_axes=weakest_axes,
+        weakest_basis_well_defined=weakest_well_defined,
         attested_margin=attested_margin,
         immunity_applicable=True,
         notes=tuple(notes),

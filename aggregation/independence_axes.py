@@ -39,8 +39,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import IntEnum
-
-from aggregation.root_vote import IndependenceBasis
+from typing import Iterable, Sequence
 
 
 class WitnessDepth(IntEnum):
@@ -89,27 +88,48 @@ class IndependenceAxes:
         return self.dominates(other) or other.dominates(self)
 
 
-#: What each legacy value actually pins down. `UNSTATED` marks the axis the
-#: legacy vocabulary was silent about -- silence recorded as silence, never
-#: defaulted (ASSAYER A5).
-DECOMPOSITION: dict[IndependenceBasis, IndependenceAxes] = {
-    IndependenceBasis.ATTESTED: IndependenceAxes(
-        WitnessDepth.UNSTATED, Attestation.INDEPENDENT),
-    IndependenceBasis.DECLARED: IndependenceAxes(
-        WitnessDepth.UNSTATED, Attestation.SELF),
-    IndependenceBasis.INFERRED: IndependenceAxes(
-        WitnessDepth.TEXT, Attestation.NONE),
-    IndependenceBasis.UNKNOWN: IndependenceAxes(
-        WitnessDepth.UNSTATED, Attestation.NONE),
+#: What each legacy value actually pins down, keyed by the wire string so this
+#: module has no dependency on `root_vote` -- `root_vote` depends on this one.
+#: `UNSTATED` marks the axis the legacy vocabulary was silent about: silence
+#: recorded as silence, never defaulted (ASSAYER A5).
+DECOMPOSITION: dict[str, IndependenceAxes] = {
+    "attested": IndependenceAxes(WitnessDepth.UNSTATED, Attestation.INDEPENDENT),
+    "declared": IndependenceAxes(WitnessDepth.UNSTATED, Attestation.SELF),
+    "inferred": IndependenceAxes(WitnessDepth.TEXT, Attestation.NONE),
+    "unknown": IndependenceAxes(WitnessDepth.UNSTATED, Attestation.NONE),
 }
 
 
-def decompose(basis: IndependenceBasis) -> IndependenceAxes:
+def decompose(basis) -> IndependenceAxes:
     """Lossy by necessity: three of the four legacy values carry no depth."""
-    return DECOMPOSITION[basis]
+    return DECOMPOSITION[getattr(basis, "value", basis)]
 
 
-def legacy_basis(axes: IndependenceAxes) -> IndependenceBasis:
+def minimal_axes(items: Iterable[IndependenceAxes]) -> tuple[IndependenceAxes, ...]:
+    """The **weakest** elements: an antichain, not a single value.
+
+    `weakest_basis` assumes a total order and returns one value. Under a partial
+    order there may be several minimal elements that no ordering can rank
+    against each other -- an anonymous eyewitness and a notarised hearsay are
+    both weakest, in different ways.
+
+    When this returns more than one element, any single "weakest" is a fiction,
+    and the honest response is to escalate rather than to pick.
+    """
+    uniq = list(dict.fromkeys(items))
+    return tuple(
+        x for i, x in enumerate(uniq)
+        if not any(j != i and x.dominates(y) and not y.dominates(x)
+                   for j, y in enumerate(uniq))
+    )
+
+
+def weakest_is_well_defined(items: Iterable[IndependenceAxes]) -> bool:
+    """False when the evidence set has no single weakest member."""
+    return len(minimal_axes(items)) <= 1
+
+
+def legacy_basis(axes: IndependenceAxes) -> str:
     """Project back onto the wire vocabulary. Lossy in the other direction.
 
     Depth cannot survive the round trip, because the legacy vocabulary has
@@ -117,12 +137,12 @@ def legacy_basis(axes: IndependenceAxes) -> IndependenceBasis:
     `invention_engine`; new callers should carry both axes.
     """
     if axes.attestation >= Attestation.INDEPENDENT:
-        return IndependenceBasis.ATTESTED
+        return "attested"
     if axes.attestation >= Attestation.SELF:
-        return IndependenceBasis.DECLARED
+        return "declared"
     if axes.depth <= WitnessDepth.TEXT:
-        return IndependenceBasis.INFERRED
-    return IndependenceBasis.UNKNOWN
+        return "inferred"
+    return "unknown"
 
 
 def rank_inversion_witness() -> tuple[IndependenceAxes, IndependenceAxes]:
