@@ -1,13 +1,16 @@
 # What this programme has contributed to Epistemic CI, and what it has not
 
 `Silentpartnercoding/epistemic-ci` is a vendor-neutral meta-validation gate: a
-test for the tests. Its v0 has **nine** checks — **Vacuous Test**, **Executable
+test for the tests. Its v0 has **ten** checks — **Vacuous Test**, **Executable
 Pass Condition**, **Observation Surface**, **Final Artifact Binding**, **Pinned
 Input Binding**, **Control Discrimination**, **Evidential Independence**,
-**Effect Reachability**, and **Reason-Bound Conformance**.
+**Effect Reachability**, **Reason-Bound Conformance**, and **Report
+Discrimination**.
 
-This file has now stated the wrong number four times — three, four, five, and
-eight — each after checks had already shipped. Twice the cause was this
+This file has now stated the wrong number five times — three, four, five, eight,
+and nine — each after checks had already shipped. The ninth omission was
+**Report Discrimination**, reconciled on 2026-09-08 by reading
+`epistemic_ci/core.py` upstream rather than by memory. Twice the cause was this
 programme's own contribution landing upstream without the summary following it.
 
 This programme's failure modes are the obvious source of candidate checks, so
@@ -26,6 +29,21 @@ proposed twice and to stop local findings quietly failing to travel.
 Each carries the worked instance that produced it, the expected failure
 condition, and a minimal fixture, per CONTRIBUTING.
 
+## Drafted, not submitted
+
+| candidate | failure mode | why v0 misses it |
+|---|---|---|
+| **Assertion Erosion** (`research/epistemic-ci-proposals/assertion_erosion.py`) | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which is invisible without a prior version |
+
+Implementation and 17 tests are local, including the worked instance that
+produced it: this programme weakened three assertions about a bond reference on
+2026-09-08 because the rule they encoded was mistaken. That was a correction,
+and no static analysis can distinguish it from a convenience -- so the candidate
+is a **flag, not a gate**. It guarantees a human is asked and the answer is
+recorded; it does not answer.
+
+Submission requires owner approval, so nothing has been opened upstream.
+
 ## Merged upstream
 
 | change | failure mode | how it was found |
@@ -41,6 +59,21 @@ of a check pretending to close it.
 blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): two
 grossly broken implementations pass, because mutation selection determines what is
 learned. Two separately written codebases, one shared weakness.
+
+## Drafted, not submitted
+
+| candidate | failure mode | why v0 misses it |
+|---|---|---|
+| **Assertion Erosion** (`research/epistemic-ci-proposals/assertion_erosion.py`) | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which is invisible without a prior version |
+
+Implementation and 17 tests are local, including the worked instance that
+produced it: this programme weakened three assertions about a bond reference on
+2026-09-08 because the rule they encoded was mistaken. That was a correction,
+and no static analysis can distinguish it from a convenience -- so the candidate
+is a **flag, not a gate**. It guarantees a human is asked and the answer is
+recorded; it does not answer.
+
+Submission requires owner approval, so nothing has been opened upstream.
 
 ## Merged upstream — checks 5 to 8
 
@@ -104,6 +137,21 @@ generically. *Sensitivity* — that corrupting what the pin resolves to makes th
 run fail — depends on the pin mechanism and is checked only where a
 `tamper_command` is supplied; otherwise it is reported not established. Pins are
 counted separately from mutations so they cannot inflate the assurance bound.
+
+## Drafted, not submitted
+
+| candidate | failure mode | why v0 misses it |
+|---|---|---|
+| **Assertion Erosion** (`research/epistemic-ci-proposals/assertion_erosion.py`) | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which is invisible without a prior version |
+
+Implementation and 17 tests are local, including the worked instance that
+produced it: this programme weakened three assertions about a bond reference on
+2026-09-08 because the rule they encoded was mistaken. That was a correction,
+and no static analysis can distinguish it from a convenience -- so the candidate
+is a **flag, not a gate**. It guarantees a human is asked and the answer is
+recorded; it does not answer.
+
+Submission requires owner approval, so nothing has been opened upstream.
 
 ## Merged upstream — check 9
 
