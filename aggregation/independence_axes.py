@@ -58,8 +58,40 @@ class WitnessDepth(IntEnum):
     UNSTATED = 6      # the source vocabulary did not say
 
 
+class WitnessIdentity(IntEnum):
+    """Whether the *observer* can be identified and held to the claim.
+
+    Distinct from the issuer identity the root registry already requires. The
+    registry authenticates **who requested the root**; it says nothing about
+    **who saw the thing**. An authenticated newspaper minting a root for an
+    anonymous source is fully compliant with R1.4 and tells you nothing about
+    whether two such roots came from two people.
+
+    That is the open half of U1, recorded in
+    `research/knowledge-ledger/experiments/KL-014/CORRECTION-20260813-quota.md`:
+    an issuer may supply many distinct `observation_id`s for one real
+    observation and stay inside quota. Witness identity is the lever on it,
+    because distinctness is only checkable when the observer is.
+
+    Absence is `ANONYMOUS`, not a separate `UNSTATED` -- having no identity on
+    record *is* anonymity, so nothing is being guessed.
+    """
+
+    ANONYMOUS = 0      # no identity; cannot be reached, questioned, or counted apart
+    PSEUDONYMOUS = 1   # stable handle, not resolvable to a person
+    NAMED = 2          # identity asserted, unverified
+    VERIFIED = 3       # identity bound by signature or institution
+    BONDED = 4         # identity plus something at stake if wrong
+
+
 class Attestation(IntEnum):
-    """Who vouched, and how disinterested they were."""
+    """Who vouched for the CLAIM, and how disinterested they were.
+
+    Not the same as `WitnessIdentity`, which is about the SOURCE. An anonymous
+    whistleblower whose account a journalist verified is `ANONYMOUS` identity
+    with `INDEPENDENT` attestation -- a real and common combination that one
+    axis cannot express without the testament overwriting the anonymity.
+    """
 
     NONE = 0
     SELF = 1          # the source vouches for itself
@@ -70,19 +102,31 @@ class Attestation(IntEnum):
 
 @dataclass(frozen=True)
 class IndependenceAxes:
-    """A root's independence, on both axes, with neither implying the other."""
+    """A root's independence on three axes, none implying the others.
+
+    Each does a different job in the machinery:
+
+    * `depth` decides **which classes of error** this root can catch.
+    * `attestation` reduces the **R3 margin**, by making undetected dependence
+      less likely.
+    * `identity` decides whether `N_eff` is **computable at all** -- two
+      anonymous witnesses cannot be shown to be two people.
+    """
 
     depth: WitnessDepth
     attestation: Attestation
+    identity: WitnessIdentity = WitnessIdentity.ANONYMOUS
 
     def dominates(self, other: "IndependenceAxes") -> bool:
-        """Partial order. Never a score.
+        """Partial order over all three axes. Never a score.
 
-        Vouching does not buy depth and depth does not buy vouching, so a pair
-        that is better on one axis and worse on the other is **incomparable**,
-        and the caller must escalate rather than rank them.
+        Nothing is traded against anything: vouching does not buy depth, depth
+        does not buy identity. A pair better on one axis and worse on another is
+        **incomparable**, and the caller escalates rather than ranking them.
         """
-        return self.depth <= other.depth and self.attestation >= other.attestation
+        return (self.depth <= other.depth
+                and self.attestation >= other.attestation
+                and self.identity >= other.identity)
 
     def comparable_to(self, other: "IndependenceAxes") -> bool:
         return self.dominates(other) or other.dominates(self)
@@ -103,6 +147,22 @@ DECOMPOSITION: dict[str, IndependenceAxes] = {
 def decompose(basis) -> IndependenceAxes:
     """Lossy by necessity: three of the four legacy values carry no depth."""
     return DECOMPOSITION[getattr(basis, "value", basis)]
+
+
+def indistinguishable(a: IndependenceAxes, b: IndependenceAxes) -> bool:
+    """True when the two roots cannot be shown to be different sources.
+
+    Two anonymous witnesses to the same event may be one person reporting twice,
+    and no amount of vouching settles it -- a testament about a claim says
+    nothing about whether two sources are the same source. Counting them as two
+    independent roots asserts something unverified, so they collapse to one.
+
+    Anything above `ANONYMOUS` is distinguishable *in principle*; whether two
+    particular roots are distinct is then a question about their identifiers,
+    not about this axis.
+    """
+    return (a.identity is WitnessIdentity.ANONYMOUS
+            and b.identity is WitnessIdentity.ANONYMOUS)
 
 
 def minimal_axes(items: Iterable[IndependenceAxes]) -> tuple[IndependenceAxes, ...]:
@@ -174,7 +234,7 @@ def rank_inversion_witness() -> tuple[IndependenceAxes, IndependenceAxes]:
 # each project asserts the exact ordered lists and this version number.
 # ---------------------------------------------------------------------------
 
-INDEPENDENCE_VOCABULARY_VERSION = 2
+INDEPENDENCE_VOCABULARY_VERSION = 3
 
 DEPTH_WIRE: dict[WitnessDepth, str] = {
     WitnessDepth.REALITY: "reality",
@@ -194,7 +254,16 @@ ATTESTATION_WIRE: dict[Attestation, str] = {
     Attestation.ADVERSARIAL: "adversarial",
 }
 
+IDENTITY_WIRE: dict[WitnessIdentity, str] = {
+    WitnessIdentity.ANONYMOUS: "anonymous",
+    WitnessIdentity.PSEUDONYMOUS: "pseudonymous",
+    WitnessIdentity.NAMED: "named",
+    WitnessIdentity.VERIFIED: "verified",
+    WitnessIdentity.BONDED: "bonded",
+}
+
 _DEPTH_BY_WIRE = {v: k for k, v in DEPTH_WIRE.items()}
+_IDENTITY_BY_WIRE = {v: k for k, v in IDENTITY_WIRE.items()}
 _ATTESTATION_BY_WIRE = {v: k for k, v in ATTESTATION_WIRE.items()}
 
 
@@ -205,7 +274,8 @@ class VocabularyError(ValueError):
 def to_wire(axes: IndependenceAxes) -> dict[str, str]:
     """Serialise both axes. Emitted alongside `independence_basis`, not instead."""
     return {"witness_depth": DEPTH_WIRE[axes.depth],
-            "attestation": ATTESTATION_WIRE[axes.attestation]}
+            "attestation": ATTESTATION_WIRE[axes.attestation],
+            "witness_identity": IDENTITY_WIRE[axes.identity]}
 
 
 def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> IndependenceAxes:
@@ -218,8 +288,9 @@ def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> Indepe
     """
     depth_raw = payload.get("witness_depth")
     attest_raw = payload.get("attestation")
+    identity_raw = payload.get("witness_identity")
 
-    if depth_raw is None and attest_raw is None:
+    if depth_raw is None and attest_raw is None and identity_raw is None:
         basis = legacy_basis_value or payload.get("independence_basis") or "unknown"
         if basis not in DECOMPOSITION:
             raise VocabularyError(f"unrecognised independence_basis {basis!r}")
@@ -229,10 +300,13 @@ def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> Indepe
         raise VocabularyError(f"unrecognised witness_depth {depth_raw!r}")
     if attest_raw is not None and attest_raw not in _ATTESTATION_BY_WIRE:
         raise VocabularyError(f"unrecognised attestation {attest_raw!r}")
+    if identity_raw is not None and identity_raw not in _IDENTITY_BY_WIRE:
+        raise VocabularyError(f"unrecognised witness_identity {identity_raw!r}")
 
     return IndependenceAxes(
         _DEPTH_BY_WIRE.get(depth_raw, WitnessDepth.UNSTATED),
         _ATTESTATION_BY_WIRE.get(attest_raw, Attestation.NONE),
+        _IDENTITY_BY_WIRE.get(identity_raw, WitnessIdentity.ANONYMOUS),
     )
 
 
@@ -240,4 +314,4 @@ def vocabulary_coverage() -> tuple[int, int]:
     """`(expressible_under_v1, total_points)`. Was 4 of 30; v2 is all of them."""
     v1 = len({DECOMPOSITION[k] for k in DECOMPOSITION})
     real_depths = [d for d in WitnessDepth if d is not WitnessDepth.UNSTATED]
-    return v1, len(real_depths) * len(Attestation)
+    return v1, len(real_depths) * len(Attestation) * len(WitnessIdentity)
