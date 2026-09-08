@@ -6,6 +6,7 @@ from aggregation.independence_axes import (
     DECOMPOSITION,
     Attestation,
     DepthBasis,
+    effective_basis,
     IndependenceAxes,
     WitnessDepth,
     WitnessIdentity,
@@ -204,3 +205,116 @@ class DepthBasisTests(unittest.TestCase):
                    for b in DepthBasis]
         self.assertEqual(granted, sorted(granted, reverse=True),
                          "stronger backing must never grant a shallower depth")
+
+
+class OathTests(unittest.TestCase):
+    """Sworn testimony carries no artifact and is still strong evidence.
+
+    Owner review raised it; the resolution is that the oath is not an exception
+    to the cost rule but another way of paying it. An artifact is expensive to
+    fabricate; sworn testimony is expensive to be caught on. The teeth are the
+    perjury statute, not the ceremony.
+    """
+
+    @staticmethod
+    def _sworn(identity, reference="Case 2026-CV-118"):
+        return IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                identity, DepthBasis.DECLARED, reference)
+
+    def test_a_bonded_witness_gets_full_depth_with_no_artifact(self):
+        self.assertEqual(self._sworn(WitnessIdentity.BONDED).admissible,
+                         WitnessDepth.REALITY)
+
+    def test_an_anonymous_oath_stakes_nothing(self):
+        """Nobody to prosecute, so nothing is risked, so nothing is earned.
+
+        The model predicts why anonymous testimony is generally inadmissible
+        rather than merely accommodating it.
+        """
+        self.assertEqual(self._sworn(WitnessIdentity.ANONYMOUS).admissible,
+                         WitnessDepth.TEXT)
+
+    def test_a_pseudonym_stakes_nothing_either(self):
+        """Reputation without enforcement is not exposure."""
+        self.assertEqual(self._sworn(WitnessIdentity.PSEUDONYMOUS).admissible,
+                         WitnessDepth.TEXT)
+
+    def test_exposure_scales_the_depth_it_supports(self):
+        granted = [self._sworn(i).admissible for i in WitnessIdentity]
+        self.assertEqual(granted, sorted(granted, reverse=True),
+                         "more at stake must never support a shallower claim")
+
+    def test_stake_and_artifact_are_alternative_payments(self):
+        """Either route reaches REALITY; neither is required if the other holds."""
+        by_stake = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                    WitnessIdentity.BONDED, DepthBasis.DECLARED,
+                                    "Case 2026-CV-118")
+        by_artifact = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                       WitnessIdentity.ANONYMOUS,
+                                       DepthBasis.DEVICE_ATTESTED)
+        self.assertEqual(by_stake.admissible, WitnessDepth.REALITY)
+        self.assertEqual(by_artifact.admissible, WitnessDepth.REALITY)
+
+    def test_the_stronger_of_the_two_payments_is_used(self):
+        self.assertEqual(
+            effective_basis(DepthBasis.DECLARED, WitnessIdentity.BONDED),
+            DepthBasis.DEVICE_ATTESTED)
+        self.assertEqual(
+            effective_basis(DepthBasis.ARTIFACT, WitnessIdentity.ANONYMOUS),
+            DepthBasis.ARTIFACT)
+
+
+class StakeReferenceTests(unittest.TestCase):
+    """Minority Prophet does not punish anyone -- it is the assayer, not the
+    sheriff. `BONDED` records that a claim sits under someone else's
+    consequence regime; it never creates one.
+
+    Which makes the reference load-bearing. `BONDED` unlocks `REALITY` with no
+    artifact, so a self-declared stake would be the cheapest lie in the system
+    and the most valuable one.
+    """
+
+    @staticmethod
+    def _bonded(reference):
+        return IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                WitnessIdentity.BONDED, DepthBasis.DECLARED,
+                                reference)
+
+    def test_an_unreferenced_stake_is_not_honoured(self):
+        self.assertEqual(self._bonded(None).honoured_identity,
+                         WitnessIdentity.NAMED)
+
+    def test_an_unreferenced_stake_does_not_unlock_reality(self):
+        self.assertEqual(self._bonded(None).admissible, WitnessDepth.RAW)
+
+    def test_a_referenced_stake_is_honoured(self):
+        bonded = self._bonded("Case 2026-CV-118")
+        self.assertEqual(bonded.honoured_identity, WitnessIdentity.BONDED)
+        self.assertEqual(bonded.admissible, WitnessDepth.REALITY)
+
+    def test_whitespace_is_not_a_reference(self):
+        self.assertEqual(self._bonded("   ").honoured_identity,
+                         WitnessIdentity.NAMED)
+
+    def test_verified_also_requires_a_reference(self):
+        """Cryptographic binding is a claim about a key that must point at one."""
+        unreferenced = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                        WitnessIdentity.VERIFIED,
+                                        DepthBasis.DECLARED, None)
+        self.assertEqual(unreferenced.honoured_identity, WitnessIdentity.NAMED)
+
+    def test_weaker_identities_need_no_reference(self):
+        """Claiming to be findable, or not to be, stakes nothing to check."""
+        for identity in (WitnessIdentity.ANONYMOUS, WitnessIdentity.PSEUDONYMOUS,
+                         WitnessIdentity.NAMED):
+            axes = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                    identity, DepthBasis.DECLARED, None)
+            self.assertEqual(axes.honoured_identity, identity)
+
+    def test_an_artifact_still_works_without_any_stake(self):
+        """The two payments stay independent: no reference needed to produce
+        evidence, no evidence needed to be exposed."""
+        by_artifact = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                       WitnessIdentity.ANONYMOUS,
+                                       DepthBasis.DEVICE_ATTESTED, None)
+        self.assertEqual(by_artifact.admissible, WitnessDepth.REALITY)

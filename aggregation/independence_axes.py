@@ -87,6 +87,23 @@ class DepthBasis(IntEnum):
 #: the same place proximate cause was.
 DEPTH_FLOOR: dict[DepthBasis, "WitnessDepth"] = {}
 
+#: What each identity level stakes on the claim, expressed as the backing it is
+#: worth on its own.
+#:
+#: Law furnished this. Sworn eyewitness testimony carries no artifact and no
+#: instrument, yet is treated as strong evidence -- because the oath is not an
+#: exception to the cost rule but another way of paying it. An artifact is
+#: expensive to fabricate; sworn testimony is expensive to be caught on.
+#:
+#: The teeth are the perjury statute, not the ceremony. Swearing changes nothing
+#: by itself; what changes is that a false statement becomes a prosecutable act.
+#: So the stake only bites where the claimant can be found and held, which is
+#: why courts require the witness identified, present and cross-examinable, and
+#: why anonymous testimony is generally inadmissible. That is not an
+#: accommodation bolted on here -- the model predicts it: an anonymous oath
+#: stakes nothing, because there is nobody to prosecute.
+IDENTITY_STAKE: dict["WitnessIdentity", DepthBasis] = {}
+
 
 class WitnessIdentity(IntEnum):
     """Whether the *observer* can be identified and held to the claim.
@@ -147,11 +164,41 @@ class IndependenceAxes:
     attestation: Attestation
     identity: WitnessIdentity = WitnessIdentity.ANONYMOUS
     depth_basis: DepthBasis = DepthBasis.DECLARED
+    stake_reference: str | None = None
+    """Where the exposure lives: a case number, licence, bond or registry id.
+
+    Minority Prophet does not punish anyone. It is the assayer, not the sheriff.
+    An oath has teeth because perjury is prosecutable *elsewhere*, so `BONDED`
+    records that a claim sits under someone else's consequence regime -- it
+    never creates one.
+
+    Which makes this field load-bearing rather than decorative. `BONDED` unlocks
+    `REALITY` depth with no artifact, so a self-declared `BONDED` would be the
+    cheapest lie in the system and the most valuable. It must therefore point at
+    something checkable, and an unreferenced stake is not honoured.
+    """
+
+    @property
+    def honoured_identity(self) -> "WitnessIdentity":
+        """Identity after checking that any claimed exposure points somewhere.
+
+        A stake asserted without a reference is an assertion, not a stake, and
+        degrades to `NAMED` -- the strongest position a bare claim of identity
+        can reach. Overclaiming buys nothing here either.
+        """
+        if (self.identity >= WitnessIdentity.VERIFIED
+                and not (self.stake_reference or "").strip()):
+            return WitnessIdentity.NAMED
+        return self.identity
 
     @property
     def admissible(self) -> WitnessDepth:
-        """Depth after applying its backing. Use this, not `depth`, to decide."""
-        return admissible_depth(self.depth, self.depth_basis)
+        """Depth after applying its backing, whether produced or staked.
+
+        Use this, not `depth`, to decide anything.
+        """
+        return admissible_depth(self.depth, self.depth_basis,
+                                self.honoured_identity)
 
     def dominates(self, other: "IndependenceAxes") -> bool:
         """Partial order over all three axes. Never a score.
@@ -185,6 +232,14 @@ def decompose(basis) -> IndependenceAxes:
     return DECOMPOSITION[getattr(basis, "value", basis)]
 
 
+IDENTITY_STAKE.update({
+    WitnessIdentity.ANONYMOUS: DepthBasis.DECLARED,        # nothing at stake
+    WitnessIdentity.PSEUDONYMOUS: DepthBasis.DECLARED,     # reputation, unenforceable
+    WitnessIdentity.NAMED: DepthBasis.PROCEDURAL,          # findable; reputational cost
+    WitnessIdentity.VERIFIED: DepthBasis.ARTIFACT,         # bound; can be held to it
+    WitnessIdentity.BONDED: DepthBasis.DEVICE_ATTESTED,    # sworn; real exposure
+})
+
 DEPTH_FLOOR.update({
     DepthBasis.DECLARED: WitnessDepth.TEXT,
     DepthBasis.PROCEDURAL: WitnessDepth.RAW,
@@ -193,15 +248,32 @@ DEPTH_FLOOR.update({
 })
 
 
-def admissible_depth(claimed: WitnessDepth, basis: DepthBasis) -> WitnessDepth:
+def effective_basis(basis: DepthBasis, identity: "WitnessIdentity") -> DepthBasis:
+    """The stronger of what was produced and what was staked.
+
+    A witness may back a claim with an artifact, or with their own exposure, or
+    with both. The two are alternative payments for the same thing.
+    """
+    return DepthBasis(max(basis, IDENTITY_STAKE[identity]))
+
+
+def admissible_depth(claimed: WitnessDepth, basis: DepthBasis,
+                     identity: "WitnessIdentity" = None) -> WitnessDepth:
     """The depth actually granted: the shallower of what was claimed and what
     the backing supports.
 
     Overclaiming is not punished, it is simply ineffective -- a `REALITY` claim
-    backed by nothing but assertion is granted `TEXT`, which is what a bare
-    assertion has always been worth. Underclaiming is honoured: strong backing
-    on a modest claim does not inflate it.
+    backed by nothing but assertion from an unfindable source is granted `TEXT`,
+    which is what a bare assertion has always been worth. Underclaiming is
+    honoured: strong backing on a modest claim does not inflate it.
+
+    Caveat worth stating: a stake is only worth its enforcement. The oath has
+    teeth because perjury is prosecutable; a bond in a jurisdiction that never
+    prosecutes is theatre, and this model cannot tell the difference. `BONDED`
+    is a claim about consequences that somebody else has to make true.
     """
+    if identity is not None:
+        basis = effective_basis(basis, identity)
     return WitnessDepth(max(claimed, DEPTH_FLOOR[basis]))
 
 
