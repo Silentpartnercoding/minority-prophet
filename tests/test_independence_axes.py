@@ -6,6 +6,7 @@ from aggregation.independence_axes import (
     DECOMPOSITION,
     Attestation,
     DepthBasis,
+    admissible_depth,
     effective_basis,
     IndependenceAxes,
     WitnessDepth,
@@ -221,9 +222,12 @@ class OathTests(unittest.TestCase):
         return IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
                                 identity, DepthBasis.DECLARED, reference)
 
-    def test_a_bonded_witness_gets_full_depth_with_no_artifact(self):
-        self.assertEqual(self._sworn(WitnessIdentity.BONDED).admissible,
-                         WitnessDepth.REALITY)
+    def test_a_resolved_bond_gets_full_depth_with_no_artifact(self):
+        sworn = self._sworn(WitnessIdentity.BONDED)
+        self.assertEqual(
+            admissible_depth(sworn.depth, sworn.depth_basis,
+                             sworn.honoured_identity_with(lambda r: True)),
+            WitnessDepth.REALITY)
 
     def test_an_anonymous_oath_stakes_nothing(self):
         """Nobody to prosecute, so nothing is risked, so nothing is earned.
@@ -240,7 +244,9 @@ class OathTests(unittest.TestCase):
                          WitnessDepth.TEXT)
 
     def test_exposure_scales_the_depth_it_supports(self):
-        granted = [self._sworn(i).admissible for i in WitnessIdentity]
+        granted = [admissible_depth(a.depth, a.depth_basis,
+                                    a.honoured_identity_with(lambda r: True))
+                   for a in (self._sworn(i) for i in WitnessIdentity)]
         self.assertEqual(granted, sorted(granted, reverse=True),
                          "more at stake must never support a shallower claim")
 
@@ -249,10 +255,12 @@ class OathTests(unittest.TestCase):
         by_stake = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
                                     WitnessIdentity.BONDED, DepthBasis.DECLARED,
                                     "Case 2026-CV-118")
+        resolved = admissible_depth(by_stake.depth, by_stake.depth_basis,
+                                    by_stake.honoured_identity_with(lambda r: True))
         by_artifact = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
                                        WitnessIdentity.ANONYMOUS,
                                        DepthBasis.DEVICE_ATTESTED)
-        self.assertEqual(by_stake.admissible, WitnessDepth.REALITY)
+        self.assertEqual(resolved, WitnessDepth.REALITY)
         self.assertEqual(by_artifact.admissible, WitnessDepth.REALITY)
 
     def test_the_stronger_of_the_two_payments_is_used(self):
@@ -287,10 +295,36 @@ class StakeReferenceTests(unittest.TestCase):
     def test_an_unreferenced_stake_does_not_unlock_reality(self):
         self.assertEqual(self._bonded(None).admissible, WitnessDepth.RAW)
 
-    def test_a_referenced_stake_is_honoured(self):
+    def test_the_three_tiers_are_ordered(self):
+        absent = self._bonded(None).honoured_identity
+        checkable = self._bonded("Case 1").honoured_identity
+        checked = self._bonded("Case 1").honoured_identity_with(lambda r: True)
+        self.assertLess(absent, checkable)
+        self.assertLess(checkable, checked)
+
+    def test_a_reference_alone_is_checkable_not_checked(self):
+        """A bond IS checkable -- issuer, number, amount, expiry. But
+        "checkable" and "checked" are different states, and collapsing them is
+        how a disposition passes for a fact."""
         bonded = self._bonded("Case 2026-CV-118")
-        self.assertEqual(bonded.honoured_identity, WitnessIdentity.BONDED)
-        self.assertEqual(bonded.admissible, WitnessDepth.REALITY)
+        self.assertEqual(bonded.honoured_identity, WitnessIdentity.VERIFIED)
+        self.assertEqual(bonded.admissible, WitnessDepth.METHOD)
+
+    def test_a_resolved_reference_is_honoured_in_full(self):
+        bonded = self._bonded("Case 2026-CV-118")
+        self.assertEqual(bonded.honoured_identity_with(lambda r: True),
+                         WitnessIdentity.BONDED)
+
+    def test_a_rejected_reference_falls_back_to_checkable(self):
+        """Resolver says it does not exist: the claim still named something."""
+        bonded = self._bonded("Case 2026-CV-118")
+        self.assertEqual(bonded.honoured_identity_with(lambda r: False),
+                         WitnessIdentity.VERIFIED)
+
+    def test_no_resolver_means_nothing_resolves(self):
+        """MP operates no registries. With none injected, fail closed."""
+        self.assertEqual(self._bonded("Case 2026-CV-118").honoured_identity,
+                         WitnessIdentity.VERIFIED)
 
     def test_whitespace_is_not_a_reference(self):
         self.assertEqual(self._bonded("   ").honoured_identity,

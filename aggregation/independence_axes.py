@@ -178,18 +178,42 @@ class IndependenceAxes:
     something checkable, and an unreferenced stake is not honoured.
     """
 
+    def honoured_identity_with(self, resolver=None) -> "WitnessIdentity":
+        """Identity after checking what the claimed exposure actually is.
+
+        A bond is checkable -- it has an issuer, a number, an amount, an expiry.
+        So is a licence, so is a docket. But "checkable" and "checked" are
+        different states, and collapsing them is how a disposition passes for a
+        fact. Three tiers, matching `provenance.graph.resolvable_reference`,
+        which draws the same line one level down:
+
+        * **no reference** -- nothing was named. Degrades to `NAMED`, the
+          strongest position a bare claim of identity can reach.
+        * **reference present, unresolved** -- the claim named something that
+          could in principle be checked, and nobody checked it. Capped at
+          `VERIFIED`. Falsifiable but unfalsified is worth more than
+          unfalsifiable and less than confirmed.
+        * **reference resolved** -- a resolver confirmed it exists, is current,
+          and names this party. `BONDED` stands.
+
+        Minority Prophet operates no registries, so `resolver` is injected like
+        `IssuerVerifier` is. With none supplied nothing resolves, and the
+        default is therefore the middle tier rather than the top. Fail closed.
+        """
+        if self.identity < WitnessIdentity.VERIFIED:
+            return self.identity
+        reference = (self.stake_reference or "").strip()
+        if not reference:
+            return WitnessIdentity.NAMED
+        if resolver is not None and resolver(reference):
+            return self.identity
+        return min(self.identity, WitnessIdentity.VERIFIED)
+
     @property
     def honoured_identity(self) -> "WitnessIdentity":
-        """Identity after checking that any claimed exposure points somewhere.
-
-        A stake asserted without a reference is an assertion, not a stake, and
-        degrades to `NAMED` -- the strongest position a bare claim of identity
-        can reach. Overclaiming buys nothing here either.
-        """
-        if (self.identity >= WitnessIdentity.VERIFIED
-                and not (self.stake_reference or "").strip()):
-            return WitnessIdentity.NAMED
-        return self.identity
+        """Identity honoured with no resolver available. See
+        `honoured_identity_with`."""
+        return self.honoured_identity_with(None)
 
     @property
     def admissible(self) -> WitnessDepth:
