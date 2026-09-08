@@ -90,39 +90,53 @@ This also gives adversarial review a formal position it did not have: it is the
 strongest attestation, because a party trying to find fault and failing tells
 you something a party trying to confirm never can.
 
-## What cannot be derived — and it is exactly one thing
+## What cannot be derived — retracted
 
-Everything above is a fact about a procedure. This is not:
+*This section previously claimed one irreducible gap: the false-allow /
+false-deny exchange rate, said to be owed by the owner. That was wrong, and
+owner review is what showed it. Retracted rather than silently deleted, per
+`PROGRAM.md`.*
 
-> **How many independent witnesses, against which class of error, is enough to
-> act?**
+The argument for a threshold assumed a gate with **two** outcomes. Forced to
+answer `allow` or `deny` on every case, something must adjudicate the
+undetermined middle, and that something is a preference expressed as a number.
 
-No amount of analysis produces that number, because it is not a claim about the
-world. It is a statement of which mistake you would rather make. Formally, the
-**exchange rate between false-allow and false-deny**: how many wrongly-refused
-true claims is one wrongly-admitted false claim worth?
+Give the gate a third outcome and the requirement disappears. The owner's
+objection — the laws already pin the extremes, the gate can reroute, human
+escalation exists, and every case differs — is correct, and together those
+remove the need for a threshold entirely.
 
-That is irreducibly the owner's, and it would be illegitimate for anyone else to
-choose it — a verifier that sets its own risk appetite has assumed the authority
-of the party it is supposed to be checking.
+`canon/precedent.py` implements it:
 
-Three things make it a smaller ask than it sounds:
+* **Determined by law, no preference involved.** Bounds not establishable (L8),
+  authority expanded (L1), unresolved authenticated conflict (L7), world state
+  unverified, or zero independent witnesses against the governing error class →
+  `DENY`. These hold on day one against an empty case book.
+* **Determined by precedent.** A case that dominates an allowed precedent on
+  *every* axis is allowed; a case dominated by a denied precedent on every axis
+  is denied. Dominance is a partial order — at least as many witnesses against
+  every error class, at least as reversible, no more tail risk, no more loss.
+  **Nothing is traded against anything**, because trading off is precisely the
+  step that needs a preference. A thousand extra witnesses never buys
+  irreversibility.
+* **Everything else escalates.** Not guessed.
 
-1. **Its shape is already fixed by the canon.** Law 2 (uncertainty contracts
-   authority) and Law 3 (reversibility expands freedom) mean the threshold is
-   not one number but a function of stakes: near-zero for cheap reversible
-   probes, high for irreversible ones. What is missing is calibration, not
-   structure.
-2. **It is per error class, not global.** "Two independent checks against
-   analysis error, one against fabrication" is a complete and usable answer.
-3. **It must be published before the sample** (`A3`), which means it is written
-   once and then constrains everything, rather than being renegotiated per case.
+This is the same borrowing that produced proximate cause. No legislature sets a
+numeric threshold for negligence; cases are decided, reasons are recorded, and
+the determined region grows. The preference still enters — through decided
+cases — but it enters **visibly**, attached to facts, attributed to a person,
+and open to being overturned. A number fixed in advance has none of those
+properties, and is worse for exactly that reason.
 
-## Status
+Two honest consequences, both pinned as tests:
 
-Table populated. Four contested entries assigned conservatively and flagged for
-signature. One genuine gap, which is a preference rather than a fact and is
-therefore not ours to close.
+* **Cold start.** With no case law, everything undetermined escalates. That is
+  correct behaviour rather than a defect.
+* **The escalation rate replaces the threshold, and it is measured rather than
+  chosen.** If it settles low, the system works. If it settles high, the answer
+  is more precedent or better evidence — never a looser number.
 
-Unknown procedures raise rather than defaulting to TEXT: an unassigned procedure
-is a refusal with a stated reason, not a silent downgrade.
+One subtlety worth stating: being *worse* than an allowed precedent does not
+produce a denial. It produces an escalation. The gate never extrapolates past
+what it was actually told.
+
