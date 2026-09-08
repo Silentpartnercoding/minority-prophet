@@ -155,3 +155,89 @@ def rank_inversion_witness() -> tuple[IndependenceAxes, IndependenceAxes]:
     notarised_hearsay = IndependenceAxes(WitnessDepth.TEXT, Attestation.INDEPENDENT)
     anonymous_eyewitness = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE)
     return notarised_hearsay, anonymous_eyewitness
+
+
+# ---------------------------------------------------------------------------
+# Shared wire vocabulary, v2
+#
+# v1 was the four values of `IndependenceBasis`, which express 4 of the 30
+# points in the (depth x attestation) space -- 13%. Five of six witness depths
+# and two of five attestation levels had no encoding at all, so a root that
+# reached reality could not be written down.
+#
+# v2 adds both axes explicitly. It is strictly additive: the four v1 strings are
+# unchanged and still parse, a v1 reader ignores the new fields, and a v2 reader
+# falls back to decomposing the v1 value when the new fields are absent.
+#
+# These strings are duplicated byte-for-byte in
+# `invention_engine/models.py`. Neither copy may drift; a conformance test in
+# each project asserts the exact ordered lists and this version number.
+# ---------------------------------------------------------------------------
+
+INDEPENDENCE_VOCABULARY_VERSION = 2
+
+DEPTH_WIRE: dict[WitnessDepth, str] = {
+    WitnessDepth.REALITY: "reality",
+    WitnessDepth.METHOD: "method",
+    WitnessDepth.REPLICATION: "replication",
+    WitnessDepth.RAW: "raw",
+    WitnessDepth.ANALYSIS: "analysis",
+    WitnessDepth.TEXT: "text",
+    WitnessDepth.UNSTATED: "unstated",
+}
+
+ATTESTATION_WIRE: dict[Attestation, str] = {
+    Attestation.NONE: "none",
+    Attestation.SELF: "self",
+    Attestation.INTERNAL: "internal",
+    Attestation.INDEPENDENT: "independent",
+    Attestation.ADVERSARIAL: "adversarial",
+}
+
+_DEPTH_BY_WIRE = {v: k for k, v in DEPTH_WIRE.items()}
+_ATTESTATION_BY_WIRE = {v: k for k, v in ATTESTATION_WIRE.items()}
+
+
+class VocabularyError(ValueError):
+    """An unrecognised wire value. Refused, never coerced to a default."""
+
+
+def to_wire(axes: IndependenceAxes) -> dict[str, str]:
+    """Serialise both axes. Emitted alongside `independence_basis`, not instead."""
+    return {"witness_depth": DEPTH_WIRE[axes.depth],
+            "attestation": ATTESTATION_WIRE[axes.attestation]}
+
+
+def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> IndependenceAxes:
+    """Parse both axes, falling back to the v1 value when they are absent.
+
+    A v1 producer sends only `independence_basis`; the result is then whatever
+    that value pins down, with `UNSTATED` where it says nothing. Unknown strings
+    raise rather than defaulting -- an unrecognised vocabulary is a refusal, not
+    a downgrade.
+    """
+    depth_raw = payload.get("witness_depth")
+    attest_raw = payload.get("attestation")
+
+    if depth_raw is None and attest_raw is None:
+        basis = legacy_basis_value or payload.get("independence_basis") or "unknown"
+        if basis not in DECOMPOSITION:
+            raise VocabularyError(f"unrecognised independence_basis {basis!r}")
+        return DECOMPOSITION[basis]
+
+    if depth_raw is not None and depth_raw not in _DEPTH_BY_WIRE:
+        raise VocabularyError(f"unrecognised witness_depth {depth_raw!r}")
+    if attest_raw is not None and attest_raw not in _ATTESTATION_BY_WIRE:
+        raise VocabularyError(f"unrecognised attestation {attest_raw!r}")
+
+    return IndependenceAxes(
+        _DEPTH_BY_WIRE.get(depth_raw, WitnessDepth.UNSTATED),
+        _ATTESTATION_BY_WIRE.get(attest_raw, Attestation.NONE),
+    )
+
+
+def vocabulary_coverage() -> tuple[int, int]:
+    """`(expressible_under_v1, total_points)`. Was 4 of 30; v2 is all of them."""
+    v1 = len({DECOMPOSITION[k] for k in DECOMPOSITION})
+    real_depths = [d for d in WitnessDepth if d is not WitnessDepth.UNSTATED]
+    return v1, len(real_depths) * len(Attestation)
