@@ -34,36 +34,61 @@ ladder says so structurally.
 Reasoning is not observation. This is the bootstrap, and a ladder that rewarded
 it would be worthless.
 
-## What is genuinely contested — 4 of 24
+## The four "contested" entries were not close calls — they were a missing parameter
 
-These are close calls where a competent reviewer could place them one rung
-either way. They need a signature, and under `ASSAYER.md` A3 the signature must
-land *before* any sample is drawn.
+Owner review resolved all four at once, and the resolution is structural.
 
-**1. `different-lab-same-protocol` — REPLICATION or METHOD?**
-Assigned REPLICATION: changing who runs a protocol does not change the
-protocol, and a biased protocol is biased in both labs. The case for METHOD is
-that labs differ in unrecorded ways — reagents, calibration, local practice —
-which sometimes does break systematic error. *Assigned conservatively.*
+**A rung is not a property of a procedure. It is a property of a
+`(procedure, proposition)` pair.** The same act reaches different depths
+depending on what is being measured:
 
-**2. `peer-review` — TEXT or ANALYSIS?**
-Assigned TEXT: reviewers read, they do not re-measure, and they usually do not
-recompute. The case for ANALYSIS is reviewers who genuinely check the
-arithmetic. Consequential, because it decides whether peer review adds
-independent witnesses or none. *Assigned conservatively, and it is the entry
-most likely to be argued with in public.*
+| Procedure | Proposition is about… | Rung |
+|---|---|---|
+| retrieved-original-document | the document itself | **REALITY** — the artifact *is* the world for that claim |
+| retrieved-original-document | events the document describes | RAW |
+| second-model-query | model behaviour | **REALITY** — a model was actually observed |
+| second-model-query | reality | TEXT — and correlated, same control domain |
+| peer-review | whether process was followed | **METHOD** |
+| peer-review | the world | TEXT |
+| different-lab-same-protocol | reproducibility of the protocol | **REALITY** |
+| different-lab-same-protocol | the world | REPLICATION |
 
-**3. `retrieved-original-document` — RAW or METHOD?**
-Assigned RAW: obtaining the original record goes back past the summaries but
-does not observe the world. Best-evidence, not eyewitness. The case for METHOD
-is that retrieval through an independent archive is a genuinely separate channel.
+The owner's formulation: *"the original document should be original 1 of 1, but
+you can have multiple independent witnesses of it — it depends on the context in
+which you're measuring."* Implemented in `canon/targets.py`; undefined
+`(procedure, target)` pairs are refused rather than guessed.
 
-**4. `second-model-reviewing-first-model` — TEXT or off-ladder?**
-Assigned TEXT *and* flagged same-control-domain. The argument for off-ladder is
-that it is worse than uninformative: overlapping training data means shared
-priors, so two models agree *confidently on their shared errors*. That is
-positive correlation, not absence of information, and the ladder's floor may not
-be low enough to express it.
+## Witnessing and attesting are different axes
+
+The second correction. *"Peer review is NOT a witness, it's a testament — it has
+more rigor than someone re-reading the text."*
+
+Both halves are true and the single-axis ladder could express neither. Peer
+review adds no observation of the world, and is plainly more than one more
+person reading. Same for a second lab: it is replication, and *some action was
+taken* by a separate party.
+
+So attestation gets its own axis — NONE, SELF, INTERNAL, INDEPENDENT,
+ADVERSARIAL — and the two compose without mixing:
+
+* **Witness depth sets `N_eff`.** How many independent observations exist.
+* **Attestation never adds a witness.** It reduces the *margin* required on top
+  of `N_eff`, because margin exists to absorb **undetected** dependence (R3),
+  and an independent party putting its name on the chain is precisely what makes
+  silent laundering less likely.
+
+Two consequences, both pinned as tests:
+
+- **Self-attestation and internal attestation reduce nothing.** Vouching for
+  yourself is the bootstrap; vouching from inside the same control domain is
+  internal replication. Only a party that could have said otherwise counts.
+- **A testament lowers the floor, it never removes it.** Margin saturates at 1
+  regardless of how strong the attestation is. No amount of review substitutes
+  for having looked.
+
+This also gives adversarial review a formal position it did not have: it is the
+strongest attestation, because a party trying to find fault and failing tells
+you something a party trying to confirm never can.
 
 ## What cannot be derived — and it is exactly one thing
 
