@@ -10,8 +10,10 @@ import unittest
 
 from aggregation.independence_axes import (
     ATTESTATION_WIRE,
+    DEPTH_BASIS_WIRE,
     DEPTH_WIRE,
     IDENTITY_WIRE,
+    DepthBasis,
     INDEPENDENCE_VOCABULARY_VERSION,
     Attestation,
     IndependenceAxes,
@@ -27,12 +29,13 @@ from aggregation.independence_axes import (
 from aggregation.root_vote import IndependenceBasis
 
 #: Duplicated verbatim in the invention-graph test.
-CONTRACT_VERSION = 3
+CONTRACT_VERSION = 4
 CONTRACT_BASIS = ["attested", "declared", "inferred", "unknown"]
 CONTRACT_DEPTH = ["reality", "method", "replication", "raw", "analysis",
                   "text", "unstated"]
 CONTRACT_ATTESTATION = ["none", "self", "internal", "independent", "adversarial"]
 CONTRACT_IDENTITY = ["anonymous", "pseudonymous", "named", "verified", "bonded"]
+CONTRACT_DEPTH_BASIS = ["declared", "procedural", "artifact", "device-attested"]
 
 
 class VocabularyConformanceTests(unittest.TestCase):
@@ -53,10 +56,15 @@ class VocabularyConformanceTests(unittest.TestCase):
         self.assertEqual([IDENTITY_WIRE[i] for i in WitnessIdentity],
                          CONTRACT_IDENTITY)
 
+    def test_depth_basis_vocabulary(self):
+        self.assertEqual([DEPTH_BASIS_WIRE[b] for b in DepthBasis],
+                         CONTRACT_DEPTH_BASIS)
+
     def test_wire_maps_are_total(self):
         self.assertEqual(len(DEPTH_WIRE), len(WitnessDepth))
         self.assertEqual(len(ATTESTATION_WIRE), len(Attestation))
         self.assertEqual(len(IDENTITY_WIRE), len(WitnessIdentity))
+        self.assertEqual(len(DEPTH_BASIS_WIRE), len(DepthBasis))
 
 
 class GapClosedTests(unittest.TestCase):
@@ -74,11 +82,13 @@ class GapClosedTests(unittest.TestCase):
         for depth in WitnessDepth:
             for attestation in Attestation:
                 for identity in WitnessIdentity:
-                    axes = IndependenceAxes(depth, attestation, identity)
-                    self.assertEqual(from_wire(to_wire(axes)), axes)
+                    for basis in DepthBasis:
+                        axes = IndependenceAxes(depth, attestation, identity,
+                                                basis)
+                        self.assertEqual(from_wire(to_wire(axes)), axes)
 
-    def test_v1_expressed_four_of_one_hundred_and_fifty(self):
-        self.assertEqual(vocabulary_coverage(), (4, 150))
+    def test_v1_expressed_four_of_six_hundred(self):
+        self.assertEqual(vocabulary_coverage(), (4, 600))
 
 
 class WitnessIdentityTests(unittest.TestCase):

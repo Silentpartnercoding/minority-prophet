@@ -5,8 +5,10 @@ import unittest
 from aggregation.independence_axes import (
     DECOMPOSITION,
     Attestation,
+    DepthBasis,
     IndependenceAxes,
     WitnessDepth,
+    WitnessIdentity,
     decompose,
     legacy_basis,
     rank_inversion_witness,
@@ -35,13 +37,18 @@ class InversionTests(unittest.TestCase):
 
 class AxisIndependenceTests(unittest.TestCase):
     def test_vouching_does_not_buy_depth(self):
-        shallow_but_vouched = IndependenceAxes(WitnessDepth.TEXT,
-                                               Attestation.ADVERSARIAL)
-        deep_unvouched = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE)
+        shallow_but_vouched = IndependenceAxes(
+            WitnessDepth.TEXT, Attestation.ADVERSARIAL,
+            WitnessIdentity.ANONYMOUS, DepthBasis.DEVICE_ATTESTED)
+        deep_unvouched = IndependenceAxes(
+            WitnessDepth.REALITY, Attestation.NONE,
+            WitnessIdentity.ANONYMOUS, DepthBasis.ARTIFACT)
         self.assertFalse(shallow_but_vouched.dominates(deep_unvouched))
 
     def test_depth_does_not_buy_vouching(self):
-        deep_unvouched = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE)
+        deep_unvouched = IndependenceAxes(
+            WitnessDepth.REALITY, Attestation.NONE,
+            WitnessIdentity.ANONYMOUS, DepthBasis.ARTIFACT)
         shallow_vouched = IndependenceAxes(WitnessDepth.TEXT,
                                            Attestation.INDEPENDENT)
         self.assertFalse(deep_unvouched.dominates(shallow_vouched))
@@ -145,3 +152,55 @@ class MissingTopTests(unittest.TestCase):
             axes = IndependenceAxes(WitnessDepth.REALITY, attestation)
             recovered = decompose(legacy_basis(axes))
             self.assertNotEqual(recovered.depth, WitnessDepth.REALITY)
+
+
+class DepthBasisTests(unittest.TestCase):
+    """A stated depth is worth what its backing is worth."""
+
+    def test_an_unbacked_eyewitness_claim_is_hearsay(self):
+        """Not a regression of the inversion -- an honest reading of it.
+
+        "I was there" costs nothing, so an adversary says it as readily as an
+        honest witness. Granted TEXT, which is what a bare assertion has always
+        been worth.
+        """
+        bare = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                WitnessIdentity.ANONYMOUS, DepthBasis.DECLARED)
+        self.assertEqual(bare.admissible, WitnessDepth.TEXT)
+
+    def test_a_backed_eyewitness_keeps_its_depth(self):
+        backed = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                  WitnessIdentity.ANONYMOUS,
+                                  DepthBasis.DEVICE_ATTESTED)
+        self.assertEqual(backed.admissible, WitnessDepth.REALITY)
+
+    def test_overclaiming_buys_nothing(self):
+        for basis in DepthBasis:
+            claimed = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                       WitnessIdentity.ANONYMOUS, basis)
+            honest = IndependenceAxes(claimed.admissible, Attestation.NONE,
+                                      WitnessIdentity.ANONYMOUS, basis)
+            self.assertEqual(claimed.admissible, honest.admissible)
+
+    def test_underclaiming_is_honoured(self):
+        """Strong backing on a modest claim does not inflate it."""
+        modest = IndependenceAxes(WitnessDepth.TEXT, Attestation.NONE,
+                                  WitnessIdentity.ANONYMOUS,
+                                  DepthBasis.DEVICE_ATTESTED)
+        self.assertEqual(modest.admissible, WitnessDepth.TEXT)
+
+    def test_claiming_to_have_only_read_it_needs_no_backing(self):
+        """A claim against interest: nobody lies to look weaker. That is the
+        hearsay exception, from the same source as proximate cause."""
+        self.assertEqual(
+            IndependenceAxes(WitnessDepth.TEXT, Attestation.NONE,
+                             WitnessIdentity.ANONYMOUS,
+                             DepthBasis.DECLARED).admissible,
+            WitnessDepth.TEXT)
+
+    def test_the_ladder_is_monotone(self):
+        granted = [IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                    WitnessIdentity.ANONYMOUS, b).admissible
+                   for b in DepthBasis]
+        self.assertEqual(granted, sorted(granted, reverse=True),
+                         "stronger backing must never grant a shallower depth")

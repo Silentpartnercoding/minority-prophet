@@ -72,6 +72,7 @@ class RootRequest:
     witness_depth: str | None = None
     attestation: str | None = None
     witness_identity: str | None = None
+    depth_basis: str | None = None
 
     def canonical_bytes(self) -> bytes:
         payload = {
@@ -87,7 +88,8 @@ class RootRequest:
         # Omit-if-absent. A request that states none of the v3 axes produces a
         # byte-identical payload to before, so signatures made against the
         # previous version still verify and no re-signing is required.
-        for field_name in ("attestation", "witness_depth", "witness_identity"):
+        for field_name in ("attestation", "depth_basis", "witness_depth",
+                           "witness_identity"):
             stated = getattr(self, field_name)
             if stated is not None:
                 payload[field_name] = stated

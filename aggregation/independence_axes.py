@@ -58,6 +58,36 @@ class WitnessDepth(IntEnum):
     UNSTATED = 6      # the source vocabulary did not say
 
 
+class DepthBasis(IntEnum):
+    """How we know the depth. The question `WitnessDepth` alone cannot answer.
+
+    A stated depth is worth what its backing is worth. "I was there" is free,
+    so an adversary says it as readily as an honest witness; naming a procedure
+    is also free, though at least specific enough that someone could check.
+    What raises the cost is the observation having **left something behind**
+    that the claimant could not author alone.
+
+    The ladder terminates, which the independence question never did: it bottoms
+    out at a signed artifact, a fact about cryptography rather than a claim
+    about a person.
+    """
+
+    DECLARED = 0          # "I was there." Free, therefore worthless alone.
+    PROCEDURAL = 1        # a named, specific procedure -- checkable in principle
+    ARTIFACT = 2          # the observation produced a log, capture or receipt
+    DEVICE_ATTESTED = 3   # signed by a keyholding device or instrument
+
+
+#: The deepest rung each basis can support. A claim deeper than its backing is
+#: granted only what the backing carries -- overclaiming buys nothing.
+#:
+#: `DECLARED` bottoms out at `TEXT` deliberately. Claiming to have merely read
+#: something is a claim against interest: nobody lies to look weaker, so the
+#: weakest rung needs no backing. That is the hearsay exception, borrowed from
+#: the same place proximate cause was.
+DEPTH_FLOOR: dict[DepthBasis, "WitnessDepth"] = {}
+
+
 class WitnessIdentity(IntEnum):
     """Whether the *observer* can be identified and held to the claim.
 
@@ -116,6 +146,12 @@ class IndependenceAxes:
     depth: WitnessDepth
     attestation: Attestation
     identity: WitnessIdentity = WitnessIdentity.ANONYMOUS
+    depth_basis: DepthBasis = DepthBasis.DECLARED
+
+    @property
+    def admissible(self) -> WitnessDepth:
+        """Depth after applying its backing. Use this, not `depth`, to decide."""
+        return admissible_depth(self.depth, self.depth_basis)
 
     def dominates(self, other: "IndependenceAxes") -> bool:
         """Partial order over all three axes. Never a score.
@@ -124,7 +160,7 @@ class IndependenceAxes:
         does not buy identity. A pair better on one axis and worse on another is
         **incomparable**, and the caller escalates rather than ranking them.
         """
-        return (self.depth <= other.depth
+        return (self.admissible <= other.admissible
                 and self.attestation >= other.attestation
                 and self.identity >= other.identity)
 
@@ -147,6 +183,26 @@ DECOMPOSITION: dict[str, IndependenceAxes] = {
 def decompose(basis) -> IndependenceAxes:
     """Lossy by necessity: three of the four legacy values carry no depth."""
     return DECOMPOSITION[getattr(basis, "value", basis)]
+
+
+DEPTH_FLOOR.update({
+    DepthBasis.DECLARED: WitnessDepth.TEXT,
+    DepthBasis.PROCEDURAL: WitnessDepth.RAW,
+    DepthBasis.ARTIFACT: WitnessDepth.METHOD,
+    DepthBasis.DEVICE_ATTESTED: WitnessDepth.REALITY,
+})
+
+
+def admissible_depth(claimed: WitnessDepth, basis: DepthBasis) -> WitnessDepth:
+    """The depth actually granted: the shallower of what was claimed and what
+    the backing supports.
+
+    Overclaiming is not punished, it is simply ineffective -- a `REALITY` claim
+    backed by nothing but assertion is granted `TEXT`, which is what a bare
+    assertion has always been worth. Underclaiming is honoured: strong backing
+    on a modest claim does not inflate it.
+    """
+    return WitnessDepth(max(claimed, DEPTH_FLOOR[basis]))
 
 
 def indistinguishable(a: IndependenceAxes, b: IndependenceAxes) -> bool:
@@ -212,6 +268,7 @@ def meet(a: IndependenceAxes, b: IndependenceAxes) -> IndependenceAxes:
         WitnessDepth(max(a.depth, b.depth)),
         Attestation(min(a.attestation, b.attestation)),
         WitnessIdentity(min(a.identity, b.identity)),
+        DepthBasis(min(a.depth_basis, b.depth_basis)),
     )
 
 
@@ -281,8 +338,15 @@ def rank_inversion_witness() -> tuple[IndependenceAxes, IndependenceAxes]:
     the first above the second. On the axes they are incomparable, which is the
     truthful answer: one has a better testament, the other actually saw it.
     """
-    notarised_hearsay = IndependenceAxes(WitnessDepth.TEXT, Attestation.INDEPENDENT)
-    anonymous_eyewitness = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE)
+    notarised_hearsay = IndependenceAxes(
+        WitnessDepth.TEXT, Attestation.INDEPENDENT,
+        WitnessIdentity.ANONYMOUS, DepthBasis.DECLARED)
+    # Backed, because an unbacked REALITY claim is granted TEXT and genuinely
+    # *is* hearsay -- see `admissible_depth`. The inversion this documents is
+    # about a real eyewitness, not an asserted one.
+    anonymous_eyewitness = IndependenceAxes(
+        WitnessDepth.REALITY, Attestation.NONE,
+        WitnessIdentity.ANONYMOUS, DepthBasis.ARTIFACT)
     return notarised_hearsay, anonymous_eyewitness
 
 
@@ -303,7 +367,7 @@ def rank_inversion_witness() -> tuple[IndependenceAxes, IndependenceAxes]:
 # each project asserts the exact ordered lists and this version number.
 # ---------------------------------------------------------------------------
 
-INDEPENDENCE_VOCABULARY_VERSION = 3
+INDEPENDENCE_VOCABULARY_VERSION = 4
 
 DEPTH_WIRE: dict[WitnessDepth, str] = {
     WitnessDepth.REALITY: "reality",
@@ -331,7 +395,15 @@ IDENTITY_WIRE: dict[WitnessIdentity, str] = {
     WitnessIdentity.BONDED: "bonded",
 }
 
+DEPTH_BASIS_WIRE: dict[DepthBasis, str] = {
+    DepthBasis.DECLARED: "declared",
+    DepthBasis.PROCEDURAL: "procedural",
+    DepthBasis.ARTIFACT: "artifact",
+    DepthBasis.DEVICE_ATTESTED: "device-attested",
+}
+
 _DEPTH_BY_WIRE = {v: k for k, v in DEPTH_WIRE.items()}
+_DEPTH_BASIS_BY_WIRE = {v: k for k, v in DEPTH_BASIS_WIRE.items()}
 _IDENTITY_BY_WIRE = {v: k for k, v in IDENTITY_WIRE.items()}
 _ATTESTATION_BY_WIRE = {v: k for k, v in ATTESTATION_WIRE.items()}
 
@@ -344,7 +416,8 @@ def to_wire(axes: IndependenceAxes) -> dict[str, str]:
     """Serialise both axes. Emitted alongside `independence_basis`, not instead."""
     return {"witness_depth": DEPTH_WIRE[axes.depth],
             "attestation": ATTESTATION_WIRE[axes.attestation],
-            "witness_identity": IDENTITY_WIRE[axes.identity]}
+            "witness_identity": IDENTITY_WIRE[axes.identity],
+            "depth_basis": DEPTH_BASIS_WIRE[axes.depth_basis]}
 
 
 def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> IndependenceAxes:
@@ -358,8 +431,10 @@ def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> Indepe
     depth_raw = payload.get("witness_depth")
     attest_raw = payload.get("attestation")
     identity_raw = payload.get("witness_identity")
+    basis_raw = payload.get("depth_basis")
 
-    if depth_raw is None and attest_raw is None and identity_raw is None:
+    if (depth_raw is None and attest_raw is None and identity_raw is None
+            and basis_raw is None):
         basis = legacy_basis_value or payload.get("independence_basis") or "unknown"
         if basis not in DECOMPOSITION:
             raise VocabularyError(f"unrecognised independence_basis {basis!r}")
@@ -371,11 +446,14 @@ def from_wire(payload: dict, *, legacy_basis_value: str | None = None) -> Indepe
         raise VocabularyError(f"unrecognised attestation {attest_raw!r}")
     if identity_raw is not None and identity_raw not in _IDENTITY_BY_WIRE:
         raise VocabularyError(f"unrecognised witness_identity {identity_raw!r}")
+    if basis_raw is not None and basis_raw not in _DEPTH_BASIS_BY_WIRE:
+        raise VocabularyError(f"unrecognised depth_basis {basis_raw!r}")
 
     return IndependenceAxes(
         _DEPTH_BY_WIRE.get(depth_raw, WitnessDepth.UNSTATED),
         _ATTESTATION_BY_WIRE.get(attest_raw, Attestation.NONE),
         _IDENTITY_BY_WIRE.get(identity_raw, WitnessIdentity.ANONYMOUS),
+        _DEPTH_BASIS_BY_WIRE.get(basis_raw, DepthBasis.DECLARED),
     )
 
 
@@ -383,4 +461,5 @@ def vocabulary_coverage() -> tuple[int, int]:
     """`(expressible_under_v1, total_points)`. Was 4 of 30; v2 is all of them."""
     v1 = len({DECOMPOSITION[k] for k in DECOMPOSITION})
     real_depths = [d for d in WitnessDepth if d is not WitnessDepth.UNSTATED]
-    return v1, len(real_depths) * len(Attestation) * len(WitnessIdentity)
+    return (v1, len(real_depths) * len(Attestation) * len(WitnessIdentity)
+            * len(DepthBasis))

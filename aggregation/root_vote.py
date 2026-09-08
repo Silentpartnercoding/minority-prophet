@@ -35,9 +35,11 @@ from typing import Iterable, Literal, Protocol
 
 from aggregation.independence_axes import (
     ATTESTATION_WIRE,
+    DEPTH_BASIS_WIRE,
     DEPTH_WIRE,
     IDENTITY_WIRE,
     Attestation,
+    DepthBasis,
     IndependenceAxes,
     WitnessDepth,
     WitnessIdentity,
@@ -116,6 +118,7 @@ class RootedClaim(Protocol):
     witness_depth: str | None
     attestation: str | None
     witness_identity: str | None
+    depth_basis: str | None
 
 
 UnattributedPolicy = Literal["abstain_if_decisive", "ignore", "treat_as_root"]
@@ -250,6 +253,7 @@ def _basis_of(claim: RootedClaim) -> IndependenceBasis:
 _DEPTH_BY_NAME = {v: k for k, v in DEPTH_WIRE.items()}
 _ATTESTATION_BY_NAME = {v: k for k, v in ATTESTATION_WIRE.items()}
 _IDENTITY_BY_NAME = {v: k for k, v in IDENTITY_WIRE.items()}
+_DEPTH_BASIS_BY_NAME = {v: k for k, v in DEPTH_BASIS_WIRE.items()}
 
 
 def _read_axis(claim: RootedClaim, field: str, table: dict, member_type):
@@ -279,8 +283,9 @@ def _axes_of(claim: RootedClaim) -> IndependenceAxes:
     depth = _read_axis(claim, "witness_depth", _DEPTH_BY_NAME, WitnessDepth)
     attestation = _read_axis(claim, "attestation", _ATTESTATION_BY_NAME, Attestation)
     identity = _read_axis(claim, "witness_identity", _IDENTITY_BY_NAME, WitnessIdentity)
+    basis = _read_axis(claim, "depth_basis", _DEPTH_BASIS_BY_NAME, DepthBasis)
 
-    if depth is None and attestation is None and identity is None:
+    if depth is None and attestation is None and identity is None and basis is None:
         return decompose(_basis_of(claim))
 
     legacy = decompose(_basis_of(claim))
@@ -288,6 +293,7 @@ def _axes_of(claim: RootedClaim) -> IndependenceAxes:
         depth if depth is not None else legacy.depth,
         attestation if attestation is not None else legacy.attestation,
         identity if identity is not None else legacy.identity,
+        basis if basis is not None else DepthBasis.DECLARED,
     )
 
 
