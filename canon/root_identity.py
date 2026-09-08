@@ -27,8 +27,13 @@ It is what R3 margin sufficiency exists to absorb.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from itertools import combinations
-from typing import Callable, Hashable, Iterable, Sequence
+from typing import Callable, Iterable
+
+from canon.independent_set import (
+    DEFAULT_BUDGET,
+    CountingBudgetExceeded,
+    maximum_independent_set_size,
+)
 
 
 @dataclass(frozen=True)
@@ -73,15 +78,11 @@ def proximately_dependent(
     return True
 
 
-def _independent(group: Sequence[Witness], dep: Callable[[Witness, Witness], bool]) -> bool:
-    return not any(dep(x, y) for x, y in combinations(group, 2))
-
-
 def effective_witnesses(
     witnesses: Iterable[Witness],
     dep: Callable[[Witness, Witness], bool] = proximately_dependent,
     *,
-    exact: bool = True,
+    budget: int = DEFAULT_BUDGET,
 ) -> int:
     """Number of genuinely independent witnesses: a maximum independent set.
 
@@ -96,22 +97,19 @@ def effective_witnesses(
     detection does, and detection can only ever report "no dependence trace
     found" (ASSAYER A5). Margin sufficiency R3 is what absorbs the residual.
 
-    ``exact=False`` uses a greedy pass -- always a *lower* bound, so
-    conservative in the safe direction.
+    The count is **exact or refused**. Raises ``CountingBudgetExceeded`` rather
+    than degrading to an approximation, because an approximate count is
+    order-dependent and therefore attacker-selectable -- see
+    ``canon/independent_set.py``.
     """
-    items = list(witnesses)
-    if not items:
-        return 0
+    return maximum_independent_set_size(list(witnesses), dep, budget=budget)
 
-    if not exact:
-        chosen: list[Witness] = []
-        for w in items:
-            if all(not dep(w, c) for c in chosen):
-                chosen.append(w)
-        return len(chosen)
 
-    for size in range(len(items), 0, -1):
-        for group in combinations(items, size):
-            if _independent(group, dep):
-                return size
-    return 0
+__all__ = [
+    "Witness",
+    "shares_ancestry",
+    "shares_markers",
+    "proximately_dependent",
+    "effective_witnesses",
+    "CountingBudgetExceeded",
+]

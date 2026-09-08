@@ -121,15 +121,29 @@ is what **R3 margin sufficiency** exists to absorb: require a margin above
 `N_eff` rather than trusting `N_eff` itself. U1 and R3 were always the same
 problem seen from two ends.
 
-**Two owner decisions remain**, both smaller and far more defensible than the
-original question:
+**One owner decision remains**, and it is narrow and auditable.
 
-1. **What qualifies as an intervening re-derivation?** This must be published in
-   advance under `A3` and fixed before the sample is drawn. It is a judgment
-   call, but a narrow and auditable one.
-2. **Exact or greedy?** Maximum independent set is NP-hard in general. The
-   greedy pass is always a *lower* bound — conservative in the safe direction —
-   and both are implemented. At realistic witness counts exact is affordable.
+**What qualifies as an intervening re-derivation?** Answered structurally by the
+proximity ladder in `canon/proximity.py`: re-entry is graded by how far back
+toward the world a witness went, and independence is evaluated relative to a
+named class of error. What still needs an owner signature is the *assignment* of
+particular real procedures to rungs, and it must be published in advance under
+`A3`, before any sample is drawn.
+
+**The exact-versus-greedy question is closed, and greedy loses.** The earlier
+argument — that greedy only under-counts, and under-counting is conservative —
+was wrong. Greedy is order-dependent, and ordering is usually
+attacker-influenced: a hub cited by three unrelated witnesses counts as 1 or 3
+purely by presentation order (`test_ATTACK_greedy_order_dependence`). That is a
+censorship primitive, not conservatism — an adversary who cannot inflate a count
+can still deflate one and suppress a true claim. It also destroys
+falsifiability, since a refusal no longer distinguishes real dependence from an
+unlucky traversal.
+
+Counting is therefore **exact or refused**. `CountingBudgetExceeded` is a denial
+with a stated reason, consistent with `Unknown ≠ Allow`. Exactness is affordable
+because the dependence graph shatters into connected components which are solved
+separately and summed.
 
 ## Verdict on U1
 

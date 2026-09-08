@@ -83,10 +83,16 @@ class ProximateCutTests(unittest.TestCase):
 
 
 class BoundTests(unittest.TestCase):
-    def test_greedy_is_a_lower_bound(self):
+    def test_count_is_order_invariant(self):
+        """Exact counting does not depend on presentation order.
+
+        The greedy approximation does -- see
+        ``tests/test_independent_set.py::test_ATTACK_greedy_order_dependence``.
+        That is why greedy was retired as a fallback rather than kept for speed.
+        """
         ws = [W("A", "1"), W("B", "12"), W("C", "23"), W("D", "3")]
-        self.assertLessEqual(
-            effective_witnesses(ws, exact=False), effective_witnesses(ws))
+        self.assertEqual(effective_witnesses(ws),
+                         effective_witnesses(list(reversed(ws))))
 
     def test_empty_is_zero(self):
         self.assertEqual(effective_witnesses([]), 0)
