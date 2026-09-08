@@ -150,19 +150,72 @@ def decompose(basis) -> IndependenceAxes:
 
 
 def indistinguishable(a: IndependenceAxes, b: IndependenceAxes) -> bool:
-    """True when the two roots cannot be shown to be different sources.
+    """True when the two roots cannot be **shown** to be different sources.
 
-    Two anonymous witnesses to the same event may be one person reporting twice,
-    and no amount of vouching settles it -- a testament about a claim says
-    nothing about whether two sources are the same source. Counting them as two
-    independent roots asserts something unverified, so they collapse to one.
+    Read this carefully: it does not mean they are the same source. Two
+    anonymous witnesses to the same event may be one person reporting twice, or
+    may be two people. Nothing in the record settles it, and no amount of
+    vouching helps -- a testament about a claim says nothing about whether two
+    sources are the same source.
 
-    Anything above `ANONYMOUS` is distinguishable *in principle*; whether two
-    particular roots are distinct is then a question about their identifiers,
-    not about this axis.
+    An earlier version of this module collapsed such roots to a count of one.
+    That was wrong, and owner review caught it. Collapsing *asserts* identity
+    exactly as counting them separately *asserts* distinctness; both invent a
+    fact the record does not contain, and A5 forbids positive claims of absence.
+
+    It is also not conservative, only directional. Undercounting is safe when
+    `N_eff` is used to permit an action and dangerous when it is used to refuse
+    one: an adversary who can strip identity from evidence deflates the count
+    and suppresses a true claim. That is the censorship primitive that retired
+    greedy counting, reintroduced through a default.
+
+    The honest treatment is `effective_witness_bounds`, which reports the range
+    the record actually supports and lets the caller escalate when the answer
+    depends on where in that range the truth lies.
     """
     return (a.identity is WitnessIdentity.ANONYMOUS
             and b.identity is WitnessIdentity.ANONYMOUS)
+
+
+@dataclass(frozen=True)
+class WitnessBounds:
+    """What the record supports: a range, not a number.
+
+    `lower` assumes every mutually-anonymous root is the same source; `upper`
+    assumes they are all different. The truth is somewhere inside, and the
+    record does not say where.
+    """
+
+    lower: int
+    upper: int
+
+    @property
+    def determined(self) -> bool:
+        """True when identity is sufficient to pin the count exactly."""
+        return self.lower == self.upper
+
+    def __post_init__(self) -> None:
+        if self.lower > self.upper:
+            raise ValueError("lower bound exceeds upper bound")
+
+
+def effective_witness_bounds(axes: Sequence[IndependenceAxes]) -> WitnessBounds:
+    """Bound `N_eff` from both sides instead of inventing a point estimate.
+
+    Non-anonymous roots are countable: their identifiers can be compared. Every
+    anonymous root is a coin the record refuses to turn over -- it might be a
+    fresh source or a repeat of one already counted.
+
+    A caller that needs a single number is asking a question the evidence does
+    not answer. Feed the bounds to the gate: if the decision is the same at both
+    ends, it is determined; if it differs, escalate. That is the same
+    three-outcome discipline used everywhere else, applied to counting.
+    """
+    identified = sum(1 for a in axes if a.identity is not WitnessIdentity.ANONYMOUS)
+    anonymous = sum(1 for a in axes if a.identity is WitnessIdentity.ANONYMOUS)
+    if anonymous == 0:
+        return WitnessBounds(identified, identified)
+    return WitnessBounds(identified + 1, identified + anonymous)
 
 
 def minimal_axes(items: Iterable[IndependenceAxes]) -> tuple[IndependenceAxes, ...]:

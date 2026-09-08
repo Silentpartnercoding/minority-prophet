@@ -18,6 +18,7 @@ from aggregation.independence_axes import (
     VocabularyError,
     WitnessDepth,
     WitnessIdentity,
+    effective_witness_bounds,
     from_wire,
     indistinguishable,
     to_wire,
@@ -191,3 +192,74 @@ class RefusalTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WitnessBoundsTests(unittest.TestCase):
+    """Unknown is not one and not two. It is unknown.
+
+    An earlier version collapsed mutually-anonymous roots to a count of one.
+    Owner review rejected it: collapsing asserts they are the same source
+    exactly as counting them separately asserts they are different. Both invent
+    a fact the record does not hold.
+    """
+
+    @staticmethod
+    def _axes(identity):
+        return IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE, identity)
+
+    def test_identified_witnesses_give_an_exact_count(self):
+        named = [self._axes(WitnessIdentity.NAMED)] * 3
+        bounds = effective_witness_bounds(named)
+        self.assertEqual((bounds.lower, bounds.upper), (3, 3))
+        self.assertTrue(bounds.determined)
+
+    def test_anonymous_witnesses_give_a_range_not_a_number(self):
+        anon = [self._axes(WitnessIdentity.ANONYMOUS)] * 3
+        bounds = effective_witness_bounds(anon)
+        self.assertEqual((bounds.lower, bounds.upper), (1, 3))
+        self.assertFalse(bounds.determined)
+
+    def test_a_single_anonymous_witness_is_exactly_one(self):
+        """No ambiguity with one source: it is one source, unidentified."""
+        bounds = effective_witness_bounds([self._axes(WitnessIdentity.ANONYMOUS)])
+        self.assertTrue(bounds.determined)
+        self.assertEqual(bounds.lower, 1)
+
+    def test_mixed_sets_bound_only_the_anonymous_part(self):
+        mixed = ([self._axes(WitnessIdentity.NAMED)] * 2
+                 + [self._axes(WitnessIdentity.ANONYMOUS)] * 2)
+        bounds = effective_witness_bounds(mixed)
+        self.assertEqual((bounds.lower, bounds.upper), (3, 4))
+
+    def test_the_lower_bound_is_never_the_reported_answer(self):
+        """Reporting the floor as the count is the collapse defect returning.
+
+        It is not conservative, only directional: undercounting is safe when
+        N_eff permits an action and dangerous when it refuses one, since an
+        adversary who strips identity from evidence can deflate the count and
+        suppress a true claim.
+        """
+        anon = [self._axes(WitnessIdentity.ANONYMOUS)] * 4
+        bounds = effective_witness_bounds(anon)
+        self.assertNotEqual(bounds.lower, bounds.upper)
+        self.assertEqual(bounds.upper, 4)
+
+    def test_empty_set_is_determined_at_zero(self):
+        bounds = effective_witness_bounds([])
+        self.assertEqual((bounds.lower, bounds.upper), (0, 0))
+        self.assertTrue(bounds.determined)
+
+    def test_bounds_are_ordered(self):
+        for n_named in range(4):
+            for n_anon in range(4):
+                axes = ([self._axes(WitnessIdentity.NAMED)] * n_named
+                        + [self._axes(WitnessIdentity.ANONYMOUS)] * n_anon)
+                bounds = effective_witness_bounds(axes)
+                self.assertLessEqual(bounds.lower, bounds.upper)
+
+    def test_indistinguishable_does_not_mean_identical(self):
+        """The predicate says 'cannot be shown distinct', nothing stronger."""
+        anon = self._axes(WitnessIdentity.ANONYMOUS)
+        self.assertTrue(indistinguishable(anon, anon))
+        bounds = effective_witness_bounds([anon, anon])
+        self.assertEqual(bounds.upper, 2, "they may well be two people")
