@@ -64,6 +64,14 @@ class RootRequest:
     observed_at: int
     nonce: str
     signature: str = ""
+    #: Independence vocabulary v3, all optional. Stated by the issuer and
+    #: covered by the signature, so an intermediary cannot upgrade a claim from
+    #: hearsay to eyewitness. Absent means the issuer did not state it: depth
+    #: reads as UNSTATED and identity as ANONYMOUS, which are the honest
+    #: readings of silence rather than defaults.
+    witness_depth: str | None = None
+    attestation: str | None = None
+    witness_identity: str | None = None
 
     def canonical_bytes(self) -> bytes:
         payload = {
@@ -76,6 +84,13 @@ class RootRequest:
             "proposition_id": self.proposition_id,
             "value": self.value,
         }
+        # Omit-if-absent. A request that states none of the v3 axes produces a
+        # byte-identical payload to before, so signatures made against the
+        # previous version still verify and no re-signing is required.
+        for field_name in ("attestation", "witness_depth", "witness_identity"):
+            stated = getattr(self, field_name)
+            if stated is not None:
+                payload[field_name] = stated
         return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
 
     def with_signature(self, signature: str) -> "RootRequest":
@@ -282,6 +297,17 @@ class RootRegistry:
 
     @staticmethod
     def root_identity(request: RootRequest) -> str:
+        """Which observation this is. **Deliberately excludes the v3 axes.**
+
+        Witness identity is metadata *about* an observation, not part of which
+        observation it is. Including it would let an issuer mint two ids for one
+        observation by varying the identity field -- inflating the root count
+        from inside quota, which is CE-05 and precisely what R1.4 exists to
+        bound. It would also mean that learning a witness's name later changed
+        the root's id, so one observation would exist twice as a phantom root.
+
+        Consequently no root id changes under v3, and there is no id migration.
+        """
         material = {
             "evidence_digest": request.evidence_digest,
             "issuer_id": request.issuer_id,
