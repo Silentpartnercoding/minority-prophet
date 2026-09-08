@@ -199,6 +199,22 @@ class WitnessBounds:
             raise ValueError("lower bound exceeds upper bound")
 
 
+def meet(a: IndependenceAxes, b: IndependenceAxes) -> IndependenceAxes:
+    """Greatest lower bound: the weaker position on every axis at once.
+
+    Two claims on one root may disagree about its independence. Under a total
+    order the resolution was `min`; under a partial order the componentwise meet
+    is the well-defined equivalent, and it always exists. Conservative by
+    construction -- it can only take the worse depth, the worse testament and
+    the worse identity.
+    """
+    return IndependenceAxes(
+        WitnessDepth(max(a.depth, b.depth)),
+        Attestation(min(a.attestation, b.attestation)),
+        WitnessIdentity(min(a.identity, b.identity)),
+    )
+
+
 def effective_witness_bounds(axes: Sequence[IndependenceAxes]) -> WitnessBounds:
     """Bound `N_eff` from both sides instead of inventing a point estimate.
 
