@@ -52,6 +52,20 @@ class IndependenceBasis(str, Enum):
     and an adversary who need only DECLARE faces a smaller budget than one who
     must defeat ATTESTATION. A single flip_budget over mixed roots therefore
     overstates the cost of attack.
+
+    KNOWN DEFECT (2026-09-07). These four values are a diagonal through a
+    two-dimensional space, not four points on one. ATTESTED vs DECLARED differ
+    only in *who vouched*; INFERRED vs the rest differs only in *how far toward
+    the world* the root reached. Ranking them on one scale forces an exchange
+    rate between vouching and looking, and produces an inversion: notarised
+    hearsay (ATTESTED, rank 3) outranks an anonymous eyewitness (INFERRED,
+    rank 1).
+
+    `aggregation/independence_axes.py` decomposes the vocabulary onto both axes
+    and replaces the total rank with a partial order. It is additive: this enum,
+    BASIS_RANK and verdict() are unchanged, and the wire vocabulary shared
+    byte-for-byte with invention_engine is preserved. Migration is a separate,
+    deliberate change.
     """
 
     ATTESTED = "attested"
