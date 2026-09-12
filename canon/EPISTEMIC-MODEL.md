@@ -1,17 +1,38 @@
 # The epistemic model
 
-Independent implementation. No third-party code, text or naming was used.
+What any component of the stack establishes, and what none of them does.
 
-## Four axes, and one thing that is not an axis
+Canonical copy. `invention-graph` carries a pointer to this file rather than a
+second copy. Independent implementation; no third-party code, text or naming
+was used.
 
-**Structure** is the recorded topology: roots, lineage, margin.
-**Attribution** is who or what produced an artifact.
-**Correspondence** is whether a claim matches the world, which nothing here
-establishes.
-**Dependence** is what a result rests on that this model does not itself
+Read alongside `canon/PLACEMENT.md`, which assigns the components: Border binds
+authority and human control to one exact action, Minority Prophet analyses
+evidence structure and holds no authority, Gate controls runtime consequence,
+and the strategic governor sets the sufficiency threshold and stopping rule.
+
+## A note on the word "axes"
+
+`axes` is reserved for the independence vocabulary: `WitnessDepth`,
+`Attestation`, `WitnessIdentity` and `DepthBasis`. Those are orthogonal,
+measurable dimensions of a single source, shared as a wire contract with
+`minority-prophet`.
+
+The four below are not dimensions and nothing is measured along them. They are
+questions a record either answers or does not, and one of them is a question
+this model refuses. Calling both sets "the four axes" invited exactly the
+confusion this paragraph exists to prevent.
+
+## Four questions, and one thing that is not a question
+
+**Structure** asks what the recorded topology is: roots, lineage, margin.
+**Attribution** asks who or what produced an artifact.
+**Correspondence** asks whether a claim matches the world. This model never
+answers it, and must not be read as answering it.
+**Dependence** asks what a result rests on that this model does not itself
 establish, with deliberately unbounded terms named. See `ASSUMPTIONS.md`.
 
-Authorization is not a fifth axis. It sits downstream of all four, and it takes
+Authorization is not a fifth question. It sits downstream of all four, and it takes
 two conditions that are each necessary and neither sufficient: a capability the
 provider granted this actor, and enough attack-resistant independent evidence.
 Evidence strength never creates permission, but it is a precondition for acting
@@ -196,15 +217,3 @@ A full immutable layer and commit chain over the storage engine. The store is
 append-only and content digests are carried on records, but layers, parent
 pointers and a commit pipeline are not implemented. Nothing else from the
 target model is outstanding.
-
----
-
-## Where this lives, and who cites it
-
-This is the canonical copy. Border, Minority Prophet and Gate cite it here rather
-than each keeping a version that can drift.
-
-`invention-graph` holds the engine that implements the assumption machinery
-described above: `declare_assumption`, `rest_on`, `blast_radius`,
-`unresolved_assumptions` and `irreducible_terms`. Its `docs/EPISTEMIC-MODEL.md`
-is a pointer to this file, not a second copy.
