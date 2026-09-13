@@ -71,6 +71,17 @@ python -m benchmark --worlds 500 --seed 7
 python -m experiments.los_inspired_v01
 ```
 
+That prints the baselines and the evidence-root verdict side by side, with a
+`reading` block explaining why the baselines score zero.
+
+Anything JavaScript needs **Node 22 or newer**, pinned in `.nvmrc` and matching
+CI. On an older Node the site tests fail with a confusing `glob` import error
+rather than a version message:
+
+```bash
+nvm use          # reads .nvmrc
+```
+
 For the read-only MCP/HTTP engine:
 
 ```bash
