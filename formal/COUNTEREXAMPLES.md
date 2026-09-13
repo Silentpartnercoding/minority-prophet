@@ -18,7 +18,7 @@ as is CE-14 and its mirror
 | CE-05 | **requirement added** | R1.4 (roots-per-identity bound) — not yet enforced in code |
 | CE-06 | **enforced** | `EvidenceGraph.add` raises `SideConsistencyError` |
 | CE-07 | **open by design** | scope limit; edge polarity proposed, `formal/EXTENSION-SOCKETS.md` §3 |
-| CE-08 | **open** | root identity still undefined; now named as trusted-base, ledger `U1` |
+| CE-08 | **proposed closure** | root identity defined by proximate cause: `canon/U1-PROXIMATE-ROOTS.md`, `formal/lean/MinorityProphetCore/RootIdentity.lean`. Residual detection exposure bounded by R3, pinned as `test_ATTACK_laundered_provenance_inflates_the_count` |
 | CE-09 | **fixed** | `EvidenceGraph.add` raises; `strict=False` records instead |
 | CE-10 | **fixed** | `EvidenceGraph.add` raises `PropositionMismatchError` |
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |

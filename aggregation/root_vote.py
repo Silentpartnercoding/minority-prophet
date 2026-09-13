@@ -33,6 +33,22 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Iterable, Literal, Protocol
 
+from aggregation.independence_axes import (
+    ATTESTATION_WIRE,
+    DEPTH_BASIS_WIRE,
+    DEPTH_WIRE,
+    IDENTITY_WIRE,
+    Attestation,
+    DepthBasis,
+    IndependenceAxes,
+    WitnessDepth,
+    WitnessIdentity,
+    decompose,
+    effective_witness_bounds,
+    meet,
+    minimal_axes,
+)
+
 
 class IndependenceBasis(str, Enum):
     """How a root's independence was established.
@@ -52,6 +68,20 @@ class IndependenceBasis(str, Enum):
     and an adversary who need only DECLARE faces a smaller budget than one who
     must defeat ATTESTATION. A single flip_budget over mixed roots therefore
     overstates the cost of attack.
+
+    KNOWN DEFECT (2026-09-07). These four values are a diagonal through a
+    two-dimensional space, not four points on one. ATTESTED vs DECLARED differ
+    only in *who vouched*; INFERRED vs the rest differs only in *how far toward
+    the world* the root reached. Ranking them on one scale forces an exchange
+    rate between vouching and looking, and produces an inversion: notarised
+    hearsay (ATTESTED, rank 3) outranks an anonymous eyewitness (INFERRED,
+    rank 1).
+
+    `aggregation/independence_axes.py` decomposes the vocabulary onto both axes
+    and replaces the total rank with a partial order. It is additive: this enum,
+    BASIS_RANK and verdict() are unchanged, and the wire vocabulary shared
+    byte-for-byte with invention_engine is preserved. Migration is a separate,
+    deliberate change.
     """
 
     ATTESTED = "attested"
@@ -81,6 +111,14 @@ class RootedClaim(Protocol):
     # that does not say how its independence was established has not established
     # it. Existing callers keep working and are simply reported as unknown.
     independence_basis: str | None
+    # Optional, vocabulary v3. A producer that states these gets counted on
+    # them; one that does not is read from `independence_basis` exactly as
+    # before. Absent depth is UNSTATED and absent identity is ANONYMOUS -- not
+    # guesses, but the honest readings of silence.
+    witness_depth: str | None
+    attestation: str | None
+    witness_identity: str | None
+    depth_basis: str | None
 
 
 UnattributedPolicy = Literal["abstain_if_decisive", "ignore", "treat_as_root"]
@@ -165,6 +203,28 @@ class RootVerdict:
     """False means Theorem 1 says NOTHING about this input. It is not a claim
     that the verdict is wrong -- it is the absence of a guarantee."""
     notes: tuple[str, ...] = field(default_factory=tuple)
+    weakest_axes: tuple[IndependenceAxes, ...] = ()
+    """The weakest independence positions among counted roots, as an antichain.
+
+    `weakest_basis` assumes independence is a single ranked scale. It is two
+    axes -- how far toward the world a root reached, and who vouched for it --
+    and under a partial order there may be several weakest members that no
+    ordering can rank against each other. See `aggregation/independence_axes.py`."""
+    witness_bounds: tuple[int, int] = (0, 0)
+    """`(lower, upper)` on the number of distinct sources among counted roots.
+
+    Anonymous roots cannot be shown distinct, so the count they support is a
+    range rather than a number: `lower` assumes every anonymous root is the same
+    source, `upper` assumes they are all different. Equal bounds mean identity
+    pins the count. Unequal bounds mean the evidence does not answer the
+    question, and a caller that needs one number should escalate rather than
+    pick an end."""
+    weakest_basis_well_defined: bool = True
+    """False when `weakest_axes` holds more than one element.
+
+    When false, `weakest_basis` reports one value where no single weakest
+    exists -- an anonymous eyewitness and a notarised hearsay are both weakest,
+    in different ways. Treat as a signal to escalate, not as a ranking."""
 
 
 def _basis_of(claim: RootedClaim) -> IndependenceBasis:
@@ -190,9 +250,57 @@ def _basis_of(claim: RootedClaim) -> IndependenceBasis:
         return IndependenceBasis.UNKNOWN
 
 
+_DEPTH_BY_NAME = {v: k for k, v in DEPTH_WIRE.items()}
+_ATTESTATION_BY_NAME = {v: k for k, v in ATTESTATION_WIRE.items()}
+_IDENTITY_BY_NAME = {v: k for k, v in IDENTITY_WIRE.items()}
+_DEPTH_BASIS_BY_NAME = {v: k for k, v in DEPTH_BASIS_WIRE.items()}
+
+
+def _read_axis(claim: RootedClaim, field: str, table: dict, member_type):
+    """One axis off a claim. Accepts the enum member or its wire string.
+
+    An unrecognised value reads as absent rather than raising: a producer that
+    sends a word this version does not know has not stated the axis, and
+    silence is the conservative reading. Wire-level parsing still refuses
+    unknown strings -- that is `from_wire`'s job, at the boundary.
+    """
+    raw = getattr(claim, field, None)
+    if raw is None:
+        return None
+    if isinstance(raw, member_type):
+        return raw
+    return table.get(str(raw))
+
+
+def _axes_of(claim: RootedClaim) -> IndependenceAxes:
+    """A claim's independence on all three axes.
+
+    A v3 producer states them directly. A v1 producer states only
+    `independence_basis`, and is decomposed exactly as before -- so this is a
+    strict widening: nothing that worked stops working, and a producer that says
+    more gets counted on more.
+    """
+    depth = _read_axis(claim, "witness_depth", _DEPTH_BY_NAME, WitnessDepth)
+    attestation = _read_axis(claim, "attestation", _ATTESTATION_BY_NAME, Attestation)
+    identity = _read_axis(claim, "witness_identity", _IDENTITY_BY_NAME, WitnessIdentity)
+    basis = _read_axis(claim, "depth_basis", _DEPTH_BASIS_BY_NAME, DepthBasis)
+
+    if depth is None and attestation is None and identity is None and basis is None:
+        return decompose(_basis_of(claim))
+
+    legacy = decompose(_basis_of(claim))
+    return IndependenceAxes(
+        depth if depth is not None else legacy.depth,
+        attestation if attestation is not None else legacy.attestation,
+        identity if identity is not None else legacy.identity,
+        basis if basis is not None else DepthBasis.DECLARED,
+    )
+
+
 def _sides(
     claims: Iterable[RootedClaim], *, promote_unattributed: bool
-) -> tuple[dict[str, set[bool]], int, dict[str, IndependenceBasis], dict[str, bool]]:
+) -> tuple[dict[str, set[bool]], int, dict[str, IndependenceBasis], dict[str, bool],
+           dict[str, IndependenceAxes]]:
     """Map root id -> set of assertions made on it, plus unattributed count.
 
     Collecting a SET of assertions per root, rather than keeping the first one
@@ -201,6 +309,7 @@ def _sides(
     by_root: dict[str, set[bool]] = {}
     basis: dict[str, IndependenceBasis] = {}
     values: dict[str, bool] = {}
+    axes: dict[str, IndependenceAxes] = {}
     unattributed = 0
     for claim in claims:
         root_id = getattr(claim, "root_id", None)
@@ -217,7 +326,12 @@ def _sides(
         seen = _basis_of(claim)
         if root_id not in basis or BASIS_RANK[seen] < BASIS_RANK[basis[root_id]]:
             basis[root_id] = seen
-    return by_root, unattributed, basis, values
+        # Same rule on the axes, but the componentwise meet rather than `min`:
+        # under a partial order there is no single weaker value to pick.
+        seen_axes = _axes_of(claim)
+        axes[root_id] = (seen_axes if root_id not in axes
+                         else meet(axes[root_id], seen_axes))
+    return by_root, unattributed, basis, values, axes
 
 
 def verdict(
@@ -267,7 +381,7 @@ def verdict(
             "'presence' branch counts and does not decide this shape."
         )
 
-    by_root, unattributed, basis, values = _sides(
+    by_root, unattributed, basis, values, axes = _sides(
         claims, promote_unattributed=unattributed_policy == "treat_as_root"
     )
 
@@ -285,6 +399,11 @@ def verdict(
         key=lambda b: BASIS_RANK[b],
         default=IndependenceBasis.UNKNOWN,
     ).value
+    counted_axes = [axes.get(r, decompose(IndependenceBasis.UNKNOWN))
+                    for r in counted]
+    weakest_axes = minimal_axes(counted_axes)
+    weakest_well_defined = len(weakest_axes) <= 1
+    bounds = effective_witness_bounds(counted_axes)
     attested = [r for r in counted
                 if basis.get(r, IndependenceBasis.UNKNOWN) is IndependenceBasis.ATTESTED]
     attested_margin = (sum(1 for r in attested if values.get(r))
@@ -322,6 +441,9 @@ def verdict(
             conflicting_roots=conflicting,
             basis_counts=basis_counts,
             weakest_basis=weakest,
+            weakest_axes=weakest_axes,
+            witness_bounds=(bounds.lower, bounds.upper),
+            weakest_basis_well_defined=weakest_well_defined,
             attested_margin=attested_margin,
             immunity_applicable=False,
             notes=tuple(notes),
@@ -363,6 +485,9 @@ def verdict(
         conflicting_roots=conflicting,
         basis_counts=basis_counts,
         weakest_basis=weakest,
+        weakest_axes=weakest_axes,
+        witness_bounds=(bounds.lower, bounds.upper),
+        weakest_basis_well_defined=weakest_well_defined,
         attested_margin=attested_margin,
         immunity_applicable=True,
         notes=tuple(notes),
@@ -473,7 +598,8 @@ def asymmetric_verdict(
         raise ValueError(f"unknown claim_shape: {claim_shape!r}")
 
     decisive_value = _DECISIVE_SIDE[claim_shape]
-    by_root, unattributed, basis, values = _sides(claims, promote_unattributed=False)
+    by_root, unattributed, basis, values, _axes = _sides(
+        claims, promote_unattributed=False)
 
     conflicting = frozenset(r for r, vals in by_root.items() if len(vals) > 1)
     decisive = frozenset(r for r, vals in by_root.items() if vals == {decisive_value})

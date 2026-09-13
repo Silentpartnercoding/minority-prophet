@@ -7,8 +7,10 @@ Input Binding**, **Control Discrimination**, **Evidential Independence**,
 **Effect Reachability**, **Reason-Bound Conformance**, and **Report
 Discrimination**.
 
-This file has now stated the wrong number five times — three, four, five, eight
-and nine — each after checks had already shipped. Twice the cause was this
+This file has now stated the wrong number five times — three, four, five, eight,
+and nine — each after checks had already shipped. The ninth omission was
+**Report Discrimination**, reconciled on 2026-09-08 by reading
+`epistemic_ci/core.py` upstream rather than by memory. Twice the cause was this
 programme's own contribution landing upstream without the summary following it.
 
 This programme's failure modes are the obvious source of candidate checks, so
@@ -27,6 +29,24 @@ proposed twice and to stop local findings quietly failing to travel.
 Each carries the worked instance that produced it, the expected failure
 condition, and a minimal fixture, per CONTRIBUTING.
 
+## Logged as proposals (continued)
+
+| issue | failure mode | why v0 misses it |
+|---|---|---|
+| [#21](https://github.com/Silentpartnercoding/epistemic-ci/issues/21) **Assertion Erosion** | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which no single version can show |
+
+Submitted 2026-09-08 with owner approval. First proposal in this programme that
+requires a **prior version** as input; every prior check judges one snapshot.
+
+Implementation and 17 tests are local at
+`research/epistemic-ci-proposals/assertion_erosion.py`, including the worked
+instance that produced it: this programme weakened three assertions about a bond
+reference on 2026-09-08 because the rule they encoded was mistaken. That was a
+correction, and no static analysis can distinguish it from a convenience -- so
+the candidate is proposed as a **flag, not a gate**. It guarantees a human is
+asked and the answer recorded; it does not answer. The issue states that limit,
+and the evasion by split commit, rather than hiding either.
+
 ## Merged upstream
 
 | change | failure mode | how it was found |
@@ -42,6 +62,24 @@ of a check pretending to close it.
 blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): two
 grossly broken implementations pass, because mutation selection determines what is
 learned. Two separately written codebases, one shared weakness.
+
+## Logged as proposals (continued)
+
+| issue | failure mode | why v0 misses it |
+|---|---|---|
+| [#21](https://github.com/Silentpartnercoding/epistemic-ci/issues/21) **Assertion Erosion** | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which no single version can show |
+
+Submitted 2026-09-08 with owner approval. First proposal in this programme that
+requires a **prior version** as input; every prior check judges one snapshot.
+
+Implementation and 17 tests are local at
+`research/epistemic-ci-proposals/assertion_erosion.py`, including the worked
+instance that produced it: this programme weakened three assertions about a bond
+reference on 2026-09-08 because the rule they encoded was mistaken. That was a
+correction, and no static analysis can distinguish it from a convenience -- so
+the candidate is proposed as a **flag, not a gate**. It guarantees a human is
+asked and the answer recorded; it does not answer. The issue states that limit,
+and the evasion by split commit, rather than hiding either.
 
 ## Merged upstream — checks 5 to 8
 
@@ -106,6 +144,24 @@ run fail — depends on the pin mechanism and is checked only where a
 `tamper_command` is supplied; otherwise it is reported not established. Pins are
 counted separately from mutations so they cannot inflate the assurance bound.
 
+## Logged as proposals (continued)
+
+| issue | failure mode | why v0 misses it |
+|---|---|---|
+| [#21](https://github.com/Silentpartnercoding/epistemic-ci/issues/21) **Assertion Erosion** | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which no single version can show |
+
+Submitted 2026-09-08 with owner approval. First proposal in this programme that
+requires a **prior version** as input; every prior check judges one snapshot.
+
+Implementation and 17 tests are local at
+`research/epistemic-ci-proposals/assertion_erosion.py`, including the worked
+instance that produced it: this programme weakened three assertions about a bond
+reference on 2026-09-08 because the rule they encoded was mistaken. That was a
+correction, and no static analysis can distinguish it from a convenience -- so
+the candidate is proposed as a **flag, not a gate**. It guarantees a human is
+asked and the answer recorded; it does not answer. The issue states that limit,
+and the evasion by split commit, rather than hiding either.
+
 ## Merged upstream — check 9
 
 | change | failure mode | how it was found |
@@ -118,19 +174,6 @@ the declared observations; short-circuit mutants preserve the ordinary verdict
 while changing the reason-bound contract. The evidence is produced by the
 harness or auditor and does not require a protocol peer to disclose an internal
 stop reason on the wire.
-
-## Merged upstream — check 10
-
-| change | failure mode | how it was found |
-|---|---|---|
-| [#20](https://github.com/Silentpartnercoding/epistemic-ci/pull/20) **Report Discrimination** | a harness summary is byte-for-byte identical after doing work, doing nothing, and failing | Observation Surface proves a structured report exists and binds a population and a result, and still cannot tell those three outcomes apart |
-
-The check runs the commands declared for the work, no-work and failure outcome
-classes in separate workspaces, requires pairwise-distinct projections over the
-declared JSON fields, and requires failure to differ from success through a
-non-zero exit code or a declared top-level field. The guarantee is bounded by
-the states and commands the configuration author declares; it does not infer
-whether those commands are the right ones.
 
 ## Already covered by v0 — deliberately not proposed
 
