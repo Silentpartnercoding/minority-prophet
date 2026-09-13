@@ -22,7 +22,10 @@ WHEEL = Decomposition(
              "One tea type under one named fermentation, from raw to finished."),
         Cell(Layer.COORDINATES, Fill.STATED,
              "Five sectors and no others: aroma, taste, appearance, soup colour, "
-             "tea residue."),
+             "tea residue. GB/T 14487-2017 chapters six -- dry tea shape, dry tea "
+             "colour, soup colour, aroma, taste, leaf bottom -- so the wheel "
+             "inherited six and shipped five, fusing shape and colour into "
+             "appearance. Nothing on the diagram says which two were merged."),
         Cell(Layer.OBSERVABLES, Fill.STATED,
              "One permitted descriptor per cell, from a closed list per sector."),
         Cell(Layer.OPERATIONALISATIONS, Fill.STATED,
