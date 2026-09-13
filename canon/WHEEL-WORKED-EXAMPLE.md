@@ -1,7 +1,8 @@
 # The wheel, decomposed: one instrument holding a vocabulary, a schedule and a theory
 
-A published Chinese industry instrument: a flavour wheel for pu-erh tea fermented with
-*Monascus purpureus*. It is a beautiful object, and it is a complete epistemology in one
+A flavour wheel for pu-erh tea fermented with *Monascus purpureus*. Its vocabulary sits
+on a national standard; the wheel itself is a research artifact built on top of that
+vocabulary. See the provenance note at the end, which corrects an earlier draft. It is a beautiful object, and it is a complete epistemology in one
 diagram, which is why it is the clearest teaching case this programme has. Everything the
 canon argues about observation surfaces is visible in it at once, and three separate
 things have been fused into a single artifact where only the first announces itself.
@@ -88,11 +89,41 @@ fused, with the theory least visible.
 
 **What is not settled, stated rather than implied.**
 
-The instrument is not cited here. It is a real published industry artifact, recovered from
-a screenshot, and the citation has not been recovered with it. Until it is, this document
-describes a real object at second hand, and that is an A3-adjacent weakness in a corpus
-that requires the test be published before the sample. It should be resolved before this
-is used as evidence for anything rather than as a teaching case.
+**Provenance, and a correction.** An earlier draft called this "a published Chinese
+industry instrument". That overstated what was known, and the two halves have now come
+apart.
+
+The *vocabulary* is standardised, and the standards are real and checkable. China
+maintains a national tea standards system published at `openstd.samr.gov.cn`. Three
+are relevant: `GB/T 30766-2014` **Classification of tea**, which carries an official
+English translation; `GB/T 14487-2017` **Tea vocabulary for sensory evaluation**,
+maintained by the National Tea Standardization Technical Committee, SAC/TC339, and
+effective 2018-05-01; and `GB/T 23776-2018` **Methodology for sensory evaluation of
+tea**. The vocabulary standard's own evaluation dimensions -- dry tea shape and colour,
+soup colour, aroma, taste, and leaf bottom -- correspond closely to the wheel's five
+sectors, with "leaf bottom" being what the wheel calls tea residue. So the five
+coordinates are almost certainly inherited from the standard rather than invented by
+the wheel.
+
+The *wheel* is not a standard. The published literature describes a dynamic flavour
+wheel built from the volatile compounds tracked across artificial fermentation of
+pu-erh with *Monascus purpureus*, which is a research artifact and not a normative
+document. That distinction matters here more than usual: a research figure asserting a
+trajectory is a hypothesis, whereas a national standard asserting one is a rule that
+downstream graders are obliged to follow.
+
+**What is still not closed.** The specific figure has not been matched to a specific
+paper, so the wheel itself remains uncited and this document still describes it at
+second hand. That is an A3-adjacent weakness and it must close before the wheel is used
+as evidence rather than as a teaching case.
+
+**What did get corroborated, and it is worth noting how.** The descriptor trajectories
+recorded here were read off the figure. Independent published work on the same
+fermentation reports the same progressions: soup colour green through yellow, orange,
+red to brown; taste from astringent and brisk, through thick, to mellow and sweet; aroma
+from fresh through floral-fruity. Three sequences, from a source that did not supply the
+figure. By this corpus's own rule that is a second witness to the content, not to the
+citation, and it is recorded as such.
 
 The descriptor sequences above are given as short factual examples of the ordering, not as
 a reproduction of the instrument.
