@@ -93,17 +93,32 @@ fused, with the theory least visible.
 industry instrument". That overstated what was known, and the two halves have now come
 apart.
 
+A note on how the standards were found, because it matters here more than usual. They
+were pointed at by a social-media carousel, which is not a source and is not cited as
+one: such a post can be mistaken, or generated, and it supplies no way to tell which.
+It was treated as a lead only. Everything below was then read from the standards
+themselves, and that reading immediately contradicted the lead on the number of
+dimensions. Which is the argument for going to the document.
+
 The *vocabulary* is standardised, and the standards are real and checkable. China
 maintains a national tea standards system published at `openstd.samr.gov.cn`. Three
 are relevant: `GB/T 30766-2014` **Classification of tea**, which carries an official
 English translation; `GB/T 14487-2017` **Tea vocabulary for sensory evaluation**,
 maintained by the National Tea Standardization Technical Committee, SAC/TC339, and
 effective 2018-05-01; and `GB/T 23776-2018` **Methodology for sensory evaluation of
-tea**. The vocabulary standard's own evaluation dimensions -- dry tea shape and colour,
-soup colour, aroma, taste, and leaf bottom -- correspond closely to the wheel's five
-sectors, with "leaf bottom" being what the wheel calls tea residue. So the five
-coordinates are almost certainly inherited from the standard rather than invented by
-the wheel.
+tea**.
+
+**The standard has six dimensions and the wheel has five.** `GB/T 14487-2017` chapters
+its vocabulary by dry tea shape, dry tea colour, soup colour, aroma, taste, and leaf
+bottom. The wheel's sectors are aroma, taste, appearance, soup colour and tea residue.
+Leaf bottom is what the wheel calls tea residue, and the wheel's "appearance" collapses
+the standard's two dry-tea dimensions, shape and colour, into one.
+
+That merge is itself a decomposition finding, and it was invisible until the standard
+was read. A tea whose leaf *shape* is unremarkable while its dry *colour* is anomalous
+has one sector to be recorded in, so the two signals compete for one cell. The wheel did
+not invent its coordinates; it inherited six and shipped five, and nothing on the face
+of the diagram says which two were fused.
 
 The *wheel* is not a standard. The published literature describes a dynamic flavour
 wheel built from the volatile compounds tracked across artificial fermentation of
