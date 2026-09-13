@@ -18,6 +18,11 @@ export type TournamentRow = {
 
 export const paperUrl = "https://github.com/Silentpartnercoding/minority-prophet/blob/main/papers/00-CURRENT-PAPER.md";
 
+// Archival citation for the published foundation paper. The concept DOI always
+// resolves to the newest version, so this link cannot go stale on release.
+export const doiUrl = "https://doi.org/10.5281/zenodo.21965712";
+export const doiLabel = "10.5281/zenodo.21965712";
+
 export const tournamentRows: TournamentRow[] = [
   { name: "Minority Prophet", provider: "Canonical v1", lane: "C", correct: 128, exact: 8, invalidTrials: 0, timeMs: 18.7, inputTokens: 0, outputTokens: 0, toolCalls: 0, cost: 0 },
   { name: "Claude Opus 5", provider: "Anthropic / Claude Code", lane: "A", correct: 106, exact: 6, invalidTrials: 0, timeMs: 478_018, inputTokens: 326_569, outputTokens: 41_681, toolCalls: 0, cost: 3.2534465 },
