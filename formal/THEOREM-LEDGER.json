@@ -22,8 +22,8 @@
     "mathlib_rev": "905b95818eb32af7874a58b427f50c1711a5e96c",
     "mathlib_input_rev": "v4.32.2",
     "build_command": "lake exe cache get && lake build",
-    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added",
-    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]",
+    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.",
+    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]",
     "sorry_count": 0,
     "native_decide_count": 0
   },
@@ -283,7 +283,8 @@
       ],
       "security_interpretation": "None.",
       "prohibited_overstatement": "Do not claim the canonical-records checks are reproducible until the manifests are committed or the tests skip loudly.",
-      "remediation": "FIXED. .gitignore now negates results/*.manifest.json and results/resolved-weather-v0.1.json. Clean clone verified at 40 passed."
+      "remediation": "FIXED. .gitignore now negates results/*.manifest.json and results/resolved-weather-v0.1.json. Clean clone verified at 40 passed.",
+      "currency_note": "Recorded against a cold clone at e1403a7 failing 2 of 40. A full run on 2026-09-13 gives 684 passed and 7 skipped with required checks green. Likely fixed; not re-verified from a cold clone at the original commit."
     },
     {
       "id": "LEDGER-H1",
@@ -328,11 +329,11 @@
     {
       "id": "U1",
       "short": "Root identity criterion",
-      "statement": "When are two roots the same root?",
+      "statement": "When are two roots the same root? Answered by declining the question as posed: dependence is not an equivalence, so the count is a maximum independent set rather than a quotient.",
       "definition_version": "core-v3-dag",
       "assumptions": [],
-      "proof_status": "underspecified",
-      "lean_theorem": null,
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.RootIdentity.independent_card_le_lineages; MinorityProphetCore.RootIdentity.clique_indep_one; MinorityProphetCore.RootIdentity.path_indep_two",
       "known_counterexamples_outside_scope": [
         "CE-08: one identity merge changes a verdict."
       ],
@@ -340,7 +341,16 @@
         "audit/test_counterexamples.py::test_ce08_identity_merge_changes_the_verdict"
       ],
       "security_interpretation": "Any de-duplication or canonicalisation step is inside the trusted base.",
-      "prohibited_overstatement": "No theorem can be cited about semantic root identity until this is defined."
+      "prohibited_overstatement": "The theorems bound the count relative to the dependence graph given. They do not establish that the supplied graph reflects real lineage, and the trout-in-the-milk test detects copying only where an idiosyncratic marker exists to share.",
+      "resolution": {
+        "date": "2026-09-08",
+        "doctrine": "canon/U1-PROXIMATE-ROOTS.md",
+        "why_earlier_attempts_failed": "The question was asked as 'find the equivalence relation on sources'. Ancestry is transitive and unbounded, so any 'shares an ancestor' relation has a transitive closure that swallows the corpus. On the A-B-C path where A and C share nothing, transitivity collapses all three to one; the truthful count is two.",
+        "the_move": "Borrowed from tort: proximate cause is a declared cut, and novus actus interveniens is its mechanism. Two sources descending from a common ancestor remain independent witnesses if each re-established the claim through a channel not passing through that ancestor. Shared ancestry is cause-in-fact: necessary for dependence, not sufficient.",
+        "formal_consequence": "N_eff = max { |S| : S subset of Sources, no two members proximately dependent }.",
+        "operative_test": "The trout in the milk. Independent re-derivation does not reproduce the ancestor's idiosyncratic errors; copying does. A shared idiosyncratic marker has no innocent explanation and overrides any provenance record claiming re-derivation, because the record is what an adversary controls and the content is not.",
+        "residual": "Bounded rather than solved: the count is only as good as the dependence graph supplied. Independent_card_le_lineages guarantees it cannot over-report relative to that graph, not that the graph is right."
+      }
     },
     {
       "id": "U2",
@@ -506,5 +516,15 @@
       "CE-07 (side consistency forbids synthesis in a DAG) is a scope limit, not a bug. Edge polarity is the proposed repair and is not implemented."
     ]
   },
-  "status_vocabulary_is_closed": "proof_status MUST be one of status_vocabulary. The list is deliberately closed: an evidence ledger whose vocabulary grows silently is how 'a reference implementation exists' drifts into 'this is proved'. Qualifiers such as deployment_status belong in their own field, never in the evidence class. Enforced by tests/test_evidence_alignment.py::test_ledger_status_vocabulary_is_closed."
+  "status_vocabulary_is_closed": "proof_status MUST be one of status_vocabulary. The list is deliberately closed: an evidence ledger whose vocabulary grows silently is how 'a reference implementation exists' drifts into 'this is proved'. Qualifiers such as deployment_status belong in their own field, never in the evidence class. Enforced by tests/test_evidence_alignment.py::test_ledger_status_vocabulary_is_closed.",
+  "currency": [
+    {
+      "date": "2026-09-13",
+      "note": "Ledger generated 2026-08-05, reviewed 2026-09-13. U1 moves from underspecified to proved_compiled on the strength of canon/U1-PROXIMATE-ROOTS.md and formal/lean/MinorityProphetCore/RootIdentity.lean, both authored 2026-09-08 and unmerged until now. U3 remains underspecified. F4 is likely stale."
+    },
+    {
+      "date": "2026-09-13",
+      "note": "formal/lean/MinorityProphetCore/NarrowGate.lean lands with this merge carrying ten compiled theorems, and no claim in this ledger cites any of them. Compiled is not the same as recorded: until a claim names them the results are unledgered, and this ledger must not be read as covering the narrow gate."
+    }
+  ]
 }
