@@ -62,6 +62,60 @@ conversation before any code existed: *I may be correct, but acting on or reveal
 conclusion could alter the system enough to make the resulting action harmful.* That is
 `canon/reflexive_brake.py`, including its three stances.
 
+**Two conversations this morning produced two of tonight's modules, hours apart.**
+
+At 9:11 a meme about institutions -- everyone assuming the next room knows -- produced
+authority debt. The rule that fell out: authority may determine who can act; it cannot,
+by itself, determine what is true. A title changes who is allowed to act and does not
+change the truth value of a proposition. Modern institutions are delegation graphs, and
+the dangerous case is traversing one expecting to reach ground truth and finding every
+node pointing at another node.
+
+The four terminations were named there and are implemented unchanged in
+`canon/authority_debt.py`: evidence, a reproducible mechanism, an accountable judgment
+under uncertainty, or an honest unknown. So was the recursion case, where the chain
+returns to where it started.
+
+One guard from that conversation is not yet in the code, and should be. The correct
+conclusion is not that everyone is clueless. Institutions accumulate expertise,
+procedure and collective memory that no individual has, so institutional competence and
+individual omniscience are different things. The failure is coordination authority being
+mistaken for epistemic authority, not the existence of authority.
+
+At 9:50 the tea wheel produced the ten layers. The wheel was placed not as truth but as a
+*bounding instrument*: it takes a high-dimensional phenomenon and imposes a finite
+vocabulary so different observers can compare notes. Three claims hide inside it and have
+radically different strengths -- that the phenomenon exists, that the chosen dimensions
+are useful, and that the labels correspond to reality.
+
+The sentence that generated everything after it: once you create the wheel, everything
+outside the wheel becomes difficult to report, and the representation starts controlling
+the observations it was supposed to describe.
+
+The ten layers were written out in that conversation in the order they still have, with
+the instruction not to build another framework but to formalise the grammar underneath
+what already existed. That is `canon/decomposition.py`.
+
+**Three ideas from those two conversations have not landed, and are recorded here so they
+are not rediscovered.**
+
+*Bounded truth* as a named class: a statement valid and reproducible under a declared
+measurement ontology, whose validity outside that ontology has not been established. The
+distinction it protects is between bounding reality and claiming the boundary is reality.
+A good boundary says these distinctions are reproducible within this representation; a
+bad one says these are the distinctions that exist.
+
+*The truth spectrum*, eight levels from raw state, through observation, named
+observation, bounded ontology, calibrated intersubjectivity, instrument correspondence
+and mechanistic explanation, to invariant relationship. The wheel sits at level three,
+possibly four.
+
+*The ontology-perturbation test*: hold the phenomenon fixed and change the vocabulary
+instead -- remove categories, merge them, add instrument-derived dimensions, let subjects
+invent their own, blind the tasters, change the language. Then ask whether the conclusion
+survives. This is representation invariance applied to a vocabulary rather than to
+coordinates, and it is a different probe from the social-pressure one already built.
+
 **The Lindsay Clancy case, 21 August, separated knowing from deciding.** A murder trial
 where the physical act is undisputed and the entire dispute is responsibility forced apart
 five things that had been travelling together: causation, responsibility, knowledge,
