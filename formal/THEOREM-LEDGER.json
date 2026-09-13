@@ -283,7 +283,8 @@
       ],
       "security_interpretation": "None.",
       "prohibited_overstatement": "Do not claim the canonical-records checks are reproducible until the manifests are committed or the tests skip loudly.",
-      "remediation": "FIXED. .gitignore now negates results/*.manifest.json and results/resolved-weather-v0.1.json. Clean clone verified at 40 passed."
+      "remediation": "FIXED. .gitignore now negates results/*.manifest.json and results/resolved-weather-v0.1.json. Clean clone verified at 40 passed.",
+      "currency_note": "Recorded against a fresh clone at e1403a7, failing 2 of 40 because .gitignore excluded results/*.json required by tests/test_canonical_records.py. A full local run on 2026-09-13 gave 445 passed and 7 skipped, and all four required checks are green on main. Likely fixed and not re-verified against a cold clone at the original commit."
     },
     {
       "id": "LEDGER-H1",
@@ -337,10 +338,18 @@
         "CE-08: one identity merge changes a verdict."
       ],
       "implementation_tests": [
-        "audit/test_counterexamples.py::test_ce08_identity_merge_changes_the_verdict"
+        "audit/test_counterexamples.py::test_ce08_identity_merge_changes_the_verdict",
+        "invention-graph tests/test_independence_vocabulary.py (WitnessIdentity, IDENTITY_STAKE)"
       ],
       "security_interpretation": "Any de-duplication or canonicalisation step is inside the trusted base.",
-      "prohibited_overstatement": "No theorem can be cited about semantic root identity until this is defined."
+      "prohibited_overstatement": "No theorem can be cited about semantic root identity until this is defined. The independence axes bound the question and do not close it; citing them as a resolution of U1 is the overstatement this field exists to prevent.",
+      "partial_resolution": {
+        "date": "2026-09-08",
+        "where": "invention-graph invention_engine/models.py, WitnessIdentity and IDENTITY_STAKE (landed on main 2026-09-13)",
+        "what_it_supplies": "Not a single identity criterion, but a graded axis on which the question is decidable at the top and provably undecidable at the bottom. ANONYMOUS is defined as 'cannot be reached, questioned, or counted apart', which states outright that two anonymous roots cannot be individuated. VERIFIED binds identity by signature or institution; BONDED adds stake. IDENTITY_STAKE fixes the strongest depth basis each identity level can support, so a witness who cannot be held to a claim cannot back a strong one.",
+        "what_it_does_not_supply": "A criterion for the general case. Two VERIFIED roots are distinct if their signatures differ, which answers the question only where signatures exist. De-duplication and canonicalisation remain inside the trusted base.",
+        "why_status_is_unchanged": "'underspecified' means a truth value cannot be assigned until a definition is supplied. A vocabulary that bounds the question is not a definition of it. The ledger's own rule applies: a statement does not change class by being described better."
+      }
     },
     {
       "id": "U2",
@@ -506,5 +515,11 @@
       "CE-07 (side consistency forbids synthesis in a DAG) is a scope limit, not a bug. Edge polarity is the proposed repair and is not implemented."
     ]
   },
-  "status_vocabulary_is_closed": "proof_status MUST be one of status_vocabulary. The list is deliberately closed: an evidence ledger whose vocabulary grows silently is how 'a reference implementation exists' drifts into 'this is proved'. Qualifiers such as deployment_status belong in their own field, never in the evidence class. Enforced by tests/test_evidence_alignment.py::test_ledger_status_vocabulary_is_closed."
+  "status_vocabulary_is_closed": "proof_status MUST be one of status_vocabulary. The list is deliberately closed: an evidence ledger whose vocabulary grows silently is how 'a reference implementation exists' drifts into 'this is proved'. Qualifiers such as deployment_status belong in their own field, never in the evidence class. Enforced by tests/test_evidence_alignment.py::test_ledger_status_vocabulary_is_closed.",
+  "currency": [
+    {
+      "date": "2026-09-13",
+      "note": "Ledger generated 2026-08-05. Reviewed against the corpus on 2026-09-13, a month later. U1 gains a partial_resolution record; its status is unchanged and deliberately so. F4 is recorded below as likely stale."
+    }
+  ]
 }
