@@ -386,7 +386,8 @@
       ],
       "implementation_tests": [],
       "security_interpretation": "None available.",
-      "prohibited_overstatement": "Do not cite T1/T2/T4/T5 in support of any weighted aggregation result. See EXTENSION-SOCKETS.md section 2."
+      "prohibited_overstatement": "Do not cite T1/T2/T4/T5 in support of any weighted aggregation result. See EXTENSION-SOCKETS.md section 2.",
+      "remediation": "PARTIAL. The blocker named in EXTENSION-SOCKETS.md section 2 -- a zero-weight root counted at full strength by the cardinality aggregator and at zero by weighted_vote -- is reconciled in aggregation/zero_weight.py. It names the policy rather than picking a winner, defaults to REFUSE, and refuses only where the two readings change the verdict. The underlying cause is that confidence and competence are typed float, so an unsupplied weight and a deliberate zero are the same value; that is U2's disease one level over and is resolved the same way. U3 itself remains underspecified: no theorem covers any weighted aggregator. See canon/U3-WHAT-TRANSFERS.md for which canon moves survive weighting and which do not."
     },
     {
       "definition_version": "core-v3-dag",
@@ -525,6 +526,10 @@
     {
       "date": "2026-09-13",
       "note": "Two Lean modules on main carry compiled theorems that no claim in this ledger cites: NarrowGate.lean with ten, and Responsiveness.lean with four (margin_eq_signedCount, margin_diff_eq_signedCount, margin_must_move, margin_shifts_by_added_roots; all built 2026-09-13, all on standard axioms). Compiled is not the same as recorded. Until a claim names them the results are unledgered, and this ledger must not be read as covering the narrow gate or responsiveness."
+    },
+    {
+      "date": "2026-09-13",
+      "note": "U3's stated prerequisite is discharged. The zero-weight contradiction between the two shipped aggregators no longer resolves silently: aggregation/zero_weight.py computes both readings, reports both, and fails closed where they disagree. This removes the reason a weighted theorem could not be stated; it does not state one."
     }
   ]
 }
