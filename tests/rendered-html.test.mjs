@@ -206,3 +206,22 @@ test("server-renders the synthetic observatory on its own page", async () => {
   assert.match(html, /synthetic teaching instrument/);
   assert.match(html, /No LLM or paid model is called by this page/);
 });
+
+test("server-renders the decision trace with its boundaries intact", async () => {
+  const response = await render("/experiments/decision-trace");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Decision Trace — Minority Prophet/);
+  assert.match(html, /Watch it decide/);
+  assert.match(html, /would_execute/);
+  assert.match(html, /no target transport/);
+  assert.match(html, /not a production-readiness claim/);
+  assert.match(html, /effects_executed: 0/);
+  assert.match(html, /never installs from a moving branch/);
+  // the separation of powers is the claim this page exists to make
+  assert.match(html, /returns no authority/);
+  assert.match(html, /Assessment is not/);
+  // and it must not overclaim on its own
+  assert.match(html, /establishes nothing on its own/);
+  assert.match(html, /zero coverage on real corpora/);
+});

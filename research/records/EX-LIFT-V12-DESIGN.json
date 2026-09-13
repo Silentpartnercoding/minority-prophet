@@ -1,0 +1,18 @@
+{
+  "artifacts": [],
+  "authorityEffect": "none",
+  "id": "EX-LIFT-V12-DESIGN",
+  "independenceClaims": [],
+  "manifest": null,
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": null,
+  "result": null,
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "exploratory",
+  "verdict": null
+}

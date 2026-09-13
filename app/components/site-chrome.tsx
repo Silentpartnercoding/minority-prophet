@@ -11,6 +11,7 @@ export function SiteNav() {
       <Link href="/experiments/epistemic-lift">Lift Study</Link>
       <Link href="/experiments/capability-tournament">Tournament</Link>
       <Link href="/experiments/epistemic-observatory">Observatory</Link>
+      <Link href="/experiments/decision-trace">Decision Trace</Link>
       <a href={paperUrl}>Paper</a>
       <Link className="nav-cta" href="/experiments/epistemic-lift#results">Results ↗</Link>
     </div>

@@ -26,7 +26,10 @@ class BenchmarkTests(unittest.TestCase):
 
     def test_evaluation_reports_required_metrics(self):
         reports = evaluate(generate_worlds(count=10, seed=4))
-        self.assertEqual({item["method"] for item in reports}, {"majority", "weighted"})
+        self.assertEqual(
+            {item["method"] for item in reports},
+            {"majority", "weighted", "dependence_aware"},
+        )
         self.assertIn("minority_truth_recovery", reports[0])
         self.assertIn("brier_score", reports[0])
 
