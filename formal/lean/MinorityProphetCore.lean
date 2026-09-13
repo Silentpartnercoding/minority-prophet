@@ -7,3 +7,4 @@ import MinorityProphetCore.Counterexamples
 import MinorityProphetCore.Asymmetric
 import MinorityProphetCore.NarrowGate
 import MinorityProphetCore.RootIdentity
+import MinorityProphetCore.Responsiveness

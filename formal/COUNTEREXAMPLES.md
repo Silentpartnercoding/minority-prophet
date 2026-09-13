@@ -7,15 +7,15 @@ Workstream C. Every witness below is reproducible by
 as is CE-14 and its mirror
 (`formal/lean/MinorityProphetCore/Asymmetric.lean`, ledger AC4/AC5).
 
-## Fix status as of 2026-08-17
+## Fix status as of 2026-09-07
 
 | ID | Status | Where the repair landed |
 |---|---|---|
 | CE-01 | **documented** | `formal/PROOFS.md` §4, `papers/ERRATA.md` [E1]; detection remains R1's job |
 | CE-02 | **fixed in the mathematics** | hypothesis added to T5, proved necessary (`T5_needs_assert_fixed`) |
 | CE-03 | **fixed in the mathematics** | unit stated; circular check rewritten to construct worlds |
-| CE-04 | **requirement added** | R1.4 (no hard delete) — not yet enforced in code |
-| CE-05 | **requirement added** | R1.4 (roots-per-identity bound) — not yet enforced in code |
+| CE-04 | **enforced** | R1.4 no-hard-delete: `provenance/root_registry.py` tombstones preserve edges and never restore quota (`tests/test_root_registry.py::test_tombstone_never_restores_capacity_or_orphans_ce04`) |
+| CE-05 | **enforced** | R1.4 roots-per-identity bound: durable per-window quota survives restart and key compromise (`tests/test_root_registry.py::test_quota_survives_restart_and_key_compromise_ce05`) |
 | CE-06 | **enforced** | `EvidenceGraph.add` raises `SideConsistencyError` |
 | CE-07 | **open by design** | scope limit; edge polarity proposed, `formal/EXTENSION-SOCKETS.md` §3 |
 | CE-08 | **proposed closure** | root identity defined by proximate cause: `canon/U1-PROXIMATE-ROOTS.md`, `formal/lean/MinorityProphetCore/RootIdentity.lean`. Residual detection exposure bounded by R3, pinned as `test_ATTACK_laundered_provenance_inflates_the_count` |
