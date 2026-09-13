@@ -8,6 +8,12 @@ const CIMD_CLIENT_ID = "https://minorityprophet.org/openid-aiim/client.json";
 const CLIENT_KEY_ID = "f35c5d1f-b07b-4525-9587-c0f21295a972";
 const REDIRECT_URI = "https://minorityprophet.org/openid-aiim/callback";
 const SCOPE = "mcp";
+// Keith opened first_contact_ping on 7 Sep as a no-argument no-op so the path can be
+// re-run without CK-side approval. From that message tools/list now projects TWO tools:
+// first_contact_ping callable, and file_read listed but deliberately restricted on their
+// side. A file_read refusal is therefore the expected observation, not a client fault.
+const CALL_TOOL = "first_contact_ping";
+const RESTRICTED_TOOL = "file_read";
 const COOKIE_NAME = "mp_aiim_ck_oauth";
 const MCP_VERSION = "2025-06-18";
 const FLOW_TTL_MS = 10 * 60 * 1000;
@@ -249,7 +255,7 @@ async function validateDiscovery(): Promise<{ protectedResource: ProtectedResour
 }
 
 function reproducePage(): Response {
-  return page("Run the CK SaaS interoperability test", `<p class="kicker">OpenID AIIM · bounded test surface</p><h1>Two client paths. One governed tool call.</h1><p class="lede">Each button starts a new Authorization Code + PKCE S256 flow against CK SaaS, initializes MCP, verifies that only <code>file_read</code> is projected, and calls it once with a harmless echo value.</p><section class="card"><p class="label">Fixed inputs</p><dl><dt>MCP resource</dt><dd>${RESOURCE}</dd><dt>Pre-registered client</dt><dd>${PREREGISTERED_CLIENT_ID} · token auth none</dd><dt>CIMD client</dt><dd>${CIMD_CLIENT_ID} · private_key_jwt RS256</dd><dt>Callback</dt><dd>${REDIRECT_URI}</dd><dt>Scope</dt><dd>${SCOPE}</dd><dt>Expected tool</dt><dd>file_read exactly</dd></dl><a class="button" href="/openid-aiim/ck/start?mode=preregistered">Run pre-registered path →</a><a class="button" href="/openid-aiim/ck/start?mode=cimd">Run CIMD path →</a><a class="button secondary" href="/openid-aiim/ck/diagnostics.json">View discovery checks</a></section><p class="boundary">Each click creates a fresh state, PKCE verifier, and authorization code. CIMD also creates a fresh JWT ID. Failed client authentication is never retried with the same code.</p>`);
+  return page("Run the CK SaaS interoperability test", `<p class="kicker">OpenID AIIM · bounded test surface</p><h1>Two client paths. One governed tool call.</h1><p class="lede">Each button starts a new Authorization Code + PKCE S256 flow against CK SaaS, initializes MCP, verifies that <code>${CALL_TOOL}</code> is projected, and calls it once with no arguments. <code>${RESTRICTED_TOOL}</code> may also be listed and is expected to remain restricted on the CK side.</p><section class="card"><p class="label">Fixed inputs</p><dl><dt>MCP resource</dt><dd>${RESOURCE}</dd><dt>Pre-registered client</dt><dd>${PREREGISTERED_CLIENT_ID} · token auth none</dd><dt>CIMD client</dt><dd>${CIMD_CLIENT_ID} · private_key_jwt RS256</dd><dt>Callback</dt><dd>${REDIRECT_URI}</dd><dt>Scope</dt><dd>${SCOPE}</dd><dt>Tool under test</dt><dd>${CALL_TOOL} · no arguments</dd><dt>Also permitted</dt><dd>${RESTRICTED_TOOL} · listed, restricted by CK</dd></dl><a class="button" href="/openid-aiim/ck/start?mode=preregistered">Run pre-registered path →</a><a class="button" href="/openid-aiim/ck/start?mode=cimd">Run CIMD path →</a><a class="button secondary" href="/openid-aiim/ck/diagnostics.json">View discovery checks</a></section><p class="boundary">Each click creates a fresh state, PKCE verifier, and authorization code. CIMD also creates a fresh JWT ID. Failed client authentication is never retried with the same code.</p>`);
 }
 
 async function diagnostics(): Promise<Response> {
@@ -351,16 +357,17 @@ async function callback(request: Request, env?: CkEnv): Promise<Response> {
     const tools = Array.isArray(toolsBody.result?.tools) ? toolsBody.result.tools : [];
     const toolNames = tools.map((tool) => typeof (tool as Record<string, unknown>).name === "string" ? (tool as Record<string, unknown>).name as string : null).filter(Boolean);
     timeline.push(evidence("tools_list", toolsResponse, { tool_names: toolNames }));
-    if (!toolsResponse.ok || toolsBody.error || toolNames.length !== 1 || toolNames[0] !== "file_read") return reportPage("CK tool projection check failed", { run_id: runId, mode: flow.mode, ok: false, failed_step: "tools_list", expected_tool_names: ["file_read"], actual_tool_names: toolNames, timeline, token_retained: false }, 502);
+    const unexpectedTools = toolNames.filter((name) => name !== CALL_TOOL && name !== RESTRICTED_TOOL);
+    if (!toolsResponse.ok || toolsBody.error || !toolNames.includes(CALL_TOOL) || unexpectedTools.length) return reportPage("CK tool projection check failed", { run_id: runId, mode: flow.mode, ok: false, failed_step: "tools_list", required_tool: CALL_TOOL, permitted_tools: [CALL_TOOL, RESTRICTED_TOOL], actual_tool_names: toolNames, unexpected_tool_names: unexpectedTools, timeline, token_retained: false }, 502);
 
-    const toolResponse = await mcpPost(accessToken, { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "file_read", arguments: { echo: "minority-prophet-ck-interop-proof" } } }, sessionId, negotiatedVersion);
+    const toolResponse = await mcpPost(accessToken, { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: CALL_TOOL, arguments: {} } }, sessionId, negotiatedVersion);
     const toolBody = await parseMcpEnvelope(toolResponse);
     const resultDigest = toolBody.result ? await sha256(JSON.stringify(toolBody.result)) : null;
     const isError = toolBody.result?.isError === true;
-    timeline.push(evidence("tools_call_file_read", toolResponse, { result_digest_sha256_b64url: resultDigest, result_is_error: isError }));
-    if (!toolResponse.ok || toolBody.error || !toolBody.result || isError) return reportPage("CK harmless tool call failed", { run_id: runId, mode: flow.mode, ok: false, failed_step: "tools_call_file_read", timeline, token_retained: false }, 502);
+    timeline.push(evidence(`tools_call_${CALL_TOOL}`, toolResponse, { result_digest_sha256_b64url: resultDigest, result_is_error: isError }));
+    if (!toolResponse.ok || toolBody.error || !toolBody.result || isError) return reportPage("CK harmless tool call failed", { run_id: runId, mode: flow.mode, ok: false, failed_step: `tools_call_${CALL_TOOL}`, timeline, token_retained: false }, 502);
 
-    return reportPage("CK interoperability path completed", { schema: "minority-prophet.openid-aiim-ck-run.v1", run_id: runId, started_at: startedAt, completed_at: new Date().toISOString(), mode: flow.mode, ok: true, resource: RESOURCE, issuer: ISSUER, client_id: clientId, redirect_uri: REDIRECT_URI, requested_scope: SCOPE, token_endpoint_auth_method: flow.mode === "cimd" ? "private_key_jwt" : "none", client_assertion_signing_alg: flow.mode === "cimd" ? "RS256" : null, fresh_code_rule_observed: true, negotiated_protocol_version: negotiatedVersion, mcp_session_id_returned: Boolean(sessionId), projected_tool_names: toolNames, invoked_tool: "file_read", harmless_arguments: { echo: "minority-prophet-ck-interop-proof" }, tool_result_digest_sha256_b64url: resultDigest, timeline, token_retained: false, credentials_retained: false });
+    return reportPage("CK interoperability path completed", { schema: "minority-prophet.openid-aiim-ck-run.v1", run_id: runId, started_at: startedAt, completed_at: new Date().toISOString(), mode: flow.mode, ok: true, resource: RESOURCE, issuer: ISSUER, client_id: clientId, redirect_uri: REDIRECT_URI, requested_scope: SCOPE, token_endpoint_auth_method: flow.mode === "cimd" ? "private_key_jwt" : "none", client_assertion_signing_alg: flow.mode === "cimd" ? "RS256" : null, fresh_code_rule_observed: true, negotiated_protocol_version: negotiatedVersion, mcp_session_id_returned: Boolean(sessionId), projected_tool_names: toolNames, invoked_tool: CALL_TOOL, harmless_arguments: {}, restricted_tool_projected: toolNames.includes(RESTRICTED_TOOL),  tool_result_digest_sha256_b64url: resultDigest, timeline, token_retained: false, credentials_retained: false });
   } catch (error) {
     return reportPage("CK interoperability path failed", { schema: "minority-prophet.openid-aiim-ck-run.v1", run_id: runId, started_at: startedAt, completed_at: new Date().toISOString(), mode: flow.mode, ok: false, failed_step: "network_or_response_processing", error: error instanceof Error ? error.message : "Unexpected test failure", timeline, retry_rule: "Start a fresh authorization round-trip; never reuse this code.", credentials_retained: false }, 502);
   }
