@@ -29,24 +29,6 @@ proposed twice and to stop local findings quietly failing to travel.
 Each carries the worked instance that produced it, the expected failure
 condition, and a minimal fixture, per CONTRIBUTING.
 
-## Logged as proposals (continued)
-
-| issue | failure mode | why v0 misses it |
-|---|---|---|
-| [#21](https://github.com/Silentpartnercoding/epistemic-ci/issues/21) **Assertion Erosion** | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which no single version can show |
-
-Submitted 2026-09-08 with owner approval. First proposal in this programme that
-requires a **prior version** as input; every prior check judges one snapshot.
-
-Implementation and 17 tests are local at
-`research/epistemic-ci-proposals/assertion_erosion.py`, including the worked
-instance that produced it: this programme weakened three assertions about a bond
-reference on 2026-09-08 because the rule they encoded was mistaken. That was a
-correction, and no static analysis can distinguish it from a convenience -- so
-the candidate is proposed as a **flag, not a gate**. It guarantees a human is
-asked and the answer recorded; it does not answer. The issue states that limit,
-and the evasion by split commit, rather than hiding either.
-
 ## Merged upstream
 
 | change | failure mode | how it was found |
@@ -62,24 +44,6 @@ of a check pretending to close it.
 blind spot in its own immunity ablation on the same day (`FINDING-BL058B.md`): two
 grossly broken implementations pass, because mutation selection determines what is
 learned. Two separately written codebases, one shared weakness.
-
-## Logged as proposals (continued)
-
-| issue | failure mode | why v0 misses it |
-|---|---|---|
-| [#21](https://github.com/Silentpartnercoding/epistemic-ci/issues/21) **Assertion Erosion** | a failing test edited until it passes, shrinking the guarantee while the suite stays green | all ten current checks are single-snapshot: they judge a suite as it stands. A weakened assertion is perfectly healthy on its own terms and passes every one of them. What makes it a defect is only that it used to say more, which no single version can show |
-
-Submitted 2026-09-08 with owner approval. First proposal in this programme that
-requires a **prior version** as input; every prior check judges one snapshot.
-
-Implementation and 17 tests are local at
-`research/epistemic-ci-proposals/assertion_erosion.py`, including the worked
-instance that produced it: this programme weakened three assertions about a bond
-reference on 2026-09-08 because the rule they encoded was mistaken. That was a
-correction, and no static analysis can distinguish it from a convenience -- so
-the candidate is proposed as a **flag, not a gate**. It guarantees a human is
-asked and the answer recorded; it does not answer. The issue states that limit,
-and the evasion by split commit, rather than hiding either.
 
 ## Merged upstream — checks 5 to 8
 
@@ -144,6 +108,19 @@ run fail — depends on the pin mechanism and is checked only where a
 `tamper_command` is supplied; otherwise it is reported not established. Pins are
 counted separately from mutations so they cannot inflate the assurance bound.
 
+## Merged upstream — check 9
+
+| change | failure mode | how it was found |
+|---|---|---|
+| [#19](https://github.com/Silentpartnercoding/epistemic-ci/pull/19) **Reason-Bound Conformance** | a negative vector returns the expected verdict because an earlier, unrelated guard rejected it | a verdict-only conformance suite could stay green while never reaching the property its vector claimed to test |
+
+The check binds a negative vector to causal observations including whether the
+target property was reached and why evaluation stopped. A reference must match
+the declared observations; short-circuit mutants preserve the ordinary verdict
+while changing the reason-bound contract. The evidence is produced by the
+harness or auditor and does not require a protocol peer to disclose an internal
+stop reason on the wire.
+
 ## Logged as proposals (continued)
 
 | issue | failure mode | why v0 misses it |
@@ -161,19 +138,6 @@ correction, and no static analysis can distinguish it from a convenience -- so
 the candidate is proposed as a **flag, not a gate**. It guarantees a human is
 asked and the answer recorded; it does not answer. The issue states that limit,
 and the evasion by split commit, rather than hiding either.
-
-## Merged upstream — check 9
-
-| change | failure mode | how it was found |
-|---|---|---|
-| [#19](https://github.com/Silentpartnercoding/epistemic-ci/pull/19) **Reason-Bound Conformance** | a negative vector returns the expected verdict because an earlier, unrelated guard rejected it | a verdict-only conformance suite could stay green while never reaching the property its vector claimed to test |
-
-The check binds a negative vector to causal observations including whether the
-target property was reached and why evaluation stopped. A reference must match
-the declared observations; short-circuit mutants preserve the ordinary verdict
-while changing the reason-bound contract. The evidence is produced by the
-harness or auditor and does not require a protocol peer to disclose an internal
-stop reason on the wire.
 
 ## Already covered by v0 — deliberately not proposed
 
