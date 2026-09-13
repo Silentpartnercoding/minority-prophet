@@ -7,7 +7,7 @@ quietly has to be an error rather than a convenience.
 
 import unittest
 
-from canon.decomposition import Axis, Cell, Decomposition, Fill, Layer, LAYER_AXIS
+from canon.decomposition import Cell, Decomposition, Fill, Layer, LAYER_QUESTION, Question
 from canon.decompositions.wheel import WHEEL
 
 
@@ -25,10 +25,21 @@ class LayerOrderTest(unittest.TestCase):
                          ["BOUNDARY", "COORDINATES", "OBSERVABLES"])
         self.assertEqual(list(Layer)[-1], Layer.FALSIFIERS)
 
-    def test_every_layer_declares_an_axis(self):
-        """The layers cut; the axes file. Neither derives the other at call time."""
-        self.assertEqual(set(LAYER_AXIS), set(Layer))
-        self.assertTrue(all(isinstance(a, Axis) for a in LAYER_AXIS.values()))
+    def test_every_layer_declares_a_question(self):
+        """The layers cut; the questions file. Neither derives the other."""
+        self.assertEqual(set(LAYER_QUESTION), set(Layer))
+        self.assertTrue(all(isinstance(a, Question) for a in LAYER_QUESTION.values()))
+
+
+class ReservedWordTest(unittest.TestCase):
+    def test_the_word_axes_is_not_reused_for_these_four(self):
+        """EPISTEMIC-MODEL.md reserves `axes` for the independence vocabulary.
+        Calling these four axes too is the collision that reservation exists to
+        prevent, and this module reintroduced it once already."""
+        import canon.decomposition as m
+        self.assertFalse(hasattr(m, "Axis"))
+        self.assertFalse(hasattr(m, "LAYER_AXIS"))
+        self.assertTrue(hasattr(m, "Question"))
 
 
 class RefusalTest(unittest.TestCase):
@@ -77,9 +88,9 @@ class ReportingTest(unittest.TestCase):
         })
         self.assertEqual(d.coverage(), (8, 9))
 
-    def test_by_axis_partitions_every_layer_exactly_once(self):
+    def test_by_question_partitions_every_layer_exactly_once(self):
         d = _full()
-        seen = [c.layer for a in Axis for c in d.by_axis(a)]
+        seen = [c.layer for q in Question for c in d.by_question(q)]
         self.assertCountEqual(seen, list(Layer))
 
 
