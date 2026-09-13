@@ -56,3 +56,11 @@ next-env.d.ts
 /outputs/
 /work/
 /artifacts/
+
+# Sibling clones that live inside this working tree. They are separate
+# repositories, not submodules, and `git add -A` silently commits them as
+# bare gitlinks that no clone can resolve. Ignored so that cannot happen.
+mp-decision-relative/
+mp-dri1b-human-site/
+mp-dri1b-prereg/
+mp-home-source-family/

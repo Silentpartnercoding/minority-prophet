@@ -22,7 +22,7 @@
     "mathlib_rev": "905b95818eb32af7874a58b427f50c1711a5e96c",
     "mathlib_input_rev": "v4.32.2",
     "build_command": "lake exe cache get && lake build",
-    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.",
+    "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.; rebuilt again 2026-09-13, exit 0, 3008 jobs, with Responsiveness.lean added",
     "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]",
     "sorry_count": 0,
     "native_decide_count": 0
@@ -524,7 +524,7 @@
     },
     {
       "date": "2026-09-13",
-      "note": "formal/lean/MinorityProphetCore/NarrowGate.lean lands with this merge carrying ten compiled theorems, and no claim in this ledger cites any of them. Compiled is not the same as recorded: until a claim names them the results are unledgered, and this ledger must not be read as covering the narrow gate."
+      "note": "Two Lean modules on main carry compiled theorems that no claim in this ledger cites: NarrowGate.lean with ten, and Responsiveness.lean with four (margin_eq_signedCount, margin_diff_eq_signedCount, margin_must_move, margin_shifts_by_added_roots; all built 2026-09-13, all on standard axioms). Compiled is not the same as recorded. Until a claim names them the results are unledgered, and this ledger must not be read as covering the narrow gate or responsiveness."
     }
   ]
 }
