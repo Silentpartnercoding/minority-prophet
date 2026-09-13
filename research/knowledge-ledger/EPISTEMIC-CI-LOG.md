@@ -1,13 +1,14 @@
 # What this programme has contributed to Epistemic CI, and what it has not
 
 `Silentpartnercoding/epistemic-ci` is a vendor-neutral meta-validation gate: a
-test for the tests. Its v0 has **nine** checks — **Vacuous Test**, **Executable
+test for the tests. Its v0 has **ten** checks — **Vacuous Test**, **Executable
 Pass Condition**, **Observation Surface**, **Final Artifact Binding**, **Pinned
 Input Binding**, **Control Discrimination**, **Evidential Independence**,
-**Effect Reachability**, and **Reason-Bound Conformance**.
+**Effect Reachability**, **Reason-Bound Conformance**, and **Report
+Discrimination**.
 
-This file has now stated the wrong number four times — three, four, five, and
-eight — each after checks had already shipped. Twice the cause was this
+This file has now stated the wrong number five times — three, four, five, eight
+and nine — each after checks had already shipped. Twice the cause was this
 programme's own contribution landing upstream without the summary following it.
 
 This programme's failure modes are the obvious source of candidate checks, so
@@ -117,6 +118,19 @@ the declared observations; short-circuit mutants preserve the ordinary verdict
 while changing the reason-bound contract. The evidence is produced by the
 harness or auditor and does not require a protocol peer to disclose an internal
 stop reason on the wire.
+
+## Merged upstream — check 10
+
+| change | failure mode | how it was found |
+|---|---|---|
+| [#20](https://github.com/Silentpartnercoding/epistemic-ci/pull/20) **Report Discrimination** | a harness summary is byte-for-byte identical after doing work, doing nothing, and failing | Observation Surface proves a structured report exists and binds a population and a result, and still cannot tell those three outcomes apart |
+
+The check runs the commands declared for the work, no-work and failure outcome
+classes in separate workspaces, requires pairwise-distinct projections over the
+declared JSON fields, and requires failure to differ from success through a
+non-zero exit code or a declared top-level field. The guarantee is bounded by
+the states and commands the configuration author declares; it does not infer
+whether those commands are the right ones.
 
 ## Already covered by v0 — deliberately not proposed
 
