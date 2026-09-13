@@ -8,6 +8,8 @@ from typing import Callable, Iterable
 
 from aggregation import AggregationResult, majority_vote, weighted_vote
 
+from .dependence import dependence_aware_vote
+
 from .world import SyntheticWorld
 
 
@@ -30,7 +32,11 @@ def evaluate(
     methods: dict[str, Aggregator] | None = None,
 ) -> list[dict[str, object]]:
     """Evaluate methods on the same materialized set of worlds."""
-    suite = methods or {"majority": majority_vote, "weighted": weighted_vote}
+    suite = methods or {
+        "majority": majority_vote,
+        "weighted": weighted_vote,
+        "dependence_aware": dependence_aware_vote,
+    }
     materialized = tuple(worlds)
     if not materialized:
         raise ValueError("at least one world is required")
