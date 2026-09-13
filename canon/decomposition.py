@@ -9,11 +9,17 @@ result meaning the artifact provides nothing at this layer, and it is reported
 rather than skipped, because the classic failure this primitive exists to catch is
 an instrument whose missing layer is invisible -- see `canon/WHEEL-WORKED-EXAMPLE.md`.
 
-The four axes of `canon/EPISTEMIC-MODEL.md` are not replaced by the layers. They
-classify what a thing *establishes*; the layers are a procedure for taking it
-*apart*. One is a filing system, the other a scalpel, and the filing system works
-better once you have cut. Each layer therefore declares which axis its content
-bears on, so a decomposition can be read either way round.
+The four questions of `canon/EPISTEMIC-MODEL.md` are not replaced by the layers.
+They classify what a thing *establishes*; the layers are a procedure for taking
+it *apart*. One is a filing system, the other a scalpel, and the filing system
+works better once you have cut. Each layer therefore declares which question its
+content bears on, so a decomposition can be read either way round.
+
+The word `axes` is deliberately not used here. It is reserved for the
+independence vocabulary -- WitnessDepth, Attestation, WitnessIdentity,
+DepthBasis -- which are measurable orthogonal dimensions of one source. These
+four are not dimensions and nothing is measured along them; they are questions a
+record either answers or does not.
 """
 
 from __future__ import annotations
@@ -37,8 +43,9 @@ class Layer(IntEnum):
     FALSIFIERS = 9          # what would force a legitimate update or reversal
 
 
-class Axis(StrEnum):
-    """The four axes of canon/EPISTEMIC-MODEL.md. Authorization is not among them."""
+class Question(StrEnum):
+    """The four questions of canon/EPISTEMIC-MODEL.md. Not axes: see the module
+    docstring. Authorization is not among them; it sits downstream of all four."""
 
     STRUCTURE = "structure"
     ATTRIBUTION = "attribution"
@@ -46,20 +53,20 @@ class Axis(StrEnum):
     DEPENDENCE = "dependence"
 
 
-#: Which axis each layer's content bears on. Declared once, here, so a
-#: decomposition can be read by layer or by axis without either being derived
-#: from the other at call time.
-LAYER_AXIS: dict[Layer, Axis] = {
-    Layer.BOUNDARY: Axis.DEPENDENCE,
-    Layer.COORDINATES: Axis.DEPENDENCE,
-    Layer.OBSERVABLES: Axis.CORRESPONDENCE,
-    Layer.OPERATIONALISATIONS: Axis.CORRESPONDENCE,
-    Layer.CLAIMS: Axis.STRUCTURE,
-    Layer.EVIDENCE_LINEAGE: Axis.STRUCTURE,
-    Layer.MECHANISM: Axis.CORRESPONDENCE,
-    Layer.AUTHORITY: Axis.ATTRIBUTION,
-    Layer.INVARIANTS: Axis.STRUCTURE,
-    Layer.FALSIFIERS: Axis.CORRESPONDENCE,
+#: Which question each layer's content bears on. Declared once, here, so a
+#: decomposition can be read by layer or by question without either being
+#: derived from the other at call time.
+LAYER_QUESTION: dict[Layer, Question] = {
+    Layer.BOUNDARY: Question.DEPENDENCE,
+    Layer.COORDINATES: Question.DEPENDENCE,
+    Layer.OBSERVABLES: Question.CORRESPONDENCE,
+    Layer.OPERATIONALISATIONS: Question.CORRESPONDENCE,
+    Layer.CLAIMS: Question.STRUCTURE,
+    Layer.EVIDENCE_LINEAGE: Question.STRUCTURE,
+    Layer.MECHANISM: Question.CORRESPONDENCE,
+    Layer.AUTHORITY: Question.ATTRIBUTION,
+    Layer.INVARIANTS: Question.STRUCTURE,
+    Layer.FALSIFIERS: Question.CORRESPONDENCE,
 }
 
 
@@ -99,8 +106,8 @@ class Cell:
             )
 
     @property
-    def axis(self) -> Axis:
-        return LAYER_AXIS[self.layer]
+    def question(self) -> Question:
+        return LAYER_QUESTION[self.layer]
 
 
 @dataclass(frozen=True)
@@ -134,9 +141,9 @@ class Decomposition:
         return tuple(c for c in sorted(self.cells, key=lambda c: c.layer)
                      if c.fill is Fill.UNEXAMINED)
 
-    def by_axis(self, axis: Axis) -> tuple[Cell, ...]:
+    def by_question(self, question: Question) -> tuple[Cell, ...]:
         return tuple(c for c in sorted(self.cells, key=lambda c: c.layer)
-                     if c.axis is axis)
+                     if c.question is question)
 
     def coverage(self) -> tuple[int, int]:
         """(layers the artifact supplies, layers examined). Never a single ratio:
@@ -148,7 +155,7 @@ class Decomposition:
     def report(self) -> str:
         lines = [f"decomposition: {self.subject}", ""]
         for c in sorted(self.cells, key=lambda c: c.layer):
-            lines.append(f"  {c.layer.name:<21} {c.fill.value:<11} [{c.axis.value}]")
+            lines.append(f"  {c.layer.name:<21} {c.fill.value:<11} [{c.question.value}]")
             if c.content:
                 lines.append(f"      {c.content}")
             if c.finding:
@@ -164,4 +171,4 @@ class Decomposition:
         return "\n".join(lines)
 
 
-__all__ = ["Layer", "Axis", "Fill", "Cell", "Decomposition", "LAYER_AXIS"]
+__all__ = ["Layer", "Question", "Fill", "Cell", "Decomposition", "LAYER_QUESTION"]
