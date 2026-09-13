@@ -30,9 +30,23 @@
 
 **Evidence root (recorded)** — A lineage node with no recorded ancestry. NOTE: this means "no ancestry *recorded*", not "independently observed". An undetected copy is indistinguishable from an evidence root and is governed by the margin theorems, not by copy invariance. See `formal/CLAIM-SCOPE.md`.
 
-**Root identity** — The criterion by which two roots count as the same root. `S_a` is a *set*, so every verdict is a function of this criterion — and no artifact in this repository defines it. Any de-duplication or canonicalisation step is therefore inside the trusted base. Ledger `U1`.
+**Root identity** — The criterion by which two roots count as the same root. `S_a` is a *set*, so every verdict is a function of this criterion. Defined in `canon/U1-PROXIMATE-ROOTS.md`: dependence is not an equivalence, so the count is a **maximum independent set** rather than a quotient, and shared ancestry is cause-in-fact rather than dependence. Any de-duplication or canonicalisation step is still inside the trusted base. Ledger `U1`, `proved_compiled`; worked in `canon/U1-WORKED-EXAMPLE.md`.
 
 **Flip budget** — `|margin|`, in units of **net per-side root gain** (`p₀ − p₁`). Not a count of adversary actions: one action that *converts* a root from one side to the other is worth two units. Always report `conversions_to_reverse` alongside it.
+
+**Three distinct things are measured by asking "would the verdict flip?", and only the first is a margin.** They differ in what is varied, so they are not interchangeable and no two of them should be summed into a single score. Recorded here so the distinction is not derived a fourth time.
+
+| term | measures | what is varied |
+|---|---|---|
+| **Flip budget** (above) | how many evidence roots must be converted to reverse a verdict | the evidence graph |
+| **False-reversal rate** and **copied-minority recovery** | how often an aggregator overturns wrongly, and how often rightly | the world, against known ground truth |
+| **Pressure susceptibility** | how easily a judge moves when nothing evidential has changed | prestige, consensus, framing, source repetition, who is speaking |
+
+**False-reversal rate** — Fraction of all propositions where the majority is right and the aggregator overturns it. A behavioural error rate measured against ground truth, not a property of an evidence graph. Preregistered with a ceiling in `experiments/EXP009-HYBRID-PREREGISTRATION.md`. Its partner is copied-minority recovery, and neither is meaningful without the other: refusing to overrule anything drives false reversals to zero.
+
+**Copied-minority recovery** — Accuracy on the cases where a copied majority is wrong. The benefit term whose price is the false-reversal rate. Reported as a pair with it, never alone.
+
+**Pressure susceptibility** — How far a judge's output moves when the evidence is held fixed and only social variables change. Deliberately **not** called a flip anything and not expressed in margin units, because it is not a distance in root gain and cannot be compared to one. Currently **unbuilt**; the design constraint recorded in advance is that it must be reported decomposed rather than as one number, and that **belief change and action change are reported separately**, since a belief may move harmlessly while the action holds, and a small move may cross a threshold and turn proceed into abstain. A single headline number here would rebuild the black box that confidence scores were, under a new name.
 
 **Root conversion** — Moving one root (and its descendant subtree, to preserve side-consistency) from one side to the other. Costs two units of flip budget. Reversal by conversion costs `⌊margin/2⌋ + 1` actions.
 
