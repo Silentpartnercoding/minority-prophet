@@ -112,9 +112,14 @@ class WheelTest(unittest.TestCase):
         ever reads STATED, either the instrument changed or the reading got lazy."""
         self.assertIs(WHEEL[Layer.MECHANISM].fill, Fill.IMPLIED)
 
-    def test_the_missing_citation_is_visible_rather_than_glossed(self):
-        self.assertIs(WHEEL[Layer.AUTHORITY].fill, Fill.IMPLIED)
-        self.assertIn("not been recovered", WHEEL[Layer.AUTHORITY].content)
+    def test_authority_separates_the_standardised_words_from_the_uncited_ordering(self):
+        """The vocabulary has a citable authority; the trajectory does not. Naming
+        the standard is not the same as citing the diagram that ordered its terms,
+        and collapsing the two would gloss exactly the gap that still matters."""
+        cell = WHEEL[Layer.AUTHORITY]
+        self.assertIs(cell.fill, Fill.IMPLIED)
+        self.assertIn("GB/T 14487", cell.content)
+        self.assertIn("not recovered", cell.content)
 
     def test_lineage_is_unexamined_and_is_not_counted_as_a_finding(self):
         self.assertIs(WHEEL[Layer.EVIDENCE_LINEAGE].fill, Fill.UNEXAMINED)

@@ -4,9 +4,11 @@ The prose account is `canon/WHEEL-WORKED-EXAMPLE.md`. This is the same reading
 expressed as data, so the claim "this instrument cannot record its own refutation"
 becomes a property something can assert about rather than a paragraph.
 
-The instrument is a published Chinese industry flavour wheel for pu-erh fermented
-with *Monascus purpureus*. Its citation has not been recovered, which is recorded
-below rather than glossed: the AUTHORITY layer is `IMPLIED`, not `STATED`.
+The wheel is a research artifact whose vocabulary sits on a national standard.
+The standards are identified (GB/T 14487-2017 for the sensory vocabulary, from
+SAC/TC339); the specific figure is not. The AUTHORITY layer therefore stays
+`IMPLIED` rather than becoming `STATED`, because knowing which standard the words
+came from is not the same as citing the diagram that ordered them.
 """
 
 from __future__ import annotations
@@ -20,7 +22,10 @@ WHEEL = Decomposition(
              "One tea type under one named fermentation, from raw to finished."),
         Cell(Layer.COORDINATES, Fill.STATED,
              "Five sectors and no others: aroma, taste, appearance, soup colour, "
-             "tea residue."),
+             "tea residue. GB/T 14487-2017 chapters six -- dry tea shape, dry tea "
+             "colour, soup colour, aroma, taste, leaf bottom -- so the wheel "
+             "inherited six and shipped five, fusing shape and colour into "
+             "appearance. Nothing on the diagram says which two were merged."),
         Cell(Layer.OBSERVABLES, Fill.STATED,
              "One permitted descriptor per cell, from a closed list per sector."),
         Cell(Layer.OPERATIONALISATIONS, Fill.STATED,
@@ -37,8 +42,11 @@ WHEEL = Decomposition(
              "least visible of the fused layers and the only one that can be wrong "
              "in an interesting way."),
         Cell(Layer.AUTHORITY, Fill.IMPLIED,
-             "A published industry body sets the permitted vocabulary. The specific "
-             "issuing body and citation have not been recovered."),
+             "The vocabulary is standardised: GB/T 14487-2017, Tea vocabulary for "
+             "sensory evaluation, from the National Tea Standardization Technical "
+             "Committee SAC/TC339. The wheel itself is a research artifact built on "
+             "that vocabulary and its specific citation is not recovered, so the "
+             "words have an authority and the ordering does not yet."),
         Cell(Layer.INVARIANTS, Fill.IMPLIED,
              "The rim's physical reference samples are the one invariant: they hold "
              "the vocabulary to something outside the vocabulary, so two tasters can "
