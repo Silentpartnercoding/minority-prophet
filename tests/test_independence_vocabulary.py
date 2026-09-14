@@ -129,7 +129,7 @@ class WitnessIdentityTests(unittest.TestCase):
         self.assertFalse(anon_vouched.dominates(named_unvouched))
 
     def test_two_anonymous_witnesses_cannot_be_shown_distinct(self):
-        """They may be one person reporting twice. This is the open half of U1."""
+        """They may be one person reporting twice. This is the detection residual U1 leaves open."""
         anon = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
                                 WitnessIdentity.ANONYMOUS)
         self.assertTrue(indistinguishable(anon, anon))

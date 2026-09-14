@@ -722,8 +722,10 @@
         "research/knowledge-ledger/experiments/KL-014/DECISION-20260813.md:63, 115-117",
         "provenance/graph.py:111-116"
       ],
-      "verdict": "still-live",
-      "currentEvidence": "KL-014/DECISION-20260813.md:63-64 and :116-117 still say the root-evidence gate is off by default and 'trust me' passes; code has it on by default since 2026-08-13 (provenance/graph.py:111, :269) and refuses it (tests/test_provenance.py:125). Code is correct; the decision record needs a dated supersession note."
+      "verdict": "resolved",
+      "currentEvidence": "KL-014/DECISION-20260813.md:63-64 and :116-117 still say the root-evidence gate is off by default and 'trust me' passes; code has it on by default since 2026-08-13 (provenance/graph.py:111, :269) and refuses it (tests/test_provenance.py:125). Code is correct; the decision record needs a dated supersession note.",
+      "verdictAtCheck": "still-live",
+      "fixed": "2026-09-14: KL-014 decision record carries dated supersession notes."
     },
     {
       "topic": "When did U1 close, and is it closed?",
@@ -734,8 +736,10 @@
         "PUBLIC-CLAIMS.md:51",
         "PROVENANCE-REQUIREMENTS.md:176"
       ],
-      "verdict": "partly",
-      "currentEvidence": "Public claims agree U1 is closed. The closure date is 2026-09-14 (canon/U1-PROXIMATE-ROOTS.md:3, formal/COUNTEREXAMPLES.md:21), but five sites still say 2026-09-07, the date RootIdentity.lean was written: formal/CLAIM-SCOPE.md:86, formal/EXTENSION-SOCKETS.md:167, formal/PROOFS.md:201, canon/NOVELTY-AUDIT.md:162, papers/ERRATA.md:312. canon/narrow_gate.py:191 and tests/test_independence_vocabulary.py:132 still call U1 open."
+      "verdict": "resolved",
+      "currentEvidence": "Public claims agree U1 is closed. The closure date is 2026-09-14 (canon/U1-PROXIMATE-ROOTS.md:3, formal/COUNTEREXAMPLES.md:21), but five sites still say 2026-09-07, the date RootIdentity.lean was written: formal/CLAIM-SCOPE.md:86, formal/EXTENSION-SOCKETS.md:167, formal/PROOFS.md:201, canon/NOVELTY-AUDIT.md:162, papers/ERRATA.md:312. canon/narrow_gate.py:191 and tests/test_independence_vocabulary.py:132 still call U1 open.",
+      "verdictAtCheck": "partly",
+      "fixed": "2026-09-14: Closure date corrected to 2026-09-14 at five sites; narrow_gate.py and the vocabulary test no longer call U1 open."
     },
     {
       "topic": "Is the laundering residual bounded or undetectable?",
@@ -756,8 +760,10 @@
         "canon/independent_set.py:13-16",
         "aggregation/independence_axes.py:320"
       ],
-      "verdict": "partly",
-      "currentEvidence": "Doctrine settled: under-counting is directional, not conservative (canon/independent_set.py:13-15, aggregation/independence_axes.py:320). Stale wording remains at canon/narrow_gate.py:189-190 (superseded file), aggregation/root_vote.py:233 and :264, tests/test_producer_plumbing.py:123."
+      "verdict": "resolved",
+      "currentEvidence": "Doctrine settled: under-counting is directional, not conservative (canon/independent_set.py:13-15, aggregation/independence_axes.py:320). Stale wording remains at canon/narrow_gate.py:189-190 (superseded file), aggregation/root_vote.py:233 and :264, tests/test_producer_plumbing.py:123.",
+      "verdictAtCheck": "partly",
+      "fixed": "2026-09-14: 'Conservative' wording replaced in narrow_gate.py, root_vote.py and test_producer_plumbing.py."
     },
     {
       "topic": "The copy-invariance slogan",
@@ -766,8 +772,10 @@
         "gate:README.md:85",
         "formal/CLAIM-SCOPE.md:116-122"
       ],
-      "verdict": "still-live",
-      "currentEvidence": "gate:README.md:85 says duplicating a claim can never change the verdict, without the recorded-parent hypothesis that formal/CLAIM-SCOPE.md:123-127 requires (CE-01). gate:README.md:66 carries the same unstated hypothesis."
+      "verdict": "resolved",
+      "currentEvidence": "gate:README.md:85 says duplicating a claim can never change the verdict, without the recorded-parent hypothesis that formal/CLAIM-SCOPE.md:123-127 requires (CE-01). gate:README.md:66 carries the same unstated hypothesis.",
+      "verdictAtCheck": "still-live",
+      "fixed": "2026-09-14: Gate README and aggregator docstring now state the recorded-parent hypothesis."
     },
     {
       "topic": "CE-14 presence semantics",
@@ -777,8 +785,10 @@
         "formal/COUNTEREXAMPLES.md:529-531",
         "aggregation/root_vote.py:157-158"
       ],
-      "verdict": "still-live",
-      "currentEvidence": "Settled as owner decision A3 at formal/COUNTEREXAMPLES.md:27 and :453 and knowledge_ledger/transaction_v2.py:47, but COUNTEREXAMPLES.md:529-531 still says the presence branch is open and aggregation/root_vote.py:157-158 calls it an open semantic question."
+      "verdict": "resolved",
+      "currentEvidence": "Settled as owner decision A3 at formal/COUNTEREXAMPLES.md:27 and :453 and knowledge_ledger/transaction_v2.py:47, but COUNTEREXAMPLES.md:529-531 still says the presence branch is open and aggregation/root_vote.py:157-158 calls it an open semantic question.",
+      "verdictAtCheck": "still-live",
+      "fixed": "2026-09-14: COUNTEREXAMPLES.md and root_vote.py now say settled by owner decision A3."
     },
     {
       "topic": "Is U2 fixed?",
@@ -807,8 +817,10 @@
         "canon/U3-WHAT-TRANSFERS.md:14",
         "aggregation/baselines.py:46-47"
       ],
-      "verdict": "still-live",
-      "currentEvidence": "Wording only: canon/U3-WHAT-TRANSFERS.md:14 calls the weighted baseline a shipped defect; aggregation/baselines.py:40, :46-47, tests/test_weight_decomposition.py:78 and benchmark/SPECIFICATION.md:27 say its naivety is deliberate. The baseline files are correct."
+      "verdict": "resolved",
+      "currentEvidence": "Wording only: canon/U3-WHAT-TRANSFERS.md:14 calls the weighted baseline a shipped defect; aggregation/baselines.py:40, :46-47, tests/test_weight_decomposition.py:78 and benchmark/SPECIFICATION.md:27 say its naivety is deliberate. The baseline files are correct.",
+      "verdictAtCheck": "still-live",
+      "fixed": "2026-09-14: U3-WHAT-TRANSFERS.md now calls it a deliberate baseline."
     },
     {
       "topic": "The single ranking of independence bases",

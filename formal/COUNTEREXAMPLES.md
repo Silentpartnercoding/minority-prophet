@@ -526,9 +526,8 @@ it fails closed. Note the asymmetry it encodes: an unattributed claim can create
 a refutation but can never undo one, which is AC1 read in the direction of
 missing data.
 
-*Still open — the ledger's presence branch.* Unchanged by this repair. See the
-mirror note above: it is an unmade semantic decision, not a defect awaiting
-code.
+*Settled — the ledger's presence branch.* Unchanged by this repair, and correct as
+it stands: owner decision A3 (see the mirror note above) settled its counting.
 
 ---
 

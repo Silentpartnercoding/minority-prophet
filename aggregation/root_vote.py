@@ -154,8 +154,8 @@ class AsymmetricClaimError(ValueError):
     decided. For the universal direction,
     `knowledge_ledger.evaluate_transaction_v2` answers correctly today as an
     `absence` claim. For the existential direction its `presence` branch also
-    counts -- see CE-14's mirror note, which is an open semantic question
-    rather than a settled defect.
+    counts -- see CE-14's mirror note; that counting is settled as correct
+    by owner decision A3.
     """
 
 
@@ -230,7 +230,7 @@ class RootVerdict:
 def _basis_of(claim: RootedClaim) -> IndependenceBasis:
     """A claim that does not say how its independence was established has not
     established it. Absent, unrecognised and explicitly-unknown all read as
-    UNKNOWN, which is the conservative direction.
+    UNKNOWN, which claims nothing the producer did not state.
 
     A member of this enum is accepted as itself. `IndependenceBasis` mixes in
     `str`, but `str()` on a member of a `(str, Enum)` returns
@@ -261,7 +261,7 @@ def _read_axis(claim: RootedClaim, field: str, table: dict, member_type):
 
     An unrecognised value reads as absent rather than raising: a producer that
     sends a word this version does not know has not stated the axis, and
-    silence is the conservative reading. Wire-level parsing still refuses
+    silence claims nothing. Wire-level parsing still refuses
     unknown strings -- that is `from_wire`'s job, at the boundary.
     """
     raw = getattr(claim, field, None)

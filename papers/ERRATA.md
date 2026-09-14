@@ -309,7 +309,8 @@ published foundation paper, DOI `10.5281/zenodo.21997434`).
 is primitive in the formal model", "the unresolved trust layer: root identity…",
 "**Root identity is not solved.** The model treats root equality as given." That
 was accurate on 18 August. `canon/U1-PROXIMATE-ROOTS.md` and
-`RootIdentity.lean` closed U1 on 7 September: two sources descending from a
+`RootIdentity.lean` defined root identity on 7 September, and U1 was closed by
+owner decision on 14 September: two sources descending from a
 common ancestor remain independent witnesses if each re-established the claim
 through a channel that does not run through that ancestor — `novus actus
 interveniens`, graded by `canon/proximity.py` rather than treated as a boolean.

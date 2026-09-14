@@ -159,7 +159,7 @@ sufficiently connected corpus — the aggregator becomes maximally conservative
 and useless, which is the `FalseDenyRate` failure again.
 
 This is the known hard problem in entity resolution, and it was the same gap as
-ledger `U1`. **Resolved 2026-09-07, and the answer is neither of the two options
+ledger `U1`. **Resolved 2026-09-14, and the answer is neither of the two options
 this paragraph offered.** `canon/U1-PROXIMATE-ROOTS.md` declines to make `∼` an
 equivalence relation precisely because transitive closure drives `N_eff` toward 1
 across a connected corpus, and declines to make it a clustering because the
