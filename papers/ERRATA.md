@@ -299,7 +299,7 @@ published foundation paper, DOI `10.5281/zenodo.21997434`).
 | Module | Added | Results | What it establishes |
 | --- | --- | --- | --- |
 | `Asymmetric.lean` | 2026-08-17 | 10 | Verdict rules that counting cannot express. Where a claim's falsifier is singular, one counterexample root settles it against any confirming count. `F` compares two root counts and structurally cannot state this. |
-| `NarrowGate.lean` | 2026-09-07 | 10 | Three results whose point is that they do not say what the original brief expected. |
+| `NarrowGate.lean` | 2026-09-07 | 10 | Three results whose point is that they do not say what the original brief expected. Written up as *Safety Was Never the Scarce Property*. |
 | `RootIdentity.lean` | 2026-09-07 | 5 | **Ledger U1, closed by a doctrine of remoteness.** |
 | `Responsiveness.lean` | 2026-09-07 | 4 | The missing half of the attractor requirement: a material change must *move* the verdict. The core proved only that an irrelevant change leaves it invariant. |
 
