@@ -37,10 +37,13 @@ DRI-1A exposed five limits a successor must fix:
 5. **The test was authored by the same control domain as the method.** Its own
    record says so, as does HVI-1's boundary on shared control.
 
-**DRI-1A was a pilot.** Each of its worlds was one decision, with the failure
-domain supplied and lineage given as ground truth. There was no sequence of
-junctions, no evidence request, no hand-over and no clock. DRI-2 does not reuse
-its worlds. Its world model is new, and it adds everything the pilot lacked.
+**DRI-1A was a pilot, and DRI-2 shores it up.** Each of DRI-1A's worlds was one
+decision, with the failure domain supplied and lineage given as ground truth. There
+was no sequence of junctions, no evidence request, no hand-over and no clock. DRI-2
+fixes limits 1 to 4 on a new world model, and sizes every comparison for
+statistical significance before freezing. Limit 5 is **not** fixed: no author
+independent of the method exists yet, so it stays a stated limit of DRI-2 as well
+(section 9).
 
 ## 2. Scoring principle
 
@@ -64,8 +67,7 @@ passes through. Each junction carries exactly one correct move, fixed when the
 world is built and hidden from every arm:
 
 - **settle:** the evidence in hand justifies a correct settlement here;
-- **gather:** a permitted evidence request, within the declared budget, is needed
-  before settling;
+- **gather:** a permitted evidence request is needed before settling;
 - **hand over:** the missing information or authority is available only to a
   human, so escalating here is the correct step. The run continues with the
   human's answer.
@@ -162,6 +164,8 @@ bad judgment:
    contestant.
 6. **Declared-policy rules engine:** the frozen family-to-cut table. **Reference
    only**, for the same reason.
+7. **Method under test:** acts on the relevant cut or error class it infers from
+   what the world reveals, without being told the family.
 
 There is no selector arm. No contestant arm is told the world's family, its
 failure domain or which error kinds it contains, and no step guesses them on the
@@ -187,7 +191,6 @@ reckless.
   context.
 - **Every world can be crossed.** Before a world is used, a reference run shows at
   least one legitimate path through it.
-
 - **Critical paths come from the maintainers' own junctions.** They are built from
   junctions the maintainers have faced, with identifying detail removed.
 - **Errors come from the approved error-class declaration** and the programme's
@@ -214,22 +217,12 @@ reckless.
 Every family includes paths with no hand-over, paths with one hand-over, and
 gather/hand-over twins.
 
-### Held-back worlds
+### Held-back worlds: deferred
 
-The approved error-class declaration is what the method commits to in advance. An
-attacker is not bound by it, and no declaration can be shown complete against
-errors nobody has thought of. So a separate set of worlds is built from error
-kinds that are **not** in the approved declaration, authored outside the method's
-control domain and withheld from its authors until scoring. If no author
-independent of the method can be found, held-back worlds wait for outside authors
-rather than being written by the method's own.
-
-The junction loop cannot compute an undeclared error as blocking, by construction,
-so detecting these is not the expected behaviour. What they measure is the
-leftover: how often an undeclared error produces a fall anyway, how often the
-margin or fail-closed handling of unknown input catches it without naming it, and
-how often it produces a stall. Held-back worlds carry critical paths like every
-other family and are scored the same way, but always reported on their own.
+Worlds built from error kinds outside the approved declaration need authors
+independent of the method. None exist yet, so held-back worlds are **not part of
+DRI-2**. They wait for outside authors, as decided, and are not written by the
+method's own authors.
 
 ## 6. Candidate metrics
 
@@ -254,12 +247,35 @@ Everything DRI-1A reported, plus:
 - **evidence-request use:** requests made, and requests skipped where one would
   have resolved a gather junction;
 - **joint-domain results**, reported separately from single-domain results;
-- **held-back results**, never pooled with declared results: fall rate, the
-  fraction caught by the margin, the fraction caught by fail-closed handling of
-  unknown or unreadable input, and correct and incorrect stall rates;
 - **inferred-cut accuracy:** how often the cut or class a method acted on was the
   relevant one, when it was never told the family, against a most-common-cut
   baseline.
+
+### Sample size: set for statistical significance
+
+World counts are fixed before freezing, from the tests below. No count is chosen
+or changed after any world is scored.
+
+- **Paired design.** Every arm runs on the same worlds, so each comparison is
+  paired.
+- **Primary comparisons.** The method under test against each of the seven
+  comparison arms (headcount, the four fixed cuts, weakest link and
+  determined-or-escalate), on crossing rate, per family. Each uses McNemar's test on
+  the paired outcomes, Holm-corrected to a family-wise α of 0.05.
+- **Size per family.** Enough worlds to detect a 5-point difference in crossing
+  rate with 90% power at the Bonferroni level α = 0.05 / 7, in the least favourable
+  case (unpaired, rates near 50%). That bound is **3,155 worlds per family**, 12,620
+  across the four families. Pairing only lowers the true requirement, so the bound is
+  conservative. It is split evenly across paths with no hand-over, paths with one
+  hand-over, and twins.
+- **Time to crossing.** Compared on worlds both arms cross, with a paired Wilcoxon
+  signed-rank test under the same correction. The uncertainty of the difference is
+  reported beside it.
+- **Falls.** A family with no fall in N worlds bounds the fall rate below about 3 / N
+  at 95% confidence (the rule of three). 299 fall-free worlds bound it below 1 in
+  100, and every family exceeds that.
+- **Exploratory worlds** that do not fit the model are reported apart and add
+  nothing to these counts.
 
 ## 7. What each outcome would mean
 
@@ -272,9 +288,6 @@ Everything DRI-1A reported, plus:
 | High twin discrimination with a low crossing rate | The system knows where the junctions are but cannot settle between them; the gap is in aggregation, not judgment |
 | Inferred-cut accuracy at or below the most-common baseline | Relativity may hold in principle and still be undeployable |
 | Joint-domain worlds break every arm | Joint independence becomes the blocking question for both models |
-| Held-back worlds produce few falls | The margin and fail-closed handling cover undeclared errors in this model; the declaration's incompleteness is tolerable here |
-| Held-back worlds produce many falls, uncaught by the margin | The declaration has consequential holes; each falling kind is a candidate for the next registration, and the run stays on record as a miss |
-| Held-back worlds mostly stall incorrectly | Unknown input is being handled safely but not usefully; the fail-closed path costs crossings |
 
 ## 8. Decisions required before freezing
 
@@ -303,14 +316,13 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
    bounds only. Every world is crossable.
 8. ~~Reusing DRI-1A's generator.~~ **Decided:** not reused. DRI-1A was a pilot,
    and DRI-2 uses a new, full world model.
-9. **Power:** world counts per family and path type, computed before freezing, as
-   Lift v1.2 did.
-10. **Held-back authorship.** **Decided in part:** independent authors only. If
-    none can be found, held-back worlds wait for outside authors. Their content is
-    sealed until scoring. Still open: how many worlds they receive.
-11. **Promotion of discovered kinds:** a held-back kind that causes falls may join
-    the declaration only for the next registration, never retroactively for the
-    run that exposed it.
+9. ~~Power.~~ **Decided:** sized for statistical significance before freezing:
+   3,155 worlds per family, from the paired, Holm-corrected tests in section 6.
+10. ~~Held-back authorship.~~ **Decided:** no independent authors exist, so
+    held-back worlds are not part of DRI-2. They wait for outside authors.
+11. ~~Promotion of discovered kinds.~~ Deferred with held-back worlds. When they
+    exist, a kind that causes falls joins only the next registration, never the run
+    that exposed it.
 12. ~~Worlds that do not fit.~~ **Decided:** run as exploratory experiments and
     reported apart, never discarded.
 13. ~~Revealing the path.~~ **Decided:** progressive. Each junction appears only
@@ -322,3 +334,7 @@ This draft claims nothing. A future positive result would be evidence only for i
 frozen synthetic model and scoring. It would not validate supplied lineage, show
 real-world prevalence, detect dependence the record omits, calibrate confidence,
 or grant authority to act.
+
+DRI-2 is authored by the same control domain as the method it tests, as DRI-1A
+was. That limit is unaddressed until independent authors exist. Every DRI-2 result
+carries it, and none bears on error kinds outside the approved declaration.
