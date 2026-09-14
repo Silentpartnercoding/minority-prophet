@@ -164,6 +164,39 @@ verified evidence into permission is the abstention rule. Whether this conversat
 caused those or merely reached them first has not been established, and the entry below
 on the straps is a warning against assuming the earlier telling is the ancestor.
 
+**Karla and Khader, from Shantaram, 21 August, supplied the perception model and the
+distinction that closed root identity.** The conversation opened on the wrong story — a
+typo for the Turkish legend Sahmaran — and ChatGPT titled the thread from the mistake and
+kept the title after the correction, which is why it stayed lost for weeks under a name
+that has nothing to do with the book.
+
+Two things came out of it. The first is a reading of Karla as an epistemic sensor rather
+than a love interest: someone who collects weak signals, tone and hesitation and who is
+afraid of whom, interprets people rather than facts, and can enter rooms the person she
+reports to cannot enter without changing everyone's behaviour. The skills named were
+theory of mind, metacognition, strategic silence, holding competing hypotheses,
+information-asymmetry awareness, long-horizon thinking, contradiction tolerance, agency
+preservation, and information-seeking action. Khader supplied the other half: strategic
+world modelling, system-level prioritisation, folding local signals into the whole board,
+and deciding which uncertainty actually matters. Together they gave a loop — observe,
+interpret, challenge, record beliefs, prioritise, test, act, verify against reality,
+update. The thread then went looking for characters with stronger machinery than Karla in
+specific dimensions and produced a comparison table: Luthen Rael for compartmentalised
+knowledge architecture, Varys for distributed sensing, L for keeping improbable hypotheses
+alive and trying to falsify them, Gus Fring for low-reactivity updating, Littlefinger for
+reasoning about how beliefs themselves can be manipulated, Mike Ehrmantraut for checking
+whether reality still matches the assumptions.
+
+The second thing is the distinction, and it is the more important one. Tracing Lin's night
+in the alley backwards, the answer given was that causation keeps expanding while
+responsibility does not: prior choices, addiction, earlier circumstances, an attacker with
+reasons of his own, a slum built to burn, coals someone lit. Responsibility begins where
+an agent has meaningful control over a branch of that chain, and the test offered four
+filters — control, foreseeability, contribution, and whether a reasonably safer
+alternative existed. That is the proximate-cause doctrine arrived at through a novel two
+weeks before it was arrived at through tort law, and `canon/U1-PROXIMATE-ROOTS.md` and
+`RootIdentity.lean` are where it ended up.
+
 **The Lindsay Clancy case, 21 August, separated knowing from deciding.** A murder trial
 where the physical act is undisputed and the entire dispute is responsibility forced apart
 five things that had been travelling together: causation, responsibility, knowledge,
@@ -281,8 +314,10 @@ the ledger now sits. The repository is a private slice of a forty-nine section b
 disclaims its own maturity — five of its twelve requirements are marked planned, and it
 states that Level 1 has not been calibrated.
 
-**Two gaps, recorded rather than smoothed over.** A conversation refers to "the
-distinction we discovered with Lin" as already known and never explains it; the earlier
-thread was not located. And an "Aletheon" naming discussion of 12 July lists Cloak,
-Cipher, Vault, Shadow, Ghost, Phantom, Eclipse, Obscura and Whisper, which is plainly
-adjacent to the Ghost and Phantom work but has not been read.
+**One gap remains, and one has closed.** The Lin gap is closed: the conversation that
+refers to "the distinction we discovered with Lin" as already known was referring to
+Shantaram, recorded above, and the Lindsay Clancy entry names the link in those words.
+It stayed missing because the thread carries a title from a typo made in its first
+message. Still open: an "Aletheon" naming discussion of 12 July lists Cloak, Cipher,
+Vault, Shadow, Ghost, Phantom, Eclipse, Obscura and Whisper, which is plainly adjacent to
+the Ghost and Phantom work but has not been read.
