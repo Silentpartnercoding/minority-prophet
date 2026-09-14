@@ -278,3 +278,68 @@ The revision adds both sides of the result:
 
 No prior paper is rewritten. Any balanced multi-root or cross-platform LIR-5
 is explicitly a separate research chapter.
+
+---
+
+## [E9] Four Lean modules postdate every paper, and one of them closes a limitation the papers state
+
+Unlike E1–E8, **nothing here is a correction of something false.** Every
+statement below was true when written. Four modules were added afterwards, three
+of them resolve limitations the manuscripts declare openly, and no manuscript has
+been revised to say so. A reader holding a published paper next to this
+repository will find the paper conceding a gap the repository has closed.
+
+**Affected.** `papers/minority-prophet-v1.0.7.md` (9 August, current
+pre-submission manuscript) and
+`papers/peer-review/minority-prophet-peer-review-v1.2.0.md` (18 August, the
+published foundation paper, DOI `10.5281/zenodo.21997434`).
+
+### What was added after both
+
+| Module | Added | Results | What it establishes |
+| --- | --- | --- | --- |
+| `Asymmetric.lean` | 2026-08-17 | 10 | Verdict rules that counting cannot express. Where a claim's falsifier is singular, one counterexample root settles it against any confirming count. `F` compares two root counts and structurally cannot state this. |
+| `NarrowGate.lean` | 2026-09-07 | 10 | Three results whose point is that they do not say what the original brief expected. |
+| `RootIdentity.lean` | 2026-09-07 | 5 | **Ledger U1, closed by a doctrine of remoteness.** |
+| `Responsiveness.lean` | 2026-09-07 | 4 | The missing half of the attractor requirement: a material change must *move* the verdict. The core proved only that an irrelevant change leaves it invariant. |
+
+### The three statements now out of date
+
+**Root identity.** The foundation paper states it in four places — "root identity
+is primitive in the formal model", "the unresolved trust layer: root identity…",
+"**Root identity is not solved.** The model treats root equality as given." That
+was accurate on 18 August. `canon/U1-PROXIMATE-ROOTS.md` and
+`RootIdentity.lean` closed U1 on 7 September: two sources descending from a
+common ancestor remain independent witnesses if each re-established the claim
+through a channel that does not run through that ancestor — `novus actus
+interveniens`, graded by `canon/proximity.py` rather than treated as a boolean.
+Ledger status is **closed** as of 2026-09-14 by owner decision.
+
+What has *not* changed, and must travel with any citation of the closure: the
+residual is **detection, not definition.** An adversary who launders the
+provenance record *and* scrubs the shared idiosyncratic markers removes edges,
+and a sparser graph admits a larger independent set, so the count over-reports.
+That is bounded by **R3 margin sufficiency** rather than solved, pinned by
+`test_ATTACK_laundered_provenance_inflates_the_count`, and per `ASSAYER.md` A5 a
+report may only ever say *"no dependence trace was found"*. The papers' warning
+that **root**, **independent evidence** and **truth** are not interchangeable
+stands unchanged.
+
+**One-sided invariance.** Both manuscripts present invariance results without
+their converse. Until `Responsiveness.lean`, a system that returned the same
+answer to every input satisfied every theorem in the core. It no longer does.
+
+**Asymmetric claims.** Neither manuscript states that the aggregator's comparison
+of root counts is the wrong instrument for a claim whose falsifier is singular.
+`Asymmetric.lean` states it and proves the rule that replaces counting there.
+
+### Status of the manuscripts
+
+**Not rewritten, and not superseded.** Consistent with this file's standing
+practice, no prior paper is edited to agree with today. The foundation paper's
+archival record at `10.5281/zenodo.21965712` is correct as deposited, and Zenodo
+versioning exists precisely so a later result is published as a new version
+rather than by altering a record that others may have cited.
+
+The U1 closure and the responsiveness converse are a companion paper, *Independence Without Equivalence*, not a
+version bump. Bundling a closed open problem into a revision buries it.

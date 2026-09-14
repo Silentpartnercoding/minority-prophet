@@ -1,7 +1,16 @@
 # U1 — what counts as one evidence root
 
-**Status: proposed closure.** The definitional question is answered; one
-residual exposure remains and is bounded rather than solved.
+**Status: closed, 2026-09-14, by owner decision.** The definitional question is
+answered, and the owner signature this document asked for below has been given.
+
+Two things remain true and are not defects in the closure. The residual exposure
+is **detection, not definition** — an adversary who launders provenance *and*
+scrubs the shared idiosyncratic markers inflates the independent-set count — and
+it is bounded by **R3 margin sufficiency** rather than solved, pinned by
+`test_ATTACK_laundered_provenance_inflates_the_count`. And the assignment of
+particular real procedures to proximity rungs remains an owner judgment that must
+be published in advance under `A3`, before any sample is drawn. Closing U1 fixes
+what a root *is*; it does not promise that every laundered root will be caught.
 
 ## Why every previous attempt failed
 
