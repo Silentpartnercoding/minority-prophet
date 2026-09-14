@@ -135,9 +135,10 @@ evidence* and *truth* are not interchangeable terms.
 
 ## 6. Scope
 
-Deliberately excluded, and belonging to their own paper:
-`Asymmetric.lean` — claims whose falsifier is singular, where comparing root
-counts is the wrong instrument entirely — and `NarrowGate.lean`.
+Deliberately excluded. `Asymmetric.lean` — claims whose falsifier is singular,
+where comparing root counts is the wrong instrument entirely — is the subject of
+*When Counting Is the Wrong Instrument*, drafted alongside this one.
+`NarrowGate.lean` remains unwritten up.
 
 ## Availability
 
