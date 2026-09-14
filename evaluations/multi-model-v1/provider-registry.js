@@ -27,5 +27,5 @@ export function createAdapter(config, env = process.env) {
   const defaults = { openai: ['https://api.openai.com/v1','OPENAI_API_KEY'], deepseek: ['https://api.deepseek.com/v1','DEEPSEEK_API_KEY'], openrouter: ['https://openrouter.ai/api/v1','OPENROUTER_API_KEY'], local: ['http://127.0.0.1:11434/v1','LOCAL_API_KEY'] };
   const selected = defaults[config.provider];
   if (!selected) throw new Error(`Unsupported provider: ${config.provider}`);
-  return new OpenAICompatibleAdapter({ provider: config.provider, model: config.model, baseUrl: config.base_url ?? selected[0], apiKey: env[selected[1]] ?? '' });
+  return new OpenAICompatibleAdapter({ provider: config.provider, model: config.model, baseUrl: config.base_url ?? selected[0], apiKey: env[selected[1]] ?? '', requestBody: config.request_body ?? {} });
 }
