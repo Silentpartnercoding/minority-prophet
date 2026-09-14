@@ -164,6 +164,31 @@ verified evidence into permission is the abstention rule. Whether this conversat
 caused those or merely reached them first has not been established, and the entry below
 on the straps is a warning against assuming the earlier telling is the ancestor.
 
+**Waze, 15 August, named the product and its one non-negotiable in the same breath.** The
+sentence was "in some ways its like Waze for agents", and the reply took it seriously
+rather than as a pitch line. Waze works because one driver sees a hazard, everyone nearby
+benefits, and contributors get a better shared map in return. The same shape applied to
+machines: one robot observes slippery flooring, another detects an obstruction, a third
+needs a safe route, and the network combines their authorised observations into an answer
+none of them had. Then the qualifier that is the entire programme in one clause — what
+Waze-style voting lacks is any check on *whether ten reports represent ten observations or
+one report relayed ten times*. The formulation that survived is "Waze for agents, without
+mistaking echoes for witnesses."
+
+The same exchange carries the prior-art discipline. Asked whether this already existed,
+the answer was yes, in pieces — Hivemapper for sensor networks, Datapoint and ai.market
+for agent-purchasable data, Catena-X for credentialed industrial exchange — and therefore
+that this programme must not claim to have invented agent data exchange or sensor
+marketplaces. What is claimed is narrower and is the part nobody else was doing.
+
+It shipped. `agentwex/agentwex` is public, and states the doctrine in its own README as
+limitations rather than as features: the exchange collapses repeated claims from the same
+registered node; a registered signature identifies a pseudonymous node and does not prove
+that a distinct person or organisation controls it; and returned routes are unverified
+network evidence that grant no authority. Those three sentences are copy collapse, the
+Sybil boundary, and signature-is-not-authority, written where a user will actually read
+them.
+
 **Karla and Khader, from Shantaram, 21 August, supplied the perception model and the
 distinction that closed root identity.** The conversation opened on the wrong story — a
 typo for the Turkish legend Sahmaran — and ChatGPT titled the thread from the mistake and
