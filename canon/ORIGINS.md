@@ -10,6 +10,16 @@ are the conversation dates, not the merge dates, and the two are usually weeks a
 
 Two entries could not be recovered and are recorded as gaps rather than omitted.
 
+A warning for anyone re-running this search, because the first pass made both of these
+mistakes. The three archives fail in opposite directions. Codex history is exact
+substring, so a null result is only ever as good as your exact phrasing — the straps
+entry below was missed for a day because the text says *straps* and every search used
+*bootstraps*. ChatGPT history is semantic, so it returns something plausible rather than
+nothing — a null there is informative, a hit is nearly worthless. And each machine keeps
+its own Codex corpus rather than a shared one: the straps passage was absent from a
+987MB history on one machine and sitting in plain text in a 1.6GB history on another. A
+negative result from a single machine establishes nothing.
+
 **The single most productive conversation was about how old someone is.** Filed under
 "Relativity And Aging". It runs from age, through simultaneity, to a complete pipeline,
 and five separate modules in this repository come out of it.
