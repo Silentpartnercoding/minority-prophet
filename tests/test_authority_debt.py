@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
 
 class CoordinationIsNotEpistemicTest(unittest.TestCase):
-    """The guard ORIGINS.md recorded as owed to the code.
+    """The guard the private origins record noted as owed to the code.
 
     The criterion: the two cases the prose calls out must come apart. A sound
     institutional chain must stop reading as pathological, and a chain that ends
