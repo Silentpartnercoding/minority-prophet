@@ -138,13 +138,6 @@ them. An escalation at the maximum, or at a hand-over junction, carries no clock
 charge. Working to its maximum is therefore always a method's fastest route, and
 going early always costs at least double.
 
-To the method, an escalation at a hand-over junction and an escalation at its
-maximum on a junction that evidence could resolve are the same move, and they are
-treated the same. Only the report separates them. A required escalation is within
-the world's minimum and does not reduce autonomy. An escalation at the maximum of a
-resolvable junction does, and it is reported as reaching the method's limit rather
-than as escalating early.
-
 ### How this maps to the runtime
 
 The test grades the same choices the shipped Gate makes, so a result speaks
@@ -346,8 +339,8 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
     virtual clock.
 16. ~~Charging for an escalation.~~ **Decided:** before the maximum, at least twice
     the reference time of the unmade requests. At the maximum or at a hand-over
-    junction, nothing on the clock. Still open: whether frequent escalation also
-    carries a charge that grows with each call.
+    junction, nothing on the clock. A charge that grows with each call is parked,
+    not adopted.
 
 ## 9. Not claimed
 
