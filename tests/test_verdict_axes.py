@@ -15,7 +15,7 @@ class Claim:
 
 
 class BackwardCompatibilityTests(unittest.TestCase):
-    """Nothing that existed before behaves differently."""
+    """Where the legacy scale was right, nothing changes."""
 
     def test_legacy_fields_are_untouched(self):
         r = verdict([Claim(True, "r1", "attested"), Claim(True, "r2", "declared")])
@@ -97,18 +97,22 @@ class AmbiguityTests(unittest.TestCase):
         """A notarised statement and something reached by reasoning are weakest
         in different ways: one has no testament, the other never looked.
 
-        `weakest_basis` reports 'inferred' here. That is a fiction -- it ranks a
-        depth against a testament, and there is no exchange rate between them.
+        The retired ladder reported 'inferred' here. That was a fiction -- it
+        ranked a depth against a testament, and there is no exchange rate between
+        them.
         """
         r = verdict([Claim(True, "r1", "attested"), Claim(True, "r2", "inferred")])
         self.assertFalse(r.weakest_basis_well_defined)
         self.assertEqual(len(r.weakest_axes), 2)
 
-    def test_the_legacy_field_still_answers_and_is_still_wrong(self):
-        """Recorded so the defect is visible rather than silently corrected."""
+    def test_the_legacy_field_reports_the_greatest_lower_bound(self):
+        """No root is below both, so the label is their meet: weaker than each
+        on every axis, with no exchange rate invented. The retired ladder said
+        'inferred', ranking the reasoned inference below the notarised statement
+        on the one axis where it is not weaker."""
         r = verdict([Claim(True, "r1", "attested"), Claim(True, "r2", "inferred")])
-        self.assertEqual(r.weakest_basis, "inferred")   # a single answer...
-        self.assertFalse(r.weakest_basis_well_defined)  # ...that does not exist
+        self.assertEqual(r.weakest_basis, "unknown")
+        self.assertFalse(r.weakest_basis_well_defined)
 
     def test_the_two_minimal_positions_are_each_better_on_one_axis(self):
         r = verdict([Claim(True, "r1", "attested"), Claim(True, "r2", "inferred")])

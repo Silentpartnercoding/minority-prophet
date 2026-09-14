@@ -22,6 +22,7 @@ class InversionTests(unittest.TestCase):
     """The concrete failure a single rank produces."""
 
     def test_legacy_rank_puts_notarised_hearsay_above_an_eyewitness(self):
+        """The retired constant still says so, which is why nothing reads it."""
         self.assertGreater(BASIS_RANK[IndependenceBasis.ATTESTED],
                            BASIS_RANK[IndependenceBasis.INFERRED])
 
