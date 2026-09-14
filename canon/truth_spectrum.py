@@ -1,6 +1,7 @@
 """The truth spectrum — how far a claim has actually climbed, and what blocks it.
 
-Recorded in `canon/ORIGINS.md` as one of three ideas that never landed. Eight
+Recorded in the project's private origins record as one of three ideas that never
+landed. Eight
 levels, from raw state to invariant relationship, from the tea-wheel conversation.
 The wheel itself sits at BOUNDED_ONTOLOGY, possibly CALIBRATED, and the value of
 saying so is that most things called findings are NAMED_OBSERVATION wearing

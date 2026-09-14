@@ -1,6 +1,7 @@
 """Bounded truth — a claim is valid *inside* the system that measured it.
 
-Recorded in `canon/ORIGINS.md` as one of three ideas that never landed. It comes
+Recorded in the project's private origins record as one of three ideas that never
+landed. It comes
 from the tea-wheel conversation, and the distinction it protects is between
 *bounding reality* and *claiming the boundary is reality*. A good boundary says
 these distinctions are reproducible within this representation. A bad one says

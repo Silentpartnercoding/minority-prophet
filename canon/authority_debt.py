@@ -28,7 +28,8 @@ percentage would let it average away against sound links. It gets its own field.
 
 ## Which authority is being borrowed
 
-`canon/ORIGINS.md` records a guard from the conversation that produced this module
+The project's private origins record carries a guard from the conversation that
+produced this module
 which the first version stated in prose and did not enforce. **The conclusion is not
 that everyone is clueless.** Institutions accumulate expertise, procedure and
 collective memory that no individual has, so institutional competence and individual

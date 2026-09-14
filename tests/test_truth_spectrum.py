@@ -14,7 +14,7 @@ from canon.truth_spectrum import REQUIREMENT, Level, Support, assess
 
 class LadderTest(unittest.TestCase):
     def test_the_wheel_sits_at_bounded_ontology(self):
-        """ORIGINS records the wheel as level three, possibly four."""
+        """The origins record places the wheel at level three, possibly four."""
         s = assess("Monascus fermentation increases the camphor note",
                    Support(observed=True, recorded_in_words=True,
                            vocabulary_declared=True))
