@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.parse
@@ -59,7 +60,7 @@ CASE_ERAS_V02 = [
 
 def _count(mailto: str, filter_expr: str) -> int:
     url = f"{API}?" + urllib.parse.urlencode({"filter": filter_expr, "per_page": 1})
-    request = urllib.request.Request(url, headers={"User-Agent": f"mailto:{mailto}"})
+    request = urllib.request.Request(url, headers={"User-Agent": f"mailto:{mailto}" if mailto else "minority-prophet-kl016"})
     with urllib.request.urlopen(request, timeout=30) as response:
         return json.loads(response.read())["meta"]["count"]
 
@@ -79,7 +80,8 @@ def coverage(mailto: str, era: str, field: str = MATHEMATICS) -> dict[str, float
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mailto", default="silentpartnerholdings@gmail.com")
+    parser.add_argument("--mailto", default=os.environ.get("MP_CONTACT_EMAIL", ""),
+                        help="contact address for the OpenAlex polite pool (or set MP_CONTACT_EMAIL)")
     parser.add_argument("--out", default="-")
     parser.add_argument("--cases", choices=("v01", "v02"), default="v01")
     args = parser.parse_args()
