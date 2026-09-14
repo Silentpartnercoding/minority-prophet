@@ -136,6 +136,24 @@ class EvidenceNode:
     confidence: float
     evidence: dict[str, Any]
     copied_from: tuple[str, ...] = ()
+    read_from: tuple[str, ...] = ()
+    """External sources this claimant **read**, as dereferenceable identifiers.
+
+    Distinct from `evidence`, and the distinction is the whole point. `evidence`
+    backs an observation the claimant made: a capture, a log, a receipt. This
+    field names what the claimant *consulted*, which makes them a descendant of
+    it rather than an independent witness to it.
+
+    Both used to land in `evidence`, so five people who read one paper and cited
+    it honestly were recorded as five independent roots. Nobody lied and every
+    gate passed; the two meanings simply had one field between them. See
+    `research/adversarial-weighting/citation_is_not_ancestry.py`.
+
+    A node that names a source here is never a root. The graph materialises the
+    external source as a node and makes this claim its child, so every reader of
+    one source collapses onto it, which is what the copy machinery already does
+    correctly once the edge exists.
+    """
     transformations: tuple[str, ...] = ()
     signature: str | None = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
@@ -148,12 +166,17 @@ class EvidenceNode:
 
     @property
     def is_root(self) -> bool:
-        """True when no ancestry is recorded.
+        """True when no ancestry is recorded, declared or cited.
+
+        Naming a source in `read_from` is recorded ancestry: the claimant said
+        where they got it. It is not an admission of guilt, it is the ordinary
+        honest case, and it is what stops one paper becoming as many roots as it
+        has readers.
 
         WARNING: this means "no ancestry RECORDED", not "independently
         observed". The distinction is the entire undetected-copy threat.
         """
-        return not self.copied_from
+        return not self.copied_from and not self.read_from
 
 
 @dataclass(frozen=True)
@@ -219,6 +242,11 @@ class Violation:
     detail: str
 
 
+def _source_node_id(reference: str) -> str:
+    """One node per external source, so every reader of it shares one parent."""
+    return f"source:{reference}"
+
+
 class EvidenceGraph:
     """Append-only evidence DAG.
 
@@ -248,11 +276,42 @@ class EvidenceGraph:
 
     # ------------------------------------------------------------------ ingest
 
+    def _materialise_source(self, reference: str, child: EvidenceNode) -> None:
+        """Ensure the external source exists as a node, once, shared by all readers.
+
+        The source itself is a root: it is the thing that was read, and nothing in
+        the graph stands behind it. It carries the reference as its own evidence,
+        so the root-evidence gate is satisfied by the same string that named it.
+
+        Created on the side the first reader asserts. A later reader asserting the
+        opposite side hits the ordinary side-consistency check rather than a
+        special case, which is correct: two readers of one source who disagree
+        about what it says is a real conflict and not something to paper over.
+        """
+        node_id = _source_node_id(reference)
+        if node_id in self._nodes:
+            return
+        self._nodes[node_id] = EvidenceNode(
+            node_id=node_id,
+            proposition_id=child.proposition_id,
+            value=child.value,
+            observer_id=node_id,
+            source_id=node_id,
+            confidence=child.confidence,
+            evidence={"reference": reference},
+        )
+        self._roots_offered += 1
+
     def add(self, node: EvidenceNode) -> None:
         if node.node_id in self._nodes:
             raise ValueError(f"duplicate node: {node.node_id}")
 
-        missing = [parent for parent in node.copied_from if parent not in self._nodes]
+        for reference in node.read_from:
+            self._materialise_source(reference, node)
+
+        parents = tuple(node.copied_from) + tuple(
+            _source_node_id(r) for r in node.read_from)
+        missing = [parent for parent in parents if parent not in self._nodes]
         if missing:
             raise ValueError(f"unknown ancestors: {', '.join(missing)}")
 
@@ -281,7 +340,7 @@ class EvidenceGraph:
                     ),
                 )
 
-        for parent_id in node.copied_from:
+        for parent_id in parents:
             parent = self._nodes[parent_id]
             if parent.proposition_id != node.proposition_id:
                 self._reject(
