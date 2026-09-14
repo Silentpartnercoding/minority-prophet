@@ -138,7 +138,7 @@ evidence* and *truth* are not interchangeable terms.
 Deliberately excluded. `Asymmetric.lean` — claims whose falsifier is singular,
 where comparing root counts is the wrong instrument entirely — is the subject of
 *When Counting Is the Wrong Instrument*, drafted alongside this one.
-`NarrowGate.lean` remains unwritten up.
+`NarrowGate.lean` is the subject of *Safety Was Never the Scarce Property*.
 
 ## Availability
 
