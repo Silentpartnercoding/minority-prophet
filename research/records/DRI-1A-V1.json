@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    "experiments/dri1/PREREGISTRATION.md",
+    "results/dri1a-v1/result.json",
+    "experiments/dri1/EXECUTION-CONFIG.json"
+  ],
+  "authorityEffect": "none",
+  "id": "DRI-1A-V1",
+  "independenceClaims": [],
+  "manifest": {
+    "commit": null,
+    "path": "experiments/dri1/EXECUTION-CONFIG.json",
+    "sha256": "42078e86815cd5b806e1a44f23aaff4b002f94af7193b5c422adf0c948bb7d1b"
+  },
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "out-of-tree-import",
+    "sourceCommit": "9068ef3cc7d3c930a61b3be27dfad1c75900765e",
+    "sourceRepository": "Silentpartnercoding/minority-prophet"
+  },
+  "protocol": {
+    "commit": null,
+    "path": "experiments/dri1/PREREGISTRATION.md",
+    "sha256": "6f47faa5aaa3d856e7d9e990b40b086288a9d05507a2b7ec053f85ef720248ce"
+  },
+  "result": {
+    "commit": null,
+    "path": "results/dri1a-v1/result.json",
+    "sha256": "ec8b2428f459af9f80b8372935d5d0eb1ed1d22aefc30aa0864ec00b55da4c6c"
+  },
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "imported",
+  "verdict": "rejected"
+}
