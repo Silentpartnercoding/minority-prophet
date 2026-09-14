@@ -133,6 +133,22 @@ independent act as its mechanism. Two witnesses who share a grandparent are stil
 witnesses if each went and looked through a channel that does not run through the
 grandparent. That is `canon/U1-PROXIMATE-ROOTS.md` and `RootIdentity.lean`.
 
+**You cannot lift yourself by your own straps, 7 September, fixed what a verifier has to
+be.** The argument arrives second. The first move is that the Trinity is the wrong shape
+for a verifier: the doctrine is *homoousios*, one substance, and the Spirit proceeds from
+the Father and the Son, which is whatever else it may be not independence. A verifier
+that proceeds from the thing it verifies inherits that thing's errors, including
+especially the ones it cannot see in itself. That is not a claim about honesty. A
+scrupulously sincere self-evaluation still fails, because sincerity does not create the
+outside view the evaluation requires; shared substance means shared blind spots, and
+shared blind spots are invisible from the inside by construction. The bootstrap problem
+is the same structure said without the theology. What works is never more effort applied
+from inside — it is growth into something you were not, until the straps burst. Never
+"reason harder about yourself", always "admit something you are not". The instruction it
+yields is to take the third position and refuse the third nature, and that is what seats
+this programme as the assayer: not the prospector, not the buyer, no share in the find.
+`ASSAYER.md` section 2.
+
 **The trout in the milk, from Thoreau in 1850, supplied the asymmetry.** A milkman waters
 his milk from the stream and is convicted not by anything found in the milk but by
 finding something that has no business being there. Absence of water cannot be shown;
