@@ -721,7 +721,9 @@
       "sources": [
         "research/knowledge-ledger/experiments/KL-014/DECISION-20260813.md:63, 115-117",
         "provenance/graph.py:111-116"
-      ]
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "KL-014/DECISION-20260813.md:63-64 and :116-117 still say the root-evidence gate is off by default and 'trust me' passes; code has it on by default since 2026-08-13 (provenance/graph.py:111, :269) and refuses it (tests/test_provenance.py:125). Code is correct; the decision record needs a dated supersession note."
     },
     {
       "topic": "When did U1 close, and is it closed?",
@@ -731,7 +733,9 @@
         "canon/U1-PROXIMATE-ROOTS.md:3",
         "PUBLIC-CLAIMS.md:51",
         "PROVENANCE-REQUIREMENTS.md:176"
-      ]
+      ],
+      "verdict": "partly",
+      "currentEvidence": "Public claims agree U1 is closed. The closure date is 2026-09-14 (canon/U1-PROXIMATE-ROOTS.md:3, formal/COUNTEREXAMPLES.md:21), but five sites still say 2026-09-07, the date RootIdentity.lean was written: formal/CLAIM-SCOPE.md:86, formal/EXTENSION-SOCKETS.md:167, formal/PROOFS.md:201, canon/NOVELTY-AUDIT.md:162, papers/ERRATA.md:312. canon/narrow_gate.py:191 and tests/test_independence_vocabulary.py:132 still call U1 open."
     },
     {
       "topic": "Is the laundering residual bounded or undetectable?",
@@ -740,7 +744,9 @@
         "formal/CLAIM-SCOPE.md:104-105",
         "RESEARCH-HYPOTHESES.md:149-154",
         "canon/U3-WHAT-TRANSFERS.md:80-82"
-      ]
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "CLAIM-SCOPE.md:104-105 and U3-WHAT-TRANSFERS.md:81-82 agree the residual is absorbed by margin sufficiency for unit weights, open for weighted. RESEARCH-HYPOTHESES.md:158 concerns honest-actor root ratios, not adversarial laundering."
     },
     {
       "topic": "Is under-counting conservative?",
@@ -749,7 +755,9 @@
         "canon/narrow_gate.py:189-191",
         "canon/independent_set.py:13-16",
         "aggregation/independence_axes.py:320"
-      ]
+      ],
+      "verdict": "partly",
+      "currentEvidence": "Doctrine settled: under-counting is directional, not conservative (canon/independent_set.py:13-15, aggregation/independence_axes.py:320). Stale wording remains at canon/narrow_gate.py:189-190 (superseded file), aggregation/root_vote.py:233 and :264, tests/test_producer_plumbing.py:123."
     },
     {
       "topic": "The copy-invariance slogan",
@@ -757,7 +765,9 @@
       "sources": [
         "gate:README.md:85",
         "formal/CLAIM-SCOPE.md:116-122"
-      ]
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "gate:README.md:85 says duplicating a claim can never change the verdict, without the recorded-parent hypothesis that formal/CLAIM-SCOPE.md:123-127 requires (CE-01). gate:README.md:66 carries the same unstated hypothesis."
     },
     {
       "topic": "CE-14 presence semantics",
@@ -766,7 +776,9 @@
         "formal/COUNTEREXAMPLES.md:27",
         "formal/COUNTEREXAMPLES.md:529-531",
         "aggregation/root_vote.py:157-158"
-      ]
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "Settled as owner decision A3 at formal/COUNTEREXAMPLES.md:27 and :453 and knowledge_ledger/transaction_v2.py:47, but COUNTEREXAMPLES.md:529-531 still says the presence branch is open and aggregation/root_vote.py:157-158 calls it an open semantic question."
     },
     {
       "topic": "Is U2 fixed?",
@@ -774,7 +786,9 @@
       "sources": [
         "formal/THEOREM-LEDGER.json:364-373",
         "formal/COUNTEREXAMPLES.md:25"
-      ]
+      ],
+      "verdict": "resolved",
+      "currentEvidence": "formal/THEOREM-LEDGER.json:358 decided and named; formal/COUNTEREXAMPLES.md:25, GLOSSARY.md:53 and audit/REPORT.md:150 agree. The legacy module is retained, so the ledger's counterexample line still holds."
     },
     {
       "topic": "Is Sybil excluded from the threat model?",
@@ -782,7 +796,9 @@
       "sources": [
         "PROVENANCE-REQUIREMENTS.md:23",
         "formal/EXTENSION-SOCKETS.md:184-186"
-      ]
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "PROVENANCE-REQUIREMENTS.md:23 says R1 is the layer that excludes sybil root-manufacturing; formal/EXTENSION-SOCKETS.md:184-186 records paraphrase-splitting sybils at the semantic layer as a known gap. Compatible."
     },
     {
       "topic": "Is the weighted baseline a defect?",
@@ -790,7 +806,9 @@
       "sources": [
         "canon/U3-WHAT-TRANSFERS.md:14",
         "aggregation/baselines.py:46-47"
-      ]
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "Wording only: canon/U3-WHAT-TRANSFERS.md:14 calls the weighted baseline a shipped defect; aggregation/baselines.py:40, :46-47, tests/test_weight_decomposition.py:78 and benchmark/SPECIFICATION.md:27 say its naivety is deliberate. The baseline files are correct."
     },
     {
       "topic": "The single ranking of independence bases",
@@ -798,7 +816,9 @@
       "sources": [
         "aggregation/root_vote.py:72, 392-410",
         "aggregation/independence_axes.py:24-25"
-      ]
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "Both files agree the single ordering is wrong (aggregation/root_vote.py:72, aggregation/independence_axes.py:24-25). It is a disclosed open defect still driving weakest and attested_margin (root_vote.py:397-410), with weakest_basis_well_defined and weakest_axes reported alongside. Not a documentation conflict; the code defect stands."
     },
     {
       "topic": "What happens to malformed input",
@@ -807,7 +827,9 @@
         "gate:README.md:206",
         "gate:conformance/knowledge-transaction-fail-closed.md:19",
         "contracts/authority-evidence-v0.1/README.md:38"
-      ]
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "Three different components, all fail closed: the gate's memory-evidence socket escalates (gate:README.md:206), the transaction parser raises (gate:conformance/knowledge-transaction-fail-closed.md:19), authority-evidence records fail closed (contracts/authority-evidence-v0.1/README.md:38)."
     },
     {
       "topic": "Unknown vocabulary",
@@ -815,7 +837,9 @@
       "sources": [
         "aggregation/independence_axes.py:526-527",
         "aggregation/root_vote.py:262-265"
-      ]
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "Deliberate layering: from_wire refuses unknown strings at the boundary (independence_axes.py:526-548); inside, the aggregator reads an unknown value as absent (root_vote.py:262-272, pinned by tests/test_producer_plumbing.py:121). The only tension is the 'conservative' wording in #4."
     },
     {
       "topic": "Replay means two things",
@@ -823,7 +847,9 @@
       "sources": [
         "results/hes1-v1/README.md:31",
         "provenance/root_registry.py:248-250"
-      ]
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "One word, two senses: 'stale replay' in results/hes1-v1/README.md:31 is injected stale tool output (experiments/HGD-2-PREREGISTRATION.md:95-96); ReplayError in provenance/root_registry.py:250 and gate:README.md:207 is nonce reuse. A glossary entry would prevent confusion."
     }
   ],
   "describedButUnnamed": [
@@ -894,5 +920,16 @@
         "canon/decision_sensitivity.py:41-45"
       ]
     }
-  ]
+  ],
+  "knownInconsistenciesCheckedAt": {
+    "date": "2026-09-14",
+    "minorityProphetMain": "eb26ba6e84793d554c7dc5cb03c3349c21c7308f",
+    "gateMain": "ef91dab1601f30644af236edbf8679884ed05155",
+    "verdicts": {
+      "still-live": "the disagreement is in current text",
+      "partly": "settled, but stale statements remain",
+      "resolved": "all current sources agree",
+      "not-a-conflict": "on careful reading the statements concern different things or are compatible"
+    }
+  }
 }

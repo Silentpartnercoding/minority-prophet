@@ -137,23 +137,27 @@ margin and hand over.
 
 ## Known inconsistencies
 
-Places where two sources in the repositories classify the same point differently.
-They are recorded here so the declaration does not silently pick a side; each should
-be resolved in the source files.
+Thirteen places where an earlier sweep found two sources classifying the same point
+differently. Each was re-checked on 2026-09-14 against current `main` of both
+repositories (Minority Prophet `eb26ba6`, gate `ef91dab`). They are recorded here so
+the declaration does not silently pick a side. Those still live or partly settled
+should be fixed in the source files, not here.
 
-- **Is the root-evidence gate on by default?** The KL-014 decision says off by default and that a source of "trust me" passes; the graph code says on by default since 2026-08-13 and refuses the same input. (`research/knowledge-ledger/experiments/KL-014/DECISION-20260813.md:63, 115-117`; `provenance/graph.py:111-116`)
-- **When did U1 close, and is it closed?** Claim scope and extension sockets say 2026-09-07; the U1 doctrine and counterexamples say 2026-09-14; the public claims page and provenance requirements still list it as an open boundary. (`formal/CLAIM-SCOPE.md:86`; `canon/U1-PROXIMATE-ROOTS.md:3`; `PUBLIC-CLAIMS.md:51`; `PROVENANCE-REQUIREMENTS.md:176`)
-- **Is the laundering residual bounded or undetectable?** Claim scope says R3 absorbs it; the HRI-1 hypothesis says no existing check detects it; under weights it is not established. (`formal/CLAIM-SCOPE.md:104-105`; `RESEARCH-HYPOTHESES.md:149-154`; `canon/U3-WHAT-TRANSFERS.md:80-82`)
-- **Is under-counting conservative?** The retracted narrow gate calls it a conservative lower bound; the independent-set and independence-axes modules call it a censorship primitive, directional rather than conservative. (`canon/narrow_gate.py:189-191`; `canon/independent_set.py:13-16`; `aggregation/independence_axes.py:320`)
-- **The copy-invariance slogan** Gate's README says duplicating a claim can never change the verdict; claim scope says that is false without the recorded-parent hypothesis. (`gate:README.md:85`; `formal/CLAIM-SCOPE.md:116-122`)
-- **CE-14 presence semantics** Recorded as settled by owner decision A3 in one place, and as still open elsewhere in the same file and in the aggregator. (`formal/COUNTEREXAMPLES.md:27`; `formal/COUNTEREXAMPLES.md:529-531`; `aggregation/root_vote.py:157-158`)
-- **Is U2 fixed?** Open in the theorem ledger; fixed in a new module according to the counterexamples. (`formal/THEOREM-LEDGER.json:364-373`; `formal/COUNTEREXAMPLES.md:25`)
-- **Is Sybil excluded from the threat model?** Provenance requirements list Sybil root manufacturing as an excluded threat; extension sockets call it exactly where R1's cryptography does not reach. (`PROVENANCE-REQUIREMENTS.md:23`; `formal/EXTENSION-SOCKETS.md:184-186`)
-- **Is the weighted baseline a defect?** U3 calls it a defect already shipped; the baseline module calls it the doctrine being demonstrated, not a defect to repair. (`canon/U3-WHAT-TRANSFERS.md:14`; `aggregation/baselines.py:46-47`)
-- **The single ranking of independence bases** Labelled a known defect, yet it still drives the weakest-basis and attested-margin calculations; the axes module says the error is the single ordering. (`aggregation/root_vote.py:72, 392-410`; `aggregation/independence_axes.py:24-25`)
-- **What happens to malformed input** Gate escalates it; the knowledge transaction raises and never returns a receipt; the authority-evidence contract fails closed. (`gate:README.md:206`; `gate:conformance/knowledge-transaction-fail-closed.md:19`; `contracts/authority-evidence-v0.1/README.md:38`)
-- **Unknown vocabulary** Refused at the boundary as a refusal, not a downgrade, but read inside the aggregator as absent rather than raising. (`aggregation/independence_axes.py:526-527`; `aggregation/root_vote.py:262-265`)
-- **Replay means two things** HES-1's stale replay is a partly recovered attack; in the memory, continuity and registry code, replay is an always-blocked nonce reuse. (`results/hes1-v1/README.md:31`; `provenance/root_registry.py:248-250`)
+Result: 4 still live, 2 partly settled, 1 resolved, 6 not conflicts on a careful reading.
+
+1. **Is the root-evidence gate on by default?** *Still live.* KL-014/DECISION-20260813.md:63-64 and :116-117 still say the root-evidence gate is off by default and 'trust me' passes; code has it on by default since 2026-08-13 (provenance/graph.py:111, :269) and refuses it (tests/test_provenance.py:125). Code is correct; the decision record needs a dated supersession note.
+2. **When did U1 close, and is it closed?** *Partly settled.* Public claims agree U1 is closed. The closure date is 2026-09-14 (canon/U1-PROXIMATE-ROOTS.md:3, formal/COUNTEREXAMPLES.md:21), but five sites still say 2026-09-07, the date RootIdentity.lean was written: formal/CLAIM-SCOPE.md:86, formal/EXTENSION-SOCKETS.md:167, formal/PROOFS.md:201, canon/NOVELTY-AUDIT.md:162, papers/ERRATA.md:312. canon/narrow_gate.py:191 and tests/test_independence_vocabulary.py:132 still call U1 open.
+3. **Is the laundering residual bounded or undetectable?** *Not a conflict.* CLAIM-SCOPE.md:104-105 and U3-WHAT-TRANSFERS.md:81-82 agree the residual is absorbed by margin sufficiency for unit weights, open for weighted. RESEARCH-HYPOTHESES.md:158 concerns honest-actor root ratios, not adversarial laundering.
+4. **Is under-counting conservative?** *Partly settled.* Doctrine settled: under-counting is directional, not conservative (canon/independent_set.py:13-15, aggregation/independence_axes.py:320). Stale wording remains at canon/narrow_gate.py:189-190 (superseded file), aggregation/root_vote.py:233 and :264, tests/test_producer_plumbing.py:123.
+5. **The copy-invariance slogan** *Still live.* gate:README.md:85 says duplicating a claim can never change the verdict, without the recorded-parent hypothesis that formal/CLAIM-SCOPE.md:123-127 requires (CE-01). gate:README.md:66 carries the same unstated hypothesis.
+6. **CE-14 presence semantics** *Still live.* Settled as owner decision A3 at formal/COUNTEREXAMPLES.md:27 and :453 and knowledge_ledger/transaction_v2.py:47, but COUNTEREXAMPLES.md:529-531 still says the presence branch is open and aggregation/root_vote.py:157-158 calls it an open semantic question.
+7. **Is U2 fixed?** *Resolved.* formal/THEOREM-LEDGER.json:358 decided and named; formal/COUNTEREXAMPLES.md:25, GLOSSARY.md:53 and audit/REPORT.md:150 agree. The legacy module is retained, so the ledger's counterexample line still holds.
+8. **Is Sybil excluded from the threat model?** *Not a conflict.* PROVENANCE-REQUIREMENTS.md:23 says R1 is the layer that excludes sybil root-manufacturing; formal/EXTENSION-SOCKETS.md:184-186 records paraphrase-splitting sybils at the semantic layer as a known gap. Compatible.
+9. **Is the weighted baseline a defect?** *Still live.* Wording only: canon/U3-WHAT-TRANSFERS.md:14 calls the weighted baseline a shipped defect; aggregation/baselines.py:40, :46-47, tests/test_weight_decomposition.py:78 and benchmark/SPECIFICATION.md:27 say its naivety is deliberate. The baseline files are correct.
+10. **The single ranking of independence bases** *Not a conflict.* Both files agree the single ordering is wrong (aggregation/root_vote.py:72, aggregation/independence_axes.py:24-25). It is a disclosed open defect still driving weakest and attested_margin (root_vote.py:397-410), with weakest_basis_well_defined and weakest_axes reported alongside. Not a documentation conflict; the code defect stands.
+11. **What happens to malformed input** *Not a conflict.* Three different components, all fail closed: the gate's memory-evidence socket escalates (gate:README.md:206), the transaction parser raises (gate:conformance/knowledge-transaction-fail-closed.md:19), authority-evidence records fail closed (contracts/authority-evidence-v0.1/README.md:38).
+12. **Unknown vocabulary** *Not a conflict.* Deliberate layering: from_wire refuses unknown strings at the boundary (independence_axes.py:526-548); inside, the aggregator reads an unknown value as absent (root_vote.py:262-272, pinned by tests/test_producer_plumbing.py:121). The only tension is the 'conservative' wording in #4.
+13. **Replay means two things** *Not a conflict.* One word, two senses: 'stale replay' in results/hes1-v1/README.md:31 is injected stale tool output (experiments/HGD-2-PREREGISTRATION.md:95-96); ReplayError in provenance/root_registry.py:250 and gate:README.md:207 is nonce reuse. A glossary entry would prevent confusion.
 
 ## Described but never named
 
