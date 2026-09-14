@@ -29,9 +29,12 @@ The formal statements compile in Lean 4.32.2 against pinned Mathlib with zero
   margin greater than `k`.
 - Conversions preserve margin parity, so conversion alone cannot drive an odd
   margin to abstention.
-- Root identity (U1): the independent-root count is a maximum independent set
-  over the supplied dependence graph. This bounds the count relative to that
-  graph; it does not show the graph reflects real lineage.
+- Root identity (U1, closed): the independent-root count is a maximum
+  independent set over the declared dependence graph, with dependence defined by
+  proximate cause and always relative to a class of error. This bounds the count
+  relative to that graph; it does not show the graph reflects real lineage, and a
+  laundered record that removes edges makes the count over-report. See
+  [`CLAIM-SCOPE.md`](../../formal/CLAIM-SCOPE.md).
 - Asymmetric claims (AC1–AC5): universal and existential claims need a separate
   verdict rule. The symmetric margin answers a different question and is not a
   decision-sensitivity measure for them.

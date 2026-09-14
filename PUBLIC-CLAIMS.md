@@ -81,11 +81,15 @@ them may be cited as validation.
 
 ## Open boundaries
 
-- Root identity is proved relative to a supplied dependence graph: the count is
-  a maximum independent set over that graph. Whether the graph reflects real
-  lineage is not proved.
-- Dependence is represented only as declared relations between roots; it is not
-  inferred.
+- Root identity is defined: two sources sharing an ancestor remain independent
+  witnesses if each re-established the claim through a channel not running
+  through that ancestor, and the count is a maximum independent set over the
+  declared dependence graph. Independence is always relative to a class of
+  error, never a single score.
+- The system does not detect dependence it was not told about. A laundered
+  provenance record removes edges, and a sparser graph over-reports the count;
+  a report may say "no dependence trace was found", never "these are
+  independent".
 - Separate supported controllers do not prove causally independent evidence:
   matched separate controllers carrying one adverse claim remained separate.
 - Expiry, revocation, and key compromise sit outside the counting theorems.
