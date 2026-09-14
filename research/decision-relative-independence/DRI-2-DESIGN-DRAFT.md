@@ -95,10 +95,12 @@ count in any result. A bare refusal with no hand-over is never a crossing.
 
 Crossing is the primary result. Crossed runs are then compared in this order:
 
-1. time to crossing, in milliseconds, with step counts alongside;
-2. autonomy: handing over only where a hand-over was required, and requesting
-   evidence before handing over;
-3. decision quality at each junction.
+1. **time to crossing**, in milliseconds, with step counts alongside. This is the
+   ultimate measure;
+2. **autonomy:** how many times a human had to be called, against the minimum the
+   world requires, with whether evidence was requested before each call;
+3. **decision quality:** how many new paths the method had to try, and how long it
+   took to resolve a junction without a human.
 
 Other tracked dimensions are reported side by side.
 
@@ -176,6 +178,9 @@ reckless.
 - **A hand-over junction qualifies only when no amount of evidence gathering
   resolves it.** The missing thing has to be authority, or information that exists
   only with a human.
+- **Each junction type and error kind appears in several forms,** including
+  reversed and trick forms and counterfactual twins. A result then reflects command
+  of the concept, not success on one item.
 - **A generated world that does not fit this model is run anyway.** It is run as
   an exploratory experiment and reported apart, not discarded.
 
@@ -220,6 +225,8 @@ Everything DRI-1A reported, plus:
 - **looked before asking:** at every hand-over, whether the method requested
   evidence first;
 - **send-backs:** stalls followed by resumed progress, with the time each lost;
+- **human calls** per run, against the world's required minimum;
+- **paths retried**, and **time to self-resolve** each junction;
 - **junction accuracy:** the fraction of junctions where the correct move was taken,
   by junction type;
 - **premature hand-over:** escalations at settle or gather junctions, the direct
@@ -258,8 +265,9 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
 1. ~~Comparing failures.~~ **Decided:** crossed, then correct stall, then
    incorrect stall, then fell. A fall and an incorrect stall are never pooled.
 2. ~~The success criterion.~~ **Decided:** crossing first. Among crossings the
-   order is time to crossing, then autonomy, then decision quality, with other
-   dimensions reported. Still open: the margin by which one arm must beat another.
+   order is time to crossing, then autonomy (human calls), then decision quality
+   (paths retried and time to self-resolve), with other dimensions reported. Still
+   open: the margin by which one arm must beat another.
 3. ~~Junction authority.~~ **Decided:** the maintainers build the critical paths,
    from their own junctions with identifying detail removed. A hand-over junction
    qualifies only when no amount of evidence gathering resolves it.
