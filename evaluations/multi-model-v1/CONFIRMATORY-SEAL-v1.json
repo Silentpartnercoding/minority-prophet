@@ -1,0 +1,27 @@
+{
+  "schema": "minority-prophet.lift-confirmatory-seal.v1",
+  "sealedAt": "2026-09-13T21:18:59.880Z",
+  "protocol_version": "openrouter-confirmatory-v1",
+  "repetitions": 21,
+  "worlds": 294,
+  "cohort_balance": {
+    "false_majority": 126,
+    "abstention": 42,
+    "correct_majority": 126
+  },
+  "world_set_sha256": "8a8e699bf652af37081af675a9080db4b2560516cc3f70721da2f2f14939c1f2",
+  "conditions": [
+    "B_PROVENANCE_AVAILABLE",
+    "C_NEUTRAL_ROOT_INDEX",
+    "D_MINORITY_PROPHET"
+  ],
+  "models": [
+    "openai/gpt-4.1",
+    "anthropic/claude-sonnet-4.6",
+    "google/gemini-2.5-flash"
+  ],
+  "primary_contrast": "D_MINORITY_PROPHET minus C_NEUTRAL_ROOT_INDEX, paired within model",
+  "decision_rule": "every model must show a positive paired gain of at least 0.03 with exact two-sided sign test p < 0.05",
+  "prospective_power": "exact trinomial, 10% improvement / 2% regression assumption: 0.98 per model, 0.94 joint across three models",
+  "note": "Sealed before any model call of this run. Cohort balance and world digest fixed here."
+}

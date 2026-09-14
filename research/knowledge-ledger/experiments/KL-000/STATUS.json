@@ -2,7 +2,7 @@
   "schema": "minority-prophet.experiment-status.v0.1",
   "experimentId": "KL-000",
   "state": "adversarial-passed",
-  "stateNote": "FINAL STATE (updated at RUN-20260807-5, which reopened the closed program for the single committed gate and closed it again): adversarial-passed under protocols v1.0.0 through v1.3.0. Established across two independent implementations in different languages with no shared code: the evaluator, the complete conclusion function (exhaustive distribution 160/49,480/41,820/19,380, identical), and the canonical form and digests for the two pinned receipts C11 (703 bytes) and C12 (691 bytes) -- byte-identical, NOT for all 110,840. Qualified by LEAK-101 (the implementer saw expected counts in the v1.1.0 package; the digest result is unaffected and the qualification travels with the claim). NEW at v1.3.0: the unenforced-decision finding that capped RUN-20260807-4's close is REPAIRED -- both owner decisions are now enforced by invariant I12, whose power was demonstrated at the exact previously measured surfaces (ABL-R1 caught on exactly 22,440 worlds, ABL-R52 on exactly 38,760, no fixture involved, zero other violations), with nothing else moving. The state remains adversarial-passed: verified-independent is an owner promotion decision, and the independent implementation -- whose checker is its own -- has not run against v1.3.0. A1 and A2 remain undecided owner decisions (4 and 19,152 worlds).",
+  "stateNote": "FINAL STATE. Test ladder: adversarial-passed. Independence: verified, promoted at RUN-20260807-10 on 2026-09-14 by owner decision, scoped to protocol v1.2.0. The two are recorded separately on purpose -- the ladder says what testing the experiment survived and nothing about who ran it, and independence says who without claiming anything about test strength. Neither dominates the other. Two independent implementations in different languages with no shared code agree on the evaluator, on the complete conclusion function (exhaustive distribution 160/49,480/41,820/19,380, identical), and on the canonical form and digests for the two pinned receipts C11 (703 bytes) and C12 (691 bytes). THE SCOPE OF THE PROMOTION, WHICH TRAVELS WITH ANY CITATION OF IT: (a) byte-identical canonical form is established for C11 and C12 only, NOT for all 110,840 receipt-producing worlds; (b) LEAK-101 stands -- the implementer saw expected counts in the v1.1.0 package, the digest result is unaffected, and the qualification is not discharged by this promotion; (c) the independent implementation conformed to v1.2.0 and has NOT run against v1.3.0. The promotion is defensible at v1.2.0 because I12 is a checker-side change -- the evaluator and all pinned bytes are identical between v1.2.0 and v1.3.0, so the conformance evidence is undisturbed -- but the independent checker does not carry I12 and this promotion does not claim it does. A v1.3.0 independent re-run would extend the scope and is not commissioned. A1 was decided by the owner at RUN-20260807-8. A2 (19,152 worlds, 17.3% of the kernel) was decided at RUN-20260807-11 on 2026-09-14, in favour of the registered no-coverage-for-presence reading, with the rejected reading preserved.",
   "resultStatus": "confirmatory",
   "protocolVersion": "1.3.0",
   "protocolCommitV130": "08f8703a70b4bdf89b6002b96340583935c5e775",
@@ -11,28 +11,82 @@
   "protocolCommitV110": "1a8256f51b41236b4aba18f5d0e7e379f06289e1",
   "protocolCommitV120": "7e9e55fb422c2df53f15eb80c3340cc30fb1dd29",
   "resultCommit": "recorded in the commits carrying results/kl000-confirmatory.json, -v1.1.0.json, and -v1.2.0.json",
-  "runId": "RUN-20260807-5",
+  "runId": "RUN-20260807-11",
   "runIdNote": "the program closed at RUN-20260807-4 and was deliberately reopened by RUN-20260807-5, on owner direction, for exactly the one committed gate (I12) -- and is closed again",
-  "priorRunIds": ["RUN-20260807-1", "RUN-20260807-2", "RUN-20260807-3", "RUN-20260807-4"],
-  "independentRunIds": ["IND-20260807-1 (v1.0.0)", "IND-20260807-2 (v1.1.0)", "IND-20260807-3 (v1.2.0, passed; result artifact carries stale IND-2 header metadata -- see results/independent/PROVENANCE-IND-20260807-3.md)"],
-
+  "priorRunIds": [
+    "RUN-20260807-1",
+    "RUN-20260807-2",
+    "RUN-20260807-3",
+    "RUN-20260807-4"
+  ],
+  "independentRunIds": [
+    "IND-20260807-1 (v1.0.0)",
+    "IND-20260807-2 (v1.1.0)",
+    "IND-20260807-3 (v1.2.0, passed; result artifact carries stale IND-2 header metadata -- see results/independent/PROVENANCE-IND-20260807-3.md)"
+  ],
   "gatesCompleted": [
-    {"gate": "registry-entry", "state": "seeded"},
-    {"gate": "complete and commit preregistration", "state": "preregistered", "evidence": "preregistration.json v0.2, protocol v1.0.0, frozen at c977347"},
-    {"gate": "fixture", "state": "fixture-passed", "evidence": "10/10 controls C01-C10"},
-    {"gate": "exhaustive-small", "state": "exhaustive-passed", "evidence": "176,120 worlds, 0 violations"},
-    {"gate": "randomized", "state": "randomized-passed", "evidence": "1,000,000 worlds from frozen seed 20260807, 0 violations"},
-    {"gate": "adversarial", "state": "adversarial-passed", "evidence": "10 attacks A01-A10, 7 limits recorded as ADV-001..007"},
-    {"gate": "independent reimplementation (v1.0.0)", "state": "completed-with-findings", "evidence": "IND-20260807-1: exhaustive reproduced exactly, all ten invariants passed, conclusions diverged on 22,440 worlds (predicted in advance as A3). Findings F1-F15."},
-    {"gate": "specification repair v1.1.0", "state": "preregistered-and-passed", "evidence": "R1-R4; every number identical to RUN-20260807-1 as registered (RUN-20260807-2)."},
-    {"gate": "independent re-run against v1.1.0", "state": "completed-with-findings", "evidence": "IND-20260807-2: conclusion distribution now agrees EXACTLY -- the 22,440-world divergence is closed; R1 closed it. Zero violations of all eleven invariants. C11's digest not reproduced: not a codec defect (round-trip verified) but finding G2 -- the receipt object was never registered. New findings G1-G6; package leak disclosed and traced."},
-    {"gate": "specification repair v1.2.0", "state": "preregistered-and-passed", "evidence": "R5.1 (receipt object registered: closed nine-member list, types, exact schema/reason/limits values, formulas) and R5.2 (margin is absolute; decided by RUN-20260807-3 under the run instruction's delegation and RATIFIED BY THE OWNER post-close, before IND-20260807-3 -- see runs/2026-08-07/RUN-20260807-3/RATIFICATION-R5.2.md; signed reading recorded as defensible). Registration frozen at 7e9e55fb + Amendment 1; confirmatory re-run passed with every count, conclusion, and pinned digest unchanged, as registered."},
-    {"gate": "independent re-run against v1.2.0 (IND-20260807-3)", "state": "passed", "evidence": "C11 and C12 reproduce byte-for-byte: digests sha256:84e63c21...33eafe and sha256:61000a9b...aa3b6e, canonical unsigned forms identical (703 and 691 bytes), receipt member set exactly the registered nine. Conclusion distribution again 160/49,480/41,820/19,380; zero violations across thirteen tracked invariant checks; 12/12 controls; baselines caught. I4 and I6 -- the last invariants never tested across implementations -- tested for the first time; the answer is agreement, for the two pinned receipts. Alongside: both owner-decision ablations pass every invariant (22,440 and 38,760 receipts changed, 0 violations each, caught only by C11/C12) -- the mechanistic finding that keeps the state at adversarial-passed."},
-    {"gate": "v1.3.0-I12-decision-enforcement (the committed gate, RUN-20260807-5)", "state": "passed-at-exact-registered-surfaces", "evidence": "I12 registered and implemented (world-referential conclusion and margin, one violation per world). ABL-R1 caught by I12 on exactly 22,440 exhaustive worlds and ABL-R52 on exactly 38,760, zero other-invariant violations, NO fixture involved; B5 records zero I12 violations in every phase; every count, conclusion, baseline preserved total (I1-I11), and both pinned digests unchanged. The two owner decisions are now enforced by an invariant rather than by two fixtures. New reported-only figures: baseline I12 counts B1 57,120 / B2 13,440 / B3 13,108 / B4 57,120."}
+    {
+      "gate": "registry-entry",
+      "state": "seeded"
+    },
+    {
+      "gate": "complete and commit preregistration",
+      "state": "preregistered",
+      "evidence": "preregistration.json v0.2, protocol v1.0.0, frozen at c977347"
+    },
+    {
+      "gate": "fixture",
+      "state": "fixture-passed",
+      "evidence": "10/10 controls C01-C10"
+    },
+    {
+      "gate": "exhaustive-small",
+      "state": "exhaustive-passed",
+      "evidence": "176,120 worlds, 0 violations"
+    },
+    {
+      "gate": "randomized",
+      "state": "randomized-passed",
+      "evidence": "1,000,000 worlds from frozen seed 20260807, 0 violations"
+    },
+    {
+      "gate": "adversarial",
+      "state": "adversarial-passed",
+      "evidence": "10 attacks A01-A10, 7 limits recorded as ADV-001..007"
+    },
+    {
+      "gate": "independent reimplementation (v1.0.0)",
+      "state": "completed-with-findings",
+      "evidence": "IND-20260807-1: exhaustive reproduced exactly, all ten invariants passed, conclusions diverged on 22,440 worlds (predicted in advance as A3). Findings F1-F15."
+    },
+    {
+      "gate": "specification repair v1.1.0",
+      "state": "preregistered-and-passed",
+      "evidence": "R1-R4; every number identical to RUN-20260807-1 as registered (RUN-20260807-2)."
+    },
+    {
+      "gate": "independent re-run against v1.1.0",
+      "state": "completed-with-findings",
+      "evidence": "IND-20260807-2: conclusion distribution now agrees EXACTLY -- the 22,440-world divergence is closed; R1 closed it. Zero violations of all eleven invariants. C11's digest not reproduced: not a codec defect (round-trip verified) but finding G2 -- the receipt object was never registered. New findings G1-G6; package leak disclosed and traced."
+    },
+    {
+      "gate": "specification repair v1.2.0",
+      "state": "preregistered-and-passed",
+      "evidence": "R5.1 (receipt object registered: closed nine-member list, types, exact schema/reason/limits values, formulas) and R5.2 (margin is absolute; decided by RUN-20260807-3 under the run instruction's delegation and RATIFIED BY THE OWNER post-close, before IND-20260807-3 -- see runs/2026-08-07/RUN-20260807-3/RATIFICATION-R5.2.md; signed reading recorded as defensible). Registration frozen at 7e9e55fb + Amendment 1; confirmatory re-run passed with every count, conclusion, and pinned digest unchanged, as registered."
+    },
+    {
+      "gate": "independent re-run against v1.2.0 (IND-20260807-3)",
+      "state": "passed",
+      "evidence": "C11 and C12 reproduce byte-for-byte: digests sha256:84e63c21...33eafe and sha256:61000a9b...aa3b6e, canonical unsigned forms identical (703 and 691 bytes), receipt member set exactly the registered nine. Conclusion distribution again 160/49,480/41,820/19,380; zero violations across thirteen tracked invariant checks; 12/12 controls; baselines caught. I4 and I6 -- the last invariants never tested across implementations -- tested for the first time; the answer is agreement, for the two pinned receipts. Alongside: both owner-decision ablations pass every invariant (22,440 and 38,760 receipts changed, 0 violations each, caught only by C11/C12) -- the mechanistic finding that keeps the state at adversarial-passed."
+    },
+    {
+      "gate": "v1.3.0-I12-decision-enforcement (the committed gate, RUN-20260807-5)",
+      "state": "passed-at-exact-registered-surfaces",
+      "evidence": "I12 registered and implemented (world-referential conclusion and margin, one violation per world). ABL-R1 caught by I12 on exactly 22,440 exhaustive worlds and ABL-R52 on exactly 38,760, zero other-invariant violations, NO fixture involved; B5 records zero I12 violations in every phase; every count, conclusion, baseline preserved total (I1-I11), and both pinned digests unchanged. The two owner decisions are now enforced by an invariant rather than by two fixtures. New reported-only figures: baseline I12 counts B1 57,120 / B2 13,440 / B3 13,108 / B4 57,120."
+    }
   ],
   "gatesFailed": [],
   "lastCompletedGate": "v1.3.0-I12-decision-enforcement (RUN-20260807-5, passed at exact registered surfaces)",
-
   "committedGates": [],
   "committedGatesNote": "Empty: the single committed gate (v1.3.0-I12-decision-enforcement) was paid by RUN-20260807-5 and moved to gatesCompleted with its evidence. No gate remains committed; everything further is an owner decision (see nextGate).",
   "committedGatesHistory": [
@@ -47,11 +101,9 @@
     }
   ],
   "nextGateSuperseded_IND3": "COMPLETED AND PASSED at IND-20260807-3; retained verbatim below for the record. Original text: IND-20260807-3: the independent implementation re-runs against protocol v1.2.0 and attempts C11 (and C12) again. Separate owner commission; this repository's agents do not execute it and do not modify impl-rs. What it tests: whether registering the receipt object (R5.1) and the margin sign (R5.2) makes contentDigest reproduce across implementations for the first time -- which would make I4 and I6 cross-implementation properties and complete the repair arc F10 -> R4 -> G2 -> R5.1. Exact pass condition: C11 digest sha256:84e63c21...33eafe and C12 digest sha256:61000a9b...aa3b6e reproduced byte-for-byte, conclusion distribution again identical, zero violations. PACKAGING (constraint LEAK-101): the package must derive from the registration by REMOVING the prediction table and expectedIdenticalToRun1; screening greps run against every shipped file in comma and comma-less formats; registered fixture paths must resolve as registered.",
-
-  "nextGate": "NONE COMMITTED -- the I12 gate is paid and the program is closed again. Everything further is an owner decision: (1) push agent/kl-000-conformance and open the draft PR (prepared, tested, unpushed); (2) decide A2 (19,152 worlds) and A1 (4 worlds) -- see permanentLimits, still open by instruction; (3) whether verified-independent is promotable, noting the independent implementation has conformed to v1.2.0 but has not run against v1.3.0 (I12 is a checker-side change; the evaluator and all pinned bytes are identical, so its v1.2.0 conformance evidence is undisturbed -- but its own checker does not carry I12); (4) any future commission (IND v1.3.0 re-run, or the fourth implementation on a reference-free machine) under the binding packaging rules LEAK-101/LEAK-102; (5) the digest-moving bundle (margin rename / majoritySide, F4 empty-ledger value) if ever wanted.",
-
+  "nextGate": "NONE COMMITTED. Owner decisions remaining, unchanged by this promotion except where noted: (1) push agent/kl-000-conformance and open the draft PR (prepared, tested, unpushed); (2) RESOLVED: A2 decided at RUN-20260807-11, 2026-09-14, as A1 was at RUN-20260807-8; (3) RESOLVED: verified-independent promoted at v1.2.0 scope, 2026-09-14; (4) any future commission -- an IND v1.3.0 re-run would extend the promotion to v1.3.0, or a fourth implementation on a reference-free machine would discharge LEAK-101 -- under the binding packaging rules LEAK-101/LEAK-102; (5) the digest-moving bundle (margin rename / majoritySide, F4 empty-ledger value) if wanted.",
   "permanentLimits": {
-    "note": "The two conclusion-function ambiguities the program closed by registered text but never brought to an explicit decision the way R1 and R5.2 were. Recorded per owner instruction at close-out as owner decisions the program did not reach. Both implementations currently follow the registered text; no invariant enforces either reading (the same mechanistic gap as R1/R5.2). Neither is decided here.",
+    "note": "The two conclusion-function ambiguities the program closed by registered text but never brought to an explicit decision the way R1 and R5.2 were. Recorded per owner instruction at close-out as owner decisions the program did not reach. Both implementations currently follow the registered text; no invariant enforces either reading (the same mechanistic gap as R1/R5.2). A1 was decided at RUN-20260807-8 and A2 at RUN-20260807-11. Both readings of each are preserved; no invariant enforces either, so the mechanistic gap noted for R1/R5.2 still applies and the decisions are of record rather than enforced.",
     "A1": {
       "question": "Does an absence conclusion require at least one supporting root, or is complete coverage alone sufficient?",
       "DECISION": "DECIDED BY THE OWNER at RUN-20260807-8: complete coverage with an empty evidence ledger yields absent_within_declared_scope. Silence across a fully searched declared scope IS the finding. A decision, not a derivation.",
@@ -66,20 +118,19 @@
       "registeredTextImplies": "no: conclusionFunction.presence has no coverage term, so 'supported' is reachable with zero searched locations",
       "alternativeReading": "presence also requires search.complete; the affected worlds conclude not_established",
       "worldsAffected": 19152,
-      "consequence": "19,152 of 110,840 receipt-producing worlds (17.3%) change conclusion between the readings -- the largest undecided surface in the kernel. A third implementation reading it the other way would diverge on all of them while passing every invariant (the G5/G4 combination). UNDECIDED: the program records this as an owner decision it did not reach, with both readings preserved. The independent implementer chose the no-coverage reading in IND-1 on the argument that presence is existential; the registered text agrees; neither constitutes a decision of record.",
-      "status": "owner decision not reached; recorded, not decided",
-      "paperEvidence": "RUN-20260807-9 traceability audit: the paper's aggregator (section 3) has no coverage input and section 8 imposes coverage on absence claims only -- the registered no-coverage-for-presence reading matches the paper and the alternative reading has no paper basis. Recorded as evidence; the decision remains the owner's and remains open."
+      "consequence": "19,152 of 110,840 receipt-producing worlds (17.3%) change conclusion between the readings -- the largest undecided surface in the kernel. A third implementation reading it the other way would diverge on all of them while passing every invariant (the G5/G4 combination). DECIDED 2026-09-14 in favour of the registered no-coverage reading; both readings remain preserved. A third implementation reading it the other way now diverges from a decision of record rather than from an ambiguity, which is the point of deciding it. The independent implementer chose the no-coverage reading in IND-1 on the argument that presence is existential; the registered text agrees; neither constitutes a decision of record.",
+      "status": "DECIDED at RUN-20260807-11, 2026-09-14; rejected reading preserved",
+      "paperEvidence": "RUN-20260807-9 traceability audit: the paper's aggregator (section 3) has no coverage input and section 8 imposes coverage on absence claims only -- the registered no-coverage-for-presence reading matches the paper and the alternative reading has no paper basis. Recorded as evidence; the decision remains the owner's and remains open.",
+      "DECISION": "DECIDED BY THE OWNER at RUN-20260807-11, 2026-09-14: a presence conclusion does NOT require complete search coverage. Finding the thing is the finding. Searching the remaining locations cannot un-find it, and withholding 'supported' until coverage is complete would make every true positive wait on an exhaustive search that adds no evidence for it. A decision, not a derivation -- but a decision every available reading already pointed at: the registered text has no coverage term on conclusionFunction.presence, both independent implementations chose this reading, and the RUN-20260807-9 traceability audit found the paper agrees (section 3's aggregator takes no coverage input, and section 8 imposes coverage on absence claims only). It is recorded now because none of that constitutes a decision of record, and 19,152 worlds were resting on a question nobody had answered.",
+      "rejectedReading": "PRESERVED with its reasoning, per the R1/R5.2/A1 discipline: presence also requires search.complete, on the argument that a claim asserted without knowing what else is out there is a claim about one location rather than about the declared scope, and that symmetry with absence is worth more than the availability it costs. Defensible, and rejected: absence and presence are not symmetric claims, which is the same asymmetry the assay discipline runs on and which Asymmetric.lean proves as a verdict rule -- one verified find settles an existential claim, and no number of unsuccessful searches out-votes it. Requiring coverage for presence would impose the absence rule on a claim shape that does not need it.",
+      "decidedBy": "owner"
     }
   },
   "provenanceCorrection": "RUN-20260807-9: R1 and R5.2 were DERIVABLE from papers/minority-prophet-v1.0.3.md section 3 (aggregator abstains on ties; margin defined as ||S1|-|S0||, absolute), and conversionsToReverse's formula is Theorem 4 [E2] (decisive worlds; the margin-0 edge stays outside it). The 'owner decision that could have gone the other way' characterisations are corrected in the protocol amendment logs (v1.1.0 Amendment 1, v1.2.0 Amendment 3, v1.3.0 Amendment 1) with registered text preserved. No KL-000 specification cited the paper -- the break TRC-101 and TRACEABILITY-v1.3.0.json now close. Behaviour unchanged everywhere.",
-
   "blockers": [],
-
   "claimAllowed": "FINAL (updated at v1.3.0). Within the declared bounds: the evaluator, the conclusion function, and the canonical form agree across two independent implementations in different languages with no shared code -- the conclusion function across the full 110,840-receipt enumeration, the canonical form and digests for the two pinned receipts C11 and C12 (byte-identical, 703 and 691 bytes), NOT for all 110,840. Zero violations of every registered hard invariant in every run of both implementations. Every specification change across four protocol versions altered nothing the evaluator does (no count, conclusion, or pinned digest ever moved, each time as a registered prediction). NEW: the two owner decisions are enforced by invariant I12, with power demonstrated at the exact previously measured inversion surfaces (22,440 and 38,760 worlds, no fixture involved). Qualified by LEAK-101: the implementer saw the expected counts in the v1.1.0 package; the digest result is unaffected -- a count gives no path to a hash and the receipt object was registered after the leaked package -- and the qualification travels with the claim.",
   "claimNotAllowed": "That KL-000 is 'verified' or 'verified-independent': that is an owner promotion decision, and the independent implementation -- whose checker is its own -- has not run against v1.3.0 (its v1.2.0 conformance evidence is undisturbed, since I12 changed the checker and nothing it checks). That the canonical form agrees beyond the two pinned receipts. That the randomized phases agree across implementations (replications on different streams, F11, permanent unless a stream is registered). That A1 (4 worlds) or A2 (19,152 worlds) is decided -- both remain open owner decisions by explicit instruction. That the dual ledger recovers truth, that declared roots are genuinely independent, that the invariants hold outside the declared bounds, or that KL-000 constitutes a knowledge transaction, a cross-system result, or any part of a First Transmission. The first-transaction gate is NOT REACHED and eleven kernels remain seeded.",
-
   "quantitativeCaveat": "75.7% of randomized worlds fail closed; invariants exercised on receipt-producing worlds see 243,381 draws (95% bound 1.23e-5), I3 sees all 1,000,000, I9 sees zero non-adversarial worlds in any run to date. Independent randomized counts are not comparable quantities (F11).",
-
   "knownLimits": [
     "ADV-001 high: an under-declared search space is undetectable, and the declaring party is the reporting party",
     "ADV-002..ADV-007: unchanged from RUN-20260807-1",
@@ -97,7 +148,6 @@
     "H1: four self-miscounts across the program's documents (operator leak counts three/five/six; 'ten members'; 'all nine non-contentDigest members' where eight) -- each caught by counting from scratch; Amendment 2 corrects the protocol site, the preregistration's two sites stay as committed",
     "LEAK-101: registration prediction tables and commission packages have conflicting requirements; v1.1.0's package leaked every screened value via PROTOCOL.md"
   ],
-
   "artifacts": {
     "protocol": "PROTOCOL.md (v1.0.0), PROTOCOL-v1.1.0.md, PROTOCOL-v1.2.0.md (current, Amendment 1)",
     "preregistration": "preregistration.json, preregistration-v1.1.0.json, preregistration-v1.2.0.json (current)",
@@ -107,5 +157,9 @@
     "tests": "tests/ (80 tests: 54 v1.0.0 + 14 v1.1.0 + 12 v1.2.0)",
     "results": "results/kl000-confirmatory{,-v1.1.0,-v1.2.0}.json, results/kl000-effective-sample.json, results/independent/ (IND-20260807-1 and -2 evidence, provenance, comparison records)",
     "reproduction": "REPRODUCE.md, REPRODUCE-v1.1.0.md, REPRODUCE-v1.2.0.md"
-  }
+  },
+  "promotedAt": "2026-09-14",
+  "promotionBasis": "Owner decision on the evidence of RUN-20260807-1..5 and IND-20260807-1..3. Recorded as a decision rather than a derivation, per the same discipline applied to A1, R1 and R5.2.",
+  "promotionScope": "protocol v1.2.0; C11 and C12 digests only; LEAK-101 undischarged; v1.3.0 not independently re-run",
+  "independentVerification": "verified"
 }
