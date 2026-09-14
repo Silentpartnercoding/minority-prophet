@@ -109,8 +109,11 @@ The ten layers were written out in that conversation in the order they still hav
 the instruction not to build another framework but to formalise the grammar underneath
 what already existed. That is `canon/decomposition.py`.
 
-**Three ideas from those two conversations have not landed, and are recorded here so they
-are not rediscovered.**
+**Three ideas from those two conversations did not land for weeks, and were recorded here
+so they would not be rediscovered. All three were implemented on 14 September 2026** as
+`canon/bounded_truth.py`, `canon/truth_spectrum.py` and `canon/ontology_perturbation.py`
+(PR #154). The descriptions below are kept as written, because when an idea was a lead and
+when it stopped being one is the kind of thing this file exists to hold.
 
 *Bounded truth* as a named class: a statement valid and reproducible under a declared
 measurement ontology, whose validity outside that ontology has not been established. The
