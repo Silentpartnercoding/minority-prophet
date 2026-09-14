@@ -6,7 +6,7 @@ detected and reported as a loop, not as support.
 
 import unittest
 
-from canon.authority_debt import Ground, Link, TERMINAL, walk
+from canon.authority_debt import Authority, Ground, Link, TERMINAL, walk
 
 
 def chain(*links):
@@ -112,3 +112,148 @@ class DanglingTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CoordinationIsNotEpistemicTest(unittest.TestCase):
+    """The guard ORIGINS.md recorded as owed to the code.
+
+    The criterion: the two cases the prose calls out must come apart. A sound
+    institutional chain must stop reading as pathological, and a chain that ends
+    only because someone senior said so must stop reading as sound.
+    """
+
+    def test_a_title_cannot_settle_a_proposition(self):
+        c = chain(
+            Link("ship it", Ground.DEFERENCE, defers_to="vp",
+                 defers_as=Authority.COORDINATION),
+            Link("vp", Ground.JUDGMENT, accountable="VP eng, owns the outage budget"),
+        )
+        w = walk(c, "ship it")
+        self.assertEqual(w.mistaken_authority, ("ship it",))
+        self.assertIn("MISTAKEN AUTHORITY", w.report())
+        self.assertIn("cannot settle a proposition", w.report())
+
+    def test_coordination_authority_is_never_discounted(self):
+        """Even on a walk that reaches evidence, a title borrowed nothing."""
+        c = chain(
+            Link("a", Ground.DEFERENCE, defers_to="b", defers_as=Authority.COORDINATION),
+            Link("b", Ground.EVIDENCE, note="measured"),
+        )
+        w = walk(c, "a")
+        self.assertTrue(w.is_grounded)
+        self.assertEqual(w.borrowed_competence, ())
+        self.assertEqual(w.bare_debt, 0.5)
+
+    def test_a_finding_is_not_a_percentage(self):
+        """Same reason is_loop is its own field: it must not average away."""
+        c = chain(
+            Link("a", Ground.DEFERENCE, defers_to="b", defers_as=Authority.COORDINATION),
+            Link("b", Ground.DEFERENCE, defers_to="c", defers_as=Authority.EPISTEMIC),
+            Link("c", Ground.DEFERENCE, defers_to="d", defers_as=Authority.EPISTEMIC),
+            Link("d", Ground.EVIDENCE, note="trials"),
+        )
+        w = walk(c, "a")
+        self.assertEqual(w.mistaken_authority, ("a",))
+        self.assertLess(w.bare_debt, 0.5)  # diluted by sound links...
+        self.assertTrue(w.mistaken_authority)  # ...but still reported on its own
+
+
+class InstitutionalCompetenceTest(unittest.TestCase):
+    """Institutions accumulate expertise no individual has. The module must be able
+    to say so without that becoming a licence to defer to anything."""
+
+    def setUp(self):
+        self.c = chain(
+            Link("clinician", Ground.DEFERENCE, defers_to="guideline",
+                 defers_as=Authority.EPISTEMIC),
+            Link("guideline", Ground.DEFERENCE, defers_to="trials",
+                 defers_as=Authority.EPISTEMIC),
+            Link("trials", Ground.EVIDENCE, note="randomised, published"),
+        )
+
+    def test_a_sound_institutional_chain_no_longer_reads_as_pathological(self):
+        w = walk(self.c, "clinician")
+        self.assertTrue(w.is_grounded)
+        self.assertAlmostEqual(w.debt, 2 / 3)   # still two thirds deference...
+        self.assertEqual(w.bare_debt, 0.0)      # ...and none of it borrowed nothing
+
+    def test_the_discount_is_named_rather_than_silent(self):
+        w = walk(self.c, "clinician")
+        self.assertEqual(w.borrowed_competence, ("clinician", "guideline"))
+        self.assertIn("borrowed competence", w.report())
+
+    def test_promised_expertise_that_never_arrives_is_not_discounted(self):
+        """The failure mode of the discount itself: borrowing on trust."""
+        c = chain(
+            Link("clinician", Ground.DEFERENCE, defers_to="guideline",
+                 defers_as=Authority.EPISTEMIC),
+            Link("guideline", Ground.DEFERENCE, defers_to="clinician",
+                 defers_as=Authority.EPISTEMIC),
+        )
+        w = walk(c, "clinician")
+        self.assertTrue(w.is_loop)
+        self.assertEqual(w.borrowed_competence, ())
+        self.assertEqual(w.bare_debt, 1.0)
+
+
+class UngroundedJudgmentTest(unittest.TestCase):
+    """"What is unsound is a chain that ends only because someone senior said so."
+    The first version said that in the docstring and did not check it."""
+
+    def test_a_judgment_naming_nobody_does_not_terminate_the_walk_soundly(self):
+        c = chain(Link("a", Ground.DEFERENCE, defers_to="b",
+                       defers_as=Authority.EPISTEMIC),
+                  Link("b", Ground.JUDGMENT))
+        w = walk(c, "a")
+        self.assertIs(w.terminated_in, Ground.JUDGMENT)  # it did stop there
+        self.assertFalse(w.is_grounded)                  # but it did not land
+        self.assertEqual(w.ungrounded_judgment, "b")
+        self.assertIn("seniority, not a foundation", w.report())
+
+    def test_an_accountable_judgment_does(self):
+        c = chain(Link("a", Ground.DEFERENCE, defers_to="b",
+                       defers_as=Authority.EPISTEMIC),
+                  Link("b", Ground.JUDGMENT,
+                       accountable="on-call lead, stated 60-80% confidence"))
+        w = walk(c, "b")
+        self.assertTrue(w.is_grounded)
+        self.assertIsNone(w.ungrounded_judgment)
+
+    def test_an_ungrounded_judgment_withholds_the_competence_discount(self):
+        c = chain(Link("a", Ground.DEFERENCE, defers_to="b",
+                       defers_as=Authority.EPISTEMIC),
+                  Link("b", Ground.JUDGMENT))
+        self.assertEqual(walk(c, "a").borrowed_competence, ())
+
+
+class UndeclaredDeferenceTest(unittest.TestCase):
+    def test_deference_that_does_not_say_what_it_borrows_is_treated_as_bare(self):
+        """A guard that defaults to generous is worth less than no guard."""
+        c = chain(Link("a", Ground.DEFERENCE, defers_to="b"),
+                  Link("b", Ground.EVIDENCE, note="measured"))
+        w = walk(c, "a")
+        self.assertEqual(w.undeclared_deference, ("a",))
+        self.assertEqual(w.bare_debt, 0.5)
+        self.assertIn("undeclared", w.report())
+
+    def test_the_original_unannotated_chains_keep_their_original_reading(self):
+        """Back-compatibility is a property, not an accident: every pre-existing
+        chain is undeclared, so bare_debt equals debt exactly as debt did before."""
+        c = chain(Link("a", Ground.DEFERENCE, defers_to="b"),
+                  Link("b", Ground.DEFERENCE, defers_to="c"),
+                  Link("c", Ground.EVIDENCE, note="measured"))
+        w = walk(c, "a")
+        self.assertEqual(w.bare_debt, w.debt)
+
+
+class AuthorityFieldGuardsTest(unittest.TestCase):
+    def test_only_a_deference_can_borrow_authority(self):
+        with self.assertRaises(ValueError):
+            Link("a", Ground.EVIDENCE, defers_as=Authority.EPISTEMIC)
+
+    def test_accountability_means_nothing_outside_a_judgment(self):
+        with self.assertRaises(ValueError):
+            Link("a", Ground.EVIDENCE, accountable="someone")
+
+    def test_the_two_authorities_are_not_interchangeable_values(self):
+        self.assertNotEqual(Authority.EPISTEMIC, Authority.COORDINATION)

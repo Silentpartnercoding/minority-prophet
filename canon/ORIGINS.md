@@ -76,11 +76,24 @@ The four terminations were named there and are implemented unchanged in
 under uncertainty, or an honest unknown. So was the recursion case, where the chain
 returns to where it started.
 
-One guard from that conversation is not yet in the code, and should be. The correct
-conclusion is not that everyone is clueless. Institutions accumulate expertise,
-procedure and collective memory that no individual has, so institutional competence and
-individual omniscience are different things. The failure is coordination authority being
-mistaken for epistemic authority, not the existence of authority.
+One guard from that conversation was stated here in prose and not enforced in the
+code. The correct conclusion is not that everyone is clueless. Institutions accumulate
+expertise, procedure and collective memory that no individual has, so institutional
+competence and individual omniscience are different things. The failure is coordination
+authority being mistaken for epistemic authority, not the existence of authority.
+
+It went into `canon/authority_debt.py` on 14 September 2026. `Authority` separates
+EPISTEMIC from COORDINATION on a deferring link, and JUDGMENT must name who is
+accountable. Three things that were previously assertable became checkable. Epistemic
+deference on a walk that does reach ground is *borrowed competence* rather than debt,
+and the discount is named in the report rather than applied silently -- so a clinician
+deferring to a guideline grounded in trials stops reading as two-thirds pathological.
+Coordination authority inside a chain about what is true is reported on its own field,
+never discounted and never averaged into a percentage, for the same reason a loop is.
+And a JUDGMENT naming nobody no longer terminates a walk soundly, which is what the
+module's own docstring had always said about chains that end because someone senior said
+so. Undeclared deference stays bare, because a guard defaulting to generous would be
+worth less than no guard.
 
 At 9:50 the tea wheel produced the ten layers. The wheel was placed not as truth but as a
 *bounding instrument*: it takes a high-dimensional phenomenon and imposes a finite
