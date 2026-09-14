@@ -114,7 +114,9 @@ class WitnessIdentity(IntEnum):
     anonymous source is fully compliant with R1.4 and tells you nothing about
     whether two such roots came from two people.
 
-    That is the open half of U1, recorded in
+    That is the residual half of U1 -- detection rather than definition, which
+    is what remains after the closure in `canon/U1-PROXIMATE-ROOTS.md`. Recorded
+    in
     `research/knowledge-ledger/experiments/KL-014/CORRECTION-20260813-quota.md`:
     an issuer may supply many distinct `observation_id`s for one real
     observation and stay inside quota. Witness identity is the lever on it,

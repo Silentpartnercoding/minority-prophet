@@ -16,7 +16,7 @@ This file is the prose gate.
 | **Finite exhaustive check** | Every case in a bounded domain enumerated. Says nothing about larger domains | `audit/falsify.py`, `verification/independent_check_2026-08.py` (partly — see F2) |
 | **Randomized experiment** | Sampled, not enumerated. Reports a rate, not a guarantee | `verification/r1_degradation_curve.py`; the Gate's `verify_multivalue` above 200 rewirings (F3) |
 | **Implementation invariant** | A property of shipped code, true until someone edits the code | `audit/test_counterexamples.py` CE-09…CE-12 |
-| **Security assumption** | Imported from a layer these theorems do not model. If it fails, the theorems become vacuous | R1 (root integrity), root identity (U1), acyclicity enforcement |
+| **Security assumption** | Imported from a layer these theorems do not model. If it fails, the theorems become vacuous | R1 (root integrity), acyclicity enforcement. Root identity (U1) is no longer here — it is defined in `canon/U1-PROXIMATE-ROOTS.md`; what remains imported is *detection* of laundered provenance |
 | **Speculative extension** | Not implemented, not proved | `EXTENSION-SOCKETS.md`, ledger `LEDGER-H1`/`LEDGER-H2` |
 
 A statement never changes class by being repeated. In particular: **a Lean file
@@ -97,12 +97,29 @@ an aggregator's invariances, not about accuracy.**
 
 ### It does not establish independence
 
-"Independent" is *defined* as "distinct root", and root identity is
-**undefined** (ledger U1). Graded or partial independence is not representable
-in the model that was formalized before this audit, and is representable but
-untheorised in the DAG kernel. Any claim that the system measures genuine
-evidential independence is a claim about the identity criterion, which is
-currently an opaque caller-supplied string.
+"Independent" is *defined* as "distinct root". **Root identity is now defined**
+(ledger U1, closed 2026-09-07): two sources descending from a common ancestor
+remain independent witnesses if each re-established the claim through a channel
+that does not run through that ancestor. The mechanism is the tort doctrine of
+`novus actus interveniens`, and re-derivation is graded rather than boolean by
+the proximity ladder. See `canon/U1-PROXIMATE-ROOTS.md`,
+`formal/lean/MinorityProphetCore/RootIdentity.lean` and `canon/proximity.py`.
+
+**Independence is therefore never a scalar and is always relative to a class of
+error.** `canon/proximity.py` exposes `independent_for(a, b, error)` and no
+aggregate. Two analysts working from one published table are fully independent
+for arithmetic slips and not independent at all for a miscalibrated instrument;
+a single number would hide exactly that distinction.
+
+What this does **not** give you is detection. The system cannot discover a shared
+blind spot, only count under one you have named in advance under `A3`. An
+adversary who launders the provenance record *and* scrubs the shared
+idiosyncratic markers removes edges, and a sparser graph admits a *larger*
+independent set, so the count over-reports. That residual is pinned by
+`test_ATTACK_laundered_provenance_inflates_the_count` and absorbed by **R3
+margin sufficiency**, which requires a margin above the effective witness count
+rather than trusting the count. Per `ASSAYER.md` A5 a report may only ever say
+*"no dependence trace was found"*, never *"these are independent"*.
 
 The adapter in `provenance/decision_relative.py` does not close this gap. It
 requires a caller to name the decision, failure domain and lineage cut, then

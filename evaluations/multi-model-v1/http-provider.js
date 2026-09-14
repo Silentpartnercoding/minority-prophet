@@ -15,11 +15,11 @@ export async function fetchWithRetry(url, options, { retries = 3, baseDelayMs = 
 }
 
 export class OpenAICompatibleAdapter {
-  constructor({ provider, model, baseUrl, apiKey, headers = {} }) { this.provider = provider; this.model = model; this.version = model; this.baseUrl = baseUrl.replace(/\/$/, ''); this.apiKey = apiKey; this.headers = headers; }
+  constructor({ provider, model, baseUrl, apiKey, headers = {}, requestBody = {} }) { this.provider = provider; this.model = model; this.version = model; this.baseUrl = baseUrl.replace(/\/$/, ''); this.apiKey = apiKey; this.headers = headers; this.requestBody = requestBody; }
   async runModel(request) {
     const started = Date.now();
-    const result = await fetchWithRetry(`${this.baseUrl}/chat/completions`, { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${this.apiKey}`, ...this.headers }, body: JSON.stringify({ model: this.model, messages: [{ role: 'system', content: request.systemPrompt }, ...request.messages], temperature: request.temperature, top_p: request.topP, seed: request.seed, max_tokens: request.maxTokens, response_format: { type: 'json_object' } }) });
+    const result = await fetchWithRetry(`${this.baseUrl}/chat/completions`, { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${this.apiKey}`, ...this.headers }, body: JSON.stringify({ model: this.model, messages: [{ role: 'system', content: request.systemPrompt }, ...request.messages], temperature: request.temperature, top_p: request.topP, seed: request.seed, max_tokens: request.maxTokens, response_format: { type: 'json_object' }, ...this.requestBody }) });
     const body = await result.json();
-    return { raw: body.choices?.[0]?.message?.content ?? '', provider_request_id: result.headers.get('x-request-id') ?? body.id ?? null, usage: { input_tokens: body.usage?.prompt_tokens ?? null, output_tokens: body.usage?.completion_tokens ?? null, cached_tokens: body.usage?.prompt_tokens_details?.cached_tokens ?? 0 }, cost_usd: null, execution_ms: Date.now() - started, model_version: body.model ?? this.model };
+    return { raw: body.choices?.[0]?.message?.content ?? '', provider_request_id: result.headers.get('x-request-id') ?? body.id ?? null, usage: { input_tokens: body.usage?.prompt_tokens ?? null, output_tokens: body.usage?.completion_tokens ?? null, cached_tokens: body.usage?.prompt_tokens_details?.cached_tokens ?? 0 }, cost_usd: body.usage?.cost ?? null, execution_ms: Date.now() - started, model_version: body.model ?? this.model };
   }
 }
