@@ -368,6 +368,46 @@ Flattening a branch copies the code and discards the parentage, so a version-con
 system with meticulous records will report two byte-identical files as independently
 created. Nine commands, no data, no credentials. `canon/U1-WORKED-EXAMPLE.md`.
 
+**Dostoevsky, 25 August, produced the brake and the river in one sitting.** It opens
+"What is Dostoevsky known for", gets the standard answer — *Crime and Punishment*, *The
+Brothers Karamazov*, *The Idiot*, *Demons*, *Notes from Underground*, a body of work about
+what happens when people push an idea to its limit — and then narrows immediately: "I'm
+interested in the last two, irrational agency and epistemic overconfidence."
+
+*Notes from Underground* is the argument that a person told what they will do may do
+otherwise precisely to prove they are not a mechanism. Stated for machines: once a system
+learns it has been predicted, the prediction may stop being true. The next question is the
+one that turns literature into work — "is there in silico experiment we can do to see if
+this is true for AI" — and the answer is a real design, with a baseline, a condition that
+tells the model another model predicts its choice with 97% confidence, a challenge
+condition, an autonomy condition, and a blind control. It gets scored on predictability
+delta, utility sacrificed to defeat prediction, and how fast the predicting system notices
+its own model has gone stale.
+
+Then the move that matters: "I was talking about epistemic humility, the act of applying a
+model changes the world, and how to create an awareness or a *brake* around that." Five
+checks follow — which facts in the reasoning are mutable, which the action could change,
+whether changing them would alter the recommendation, whether anyone reacts *because they
+observed* the action, and whether the conclusion still holds in the resulting state. And
+the formalism the code now runs: a recommendation from the present state, a transition the
+recommendation itself causes, a second recommendation from the state that produces, and
+the distance between them.
+
+The correction is the owner's and it survived into the doctrine. The first version treated
+moving the market as invalidating the trade. The reply: "just because you move the market
+doesn't mean you destroyed the trade or profit, it may mean your assumptions have changed."
+And later, sharper — moving the market can be good, because others move with you, or it can
+be fragile, and the calculation is not to take the original scenario and pretend the
+assumptions hold at the new state. That is why the brake fires on a conclusion that may
+well be correct rather than on uncertainty, and why an unchanged state is an acceptable
+answer rather than a failure.
+
+`canon/reflexive_brake.py`, whose three stances — prediction, intervention, and forecast
+made after intervening — are that formalism, and whose reasons include a system reacting
+because it was observed. The same conversation, later the same day, produces the river
+crossing that becomes `Silentpartnercoding/rubicon-test`, recorded below under Pitfall. One
+sitting, two artifacts.
+
 **Pitfall, 25 August, turned a benchmark from a quiz into a river.** The conversation
 had been designing a test for agents and kept producing quiz shapes — judge this claim,
 is this bridge safe. It turned on one sentence: *"the whole point of the crossing is that
@@ -404,13 +444,10 @@ the Ghost and Phantom experiments that made it look worth chasing does not exist
 vocabulary is shared because one person named both, which is recorded above as the eighth
 failure shape.
 
-And one open question rather than a gap, because the material exists and only its identity
-is unsettled. A test for whether knowing changes reality is remembered as sitting between
-the Shantaram and Pitfall conversations, so 21 to 25 August. `canon/reflexive_brake.py`
-answers to the description almost exactly — it fires on a conclusion that may well be
-correct, where acting on it or revealing it would alter the system enough to make acting
-harmful, and it holds prediction, intervention and post-intervention forecast apart — but
-it is already recorded above as the Twelve Monkeys entry and it predates that window.
-Either a separate later test exists and resembles the brake, or the brake is being
-recalled at the wrong date. The evidence does not separate the two, so neither is written
-as though it did.
+The open question is closed. A test for whether knowing changes reality was remembered as
+sitting between the Shantaram and Pitfall conversations; it is recorded above, and it is
+the head of the Pitfall conversation itself, 25 August. Both readings offered earlier were
+wrong in the same direction: it is neither a separate later test nor the Twelve Monkeys
+entry misdated. The brake has two tellings — Cole inside the mechanism he studies, and the
+underground man refusing to be predicted — and the second is the one that produced the five
+checks and the state-transition formalism the code implements.
