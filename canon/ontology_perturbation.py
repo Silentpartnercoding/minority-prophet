@@ -1,6 +1,7 @@
 """The ontology-perturbation test — hold the phenomenon fixed, change the words.
 
-Recorded in `canon/ORIGINS.md` as one of three ideas that never landed, and the
+Recorded in the project's private origins record as one of three ideas that never
+landed, and the
 one with the clearest missing slot: every robustness check in this corpus
 perturbs the *data*. This perturbs the *vocabulary*, and asks whether the
 conclusion survives.
