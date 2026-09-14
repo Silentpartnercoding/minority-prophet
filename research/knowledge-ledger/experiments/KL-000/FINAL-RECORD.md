@@ -268,12 +268,43 @@ pinned receipts C11 and C12.
    — but the independent checker does not carry I12, and this promotion does not
    claim otherwise.
 
-**A2 is unaffected and remains open.** Whether a presence conclusion requires
-complete search coverage is still an owner decision the program did not reach.
-It governs 19,152 worlds, 17.3% of the kernel, and is the largest undecided
-surface in it. Promoting independence does not decide it, and a third
-implementation reading it the other way would diverge on all 19,152 while
-passing every invariant.
+**A2 was decided separately, later the same day.** See below.
 
 This is a decision, not a derivation, recorded as such in the same manner as A1,
 R1 and R5.2.
+
+---
+
+## A2 decided, 2026-09-14
+
+**Does a presence conclusion require complete search coverage?** Decided by the
+owner at RUN-20260807-11: **no.** Finding the thing is the finding. Searching the
+remaining locations cannot un-find it, and withholding `supported` until coverage
+is complete would make every true positive wait on an exhaustive search that adds
+no evidence for it.
+
+A decision, not a derivation — but one every available reading already pointed
+at. The registered text has no coverage term on `conclusionFunction.presence`.
+Both independent implementations chose this reading. The RUN-20260807-9
+traceability audit found the paper agrees: its aggregator takes no coverage
+input, and coverage is imposed on absence claims only.
+
+**It is recorded now because none of that constituted a decision of record**, and
+19,152 worlds — 17.3% of the kernel, the largest undecided surface in it — were
+resting on a question nobody had answered. A third implementation reading it the
+other way would have diverged on every one of them *while passing every
+invariant*. It now diverges from a decision rather than from an ambiguity, which
+is the whole point of writing it down.
+
+**The rejected reading is preserved**, per the discipline applied to R1, R5.2 and
+A1: that presence should also require `search.complete`, on the argument that a
+claim asserted without knowing what else is out there is a claim about one
+location rather than about the declared scope. Defensible, and rejected —
+absence and presence are not symmetric claims. That is the same asymmetry the
+assay discipline runs on, and the one `Asymmetric.lean` proves as a verdict rule:
+one verified find settles an existential claim, and no number of unsuccessful
+searches out-votes it. Requiring coverage for presence would impose the absence
+rule on a claim shape that does not need it.
+
+**No invariant enforces either reading.** The mechanistic gap recorded for R1 and
+R5.2 still applies: this is a decision of record, not an enforced one.
