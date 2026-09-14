@@ -198,7 +198,7 @@ Full detail and minimal witnesses: `formal/COUNTEREXAMPLES.md`.
   every child at once; one compromised signing key mints unboundedly many roots.
   Converting T5's units into an incident budget requires **R1.4** in
   `PROVENANCE-REQUIREMENTS.md`, which is a requirement, not a theorem.
-- **Root identity is defined** (ledger `U1`, closed 2026-09-07 by
+- **Root identity is defined** (ledger `U1`, closed 2026-09-14 by
   `canon/U1-PROXIMATE-ROOTS.md`; what remains is detection of laundered
   provenance, bounded by R3) and **the meaning of absent provenance was
   contradictory** across modules (ledger `U2`); the latter is now an explicit,

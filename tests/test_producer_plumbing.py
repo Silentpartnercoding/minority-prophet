@@ -120,7 +120,7 @@ class DisagreementTests(unittest.TestCase):
 class RefusalTests(unittest.TestCase):
     def test_an_unrecognised_axis_value_reads_as_unstated(self):
         """A producer sending a word this version does not know has not stated
-        the axis. Silence is the conservative reading; the wire boundary is
+        the axis. Silence claims nothing; the wire boundary is
         where unknown strings are refused."""
         r = verdict([Claim(True, "r1", basis="attested", depth="vibes")])
         self.assertEqual(r.weakest_axes[0].depth, WitnessDepth.UNSTATED)

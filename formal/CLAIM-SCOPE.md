@@ -98,7 +98,7 @@ an aggregator's invariances, not about accuracy.**
 ### It does not establish independence
 
 "Independent" is *defined* as "distinct root". **Root identity is now defined**
-(ledger U1, closed 2026-09-07): two sources descending from a common ancestor
+(ledger U1, closed 2026-09-14): two sources descending from a common ancestor
 remain independent witnesses if each re-established the claim through a channel
 that does not run through that ancestor. The mechanism is the tort doctrine of
 `novus actus interveniens`, and re-derivation is graded rather than boolean by
