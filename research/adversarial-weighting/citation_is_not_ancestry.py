@@ -82,11 +82,25 @@ def main() -> None:
     print(f"    counted as roots          {len(roots2)}")
     print("    which is the correct answer, and it collapses as it should\n")
 
-    print("So the machine is right that everything traces to a root. The failure is")
-    print("that a reader who cites a paper is not recorded as descending from it, so")
-    print("one paper becomes as many roots as it has readers. The fix is not a bigger")
-    print("gate on the evidence field. It is that citing a source should propose an")
-    print("ancestry edge to it, and today those two fields never speak.")
+    print("So the machine is right that everything traces to a root. The failure was")
+    print("that a reader who cites a paper was not recorded as descending from it, so")
+    print("one paper became as many roots as it had readers.")
+    print()
+    print("FIXED 2026-09-14. EvidenceNode now carries `read_from`, naming the external")
+    print("sources a claimant consulted, separately from `evidence`, which backs an")
+    print("observation they made. A claim that names a source is no longer a root, the")
+    print("source is materialised once and shared, and every reader collapses onto it:")
+    g = EvidenceGraph(strict=True)
+    for i in range(5):
+        g.add(EvidenceNode(node_id=f"named{i}", proposition_id="p", value=True,
+                           observer_id=f"n{i}", source_id=f"n{i}", confidence=0.9,
+                           evidence={"doi": DOI}, read_from=(DOI,)))
+    print(f"    five readers naming what they read -> "
+          f"{sum(1 for n in g._nodes.values() if n.is_root)} root")
+    print()
+    print("The demonstration above is retained because the field is additive: a caller")
+    print("that has not migrated still produces the old count, which is the honest")
+    print("state of any repository the day after a fix lands.")
 
 
 if __name__ == "__main__":
