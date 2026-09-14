@@ -15,7 +15,8 @@
     "tested_implementation": "Covered by an executable test against shipped code.",
     "hypothesis": "Believed, not established.",
     "falsified": "A counterexample exists.",
-    "underspecified": "Cannot be assigned a truth value until a definition is supplied."
+    "underspecified": "Cannot be assigned a truth value until a definition is supplied.",
+    "not_pursued": "Deliberately not attempted, with the reason recorded and the cost measured. Distinct from underspecified, which means nobody has defined it, and from falsified, which means it is wrong. This says it was costed and declined."
   },
   "lean_environment": {
     "toolchain": "leanprover/lean4:v4.32.2",
@@ -378,7 +379,7 @@
       "statement": "No theorem covers any weighted aggregator.",
       "definition_version": "core-v3-dag",
       "assumptions": [],
-      "proof_status": "underspecified",
+      "proof_status": "not_pursued",
       "lean_theorem": null,
       "known_counterexamples_outside_scope": [
         "F is a pure cardinality comparison; a confidence-0.01 root and a confidence-1.0 root count identically.",
@@ -387,7 +388,17 @@
       "implementation_tests": [],
       "security_interpretation": "None available.",
       "prohibited_overstatement": "Do not cite T1/T2/T4/T5 in support of any weighted aggregation result. See EXTENSION-SOCKETS.md section 2.",
-      "remediation": "PARTIAL. The blocker named in EXTENSION-SOCKETS.md section 2 -- a zero-weight root counted at full strength by the cardinality aggregator and at zero by weighted_vote -- is reconciled in aggregation/zero_weight.py. It names the policy rather than picking a winner, defaults to REFUSE, and refuses only where the two readings change the verdict. The underlying cause is that confidence and competence are typed float, so an unsupplied weight and a deliberate zero are the same value; that is U2's disease one level over and is resolved the same way. U3 itself remains underspecified: no theorem covers any weighted aggregator. See canon/U3-WHAT-TRANSFERS.md for which canon moves survive weighting and which do not."
+      "remediation": "CLOSED BY DECISION, not solved. The zero-weight contradiction that blocked any weighted theorem is reconciled in aggregation/zero_weight.py. The theorem is not written because the measured value does not justify it.",
+      "decision": {
+        "date": "2026-09-14",
+        "summary": "Weighted roots are declined rather than left open. Measurements in research/weight-sensitivity and research/adversarial-weighting.",
+        "what_it_would_buy": "About five accuracy points over plain counting when every source is honest and every weight is known exactly. That is the entire prize.",
+        "what_it_costs": "Under a preregistered adversarial test, weighting halves the corruption an attacker needs: counting first falls below a coin flip at adversary fraction 0.40, weighting at 0.20. Against a sleeper who earns a record then defects, no estimate tolerance tested makes weighting beat counting.",
+        "why_the_obvious_fixes_fail": "Capping a single share was preregistered as the defence and failed its own frozen condition: it stops one heavy source, not a coordinated block of merely-heavy ones. Reputation is worse than no defence, because it concentrates weight on whoever has been most consistently right, which selects for the patient adversary it exists to deter.",
+        "what_to_do_instead": "Count equally. Trim the highest and lowest declared weights where about three and a half accuracy points is affordable; trimming's breakdown point is 0.45 against plain counting's 0.40.",
+        "what_would_reopen_it": "A setting established as non-adversarial, with competence scored against at least a dozen resolved outcomes per source, and the source ranking shown to hold in a second resolving domain.",
+        "not_claimed": "No theorem. The measurements are exploratory simulations of a stated generator, except the adversarial run which is preregistered and hashed. None of it proves a weighted aggregator unsafe in general."
+      }
     },
     {
       "definition_version": "core-v3-dag",
@@ -530,6 +541,10 @@
     {
       "date": "2026-09-13",
       "note": "U3's stated prerequisite is discharged. The zero-weight contradiction between the two shipped aggregators no longer resolves silently: aggregation/zero_weight.py computes both readings, reports both, and fails closed where they disagree. This removes the reason a weighted theorem could not be stated; it does not state one."
+    },
+    {
+      "date": "2026-09-14",
+      "note": "U3 moves from underspecified to not_pursued. The register now holds no item open merely because nobody got to it: what remains unproved is finite verification, tested implementation, or this recorded decision."
     }
   ]
 }
