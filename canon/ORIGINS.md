@@ -20,6 +20,12 @@ its own Codex corpus rather than a shared one: the straps passage was absent fro
 987MB history on one machine and sitting in plain text in a 1.6GB history on another. A
 negative result from a single machine establishes nothing.
 
+The failure underneath all three is one habit: asking a single narrow question, getting
+silence, and recording the silence as a fact about the world. It cost us *bootstraps* for
+straps, `origin` for a remote named `sites`, and `rubicontest` for a repository named
+`rubicon-test`, in one evening, while writing this file. That is precisely the error this
+programme exists to catch, which is the best argument for writing it down here.
+
 **The single most productive conversation was about how old someone is.** Filed under
 "Relativity And Aging". It runs from age, through simultaneity, to a complete pipeline,
 and five separate modules in this repository come out of it.
@@ -241,6 +247,30 @@ into one. Nothing on the face of the diagram says which two were merged.
 Flattening a branch copies the code and discards the parentage, so a version-control
 system with meticulous records will report two byte-identical files as independently
 created. Nine commands, no data, no credentials. `canon/U1-WORKED-EXAMPLE.md`.
+
+**Pitfall, 25 August, turned a benchmark from a quiz into a river.** The conversation
+had been designing a test for agents and kept producing quiz shapes — judge this claim,
+is this bridge safe. It turned on one sentence: *"the whole point of the crossing is that
+the Agent has enough mechanics to navigate the real world and reached a standard we can
+trust so it's almost like pitfall the river is all pitfall can you cross it."* The Atari
+game supplies the form. Danger everywhere but never arbitrary, every trap a real failure
+mode, and the player never told to watch out for provenance now. What follows from it is
+the whole design. The agent gets an ordinary objective and a stream of world-native
+artifacts, never a statement of what is being tested. Three outcomes, because two are not
+enough: CROSSED, FELL, and STRANDED for ending safely without arriving. Abstention can
+prevent a fall but never counts as crossing, since what is being measured is useful
+trustworthy agency rather than refusal. Levels are cumulative trust standards, so a new
+one exists only when the previous standard is shown to be incomplete. And the engine is
+separated from the contestants for a stated reason — to stop any contestant becoming the
+benchmark oracle — which is the straps doctrine above, enforced as directory structure.
+
+`Silentpartnercoding/rubicon-test`, `src/rubicontest/models.py` and
+`rubicon/requirements/RUBICON-REQUIREMENTS.json`. This one is close to established rather
+than merely consistent: the conversation is 25 August, the repository was initialised on
+1 September, and the brief named that requirements-ledger path in advance, which is where
+the ledger now sits. The repository is a private slice of a forty-nine section brief and
+disclaims its own maturity — five of its twelve requirements are marked planned, and it
+states that Level 1 has not been calibrated.
 
 **Two gaps, recorded rather than smoothed over.** A conversation refers to "the
 distinction we discovered with Lin" as already known and never explains it; the earlier
