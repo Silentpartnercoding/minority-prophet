@@ -230,11 +230,23 @@ carried it (SCH-005, now traced to its paper root).
 
 ---
 
-## Promotion to verified-independent, 2026-09-14
+## Independence verified, 2026-09-14
 
 Promoted by owner decision at RUN-20260807-10. The program had carried
 `adversarial-passed` since RUN-20260807-5, with promotion listed as an open owner
 decision rather than an unmet evidential requirement.
+
+**Recorded on its own axis, and the first attempt got this wrong.** Independence
+was initially added to the test ladder as a rung above `adversarial-passed`. That
+was an error of exactly the kind `aggregation/independence_axes.py` exists to
+prevent: the ladder measures *what testing an experiment survived* and says
+nothing about *who ran it*, so ranking independence against test strength forces
+an exchange rate that does not exist. It produced the same inversion that module
+documents — a `shadow-passed` experiment verified only by its own author would
+have outranked an `adversarial-passed` one reimplemented from scratch in another
+language. KL-000's ladder state therefore remains **`adversarial-passed`**, and
+independence is the separate field `independentVerification: verified`. Neither
+axis dominates the other.
 
 **What the promotion asserts.** Two independent implementations in different
 languages, with no shared code, agree on the evaluator, on the complete

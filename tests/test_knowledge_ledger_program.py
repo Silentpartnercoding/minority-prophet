@@ -95,35 +95,51 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
     # The kernel-state ladder. A state outside this list is a typo or an
     # invented stage, and either way must not pass silently.
     #
-    # `verified-independent` sits above `adversarial-passed` and was added on
-    # 2026-09-14, when KL-000 was promoted into it. Until then it existed only
-    # as a word in KL-000's own status note -- the program described a promotion
-    # target the ladder had never defined, so setting it would have been caught
-    # here as an invented stage. That was the right behaviour and it worked.
+    # This ladder measures ONE thing: what kind of test the experiment survived.
+    # fixture, exhaustive, randomized, adversarial, retrospective, shadow,
+    # bounded-pilot. Nothing on it says who ran the test.
     #
-    # It means: a second implementation, built independently and sharing no
-    # code, agrees with the reference. It does NOT mean every qualification has
-    # been discharged, which is why PROMOTION_FIELDS below is enforced.
+    # `verified-independent` was briefly inserted here on 2026-09-14 and removed
+    # the same day. It belongs to a different axis -- who did the verifying --
+    # and putting it on this one forced an exchange rate between test strength
+    # and independence that does not exist. The inversion it produced is the
+    # same shape as the one `aggregation/independence_axes.py` was written to
+    # kill: a shadow-passed experiment verified only by its own author would
+    # have outranked an adversarial-passed one reimplemented from scratch in
+    # another language. Independence is `independentVerification` below.
     LADDER = (
         "seeded", "preregistered", "fixture-passed", "exhaustive-passed",
-        "randomized-passed", "adversarial-passed", "verified-independent",
-        "retrospective-passed", "shadow-passed", "bounded-pilot-passed",
-        "failed", "incomplete", "blocked-safety",
+        "randomized-passed", "adversarial-passed", "retrospective-passed",
+        "shadow-passed", "bounded-pilot-passed", "failed", "incomplete",
+        "blocked-safety",
     )
 
-    # An independence claim is worth nothing without its scope. A promotion that
-    # records only the state is exactly the "someone edited a status field" case
-    # the test below exists to catch, so the scope is required to travel with it.
+    # The second axis, deliberately NOT a rank against the first. An experiment
+    # may be strongly tested and unverified, or weakly tested and independently
+    # reimplemented, and neither dominates the other.
+    INDEPENDENCE = ("none", "conformed", "verified")
+
+    # A verified claim is worth nothing without its scope, and it is the most
+    # citable thing the program emits. A promotion recording only the state is
+    # the "someone edited a status field" case the ladder test exists to catch.
     PROMOTION_FIELDS = ("promotedAt", "promotionBasis", "promotionScope")
 
-    def test_verified_independent_cannot_be_claimed_without_its_scope(self):
-        """Independence is the most citable state on the ladder and the easiest
-        to overstate. Reaching it requires recording when it was promoted, on
-        what basis, and -- above all -- what the promotion does not cover."""
+    def test_independence_is_its_own_axis_and_carries_its_scope(self):
+        """Independence is the most citable thing this program emits and the
+        easiest to overstate. It is recorded separately from the test ladder,
+        must use the declared vocabulary, and `verified` requires when it was
+        promoted, on what basis, and -- above all -- what it does not cover."""
         for index in range(12):
             directory = PROGRAM / "experiments" / f"KL-{index:03d}"
             status = json.loads((directory / "STATUS.json").read_text())
-            if status["state"] != "verified-independent":
+            claimed = status.get("independentVerification", "none")
+            self.assertIn(claimed, self.INDEPENDENCE, directory.name)
+            self.assertNotIn(
+                "independent", status["state"],
+                f"{directory.name}: independence belongs in independentVerification, "
+                f"not on the test ladder",
+            )
+            if claimed != "verified":
                 continue
             for field in self.PROMOTION_FIELDS:
                 self.assertIn(field, status, f"{directory.name}: {field}")
