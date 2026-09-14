@@ -341,5 +341,5 @@ archival record at `10.5281/zenodo.21965712` is correct as deposited, and Zenodo
 versioning exists precisely so a later result is published as a new version
 rather than by altering a record that others may have cited.
 
-The U1 closure and the responsiveness converse are a companion paper, not a
+The U1 closure and the responsiveness converse are a companion paper, *Independence Without Equivalence*, not a
 version bump. Bundling a closed open problem into a revision buries it.

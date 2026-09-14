@@ -1,4 +1,4 @@
-# Closing U1: Root Identity by Proximate Cause
+# Independence Without Equivalence: Root Identity by Proximate Cause
 
 **Status: DRAFT v0.1. Not submitted. Not deposited. No DOI.**
 Drafted 2026-09-14. Recorded in `papers/ERRATA.md` under `[E9]` and in the
