@@ -20,11 +20,20 @@ its own Codex corpus rather than a shared one: the straps passage was absent fro
 987MB history on one machine and sitting in plain text in a 1.6GB history on another. A
 negative result from a single machine establishes nothing.
 
-The failure underneath all three is one habit: asking a single narrow question, getting
+The failure underneath all four is one habit: asking a single narrow question, getting
 silence, and recording the silence as a fact about the world. It cost us *bootstraps* for
-straps, `origin` for a remote named `sites`, and `rubicontest` for a repository named
-`rubicon-test`, in one evening, while writing this file. That is precisely the error this
-programme exists to catch, which is the best argument for writing it down here.
+straps, `origin` for a remote named `sites`, `rubicontest` for a repository named
+`rubicon-test`, and a repository declared to have one squashed commit when the clone
+asked was a shallow one truncated at a single revision — that last inside an entry about
+a programme whose worked example is parentage destroyed by squashing. Four in one
+evening, while writing this file.
+
+The part worth keeping is not the tally. It is that not one of the four was caught by
+whoever made it. Each was found by the other session looking from outside, with a
+different archive, a different checkout and no stake in the earlier answer. A file
+arguing that a verifier cannot be of the same substance as the thing it verifies was
+assembled by two verifiers correcting each other four times in a night, and neither could
+have done it alone. That is the straps entry below, demonstrated rather than asserted.
 
 **The single most productive conversation was about how old someone is.** Filed under
 "Relativity And Aging". It runs from age, through simultaneity, to a complete pipeline,
