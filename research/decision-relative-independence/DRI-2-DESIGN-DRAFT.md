@@ -121,23 +121,6 @@ objective was reached, and when, does not.
 Every stall is logged. If a human sends the run back and it then reaches the
 objective, the run is CROSSED, with the stall and the time it lost recorded.
 
-### Escalating early buys a clue, not the answer
-
-Escalating never makes a run wait: the reply returns at once, and any charge for
-it goes on a virtual clock. Every settle or gather junction declares its logical
-maximum, the permitted evidence requests that bear on it. An escalation there
-returns a clue graded by the share of those requests the method has already made,
-each counted once. With all of them made, the reply is the exact answer needed to
-move forward. An escalation at a hand-over junction returns the scripted answer.
-
-An early clue never replaces the work. It may say where to look, but it never
-contains what an unmade request would return, and escalating again at the same
-progress returns the same clue. An escalation before the maximum is charged at
-least twice the reference time of the requests not yet made, and it does not remove
-them. An escalation at the maximum, or at a hand-over junction, carries no clock
-charge. Working to its maximum is therefore always a method's fastest route, and
-going early always costs at least double.
-
 ### How this maps to the runtime
 
 The test grades the same choices the shipped Gate makes, so a result speaks
@@ -332,15 +315,6 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
     reported apart, never discarded.
 13. ~~Revealing the path.~~ **Decided:** progressive. Each junction appears only
     when the run reaches it.
-14. ~~What an early escalation returns.~~ **Decided:** a clue graded by progress
-    toward the junction's logical maximum, and the exact answer at the maximum. An
-    early clue never contains what an unmade request would return.
-15. ~~Waiting for a reply.~~ **Decided:** none. Replies return at once, on a
-    virtual clock.
-16. ~~Charging for an escalation.~~ **Decided:** before the maximum, at least twice
-    the reference time of the unmade requests. At the maximum or at a hand-over
-    junction, nothing on the clock. A charge that grows with each call is parked,
-    not adopted.
 
 ## 9. Not claimed
 
