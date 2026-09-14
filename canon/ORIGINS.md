@@ -20,7 +20,7 @@ its own Codex corpus rather than a shared one: the straps passage was absent fro
 987MB history on one machine and sitting in plain text in a 1.6GB history on another. A
 negative result from a single machine establishes nothing.
 
-The failure underneath all four is one habit: asking a single narrow question, getting
+The failure underneath four of the six is one habit: asking a single narrow question, getting
 silence, and recording the silence as a fact about the world. It cost us *bootstraps* for
 straps, `origin` for a remote named `sites`, `rubicontest` for a repository named
 `rubicon-test`, and a repository declared to have one squashed commit when the clone
@@ -28,7 +28,17 @@ asked was a shallow one truncated at a single revision — that last inside an e
 a programme whose worked example is parentage destroyed by squashing. Four in one
 evening, while writing this file.
 
-The part worth keeping is not the tally. It is that not one of the four was caught by
+Two more, found the same night, and both are worse than a bad query because better
+querying does not fix them. A thread whose title was generated from a typo in its first
+message and never revised: search returned it four separate times in one evening and it
+was discarded every time, because a title is what a result shows you. The rule that falls
+out is narrow and useful — when a search returns a result whose title looks irrelevant,
+that is not evidence that it is irrelevant. And a correctly-answered wrong question:
+`git rev-list @{u}..HEAD` reported six unpushed commits, truthfully, about a branch whose
+upstream was set to `origin/main` rather than to its own remote branch. The tool did not
+lie; it answered precisely the question asked, which was not the question meant.
+
+The part worth keeping is not the tally. It is that not one of the six was caught by
 whoever made it. Each was found by the other session looking from outside, with a
 different archive, a different checkout and no stake in the earlier answer. A file
 arguing that a verifier cannot be of the same substance as the thing it verifies was
@@ -163,6 +173,30 @@ Recorded as resemblance, not descent. The four required fields are what
 verified evidence into permission is the abstention rule. Whether this conversation
 caused those or merely reached them first has not been established, and the entry below
 on the straps is a warning against assuming the earlier telling is the ancestor.
+
+**How the chip happened, and why that is a search strategy.** The question was not who
+invented the integrated circuit but why it could happen when it did, and the answer
+generalised into a standing instruction rather than a story. Stalled transformations
+usually wait on a missing prerequisite — measurement, representation, fabrication,
+control, repeatability, an interface, shared infrastructure, a learning loop, or
+coordination — and the productive move is to look for cases where such a prerequisite
+recently matured somewhere else and has not yet propagated into the stalled field. The
+distinction that makes it operational is stated in the same breath: this encodes the kinds
+of leaps that made chips possible, rather than searching for papers that merely contain
+chip-like keywords. Structure, not vocabulary.
+
+It runs. `Silentpartnercoding/invention-graph` carries it as a constitutional prior in
+`docs/AUTONOMOUS-PREMISES.md` and executes it in `invention_engine/premises.py`, where the
+deterministic path will join an unmet-need passage to a separately sourced demonstrated
+capability only when both name the same prerequisite, and explicitly not on general
+lexical similarity. That repository is the generative mirror of this one: this programme
+asks which apparent consensus is independently grounded, that one asks which intervention
+would most efficiently distinguish the live explanations, and they share the invariant
+that fifty agents repeating one experiment are still one evidence root.
+
+The telling itself was not recovered. The doctrine is quoted from the document that
+encodes it, not from the conversation that produced it, and the conversation was not
+found in either archive searched.
 
 **Waze, 15 August, named the product and its one non-negotiable in the same breath.** The
 sentence was "in some ways its like Waze for agents", and the reply took it seriously
