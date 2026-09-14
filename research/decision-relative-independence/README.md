@@ -186,7 +186,11 @@ Against this document's kill criteria below:
 
 What DRI-1A adds to the design of any successor: false settlement read alone
 rewards abstention, so the next test must score correct settlement, abstention
-and false settlement together under costs fixed in advance.
+and false settlement together. A refusal never counts as crossing. Handing over
+to a human is part of crossing only at the junction where a human is genuinely
+needed; stopping before that point, when the system could have carried on, is a
+stall and counts as a failure. In deployment the system should still fail safe;
+the test measures whether it navigates the critical path.
 
 ## Relation to the canon's independence model
 
