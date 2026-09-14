@@ -12,7 +12,7 @@ This file is the prose gate.
 
 | Class | What it means | Where it lives in this audit |
 |---|---|---|
-| **Mathematical theorem** | Compiled by Lean 4.32.2 against pinned Mathlib `905b958`, zero `sorry`, no axioms beyond `propext`/`Classical.choice`/`Quot.sound` | `formal/lean/MinorityProphetCore/` — 8 ledger entries |
+| **Mathematical theorem** | Compiled by Lean 4.33.1 against pinned Mathlib `0df444a`, zero `sorry`, no axioms beyond `propext`/`Classical.choice`/`Quot.sound` | `formal/lean/MinorityProphetCore/` — 8 ledger entries |
 | **Finite exhaustive check** | Every case in a bounded domain enumerated. Says nothing about larger domains | `audit/falsify.py`, `verification/independent_check_2026-08.py` (partly — see F2) |
 | **Randomized experiment** | Sampled, not enumerated. Reports a rate, not a guarantee | `verification/r1_degradation_curve.py`; the Gate's `verify_multivalue` above 200 rewirings (F3) |
 | **Implementation invariant** | A property of shipped code, true until someone edits the code | `audit/test_counterexamples.py` CE-09…CE-12 |
@@ -173,3 +173,39 @@ not change underneath you, the aggregator's verdict is provably insensitive to
 everything about who-copied-whom except the identity and count of the parentless
 claims on each side — and every one of those three preconditions is an assumption
 imported from outside the mathematics, not a result of it.*
+
+
+## The kernel that checks the proofs is itself an assumption
+
+A Lean file that does not compile is not a proof. Its harder sibling: **a Lean
+file that does compile is not a proof either if the kernel that checked it has a
+hole.** Kernel soundness is a **Security assumption** in the table above, beside
+R1 root integrity, not a theorem.
+
+Between 2026-07-25 and 2026-08-21 the Lean kernel bug hunt found **six**
+soundness bugs, each permitting a proof of `False` (CVE-2026-72844). The first,
+[#14576](https://github.com/leanprover/lean4/pull/14577), let nested inductive
+types with *phantom parameters* drop those parameters from the generated
+auxiliary type, so they escaped type checking entirely; an AI-assisted "disproof
+of the Collatz conjecture" compiled `sorry`-free against it.
+
+This core was pinned to v4.32.2, which **does** contain the #14576 fix but
+predates the five later August fixes. Recompiled on v4.33.1: all 14
+`proved_compiled` claims build with zero source changes, and no theorem depends
+on `sorryAx`.
+
+**One axiom set changed and is recorded rather than smoothed over.**
+`RootIdentity.path_indep_two` moved from `[propext, Quot.sound]` to `[propext,
+Classical.choice, Quot.sound]` — still inside the declared envelope, so no claim
+status moves, but "the axioms are identical" would have been false.
+
+Worth recording for a second reason: the forged Collatz proof also passed
+**nanoda**, an independent external checker, via a *second unrelated* bug whose
+own fix had landed a week earlier. That is not one failure of independent
+verification but two distinct bugs in two implementations, the artifact built so
+the expression Lean's kernel never inspects was one old nanoda accepted.
+Independent checking held in the way that matters — forgery required distinct
+roots of failure — which is this repository's own thesis applied to its own
+toolchain. It is also the limit U1 reserves: the theorems bound the count
+relative to the dependence graph *given*, and no honest lineage graph joins two
+separately written checkers.
