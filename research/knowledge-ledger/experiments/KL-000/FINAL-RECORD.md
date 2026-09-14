@@ -228,3 +228,40 @@ report — including the finding that the paper's own R3 promises
 `flip_budget` "surfaced with every verdict" and KL-000's receipt has never
 carried it (SCH-005, now traced to its paper root).
 
+---
+
+## Promotion to verified-independent, 2026-09-14
+
+Promoted by owner decision at RUN-20260807-10. The program had carried
+`adversarial-passed` since RUN-20260807-5, with promotion listed as an open owner
+decision rather than an unmet evidential requirement.
+
+**What the promotion asserts.** Two independent implementations in different
+languages, with no shared code, agree on the evaluator, on the complete
+conclusion function across the exhaustive distribution
+160/49,480/41,820/19,380, and on the canonical form and digests of the two
+pinned receipts C11 and C12.
+
+**What it does not assert, and what travels with every citation of it.**
+
+1. Byte-identical canonical form is established for **C11 and C12 only** — two
+   receipts, not the 110,840 receipt-producing worlds.
+2. **LEAK-101 is not discharged.** The implementer saw expected counts in the
+   v1.1.0 package. The digest result is unaffected and the qualification stands.
+   Discharging it requires a fourth implementation on a reference-free machine.
+3. The promotion is scoped to **protocol v1.2.0**. The independent
+   implementation has not run against v1.3.0. This is defensible rather than
+   evasive: I12 is a checker-side change, the evaluator and all pinned bytes are
+   identical across the two versions, so the conformance evidence is undisturbed
+   — but the independent checker does not carry I12, and this promotion does not
+   claim otherwise.
+
+**A2 is unaffected and remains open.** Whether a presence conclusion requires
+complete search coverage is still an owner decision the program did not reach.
+It governs 19,152 worlds, 17.3% of the kernel, and is the largest undecided
+surface in it. Promoting independence does not decide it, and a third
+implementation reading it the other way would diverge on all 19,152 while
+passing every invariant.
+
+This is a decision, not a derivation, recorded as such in the same manner as A1,
+R1 and R5.2.
