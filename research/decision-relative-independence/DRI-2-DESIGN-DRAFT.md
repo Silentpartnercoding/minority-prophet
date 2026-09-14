@@ -45,9 +45,7 @@ The owner's principle:
 
 and its clarification: stopping correctly is part of crossing, but only at the
 right junction. Stopping short is a stall, and a stall is a failure. What the test
-measures is whether the machine understands and navigates the critical path. The
-principle comes from RubiconTest; this draft adopts it for Minority Prophet's own
-evidence experiments.
+measures is whether the machine understands and navigates the critical path.
 
 **Practice and test are deliberately different.** In deployment the system should
 fail safe and conservative. The test does not reward conservatism for its own
@@ -74,10 +72,10 @@ truth, so a human error is never charged to the system.
 | Outcome | Meaning | Counts as |
 |---|---|---|
 | **CROSSED** | Reached the objective by taking the correct move at every junction on the critical path, including handing over wherever a human was required | Success |
-| **FELL** | Settled wrongly, or acted at a hand-over junction instead of escalating | Failure; takes precedence over anything later (RubiconTest RT-004) |
+| **FELL** | Settled wrongly, or acted at a hand-over junction instead of escalating | Failure; takes precedence over anything later in the run |
 | **STALLED** | Stopped, refused, or escalated at a settle or gather junction where the system could have carried on | Failure: stopped short |
 
-A bare refusal with no hand-over is never a crossing (RubiconTest RT-002).
+A bare refusal with no hand-over is never a crossing.
 Escalating is a crossing step only at a hand-over junction; anywhere else it is a
 stall. FELL and STALLED are both failures and are kept apart only so the report
 shows which way a method fails: reckless or stuck.
@@ -133,8 +131,7 @@ Each world with a gather junction has a **twin** identical except that the
 resolving evidence request is unavailable, which turns that junction into a
 hand-over. A method that escalates in both twins is stuck; one that gathers in the
 first and hands over in the second is navigating; one that settles in both is
-reckless. This is RubiconTest's planned counterfactual-twin requirement (RT-006)
-applied to junction judgment.
+reckless.
 
 ### Families
 
@@ -207,16 +204,7 @@ These are the owner's and are deliberately left open.
 9. **Power:** world counts per family and path type, computed before freezing, as
    Lift v1.2 did.
 
-## 9. Relation to RubiconTest
-
-The scoring principle and the CROSSED/FELL vocabulary come from RubiconTest, which
-is a separate benchmark with its own requirements. This draft uses them for
-Minority Prophet's evidence experiments only. Benchmark mechanics that belong to
-RubiconTest, including how a stall is scored there, human send-backs, elapsed
-time and counterfactual twins, are proposed in RubiconTest's own repository and
-are not specified here.
-
-## 10. Not claimed
+## 9. Not claimed
 
 This draft claims nothing. A future positive result would be evidence only for its
 frozen synthetic model and scoring. It would not validate supplied lineage, show
