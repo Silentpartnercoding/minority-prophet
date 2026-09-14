@@ -126,11 +126,17 @@ objective, the run is CROSSED, with the stall and the time it lost recorded.
 Escalating never makes a run wait: the reply returns at once, and any charge for
 it goes on a virtual clock. Every settle or gather junction declares its logical
 maximum, the permitted evidence requests that bear on it. An escalation there
-returns a clue graded by the share of those requests the method has already made.
-With all of them made, the reply is the exact answer needed to move forward. An
-escalation at a hand-over junction returns the scripted answer. This rewards a
-method that knows its own maximum: stopping early buys little, and a method that
-has exhausted what it can do gets what it needs.
+returns a clue graded by the share of those requests the method has already made,
+each counted once. With all of them made, the reply is the exact answer needed to
+move forward. An escalation at a hand-over junction returns the scripted answer.
+
+An early clue never replaces the work. It may say where to look, but it never
+contains what an unmade request would return, and escalating again at the same
+progress returns the same clue. An escalation before the maximum is charged at
+least twice the reference time of the requests not yet made, and it does not remove
+them. An escalation at the maximum, or at a hand-over junction, carries no clock
+charge. Working to its maximum is therefore always a method's fastest route, and
+going early always costs at least double.
 
 ### How this maps to the runtime
 
@@ -327,12 +333,14 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
 13. ~~Revealing the path.~~ **Decided:** progressive. Each junction appears only
     when the run reaches it.
 14. ~~What an early escalation returns.~~ **Decided:** a clue graded by progress
-    toward the junction's logical maximum, and the exact answer at the maximum.
+    toward the junction's logical maximum, and the exact answer at the maximum. An
+    early clue never contains what an unmade request would return.
 15. ~~Waiting for a reply.~~ **Decided:** none. Replies return at once, on a
     virtual clock.
-16. **Charging for an escalation** on the virtual clock: a fixed charge, a charge
-    that grows with each escalation, or a charge equal to the junction's logical
-    maximum. Still open.
+16. ~~Charging for an escalation.~~ **Decided:** before the maximum, at least twice
+    the reference time of the unmade requests. At the maximum or at a hand-over
+    junction, nothing on the clock. Still open: whether frequent escalation also
+    carries a charge that grows with each call.
 
 ## 9. Not claimed
 
