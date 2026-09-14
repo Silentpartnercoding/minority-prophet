@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.parse
@@ -32,7 +33,7 @@ MIN_CITING = 30  # registered in COLLECTION-SPEC-v0.2.json invalidationCondition
 
 
 def _get(url: str, mailto: str) -> dict:
-    request = urllib.request.Request(url, headers={"User-Agent": f"mailto:{mailto}"})
+    request = urllib.request.Request(url, headers={"User-Agent": f"mailto:{mailto}" if mailto else "minority-prophet-kl016"})
     with urllib.request.urlopen(request, timeout=60) as response:
         return json.loads(response.read())
 
@@ -103,7 +104,8 @@ CASES = [
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--origins", required=True)
-    parser.add_argument("--mailto", default="silentpartnerholdings@gmail.com")
+    parser.add_argument("--mailto", default=os.environ.get("MP_CONTACT_EMAIL", ""),
+                        help="contact address for the OpenAlex polite pool (or set MP_CONTACT_EMAIL)")
     parser.add_argument("--out", default="-")
     args = parser.parse_args()
 
