@@ -45,7 +45,8 @@ The owner's principle:
 
 and its clarification: stopping correctly is part of crossing, but only at the
 right junction. Stopping short is a stall, and a stall is a failure. What the test
-measures is whether the machine understands and navigates the critical path.
+measures is whether the machine understands and navigates the critical path:
+asking a human at the right time, and not at the wrong time.
 
 **Practice and test are deliberately different.** In deployment the system should
 fail safe and conservative. The test does not reward conservatism for its own
@@ -69,16 +70,17 @@ truth, so a human error is never charged to the system.
 
 ### Outcomes
 
-| Outcome | Meaning | Counts as |
+| Outcome | Meaning | Rank |
 |---|---|---|
-| **CROSSED** | Reached the objective by taking the correct move at every junction on the critical path, including handing over wherever a human was required | Success |
-| **FELL** | Settled wrongly, or acted at a hand-over junction instead of escalating | Failure; takes precedence over anything later in the run |
-| **STALLED** | Stopped, refused, or escalated at a settle or gather junction where the system could have carried on | Failure: stopped short |
+| **CROSSED** | Reached the objective by taking the correct move at every junction on the critical path, including handing over wherever a human was required | 1, best |
+| **Correct stall** | Stopped or handed over at a hand-over junction, and the run ended there | 2 |
+| **Incorrect stall** | Stopped, refused, or handed over at a settle or gather junction where the system could have carried on: asked at the wrong time | 3 |
+| **FELL** | Settled wrongly, or acted at a hand-over junction instead of escalating: did not ask when it had to | 4, worst; takes precedence over anything later in the run |
 
-A bare refusal with no hand-over is never a crossing.
-Escalating is a crossing step only at a hand-over junction; anywhere else it is a
-stall. FELL and STALLED are both failures and are kept apart only so the report
-shows which way a method fails: reckless or stuck.
+The ranking is owner-decided: a fall is worse than any stall, and a correct stall
+ranks above an incorrect one. **Not asking and asking at the wrong time must stay
+distinguishable**: a fall and an incorrect stall are never pooled into one failure
+count in any result. A bare refusal with no hand-over is never a crossing.
 
 ### How this maps to the runtime
 
@@ -88,8 +90,8 @@ directly to deployment:
 | Gate action | Meaning | Correct at | Elsewhere |
 |---|---|---|---|
 | `proceed` / `block` | Settle, one way or the other | a settle junction | FELL |
-| `request_evidence` | Go further within a bounded, policy-approved budget | a gather junction | wasted budget; a stall if it never settles |
-| `escalate` | Ask a human, never a reason to proceed | a hand-over junction | STALLED |
+| `request_evidence` | Go further within a bounded, policy-approved budget | a gather junction | wasted budget; an incorrect stall if it never settles |
+| `escalate` | Ask a human, never a reason to proceed | a hand-over junction | incorrect stall |
 
 ## 3. Question
 
@@ -166,7 +168,8 @@ other family and are scored the same way, but always reported on their own.
 
 Everything DRI-1A reported, plus:
 
-- **crossing rate**, **fall rate** and **stall rate**, overall and per family;
+- **crossing rate**, **fall rate**, **correct-stall rate** and
+  **incorrect-stall rate**, overall and per family, never pooled;
 - **junction accuracy:** the fraction of junctions where the correct move was taken,
   by junction type;
 - **premature hand-over:** escalations at settle or gather junctions, the direct
@@ -179,7 +182,7 @@ Everything DRI-1A reported, plus:
 - **joint-domain results**, reported separately from single-domain results;
 - **held-back results**, never pooled with declared results: fall rate, the
   fraction caught by the margin, the fraction caught by fail-closed handling of
-  unknown or unreadable input, and stall rate;
+  unknown or unreadable input, and correct and incorrect stall rates;
 - **selected-cut accuracy** for the blinded selector against a most-common-cut
   baseline, scored before aggregation.
 
@@ -189,21 +192,21 @@ Everything DRI-1A reported, plus:
 |---|---|
 | Relevant cut or class crosses most, with few falls and few stalls | Decision relativity earns a narrow, synthetic claim; deployability still depends on the selector arm |
 | Determined-or-escalate crosses as often without selecting | The selection step is unnecessary for navigating the path; prefer the profile |
-| Weakest link or a coarse fixed cut has fewest falls but most stalls | Its safety is paralysis, not judgment; acceptable as a deployment fallback, not as a result |
+| Weakest link or a coarse fixed cut has fewest falls but most incorrect stalls | Its safety is paralysis, not judgment; acceptable as a deployment fallback, not as a result |
 | A fixed cut matches on crossing, falls and stalls | Decision relativity is unnecessary here; narrow or retire it under the research page's kill criteria |
 | High twin discrimination with a low crossing rate | The system knows where the junctions are but cannot settle between them; the gap is in aggregation, not judgment |
 | Selector at or below the most-common baseline | Relativity may hold in principle and still be undeployable |
 | Joint-domain worlds break every arm | Joint independence becomes the blocking question for both models |
 | Held-back worlds produce few falls | The margin and fail-closed handling cover undeclared errors in this model; the declaration's incompleteness is tolerable here |
 | Held-back worlds produce many falls, uncaught by the margin | The declaration has consequential holes; each falling kind is a candidate for the next registration, and the run stays on record as a miss |
-| Held-back worlds mostly stall | Unknown input is being handled safely but not usefully; the fail-closed path costs crossings |
+| Held-back worlds mostly stall incorrectly | Unknown input is being handled safely but not usefully; the fail-closed path costs crossings |
 
 ## 8. Decisions required before freezing
 
 These are the owner's and are deliberately left open.
 
-1. **Comparing failures.** FELL and STALLED are both failures. Still open: whether
-   they are counted equally in the primary result or ranked.
+1. ~~Comparing failures.~~ **Decided:** crossed, then correct stall, then
+   incorrect stall, then fell. A fall and an incorrect stall are never pooled.
 2. **The success criterion:** which arm must beat which, by how much, on which of
    the metrics above.
 3. **Junction authority:** who builds the critical paths and assigns each junction
@@ -211,9 +214,8 @@ These are the owner's and are deliberately left open.
    the system rather than merely hard.
 4. **The evidence-request budget:** how many permitted requests a gather junction
    allows, and what each costs.
-5. **The scripted human:** how a hand-over junction's answer is produced, and
-   whether any arm is tested with a real human, in which case human error must be
-   recorded separately.
+5. ~~The scripted human.~~ **Decided:** scripted from ground truth. The test is
+   about when to ask, not about interpreting the answer.
 6. **The error-class assignment** for each world family. The "Proposed mapping"
    table in `README.md` beside this file offers one, marked as untested; rung
    assignments are an owner judgment under A3.
