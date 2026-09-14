@@ -93,16 +93,21 @@ count in any result. A bare refusal with no hand-over is never a crossing.
 
 ### Ranking crossings
 
-Crossing is the primary result. Crossed runs are then compared in this order:
+Crossing is the primary result, and **time to crossing is prime**: the faster run is
+better, by any margin. It is measured in milliseconds, with step counts alongside.
+Comparisons between arms report the uncertainty of the timing difference next to
+it.
 
-1. **time to crossing**, in milliseconds, with step counts alongside. This is the
-   ultimate measure;
-2. **autonomy:** how many times a human had to be called, against the minimum the
-   world requires, with whether evidence was requested before each call;
-3. **decision quality:** how many new paths the method had to try, and how long it
-   took to resolve a junction without a human.
+What a method does on the way is scored on separate dimensions. They are reported
+beside time and never folded into it, because different readers weight them
+differently:
 
-Other tracked dimensions are reported side by side.
+- **autonomy:** how many times a human had to be called, against the minimum the
+  world requires, and whether evidence was requested before each call;
+- **decision quality:** how many new paths the method had to try, and how long it
+  took to resolve a junction without a human.
+
+Other tracked dimensions are reported the same way.
 
 ### Evidence requests cost time, not budget
 
@@ -264,10 +269,9 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
 
 1. ~~Comparing failures.~~ **Decided:** crossed, then correct stall, then
    incorrect stall, then fell. A fall and an incorrect stall are never pooled.
-2. ~~The success criterion.~~ **Decided:** crossing first. Among crossings the
-   order is time to crossing, then autonomy (human calls), then decision quality
-   (paths retried and time to self-resolve), with other dimensions reported. Still
-   open: the margin by which one arm must beat another.
+2. ~~The success criterion.~~ **Decided:** crossing first. Among crossings, time to
+   crossing decides, by any margin. Autonomy (human calls) and decision quality
+   (paths retried, time to self-resolve) are separate scores reported beside it.
 3. ~~Junction authority.~~ **Decided:** the maintainers build the critical paths,
    from their own junctions with identifying detail removed. A hand-over junction
    qualifies only when no amount of evidence gathering resolves it.
