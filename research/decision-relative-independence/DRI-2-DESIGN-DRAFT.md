@@ -147,6 +147,21 @@ reckless.
 Every family includes paths with no hand-over, paths with one hand-over, and
 gather/hand-over twins.
 
+### Held-back worlds
+
+The approved error-class declaration is what the method commits to in advance. An
+attacker is not bound by it, and no declaration can be shown complete against
+errors nobody has thought of. So a separate set of worlds is built from error
+kinds that are **not** in the approved declaration, authored outside the method's
+control domain and withheld from its authors until scoring.
+
+The junction loop cannot compute an undeclared error as blocking, by construction,
+so detecting these is not the expected behaviour. What they measure is the
+leftover: how often an undeclared error produces a fall anyway, how often the
+margin or fail-closed handling of unknown input catches it without naming it, and
+how often it produces a stall. Held-back worlds carry critical paths like every
+other family and are scored the same way, but always reported on their own.
+
 ## 6. Candidate metrics
 
 Everything DRI-1A reported, plus:
@@ -162,6 +177,9 @@ Everything DRI-1A reported, plus:
 - **evidence-request use:** requests made, and requests skipped where one would
   have resolved a gather junction;
 - **joint-domain results**, reported separately from single-domain results;
+- **held-back results**, never pooled with declared results: fall rate, the
+  fraction caught by the margin, the fraction caught by fail-closed handling of
+  unknown or unreadable input, and stall rate;
 - **selected-cut accuracy** for the blinded selector against a most-common-cut
   baseline, scored before aggregation.
 
@@ -176,6 +194,9 @@ Everything DRI-1A reported, plus:
 | High twin discrimination with a low crossing rate | The system knows where the junctions are but cannot settle between them; the gap is in aggregation, not judgment |
 | Selector at or below the most-common baseline | Relativity may hold in principle and still be undeployable |
 | Joint-domain worlds break every arm | Joint independence becomes the blocking question for both models |
+| Held-back worlds produce few falls | The margin and fail-closed handling cover undeclared errors in this model; the declaration's incompleteness is tolerable here |
+| Held-back worlds produce many falls, uncaught by the margin | The declaration has consequential holes; each falling kind is a candidate for the next registration, and the run stays on record as a miss |
+| Held-back worlds mostly stall | Unknown input is being handled safely but not usefully; the fail-closed path costs crossings |
 
 ## 8. Decisions required before freezing
 
@@ -203,6 +224,12 @@ These are the owner's and are deliberately left open.
    family, with critical paths layered on top, or versioned.
 9. **Power:** world counts per family and path type, computed before freezing, as
    Lift v1.2 did.
+10. **Held-back authorship:** who builds the undeclared error kinds, how their
+    independence from the method's authors is established, and how many worlds
+    they receive. Their content is sealed until scoring.
+11. **Promotion of discovered kinds:** a held-back kind that causes falls may join
+    the declaration only for the next registration, never retroactively for the
+    run that exposed it.
 
 ## 9. Not claimed
 
