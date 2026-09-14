@@ -1,0 +1,20 @@
+{
+  "artifacts": [
+    "research/decision-relative-independence/DRI-2-DESIGN-DRAFT.md"
+  ],
+  "authorityEffect": "none",
+  "id": "EX-DRI-2-DESIGN",
+  "independenceClaims": [],
+  "manifest": null,
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": null,
+  "result": null,
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "exploratory",
+  "verdict": null
+}
