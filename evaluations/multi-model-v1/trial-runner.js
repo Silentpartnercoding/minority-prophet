@@ -3,13 +3,13 @@ import { parseModelResponse } from './parser.js';
 import { scoreTrial } from './scoring.js';
 import { recordId, trialKey } from './run-ids.js';
 
-export async function runTrial({ store, runId, adapter, world, condition, settings, executionOrder = null }) {
+export async function runTrial({ store, runId, adapter, world, condition, settings, executionOrder = null, promptBuilder = buildPrompt }) {
   const key = trialKey({ runId, benchmark_version: world.benchmark_version, world_id: world.world_id, seed: world.seed, provider: adapter.provider, model: adapter.model, model_version: adapter.version, condition, settings });
   const completed = store.find('trials', (trial) => trial.trial_key === key && trial.status === 'COMPLETED');
   if (completed) return completed;
   const attempt = store.filter('trials', (trial) => trial.trial_key === key).length + 1;
   const id = recordId('trial', { key, attempt });
-  const prompt = buildPrompt(world, condition);
+  const prompt = promptBuilder(world, condition);
   const started = Date.now();
   try {
     const result = await adapter.runModel({ condition, systemPrompt: prompt.systemPrompt, messages: prompt.messages, tools: prompt.tools, temperature: settings.temperature, topP: settings.top_p, seed: world.seed, maxTokens: settings.max_tokens });
