@@ -58,7 +58,10 @@ controller for an operator-consensus question.
 
 The shortest honest status is: narrow invariants are proved; large synthetic and
 bibliographic measurements exist; real-world provenance recovery and general
-truth discovery are **not** established. See [Evidence status](docs/evidence/STATUS.md)
+truth discovery are **not** established. Weighting sources by competence did not
+survive a preregistered adversary and is closed rather than solved, and choosing
+the decision-relevant independence cut did not beat every fixed cut in its
+preregistered test. See [Evidence status](docs/evidence/STATUS.md)
 and [Public claims](PUBLIC-CLAIMS.md) before quoting results.
 
 ## Try it

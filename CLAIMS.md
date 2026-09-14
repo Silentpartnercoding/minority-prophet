@@ -103,8 +103,13 @@ odd margin, or show the half-ratio is wrong.
 
 ### A6. Preregistrations are byte-identical to their pinned commits
 
-Six bindings verified: each pinned commit exists, is an ancestor of the published
-branch, and the preregistration blob at HEAD matches the blob at the pin.
+Twelve bindings verified as of 2026-09-14 (six when this claim was first
+written): each pinned commit exists, is an ancestor of the published branch, and
+the preregistration blob at HEAD matches the blob at the pin.
+
+Three preregistrations rescued onto main from a stale branch (KL-017 to KL-019)
+pin commits that are **not** ancestors of main. They are not in the checked
+bindings, so this claim does not cover them.
 
 **Evidence.** `scripts/check_registration_chain.py`, run in CI on every commit.
 It deliberately does **not** use "last-touching commit equals the pin", which is
@@ -148,6 +153,34 @@ comparison silently stops being a comparison.
 
 Established earlier and unretracted: it is reachable only via L1-POS, so it is a
 corollary rather than independent evidence.
+
+### B4. Decision-relative cut selection did not beat every fixed cut
+
+DRI-1A froze a joint criterion: the oracle cut policy must reduce false
+settlement by at least 0.15 against every fixed-cut baseline. It did not. The
+reduction was 0.130737304 against the fixed controller cut and 0.130615234
+against fixed evidence origin, and the fixed upstream-component cut settled
+falsely *less* often than the oracle (-0.057495118) by abstaining far more. The
+rules engine matched the oracle only because the failure domain was supplied.
+`results/dri1a-v1/`. Recorded as an adverse, non-canonical result.
+
+**Breaks if.** A rerun under the same frozen criterion passes, which would make
+this entry stale rather than wrong.
+
+### B5. Capping weights does not restore the breakdown point
+
+In the preregistered adversarial-weighting experiment, H2 predicted that capping
+every source at `2/n` would restore the breakdown point. It did not move it:
+capped weighting broke at 0.20, exactly where uncapped weighting broke.
+`research/adversarial-weighting/RESULTS.md`.
+
+### B6. A registered endpoint passed and was refuted by its own control
+
+KL-018's registered test passed decisively (35 positive, 0 negative). Its
+before-and-after control then showed no effect (median +0, p = 0.087): the test
+had compared burst periods with ordinary ones. Freezing a protocol does not
+freeze the right control.
+`research/knowledge-ledger/experiments/KL-018/FINDING-KL018.md`.
 
 ---
 

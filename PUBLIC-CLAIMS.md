@@ -7,10 +7,14 @@
 2. **Safe rewiring is harmless.** Reassigning same-side parent links does not
    change a verdict when the root set is preserved.
 3. **Margin is the safety budget.** A decision survives only while root-set
-   change remains below its honest root margin, with assertions fixed.
+   change remains below its honest root margin, with assertions fixed. This
+   holds for the symmetric true-or-false question only. Universal and
+   existential claims are answered by a separate asymmetric rule, where the
+   margin is not a measure of decision sensitivity.
 
 These statements are proved under their stated assumptions. They do not prove
-that a deployment identified its roots correctly.
+that a deployment identified its roots correctly. `flip_budget` counts root-set
+units; it is not an operational security budget.
 
 ## Required guarantees
 
@@ -46,14 +50,50 @@ that a deployment identified its roots correctly.
   recall from 1.0 to 0.4329 while precision remained 1.0. This is recorded
   platform lineage, not causal evidence independence or truth.
 
+The results below are **not canonical records**. They are listed so that
+adverse and null outcomes stay visible alongside the positive ones; none of
+them may be cited as validation.
+
+- **Weighting does not survive an adversary** (preregistered, synthetic). Uniform
+  root counting first fell below a coin flip at an adversary fraction of 0.40;
+  weighting by declared competence broke at 0.20, and at 0.25 under a sleeper
+  attack. Capping each source's weight did not move the breakdown point.
+  Trimming extremes held to 0.45. This does not establish that any scheme is
+  safe.
+- **Decision-relative cut selection was not supported** (preregistered,
+  synthetic, not canonical). Using the declared failure domain's cut reduced
+  false settlement by 0.1307 against two fixed cuts, short of the frozen 0.15
+  margin, and a fixed upstream-component cut settled falsely less often than
+  the oracle by abstaining far more often.
+- **Real citation literature is mostly derived** (descriptive, real data). For
+  four mathematical conjectures, 57% to 87% of the literature citing each one
+  before its resolution descended from other literature citing the same
+  conjecture; unrelated literature from the same eras was 0%. No predictive,
+  belief, or independence claim is permitted from this.
+- **Model lift is a development result only.** On 32 synthetic development
+  worlds, adding the Minority Prophet receipt to provenance improved two models
+  by 28.1 and 21.9 points. The worlds were designed alongside the analysis; a
+  hidden, independently audited benchmark is required before any public
+  empirical claim.
+- **A registered endpoint can pass and still be wrong.** A preregistered
+  copy-trading test met its endpoint (35 positive, 0 negative) and was then
+  refuted by its own before-and-after control (p = 0.087).
+
 ## Open boundaries
 
-- Root identity is operationally assigned, not semantically proved.
-- Partial dependence between roots is not represented.
+- Root identity is proved relative to a supplied dependence graph: the count is
+  a maximum independent set over that graph. Whether the graph reflects real
+  lineage is not proved.
+- Dependence is represented only as declared relations between roots; it is not
+  inferred.
 - Separate supported controllers do not prove causally independent evidence:
   matched separate controllers carrying one adverse claim remained separate.
 - Expiry, revocation, and key compromise sit outside the counting theorems.
 - Synthetic and replay evidence does not establish real-world truth recovery.
+- Weighted aggregation is closed by decision, not solved: no theorem covers any
+  weighted aggregator.
+- Whether a model or person can choose the correct independence cut in
+  deployment is not established.
 - The lineage series does not establish resistance to forged provenance: the
   final PHEME safety diagnostic had only one multi-root case and was underpowered.
 - Released-implementation comparisons, matched-coverage analysis, and primary-
