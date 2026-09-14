@@ -145,8 +145,8 @@ bad judgment:
 
 - **Junction judgment:** at each junction, does the method take the correct move:
   settle, gather, or hand over?
-- **Choosing the cut:** can a blinded selector, human or model, identify the
-  relevant cut from the decision context?
+- **Reading the world:** can a method act on the relevant cut or error class when
+  nobody tells it the world's family or failure domain?
 
 ## 4. Candidate arms
 
@@ -158,9 +158,15 @@ bad judgment:
    every declared error class, otherwise escalate. This mirrors the discipline in
    `aggregation/independence_axes.py::effective_witness_bounds`.
 5. **Oracle relevant cut:** the preregistered cut for the world family, as in DRI-1A.
-6. **Declared-policy rules engine:** the frozen family-to-cut table.
-7. **Blinded selector:** humans and/or models choose the cut from externally
-   authored case descriptions without outcome labels. This is DRI-1B's scope.
+   **Reference only.** It is told the family, so it is an upper bound, not a
+   contestant.
+6. **Declared-policy rules engine:** the frozen family-to-cut table. **Reference
+   only**, for the same reason.
+
+There is no selector arm. No contestant arm is told the world's family, its
+failure domain or which error kinds it contains, and no step guesses them on the
+method's behalf. Like reality, a world does not announce what it is. A method has
+to work that out from what the world reveals as the run proceeds.
 
 Every arm may settle, request evidence, or escalate at every junction.
 
@@ -175,6 +181,12 @@ first and hands over in the second is navigating; one that settles in both is
 reckless.
 
 ### Where junctions and errors come from
+
+- **Worlds are stated as raw, general questions** that test a capability any
+  method can understand. They carry no project detail, domain jargon or insider
+  context.
+- **Every world can be crossed.** Before a world is used, a reference run shows at
+  least one legitimate path through it.
 
 - **Critical paths come from the maintainers' own junctions.** They are built from
   junctions the maintainers have faced, with identifying detail removed.
@@ -245,19 +257,20 @@ Everything DRI-1A reported, plus:
 - **held-back results**, never pooled with declared results: fall rate, the
   fraction caught by the margin, the fraction caught by fail-closed handling of
   unknown or unreadable input, and correct and incorrect stall rates;
-- **selected-cut accuracy** for the blinded selector against a most-common-cut
-  baseline, scored before aggregation.
+- **inferred-cut accuracy:** how often the cut or class a method acted on was the
+  relevant one, when it was never told the family, against a most-common-cut
+  baseline.
 
 ## 7. What each outcome would mean
 
 | Outcome | Consequence |
 |---|---|
-| Relevant cut or class crosses most, with few falls and few stalls | Decision relativity earns a narrow, synthetic claim; deployability still depends on the selector arm |
+| Relevant cut or class crosses most, with few falls and few stalls | Decision relativity earns a narrow, synthetic claim; deployability rests on the arms that were not told the family |
 | Determined-or-escalate crosses as often without selecting | The selection step is unnecessary for navigating the path; prefer the profile |
 | Weakest link or a coarse fixed cut has fewest falls but most incorrect stalls | Its safety is paralysis, not judgment; acceptable as a deployment fallback, not as a result |
 | A fixed cut matches on crossing, falls and stalls | Decision relativity is unnecessary here; narrow or retire it under the research page's kill criteria |
 | High twin discrimination with a low crossing rate | The system knows where the junctions are but cannot settle between them; the gap is in aggregation, not judgment |
-| Selector at or below the most-common baseline | Relativity may hold in principle and still be undeployable |
+| Inferred-cut accuracy at or below the most-common baseline | Relativity may hold in principle and still be undeployable |
 | Joint-domain worlds break every arm | Joint independence becomes the blocking question for both models |
 | Held-back worlds produce few falls | The margin and fail-closed handling cover undeclared errors in this model; the declaration's incompleteness is tolerable here |
 | Held-back worlds produce many falls, uncaught by the margin | The declaration has consequential holes; each falling kind is a candidate for the next registration, and the run stays on record as a miss |
@@ -279,13 +292,15 @@ These are the owner's. The items marked decided were settled on 2026-09-14.
    time, measured as delay to the objective rather than as compute.
 5. ~~The scripted human.~~ **Decided:** scripted from ground truth. The test is
    about when to ask, not about interpreting the answer.
-6. **The error-class assignment** for each world family. **Decided in part:**
-   errors come from the approved declaration and recorded cases, generalized and
-   extrapolated. Still open: the per-family mapping. The "Proposed mapping" table
-   in `README.md` beside this file offers one, marked as untested.
-7. **The selector arm:** humans, models, or both, how many, and who authors the
-   cases. External authorship is the only way to avoid the same-control-domain
-   limit.
+6. ~~The error-class assignment.~~ **Decided:** errors come from the approved
+   declaration and recorded cases, generalized and extrapolated, and are stated as
+   raw, general capability questions. Which kinds go into each world is an
+   authoring choice for the maintainers and is never disclosed to a method. The
+   "Proposed mapping" table in `README.md` beside this file is one starting point,
+   marked as untested.
+7. ~~The selector arm.~~ **Decided:** there is none. No arm is told or given a
+   guess of the world's family; the oracle and the rules engine are reference
+   bounds only. Every world is crossable.
 8. ~~Reusing DRI-1A's generator.~~ **Decided:** not reused. DRI-1A was a pilot,
    and DRI-2 uses a new, full world model.
 9. **Power:** world counts per family and path type, computed before freezing, as
