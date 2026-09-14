@@ -388,7 +388,14 @@ Shantaram, recorded above, and the Lindsay Clancy entry names the link in those 
 It stayed missing because the thread carries a title from a typo made in its first
 message. Still open: an "Aletheon" naming discussion of 12 July lists Cloak, Cipher,
 Vault, Shadow, Ghost, Phantom, Eclipse, Obscura and Whisper, which is plainly adjacent to
-the Ghost and Phantom work but has not been read.
+the Ghost and Phantom work. Partly resolved: Aletheon is a candidate *name*, not a
+concept, derived from the Greek *aletheia*, truth in the sense of unconcealment. It was
+proposed on 12 July and still live on 21 July, where it appears in a thread about an AI
+trust intermediary marked "already discussed before", and at least one exchange considers
+turning it into a verb. What remains unread is the reasoning: which of the nine names was
+preferred and why, and whether the shortlist encodes a distinction the architecture later
+adopted. The thread's visible portion is about the escrow product's report structure and
+revenue model, so the naming discussion sits at its head, unreached.
 
 And one open question rather than a gap, because the material exists and only its identity
 is unsettled. A test for whether knowing changes reality is remembered as sitting between
