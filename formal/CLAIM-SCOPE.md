@@ -68,6 +68,21 @@ finite, acyclic, side-consistent worlds.
    (`T5_needs_assert_fixed`), and without side-consistency one root serves both
    sides (`CE06_…`).
 
+9. **The margin responds to material change, not only invariance** (ledger
+   RS1–RS3). With assertions fixed, the change in margin *equals* the signed
+   count of the roots that appeared and disappeared (`margin_diff_eq_signedCount`),
+   so a material root change must move the margin (`margin_must_move`) and `k`
+   fresh one-sided roots move it by exactly `k` (`margin_shifts_by_added_roots`).
+   This excludes an always-abstaining aggregator, which every invariance result
+   above permits. The margin moving does not imply the verdict changes.
+
+Also compiled, **outside the aggregator core** (ledger NG1–NG5): an abstract
+authority-and-gate model in `NarrowGate.lean`. Authority does not expand along
+a chain; strict contraction exhausts it; a gate preserves viability without any
+invariance hypothesis; controlled invariance is what keeps the gate non-empty;
+and a three-state witness satisfies safety while paralysed. It is not a model of
+Gate or Border, and `canon/narrow_gate.py` is retracted as a proposal.
+
 ---
 
 ## What the core DOES NOT establish
