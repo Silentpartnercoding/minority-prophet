@@ -46,6 +46,15 @@ contain the 15 August conversation recorded below. The lesson had been written d
 correctly, by the person who then failed to apply it. Reading about a failure mode does
 not inoculate you against it; only checking does.
 
+An eighth belongs on its own and is the only one that is not the archive's fault.
+Aletheon's shortlist — Cloak, Cipher, Vault, Shadow, Ghost, Phantom, Eclipse, Obscura,
+Whisper — was read as conceptually adjacent to the Ghost and Phantom experiments, by two
+sessions independently, because the words overlap. They overlap because they are one
+person's naming vocabulary, drawn on twice for unrelated purposes. The archive showed us
+something real and accurate; the relationship was ours, inferred from shared vocabulary
+and not present in the material. Every other failure here is something hidden. This one is
+something invented.
+
 The part worth keeping is not the tally. It is that not one of the seven was caught by
 whoever made it. Each was found by the other session looking from outside, with a
 different archive, a different checkout and no stake in the earlier answer. A file
@@ -278,7 +287,8 @@ analyses evidence, and something else decides.
 asked as "find the equivalence relation on sources", and every attempt collapsed, because
 shared ancestry is transitive and eventually swallows the corpus. Lawyers hit the same
 wall and did not solve it by tracing harder; they declared a cut, with an intervening
-independent act as its mechanism. Two witnesses who share a grandparent are still two
+independent act as its mechanism — `novus actus interveniens`, which is the term the
+canon uses and which this entry should use too. Two witnesses who share a grandparent are still two
 witnesses if each went and looked through a channel that does not run through the
 grandparent. That is `canon/U1-PROXIMATE-ROOTS.md` and `RootIdentity.lean`.
 
@@ -382,20 +392,17 @@ the ledger now sits. The repository is a private slice of a forty-nine section b
 disclaims its own maturity — five of its twelve requirements are marked planned, and it
 states that Level 1 has not been calibrated.
 
-**One gap remains, and one has closed.** The Lin gap is closed: the conversation that
-refers to "the distinction we discovered with Lin" as already known was referring to
-Shantaram, recorded above, and the Lindsay Clancy entry names the link in those words.
-It stayed missing because the thread carries a title from a typo made in its first
-message. Still open: an "Aletheon" naming discussion of 12 July lists Cloak, Cipher,
-Vault, Shadow, Ghost, Phantom, Eclipse, Obscura and Whisper, which is plainly adjacent to
-the Ghost and Phantom work. Partly resolved: Aletheon is a candidate *name*, not a
-concept, derived from the Greek *aletheia*, truth in the sense of unconcealment. It was
-proposed on 12 July and still live on 21 July, where it appears in a thread about an AI
-trust intermediary marked "already discussed before", and at least one exchange considers
-turning it into a verb. What remains unread is the reasoning: which of the nine names was
-preferred and why, and whether the shortlist encodes a distinction the architecture later
-adopted. The thread's visible portion is about the escrow product's report structure and
-revenue model, so the naming discussion sits at its head, unreached.
+**The gaps are closed, and one open question remains.** The Lin gap closed: the
+conversation that refers to "the distinction we discovered with Lin" as already known was
+referring to Shantaram, recorded above, and the Lindsay Clancy entry names the link in
+those words. It stayed missing because the thread carries a title from a typo made in its
+first message. The Aletheon gap closed differently and more usefully — it was never an
+origin at all. Aletheon, from the Greek *aletheia*, truth as unconcealment, was a
+candidate name for the software escrow product, and Cloak, Cipher, Vault, Shadow, Ghost,
+Phantom, Eclipse, Obscura and Whisper were its rivals on that shortlist. The adjacency to
+the Ghost and Phantom experiments that made it look worth chasing does not exist; the
+vocabulary is shared because one person named both, which is recorded above as the eighth
+failure shape.
 
 And one open question rather than a gap, because the material exists and only its identity
 is unsettled. A test for whether knowing changes reality is remembered as sitting between
