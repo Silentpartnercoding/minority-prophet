@@ -830,7 +830,8 @@
         "aggregation/independence_axes.py:24-25"
       ],
       "verdict": "not-a-conflict",
-      "currentEvidence": "Both files agree the single ordering is wrong (aggregation/root_vote.py:72, aggregation/independence_axes.py:24-25). It is a disclosed open defect still driving weakest and attested_margin (root_vote.py:397-410), with weakest_basis_well_defined and weakest_axes reported alongside. Not a documentation conflict; the code defect stands."
+      "currentEvidence": "Both files agree the single ordering is wrong (aggregation/root_vote.py:72, aggregation/independence_axes.py:24-25). It is a disclosed open defect still driving weakest and attested_margin (root_vote.py:397-410), with weakest_basis_well_defined and weakest_axes reported alongside. Not a documentation conflict; the code defect stands.",
+      "fixed": "2026-09-14: the code defect is fixed. weakest_basis, basis_counts and attested_margin in verdict(), and weakest_basis in asymmetric_verdict(), are computed on the independence axes; BASIS_RANK is kept for importers and read by nothing."
     },
     {
       "topic": "What happens to malformed input",
