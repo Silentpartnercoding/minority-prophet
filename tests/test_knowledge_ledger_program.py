@@ -94,12 +94,45 @@ class KnowledgeLedgerProgramTests(unittest.TestCase):
 
     # The kernel-state ladder. A state outside this list is a typo or an
     # invented stage, and either way must not pass silently.
+    #
+    # `verified-independent` sits above `adversarial-passed` and was added on
+    # 2026-09-14, when KL-000 was promoted into it. Until then it existed only
+    # as a word in KL-000's own status note -- the program described a promotion
+    # target the ladder had never defined, so setting it would have been caught
+    # here as an invented stage. That was the right behaviour and it worked.
+    #
+    # It means: a second implementation, built independently and sharing no
+    # code, agrees with the reference. It does NOT mean every qualification has
+    # been discharged, which is why PROMOTION_FIELDS below is enforced.
     LADDER = (
         "seeded", "preregistered", "fixture-passed", "exhaustive-passed",
-        "randomized-passed", "adversarial-passed", "retrospective-passed",
-        "shadow-passed", "bounded-pilot-passed", "failed", "incomplete",
-        "blocked-safety",
+        "randomized-passed", "adversarial-passed", "verified-independent",
+        "retrospective-passed", "shadow-passed", "bounded-pilot-passed",
+        "failed", "incomplete", "blocked-safety",
     )
+
+    # An independence claim is worth nothing without its scope. A promotion that
+    # records only the state is exactly the "someone edited a status field" case
+    # the test below exists to catch, so the scope is required to travel with it.
+    PROMOTION_FIELDS = ("promotedAt", "promotionBasis", "promotionScope")
+
+    def test_verified_independent_cannot_be_claimed_without_its_scope(self):
+        """Independence is the most citable state on the ladder and the easiest
+        to overstate. Reaching it requires recording when it was promoted, on
+        what basis, and -- above all -- what the promotion does not cover."""
+        for index in range(12):
+            directory = PROGRAM / "experiments" / f"KL-{index:03d}"
+            status = json.loads((directory / "STATUS.json").read_text())
+            if status["state"] != "verified-independent":
+                continue
+            for field in self.PROMOTION_FIELDS:
+                self.assertIn(field, status, f"{directory.name}: {field}")
+                self.assertTrue(str(status[field]).strip(), f"{directory.name}: {field} empty")
+            # A scope that names no limit is not a scope.
+            self.assertGreater(
+                len(str(status["promotionScope"])), 40,
+                f"{directory.name}: promotionScope must state what is NOT covered",
+            )
 
     def test_no_experiment_claims_progress_without_the_evidence_for_it(self):
         """Every experiment's declared state must be backed by artifacts.
