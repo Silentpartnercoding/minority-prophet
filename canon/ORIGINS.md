@@ -38,7 +38,15 @@ that is not evidence that it is irrelevant. And a correctly-answered wrong quest
 upstream was set to `origin/main` rather than to its own remote branch. The tool did not
 lie; it answered precisely the question asked, which was not the question meant.
 
-The part worth keeping is not the tally. It is that not one of the six was caught by
+A seventh is really the first one repeating, and it is the most useful thing in this
+preamble. Within an hour of writing the paragraph above about disjoint archives, the
+session that wrote it searched its own machine for Waze, found one message of marketing
+copy, and concluded there was no anecdote — from a corpus that structurally could not
+contain the 15 August conversation recorded below. The lesson had been written down,
+correctly, by the person who then failed to apply it. Reading about a failure mode does
+not inoculate you against it; only checking does.
+
+The part worth keeping is not the tally. It is that not one of the seven was caught by
 whoever made it. Each was found by the other session looking from outside, with a
 different archive, a different checkout and no stake in the earlier answer. A file
 arguing that a verifier cannot be of the same substance as the thing it verifies was
@@ -219,9 +227,10 @@ It shipped. `agentwex/agentwex` is public, and states the doctrine in its own RE
 limitations rather than as features: the exchange collapses repeated claims from the same
 registered node; a registered signature identifies a pseudonymous node and does not prove
 that a distinct person or organisation controls it; and returned routes are unverified
-network evidence that grant no authority. Those three sentences are copy collapse, the
-Sybil boundary, and signature-is-not-authority, written where a user will actually read
-them.
+network evidence that grant no authority; and confidence is not a statistical guarantee,
+proof of controller independence, or authorisation. Those are copy collapse, the Sybil
+boundary, signature-is-not-authority and confidence-is-not-independence, written where a
+user will actually read them rather than in a paper.
 
 **Karla and Khader, from Shantaram, 21 August, supplied the perception model and the
 distinction that closed root identity.** The conversation opened on the wrong story — a
@@ -380,3 +389,14 @@ It stayed missing because the thread carries a title from a typo made in its fir
 message. Still open: an "Aletheon" naming discussion of 12 July lists Cloak, Cipher,
 Vault, Shadow, Ghost, Phantom, Eclipse, Obscura and Whisper, which is plainly adjacent to
 the Ghost and Phantom work but has not been read.
+
+And one open question rather than a gap, because the material exists and only its identity
+is unsettled. A test for whether knowing changes reality is remembered as sitting between
+the Shantaram and Pitfall conversations, so 21 to 25 August. `canon/reflexive_brake.py`
+answers to the description almost exactly — it fires on a conclusion that may well be
+correct, where acting on it or revealing it would alter the system enough to make acting
+harmful, and it holds prediction, intervention and post-intervention forecast apart — but
+it is already recorded above as the Twelve Monkeys entry and it predates that window.
+Either a separate later test exists and resembles the brake, or the brake is being
+recalled at the wrong date. The evidence does not separate the two, so neither is written
+as though it did.
