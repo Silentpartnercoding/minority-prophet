@@ -111,7 +111,12 @@ requires a caller to name the decision, failure domain and lineage cut, then
 reports whether alternative declared cuts materially change settlement. That
 makes root-identity policy visible and testable; it neither proves that the
 selected cut is causally correct nor extends a theorem. Its constructed fixtures
-are implementation invariants, not empirical evidence.
+are implementation invariants, not empirical evidence. Its one preregistered
+test, DRI-1A, did not support the claim that selecting the relevant cut lowers
+false settlement by 0.15 against every fixed cut (`results/dri1a-v1/`), so the
+adapter is unvalidated as a decision policy. The proximity ladder is a related
+but different model and does not supersede it; see
+`research/decision-relative-independence/README.md`.
 
 ### It does not survive its own headline slogan
 

@@ -45,6 +45,10 @@ negative fixtures. A conforming producer may add vendor fields outside the
 Interoperability Community Group onto these fields, and names the failure that
 becomes unobservable when one is absent. It is a crosswalk, not a proposal.
 
+`W3C-PROV-O-CROSSWALK.md` maps the terms of the W3C PROV Ontology onto the same
+fields, marks which ones PROV-O can express, and names the failure left
+unobservable where it cannot. It is also a crosswalk, not a proposal.
+
 Consumers decide whether an authentication method, controller assertion,
 clock, revocation source, or conclusion method is acceptable. Invalid,
 expired, revoked, replayed, incompletely searched, or insufficiently

@@ -61,6 +61,26 @@ causal independence.
 | LIR-3/PHEME | With 40% of exact parent-status IDs hidden but reply-target author retained, the frozen author-only rule achieved recorded-root precision, recall, and F1 of 1.0 with zero root-count error on 425 sealed cases. | Causal copying, evidence independence, author authentication, content truth, cross-platform generalization, or general provenance recovery. |
 | LIR-4/PHEME | At 50% missing reply-target identity among hidden-edge records, precision remained 1.0 but recall fell to 0.4329, F1 to 0.6043, and root-count MAE rose to 2.405, rejecting graceful degradation. | General resistance to false identity or cross-root misbinding; only one final-holdout case had multiple roots, so the safety diagnostic was underpowered. |
 
+## Non-canonical results summarized on public pages (2026-09-14)
+
+`PUBLIC-CLAIMS.md` and `docs/evidence/STATUS.md` now list results added after
+2026-08-09 so that adverse and null outcomes are visible. None is a canonical
+record and none is added to `CANONICAL-RECORDS.md`. Each public statement maps
+to its source as follows.
+
+| Source | Label as recorded | Supported statement | Unsupported extension |
+| --- | --- | --- | --- |
+| `research/adversarial-weighting/RESULTS.md` | Preregistered, hash-frozen before code; synthetic | Uniform counting broke at adversary fraction 0.40; declared-competence weighting at 0.20 (0.25 under sleeper); capping at `2/n` did not move breakdown (H2 not supported); trimming held to 0.45. | That any weighting or trimming scheme is safe, or any real-world adversary rate. |
+| `results/dri1a-v1/result.json`, `research/records/DRI-1A-V1.json` | Imported, verdict `rejected`; its README keeps it out of the canonical registry | Oracle false-settlement reduction was 0.130737304 against the fixed controller cut and 0.130615234 against fixed evidence origin, below the frozen 0.15; against fixed upstream component it was -0.057495118. | That decision-relative selection beats fixed cuts, or that a model or person can select the cut. |
+| `research/knowledge-ledger/experiments/KL-016/FINDING-v0.2.md` | v0.2 primary endpoint measured; real bibliographic data | Root ratios 0.429, 0.295, 0.132 and 0.298 for four conjectures (57–87% derived); unrelated control 1.000. | Prediction, belief, independence of roots, or anything about unlisted conjectures. The control arm collapsed to one case. |
+| `evaluations/multi-model-v1/EPISTEMIC-LIFT-V11-RESULT.md` | `SUPPORTED_IN_FROZEN_CANDIDATE`; development worlds | C − B of +28.125 points (p 0.003906) and +21.875 points (p 0.015625) on 32 worlds per model. | Any public empirical claim before a hidden, independently audited benchmark, which the result itself requires. |
+| `evaluations/multi-model-v1/CAPABILITY-TOURNAMENT-V1-RESULTS.md` | Preregistered conformance run | Deterministic root vote 128/128 dispositions; best model 116/128. | Truth in the world, origin honesty, or real-world independence. |
+| `research/knowledge-ledger/experiments/KL-018/FINDING-KL018.md` | Registered endpoint met, refuted by its own control | Sign test 35 positive, 0 negative; before-and-after control p = 0.087. | Any copy-trading effect. |
+| `formal/THEOREM-LEDGER.json` U1, `formal/CLAIM-SCOPE.md` | `proved_compiled` (was `underspecified`); closed by owner decision | Root identity is defined by proximate cause; the count is a maximum independent set over the declared dependence graph, relative to a class of error. | That the supplied graph reflects real lineage, that dependence is detected, or that independence is a scalar. A laundered record over-reports the count. |
+| `formal/THEOREM-LEDGER.json` U3 | `not_pursued` (was `underspecified`) | Weighted roots are closed by decision; no theorem covers a weighted aggregator. | That weighting is solved or shown unsafe in general. |
+| `formal/THEOREM-LEDGER.json` AC1–AC5 | `proved_compiled` | Universal and existential claims need the separate asymmetric rule; the symmetric margin is not their decision-sensitivity measure. | That either verdict rule is correct for a given deployment. |
+| `provenance/graph.py` `read_from` | Shipped, tested, opt-in | Naming what a claim read records ancestry, so honest readers of one source share one root. | That existing callers use it, or that it detects fabricated roots. |
+
 ## v1.0.7 manuscript alignment
 
 The active manuscript corrects two inherited presentation defects without
