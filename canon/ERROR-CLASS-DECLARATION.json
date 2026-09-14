@@ -1,0 +1,935 @@
+{
+  "schema": "minority-prophet.error-class-declaration.v1",
+  "version": 1,
+  "declaredOn": "2026-09-14",
+  "decision": "Owner decision: declare every condensed kind and every newly named kind for now.",
+  "purpose": "The error kinds declared in advance of any sample (ASSAYER.md A3). The junction loop may compute only a declared kind as the one blocking an action. Held-back test worlds must be built from kinds NOT in this version.",
+  "scope": "Condensed from 189 named entries across Minority Prophet and minority-prophet-gate. Research-process errors and refusal codes from retracted modules are not declared here. gate: paths refer to Silentpartnercoding/minority-prophet-gate.",
+  "change_rule": "This file is versioned. A kind discovered during a run joins only the next version; a version is never edited to cover the run that exposed a gap.",
+  "defence_vocabulary": {
+    "defended": "the record itself shows the error and the code refuses or escalates",
+    "conditional": "defended only when a stated condition holds",
+    "bounded": "limited by margin, quota or cost, not prevented",
+    "undetectable": "leaves no mark in the record; only an outside witness or the margin helps",
+    "unassessed": "newly named; no defence assessed yet"
+  },
+  "families": {
+    "F1": "Where the error enters",
+    "F2": "Count too high",
+    "F3": "Count too low",
+    "F4": "Wrong frame",
+    "F5": "Coverage",
+    "F6": "Time",
+    "F7": "Binding and authority",
+    "F8": "Social pressure",
+    "F9": "Reflexive",
+    "F10": "Weighting"
+  },
+  "declared": [
+    {
+      "id": "E-1",
+      "family": "F1",
+      "familyName": "Where the error enters",
+      "name": "Fabrication",
+      "what": "The world was never consulted: a root backed by nothing real.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable structurally: the graph is never malformed, and the reference check checks shape, not existence. Stopped only where a signature verifier rejects the root.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory E-1",
+        "canon/proximity.py:66",
+        "research/adversarial-weighting/two_failure_classes.py:2-17",
+        "provenance/graph.py:65-74"
+      ]
+    },
+    {
+      "id": "E-2",
+      "family": "F1",
+      "familyName": "Where the error enters",
+      "name": "Biased method",
+      "what": "The method itself is biased.",
+      "defence": "conditional",
+      "defenceNote": "Caught only by witnesses who re-entered the chain at or below the rung where the error enters.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory E-2",
+        "canon/proximity.py:59-67",
+        "canon/rungs.py:36-41"
+      ]
+    },
+    {
+      "id": "E-3",
+      "family": "F1",
+      "familyName": "Where the error enters",
+      "name": "Instrument error",
+      "what": "Miscalibration or random measurement error.",
+      "defence": "conditional",
+      "defenceNote": "Caught only by witnesses who re-entered the chain at or below the rung where the error enters.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory E-3",
+        "canon/proximity.py:68",
+        "formal/CLAIM-SCOPE.md:95-97"
+      ]
+    },
+    {
+      "id": "E-4",
+      "family": "F1",
+      "familyName": "Where the error enters",
+      "name": "Processing error",
+      "what": "The pipeline from raw data mangles it.",
+      "defence": "conditional",
+      "defenceNote": "Caught only by witnesses who re-entered the chain at or below the rung where the error enters.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory E-4",
+        "canon/proximity.py:69"
+      ]
+    },
+    {
+      "id": "E-5",
+      "family": "F1",
+      "familyName": "Where the error enters",
+      "name": "Analysis error",
+      "what": "Wrong test, arithmetic slip, or coding bug.",
+      "defence": "conditional",
+      "defenceNote": "Caught only by witnesses who re-entered the chain at or below the rung where the error enters.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory E-5",
+        "canon/proximity.py:70",
+        "formal/CLAIM-SCOPE.md:95-96"
+      ]
+    },
+    {
+      "id": "E-6",
+      "family": "F1",
+      "familyName": "Where the error enters",
+      "name": "Transcription error",
+      "what": "A digit changed on the way to the page.",
+      "defence": "conditional",
+      "defenceNote": "Caught only by witnesses who re-entered the chain at or below the rung where the error enters.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory E-6",
+        "canon/proximity.py:71"
+      ]
+    },
+    {
+      "id": "I-1",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Unrecorded copy",
+      "what": "A copy with no recorded parent is counted as an independent root.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable by counting: an undetected copy is indistinguishable from an original observation. Bounded only by the R3 margin.",
+      "evidence": "Demonstrated (Lean CE-01; KL-014 over-count floor at least 0.46 × N)",
+      "sources": [
+        "inventory I-1",
+        "formal/COUNTEREXAMPLES.md:51-80",
+        "research/knowledge-ledger/experiments/KL-014/OVERCOUNT-BOUND-20260814.md:14-19",
+        "provenance/graph.py:18-20"
+      ]
+    },
+    {
+      "id": "I-2",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Laundered provenance",
+      "what": "Faked re-derivation plus scrubbed shared markers remove dependence edges and inflate the count.",
+      "defence": "bounded",
+      "defenceNote": "Bounded by R3 margin sufficiency rather than solved; no counting rule closes it, only detection does.",
+      "evidence": "Demonstrated (pinned attack test)",
+      "sources": [
+        "inventory I-2",
+        "canon/U1-PROXIMATE-ROOTS.md:116-131",
+        "canon/root_identity.py:94-98"
+      ]
+    },
+    {
+      "id": "I-3",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Fake identities (Sybil)",
+      "what": "Many fabricated identities, each minting roots.",
+      "defence": "bounded",
+      "defenceNote": "Bounded by identity cost and the R1.4 issuance quota. At zero identity cost no aggregation rule survives.",
+      "evidence": "Demonstrated (EXP007A parameter)",
+      "sources": [
+        "inventory I-3",
+        "PROVENANCE-REQUIREMENTS.md:23-24",
+        "research/adversarial-weighting/NOT-A-VIBE.md:43-53"
+      ]
+    },
+    {
+      "id": "I-4",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Stolen signing key",
+      "what": "One compromised root-signing key issues roots at will.",
+      "defence": "bounded",
+      "defenceNote": "Bounded by a durable per-window quota that survives restart and key compromise.",
+      "evidence": "Demonstrated (CE-05)",
+      "sources": [
+        "inventory I-4",
+        "formal/COUNTEREXAMPLES.md:214-231",
+        "provenance/root_registry.py:302-309"
+      ]
+    },
+    {
+      "id": "I-6",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "One observation split into many roots",
+      "what": "Honest, separate issuers each re-issue the same upstream observation as their own root.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable: no key is compromised, no quota exceeded, no signature invalid, and no quota design fixes it.",
+      "evidence": "Named in docs, with a pilot",
+      "sources": [
+        "inventory I-6",
+        "RESEARCH-HYPOTHESES.md:124-160",
+        "research/knowledge-ledger/experiments/KL-014/CORRECTION-20260813-quota.md:38-49"
+      ]
+    },
+    {
+      "id": "I-7",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Restated or translated copies",
+      "what": "Paraphrases, translations, summaries and model rewrites are not recognised as copies.",
+      "defence": "conditional",
+      "defenceNote": "Defended only with supported lineage (HEO-1 added zero evidence-origin roots); not under inferred lineage (holdout accuracy 0.371544).",
+      "evidence": "Demonstrated (EXP007A, HEO-1)",
+      "sources": [
+        "inventory I-7",
+        "results/heo1-v1/README.md:7-16",
+        "results/exp007a-v1/README.md:11-13"
+      ]
+    },
+    {
+      "id": "I-8",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Honest citation of one source",
+      "what": "Five honest readers of one paper count as five roots.",
+      "defence": "conditional",
+      "defenceNote": "Defended when the claim names what it read in read_from, which is opt-in and not yet used by shipped callers.",
+      "evidence": "Demonstrated",
+      "sources": [
+        "inventory I-8",
+        "research/adversarial-weighting/citation_is_not_ancestry.py:2-14",
+        "provenance/graph.py:140-156"
+      ]
+    },
+    {
+      "id": "I-14+I-17",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "One controller posing as many",
+      "what": "Aliases, rotated keys, split services, or undisclosed common ownership behind apparently separate sources.",
+      "defence": "conditional",
+      "defenceNote": "Defended with supported controller provenance (HVI-1 admitted zero extra roots). Cannot discover undisclosed common control.",
+      "evidence": "Demonstrated (HVI-1)",
+      "sources": [
+        "inventory I-14, I-17",
+        "results/hvi1-v1/README.md:7-13",
+        "experiments/hvi1/THREAT-MODEL.md:13-17"
+      ]
+    },
+    {
+      "id": "I-15",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Self-verification",
+      "what": "A producer verifies or mints its own evidence.",
+      "defence": "defended",
+      "defenceNote": "Defended: self-verification added zero roots.",
+      "evidence": "Demonstrated (HVI-1)",
+      "sources": [
+        "inventory I-15",
+        "experiments/HVI-1-PREREGISTRATION.md:62",
+        "FOUNDATIONS.md:42-47"
+      ]
+    },
+    {
+      "id": "I-19",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Shared component or common-mode failure",
+      "what": "Distinct measurements share one upstream failure cause.",
+      "defence": "bounded",
+      "defenceNote": "Bounded: much of the gain came through abstention, and HGD-1's primary claim was rejected.",
+      "evidence": "Demonstrated (HGD-1, HGD-2)",
+      "sources": [
+        "inventory I-19",
+        "results/hgd1-v1/README.md:3-15",
+        "results/hgd2-v1/README.md:3-22"
+      ]
+    },
+    {
+      "id": "I-23",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "A model agreeing with a model",
+      "what": "One model reviewing another model's output is taken as corroboration.",
+      "defence": "defended",
+      "defenceNote": "Defended by rung assignment: it counts as restated text, and is flagged same-control-domain. The assignment is marked contested.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory I-23",
+        "canon/rungs.py:91-96",
+        "ASSAYER.md:103-106"
+      ]
+    },
+    {
+      "id": "I-22",
+      "family": "F2",
+      "familyName": "Count too high",
+      "name": "Partial dependence",
+      "what": "Partly correlated observers are treated as either fully independent or fully dependent.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable here: unrepresentable and untheorised.",
+      "evidence": "Named in code comments and docs",
+      "sources": [
+        "inventory I-22",
+        "provenance/graph.py:441-443",
+        "PROVENANCE-REQUIREMENTS.md:180-182"
+      ]
+    },
+    {
+      "id": "I-5",
+      "family": "F3",
+      "familyName": "Count too low",
+      "name": "Independent roots merged",
+      "what": "Genuinely independent roots are merged into one, which destroys margin.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable, inside the trusted base: any de-duplication or canonicalisation step is trusted. What is missing is a measurement, not a theorem.",
+      "evidence": "Demonstrated (CE-08)",
+      "sources": [
+        "inventory I-5",
+        "formal/COUNTEREXAMPLES.md:284-300",
+        "formal/EXTENSION-SOCKETS.md:186-196"
+      ]
+    },
+    {
+      "id": "I-10",
+      "family": "F3",
+      "familyName": "Count too low",
+      "name": "Count depends on presentation order",
+      "what": "An approximate count lets whoever controls the order deflate it.",
+      "defence": "defended",
+      "defenceNote": "Defended: exact, or refuse.",
+      "evidence": "Demonstrated (pinned attack test)",
+      "sources": [
+        "inventory I-10",
+        "canon/independent_set.py:3-24"
+      ]
+    },
+    {
+      "id": "I-12",
+      "family": "F3",
+      "familyName": "Count too low",
+      "name": "Chained ancestry collapses the count",
+      "what": "Treating shared ancestry as an equivalence drives the count toward 1.",
+      "defence": "defended",
+      "defenceNote": "Defended: a maximum independent set replaces the quotient.",
+      "evidence": "Demonstrated (Lean path_indep_two)",
+      "sources": [
+        "inventory I-12",
+        "canon/U1-PROXIMATE-ROOTS.md:15-34"
+      ]
+    },
+    {
+      "id": "I-13",
+      "family": "F3",
+      "familyName": "Count too low",
+      "name": "Anonymous witnesses cannot be told apart",
+      "what": "Collapsing anonymous roots asserts identity; stripping identity deflates the count.",
+      "defence": "bounded",
+      "defenceNote": "Bounded: the count is reported as a range, and a decision that depends on where in the range the truth lies escalates.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory I-13",
+        "aggregation/independence_axes.py:306-354"
+      ]
+    },
+    {
+      "id": "I-20",
+      "family": "F4",
+      "familyName": "Wrong frame",
+      "name": "Counting at the wrong level",
+      "what": "Counting at a finer or coarser cut than the decision's failure domain needs.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable by the adapter, which does not infer the cut; sensitivity to alternative cuts is reported.",
+      "evidence": "Enumerated in code; demonstrated (DRI-1A)",
+      "sources": [
+        "inventory I-20",
+        "provenance/decision_relative.py:169-178",
+        "results/dri1a-v1/README.md:66-81"
+      ]
+    },
+    {
+      "id": "I-21",
+      "family": "F4",
+      "familyName": "Wrong frame",
+      "name": "Joint failure domains",
+      "what": "Two failure domains active at once, which a single cut cannot represent.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable here: multi-cut independence is not implemented.",
+      "evidence": "Named in docs",
+      "sources": [
+        "inventory I-21",
+        "research/decision-relative-independence/README.md:161-167"
+      ]
+    },
+    {
+      "id": "I-18",
+      "family": "F4",
+      "familyName": "Wrong frame",
+      "name": "Separate sources repeating one wrong claim",
+      "what": "Truly separate controllers or origins carry the same wrong claim.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable: supported organisational separation is not proof of causal evidence independence or truth.",
+      "evidence": "Demonstrated (HVI-1 genuine_8)",
+      "sources": [
+        "inventory I-18",
+        "results/hvi1-v1/README.md:15-18"
+      ]
+    },
+    {
+      "id": "S-1+S-2",
+      "family": "F4",
+      "familyName": "Wrong frame",
+      "name": "Universal or existential claim counted as symmetric",
+      "what": "A claim that one root settles is decided by comparing root counts.",
+      "defence": "conditional",
+      "defenceNote": "Defended by the separate asymmetric verdict, but the claim shape is declared, not detected: a caller who mislabels a universal claim still gets the wrong answer.",
+      "evidence": "Demonstrated (CE-14; Lean AC4, AC5)",
+      "sources": [
+        "inventory S-1, S-2",
+        "formal/COUNTEREXAMPLES.md:391-451",
+        "aggregation/root_vote.py:140-145"
+      ]
+    },
+    {
+      "id": "M-1+M-3",
+      "family": "F4",
+      "familyName": "Wrong frame",
+      "name": "Conclusion carried into another vocabulary untested",
+      "what": "A result established in one ontology is assumed to hold in another, or flips under a change of category scheme.",
+      "defence": "defended",
+      "defenceNote": "Defended: an untested transport defaults to UNTESTED, never inherited validity; vocabulary perturbation is probed.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory M-1, M-2, M-3",
+        "canon/bounded_truth.py:10-19",
+        "canon/ontology_perturbation.py:9-22"
+      ]
+    },
+    {
+      "id": "C-1",
+      "family": "F5",
+      "familyName": "Coverage",
+      "name": "Absence without a complete search",
+      "what": "Absence is concluded from a partial or unknown-coverage search.",
+      "defence": "defended",
+      "defenceNote": "Defended: the conclusion is not established, or escalates.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory C-1",
+        "knowledge_ledger/transaction_v2.py:156-159",
+        "interop/memory-evidence-profile-v0.1/adversarial-cases.json:6"
+      ]
+    },
+    {
+      "id": "C-4",
+      "family": "F5",
+      "familyName": "Coverage",
+      "name": "Empty search counted as opposition",
+      "what": "An unsuccessful search is filed as contrary evidence.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable here: the evaluator cannot enforce this.",
+      "evidence": "Named in docs",
+      "sources": [
+        "inventory C-4",
+        "formal/COUNTEREXAMPLES.md:453-477"
+      ]
+    },
+    {
+      "id": "C-10",
+      "family": "F5",
+      "familyName": "Coverage",
+      "name": "Unattributed claims silently dropped",
+      "what": "Claims with no root get zero influence, or full influence, without anyone deciding.",
+      "defence": "defended",
+      "defenceNote": "Defended by default, and the default is recorded as a policy decision, not a theorem.",
+      "evidence": "Demonstrated (CE-12)",
+      "sources": [
+        "inventory C-10",
+        "formal/COUNTEREXAMPLES.md:347-360",
+        "aggregation/root_vote.py:352-363"
+      ]
+    },
+    {
+      "id": "T-1",
+      "family": "F6",
+      "familyName": "Time",
+      "name": "Stale or expired evidence",
+      "what": "Evidence past its lifetime, or with no timestamp under a freshness policy.",
+      "defence": "defended",
+      "defenceNote": "Defended: blocked, or given zero weight.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory T-1",
+        "gate:minority_prophet/adapter_acp.py:143-153",
+        "gate:minority_prophet/memory_evidence.py:91-92"
+      ]
+    },
+    {
+      "id": "T-3+T-4",
+      "family": "F6",
+      "familyName": "Time",
+      "name": "Revoked, or revocation unknown",
+      "what": "Evidence or authority has been revoked, or its revocation status cannot be determined.",
+      "defence": "defended",
+      "defenceNote": "Defended: revoked blocks; unknown escalates or blocks.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory T-3, T-4",
+        "gate:minority_prophet/memory_evidence.py:96-100"
+      ]
+    },
+    {
+      "id": "T-5",
+      "family": "F6",
+      "familyName": "Time",
+      "name": "Replay",
+      "what": "The same evidence, nonce or delivery is presented again.",
+      "defence": "conditional",
+      "defenceNote": "Defended with a durable nonce store; an in-memory set is only a local demonstration.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory T-5",
+        "provenance/root_registry.py:248-250",
+        "gate:README.md:212-214"
+      ]
+    },
+    {
+      "id": "T-7",
+      "family": "F6",
+      "familyName": "Time",
+      "name": "Fresh restatement of an old observation",
+      "what": "A recent restatement carries the freshness of the restatement, not of the observation it rests on.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable in the profile: a consumer cannot age the root.",
+      "evidence": "Enumerated as a fixture",
+      "sources": [
+        "inventory T-7",
+        "interop/memory-evidence-profile-v0.1/README.md:17-22"
+      ]
+    },
+    {
+      "id": "A-1+L-5",
+      "family": "F7",
+      "familyName": "Binding and authority",
+      "name": "Evidence bound to the wrong proposition or action",
+      "what": "Evidence is attached to a different claim, subject, request or action than the one being decided.",
+      "defence": "defended",
+      "defenceNote": "Defended: blocked; a missing expected binding escalates.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory A-1, L-5",
+        "gate:minority_prophet/memory_evidence.py:81-85",
+        "provenance/graph.py:344-354"
+      ]
+    },
+    {
+      "id": "A-4",
+      "family": "F7",
+      "familyName": "Binding and authority",
+      "name": "Evidence treated as permission",
+      "what": "An evidence assessment, evidence request, or collection right is read as authority to act.",
+      "defence": "defended",
+      "defenceNote": "Defended: evidence assessment does not grant authority, and only a final Gate outcome reaches the runtime.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory A-4",
+        "AGENTS.md:43",
+        "gate:minority_prophet/control_plane.py:164"
+      ]
+    },
+    {
+      "id": "A-7",
+      "family": "F7",
+      "familyName": "Binding and authority",
+      "name": "Coordination authority mistaken for knowledge",
+      "what": "Deferring to whoever coordinates is treated as deferring to whoever knows.",
+      "defence": "conditional",
+      "defenceNote": "Defended only when the kind of authority is declared.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory A-7",
+        "canon/authority_debt.py:35-65"
+      ]
+    },
+    {
+      "id": "P-1+P-5",
+      "family": "F8",
+      "familyName": "Social pressure",
+      "name": "Social pressure",
+      "what": "Belief or action moves with who is speaking, how many appear to agree, how the question is framed, repetition, or emotional loading, while the evidence stays fixed.",
+      "defence": "conditional",
+      "defenceNote": "Probed, not measured: the instrument varies the pressure and reports belief and action change separately, and claims no measurement.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory P-1 to P-5",
+        "canon/susceptibility.py:9-10",
+        "canon/susceptibility.py:35-42"
+      ]
+    },
+    {
+      "id": "R-1+R-5",
+      "family": "F9",
+      "familyName": "Reflexive",
+      "name": "Acting on a conclusion changes what is true",
+      "what": "The conclusion is self-invalidating or self-fulfilling, observing is intervening, the footprint exceeds the mandate, or a forecast confirms our own effect.",
+      "defence": "conditional",
+      "defenceNote": "Defended only through the caller-declared footprint; an empty footprint is itself a claim.",
+      "evidence": "Enumerated in code",
+      "sources": [
+        "inventory R-1 to R-5",
+        "canon/reflexive_brake.py:41-54",
+        "canon/reflexive_brake.py:57-72"
+      ]
+    },
+    {
+      "id": "W-9",
+      "family": "F10",
+      "familyName": "Weighting",
+      "name": "Self-declared weight gaming",
+      "what": "A source declares its own confidence or competence to gain weight.",
+      "defence": "conditional",
+      "defenceNote": "Defended only if the weight cannot be self-declared; weighting by declared competence broke at an adversary fraction of 0.20.",
+      "evidence": "Demonstrated (preregistered)",
+      "sources": [
+        "inventory W-9",
+        "research/adversarial-weighting/PREREGISTRATION.md:56-58",
+        "research/adversarial-weighting/RESULTS.md:16-19"
+      ]
+    },
+    {
+      "id": "W-10",
+      "family": "F10",
+      "familyName": "Weighting",
+      "name": "Sleeper and reputation attacks",
+      "what": "A source earns weight honestly, then defects; reputation selects for the attacker it exists to deter.",
+      "defence": "undetectable",
+      "defenceNote": "Undetectable for earned weights; a bond helped in an exploratory run.",
+      "evidence": "Demonstrated (sleeper preregistered; reputation exploratory)",
+      "sources": [
+        "inventory W-10",
+        "research/adversarial-weighting/RESULTS.md:40-53",
+        "research/adversarial-weighting/TWO-CORRECTIONS.md:47-78"
+      ]
+    },
+    {
+      "id": "W-7",
+      "family": "F10",
+      "familyName": "Weighting",
+      "name": "Weight concentration",
+      "what": "A coordinated block of merely heavy sources controls the outcome.",
+      "defence": "bounded",
+      "defenceNote": "Bounded only: capping each source did not move the breakdown point (H2 not supported).",
+      "evidence": "Demonstrated (preregistered)",
+      "sources": [
+        "inventory W-7",
+        "research/adversarial-weighting/RESULTS.md:20-28",
+        "canon/U3-WHAT-TRANSFERS.md:84-87"
+      ]
+    },
+    {
+      "id": "N-1",
+      "family": "NEW",
+      "familyName": "Newly named in this declaration",
+      "name": "Selective withholding inside a searched scope",
+      "what": "A producer holds opposing roots in a location it reports as searched. Coverage rules only cover locations that were not searched.",
+      "defence": "unassessed",
+      "defenceNote": "Not named anywhere in the repositories before this declaration; no defence has been assessed.",
+      "evidence": "Proposed",
+      "sources": []
+    },
+    {
+      "id": "N-2",
+      "family": "NEW",
+      "familyName": "Newly named in this declaration",
+      "name": "Abstention-forcing flood",
+      "what": "Injecting unattributed claims up to the flip budget triggers abstain_if_decisive (aggregation/root_vote.py:465-474). Only mandate denial of service is named.",
+      "defence": "unassessed",
+      "defenceNote": "Not named anywhere in the repositories before this declaration; no defence has been assessed.",
+      "evidence": "Proposed",
+      "sources": []
+    },
+    {
+      "id": "N-3",
+      "family": "NEW",
+      "familyName": "Newly named in this declaration",
+      "name": "Timestamp forged inside the accepted clock window",
+      "what": "ClockError fires only outside the window (provenance/root_registry.py:148, 332), so an observed_at moved within it passes.",
+      "defence": "unassessed",
+      "defenceNote": "Not named anywhere in the repositories before this declaration; no defence has been assessed.",
+      "evidence": "Proposed",
+      "sources": []
+    },
+    {
+      "id": "N-4",
+      "family": "NEW",
+      "familyName": "Newly named in this declaration",
+      "name": "Assertion mapped to the wrong side at ingest",
+      "what": "Only unmappable assertions are named; polarity laundering covers edges, not assertions.",
+      "defence": "unassessed",
+      "defenceNote": "Not named anywhere in the repositories before this declaration; no defence has been assessed.",
+      "evidence": "Proposed",
+      "sources": []
+    },
+    {
+      "id": "N-5",
+      "family": "NEW",
+      "familyName": "Newly named in this declaration",
+      "name": "Two propositions sharing one proposition id",
+      "what": "CE-10 checks that edges do not cross propositions, not that one id names one proposition.",
+      "defence": "unassessed",
+      "defenceNote": "Not named anywhere in the repositories before this declaration; no defence has been assessed.",
+      "evidence": "Proposed",
+      "sources": []
+    },
+    {
+      "id": "N-6",
+      "family": "NEW",
+      "familyName": "Newly named in this declaration",
+      "name": "Time-of-check versus time-of-use on the main decision path",
+      "what": "Addressed only in the continuity-receipt lane, not on decide().",
+      "defence": "unassessed",
+      "defenceNote": "Not named anywhere in the repositories before this declaration; no defence has been assessed.",
+      "evidence": "Proposed",
+      "sources": []
+    }
+  ],
+  "knownInconsistencies": [
+    {
+      "topic": "Is the root-evidence gate on by default?",
+      "detail": "The KL-014 decision says off by default and that a source of \"trust me\" passes; the graph code says on by default since 2026-08-13 and refuses the same input.",
+      "sources": [
+        "research/knowledge-ledger/experiments/KL-014/DECISION-20260813.md:63, 115-117",
+        "provenance/graph.py:111-116"
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "KL-014/DECISION-20260813.md:63-64 and :116-117 still say the root-evidence gate is off by default and 'trust me' passes; code has it on by default since 2026-08-13 (provenance/graph.py:111, :269) and refuses it (tests/test_provenance.py:125). Code is correct; the decision record needs a dated supersession note."
+    },
+    {
+      "topic": "When did U1 close, and is it closed?",
+      "detail": "Claim scope and extension sockets say 2026-09-07; the U1 doctrine and counterexamples say 2026-09-14; the public claims page and provenance requirements still list it as an open boundary.",
+      "sources": [
+        "formal/CLAIM-SCOPE.md:86",
+        "canon/U1-PROXIMATE-ROOTS.md:3",
+        "PUBLIC-CLAIMS.md:51",
+        "PROVENANCE-REQUIREMENTS.md:176"
+      ],
+      "verdict": "partly",
+      "currentEvidence": "Public claims agree U1 is closed. The closure date is 2026-09-14 (canon/U1-PROXIMATE-ROOTS.md:3, formal/COUNTEREXAMPLES.md:21), but five sites still say 2026-09-07, the date RootIdentity.lean was written: formal/CLAIM-SCOPE.md:86, formal/EXTENSION-SOCKETS.md:167, formal/PROOFS.md:201, canon/NOVELTY-AUDIT.md:162, papers/ERRATA.md:312. canon/narrow_gate.py:191 and tests/test_independence_vocabulary.py:132 still call U1 open."
+    },
+    {
+      "topic": "Is the laundering residual bounded or undetectable?",
+      "detail": "Claim scope says R3 absorbs it; the HRI-1 hypothesis says no existing check detects it; under weights it is not established.",
+      "sources": [
+        "formal/CLAIM-SCOPE.md:104-105",
+        "RESEARCH-HYPOTHESES.md:149-154",
+        "canon/U3-WHAT-TRANSFERS.md:80-82"
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "CLAIM-SCOPE.md:104-105 and U3-WHAT-TRANSFERS.md:81-82 agree the residual is absorbed by margin sufficiency for unit weights, open for weighted. RESEARCH-HYPOTHESES.md:158 concerns honest-actor root ratios, not adversarial laundering."
+    },
+    {
+      "topic": "Is under-counting conservative?",
+      "detail": "The retracted narrow gate calls it a conservative lower bound; the independent-set and independence-axes modules call it a censorship primitive, directional rather than conservative.",
+      "sources": [
+        "canon/narrow_gate.py:189-191",
+        "canon/independent_set.py:13-16",
+        "aggregation/independence_axes.py:320"
+      ],
+      "verdict": "partly",
+      "currentEvidence": "Doctrine settled: under-counting is directional, not conservative (canon/independent_set.py:13-15, aggregation/independence_axes.py:320). Stale wording remains at canon/narrow_gate.py:189-190 (superseded file), aggregation/root_vote.py:233 and :264, tests/test_producer_plumbing.py:123."
+    },
+    {
+      "topic": "The copy-invariance slogan",
+      "detail": "Gate's README says duplicating a claim can never change the verdict; claim scope says that is false without the recorded-parent hypothesis.",
+      "sources": [
+        "gate:README.md:85",
+        "formal/CLAIM-SCOPE.md:116-122"
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "gate:README.md:85 says duplicating a claim can never change the verdict, without the recorded-parent hypothesis that formal/CLAIM-SCOPE.md:123-127 requires (CE-01). gate:README.md:66 carries the same unstated hypothesis."
+    },
+    {
+      "topic": "CE-14 presence semantics",
+      "detail": "Recorded as settled by owner decision A3 in one place, and as still open elsewhere in the same file and in the aggregator.",
+      "sources": [
+        "formal/COUNTEREXAMPLES.md:27",
+        "formal/COUNTEREXAMPLES.md:529-531",
+        "aggregation/root_vote.py:157-158"
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "Settled as owner decision A3 at formal/COUNTEREXAMPLES.md:27 and :453 and knowledge_ledger/transaction_v2.py:47, but COUNTEREXAMPLES.md:529-531 still says the presence branch is open and aggregation/root_vote.py:157-158 calls it an open semantic question."
+    },
+    {
+      "topic": "Is U2 fixed?",
+      "detail": "Open in the theorem ledger; fixed in a new module according to the counterexamples.",
+      "sources": [
+        "formal/THEOREM-LEDGER.json:364-373",
+        "formal/COUNTEREXAMPLES.md:25"
+      ],
+      "verdict": "resolved",
+      "currentEvidence": "formal/THEOREM-LEDGER.json:358 decided and named; formal/COUNTEREXAMPLES.md:25, GLOSSARY.md:53 and audit/REPORT.md:150 agree. The legacy module is retained, so the ledger's counterexample line still holds."
+    },
+    {
+      "topic": "Is Sybil excluded from the threat model?",
+      "detail": "Provenance requirements list Sybil root manufacturing as an excluded threat; extension sockets call it exactly where R1's cryptography does not reach.",
+      "sources": [
+        "PROVENANCE-REQUIREMENTS.md:23",
+        "formal/EXTENSION-SOCKETS.md:184-186"
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "PROVENANCE-REQUIREMENTS.md:23 says R1 is the layer that excludes sybil root-manufacturing; formal/EXTENSION-SOCKETS.md:184-186 records paraphrase-splitting sybils at the semantic layer as a known gap. Compatible."
+    },
+    {
+      "topic": "Is the weighted baseline a defect?",
+      "detail": "U3 calls it a defect already shipped; the baseline module calls it the doctrine being demonstrated, not a defect to repair.",
+      "sources": [
+        "canon/U3-WHAT-TRANSFERS.md:14",
+        "aggregation/baselines.py:46-47"
+      ],
+      "verdict": "still-live",
+      "currentEvidence": "Wording only: canon/U3-WHAT-TRANSFERS.md:14 calls the weighted baseline a shipped defect; aggregation/baselines.py:40, :46-47, tests/test_weight_decomposition.py:78 and benchmark/SPECIFICATION.md:27 say its naivety is deliberate. The baseline files are correct."
+    },
+    {
+      "topic": "The single ranking of independence bases",
+      "detail": "Labelled a known defect, yet it still drives the weakest-basis and attested-margin calculations; the axes module says the error is the single ordering.",
+      "sources": [
+        "aggregation/root_vote.py:72, 392-410",
+        "aggregation/independence_axes.py:24-25"
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "Both files agree the single ordering is wrong (aggregation/root_vote.py:72, aggregation/independence_axes.py:24-25). It is a disclosed open defect still driving weakest and attested_margin (root_vote.py:397-410), with weakest_basis_well_defined and weakest_axes reported alongside. Not a documentation conflict; the code defect stands."
+    },
+    {
+      "topic": "What happens to malformed input",
+      "detail": "Gate escalates it; the knowledge transaction raises and never returns a receipt; the authority-evidence contract fails closed.",
+      "sources": [
+        "gate:README.md:206",
+        "gate:conformance/knowledge-transaction-fail-closed.md:19",
+        "contracts/authority-evidence-v0.1/README.md:38"
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "Three different components, all fail closed: the gate's memory-evidence socket escalates (gate:README.md:206), the transaction parser raises (gate:conformance/knowledge-transaction-fail-closed.md:19), authority-evidence records fail closed (contracts/authority-evidence-v0.1/README.md:38)."
+    },
+    {
+      "topic": "Unknown vocabulary",
+      "detail": "Refused at the boundary as a refusal, not a downgrade, but read inside the aggregator as absent rather than raising.",
+      "sources": [
+        "aggregation/independence_axes.py:526-527",
+        "aggregation/root_vote.py:262-265"
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "Deliberate layering: from_wire refuses unknown strings at the boundary (independence_axes.py:526-548); inside, the aggregator reads an unknown value as absent (root_vote.py:262-272, pinned by tests/test_producer_plumbing.py:121). The only tension is the 'conservative' wording in #4."
+    },
+    {
+      "topic": "Replay means two things",
+      "detail": "HES-1's stale replay is a partly recovered attack; in the memory, continuity and registry code, replay is an always-blocked nonce reuse.",
+      "sources": [
+        "results/hes1-v1/README.md:31",
+        "provenance/root_registry.py:248-250"
+      ],
+      "verdict": "not-a-conflict",
+      "currentEvidence": "One word, two senses: 'stale replay' in results/hes1-v1/README.md:31 is injected stale tool output (experiments/HGD-2-PREREGISTRATION.md:95-96); ReplayError in provenance/root_registry.py:250 and gate:README.md:207 is nonce reuse. A glossary entry would prevent confusion."
+    }
+  ],
+  "describedButUnnamed": [
+    {
+      "description": "Several observations published as one work, or preprint and published versions folded into one work id, under-count because the indexer merges them.",
+      "sources": [
+        "research/knowledge-ledger/experiments/KL-014/HRI1-BLOCKER-20260816.md:36-39"
+      ]
+    },
+    {
+      "description": "Under attack, a worse estimate scores better: precision helps the attacker.",
+      "sources": [
+        "research/adversarial-weighting/RESULTS.md:67-69"
+      ]
+    },
+    {
+      "description": "An implementation artefact misread as a finding (the median tracking the capped aggregator).",
+      "sources": [
+        "research/adversarial-weighting/RESULTS.md:71-74"
+      ]
+    },
+    {
+      "description": "An endpoint that does not count the cost of refusing clean items.",
+      "sources": [
+        "CLAIMS.md:134-136"
+      ]
+    },
+    {
+      "description": "Undeclared category fusion inside an instrument: nothing on the diagram says which two were merged.",
+      "sources": [
+        "canon/decompositions/wheel.py:24-28",
+        "canon/bounded_truth.py:64-66"
+      ]
+    },
+    {
+      "description": "Evidence-request challenge state is forgeable: its hash is not a signature and cannot authenticate state supplied by an untrusted agent.",
+      "sources": [
+        "gate:README.md:396-399"
+      ]
+    },
+    {
+      "description": "A legitimate reference format the resolvable-reference check does not recognise causes false refusals.",
+      "sources": [
+        "provenance/graph.py:192-198"
+      ]
+    },
+    {
+      "description": "Self-reported root metadata destroys its own evidentiary value.",
+      "sources": [
+        "research/decision-relative-independence/README.md:157-158"
+      ]
+    },
+    {
+      "description": "A generator that cannot produce the hard case (0 of 71 files carry two defects).",
+      "sources": [
+        "research/knowledge-ledger/experiments/KL-001/corpus/TAXONOMY-NOTE.md:38-43"
+      ]
+    },
+    {
+      "description": "Proximity misread as correctness.",
+      "sources": [
+        "results/hes1-v1/README.md:20-22"
+      ]
+    },
+    {
+      "description": "A vocabulary collision between proceed and act.",
+      "sources": [
+        "canon/decision_sensitivity.py:41-45"
+      ]
+    }
+  ],
+  "knownInconsistenciesCheckedAt": {
+    "date": "2026-09-14",
+    "minorityProphetMain": "eb26ba6e84793d554c7dc5cb03c3349c21c7308f",
+    "gateMain": "ef91dab1601f30644af236edbf8679884ed05155",
+    "verdicts": {
+      "still-live": "the disagreement is in current text",
+      "partly": "settled, but stale statements remain",
+      "resolved": "all current sources agree",
+      "not-a-conflict": "on careful reading the statements concern different things or are compatible"
+    }
+  }
+}
