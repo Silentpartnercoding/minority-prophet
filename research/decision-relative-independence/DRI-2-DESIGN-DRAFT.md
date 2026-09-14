@@ -37,6 +37,11 @@ DRI-1A exposed five limits a successor must fix:
 5. **The test was authored by the same control domain as the method.** Its own
    record says so, as does HVI-1's boundary on shared control.
 
+**DRI-1A was a pilot.** Each of its worlds was one decision, with the failure
+domain supplied and lineage given as ground truth. There was no sequence of
+junctions, no evidence request, no hand-over and no clock. DRI-2 does not reuse
+its worlds. Its world model is new, and it adds everything the pilot lacked.
+
 ## 2. Scoring principle
 
 The owner's principle:
@@ -68,6 +73,10 @@ world is built and hidden from every arm:
 The human's answer at a hand-over junction is scripted from the world's ground
 truth, so a human error is never charged to the system.
 
+Junctions are not handed to a method as a list. Each junction, and the evidence
+available at it, becomes visible only when the run reaches it. So a method has to
+recognise what kind of junction it is standing at.
+
 ### Outcomes
 
 | Outcome | Meaning | Rank |
@@ -82,6 +91,29 @@ ranks above an incorrect one. **Not asking and asking at the wrong time must sta
 distinguishable**: a fall and an incorrect stall are never pooled into one failure
 count in any result. A bare refusal with no hand-over is never a crossing.
 
+### Ranking crossings
+
+Crossing is the primary result. Crossed runs are then compared in this order:
+
+1. time to crossing, in milliseconds, with step counts alongside;
+2. autonomy: handing over only where a hand-over was required, and requesting
+   evidence before handing over;
+3. decision quality at each junction.
+
+Other tracked dimensions are reported side by side.
+
+### Evidence requests cost time, not budget
+
+A method may request evidence as often as it likes. Every request costs elapsed
+time, which counts toward time to crossing. Cost is measured as delay to the
+objective, never as compute spent. Compute cost changes over time; whether the
+objective was reached, and when, does not.
+
+### Stalls are part of the run
+
+Every stall is logged. If a human sends the run back and it then reaches the
+objective, the run is CROSSED, with the stall and the time it lost recorded.
+
 ### How this maps to the runtime
 
 The test grades the same choices the shipped Gate makes, so a result speaks
@@ -90,7 +122,7 @@ directly to deployment:
 | Gate action | Meaning | Correct at | Elsewhere |
 |---|---|---|---|
 | `proceed` / `block` | Settle, one way or the other | a settle junction | FELL |
-| `request_evidence` | Go further within a bounded, policy-approved budget | a gather junction | wasted budget; an incorrect stall if it never settles |
+| `request_evidence` | Go further; unlimited, but every request costs time | a gather junction | time lost; an incorrect stall if it never settles |
 | `escalate` | Ask a human, never a reason to proceed | a hand-over junction | incorrect stall |
 
 ## 3. Question
@@ -135,10 +167,21 @@ hand-over. A method that escalates in both twins is stuck; one that gathers in t
 first and hands over in the second is navigating; one that settles in both is
 reckless.
 
+### Where junctions and errors come from
+
+- **Critical paths come from the maintainers' own junctions.** They are built from
+  junctions the maintainers have faced, with identifying detail removed.
+- **Errors come from the approved error-class declaration** and the programme's
+  recorded cases, generalized and extrapolated.
+- **A hand-over junction qualifies only when no amount of evidence gathering
+  resolves it.** The missing thing has to be authority, or information that exists
+  only with a human.
+- **A generated world that does not fit this model is run anyway.** It is run as
+  an exploratory experiment and reported apart, not discarded.
+
 ### Families
 
-- **Single domain,** reusing DRI-1A's generator so results remain comparable, with
-  critical paths added.
+- **Single domain,** on the new generator. DRI-1A's worlds are not reused.
 - **Joint domain:** two failure domains active at once, for example shared
   controller with copied source.
 - **Separate control, shared origin:** separately controlled roots repeating one
@@ -155,7 +198,9 @@ The approved error-class declaration is what the method commits to in advance. A
 attacker is not bound by it, and no declaration can be shown complete against
 errors nobody has thought of. So a separate set of worlds is built from error
 kinds that are **not** in the approved declaration, authored outside the method's
-control domain and withheld from its authors until scoring.
+control domain and withheld from its authors until scoring. If no author
+independent of the method can be found, held-back worlds wait for outside authors
+rather than being written by the method's own.
 
 The junction loop cannot compute an undeclared error as blocking, by construction,
 so detecting these is not the expected behaviour. What they measure is the
@@ -170,6 +215,11 @@ Everything DRI-1A reported, plus:
 
 - **crossing rate**, **fall rate**, **correct-stall rate** and
   **incorrect-stall rate**, overall and per family, never pooled;
+- **time to crossing** in milliseconds, with step counts alongside, including the
+  time spent on evidence requests and stalls;
+- **looked before asking:** at every hand-over, whether the method requested
+  evidence first;
+- **send-backs:** stalls followed by resumed progress, with the time each lost;
 - **junction accuracy:** the fraction of junctions where the correct move was taken,
   by junction type;
 - **premature hand-over:** escalations at settle or gather junctions, the direct
@@ -203,35 +253,41 @@ Everything DRI-1A reported, plus:
 
 ## 8. Decisions required before freezing
 
-These are the owner's and are deliberately left open.
+These are the owner's. The items marked decided were settled on 2026-09-14.
 
 1. ~~Comparing failures.~~ **Decided:** crossed, then correct stall, then
    incorrect stall, then fell. A fall and an incorrect stall are never pooled.
-2. **The success criterion:** which arm must beat which, by how much, on which of
-   the metrics above.
-3. **Junction authority:** who builds the critical paths and assigns each junction
-   its correct move, and how a hand-over junction is shown to be genuinely beyond
-   the system rather than merely hard.
-4. **The evidence-request budget:** how many permitted requests a gather junction
-   allows, and what each costs.
+2. ~~The success criterion.~~ **Decided:** crossing first. Among crossings the
+   order is time to crossing, then autonomy, then decision quality, with other
+   dimensions reported. Still open: the margin by which one arm must beat another.
+3. ~~Junction authority.~~ **Decided:** the maintainers build the critical paths,
+   from their own junctions with identifying detail removed. A hand-over junction
+   qualifies only when no amount of evidence gathering resolves it.
+4. ~~The evidence-request budget.~~ **Decided:** unlimited. Each request costs
+   time, measured as delay to the objective rather than as compute.
 5. ~~The scripted human.~~ **Decided:** scripted from ground truth. The test is
    about when to ask, not about interpreting the answer.
-6. **The error-class assignment** for each world family. The "Proposed mapping"
-   table in `README.md` beside this file offers one, marked as untested; rung
-   assignments are an owner judgment under A3.
+6. **The error-class assignment** for each world family. **Decided in part:**
+   errors come from the approved declaration and recorded cases, generalized and
+   extrapolated. Still open: the per-family mapping. The "Proposed mapping" table
+   in `README.md` beside this file offers one, marked as untested.
 7. **The selector arm:** humans, models, or both, how many, and who authors the
    cases. External authorship is the only way to avoid the same-control-domain
    limit.
-8. **Whether DRI-1A's generator is reused byte-for-byte** for the single-domain
-   family, with critical paths layered on top, or versioned.
+8. ~~Reusing DRI-1A's generator.~~ **Decided:** not reused. DRI-1A was a pilot,
+   and DRI-2 uses a new, full world model.
 9. **Power:** world counts per family and path type, computed before freezing, as
    Lift v1.2 did.
-10. **Held-back authorship:** who builds the undeclared error kinds, how their
-    independence from the method's authors is established, and how many worlds
-    they receive. Their content is sealed until scoring.
+10. **Held-back authorship.** **Decided in part:** independent authors only. If
+    none can be found, held-back worlds wait for outside authors. Their content is
+    sealed until scoring. Still open: how many worlds they receive.
 11. **Promotion of discovered kinds:** a held-back kind that causes falls may join
     the declaration only for the next registration, never retroactively for the
     run that exposed it.
+12. ~~Worlds that do not fit.~~ **Decided:** run as exploratory experiments and
+    reported apart, never discarded.
+13. ~~Revealing the path.~~ **Decided:** progressive. Each junction appears only
+    when the run reaches it.
 
 ## 9. Not claimed
 
