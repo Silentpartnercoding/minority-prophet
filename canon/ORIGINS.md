@@ -116,6 +116,29 @@ invent their own, blind the tasters, change the language. Then ask whether the c
 survives. This is representation invariance applied to a vocabulary rather than to
 coordinates, and it is a different probe from the social-pressure one already built.
 
+**The first monkey, 2 August, moved the product from a repository to a map of what
+nobody knows.** The conversation began on Girard and mimetic theory and on whether the
+thing being built was GitHub for knowledge, and turned on one question asked half as a
+joke: if a question has no answer out there, can the AI contribute the first data point,
+the first monkey. That is the cold-start problem, and answering it moved the atomic
+object. Not a post, not an observation, not a claim, but an unanswered question, with
+everything growing around it. The response to zero evidence is then not "I don't know"
+but a hypothesis explicitly labelled as one, carrying low confidence, limited evidence
+and a status of waiting for corroboration, so that a human saying "I've seen that" and an
+agent saying "I think it's actually tool-state drift" take the count from zero to three.
+The caution issued in the same breath is the one this programme now enforces everywhere:
+keep known facts, hypotheses and speculation apart, because a system that blurs its own
+confidence levels pollutes its memory — so every contribution carries confidence,
+evidence, provenance and verification status. The conclusion was that the valuable
+artifact is neither a database of answers nor of questions but a map of humanity's
+uncertainty, because thin evidence marks where discoveries are likely.
+
+Recorded as resemblance, not descent. The four required fields are what
+`provenance/graph.py` and the research lifecycle now carry, and refusing to convert zero
+verified evidence into permission is the abstention rule. Whether this conversation
+caused those or merely reached them first has not been established, and the entry below
+on the straps is a warning against assuming the earlier telling is the ancestor.
+
 **The Lindsay Clancy case, 21 August, separated knowing from deciding.** A murder trial
 where the physical act is undisputed and the entire dispute is responsibility forced apart
 five things that had been travelling together: causation, responsibility, knowledge,
@@ -148,6 +171,14 @@ from inside — it is growth into something you were not, until the straps burst
 yields is to take the third position and refuse the third nature, and that is what seats
 this programme as the assayer: not the prospector, not the buyer, no share in the find.
 `ASSAYER.md` section 2.
+
+The lineage runs backwards, which is worth keeping rather than tidying. The rule this
+argument explains was already running a month earlier: "no path emits INDEPENDENT without
+an external witness" shipped on 8 August in
+`Silentpartnercoding/minority-prophet-out-of-tree-validation`, and a gate was rejected on
+it the same evening. ASSAYER.md was written on 7 September. So the straps conversation did
+not produce the rule; it produced the account of why the rule had been necessary. The
+practice preceded its own doctrine by a month.
 
 **The trout in the milk, from Thoreau in 1850, supplied the asymmetry.** A milkman waters
 his milk from the stream and is convicted not by anything found in the milk but by
