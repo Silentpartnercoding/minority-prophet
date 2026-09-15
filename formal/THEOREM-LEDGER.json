@@ -24,7 +24,7 @@
     "mathlib_input_rev": "v4.32.2",
     "build_command": "lake exe cache get && lake build",
     "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.; rebuilt again 2026-09-13, exit 0, 3008 jobs, with Responsiveness.lean added",
-    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]",
+    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]",
     "sorry_count": 0,
     "native_decide_count": 0
   },
@@ -639,6 +639,43 @@
       "implementation_tests": [],
       "security_interpretation": "A constant or always-abstaining rule cannot satisfy this, which no invariance theorem alone excludes.",
       "prohibited_overstatement": "Only for fresh roots all on one side. Mixed changes are covered by RS1, not here."
+    },
+    {
+      "id": "DR1",
+      "short": "Every admissible reading is among the settlements the robustness engine computes",
+      "statement": "For any reading of observations into roots that the record allows (observations on one root joined by recorded shared identities inside that root) and any labelling that same-side shared identities cannot split, the reading's settlement, failing closed on a mixed root, is in the set computed from the corners of the per-side root-count box.",
+      "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "Admissible share kappa",
+        "SideInvariant share value comp"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.DependenceRobustness.reading_mem_reachable",
+      "lean_file": "formal/lean/MinorityProphetCore/DependenceRobustness.lean",
+      "implementation_tests": [
+        "tests/test_dependence_robustness.py"
+      ],
+      "security_interpretation": "The engine never omits a settlement that some reading of the recorded dependence could produce.",
+      "prohibited_overstatement": "Soundness only: that every computed settlement is achieved by some reading is checked by brute force in tests, not proved. The correspondence with provenance/dependence_robustness.py is by construction, not proved. Says nothing about dependence the record does not carry."
+    },
+    {
+      "id": "DR2",
+      "short": "A robust settlement is the true settlement when the record carries the dependence",
+      "statement": "If the settlements computed from recorded possible dependence form a single settlement, every admissible reading settles that way; in particular the true causal grouping does whenever it is an admissible reading.",
+      "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "Admissible share kappa (the true grouping is a reading the record allows)",
+        "SideInvariant share value comp",
+        "reachable share value comp k = {s}"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.DependenceRobustness.robust_settlement_is_true",
+      "lean_file": "formal/lean/MinorityProphetCore/DependenceRobustness.lean",
+      "implementation_tests": [
+        "tests/test_dependence_robustness.py"
+      ],
+      "security_interpretation": "Settling only on robust settlements cannot settle silently against the truth when every real dependence is recorded. This is why DRI-3's zero silent false settlements held by construction.",
+      "prohibited_overstatement": "Conditional on admissibility. It does not show that real records carry every dependence, and it provides no protection against unrecorded dependence (DRI-3 family 7) or wrong lineage. DRI-4 is drafted to measure what happens when the assumption fails."
     }
   ],
   "remediation": {
@@ -683,6 +720,10 @@
     {
       "date": "2026-09-14",
       "note": "NarrowGate.lean (ten theorems) and Responsiveness.lean (four) are now ledgered as NG1-NG5 and RS1-RS3, superseding the 2026-09-13 note that they were unledgered. Rebuilt 2026-09-14 from the existing cache with Lean 4.32.2, exit 0, 3002 jobs; not a cold clone. #print axioms on all fourteen theorems reports nothing beyond propext, Classical.choice and Quot.sound. NarrowGate is an abstract model; canon/narrow_gate.py remains retracted as a proposal."
+    },
+    {
+      "date": "2026-09-15",
+      "note": "DependenceRobustness.lean ledgered as DR1 (reading_mem_reachable) and DR2 (robust_settlement_is_true). Built 2026-09-15 from the existing cache with Lean 4.32.2, exit 0, 3009 jobs; not a cold clone. #print axioms on reading_mem_reachable, robust_settlement_is_true, settle_corners and fewest_le_sideRoots reports nothing beyond propext, Classical.choice and Quot.sound. Soundness only; the converse is tested by brute force."
     }
   ]
 }
