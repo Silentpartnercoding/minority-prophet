@@ -1,0 +1,129 @@
+{
+  "schema": "minority-prophet.kl002-first-gate.v1",
+  "gate": "Twenty paraphrases of one false source must remain one root.",
+  "gateHolds": false,
+  "laundered": {
+    "trueOriginCount": 1,
+    "groundTruth": false,
+    "documents": 20,
+    "byRule": {
+      "byte_identity": {
+        "distinctRoots": 20,
+        "confidence": 0.999999999965,
+        "overcountsBy": 19
+      },
+      "declared_origin": {
+        "distinctRoots": 1,
+        "confidence": 0.7,
+        "overcountsBy": 0
+      }
+    }
+  },
+  "independent": {
+    "trueOriginCount": 3,
+    "groundTruth": true,
+    "documents": 3,
+    "byRule": {
+      "byte_identity": {
+        "distinctRoots": 3,
+        "confidence": 0.973,
+        "overcountsBy": 0
+      },
+      "declared_origin": {
+        "distinctRoots": 3,
+        "confidence": 0.973,
+        "overcountsBy": 0
+      }
+    }
+  },
+  "falseClaimOutscoresTrueClaim": true,
+  "confidenceGap": 0.026999999965,
+  "inflationTable": [
+    {
+      "roots": 1,
+      "confidence": 0.7
+    },
+    {
+      "roots": 2,
+      "confidence": 0.91
+    },
+    {
+      "roots": 3,
+      "confidence": 0.973
+    },
+    {
+      "roots": 4,
+      "confidence": 0.9919
+    },
+    {
+      "roots": 5,
+      "confidence": 0.99757
+    },
+    {
+      "roots": 6,
+      "confidence": 0.999271
+    },
+    {
+      "roots": 7,
+      "confidence": 0.9997813
+    },
+    {
+      "roots": 8,
+      "confidence": 0.99993439
+    },
+    {
+      "roots": 9,
+      "confidence": 0.999980317
+    },
+    {
+      "roots": 10,
+      "confidence": 0.9999940951
+    },
+    {
+      "roots": 11,
+      "confidence": 0.99999822853
+    },
+    {
+      "roots": 12,
+      "confidence": 0.999999468559
+    },
+    {
+      "roots": 13,
+      "confidence": 0.999999840568
+    },
+    {
+      "roots": 14,
+      "confidence": 0.99999995217
+    },
+    {
+      "roots": 15,
+      "confidence": 0.999999985651
+    },
+    {
+      "roots": 16,
+      "confidence": 0.999999995695
+    },
+    {
+      "roots": 17,
+      "confidence": 0.999999998709
+    },
+    {
+      "roots": 18,
+      "confidence": 0.999999999613
+    },
+    {
+      "roots": 19,
+      "confidence": 0.999999999884
+    },
+    {
+      "roots": 20,
+      "confidence": 0.999999999965
+    }
+  ],
+  "perRootAccuracyDeclared": 0.7,
+  "boundaries": [
+    "The population is authored and is not a sample. No rate is reported and none is derivable; every number here is a total function of the fixture and the two declared rules.",
+    "The normalizer is deliberately generous. A stricter one yields MORE byte-identity roots, never fewer, so the reported failure is the best case for byte identity.",
+    "declared_origin holding at one root is not evidence that origins are truthfully declared. It relocates the trust assumption from the text to the declaration; ADV-001's under-declared search space is untouched by this gate."
+  ]
+}
