@@ -114,7 +114,10 @@ Later constructed results, none canonical:
   robust to recorded stacked dependence removed silent false settlements in its
   synthetic model, at a cost in looks and lost settlements, and that it cannot
   catch dependence no record carries; see
-  [`DRI-3`](../../results/dri3-v1/README.md).
+  [`DRI-3`](../../results/dri3-v1/README.md). DRI-4 was rejected on two of 67
+  checks: the proven guarantee held with a complete record, but protection eroded
+  as shared identities went missing, never becoming worse than the old rule; see
+  [`DRI-4`](../../results/dri4-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

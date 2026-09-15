@@ -148,16 +148,29 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
-## Next: DRI-4 (draft) and a proof
+## Result: DRI-4 v1, and the proof
 
 DRI-3's zero silent false settlements were guaranteed by construction, so the
-guarantee is now proved: `robust_settlement_is_true` in
-`formal/lean/MinorityProphetCore/DependenceRobustness.lean` shows that when the
-engine reports one settlement, every reading the record allows gives it, including
-the true grouping whenever every real dependence is recorded.
-[`DRI-4-DESIGN-DRAFT.md`](DRI-4-DESIGN-DRAFT.md) drafts a test of what that
-assumption costs when the record is incomplete, and repairs the side-asymmetric
-trap. Not frozen, not run.
+guarantee is now proved: `robust_settlement_is_true` (ledger DR2) in
+`formal/lean/MinorityProphetCore/DependenceRobustness.lean`. When the engine reports
+one settlement, every reading the record allows gives it, including the true
+grouping whenever every real dependence is recorded.
+
+DRI-4 tested that assumption on 240,000 fresh synthetic decisions and was
+**rejected** on 2 of 67 checks.
+
+- **Complete record:** the tiered rule made zero silent false settlements in every
+  family, including a repaired side-asymmetric trap on which the old agreement
+  rule settled every decision falsely.
+- **Incomplete record:** as true shared identities went missing, protection eroded.
+  The rule prevented 33–87% of the old rule's silent errors at 10% missing and
+  10–26% at 50%, and never did worse.
+- **Why it was rejected:** two comparisons at 10% missing were not significant.
+
+Imperfect lookups remain the follow-up. Full record:
+[`results/dri4-v1/`](../../results/dri4-v1/README.md),
+[`research/records/DRI-4-V1.json`](../records/DRI-4-V1.json). Design:
+[`DRI-4-DESIGN-DRAFT.md`](DRI-4-DESIGN-DRAFT.md).
 
 ## Result: DRI-3 v1
 
