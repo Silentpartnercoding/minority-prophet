@@ -148,6 +148,25 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Result: DRI-6 v1, imperfect lookups
+
+Every earlier experiment assumed a truthful lookup. DRI-6 let each lookup miss or
+invent dependence, independently per call, and was **supported** on all 77 checks.
+
+- **Harm:** with erring lookups, every silent false settlement the tiered rule made
+  came after a look.
+- **Record check:** checking a report against the record caught no missed
+  dependence (DR3 again), and only some invented dependence.
+- **Confirmation:** looking twice and settling only when both reports agree removed
+  68–100% of those errors in every powered comparison, at 2.9–42.6 extra looks per
+  prevented false settlement against missed dependence. Against invented dependence
+  it cost many unneeded abstentions.
+- **Not covered:** a lookup wrong the same way every time.
+
+Full record: [`results/dri6-v1/`](../../results/dri6-v1/README.md),
+[`research/records/DRI-6-V1.json`](../records/DRI-6-V1.json). Design:
+[`DRI-6-DESIGN-DRAFT.md`](DRI-6-DESIGN-DRAFT.md).
+
 ## Result: DRI-5 v1, and why the record alone cannot be enough
 
 DRI-4 showed protection eroding as lineage goes missing. Ledger DR3
