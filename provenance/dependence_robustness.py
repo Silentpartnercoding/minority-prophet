@@ -18,7 +18,8 @@ reading the record cannot rule out, including readings no single cut expresses,
 such as one side's reports being one source while the other side's are independent.
 A settlement is robust only when every such reading gives the same settlement.
 
-The computation is exact and polynomial. Each side's root count ranges
+The computation is exact and near-linear in the number of observations times
+cuts. Each side's root count ranges
 independently, from its connected components under shared identity to its
 observation count. Any value in between is reachable by merging along the shared
 identities one at a time. A block that mixes true and false observations can only
@@ -130,11 +131,20 @@ def assess_dependence_robustness(
     true_range = (_components(true_indices, shared), len(true_indices))
     false_range = (_components(false_indices, shared), len(false_indices))
 
-    reachable = {
-        settle_counts(true_count, false_count, minimum_winning_roots)
-        for true_count in range(true_range[0], true_range[1] + 1)
-        for false_count in range(false_range[0], false_range[1] + 1)
-    }
+    # Settlement is monotone in each side's count, so the corners decide it. True
+    # is reachable iff the true side at its most and the false side at its fewest
+    # settles true, and symmetrically for false. Every count box that is neither
+    # all true nor all false contains an unsettled point: moving one root at a time
+    # from a true point to a false one passes through a tie.
+    most_true = settle_counts(true_range[1], false_range[0], minimum_winning_roots)
+    most_false = settle_counts(true_range[0], false_range[1], minimum_winning_roots)
+    reachable: set[str] = set()
+    if most_true == SETTLED_TRUE:
+        reachable.add(SETTLED_TRUE)
+    if most_false == SETTLED_FALSE:
+        reachable.add(SETTLED_FALSE)
+    if most_false != SETTLED_TRUE and most_true != SETTLED_FALSE:
+        reachable.add(UNSETTLED)
     if mixed:
         reachable.add(UNSETTLED)
     robust = unattributed == 0 and len(reachable) == 1

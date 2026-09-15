@@ -100,7 +100,7 @@ def _brute_force(records, cuts, threshold):
 
 def test_matches_brute_force_on_random_records():
     rng = random.Random(20260915)
-    for _ in range(600):
+    for _ in range(2000):
         cuts = ("a", "b", "c")[: rng.randint(1, 3)]
         rows = []
         for _ in range(rng.randint(1, 6)):
