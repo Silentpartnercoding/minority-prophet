@@ -37,7 +37,7 @@ true outside its stated experiment.
 | LIR-2/PHEME | Canonical fixed-method recorded-lineage transfer: rejected | `results/lir2-pheme-transfer-v0.1/canonical-manifest.json` | The constructed-corpus root grouper did not transfer to PHEME reply-tree coverage; precision remained 1.0 but recall was 0.2020. |
 | LIR-3/PHEME | Canonical observable-provenance bridge: supported | `results/lir3-confirmatory-v0.1/canonical-manifest.json` | Reply-target author identity recovered recorded PHEME reply components when exact parent IDs were hidden; this does not establish causal evidence ancestry, independence, authentication, or truth. |
 | LIR-4/PHEME | Canonical provenance graceful-degradation experiment: rejected | `results/lir4-confirmatory-v0.1/canonical-manifest.json` | Substantial reply-identity missingness fragmented recorded roots; the false-identity safety diagnostic was underpowered because only one holdout case had multiple roots. |
-| DRI-2 | Canonical critical-path experiment: rejected | `results/dri2-v1/canonical-manifest.json` | Crossed as often as always escalating and far more often than any fixed cut, with almost no excess human calls, but failed its frozen time criterion; synthetic worlds, same control domain, no held-back worlds. |
+| DRI-2-V1 | Canonical critical-path experiment: rejected | `results/dri2-v1/canonical-manifest.json` | Crossed as often as always escalating and far more often than any fixed cut, with almost no excess human calls, but failed its frozen time criterion; synthetic worlds, same control domain, no held-back worlds. |
 
 ## Promotion rule
 
