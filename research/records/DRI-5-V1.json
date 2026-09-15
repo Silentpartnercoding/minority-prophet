@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "experiments/dri5/PREREGISTRATION.md"
+  ],
+  "authorityEffect": "none",
+  "id": "DRI-5-V1",
+  "independenceClaims": [],
+  "manifest": null,
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": {
+    "commit": "f80c6a1b0085fed57352b95dec9e44e7c407e6e3",
+    "path": "experiments/dri5/PREREGISTRATION.md",
+    "sha256": "a5825a3da59a725ceb358c51809a101731b90f0235cabdae89a8cc84ccb7cb14"
+  },
+  "result": null,
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "candidate",
+  "verdict": null
+}
