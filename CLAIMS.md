@@ -199,11 +199,30 @@ the originals were harmless. The independent implementation is not in this
 repository. A2 and A3 are established from **our** audit, which publishes
 everything; the independent one remains uninterpretable.
 
-**C2. A real-repository run needs defect ground truth for real repositories.**
-Unsolved, and nothing in this programme solves it. This is why KL-001 stops at
-`fixture-passed` and why the 15% `cleanRefusalRate` ceiling (owner decision, fixed
-before any population it will be tested against exists) has nothing to test
-against yet.
+**C2. KL-001's registered endpoint has not been run against a real-repository
+corpus. The second clause of this claim was false and is corrected.**
+
+This entry previously read *"Unsolved, and nothing in this programme solves it."*
+The first clause stands; the second did not survive contact with the repository.
+**HGD-2 Domain B** replicates against NIST SARD test suite 101 — the C test suite
+for source-code analyzers — with real detector families (`clang_analyze`,
+`clang_warning`, `clang_security`, `flawfinder`, lexical) and frozen source
+digests. That is defect ground truth for real software, in this repository,
+acquired before this claim was written. **DRI-7** independently supplies ground
+truth on real repository records by dereference rather than planting.
+
+What remains true, and is now the whole of C2: HGD-2 was not designed to run
+KL-001's endpoint and does not, so KL-001 stays at `fixture-passed` and the 15%
+`cleanRefusalRate` ceiling still has nothing to test against. The work needed is
+a registration binding KL-001's endpoint to a corpus that already exists — not
+the acquisition of one.
+
+The error itself is the more useful record: a claim of the form *"nothing in this
+programme solves it"* is a statement about the whole repository made from inside
+one experiment, and no review in this programme has that scope. See
+`research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md` for the six gates
+in this class and `scripts/check_gate_coverage.py` for the check that now fails
+when such a claim goes stale.
 
 **C3. Earlier findings are superseded in framing, not withdrawn.** A reader who
 stops at `FINDING-KL001-v0.3.md` comes away with "reduces false cleans by half".

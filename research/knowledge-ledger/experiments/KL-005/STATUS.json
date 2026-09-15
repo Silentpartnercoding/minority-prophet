@@ -27,5 +27,22 @@
       "twoSidedMetricDeniesSilenceTheWin": "HOLDS -- the never-confirming system scores 0.0 (best) on the one-sided endpoint and 1.0 (worst) on the two-sided one; root_aware wins the two-sided at 0.533."
     },
     "bearing": "The prerequisite the protocol names -- 'a single-endpoint design would let indefinite abstention win; the two-sided metric is the prerequisite, not a refinement' -- now exists as code, with the defect it repairs demonstrated rather than asserted."
+  },
+  "gateCoverage": {
+    "map": "research/knowledge-ledger/GATE-COVERAGE.json",
+    "reconciliation": "research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md",
+    "advancesThisExperiment": false,
+    "note": "Other work in this repository addresses part of this experiment's open gate. Recorded so it is not rediscovered as new. It transfers no claim and did not move this experiment's state.",
+    "entries": [
+      {
+        "gatePhrase": "timestamped closed news events",
+        "strength": "partial",
+        "coveredBy": [
+          "experiments/lir1/DATASET-CATALOG.md",
+          "experiments/lir3/pheme_provenance.py"
+        ],
+        "doesNotDischarge": "No KL-005 registration exists and no corpus is frozen for it."
+      }
+    ]
   }
 }

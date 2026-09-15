@@ -57,5 +57,31 @@
     },
     "whatTheNumberIsWorth": "Two false cleans became one. n=1. Reported as one repository rather than as a 50% reduction, in FINDING-KL001-v0.3.md.",
     "unbookedCost": "Of 4 repositories moved to not_established, 1 was defective (the rescue) and 3 were clean. The registered endpoint counts only defective repositories and is structurally blind to the 3 refusals (BL-061)."
+  },
+  "gateCoverage": {
+    "map": "research/knowledge-ledger/GATE-COVERAGE.json",
+    "reconciliation": "research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md",
+    "advancesThisExperiment": false,
+    "note": "Other work in this repository addresses part of this experiment's open gate. Recorded so it is not rediscovered as new. It transfers no claim and did not move this experiment's state.",
+    "entries": [
+      {
+        "gatePhrase": "defect ground truth for real repositories",
+        "strength": "covers",
+        "coveredBy": [
+          "experiments/HGD-2-PREREGISTRATION.md",
+          "experiments/hgd2/software-detector-records.json"
+        ],
+        "doesNotDischarge": "KL-001's registered endpoint was not run against it; HGD-2 was not designed to."
+      },
+      {
+        "gatePhrase": "defect ground truth for real repositories",
+        "strength": "partial",
+        "coveredBy": [
+          "experiments/dri7/OBSERVATIONAL-REPORT.md"
+        ],
+        "doesNotDischarge": "Different defect class: a dangling reference, not an injected vulnerability.",
+        "pendingPullRequest": 190
+      }
+    ]
   }
 }

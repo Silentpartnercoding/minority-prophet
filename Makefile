@@ -40,10 +40,13 @@ verify: verify-python verify-integrity verify-site verify-evaluation
 verify-python:
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q
 
-verify-integrity: check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity
+verify-integrity: check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity check-gate-coverage
 
 check-doc-navigation:
 	"$(PYTHON)" scripts/check_documentation_navigation.py
+
+check-gate-coverage:
+	"$(PYTHON)" scripts/check_gate_coverage.py
 
 check-public-boundary:
 	"$(PYTHON)" scripts/check_public_boundary.py --base "$(BASE)" --head "$(HEAD_REF)"

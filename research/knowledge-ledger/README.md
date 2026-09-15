@@ -15,6 +15,12 @@ fixtures, expected outputs, simulations, and failed runs are not results.
 3. [`experiments/`](experiments/) contains versioned protocols, statuses, and results.
 4. [`interoperability/`](interoperability/) contains reference conformance fixtures and cross-system acceptance criteria.
 5. `knowledge_ledger.transaction` is a deliberately small reference evaluator.
+6. [`CROSS-PROGRAMME-RECONCILIATION.md`](CROSS-PROGRAMME-RECONCILIATION.md) records
+   gates that other series in this repository already answer. **Read it before
+   concluding an experiment is blocked**: six gates in the KL-001..011 ladder
+   describe work the DRI, H- and LIR-series have done, and the ladder does not
+   know. [`GATE-COVERAGE.json`](GATE-COVERAGE.json) is its machine-readable form,
+   enforced by `scripts/check_gate_coverage.py`.
 
 ## Experiment index
 
