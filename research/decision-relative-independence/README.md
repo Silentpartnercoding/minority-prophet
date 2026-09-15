@@ -148,6 +148,28 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Result: DRI-5 v1, and why the record alone cannot be enough
+
+DRI-4 showed protection eroding as lineage goes missing. Ledger DR3
+(`no_record_rule_is_immune`) proves no rule that reads only the record can be immune:
+one record can come from two groupings that settle differently. Protection needs an
+observable the loss does not remove.
+
+DRI-5 tested one, an exact content fingerprint counted as possible dependence, on
+360,000 synthetic decisions, and was **rejected** on 4 of 193 checks.
+
+- **Forgotten copies:** in the trap family, where the lost dependence is copying,
+  exact content removed every silent and every irreversible false settlement.
+- **Shared components or origins:** content carries no trace of them, and recovery
+  was partial.
+- **Paraphrase:** rewording half of copies largely defeated it.
+- **Why it was rejected:** four recovery comparisons at 25% missing were not
+  significant.
+
+Full record: [`results/dri5-v1/`](../../results/dri5-v1/README.md),
+[`research/records/DRI-5-V1.json`](../records/DRI-5-V1.json). Design:
+[`DRI-5-DESIGN-DRAFT.md`](DRI-5-DESIGN-DRAFT.md).
+
 ## Result: DRI-4 v1, and the proof
 
 DRI-3's zero silent false settlements were guaranteed by construction, so the
