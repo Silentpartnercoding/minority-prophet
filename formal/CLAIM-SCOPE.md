@@ -111,6 +111,13 @@ aggregate. Two analysts working from one published table are fully independent
 for arithmetic slips and not independent at all for a miscalibrated instrument;
 a single number would hide exactly that distinction.
 
+**Settling only on a robust settlement is sound over recorded dependence** (ledger
+DR1, DR2; `formal/lean/MinorityProphetCore/DependenceRobustness.lean`). When the
+settlements reachable under every combination of recorded possible dependence
+collapse to one, every reading the record allows settles that way, including the
+true grouping whenever it is such a reading. The condition is the whole point:
+dependence the record does not carry is outside the theorem.
+
 What this does **not** give you is detection. The system cannot discover a shared
 blind spot, only count under one you have named in advance under `A3`. An
 adversary who launders the provenance record *and* scrubs the shared

@@ -148,6 +148,17 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Next: DRI-4 (draft) and a proof
+
+DRI-3's zero silent false settlements were guaranteed by construction, so the
+guarantee is now proved: `robust_settlement_is_true` in
+`formal/lean/MinorityProphetCore/DependenceRobustness.lean` shows that when the
+engine reports one settlement, every reading the record allows gives it, including
+the true grouping whenever every real dependence is recorded.
+[`DRI-4-DESIGN-DRAFT.md`](DRI-4-DESIGN-DRAFT.md) drafts a test of what that
+assumption costs when the record is incomplete, and repairs the side-asymmetric
+trap. Not frozen, not run.
+
 ## Result: DRI-3 v1
 
 All 14 of the DRI-2 method's false settlements were stacked dependence on which
