@@ -1,0 +1,47 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-5",
+  "status": "canonical-content-backstop-rejected",
+  "files": {
+    "experiments/dri5/PREREGISTRATION.md": "a5825a3da59a725ceb358c51809a101731b90f0235cabdae89a8cc84ccb7cb14",
+    "experiments/dri5/EXECUTION-CONFIG.json": "4d4b27c4f5bc67228934f3d7e69a9315e44f915bc79e4173cbbb4b33fce2e1bf",
+    "experiments/dri5/world.py": "90792bb6de2e86ad18440327ac1ab90c5a73b3f19e6b9874ce05b37bbae966c1",
+    "experiments/dri5/arms.py": "80aab841497ef58f29c73e112e16916d4a3b1a42047dba4e63664248392fa52c",
+    "experiments/dri5/scoring.py": "3ee9456d2529dd6734bc66079fbf1c1cb330b28c45114fbf20d78c1ff6c13a97",
+    "experiments/dri5/run_confirmatory.py": "638655f092f430418d7147c02edd557b47d6a18ed35217c810e546146aba3628",
+    "experiments/dri4/world.py": "6a316cc375302f36d7f06449d7a11f2a65bdd2456b56521fc561b25de8f692bf",
+    "experiments/dri3/world.py": "f6401442a47ba6179680203914a0c850ace2306ad1eb8101ea0e22996509d592",
+    "experiments/dri3/arms.py": "104fedd3695719ca8fc7d92c0db789c5090d00973813d4eb0cc80004a7983c13",
+    "experiments/dri3/scoring.py": "4c4d02f0bd59eee951c59b06d4527821f0484c00a357387a459200940afb5093",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "provenance/dependence_robustness.py": "c5273b6d4dbe7faa22351ba456c6781ac19a4b911b002167362d41ecd1d921bf",
+    "provenance/decision_relative.py": "f9fe5d9b95982e42c754fa3a187628f09be5408f69f7fa6873029bdad3046b13",
+    "tests/test_dri5_protocol.py": "11093641cc8135cd2df0be019cfe896afeb38a2906d2fee7842d77643e201f83",
+    "formal/lean/MinorityProphetCore/DependenceRobustness.lean": "3411e4bec46e02a39a0077ef673e297b3c5d56913c0626ec0d766f78876998e9",
+    "results/dri5-v1/README.md": "03a7006da6e38a4fe9c1eb0d48b339e0499b13e281b4f012fd065bcfd06d9062",
+    "results/dri5-v1/result.json": "e6a2e80271ab7939b4f7389a96431cd0cc5c3a4f5d79bc46235a9dfb62004301",
+    "results/dri5-v1/run-stdout.txt": "54ad57443024be3eb406a98b3be121c404436e1580aec66c03cf3ffcf2c44a7d",
+    "results/dri5-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "draft": "c9cb99e",
+    "protocol": "f80c6a1b0085fed57352b95dec9e44e7c407e6e3",
+    "runner": "87cf5b8756ceb6d1c1df2f5dc4edaa380701153f",
+    "candidateRecord": "d7c7de82fd95d0a42bf64e6989774e7b8798e407"
+  },
+  "recordNote": "The lifecycle record research/records/DRI-5-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "5c92a1c7eaaeaf6f4e977d7d52718f112ba3f9a325ca9b43987084b9e4b7d877",
+    "command": "PYTHONPATH=. python -m experiments.dri5.run_confirmatory --output results/dri5-v1/result.json",
+    "environment": {
+      "commit": "d7c7de82fd95d0a42bf64e6989774e7b8798e407",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic worlds with truthful lookups, DRI-4's missing-lineage model and an exact synthetic content fingerprint. Guarantees held in the implementation; exact content removed every silent false settlement where the lost dependence was copying, recovered partially where it was a shared component or origin, and was largely defeated by paraphrase; 4 of 32 powered recovery comparisons were not significant, so the criterion was rejected. No real content-similarity, paraphrase or collision rates, fuzzy matching, rescue, independent authorship, or authority claim."
+}
