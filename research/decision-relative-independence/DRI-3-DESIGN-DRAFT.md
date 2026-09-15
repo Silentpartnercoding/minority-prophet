@@ -46,14 +46,14 @@ No human. An abstention supplies no answer, as in DRI-2 v2.
 2. **Robustness everywhere:** settles only when `assess_dependence_robustness`
    reports a robust settlement. Otherwise it looks, and abstains if looking is
    unavailable. It applies to every decision.
-3. **Tiered rule, the method under test:** the owner's cost rule (section 4a).
+3. **Tiered rule, the method under test:** the owner's cost rule (section 3a).
    - **Irreversible decisions:** as robustness everywhere.
    - **Reversible decisions:** as the agreement rule, except that a settlement which
      is not robust is **stamped "not robust"**. It is never settled silently.
 4. **Always look:** looks at every decision. This bounds the cost from above.
 5. **Oracle (reference):** takes each decision's correct move.
 
-## 4a. Cost rule (owner decision, 2026-09-15)
+## 3a. Cost rule (owner decision, 2026-09-15)
 
 A look forced by non-robustness has a cost. Immunity is not bought at any price for
 every decision.
@@ -147,7 +147,7 @@ Time is measured and reported. It is not a criterion.
      rule-of-three 95% upper bound below the chosen rate (decision 3);
    - it makes significantly fewer silent false settlements than the agreement rule
      in families 2, 4 and 5.
-2. ~~The cost.~~ **Decided:** the tiered cost rule in section 4a. There is no
+2. ~~The cost.~~ **Decided:** the tiered cost rule in section 3a. There is no
    ceiling for irreversible decisions. Reversible decisions have a ceiling of 100
    extra looks per prevented false settlement; above it, settlements are stamped
    "not robust" instead of forcing a look.
