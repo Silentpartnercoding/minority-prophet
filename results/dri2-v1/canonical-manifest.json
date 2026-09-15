@@ -1,0 +1,40 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-2",
+  "status": "canonical-critical-path-rejected",
+  "files": {
+    "experiments/dri2/PREREGISTRATION.md": "8d05327d3505d943aa7947aacefcd656be0d59be5f6b1d881d8ec2fc0cc2a94e",
+    "experiments/dri2/EXECUTION-CONFIG.json": "c13304c3801a30a1e4982a69d075b3c5ded4edfe3258b9dd04b27f91501bb125",
+    "experiments/dri2/world.py": "30327cc6a46542f1dba52cbaf4faf5fd2386510cd5b9bcd7d5b5078c4db24161",
+    "experiments/dri2/arms.py": "39bee408c92072ef0b55bfe06d18070dbae843621101b0063ebb4a0d1d47e7a8",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "experiments/dri2/scoring.py": "e9e9275d2e8b9f22d844b4e9e62e2e9b67f46e7a83a67e77d9390570b67a1be1",
+    "experiments/dri2/run_confirmatory.py": "28515af62535c2859463a421aa7903d51690f9df1b7445e29536b97992c73e71",
+    "tests/test_dri2_protocol.py": "cd7c5d823574761753bc6150f673dc6f0384ce32daced3df14ce86ba04cc98ab",
+    "research/records/DRI-2-V1.json": "f41fc4bc70f338090c8e5fff31fd77b13e8f7ef80ca9e6c8985a990f10443b16",
+    "results/dri2-v1/README.md": "41bb4a961d8a32ffdb6c4f41f2208fa52b3f80e167647e2b4190e94a14d542aa",
+    "results/dri2-v1/result.json": "7a8203aa384074748b51521e9898c2d39ab1538e3a9ffcd11b6e0828ad5d7f01",
+    "results/dri2-v1/run-stdout.txt": "86048a1941d48b17a68598bb5d301a95c93a6bb357f361adda46aa162f7718ae",
+    "results/dri2-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "protocol": "574a6a626845215244f03fa85a5cd689f0ed350c",
+    "runner": "a7e2970422df5d12d713a53909e543106a1d60b3",
+    "candidateRecord": "1e6b07c87e609627cbb393f9fec1435302ac3264"
+  },
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "ade282044427a4d584c23fa272cdfb030a2416da0ba3c8f6b77b0906cc98aa02",
+    "command": "PYTHONPATH=. python -m experiments.dri2.run_confirmatory --output results/dri2-v1/result.json",
+    "environment": {
+      "commit": "1e6b07c87e609627cbb393f9fec1435302ac3264",
+      "dirtyWorktree": false,
+      "implementation": "CPython",
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic critical-path worlds with undisclosed lineage. The method crossed as often as always escalating and far more often than any fixed cut, with almost no excess human calls, but failed its frozen time criterion. No held-back worlds; same control domain; no real-world lineage, cost, or authority claim."
+}

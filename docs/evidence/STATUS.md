@@ -105,7 +105,10 @@ Later constructed results, none canonical:
   independence cut in deployment. The preregistered DRI-1A run did not support
   even the oracle-supplied version against every fixed cut; it is recorded as an
   adverse, non-canonical result. See
-  [`DRI-1A`](../../results/dri1a-v1/README.md).
+  [`DRI-1A`](../../results/dri1a-v1/README.md). DRI-2, which withholds the failure
+  domain, was also rejected: its method crossed as often as always escalating and
+  far more often than any fixed cut, but failed its frozen time criterion. See
+  [`DRI-2`](../../results/dri2-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
