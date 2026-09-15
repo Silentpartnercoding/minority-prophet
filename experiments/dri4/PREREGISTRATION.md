@@ -1,9 +1,11 @@
-# DRI-4 — preregistration draft
+# DRI-4 — preregistration, protocol v1
 
-**Status: DRAFT. NOT FROZEN. NOT RUN.** It becomes the preregistration when it is
-renamed, committed and pinned by hash in the runner, before any confirmatory world
-is generated or scored. No comparative outcome has been computed on any DRI-4
-world.
+**Status: FROZEN, protocol v1, 2026-09-15. NOT RUN.** Frozen before any
+confirmatory world is generated or scored. The runner pins this file, the
+configuration, the implementation, the reused DRI-3 files and the engine by SHA-256,
+and refuses to run if any of them has changed. When this was frozen, no comparative
+outcome had been computed on any DRI-4 world. Development runs checked integrity and
+runtime only.
 
 Design rationale: `research/decision-relative-independence/DRI-4-DESIGN-DRAFT.md`.
 Implementation: `experiments/dri4/`, which reuses the frozen DRI-3 generator, arms

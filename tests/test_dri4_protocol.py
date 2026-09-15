@@ -1,4 +1,4 @@
-"""Integrity tests for the DRI-4 draft.
+"""Integrity tests for the frozen DRI-4 protocol.
 
 Development salt only. Construction invariants; no arm comparisons.
 """
@@ -22,12 +22,12 @@ from experiments.dri3.scoring import zero_event_upper_bound
 from provenance.dependence_robustness import assess_dependence_robustness
 
 ROOT = Path(__file__).parents[1]
-CONFIG = json.loads((ROOT / "experiments" / "dri4" / "EXECUTION-CONFIG-DRAFT.json").read_text())
+CONFIG = json.loads((ROOT / "experiments" / "dri4" / "EXECUTION-CONFIG.json").read_text())
 DEV = CONFIG["development_salt"]
 
 
-def test_config_is_a_draft_sized_for_the_bound():
-    assert CONFIG["status"] == "draft-unfrozen"
+def test_config_is_frozen_and_sized_for_the_bound():
+    assert CONFIG["status"] == "preregistered-unexecuted"
     assert tuple(CONFIG["families"]) == FAMILIES
     decisions = CONFIG["worlds_per_family"] * CONFIG["decisions_per_world"]
     assert zero_event_upper_bound(decisions) < CONFIG["success_criterion"]["maximum_rate_bound"]

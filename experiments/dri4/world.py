@@ -1,4 +1,4 @@
-"""DRI-4 world generator. DRAFT: not frozen, and never run on confirmatory seeds.
+"""DRI-4 world generator, frozen at protocol v1.
 
 Base worlds come from the frozen DRI-3 generator, plus one new family,
 `side_asymmetric_trap`, built so that the agreement trap is always present. Each

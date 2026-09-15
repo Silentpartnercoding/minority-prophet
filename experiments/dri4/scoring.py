@@ -1,4 +1,4 @@
-"""DRI-4 scoring and criterion. DRAFT, NOT FROZEN.
+"""DRI-4 scoring and criterion, frozen at protocol v1.
 
 Decisions are scored exactly as in DRI-3 (`experiments.dri3.scoring.score_decision`)
 by the frozen DRI-3 arms. Results are kept per family and per (missing, spurious)
@@ -90,7 +90,7 @@ def evaluate(
             },
         }
     return {
-        "schema": "minority-prophet.dri4-semantic-result.v0-draft",
+        "schema": "minority-prophet.dri4-semantic-result.v1",
         "worlds": worlds,
         "worldManifestSha256": manifest.hexdigest(),
         "families": families,

@@ -1,7 +1,7 @@
 {
-  "schema": "minority-prophet.dri4-execution-config.v0-draft",
+  "schema": "minority-prophet.dri4-execution-config.v1",
   "experiment": "DRI-4",
-  "status": "draft-unfrozen",
+  "status": "preregistered-unexecuted",
   "confirmatory_salt": "minority-prophet-dri4-v1-confirmatory",
   "development_salt": "minority-prophet-dri4-development",
   "families": [
@@ -13,15 +13,36 @@
   ],
   "worlds_per_family": 2000,
   "decisions_per_world": 3,
-  "roots_per_decision": [4, 5],
-  "independent_root_accuracies": [0.65, 0.75, 0.85, 0.95],
-  "erroneous_root_amplifications": [1, 3, 7, 15],
+  "roots_per_decision": [
+    4,
+    5
+  ],
+  "independent_root_accuracies": [
+    0.65,
+    0.75,
+    0.85,
+    0.95
+  ],
+  "erroneous_root_amplifications": [
+    1,
+    3,
+    7,
+    15
+  ],
   "decision_classes": {
     "low_reversible": 2,
     "high_irreversible": 3
   },
-  "missing_rates": [0, 0.1, 0.25, 0.5],
-  "spurious_rates": [0, 0.1],
+  "missing_rates": [
+    0,
+    0.1,
+    0.25,
+    0.5
+  ],
+  "spurious_rates": [
+    0,
+    0.1
+  ],
   "look_cost_ms": 1000,
   "action_cost_ms": 1,
   "familywise_alpha": 0.05,
@@ -34,7 +55,10 @@
       "side_asymmetric_trap"
     ],
     "maximum_rate_bound": 0.001,
-    "significance_missing_rates": [0.1, 0.25],
+    "significance_missing_rates": [
+      0.1,
+      0.25
+    ],
     "minimum_agreement_silent_for_test": 12,
     "requires_reproducible_semantic_result": true
   }
