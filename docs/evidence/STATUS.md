@@ -111,7 +111,11 @@ Later constructed results, none canonical:
   [`DRI-2`](../../results/dri2-v1/README.md). The final DRI-2 v2, on fresh worlds
   with no human and speed not a criterion, was supported in its synthetic model;
   see [`DRI-2 v2`](../../results/dri2-v2/README.md). Neither shows a model can
-  choose the cut in deployment.
+  choose the cut in deployment. DRI-3 showed that settling only on settlements
+  robust to recorded stacked dependence removed silent false settlements in its
+  synthetic model, at a cost in looks and lost settlements, and that it cannot
+  catch dependence no record carries; see
+  [`DRI-3`](../../results/dri3-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
