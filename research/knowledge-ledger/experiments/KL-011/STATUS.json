@@ -107,7 +107,7 @@
           "research/knowledge-ledger/experiments/KL-011/EXTERNAL-EVIDENCE.md"
         ],
         "doesNotDischarge": "A different corpus. No independent party has read a KL-011 receipt.",
-        "pendingPullRequest": 191
+        "landedInPullRequest": 191
       }
     ]
   }

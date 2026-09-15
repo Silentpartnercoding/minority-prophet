@@ -80,7 +80,7 @@
           "experiments/dri7/OBSERVATIONAL-REPORT.md"
         ],
         "doesNotDischarge": "Different defect class: a dangling reference, not an injected vulnerability.",
-        "pendingPullRequest": 190
+        "landedInPullRequest": 190
       }
     ]
   }

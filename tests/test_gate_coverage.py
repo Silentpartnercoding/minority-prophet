@@ -61,11 +61,39 @@ class GateCoverageTests(unittest.TestCase):
 
     def test_fires_when_a_pending_branch_lands(self):
         """Merging must force promotion into entries[], not leave an
-        unverifiable citation sitting in the map."""
-        result = self._with(lambda d: d["pendingEntries"][0].__setitem__(
-            "coveredBy", ["CLAIMS.md"]))
+        unverifiable citation sitting in the map.
+
+        The pending entry is synthesized rather than borrowed from the committed
+        map: this ablation must keep working when nothing happens to be pending,
+        which is the normal state.
+        """
+        def add_landed_pending(document):
+            document["pendingEntries"] = [{
+                "experiment": "KL-001",
+                "gatePhrase": "defect ground truth for real repositories",
+                "coveredBy": ["CLAIMS.md"],          # exists, so it has "landed"
+                "evidence": "synthetic ablation entry",
+                "strength": "partial",
+                "doesNotDischarge": "synthetic ablation entry",
+                "pendingPullRequest": 99999,
+            }]
+        result = self._with(add_landed_pending)
         self.assertEqual(result.returncode, 1)
         self.assertIn("has landed", result.stdout)
+
+    def test_fires_when_a_pending_entry_names_no_pull_request(self):
+        def add_unnamed_pending(document):
+            document["pendingEntries"] = [{
+                "experiment": "KL-001",
+                "gatePhrase": "defect ground truth for real repositories",
+                "coveredBy": ["experiments/not-yet-merged.md"],
+                "evidence": "synthetic ablation entry",
+                "strength": "partial",
+                "doesNotDischarge": "synthetic ablation entry",
+            }]
+        result = self._with(add_unnamed_pending)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("must name the pull request", result.stdout)
 
     def test_fires_on_an_undeclared_strength(self):
         result = self._with(lambda d: d["entries"][0].__setitem__("strength", "definitely"))

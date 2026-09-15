@@ -69,9 +69,7 @@
       "evidence": "Root structure on real mathematical literature; 57-87% of citing literature descends from other citing literature against a 0% negative control",
       "strength": "adjacent",
       "doesNotDischarge": "Literature descent is not replication outcome. KL-016 records that its own control arm collapsed."
-    }
-  ],
-  "pendingEntries": [
+    },
     {
       "experiment": "KL-001",
       "gatePhrase": "defect ground truth for real repositories",
@@ -81,7 +79,7 @@
       "evidence": "Ground truth on real repository records by dereference rather than planting; 123 checkable, 102 absent",
       "strength": "partial",
       "doesNotDischarge": "Different defect class: a dangling reference, not an injected vulnerability.",
-      "pendingPullRequest": 190
+      "landedInPullRequest": 190
     },
     {
       "experiment": "KL-011",
@@ -92,8 +90,9 @@
       "evidence": "Border A2A-MCP-CROSSING-001 transport run and an independent external execution of that corpus",
       "strength": "adjacent",
       "doesNotDischarge": "A different corpus. No independent party has read a KL-011 receipt.",
-      "pendingPullRequest": 191
+      "landedInPullRequest": 191
     }
   ],
-  "pendingNote": "These cite artifacts that exist only on unmerged branches. The checker asserts they are still absent, so that merging the branch FAILS the check and forces promotion into entries[] rather than letting the citation sit unverified. A coverage map that can cite something it cannot see is the defect this whole file exists to prevent."
+  "pendingEntries": [],
+  "pendingNote": "No entries are pending. When one is added citing an unmerged branch it must carry pendingPullRequest; the checker then asserts the artifact is still ABSENT, so merging that branch fails the check and forces promotion into entries[] rather than leaving an unverifiable citation. Both original pending entries (#190, #191) were promoted this way after their branches merged."
 }

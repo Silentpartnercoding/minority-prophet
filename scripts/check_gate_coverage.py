@@ -102,8 +102,11 @@ def main() -> int:
     print(
         f"Gate-coverage check passed: {len(document['entries'])} declared entries across "
         f"{len(covered)} experiments; every cited artifact present, every gate phrase intact, "
-        f"no covered experiment promoted. {len(pending)} entries pending unmerged branches "
-        f"({', '.join('#' + str(e['pendingPullRequest']) for e in pending)}), all still absent as expected."
+        "no covered experiment promoted." + (
+            f" {len(pending)} pending unmerged "
+            f"({', '.join('#' + str(e['pendingPullRequest']) for e in pending)}), all still absent as expected."
+            if pending else " No entries pending an unmerged branch."
+        )
     )
     return 0
 
