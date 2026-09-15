@@ -158,7 +158,9 @@ settlements and zero irreversible false settlements in six recorded-dependence
 families, where the old agreement rule settled falsely 780 times. The cost was
 extra looks where lineage exists, and lost settlements where it does not.
 Unrecorded dependence remains undetectable, and the side-asymmetric family did not
-produce its intended case. Full record:
+produce its intended case. The reversible scorecard chose forced looks, but every
+false settlement it prevented came from one family, so that policy is not adopted
+for real use until tested further. Full record:
 [`results/dri3-v1/`](../../results/dri3-v1/README.md),
 [`research/records/DRI-3-V1.json`](../records/DRI-3-V1.json). Design:
 [`DRI-3-DESIGN-DRAFT.md`](DRI-3-DESIGN-DRAFT.md).
@@ -167,8 +169,7 @@ produce its intended case. Full record:
 
 DRI-2 v2 reran the unchanged v1 method on 12,624 fresh synthetic worlds with no
 human and speed measured but not a criterion, and was **supported**: all 44
-checks passed. The method crossed as often as always abstaining and far more
-often than headcount or any fixed cut, with almost no unneeded abstentions. Its
+checks passed. The method had as few false settlements as always abstaining and far fewer than headcount or any fixed cut, with almost no unneeded abstentions. Its
 criterion was fixed after v1 was known. Full record:
 [`results/dri2-v2/`](../../results/dri2-v2/README.md),
 [`research/records/DRI-2-V2.json`](../records/DRI-2-V2.json).
@@ -176,13 +177,15 @@ criterion was fixed after v1 was known. Full record:
 ## Result: DRI-2 v1
 
 DRI-2 withheld the failure domain on 12,624 frozen synthetic worlds and was
-**rejected**: the decision-sensitivity guided method crossed as often as always
-escalating and far more often than headcount or any fixed cut, with almost no
+**rejected**: the decision-sensitivity guided method had as few false settlements as always
+escalating and far fewer than headcount or any fixed cut, with almost no
 excess human calls, but failed its frozen time criterion. Full record:
 [`results/dri2-v1/`](../../results/dri2-v1/README.md),
 [`research/records/DRI-2-V1.json`](../records/DRI-2-V1.json). Its speed checks were
 misplaced; with them set aside, all 44 other registered checks passed. See the
-[`post-result note`](../../results/dri2-v1/POST-RESULT-NOTE.md), which leaves the verdict unchanged.
+[`post-result note`](../../results/dri2-v1/POST-RESULT-NOTE.md), which leaves the verdict unchanged. Terminology notes for both DRI-2 versions:
+[`dri2-v1`](../../results/dri2-v1/TERMINOLOGY-NOTE.md),
+[`dri2-v2`](../../results/dri2-v2/TERMINOLOGY-NOTE.md).
 
 ## Result so far: DRI-1A
 
@@ -222,8 +225,8 @@ Against this document's kill criteria below:
 
 What DRI-1A adds to the design of any successor: false settlement read alone
 rewards abstention, so the next test must score correct settlement, abstention
-and false settlement together. A refusal never counts as crossing. Handing over
-to a human is part of crossing only at the junction where a human is genuinely
+and false settlement together. A refusal never counts as completing a decision. Handing over
+to a human is part of completing the run only at the junction where a human is genuinely
 needed; stopping before that point, when the system could have carried on, is a
 stall and counts as a failure. In deployment the system should still fail safe;
 the test measures whether it navigates the critical path.

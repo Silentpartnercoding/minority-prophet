@@ -15,7 +15,7 @@ shape:
 - the method treated that agreement as proof that the choice of cut did not matter,
   and settled without looking.
 
-Every other arm that trusts agreement fell in the same worlds.
+Every other arm that trusts agreement falsely settled in the same worlds.
 
 The mistake is a class, not those worlds: **agreement across a menu of dependence
 readings is not robustness when dependencies stack.** The engine change in
@@ -129,7 +129,7 @@ Time is measured and reported. It is not a criterion.
   - silent false settlements by the tiered rule in families 1 to 6;
   - false settlements by the tiered rule on irreversible decisions in families 1 to 6;
   - the reduction in silent false settlements against the agreement rule in the
-    families where the agreement rule falls.
+    families where the agreement rule falsely settles.
 - **Cost rule:** extra looks per prevented false settlement on reversible decisions
   under robustness everywhere, per family and overall, compared with the ceiling
   of 100.
