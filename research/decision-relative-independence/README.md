@@ -148,6 +148,16 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Result: DRI-2 v2 (final)
+
+DRI-2 v2 reran the unchanged v1 method on 12,624 fresh synthetic worlds with no
+human and speed measured but not a criterion, and was **supported**: all 44
+checks passed. The method crossed as often as always abstaining and far more
+often than headcount or any fixed cut, with almost no unneeded abstentions. Its
+criterion was fixed after v1 was known. Full record:
+[`results/dri2-v2/`](../../results/dri2-v2/README.md),
+[`research/records/DRI-2-V2.json`](../records/DRI-2-V2.json).
+
 ## Result: DRI-2 v1
 
 DRI-2 withheld the failure domain on 12,624 frozen synthetic worlds and was

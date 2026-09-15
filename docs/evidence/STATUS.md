@@ -108,7 +108,10 @@ Later constructed results, none canonical:
   [`DRI-1A`](../../results/dri1a-v1/README.md). DRI-2, which withholds the failure
   domain, was also rejected: its method crossed as often as always escalating and
   far more often than any fixed cut, but failed its frozen time criterion. See
-  [`DRI-2`](../../results/dri2-v1/README.md).
+  [`DRI-2`](../../results/dri2-v1/README.md). The final DRI-2 v2, on fresh worlds
+  with no human and speed not a criterion, was supported in its synthetic model;
+  see [`DRI-2 v2`](../../results/dri2-v2/README.md). Neither shows a model can
+  choose the cut in deployment.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
