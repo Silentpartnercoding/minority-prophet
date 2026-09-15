@@ -1,7 +1,7 @@
 # DRI-6 — imperfect lookups
 
-Status: **DRAFT.** It becomes a preregistration only when the protocol, generator
-and runner are committed and pinned before any confirmatory world is generated.
+Status: **Frozen.** The preregistration is `experiments/dri6/PREREGISTRATION.md`,
+protocol v1. This draft records the design rationale and is not itself pinned.
 
 ## 1. Why this exists
 

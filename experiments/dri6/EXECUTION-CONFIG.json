@@ -1,7 +1,7 @@
 {
   "schema": "minority-prophet.dri6-execution-config.v1",
   "experiment": "DRI-6",
-  "status": "draft",
+  "status": "preregistered-unexecuted",
   "confirmatory_salt": "minority-prophet-dri6-v1-confirmatory",
   "development_salt": "minority-prophet-dri6-development",
   "families": [
