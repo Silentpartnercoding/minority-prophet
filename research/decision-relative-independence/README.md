@@ -148,6 +148,14 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Next: DRI-3 (draft)
+
+All 14 of the DRI-2 method's false settlements were stacked dependence on
+which every cut agreed. [`DRI-3-DESIGN-DRAFT.md`](DRI-3-DESIGN-DRAFT.md) drafts a
+test of whether settling only on a robust settlement
+(`provenance/dependence_robustness.py`) is immune to that class, and what it
+costs. Not frozen, not run.
+
 ## Result: DRI-2 v1
 
 DRI-2 withheld the failure domain on 12,624 frozen synthetic worlds and was
