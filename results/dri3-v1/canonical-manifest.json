@@ -1,0 +1,42 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-3",
+  "status": "canonical-stacked-dependence-immunity-supported",
+  "files": {
+    "experiments/dri3/PREREGISTRATION.md": "258f831ae7f5e2e5753c9899adb1c3f111a12b815af12ec148617146d5799a0c",
+    "experiments/dri3/EXECUTION-CONFIG.json": "81bf703ad6d020068fe1e3ecd9e70e83bf51beff1ad43f2c3196b2a17a7a613b",
+    "experiments/dri3/world.py": "f6401442a47ba6179680203914a0c850ace2306ad1eb8101ea0e22996509d592",
+    "experiments/dri3/arms.py": "104fedd3695719ca8fc7d92c0db789c5090d00973813d4eb0cc80004a7983c13",
+    "experiments/dri3/scoring.py": "4c4d02f0bd59eee951c59b06d4527821f0484c00a357387a459200940afb5093",
+    "experiments/dri3/run_confirmatory.py": "291e79e5f7f96c9f2355208a051d2c175741e1c76ce21eb285d56c62f657589e",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "provenance/dependence_robustness.py": "c5273b6d4dbe7faa22351ba456c6781ac19a4b911b002167362d41ecd1d921bf",
+    "provenance/decision_relative.py": "f9fe5d9b95982e42c754fa3a187628f09be5408f69f7fa6873029bdad3046b13",
+    "tests/test_dri3_protocol.py": "74f380e568749a8a4f1b11fe790698027f63b1ae55f60cd1d1d35dc952869c4e",
+    "results/dri3-v1/README.md": "d5d90cb493cdda0ced0dd691fa7e86c46f577689ec6e75c92503fe4869e921ca",
+    "results/dri3-v1/result.json": "e41245b961137de97b1e9b272de9370c467b9f362f2ca9248c7b830850e81ab1",
+    "results/dri3-v1/run-stdout.txt": "2002799444e9ccc58db3351f493444982569628cf4a353904bc8b24debd7c1b3",
+    "results/dri3-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "protocol": "1875bd70c8540b7e989c44e2a633a2c9372e3b8a",
+    "runner": "1ee4ff230c639cb263cfadb774bede0a32f8ebc2",
+    "candidateRecord": "28d3a4c80030a33151da1b877629f58381833fc6",
+    "mislabelledDraftCommit": "e9472262b25469cdb1be4cd631edde628c508073"
+  },
+  "recordNote": "The lifecycle record research/records/DRI-3-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "508282040f5e22760c6bf86e7e53becdb477abedb814643daeef67b2d0d4709e",
+    "command": "PYTHONPATH=. python -m experiments.dri3.run_confirmatory --output results/dri3-v1/result.json",
+    "environment": {
+      "commit": "28d3a4c80030a33151da1b877629f58381833fc6",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic worlds with truthful lookups. Settling only on settlements robust over recorded possible dependence, under the tiered cost rule, made zero silent and zero irreversible false settlements in six recorded-dependence families; this holds by construction and the run confirms implementation, generator and cost. No immunity to unrecorded dependence; side-asymmetric family did not produce its case; imperfect lookups deferred; same control domain; no real-world or authority claim."
+}

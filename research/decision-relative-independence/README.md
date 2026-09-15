@@ -148,13 +148,21 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
-## Next: DRI-3 (draft)
+## Result: DRI-3 v1
 
-All 14 of the DRI-2 method's false settlements were stacked dependence on
-which every cut agreed. [`DRI-3-DESIGN-DRAFT.md`](DRI-3-DESIGN-DRAFT.md) drafts a
-test of whether settling only on a robust settlement
-(`provenance/dependence_robustness.py`) is immune to that class, and what it
-costs. Not frozen, not run.
+All 14 of the DRI-2 method's false settlements were stacked dependence on which
+every cut agreed. DRI-3 tested the engine fix
+(`provenance/dependence_robustness.py`) under the owner's tiered cost rule on
+42,000 fresh synthetic decisions and was **supported**. It made zero silent false
+settlements and zero irreversible false settlements in six recorded-dependence
+families, where the old agreement rule settled falsely 780 times. The cost was
+extra looks where lineage exists, and lost settlements where it does not.
+Unrecorded dependence remains undetectable, and the side-asymmetric family did not
+produce its intended case. Full record:
+[`results/dri3-v1/`](../../results/dri3-v1/README.md),
+[`research/records/DRI-3-V1.json`](../records/DRI-3-V1.json). Design:
+[`DRI-3-DESIGN-DRAFT.md`](DRI-3-DESIGN-DRAFT.md).
+
 ## Result: DRI-2 v2 (final)
 
 DRI-2 v2 reran the unchanged v1 method on 12,624 fresh synthetic worlds with no
