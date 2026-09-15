@@ -38,6 +38,7 @@ true outside its stated experiment.
 | LIR-3/PHEME | Canonical observable-provenance bridge: supported | `results/lir3-confirmatory-v0.1/canonical-manifest.json` | Reply-target author identity recovered recorded PHEME reply components when exact parent IDs were hidden; this does not establish causal evidence ancestry, independence, authentication, or truth. |
 | LIR-4/PHEME | Canonical provenance graceful-degradation experiment: rejected | `results/lir4-confirmatory-v0.1/canonical-manifest.json` | Substantial reply-identity missingness fragmented recorded roots; the false-identity safety diagnostic was underpowered because only one holdout case had multiple roots. |
 | DRI-2-V1 | Canonical critical-path experiment: rejected | `results/dri2-v1/canonical-manifest.json` | Crossed as often as always escalating and far more often than any fixed cut, with almost no excess human calls, but failed its frozen time criterion; synthetic worlds, same control domain, no held-back worlds. |
+| DRI-2-V2 | Canonical critical-path experiment: supported | `results/dri2-v2/canonical-manifest.json` | Unchanged v1 method on fresh worlds with no human crossed as often as always abstaining and far more often than any fixed cut, with almost no unneeded abstentions; criterion fixed after v1, synthetic worlds, same control domain, no held-back worlds. |
 
 ## Promotion rule
 
