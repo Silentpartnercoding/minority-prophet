@@ -24,7 +24,7 @@
     "mathlib_input_rev": "v4.32.2",
     "build_command": "lake exe cache get && lake build",
     "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.; rebuilt again 2026-09-13, exit 0, 3008 jobs, with Responsiveness.lean added",
-    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]",
+    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]; DR3 (no_record_rule_is_immune) audited 2026-09-15: depends only on [propext, Classical.choice, Quot.sound]",
     "sorry_count": 0,
     "native_decide_count": 0
   },
@@ -676,6 +676,21 @@
       ],
       "security_interpretation": "Settling only on robust settlements cannot settle silently against the truth when every real dependence is recorded. This is why DRI-3's zero silent false settlements held by construction.",
       "prohibited_overstatement": "Conditional on admissibility. It does not show that real records carry every dependence, and it provides no protection against unrecorded dependence (DRI-3 family 7) or wrong lineage. DRI-4 is drafted to measure what happens when the assumption fails."
+    },
+    {
+      "id": "DR3",
+      "short": "No rule that reads only the record is immune to an unrecorded dependence",
+      "statement": "There is a record (three observations, two for true and one for false, with no recorded shared identity) consistent with two groupings: the admissible one with every observation its own root settles true, and the inadmissible one with the two true observations as one root is unsettled. Any output on that record is a false settlement under the second grouping or differs from the settlement of the first.",
+      "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+      "assumptions": [],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.DependenceRobustness.no_record_rule_is_immune",
+      "lean_file": "formal/lean/MinorityProphetCore/DependenceRobustness.lean",
+      "implementation_tests": [
+        "tests/test_dri5_protocol.py"
+      ],
+      "security_interpretation": "Immunity to missing lineage cannot come from a better rule over the same record. It needs an observable the loss does not remove, such as a content fingerprint or a lookup. DRI-5 tests a content fingerprint.",
+      "prohibited_overstatement": "An existence witness, not a rate: it says nothing about how often real records lose their only link. It does not show that any added observable is sufficient; roots that share a component without being copies leave no content trace."
     }
   ],
   "remediation": {
@@ -724,6 +739,10 @@
     {
       "date": "2026-09-15",
       "note": "DependenceRobustness.lean ledgered as DR1 (reading_mem_reachable) and DR2 (robust_settlement_is_true). Built 2026-09-15 from the existing cache with Lean 4.32.2, exit 0, 3009 jobs; not a cold clone. #print axioms on reading_mem_reachable, robust_settlement_is_true, settle_corners and fewest_le_sideRoots reports nothing beyond propext, Classical.choice and Quot.sound. Soundness only; the converse is tested by brute force."
+    },
+    {
+      "date": "2026-09-15",
+      "note": "DR3 (no_record_rule_is_immune) added to DependenceRobustness.lean. The file was compiled on its own with `lake env lean` against the existing Mathlib cache, Lean 4.32.2, exit 0; a full `lake build` was not rerun for this addition. #print axioms: no_record_rule_is_immune depends on propext, Classical.choice and Quot.sound; witness_merged_not_admissible on propext; witness_distinct_admissible on none."
     }
   ]
 }

@@ -27,6 +27,9 @@ reads the settlement off two corners of that box.
   the engine computes.**
 * `robust_settlement_is_true`: **so when that set is a single settlement, every
   admissible reading, including the true grouping, settles that way.**
+* `no_record_rule_is_immune`: **but no rule that reads only the record can cover
+  a dependence the record does not carry.** One record, two groupings, two
+  settlements.
 
 This is soundness only. The converse, that every computed settlement is achieved by
 some reading, is checked by brute force in `tests/test_dependence_robustness.py`,
@@ -243,5 +246,77 @@ theorem robust_settlement_is_true (share : α → α → Prop) (value : α → B
   have h := reading_mem_reachable share value κ comp k hadm hinv
   rw [hrobust] at h
   simpa using h
+
+/-!
+## No rule that reads only the record is immune to an unrecorded dependence
+
+DR2 needs the true grouping to be admissible. When a real dependence leaves no
+recorded shared identity, nothing computed from the record can make up for it.
+
+Take three observations, two for true and one for false, with no recorded shared
+identity. The record is identical whether all three are independent (true settles,
+two roots to one) or the two true observations are one source (one root each,
+unsettled). The first grouping is admissible; the second is not, because its shared
+root has no recorded link. Whatever a rule outputs on that record is a false
+settlement under one grouping or misses the settlement under the other.
+
+Only a new observable can separate the two, such as a content fingerprint or a
+lookup. That is why DRI-5 adds one.
+-/
+
+/-- The witness: two observations for true, one for false. -/
+def witnessValue : Fin 3 → Bool := ![true, true, false]
+
+/-- The grouping in which the two true observations are one source. -/
+def witnessMerged : Fin 3 → Fin 3 := ![0, 0, 2]
+
+/-- A record with no shared identity at all. -/
+def noShare : Fin 3 → Fin 3 → Prop := fun _ _ => False
+
+theorem witness_true_side : side witnessValue true = {0, 1} := by
+  ext i; fin_cases i <;> simp [side, witnessValue]
+
+theorem witness_false_side : side witnessValue false = {2} := by
+  ext i; fin_cases i <;> simp [side, witnessValue]
+
+theorem witness_distinct_admissible : Admissible noShare (id : Fin 3 → Fin 3) := by
+  intro i j h
+  rw [show i = j from h]
+
+theorem witness_merged_not_admissible : ¬ Admissible noShare witnessMerged := by
+  intro h
+  rcases Relation.ReflTransGen.cases_tail (h 0 1 rfl) with h01 | ⟨_, _, hb⟩
+  · exact absurd h01 (by decide)
+  · exact hb.1
+
+theorem witness_distinct_settles :
+    readingSettlement witnessValue (id : Fin 3 → Fin 3) 1 = .settledTrue := by
+  have hm : ¬ Mixed witnessValue (id : Fin 3 → Fin 3) := by
+    rintro ⟨i, j, h, hv⟩; exact hv (by simp_all)
+  have ht : sideRoots witnessValue (id : Fin 3 → Fin 3) true = 2 := by
+    unfold sideRoots; rw [witness_true_side]; simp
+  have hf : sideRoots witnessValue (id : Fin 3 → Fin 3) false = 1 := by
+    unfold sideRoots; rw [witness_false_side]; simp
+  unfold readingSettlement; rw [if_neg hm, ht, hf]; decide
+
+theorem witness_merged_unsettled :
+    readingSettlement witnessValue witnessMerged 1 = .unsettled := by
+  have hm : ¬ Mixed witnessValue witnessMerged := by
+    rintro ⟨i, j, h, hv⟩
+    fin_cases i <;> fin_cases j <;> simp_all [witnessMerged, witnessValue]
+  have ht : sideRoots witnessValue witnessMerged true = 1 := by
+    unfold sideRoots; rw [witness_true_side]; simp [witnessMerged]
+  have hf : sideRoots witnessValue witnessMerged false = 1 := by
+    unfold sideRoots; rw [witness_false_side]; simp [witnessMerged]
+  unfold readingSettlement; rw [if_neg hm, ht, hf]; decide
+
+/-- **No immunity from the record alone.** On the witness record, any output `r` is
+either a settlement that is false under the merged grouping, or fails to match the
+settlement of the admissible distinct grouping. -/
+theorem no_record_rule_is_immune (r : Settlement) :
+    (r ≠ .unsettled ∧ r ≠ readingSettlement witnessValue witnessMerged 1) ∨
+      r ≠ readingSettlement witnessValue (id : Fin 3 → Fin 3) 1 := by
+  rw [witness_merged_unsettled, witness_distinct_settles]
+  cases r <;> simp
 
 end MinorityProphetCore.DependenceRobustness
