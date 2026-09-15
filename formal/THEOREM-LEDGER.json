@@ -19,14 +19,37 @@
     "not_pursued": "Deliberately not attempted, with the reason recorded and the cost measured. Distinct from underspecified, which means nobody has defined it, and from falsified, which means it is wrong. This says it was costed and declined."
   },
   "lean_environment": {
-    "toolchain": "leanprover/lean4:v4.32.2",
-    "mathlib_rev": "905b95818eb32af7874a58b427f50c1711a5e96c",
-    "mathlib_input_rev": "v4.32.2",
+    "toolchain": "leanprover/lean4:v4.33.1",
+    "mathlib_rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+    "mathlib_input_rev": "v4.33.1",
     "build_command": "lake exe cache get && lake build",
     "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.; rebuilt again 2026-09-13, exit 0, 3008 jobs, with Responsiveness.lean added",
     "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]; DR3 (no_record_rule_is_immune) audited 2026-09-15: depends only on [propext, Classical.choice, Quot.sound]",
     "sorry_count": 0,
-    "native_decide_count": 0
+    "native_decide_count": 0,
+    "kernel_soundness_status": {
+      "recompiled_at": "2026-09-14",
+      "previous_toolchain": "leanprover/lean4:v4.32.2",
+      "previous_mathlib_rev": "905b95818eb32af7874a58b427f50c1711a5e96c",
+      "reason": "Six Lean kernel soundness bugs were found and fixed between 2026-07-25 and 2026-08-21, each permitting a proof of False (CVE-2026-72844). v4.32.2 contains the first fix, #14576 (nested inductives with phantom parameters escaping type checking), cherry-picked to releases/v4.32.0 as 8be817b3f6 with the release cut about three hours later. It predates the later fixes - #14582, #14632, #14633, #14806, #14807/#14843, plus #14838 and #14833 - all shipped in v4.33.1.",
+      "exploitability_of_this_core": "MinorityProphetCore declares no nested inductive types, and #14576 is reachable only through metaprogramming that sends a declaration straight to the kernel, bypassing a frontend that rejects the ill-typed term. No exploitation path was found.",
+      "revalidation": "All 14 proved_compiled claims (17 theorem names) rebuilt on v4.33.1 with zero source changes. Zero theorems depend on sorryAx. Axiom sets are identical to the v4.32.2 baseline with ONE exception, recorded below rather than smoothed over.",
+      "axiom_set_change": {
+        "theorem": "MinorityProphetCore.RootIdentity.path_indep_two",
+        "on_v4_32_2": [
+          "propext",
+          "Quot.sound"
+        ],
+        "on_v4_33_1": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "assessment": "Gained a dependency on Classical.choice, almost certainly because a Mathlib lemma reached by decide/simp changed its own proof between revisions. Still within the declared envelope of propext/Classical.choice/Quot.sound, so no claim status changes. Recorded because 'the axioms are identical' would have been false."
+      },
+      "standing_dependency": "A compiled proof inherits the soundness of the kernel that checked it. This is a Security assumption, not a theorem: if the toolchain is later found unsound, the Mathematical theorem class degrades until recompiled.",
+      "provenance_correction": "An earlier attempt at this upgrade was performed against ~/Development/minority-prophet on M4, whose origin is a path on M1 rather than this repository. That checkout carries 17 claims, 8 proved_compiled and 6 MinorityProphetCore files, and is missing RootIdentity.lean, Asymmetric.lean, NarrowGate.lean and Responsiveness.lean. Both ledgers report ledger_version 1.1.0 and generated 2026-08-05, so a version comparison reports them identical while the content differs. This run was performed against Silentpartnercoding/minority-prophet main at 846fd3d."
+    }
   },
   "claims": [
     {
