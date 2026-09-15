@@ -1,4 +1,4 @@
-"""DRI-3 scoring, cost scorecard and criterion. DRAFT, NOT FROZEN.
+"""DRI-3 scoring, cost scorecard and criterion, frozen at protocol v1.
 
 Decision outcomes:
 
@@ -127,7 +127,7 @@ def evaluate(
             "reversibleScorecard": _scorecard(p, ceiling),
         }
     return {
-        "schema": "minority-prophet.dri3-semantic-result.v0-draft",
+        "schema": "minority-prophet.dri3-semantic-result.v1",
         "worlds": worlds,
         "worldManifestSha256": manifest.hexdigest(),
         "families": families,

@@ -1,4 +1,4 @@
-"""DRI-3 arms. DRAFT, NOT FROZEN.
+"""DRI-3 arms, frozen at protocol v1.
 
 Contestant arms see only a ``VisibleDecision``: the observations, the sufficiency
 threshold and the decision class. Reversibility is a property of the decision

@@ -1,4 +1,4 @@
-"""DRI-3 world generator. DRAFT: not frozen, and never run on confirmatory seeds.
+"""DRI-3 world generator, frozen at protocol v1.
 
 Each world holds three independent decisions. Every decision carries observations
 with identities at five lineage cuts, and a hidden true causal grouping that a

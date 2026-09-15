@@ -1,1 +1,1 @@
-"""DRI-3: is settling immune to stacked dependence? DRAFT, NOT FROZEN."""
+"""DRI-3: is settling immune to stacked dependence? Protocol v1, frozen."""

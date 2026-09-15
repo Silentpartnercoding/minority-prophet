@@ -1,9 +1,14 @@
-# DRI-3 — preregistration draft
+# DRI-3 — preregistration, protocol v1
 
-**Status: DRAFT. NOT FROZEN. NOT RUN.** It becomes the preregistration when it is
-renamed, committed and pinned by hash in the runner, before any confirmatory world
-is generated or scored. No comparative outcome has been computed on any DRI-3
-world.
+**Status: FROZEN, protocol v1, 2026-09-15. NOT RUN.** Frozen before any
+confirmatory world is generated or scored. The runner pins this file, the
+configuration, the implementation and the engine by SHA-256, and refuses to run if
+any of them has changed. When this was frozen, no comparative outcome had been
+computed on any DRI-3 world. Development runs checked integrity and runtime only.
+
+Commit history note: commit `e947226`, titled "Freeze DRI-3 protocol v1", holds the
+unfrozen draft files. Its freeze step failed before the rename. The protocol commit
+is the next commit, which records this.
 
 Design rationale: `research/decision-relative-independence/DRI-3-DESIGN-DRAFT.md`.
 Implementation: `experiments/dri3/`. Engine under test:

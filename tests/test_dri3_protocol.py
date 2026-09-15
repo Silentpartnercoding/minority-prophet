@@ -1,4 +1,4 @@
-"""Integrity tests for the DRI-3 draft.
+"""Integrity tests for the frozen DRI-3 protocol.
 
 Development salt only. These assert construction invariants and never compare
 arms, so no comparative outcome is seen before the protocol is frozen.
@@ -34,7 +34,7 @@ from experiments.dri3.world import (
 from provenance.dependence_robustness import assess_dependence_robustness
 
 ROOT = Path(__file__).parents[1]
-CONFIG = json.loads((ROOT / "experiments" / "dri3" / "EXECUTION-CONFIG-DRAFT.json").read_text())
+CONFIG = json.loads((ROOT / "experiments" / "dri3" / "EXECUTION-CONFIG.json").read_text())
 DEV = CONFIG["development_salt"]
 
 
@@ -50,8 +50,8 @@ def _units(decision):
     return _partition(decision, lambda item: unit_of[item.observation_id])
 
 
-def test_config_is_a_draft_sized_for_the_bound():
-    assert CONFIG["status"] == "draft-unfrozen"
+def test_config_is_frozen_and_sized_for_the_bound():
+    assert CONFIG["status"] == "preregistered-unexecuted"
     assert CONFIG["development_salt"] != CONFIG["confirmatory_salt"]
     decisions = CONFIG["worlds_per_family"] * CONFIG["decisions_per_world"]
     irreversible = decisions // 2
