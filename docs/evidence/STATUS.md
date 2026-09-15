@@ -117,7 +117,10 @@ Later constructed results, none canonical:
   [`DRI-3`](../../results/dri3-v1/README.md). DRI-4 was rejected on two of 67
   checks: the proven guarantee held with a complete record, but protection eroded
   as shared identities went missing, never becoming worse than the old rule; see
-  [`DRI-4`](../../results/dri4-v1/README.md).
+  [`DRI-4`](../../results/dri4-v1/README.md). DRI-5 was rejected on four of 193
+  checks: an exact content fingerprint fully restored protection where missing
+  lineage hid copying, but not where it hid a shared component, and paraphrase
+  largely defeated it; see [`DRI-5`](../../results/dri5-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

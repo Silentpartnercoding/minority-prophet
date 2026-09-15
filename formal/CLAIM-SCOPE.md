@@ -118,6 +118,12 @@ collapse to one, every reading the record allows settles that way, including the
 true grouping whenever it is such a reading. The condition is the whole point:
 dependence the record does not carry is outside the theorem.
 
+**And no rule over the record alone can cover that gap** (ledger DR3). A record
+with no shared identity cannot tell independent observations from copies of one
+source, so any output on it is wrong under one of the two groupings. Protection
+against lost lineage needs an observable the loss does not remove, such as a
+content fingerprint or a lookup.
+
 What this does **not** give you is detection. The system cannot discover a shared
 blind spot, only count under one you have named in advance under `A3`. An
 adversary who launders the provenance record *and* scrubs the shared
