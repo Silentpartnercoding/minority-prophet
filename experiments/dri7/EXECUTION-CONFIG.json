@@ -1,0 +1,85 @@
+{
+  "schema": "minority-prophet.dri7-execution-config.v1",
+  "experiment": "DRI-7",
+  "status": "observational-analysis-complete",
+  "preregistered": false,
+  "preregistration_note": "The corpus is historical and the analysis was performed before this configuration existed. No hypothesis was frozen in ignorance of the outcome. Do not cite the rates below as estimates; cite the non-falsifiability finding, which a single counterexample refutes.",
+  "generated_world": false,
+  "salt": null,
+  "salt_note": "DRI-1..6 seed a generator. DRI-7 has no generator: ground truth is established by dereferencing a referent, not by authoring it.",
+  "corpora": [
+    {
+      "id": "A",
+      "name": "recorded_result_commits",
+      "n": 358,
+      "identifier": "40-hex git object id",
+      "location": "repository path recorded alongside the identifier",
+      "writer": "job runner at completion",
+      "authored_for_this_experiment": false
+    },
+    {
+      "id": "B",
+      "name": "recorded_qa_artifacts",
+      "n": 284,
+      "identifier": "sha256 content hash",
+      "location": "absolute filesystem path",
+      "writer": "verification evidence path",
+      "authored_for_this_experiment": false
+    }
+  ],
+  "rules": {
+    "A_record_only": "accept when the identifier is well formed and a location is named; consult nothing outside the record",
+    "B_look_twice": "rule A, then dereference the referent exactly once",
+    "C_look_by_content": "for referents rule B finds absent, search a content-addressed store by hash rather than by location"
+  },
+  "results": {
+    "corpus_a": {
+      "rule_a_accepts": 358,
+      "rule_a_detects": 0,
+      "rule_b_checkable_on_this_host": 123,
+      "rule_b_unverifiable_on_this_host": 235,
+      "rule_b_absent": 102,
+      "rule_b_rate": 0.829,
+      "share_found_only_by_looking_twice": 1.0
+    },
+    "corpus_b": {
+      "rule_a_accepts": 284,
+      "rule_a_detects": 0,
+      "rule_b_absent": 284,
+      "rule_b_rate": 1.0,
+      "rule_c_recoverable_by_content": 233,
+      "rule_c_rate": 0.82,
+      "genuinely_unrecoverable": 51,
+      "share_found_only_by_looking_twice": 1.0
+    }
+  },
+  "negative_control": {
+    "table": "attempt_leases",
+    "n": 2299,
+    "records_missing_a_job_or_worker": 0,
+    "finding": "clean",
+    "why_it_is_recorded": "An extractor sampling only this table reports a sound system. Cleanliness of one table is not evidence about the plane; it is evidence about that table.",
+    "empty_tables_that_would_also_report_clean": [
+      "workflow_runs",
+      "node_runs",
+      "artifacts",
+      "edge_transitions",
+      "evaluations",
+      "owner_decisions",
+      "outcomes"
+    ],
+    "empty_table_note": "All seven are empty. A checker aimed at them returns zero defects over zero rows, which is indistinguishable from a passing result unless the denominator is reported."
+  },
+  "boundaries": [
+    "235 of corpus A is unverifiable on this host, not clean. Rates are over what one machine can dereference; treating unverifiable as failure converts machine visibility into a false negative.",
+    "One host, one control plane, six weeks (2026-07-31 to 2026-09-15). Not a population estimate.",
+    "Identical hashes are not proof of copying: constant and empty outputs collide.",
+    "Corpora A and B are independent in identifier scheme and code path, not in root cause: both are written into the same disposable workspace.",
+    "Corpus A's absences have one known mechanism (objects written inside a `git clone --shared` disposable clone). A second mechanism would test generality further than corpus B does."
+  ],
+  "refutation": "Exhibit one record in either corpus that rule A rejects.",
+  "reproduce": "DRI7_LEDGER_STATE=<state.json> DRI7_CONTENT_STORE=<store> python3 experiments/dri7/measure.py (read-only; emits aggregates only, cells below 10 suppressed)",
+  "corpus_distributed": false,
+  "corpus_note": "The measured corpus is an operator's private ledger and is not published with this repository. Method, aggregates and boundaries are.",
+  "report": "experiments/dri7/OBSERVATIONAL-REPORT.md"
+}
