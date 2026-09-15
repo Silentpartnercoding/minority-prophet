@@ -1,0 +1,22 @@
+{
+  "artifacts": [
+    "experiments/dri7/OBSERVATIONAL-REPORT.md",
+    "experiments/dri7/EXECUTION-CONFIG.json",
+    "experiments/dri7/measure.py"
+  ],
+  "authorityEffect": "none",
+  "id": "DRI-7-V1",
+  "independenceClaims": [],
+  "manifest": null,
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": null,
+  "result": null,
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "exploratory",
+  "verdict": null
+}

@@ -148,6 +148,49 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Observation: DRI-7, the same rules on a corpus nobody authored
+
+**Not preregistered, and not a result in the sense of the sections below.** The
+corpus is historical and the analysis was performed before the write-up existed.
+It is recorded as an *exploratory* record for that reason, and the repository's
+own record tooling refuses to pin a protocol for it.
+
+DRI-1 through DRI-6 generate their worlds. That is the right way to establish a
+mechanism and the wrong way to establish a rate, because a rate measured on an
+authored corpus reads back the setting that authored it. DRI-7 runs the same
+rules against 642 records written over six weeks by a production job-control
+plane, for purposes unrelated to this research.
+
+- **Record-only is not inaccurate; it is non-falsifiable.** It accepted 642 of
+  642 records across two corpora that share no identifier scheme. No input
+  present could make it return false: the defect lies entirely outside what it
+  inspects. A check whose outcome has only ever held one value has not been
+  tested, whatever its sample size.
+- **Looking twice removed 100% of the silent failures**, on both corpora,
+  because the first look removed none. That is the top of DRI-6's 68–100% band,
+  reached on data with no author.
+- **The DRI-6 gap is the one that bites.** DRI-6 recorded "a lookup wrong the
+  same way every time" as not covered. Record-only is the limiting case of it —
+  a check whose answer is constant regardless of input — and it is what was
+  running in production.
+- **Content addressing recovered 82% of what location lost.** Absent referents
+  were mostly retrievable by hash from a store already present; they were not
+  lost, they were addressed by a path that did not survive.
+- **What makes a check untested is that its outcome never varies.** A negative
+  control shows the second way to build one: a sibling table of 2,299 rows is
+  genuinely clean and seven more hold zero rows, so a check aimed at those eight
+  reports a sound system — truthfully, and worthlessly, since zero-over-zero and
+  zero-over-2,299 print the same — while 102 absent referents sit in a ninth.
+  Report the denominator; audit outcome distribution, not pass rate.
+- **Boundaries:** one host, one control plane; 235 of 358 records name
+  repositories absent from this host and are *unverifiable*, not clean; the two
+  corpora are independent in identifier scheme and code path, not in root cause.
+
+Refuted by exhibiting a single record that record-only rejects. Full write-up:
+[`experiments/dri7/OBSERVATIONAL-REPORT.md`](../../experiments/dri7/OBSERVATIONAL-REPORT.md),
+[`research/records/DRI-7-V1.json`](../records/DRI-7-V1.json). Rerun:
+`python3 experiments/dri7/measure.py`.
+
 ## Result: DRI-6 v1, imperfect lookups
 
 Every earlier experiment assumed a truthful lookup. DRI-6 let each lookup miss or
