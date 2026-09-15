@@ -177,3 +177,19 @@ def test_evaluation_runs_and_is_deterministic_on_development_worlds():
     assert first == second
     assert first["worlds"] == 4 * len(CONFIG["families"])
     assert set(first["families"]) == set(CONFIG["families"])
+
+
+def test_runner_pins_hold_and_refuse_changed_inputs(tmp_path):
+    import shutil
+
+    from experiments.dri3.run_confirmatory import PINNED, load_config, verify_pins
+
+    verify_pins()
+    assert load_config()["status"] == "preregistered-unexecuted"
+    for name in PINNED:
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(ROOT / name, tmp_path / name)
+    engine = tmp_path / "provenance/dependence_robustness.py"
+    engine.write_text(engine.read_text() + "\n# changed\n")
+    with pytest.raises(ValueError, match="dependence_robustness"):
+        verify_pins(tmp_path)
