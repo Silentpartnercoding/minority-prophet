@@ -1,4 +1,4 @@
-"""DRI-2 scoring and evaluation. DRAFT, NOT FROZEN.
+"""DRI-2 scoring and evaluation, frozen at protocol v1.
 
 Junction scoring (hidden junction type, arm's terminal action):
 
@@ -221,7 +221,7 @@ def evaluate(
             "tests": _primary(by_arm, config["familywise_alpha"]),
         }
     return {
-        "schema": "minority-prophet.dri2-semantic-result.v0-draft",
+        "schema": "minority-prophet.dri2-semantic-result.v1",
         "worlds": worlds,
         "worldManifestSha256": manifest.hexdigest(),
         "families": families,
@@ -231,3 +231,33 @@ def evaluate(
 def semantic_hash(result: Mapping[str, Any]) -> str:
     encoded = json.dumps(result, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def evaluate_criterion(
+    semantic: Mapping[str, Any], config: Mapping[str, Any], reproducible: bool
+) -> dict[str, Any]:
+    """The preregistered success criterion (PREREGISTRATION.md section 10)."""
+    rule = config["success_criterion"]
+    alpha = config["familywise_alpha"]
+    checks: dict[str, bool] = {}
+    for family in rule["structured_families"]:
+        tests = semantic["families"][family]["tests"]
+        crossing, timing = tests["crossing"], tests["timeToCrossing"]
+        for arm in rule["crossing_superior_to"]:
+            row = crossing[arm]
+            checks[f"{family}:crossesMoreOftenThan:{arm}"] = row["holmP"] < alpha and row["difference"] > 0
+        for arm, row in crossing.items():
+            checks[f"{family}:notCrossingLessOftenThan:{arm}"] = not (
+                row["holmP"] < alpha and row["difference"] < 0
+            )
+        for arm in rule["faster_than"]:
+            row = timing[arm]
+            checks[f"{family}:fasterThan:{arm}"] = row["holmP"] < alpha and row["wilcoxon_z"] < 0
+    family = rule["non_inferiority_family"]
+    for arm, row in semantic["families"][family]["tests"]["crossing"].items():
+        low = row["difference95"][0]
+        checks[f"{family}:nonInferiorTo:{arm}"] = (
+            low is not None and low >= -rule["non_inferiority_margin"]
+        )
+    checks["semanticResultReproducible"] = reproducible
+    return {"tests": checks, "supported": all(checks.values())}

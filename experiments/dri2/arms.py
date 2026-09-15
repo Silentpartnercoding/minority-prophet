@@ -1,4 +1,4 @@
-"""DRI-2 arms. DRAFT, NOT FROZEN.
+"""DRI-2 arms, frozen at protocol v1.
 
 Contestant arms see only a ``VisibleDecision``: the observations and the
 sufficiency threshold. They are never given the failure domain, the junction

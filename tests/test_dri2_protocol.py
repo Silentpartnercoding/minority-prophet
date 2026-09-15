@@ -1,4 +1,4 @@
-"""Integrity tests for the DRI-2 draft generator, arms, scoring and statistics.
+"""Integrity tests for the frozen DRI-2 generator, arms, scoring and statistics.
 
 These use the development salt only and assert construction invariants. They do
 not compare contestant arms, so no confirmatory or comparative outcome is seen
@@ -34,7 +34,7 @@ from experiments.dri2.world import (
 )
 
 ROOT = Path(__file__).parents[1]
-CONFIG = json.loads((ROOT / "experiments" / "dri2" / "EXECUTION-CONFIG-DRAFT.json").read_text())
+CONFIG = json.loads((ROOT / "experiments" / "dri2" / "EXECUTION-CONFIG.json").read_text())
 DEV = CONFIG["development_salt"]
 
 
@@ -50,9 +50,10 @@ def _unit_partition(decision):
     return _partition(decision, lambda item: unit_of[item.observation_id])
 
 
-def test_config_is_a_draft_and_sized_for_significance():
-    assert CONFIG["status"] == "draft-unfrozen"
-    assert CONFIG["success_criterion"] == "pending-owner-approval"
+def test_config_is_frozen_and_sized_for_significance():
+    assert CONFIG["status"] == "preregistered-unexecuted"
+    assert CONFIG["wrong_time_escalation_cost_ms"] == 2 * CONFIG["probe_cost_ms"]
+    assert set(CONFIG["success_criterion"]["faster_than"]) == {"determined_or_escalate", "weakest_link"}
     assert CONFIG["worlds_per_path_type"] * len(CONFIG["path_types"]) >= 3155
     assert CONFIG["development_salt"] != CONFIG["confirmatory_salt"]
 
@@ -150,3 +151,31 @@ def test_every_contestant_arm_runs_and_probes_are_charged():
     for d in world.decisions:
         terminal, calls = act("agent_headcount", d)
         assert calls == 0
+
+
+def _fake_semantic(crossing_row, timing_row):
+    arms = COMPARISON_ARMS
+    family = {"tests": {"crossing": {a: dict(crossing_row) for a in arms},
+                        "timeToCrossing": {a: dict(timing_row) for a in arms}}}
+    return {"families": {f: family for f in CONFIG["families"]}}
+
+
+def test_criterion_logic_on_constructed_rows():
+    from experiments.dri2.scoring import evaluate_criterion
+
+    winning = _fake_semantic(
+        {"holmP": 0.001, "difference": 0.1, "difference95": [0.05, 0.15]},
+        {"holmP": 0.001, "wilcoxon_z": -5.0},
+    )
+    assert evaluate_criterion(winning, CONFIG, True)["supported"]
+    assert not evaluate_criterion(winning, CONFIG, False)["supported"]
+    worse = _fake_semantic(
+        {"holmP": 0.001, "difference": -0.1, "difference95": [-0.15, -0.05]},
+        {"holmP": 0.001, "wilcoxon_z": -5.0},
+    )
+    assert not evaluate_criterion(worse, CONFIG, True)["supported"]
+    slower = _fake_semantic(
+        {"holmP": 0.001, "difference": 0.1, "difference95": [0.05, 0.15]},
+        {"holmP": 0.001, "wilcoxon_z": 5.0},
+    )
+    assert not evaluate_criterion(slower, CONFIG, True)["supported"]

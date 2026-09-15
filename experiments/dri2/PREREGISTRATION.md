@@ -1,10 +1,10 @@
-# DRI-2 — preregistration draft
+# DRI-2 — preregistration, protocol v1
 
-**Status: DRAFT. NOT FROZEN. NOT RUN.** This becomes a preregistration only after
-the owner approves the two items marked **OWNER DECISION**, and after the protocol,
-configuration and runner are committed and pinned by hash, before any confirmatory
-world is generated or scored. No comparative outcome has been computed on any world,
-development or confirmatory.
+**Status: FROZEN, protocol v1, 2026-09-14. NOT RUN.** Frozen before any
+confirmatory world is generated or scored. The owner approved both open decisions on
+2026-09-14. The runner pins this file, the configuration and the implementation by
+SHA-256 and refuses to run if any of them has changed. When this was frozen, no
+comparative outcome had been computed on any world, development or confirmatory.
 
 Design rationale: `research/decision-relative-independence/DRI-2-DESIGN-DRAFT.md`.
 Implementation: `experiments/dri2/`.
@@ -118,7 +118,8 @@ None of the contestants except the method under test calls the probe.
 A fall ends the run. A run with no fall is **crossed**.
 
 **Clock:** each action costs 1 virtual ms, and each probe costs 1,000. A wrong-time
-escalation (at a settle or gather junction) costs **OWNER DECISION A**.
+escalation (at a settle or gather junction) costs 2,000 virtual ms, twice a probe
+(owner decision).
 
 **Primary endpoint:** the crossing rate, per family.
 
@@ -150,7 +151,7 @@ escalation (at a settle or gather junction) costs **OWNER DECISION A**.
 
 ## 10. Success, failure, invalidation, stop
 
-**OWNER DECISION B — success criterion.** Proposed:
+**Success criterion** (owner-approved, encoded in `EXECUTION-CONFIG.json`):
 
 1. **Structured families** (`single_domain`, `joint_domain` and
    `separate_control_shared_origin`), each:
@@ -175,7 +176,7 @@ contestant arm is shown to have read a hidden field.
 The following are pinned by SHA-256 in the runner at the freeze commit:
 
 - this protocol;
-- `EXECUTION-CONFIG` (renamed from `-DRAFT` at freeze, with `status: frozen`);
+- `EXECUTION-CONFIG.json`;
 - `world.py`, `arms.py`, `stats.py`, `scoring.py`.
 
 **Environment:** CPython 3.12, with no third-party packages beyond the repository.
@@ -187,10 +188,22 @@ Synthetic worlds only. No authority, no deployment and no external contact. A
 positive result is evidence for this frozen model only. DRI-2 is authored in the
 same control domain as the method it tests, and every result carries that limit.
 
-## Owner decisions required before freezing
+## Procedural note
 
-- **A. Charge for a wrong-time escalation.** As written, escalating costs 1 ms and
-  probing costs 1,000 ms, so an arm that escalates instead of looking finishes
-  faster. Proposed: 2,000 ms, twice a probe, matching "asking early costs at least
-  double". Required hand-overs stay free.
-- **B. Success criterion** in section 10.
+Development used the development salt only. Integrity tests assert construction
+invariants and compare no contestant arms. Writing them exposed two construction
+issues, both fixed before any outcome existed:
+
+- with a fixed five causal roots a vote can never tie, so no native hand-over
+  junction could occur; roots are now 4 or 5;
+- the oracle settled in twins, where the lineage is withheld; it now takes each
+  junction's correct move.
+
+A 240-world development evaluation checked determinism and runtime. It printed
+only integrity fields.
+
+The design draft had removed escalation charges from DRI-2. Without a charge, the
+time endpoint rewards escalating instead of looking, because an escalation costs
+1 ms and a probe 1,000 ms. The owner therefore approved the wrong-time charge of
+2,000 ms on 2026-09-14, together with the success criterion in section 10 as
+proposed.

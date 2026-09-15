@@ -1,4 +1,4 @@
-"""DRI-2 world generator. DRAFT: not frozen, and never run on confirmatory seeds.
+"""DRI-2 world generator, frozen at protocol v1.
 
 A world is a short sequence of decisions, revealed one at a time. Each decision
 carries observations with identities at the five lineage cuts DRI-1A used, but

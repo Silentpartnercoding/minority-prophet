@@ -1,1 +1,1 @@
-"""DRI-2: decision-relative independence on the critical path. DRAFT, NOT FROZEN."""
+"""DRI-2: decision-relative independence on the critical path. Protocol v1, frozen."""

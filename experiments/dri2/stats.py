@@ -1,4 +1,4 @@
-"""Statistics for DRI-2, in the standard library only. DRAFT, NOT FROZEN."""
+"""Statistics for DRI-2, in the standard library only. Frozen at protocol v1."""
 
 from __future__ import annotations
 
