@@ -155,6 +155,15 @@ which every cut agreed. [`DRI-3-DESIGN-DRAFT.md`](DRI-3-DESIGN-DRAFT.md) drafts 
 test of whether settling only on a robust settlement
 (`provenance/dependence_robustness.py`) is immune to that class, and what it
 costs. Not frozen, not run.
+## Result: DRI-2 v2 (final)
+
+DRI-2 v2 reran the unchanged v1 method on 12,624 fresh synthetic worlds with no
+human and speed measured but not a criterion, and was **supported**: all 44
+checks passed. The method crossed as often as always abstaining and far more
+often than headcount or any fixed cut, with almost no unneeded abstentions. Its
+criterion was fixed after v1 was known. Full record:
+[`results/dri2-v2/`](../../results/dri2-v2/README.md),
+[`research/records/DRI-2-V2.json`](../records/DRI-2-V2.json).
 
 ## Result: DRI-2 v1
 
