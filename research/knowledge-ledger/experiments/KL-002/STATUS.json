@@ -26,5 +26,21 @@
     "outcome": "DOES NOT HOLD under byte identity: 20 distinct roots for 1 true origin. declared_origin yields 1.",
     "harm": "A false claim laundered through 20 paraphrases reaches confidence 0.99999999996; a true claim with 3 genuinely independent sources reaches 0.973. The false claim outscores the true one with no adversary present.",
     "bearing": "Confirms constraint ADV-004 by measurement rather than assertion, and shows the repair (declared_origin) relocates the trust assumption to the declaration without touching ADV-001's under-declared search space."
+  },
+  "gateCoverage": {
+    "map": "research/knowledge-ledger/GATE-COVERAGE.json",
+    "reconciliation": "research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md",
+    "advancesThisExperiment": false,
+    "note": "Other work in this repository addresses part of this experiment's open gate. Recorded so it is not rediscovered as new. It transfers no claim and did not move this experiment's state.",
+    "entries": [
+      {
+        "gatePhrase": "splits one source into many roots",
+        "strength": "covers",
+        "coveredBy": [
+          "experiments/HVI-1-PREREGISTRATION.md"
+        ],
+        "doesNotDischarge": "KL-002 scopes its remainder to an agent PIPELINE assigning rootIds, which HVI-1 does not test."
+      }
+    ]
   }
 }

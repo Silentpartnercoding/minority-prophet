@@ -93,5 +93,22 @@
     "pattern": "stale-self-description",
     "novelty": "First instance ACROSS repositories rather than within one. Prior instances (PROV-005, ART-101, TEST-101, DOC-102, and this experiment's own blocker corrected at RUN-20260807-6) were each caught by a review that re-derived rather than re-read. No such review spans repositories, so this one was caught by the owner's memory instead.",
     "latencyDays": 13
+  },
+  "gateCoverage": {
+    "map": "research/knowledge-ledger/GATE-COVERAGE.json",
+    "reconciliation": "research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md",
+    "advancesThisExperiment": false,
+    "note": "Other work in this repository addresses part of this experiment's open gate. Recorded so it is not rediscovered as new. It transfers no claim and did not move this experiment's state.",
+    "entries": [
+      {
+        "gatePhrase": "a transport that is not of our own construction",
+        "strength": "adjacent",
+        "coveredBy": [
+          "research/knowledge-ledger/experiments/KL-011/EXTERNAL-EVIDENCE.md"
+        ],
+        "doesNotDischarge": "A different corpus. No independent party has read a KL-011 receipt.",
+        "landedInPullRequest": 191
+      }
+    ]
   }
 }

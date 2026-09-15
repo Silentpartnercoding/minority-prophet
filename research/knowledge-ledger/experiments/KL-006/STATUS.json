@@ -19,5 +19,21 @@
     "KL-000"
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed in RUN-20260807-1, so this dependency is satisfied for fixture-stage work but NOT for any promotion: KL-000 itself awaits independent reimplementation.",
-  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence.",
+  "gateCoverage": {
+    "map": "research/knowledge-ledger/GATE-COVERAGE.json",
+    "reconciliation": "research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md",
+    "advancesThisExperiment": false,
+    "note": "Other work in this repository addresses part of this experiment's open gate. Recorded so it is not rediscovered as new. It transfers no claim and did not move this experiment's state.",
+    "entries": [
+      {
+        "gatePhrase": "shared upstream dependency is not representable in schema v0.1",
+        "strength": "partial",
+        "coveredBy": [
+          "experiments/hgd1/dependency-receipt.schema.json"
+        ],
+        "doesNotDischarge": "ADV-005 is stated against the KL schema; no migration has been done."
+      }
+    ]
+  }
 }

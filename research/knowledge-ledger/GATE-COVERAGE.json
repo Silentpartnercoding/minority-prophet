@@ -1,0 +1,98 @@
+{
+  "schema": "minority-prophet.gate-coverage.v1",
+  "note": "Declared answers to gates that other parts of this repository have already addressed. This file transfers no claim and advances no experiment; see CROSS-PROGRAMME-RECONCILIATION.md. Each entry is checked by scripts/check_gate_coverage.py, which fails when either side drifts.",
+  "strengths": {
+    "covers": "The cited artifact answers the gate as written, on the population the gate asks for.",
+    "partial": "The cited artifact answers a necessary part of the gate.",
+    "adjacent": "The cited artifact answers the same question about a DIFFERENT artifact. Inadmissible for the gate; recorded so it is not rediscovered as though new."
+  },
+  "entries": [
+    {
+      "experiment": "KL-001",
+      "gatePhrase": "defect ground truth for real repositories",
+      "coveredBy": [
+        "experiments/HGD-2-PREREGISTRATION.md",
+        "experiments/hgd2/software-detector-records.json"
+      ],
+      "evidence": "NIST SARD test suite 101 with real detector families and frozen source digests",
+      "strength": "covers",
+      "doesNotDischarge": "KL-001's registered endpoint was not run against it; HGD-2 was not designed to."
+    },
+    {
+      "experiment": "KL-008",
+      "gatePhrase": "derived products sharing one instrument are collapsed into one dependency family",
+      "coveredBy": [
+        "experiments/HGD-1-PREREGISTRATION.md",
+        "experiments/HGD-2-PREREGISTRATION.md"
+      ],
+      "evidence": "EPA collocated PM2.5, real instruments, common-mode failure injected into the collocated family only",
+      "strength": "covers",
+      "doesNotDischarge": "No KL-008 registration exists. Both H-series primary claims are recorded false."
+    },
+    {
+      "experiment": "KL-002",
+      "gatePhrase": "splits one source into many roots",
+      "coveredBy": [
+        "experiments/HVI-1-PREREGISTRATION.md"
+      ],
+      "evidence": "Whether one controlling party can manufacture apparent independence by multiplying names, keys, services or organizational labels; primary_claim true",
+      "strength": "covers",
+      "doesNotDischarge": "KL-002 scopes its remainder to an agent PIPELINE assigning rootIds, which HVI-1 does not test."
+    },
+    {
+      "experiment": "KL-006",
+      "gatePhrase": "shared upstream dependency is not representable in schema v0.1",
+      "coveredBy": [
+        "experiments/hgd1/dependency-receipt.schema.json"
+      ],
+      "evidence": "components[] carrying componentId, kind, sharedWeightLower and sharedWeightUpper -- shared dependency as interval-valued shared weight",
+      "strength": "partial",
+      "doesNotDischarge": "ADV-005 is stated against the KL schema; no migration has been done."
+    },
+    {
+      "experiment": "KL-005",
+      "gatePhrase": "timestamped closed news events",
+      "coveredBy": [
+        "experiments/lir1/DATASET-CATALOG.md",
+        "experiments/lir3/pheme_provenance.py"
+      ],
+      "evidence": "Catalogued news-descent corpora with acquisition paths and caveats; PHEME splits materialised with observable provenance",
+      "strength": "partial",
+      "doesNotDischarge": "No KL-005 registration exists and no corpus is frozen for it."
+    },
+    {
+      "experiment": "KL-003",
+      "gatePhrase": "public replication corpus",
+      "coveredBy": [
+        "research/knowledge-ledger/experiments/KL-016/FINDING-v0.2.md"
+      ],
+      "evidence": "Root structure on real mathematical literature; 57-87% of citing literature descends from other citing literature against a 0% negative control",
+      "strength": "adjacent",
+      "doesNotDischarge": "Literature descent is not replication outcome. KL-016 records that its own control arm collapsed."
+    },
+    {
+      "experiment": "KL-001",
+      "gatePhrase": "defect ground truth for real repositories",
+      "coveredBy": [
+        "experiments/dri7/OBSERVATIONAL-REPORT.md"
+      ],
+      "evidence": "Ground truth on real repository records by dereference rather than planting; 123 checkable, 102 absent",
+      "strength": "partial",
+      "doesNotDischarge": "Different defect class: a dangling reference, not an injected vulnerability.",
+      "landedInPullRequest": 190
+    },
+    {
+      "experiment": "KL-011",
+      "gatePhrase": "a transport that is not of our own construction",
+      "coveredBy": [
+        "research/knowledge-ledger/experiments/KL-011/EXTERNAL-EVIDENCE.md"
+      ],
+      "evidence": "Border A2A-MCP-CROSSING-001 transport run and an independent external execution of that corpus",
+      "strength": "adjacent",
+      "doesNotDischarge": "A different corpus. No independent party has read a KL-011 receipt.",
+      "landedInPullRequest": 191
+    }
+  ],
+  "pendingEntries": [],
+  "pendingNote": "No entries are pending. When one is added citing an unmerged branch it must carry pendingPullRequest; the checker then asserts the artifact is still ABSENT, so merging that branch fails the check and forces promotion into entries[] rather than leaving an unverifiable citation. Both original pending entries (#190, #191) were promoted this way after their branches merged."
+}
