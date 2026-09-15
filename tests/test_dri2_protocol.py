@@ -179,3 +179,18 @@ def test_criterion_logic_on_constructed_rows():
         {"holmP": 0.001, "wilcoxon_z": 5.0},
     )
     assert not evaluate_criterion(slower, CONFIG, True)["supported"]
+
+
+def test_runner_refuses_changed_inputs_and_accepts_frozen_ones(tmp_path):
+    import shutil
+
+    from experiments.dri2.run_confirmatory import PINNED, load_config, verify_pins
+
+    source = ROOT / "experiments" / "dri2"
+    verify_pins(source)
+    assert load_config(source)["status"] == "preregistered-unexecuted"
+    for name in PINNED:
+        shutil.copy(source / name, tmp_path / name)
+    (tmp_path / "scoring.py").write_text((source / "scoring.py").read_text() + "\n# changed\n")
+    with pytest.raises(ValueError, match="scoring.py"):
+        verify_pins(tmp_path)
