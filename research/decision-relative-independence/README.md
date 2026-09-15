@@ -155,7 +155,9 @@ DRI-2 withheld the failure domain on 12,624 frozen synthetic worlds and was
 escalating and far more often than headcount or any fixed cut, with almost no
 excess human calls, but failed its frozen time criterion. Full record:
 [`results/dri2-v1/`](../../results/dri2-v1/README.md),
-[`research/records/DRI-2-V1.json`](../records/DRI-2-V1.json).
+[`research/records/DRI-2-V1.json`](../records/DRI-2-V1.json). Its speed checks were
+misplaced; with them set aside, all 44 other registered checks passed. See the
+[`post-result note`](../../results/dri2-v1/POST-RESULT-NOTE.md), which leaves the verdict unchanged.
 
 ## Result so far: DRI-1A
 
