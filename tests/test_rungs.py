@@ -20,10 +20,31 @@ class TableTests(unittest.TestCase):
             rung_of("some-procedure-nobody-classified")
         self.assertIn("publish before drawing a sample", str(ctx.exception))
 
-    def test_contested_entries_are_few_and_flagged(self):
-        self.assertEqual(len(contested()), 4)
-        for a in contested():
-            self.assertTrue(a.contested)
+    def test_nothing_is_contested_because_the_four_were_not_close_calls(self):
+        """The four entries once flagged here were resolved structurally rather
+        than by signature: a rung is a property of a (procedure, proposition)
+        pair, and `canon/targets.py` holds that table. Reinstating a flag here
+        would re-open a decision that was made, so this asserts the resolution
+        rather than the old snapshot."""
+        self.assertEqual(contested(), ())
+
+    def test_every_formerly_contested_procedure_is_target_resolved(self):
+        """The flags are gone because the ambiguity moved, not because it was
+        dropped. Each one must have at least one (procedure, target) entry."""
+        from canon.targets import RUNG_BY_TARGET
+        for procedure in ("different-lab-same-protocol", "peer-review",
+                          "retrieved-original-document",
+                          "second-model-reviewing-first-model"):
+            resolved = [t for (p, t) in RUNG_BY_TARGET if p == procedure]
+            self.assertTrue(resolved, f"{procedure} has no target-resolved rung")
+
+    def test_attestation_never_substitutes_for_witness_depth(self):
+        """Peer review is a testament, not a witness. Its rigour lives on the
+        attestation axis; moving it down the ladder would let vouching buy the
+        appearance of looking."""
+        from canon.targets import ATTESTATION, Attestation
+        self.assertIs(ATTESTATION["peer-review"], Attestation.INDEPENDENT)
+        self.assertIs(BY_NAME["peer-review"].rung, Rung.TEXT)
 
 
 class LoadBearingAssignmentTests(unittest.TestCase):
