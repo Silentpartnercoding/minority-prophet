@@ -59,9 +59,17 @@ simultaneous failure domains, discover undisclosed causal structure, or grant
 action authority. A positive oracle result with a failed selector supports the
 concept but not runtime deployability.
 
-**Current evidence:** Three constructed conformance fixtures exist in
-`benchmark/decision-relative-independence-v0.1.json`. They validate evaluator
-semantics only and are not evidence for DRI-1.
+**Current evidence:** DRI-1A froze the success condition above as its joint
+criterion and ran on 2026-08-25 with the failure domain supplied. **It was not
+supported:** the relevant cut reduced false settlement by 13.07 and 13.06 points
+against the controller and evidence-origin cuts, short of 15, and by −5.75
+against the upstream-component cut, which abstained on 40.23% of worlds. The
+result is not canonical. See `results/dri1a-v1/README.md`. The selector arm
+(DRI-1B) has not run, so the implementable-selector condition is untested.
+Three constructed conformance fixtures in
+`benchmark/decision-relative-independence-v0.1.json` validate evaluator
+semantics only. A successor design is drafted, not frozen, in
+`research/decision-relative-independence/DRI-2-DESIGN-DRAFT.md`.
 
 ## HVI-1 — verifier independence under shared control
 

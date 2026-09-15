@@ -1,0 +1,2457 @@
+{
+  "criterion": {
+    "supported": true,
+    "tests": {
+      "genuinely_independent:nonInferiorTo:agent_headcount": true,
+      "genuinely_independent:nonInferiorTo:determined_or_escalate": true,
+      "genuinely_independent:nonInferiorTo:fixed_controller": true,
+      "genuinely_independent:nonInferiorTo:fixed_evidence_origin": true,
+      "genuinely_independent:nonInferiorTo:fixed_machine": true,
+      "genuinely_independent:nonInferiorTo:fixed_upstream_component": true,
+      "genuinely_independent:nonInferiorTo:weakest_link": true,
+      "joint_domain:crossesMoreOftenThan:agent_headcount": true,
+      "joint_domain:crossesMoreOftenThan:fixed_controller": true,
+      "joint_domain:crossesMoreOftenThan:fixed_evidence_origin": true,
+      "joint_domain:crossesMoreOftenThan:fixed_machine": true,
+      "joint_domain:crossesMoreOftenThan:fixed_upstream_component": true,
+      "joint_domain:notCrossingLessOftenThan:agent_headcount": true,
+      "joint_domain:notCrossingLessOftenThan:determined_or_escalate": true,
+      "joint_domain:notCrossingLessOftenThan:fixed_controller": true,
+      "joint_domain:notCrossingLessOftenThan:fixed_evidence_origin": true,
+      "joint_domain:notCrossingLessOftenThan:fixed_machine": true,
+      "joint_domain:notCrossingLessOftenThan:fixed_upstream_component": true,
+      "joint_domain:notCrossingLessOftenThan:weakest_link": true,
+      "semanticResultReproducible": true,
+      "separate_control_shared_origin:crossesMoreOftenThan:agent_headcount": true,
+      "separate_control_shared_origin:crossesMoreOftenThan:fixed_controller": true,
+      "separate_control_shared_origin:crossesMoreOftenThan:fixed_evidence_origin": true,
+      "separate_control_shared_origin:crossesMoreOftenThan:fixed_machine": true,
+      "separate_control_shared_origin:crossesMoreOftenThan:fixed_upstream_component": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:agent_headcount": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:determined_or_escalate": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:fixed_controller": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:fixed_evidence_origin": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:fixed_machine": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:fixed_upstream_component": true,
+      "separate_control_shared_origin:notCrossingLessOftenThan:weakest_link": true,
+      "single_domain:crossesMoreOftenThan:agent_headcount": true,
+      "single_domain:crossesMoreOftenThan:fixed_controller": true,
+      "single_domain:crossesMoreOftenThan:fixed_evidence_origin": true,
+      "single_domain:crossesMoreOftenThan:fixed_machine": true,
+      "single_domain:crossesMoreOftenThan:fixed_upstream_component": true,
+      "single_domain:notCrossingLessOftenThan:agent_headcount": true,
+      "single_domain:notCrossingLessOftenThan:determined_or_escalate": true,
+      "single_domain:notCrossingLessOftenThan:fixed_controller": true,
+      "single_domain:notCrossingLessOftenThan:fixed_evidence_origin": true,
+      "single_domain:notCrossingLessOftenThan:fixed_machine": true,
+      "single_domain:notCrossingLessOftenThan:fixed_upstream_component": true,
+      "single_domain:notCrossingLessOftenThan:weakest_link": true
+    }
+  },
+  "environment": {
+    "commit": "fd79b1f4f999636844ea34a7207c7bf01309ebaa",
+    "dirtyWorktree": false,
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+  },
+  "finishedAt": "2026-09-15T14:58:17.495387+00:00",
+  "pins": {
+    "experiments/dri2/PREREGISTRATION.md": "8d05327d3505d943aa7947aacefcd656be0d59be5f6b1d881d8ec2fc0cc2a94e",
+    "experiments/dri2/arms.py": "39bee408c92072ef0b55bfe06d18070dbae843621101b0063ebb4a0d1d47e7a8",
+    "experiments/dri2/scoring.py": "e9e9275d2e8b9f22d844b4e9e62e2e9b67f46e7a83a67e77d9390570b67a1be1",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "experiments/dri2/world.py": "30327cc6a46542f1dba52cbaf4faf5fd2386510cd5b9bcd7d5b5078c4db24161",
+    "experiments/dri2v2/EXECUTION-CONFIG.json": "e5895176e71dacc2ed904fdd748d9295acba42049533b9b98efc0d54b7896c4c",
+    "experiments/dri2v2/PREREGISTRATION.md": "a887ede0423b550f7112966dcaeec65cd0712a4f242aab07a7772cdc506be115"
+  },
+  "schema": "minority-prophet.dri2-v2-confirmatory-result.v1",
+  "semanticResult": {
+    "families": {
+      "genuinely_independent": {
+        "arms": {
+          "agent_headcount": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "determined_or_escalate": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_controller": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_evidence_origin": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_machine": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_upstream_component": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "method_under_test": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "oracle_reference": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "rules_engine_reference": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "weakest_link": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": null,
+                "reached": 0
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 1.0,
+                "reached": 1052
+              },
+              "settle": {
+                "correct": 8416,
+                "rate": 1.0,
+                "reached": 8416
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          }
+        },
+        "tests": {
+          "crossing": {
+            "agent_headcount": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "determined_or_escalate": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_controller": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_evidence_origin": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_machine": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_upstream_component": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "weakest_link": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            }
+          },
+          "timeToCrossing": {
+            "agent_headcount": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            },
+            "determined_or_escalate": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            },
+            "fixed_controller": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            },
+            "fixed_evidence_origin": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            },
+            "fixed_machine": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            },
+            "fixed_upstream_component": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            },
+            "weakest_link": {
+              "bothCrossed": 3156,
+              "holmP": 1.0,
+              "meanDifference95": [
+                0.0,
+                0.0
+              ],
+              "meanDifferenceMs": 0.0,
+              "significant": false,
+              "wilcoxon_n": 0,
+              "wilcoxon_p": 1.0,
+              "wilcoxon_wPlus": 0.0,
+              "wilcoxon_z": 0.0
+            }
+          }
+        },
+        "twinDiscrimination": {
+          "agent_headcount": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "determined_or_escalate": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "fixed_controller": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "fixed_evidence_origin": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "fixed_machine": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "fixed_upstream_component": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "method_under_test": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "oracle_reference": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "rules_engine_reference": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          },
+          "weakest_link": {
+            "discriminating": 0,
+            "eligible": 0,
+            "rate": null
+          }
+        }
+      },
+      "joint_domain": {
+        "arms": {
+          "agent_headcount": {
+            "cleanCrossed": 237,
+            "crossed": 262,
+            "crossingRate": 0.083016477,
+            "crossingRateWilson95": [
+              0.073889989,
+              0.093156829
+            ],
+            "excessHumanCalls": 60,
+            "fell": 2894,
+            "humanCalls": 209,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1384
+              },
+              "hand_over": {
+                "correct": 133,
+                "rate": 0.077370564,
+                "reached": 1719
+              },
+              "settle": {
+                "correct": 2271,
+                "rate": 1.0,
+                "reached": 2271
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1586,
+            "prematureHandovers": 76,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "determined_or_escalate": {
+            "cleanCrossed": 1519,
+            "crossed": 3152,
+            "crossingRate": 0.998732573,
+            "crossingRateWilson95": [
+              0.996745499,
+              0.999507015
+            ],
+            "excessHumanCalls": 2399,
+            "fell": 4,
+            "humanCalls": 5184,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2400
+              },
+              "hand_over": {
+                "correct": 2784,
+                "rate": 0.99856528,
+                "reached": 2788
+              },
+              "settle": {
+                "correct": 4277,
+                "rate": 1.0,
+                "reached": 4277
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 4,
+            "prematureHandovers": 2400,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_controller": {
+            "cleanCrossed": 237,
+            "crossed": 259,
+            "crossingRate": 0.082065906,
+            "crossingRateWilson95": [
+              0.072990722,
+              0.092157266
+            ],
+            "excessHumanCalls": 54,
+            "fell": 2897,
+            "humanCalls": 205,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1388
+              },
+              "hand_over": {
+                "correct": 139,
+                "rate": 0.081096849,
+                "reached": 1714
+              },
+              "settle": {
+                "correct": 2288,
+                "rate": 1.0,
+                "reached": 2288
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1575,
+            "prematureHandovers": 66,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_evidence_origin": {
+            "cleanCrossed": 239,
+            "crossed": 265,
+            "crossingRate": 0.083967047,
+            "crossingRateWilson95": [
+              0.074789629,
+              0.094156018
+            ],
+            "excessHumanCalls": 59,
+            "fell": 2891,
+            "humanCalls": 213,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1392
+              },
+              "hand_over": {
+                "correct": 142,
+                "rate": 0.082943925,
+                "reached": 1712
+              },
+              "settle": {
+                "correct": 2302,
+                "rate": 1.0,
+                "reached": 2302
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1570,
+            "prematureHandovers": 71,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_machine": {
+            "cleanCrossed": 237,
+            "crossed": 264,
+            "crossingRate": 0.08365019,
+            "crossingRateWilson95": [
+              0.074489708,
+              0.093822996
+            ],
+            "excessHumanCalls": 58,
+            "fell": 2892,
+            "humanCalls": 211,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1385
+              },
+              "hand_over": {
+                "correct": 139,
+                "rate": 0.080908033,
+                "reached": 1718
+              },
+              "settle": {
+                "correct": 2286,
+                "rate": 1.0,
+                "reached": 2286
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1579,
+            "prematureHandovers": 72,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_upstream_component": {
+            "cleanCrossed": 1437,
+            "crossed": 2953,
+            "crossingRate": 0.935678074,
+            "crossingRateWilson95": [
+              0.926578249,
+              0.943718579
+            ],
+            "excessHumanCalls": 2237,
+            "fell": 203,
+            "humanCalls": 4866,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2351
+              },
+              "hand_over": {
+                "correct": 2626,
+                "rate": 0.966151582,
+                "reached": 2718
+              },
+              "settle": {
+                "correct": 4177,
+                "rate": 1.0,
+                "reached": 4177
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 92,
+            "prematureHandovers": 2240,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "method_under_test": {
+            "cleanCrossed": 3111,
+            "crossed": 3152,
+            "crossingRate": 0.998732573,
+            "crossingRateWilson95": [
+              0.996745499,
+              0.999507015
+            ],
+            "excessHumanCalls": 41,
+            "fell": 4,
+            "humanCalls": 2825,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 2359,
+                "rate": 0.982916667,
+                "reached": 2400
+              },
+              "hand_over": {
+                "correct": 2784,
+                "rate": 0.99856528,
+                "reached": 2788
+              },
+              "settle": {
+                "correct": 4277,
+                "rate": 1.0,
+                "reached": 4277
+              }
+            },
+            "lookedBeforeAsking": 2733,
+            "meanVirtualMsWhenCrossed": 1618.164974619,
+            "overReach": 4,
+            "prematureHandovers": 41,
+            "probes": 5092,
+            "worlds": 3156
+          },
+          "oracle_reference": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 2788,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 2400,
+                "rate": 1.0,
+                "reached": 2400
+              },
+              "hand_over": {
+                "correct": 2788,
+                "rate": 1.0,
+                "reached": 2788
+              },
+              "settle": {
+                "correct": 4280,
+                "rate": 1.0,
+                "reached": 4280
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "rules_engine_reference": {
+            "cleanCrossed": 1132,
+            "crossed": 1216,
+            "crossingRate": 0.385297845,
+            "crossingRateWilson95": [
+              0.368468114,
+              0.402406467
+            ],
+            "excessHumanCalls": 86,
+            "fell": 1940,
+            "humanCalls": 302,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 1885,
+                "rate": 0.948189135,
+                "reached": 1988
+              },
+              "hand_over": {
+                "correct": 199,
+                "rate": 0.093034128,
+                "reached": 2139
+              },
+              "settle": {
+                "correct": 3062,
+                "rate": 1.0,
+                "reached": 3062
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1940,
+            "prematureHandovers": 103,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "weakest_link": {
+            "cleanCrossed": 1437,
+            "crossed": 2953,
+            "crossingRate": 0.935678074,
+            "crossingRateWilson95": [
+              0.926578249,
+              0.943718579
+            ],
+            "excessHumanCalls": 2237,
+            "fell": 203,
+            "humanCalls": 4866,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2351
+              },
+              "hand_over": {
+                "correct": 2626,
+                "rate": 0.966151582,
+                "reached": 2718
+              },
+              "settle": {
+                "correct": 4177,
+                "rate": 1.0,
+                "reached": 4177
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 92,
+            "prematureHandovers": 2240,
+            "probes": 0,
+            "worlds": 3156
+          }
+        },
+        "tests": {
+          "crossing": {
+            "agent_headcount": {
+              "armOnlyCrossed": 0,
+              "difference": 0.9157160963244614,
+              "difference95": [
+                0.9060236737841542,
+                0.9254085188647686
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2890,
+              "p": 0.0,
+              "significant": true
+            },
+            "determined_or_escalate": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_controller": {
+              "armOnlyCrossed": 0,
+              "difference": 0.9166666666666666,
+              "difference95": [
+                0.9070240547035826,
+                0.9263092786297507
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2893,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_evidence_origin": {
+              "armOnlyCrossed": 0,
+              "difference": 0.914765525982256,
+              "difference95": [
+                0.9050236604392387,
+                0.9245073915252734
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2887,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_machine": {
+              "armOnlyCrossed": 0,
+              "difference": 0.9150823827629911,
+              "difference95": [
+                0.9053569577261793,
+                0.924807807799803
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2888,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_upstream_component": {
+              "armOnlyCrossed": 0,
+              "difference": 0.06305449936628643,
+              "difference95": [
+                0.05457451991875335,
+                0.07153447881381951
+              ],
+              "holmP": 7.46761833343337e-60,
+              "methodOnlyCrossed": 199,
+              "p": 2.4892061111444567e-60,
+              "significant": true
+            },
+            "weakest_link": {
+              "armOnlyCrossed": 0,
+              "difference": 0.06305449936628643,
+              "difference95": [
+                0.05457451991875335,
+                0.07153447881381951
+              ],
+              "holmP": 7.46761833343337e-60,
+              "methodOnlyCrossed": 199,
+              "p": 2.4892061111444567e-60,
+              "significant": true
+            }
+          },
+          "timeToCrossing": {
+            "agent_headcount": {
+              "bothCrossed": 262,
+              "holmP": 1.1795137209002578e-14,
+              "meanDifference95": [
+                202.2885055489426,
+                316.7954639167062
+              ],
+              "meanDifferenceMs": 259.5419847328244,
+              "significant": true,
+              "wilcoxon_n": 64,
+              "wilcoxon_p": 7.351519701821692e-15,
+              "wilcoxon_wPlus": 2080.0,
+              "wilcoxon_z": 7.778283469313995
+            },
+            "determined_or_escalate": {
+              "bothCrossed": 3152,
+              "holmP": 0.0,
+              "meanDifference95": [
+                1587.2535788980842,
+                1643.0763703404943
+              ],
+              "meanDifferenceMs": 1615.1649746192893,
+              "significant": true,
+              "wilcoxon_n": 2954,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 4364535.0,
+              "wilcoxon_z": 48.03113748992867
+            },
+            "fixed_controller": {
+              "bothCrossed": 259,
+              "holmP": 1.1795137209002578e-14,
+              "meanDifference95": [
+                183.74434244698466,
+                287.2981285954864
+              ],
+              "meanDifferenceMs": 235.52123552123552,
+              "significant": true,
+              "wilcoxon_n": 61,
+              "wilcoxon_p": 5.897568604501289e-15,
+              "wilcoxon_wPlus": 1891.0,
+              "wilcoxon_z": 7.806119453973335
+            },
+            "fixed_evidence_origin": {
+              "bothCrossed": 265,
+              "holmP": 4.334037867065265e-15,
+              "meanDifference95": [
+                207.95658239089602,
+                320.3453044015568
+              ],
+              "meanDifferenceMs": 264.1509433962264,
+              "significant": true,
+              "wilcoxon_n": 67,
+              "wilcoxon_p": 1.0835094667663162e-15,
+              "wilcoxon_wPlus": 2278.0,
+              "wilcoxon_z": 8.017009270648174
+            },
+            "fixed_machine": {
+              "bothCrossed": 264,
+              "holmP": 5.389862223424451e-15,
+              "meanDifference95": [
+                205.22320185980368,
+                317.50407086746907
+              ],
+              "meanDifferenceMs": 261.3636363636364,
+              "significant": true,
+              "wilcoxon_n": 66,
+              "wilcoxon_p": 1.7966207411414836e-15,
+              "wilcoxon_wPlus": 2211.0,
+              "wilcoxon_z": 7.954633829410117
+            },
+            "fixed_upstream_component": {
+              "bothCrossed": 2953,
+              "holmP": 0.0,
+              "meanDifference95": [
+                1557.1962001960187,
+                1614.493606779938
+              ],
+              "meanDifferenceMs": 1585.8449034879784,
+              "significant": true,
+              "wilcoxon_n": 2755,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 3796390.0,
+              "wilcoxon_z": 46.419682442403726
+            },
+            "weakest_link": {
+              "bothCrossed": 2953,
+              "holmP": 0.0,
+              "meanDifference95": [
+                1557.1962001960187,
+                1614.493606779938
+              ],
+              "meanDifferenceMs": 1585.8449034879784,
+              "significant": true,
+              "wilcoxon_n": 2755,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 3796390.0,
+              "wilcoxon_z": 46.419682442403726
+            }
+          }
+        },
+        "twinDiscrimination": {
+          "agent_headcount": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "determined_or_escalate": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "fixed_controller": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "fixed_evidence_origin": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "fixed_machine": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "fixed_upstream_component": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "method_under_test": {
+            "discriminating": 1714,
+            "eligible": 1736,
+            "rate": 0.987327189
+          },
+          "oracle_reference": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "rules_engine_reference": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          },
+          "weakest_link": {
+            "discriminating": 0,
+            "eligible": 1736,
+            "rate": 0.0
+          }
+        }
+      },
+      "separate_control_shared_origin": {
+        "arms": {
+          "agent_headcount": {
+            "cleanCrossed": 882,
+            "crossed": 882,
+            "crossingRate": 0.279467681,
+            "crossingRateWilson95": [
+              0.26408732,
+              0.295384249
+            ],
+            "excessHumanCalls": 0,
+            "fell": 2274,
+            "humanCalls": 95,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 363
+              },
+              "hand_over": {
+                "correct": 95,
+                "rate": 0.047357926,
+                "reached": 2006
+              },
+              "settle": {
+                "correct": 4671,
+                "rate": 1.0,
+                "reached": 4671
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1911,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "determined_or_escalate": {
+            "cleanCrossed": 2723,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 463,
+            "fell": 0,
+            "humanCalls": 2661,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 463
+              },
+              "hand_over": {
+                "correct": 2198,
+                "rate": 1.0,
+                "reached": 2198
+              },
+              "settle": {
+                "correct": 6807,
+                "rate": 1.0,
+                "reached": 6807
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 463,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_controller": {
+            "cleanCrossed": 893,
+            "crossed": 893,
+            "crossingRate": 0.282953105,
+            "crossingRateWilson95": [
+              0.267509447,
+              0.298924496
+            ],
+            "excessHumanCalls": 0,
+            "fell": 2263,
+            "humanCalls": 105,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 362
+              },
+              "hand_over": {
+                "correct": 105,
+                "rate": 0.052342971,
+                "reached": 2006
+              },
+              "settle": {
+                "correct": 4674,
+                "rate": 1.0,
+                "reached": 4674
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1901,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_evidence_origin": {
+            "cleanCrossed": 1671,
+            "crossed": 1671,
+            "crossingRate": 0.529467681,
+            "crossingRateWilson95": [
+              0.512028588,
+              0.546835125
+            ],
+            "excessHumanCalls": 0,
+            "fell": 1485,
+            "humanCalls": 954,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 433
+              },
+              "hand_over": {
+                "correct": 954,
+                "rate": 0.47557328,
+                "reached": 2006
+              },
+              "settle": {
+                "correct": 5485,
+                "rate": 1.0,
+                "reached": 5485
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1052,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_machine": {
+            "cleanCrossed": 895,
+            "crossed": 895,
+            "crossingRate": 0.283586819,
+            "crossingRateWilson95": [
+              0.268131777,
+              0.299568053
+            ],
+            "excessHumanCalls": 0,
+            "fell": 2261,
+            "humanCalls": 105,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 360
+              },
+              "hand_over": {
+                "correct": 105,
+                "rate": 0.052342971,
+                "reached": 2006
+              },
+              "settle": {
+                "correct": 4677,
+                "rate": 1.0,
+                "reached": 4677
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1901,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_upstream_component": {
+            "cleanCrossed": 2421,
+            "crossed": 2721,
+            "crossingRate": 0.8621673,
+            "crossingRateWilson95": [
+              0.849699421,
+              0.873754597
+            ],
+            "excessHumanCalls": 320,
+            "fell": 435,
+            "humanCalls": 2163,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 452
+              },
+              "hand_over": {
+                "correct": 1840,
+                "rate": 0.857409133,
+                "reached": 2146
+              },
+              "settle": {
+                "correct": 6435,
+                "rate": 1.0,
+                "reached": 6435
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 306,
+            "prematureHandovers": 323,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "method_under_test": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 2198,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 463,
+                "rate": 1.0,
+                "reached": 463
+              },
+              "hand_over": {
+                "correct": 2198,
+                "rate": 1.0,
+                "reached": 2198
+              },
+              "settle": {
+                "correct": 6807,
+                "rate": 1.0,
+                "reached": 6807
+              }
+            },
+            "lookedBeforeAsking": 2165,
+            "meanVirtualMsWhenCrossed": 835.699619772,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 2628,
+            "worlds": 3156
+          },
+          "oracle_reference": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 2198,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 463,
+                "rate": 1.0,
+                "reached": 463
+              },
+              "hand_over": {
+                "correct": 2198,
+                "rate": 1.0,
+                "reached": 2198
+              },
+              "settle": {
+                "correct": 6807,
+                "rate": 1.0,
+                "reached": 6807
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "rules_engine_reference": {
+            "cleanCrossed": 1105,
+            "crossed": 1105,
+            "crossingRate": 0.350126743,
+            "crossingRateWilson95": [
+              0.333676026,
+              0.366941865
+            ],
+            "excessHumanCalls": 0,
+            "fell": 2051,
+            "humanCalls": 114,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 300,
+                "rate": 0.777202073,
+                "reached": 386
+              },
+              "hand_over": {
+                "correct": 114,
+                "rate": 0.054834055,
+                "reached": 2079
+              },
+              "settle": {
+                "correct": 4896,
+                "rate": 1.0,
+                "reached": 4896
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1965,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "weakest_link": {
+            "cleanCrossed": 2433,
+            "crossed": 2737,
+            "crossingRate": 0.867237009,
+            "crossingRateWilson95": [
+              0.854951095,
+              0.878630013
+            ],
+            "excessHumanCalls": 324,
+            "fell": 419,
+            "humanCalls": 2180,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 453
+              },
+              "hand_over": {
+                "correct": 1856,
+                "rate": 0.864864865,
+                "reached": 2146
+              },
+              "settle": {
+                "correct": 6449,
+                "rate": 1.0,
+                "reached": 6449
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 290,
+            "prematureHandovers": 324,
+            "probes": 0,
+            "worlds": 3156
+          }
+        },
+        "tests": {
+          "crossing": {
+            "agent_headcount": {
+              "armOnlyCrossed": 0,
+              "difference": 0.720532319391635,
+              "difference95": [
+                0.7048766326816982,
+                0.7361880061015718
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2274,
+              "p": 0.0,
+              "significant": true
+            },
+            "determined_or_escalate": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_controller": {
+              "armOnlyCrossed": 0,
+              "difference": 0.7170468948035488,
+              "difference95": [
+                0.7013320315725172,
+                0.7327617580345803
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2263,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_evidence_origin": {
+              "armOnlyCrossed": 0,
+              "difference": 0.470532319391635,
+              "difference95": [
+                0.4531184993925689,
+                0.4879461393907011
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 1485,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_machine": {
+              "armOnlyCrossed": 0,
+              "difference": 0.7164131812420785,
+              "difference95": [
+                0.7006876835920115,
+                0.7321386788921456
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2261,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_upstream_component": {
+              "armOnlyCrossed": 0,
+              "difference": 0.13783269961977188,
+              "difference95": [
+                0.1258058605822909,
+                0.14985953865725285
+              ],
+              "holmP": 6.762435511073537e-131,
+              "methodOnlyCrossed": 435,
+              "p": 2.2541451703578456e-131,
+              "significant": true
+            },
+            "weakest_link": {
+              "armOnlyCrossed": 0,
+              "difference": 0.13276299112801013,
+              "difference95": [
+                0.12092475469610336,
+                0.1446012275599169
+              ],
+              "holmP": 2.9545531576914354e-126,
+              "methodOnlyCrossed": 419,
+              "p": 1.4772765788457177e-126,
+              "significant": true
+            }
+          },
+          "timeToCrossing": {
+            "agent_headcount": {
+              "bothCrossed": 882,
+              "holmP": 2.7130627673730472e-14,
+              "meanDifference95": [
+                49.39263447864519,
+                82.12663989777204
+              ],
+              "meanDifferenceMs": 65.75963718820861,
+              "significant": true,
+              "wilcoxon_n": 58,
+              "wilcoxon_p": 2.7130627673730472e-14,
+              "wilcoxon_wPlus": 1711.0,
+              "wilcoxon_z": 7.611322040343239
+            },
+            "determined_or_escalate": {
+              "bothCrossed": 3156,
+              "holmP": 0.0,
+              "meanDifference95": [
+                812.5568724556074,
+                852.8423670881189
+              ],
+              "meanDifferenceMs": 832.6996197718631,
+              "significant": true,
+              "wilcoxon_n": 2332,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 2720278.0,
+              "wilcoxon_z": 45.885811456737365
+            },
+            "fixed_controller": {
+              "bothCrossed": 893,
+              "holmP": 2.027149797257706e-16,
+              "meanDifference95": [
+                59.74488349394825,
+                94.79039086215478
+              ],
+              "meanDifferenceMs": 77.26763717805152,
+              "significant": true,
+              "wilcoxon_n": 69,
+              "wilcoxon_p": 1.013574898628853e-16,
+              "wilcoxon_wPlus": 2415.0,
+              "wilcoxon_z": 8.303184267115624
+            },
+            "fixed_evidence_origin": {
+              "bothCrossed": 1671,
+              "holmP": 1.3087584731474471e-185,
+              "meanDifference95": [
+                482.90378846437613,
+                530.860424581704
+              ],
+              "meanDifferenceMs": 506.8821065230401,
+              "significant": true,
+              "wilcoxon_n": 847,
+              "wilcoxon_p": 3.271896182868618e-186,
+              "wilcoxon_wPlus": 359128.0,
+              "wilcoxon_z": 29.103183383015597
+            },
+            "fixed_machine": {
+              "bothCrossed": 895,
+              "holmP": 1.1022746060800354e-16,
+              "meanDifference95": [
+                61.61428588278183,
+                97.04493199431313
+              ],
+              "meanDifferenceMs": 79.32960893854748,
+              "significant": true,
+              "wilcoxon_n": 71,
+              "wilcoxon_p": 3.6742486869334514e-17,
+              "wilcoxon_wPlus": 2556.0,
+              "wilcoxon_z": 8.422853157459155
+            },
+            "fixed_upstream_component": {
+              "bothCrossed": 2721,
+              "holmP": 0.0,
+              "meanDifference95": [
+                741.5258088864754,
+                783.6487592869902
+              ],
+              "meanDifferenceMs": 762.5872840867328,
+              "significant": true,
+              "wilcoxon_n": 1897,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 1800253.0,
+              "wilcoxon_z": 41.83943039153236
+            },
+            "weakest_link": {
+              "bothCrossed": 2737,
+              "holmP": 0.0,
+              "meanDifference95": [
+                744.4154010720447,
+                786.4578177807139
+              ],
+              "meanDifferenceMs": 765.4366094263793,
+              "significant": true,
+              "wilcoxon_n": 1913,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 1830741.0,
+              "wilcoxon_z": 41.99469799700817
+            }
+          }
+        },
+        "twinDiscrimination": {
+          "agent_headcount": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "determined_or_escalate": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "fixed_controller": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "fixed_evidence_origin": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "fixed_machine": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "fixed_upstream_component": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "method_under_test": {
+            "discriminating": 1146,
+            "eligible": 1146,
+            "rate": 1.0
+          },
+          "oracle_reference": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "rules_engine_reference": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          },
+          "weakest_link": {
+            "discriminating": 0,
+            "eligible": 1146,
+            "rate": 0.0
+          }
+        }
+      },
+      "single_domain": {
+        "arms": {
+          "agent_headcount": {
+            "cleanCrossed": 159,
+            "crossed": 197,
+            "crossingRate": 0.062420786,
+            "crossingRateWilson95": [
+              0.054501018,
+              0.071404494
+            ],
+            "excessHumanCalls": 118,
+            "fell": 2959,
+            "humanCalls": 364,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1627
+              },
+              "hand_over": {
+                "correct": 225,
+                "rate": 0.132665094,
+                "reached": 1696
+              },
+              "settle": {
+                "correct": 1787,
+                "rate": 1.0,
+                "reached": 1787
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1471,
+            "prematureHandovers": 139,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "determined_or_escalate": {
+            "cleanCrossed": 1328,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 2945,
+            "fell": 0,
+            "humanCalls": 5922,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2945
+              },
+              "hand_over": {
+                "correct": 2977,
+                "rate": 1.0,
+                "reached": 2977
+              },
+              "settle": {
+                "correct": 3546,
+                "rate": 1.0,
+                "reached": 3546
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 2945,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_controller": {
+            "cleanCrossed": 375,
+            "crossed": 668,
+            "crossingRate": 0.21166033,
+            "crossingRateWilson95": [
+              0.19776387,
+              0.226257866
+            ],
+            "excessHumanCalls": 611,
+            "fell": 2488,
+            "humanCalls": 1482,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1995
+              },
+              "hand_over": {
+                "correct": 820,
+                "rate": 0.415189873,
+                "reached": 1975
+              },
+              "settle": {
+                "correct": 2226,
+                "rate": 1.0,
+                "reached": 2226
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1155,
+            "prematureHandovers": 662,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_evidence_origin": {
+            "cleanCrossed": 642,
+            "crossed": 1409,
+            "crossingRate": 0.446451204,
+            "crossingRateWilson95": [
+              0.429182916,
+              0.463849692
+            ],
+            "excessHumanCalls": 1361,
+            "fell": 1747,
+            "humanCalls": 2878,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2333
+              },
+              "hand_over": {
+                "correct": 1471,
+                "rate": 0.641797557,
+                "reached": 2292
+              },
+              "settle": {
+                "correct": 2726,
+                "rate": 1.0,
+                "reached": 2726
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 821,
+            "prematureHandovers": 1407,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_machine": {
+            "cleanCrossed": 182,
+            "crossed": 216,
+            "crossingRate": 0.068441065,
+            "crossingRateWilson95": [
+              0.060146119,
+              0.077785314
+            ],
+            "excessHumanCalls": 99,
+            "fell": 2940,
+            "humanCalls": 414,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 1675
+              },
+              "hand_over": {
+                "correct": 298,
+                "rate": 0.177486599,
+                "reached": 1679
+              },
+              "settle": {
+                "correct": 1817,
+                "rate": 1.0,
+                "reached": 1817
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1381,
+            "prematureHandovers": 116,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "fixed_upstream_component": {
+            "cleanCrossed": 1032,
+            "crossed": 2439,
+            "crossingRate": 0.772813688,
+            "crossingRateWilson95": [
+              0.757868473,
+              0.787095578
+            ],
+            "excessHumanCalls": 2318,
+            "fell": 717,
+            "humanCalls": 4730,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2739
+              },
+              "hand_over": {
+                "correct": 2412,
+                "rate": 0.890694239,
+                "reached": 2708
+              },
+              "settle": {
+                "correct": 3251,
+                "rate": 1.0,
+                "reached": 3251
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 296,
+            "prematureHandovers": 2318,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "method_under_test": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 2977,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 2945,
+                "rate": 1.0,
+                "reached": 2945
+              },
+              "hand_over": {
+                "correct": 2977,
+                "rate": 1.0,
+                "reached": 2977
+              },
+              "settle": {
+                "correct": 3546,
+                "rate": 1.0,
+                "reached": 3546
+              }
+            },
+            "lookedBeforeAsking": 2706,
+            "meanVirtualMsWhenCrossed": 1793.557667934,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 5651,
+            "worlds": 3156
+          },
+          "oracle_reference": {
+            "cleanCrossed": 3156,
+            "crossed": 3156,
+            "crossingRate": 1.0,
+            "crossingRateWilson95": [
+              0.998784287,
+              1.0
+            ],
+            "excessHumanCalls": 0,
+            "fell": 0,
+            "humanCalls": 2977,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 2945,
+                "rate": 1.0,
+                "reached": 2945
+              },
+              "hand_over": {
+                "correct": 2977,
+                "rate": 1.0,
+                "reached": 2977
+              },
+              "settle": {
+                "correct": 3546,
+                "rate": 1.0,
+                "reached": 3546
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 0,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "rules_engine_reference": {
+            "cleanCrossed": 2104,
+            "crossed": 2104,
+            "crossingRate": 0.666666667,
+            "crossingRateWilson95": [
+              0.650026305,
+              0.682901791
+            ],
+            "excessHumanCalls": 0,
+            "fell": 1052,
+            "humanCalls": 1052,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 2945,
+                "rate": 1.0,
+                "reached": 2945
+              },
+              "hand_over": {
+                "correct": 1052,
+                "rate": 0.5,
+                "reached": 2104
+              },
+              "settle": {
+                "correct": 2813,
+                "rate": 1.0,
+                "reached": 2813
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 1052,
+            "prematureHandovers": 0,
+            "probes": 0,
+            "worlds": 3156
+          },
+          "weakest_link": {
+            "cleanCrossed": 1055,
+            "crossed": 2521,
+            "crossingRate": 0.798795944,
+            "crossingRateWilson95": [
+              0.78444976,
+              0.812415629
+            ],
+            "excessHumanCalls": 2417,
+            "fell": 635,
+            "humanCalls": 4877,
+            "junctionAccuracy": {
+              "gather": {
+                "correct": 0,
+                "rate": 0.0,
+                "reached": 2779
+              },
+              "hand_over": {
+                "correct": 2460,
+                "rate": 0.900109769,
+                "reached": 2733
+              },
+              "settle": {
+                "correct": 3278,
+                "rate": 1.0,
+                "reached": 3278
+              }
+            },
+            "lookedBeforeAsking": 0,
+            "meanVirtualMsWhenCrossed": 3.0,
+            "overReach": 273,
+            "prematureHandovers": 2417,
+            "probes": 0,
+            "worlds": 3156
+          }
+        },
+        "tests": {
+          "crossing": {
+            "agent_headcount": {
+              "armOnlyCrossed": 0,
+              "difference": 0.9375792141951838,
+              "difference95": [
+                0.9291391024840084,
+                0.9460193259063591
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2959,
+              "p": 0.0,
+              "significant": true
+            },
+            "determined_or_escalate": {
+              "armOnlyCrossed": 0,
+              "difference": 0.0,
+              "difference95": [
+                0.0,
+                0.0
+              ],
+              "holmP": 1.0,
+              "methodOnlyCrossed": 0,
+              "p": 1.0,
+              "significant": false
+            },
+            "fixed_controller": {
+              "armOnlyCrossed": 0,
+              "difference": 0.788339670468948,
+              "difference95": [
+                0.7740883200627736,
+                0.8025910208751225
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2488,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_evidence_origin": {
+              "armOnlyCrossed": 0,
+              "difference": 0.5535487959442332,
+              "difference95": [
+                0.5362049843054407,
+                0.5708926075830257
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 1747,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_machine": {
+              "armOnlyCrossed": 0,
+              "difference": 0.9315589353612167,
+              "difference95": [
+                0.9227496000688518,
+                0.9403682706535816
+              ],
+              "holmP": 0.0,
+              "methodOnlyCrossed": 2940,
+              "p": 0.0,
+              "significant": true
+            },
+            "fixed_upstream_component": {
+              "armOnlyCrossed": 0,
+              "difference": 0.22718631178707224,
+              "difference95": [
+                0.21256763456005426,
+                0.24180498901409023
+              ],
+              "holmP": 8.702506559578674e-216,
+              "methodOnlyCrossed": 717,
+              "p": 2.900835519859558e-216,
+              "significant": true
+            },
+            "weakest_link": {
+              "armOnlyCrossed": 0,
+              "difference": 0.2012040557667934,
+              "difference95": [
+                0.1872173356422469,
+                0.2151907758913399
+              ],
+              "holmP": 2.805515966730756e-191,
+              "methodOnlyCrossed": 635,
+              "p": 1.402757983365378e-191,
+              "significant": true
+            }
+          },
+          "timeToCrossing": {
+            "agent_headcount": {
+              "bothCrossed": 197,
+              "holmP": 2.920879556161328e-14,
+              "meanDifference95": [
+                266.6603750830435,
+                413.5426706022357
+              ],
+              "meanDifferenceMs": 340.1015228426396,
+              "significant": true,
+              "wilcoxon_n": 62,
+              "wilcoxon_p": 2.920879556161328e-14,
+              "wilcoxon_wPlus": 1953.0,
+              "wilcoxon_z": 7.601778682875791
+            },
+            "determined_or_escalate": {
+              "bothCrossed": 3156,
+              "holmP": 0.0,
+              "meanDifference95": [
+                1762.4998140308626,
+                1818.615521837325
+              ],
+              "meanDifferenceMs": 1790.5576679340938,
+              "significant": true,
+              "wilcoxon_n": 3021,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 4564731.0,
+              "wilcoxon_z": 48.47451151417427
+            },
+            "fixed_controller": {
+              "bothCrossed": 668,
+              "holmP": 1.2483864337386648e-95,
+              "meanDifference95": [
+                1063.5949593313326,
+                1181.9140227045955
+              ],
+              "meanDifferenceMs": 1122.754491017964,
+              "significant": true,
+              "wilcoxon_n": 533,
+              "wilcoxon_p": 4.161288112462216e-96,
+              "wilcoxon_wPlus": 142311.0,
+              "wilcoxon_z": 20.80188508402406
+            },
+            "fixed_evidence_origin": {
+              "bothCrossed": 1409,
+              "holmP": 2.062515066047122e-219,
+              "meanDifference95": [
+                1414.8956299727352,
+                1497.80841544955
+              ],
+              "meanDifferenceMs": 1456.3520227111426,
+              "significant": true,
+              "wilcoxon_n": 1274,
+              "wilcoxon_p": 5.156287665117805e-220,
+              "wilcoxon_wPlus": 812175.0,
+              "wilcoxon_z": 31.662172841106585
+            },
+            "fixed_machine": {
+              "bothCrossed": 216,
+              "holmP": 8.677004298900926e-18,
+              "meanDifference95": [
+                333.4365196857852,
+                481.3782951290296
+              ],
+              "meanDifferenceMs": 407.4074074074074,
+              "significant": true,
+              "wilcoxon_n": 81,
+              "wilcoxon_p": 4.338502149450463e-18,
+              "wilcoxon_wPlus": 3321.0,
+              "wilcoxon_z": 8.669545089916928
+            },
+            "fixed_upstream_component": {
+              "bothCrossed": 2439,
+              "holmP": 0.0,
+              "meanDifference95": [
+                1660.039672137876,
+                1724.134169600541
+              ],
+              "meanDifferenceMs": 1692.0869208692086,
+              "significant": true,
+              "wilcoxon_n": 2304,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 2655360.0,
+              "wilcoxon_z": 42.36803522889321
+            },
+            "weakest_link": {
+              "bothCrossed": 2521,
+              "holmP": 0.0,
+              "meanDifference95": [
+                1678.7824730100313,
+                1742.082263205756
+              ],
+              "meanDifferenceMs": 1710.4323681078936,
+              "significant": true,
+              "wilcoxon_n": 2386,
+              "wilcoxon_p": 0.0,
+              "wilcoxon_wPlus": 2847691.0,
+              "wilcoxon_z": 43.09920039614496
+            }
+          }
+        },
+        "twinDiscrimination": {
+          "agent_headcount": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "determined_or_escalate": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "fixed_controller": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "fixed_evidence_origin": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "fixed_machine": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "fixed_upstream_component": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "method_under_test": {
+            "discriminating": 1925,
+            "eligible": 1925,
+            "rate": 1.0
+          },
+          "oracle_reference": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "rules_engine_reference": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          },
+          "weakest_link": {
+            "discriminating": 0,
+            "eligible": 1925,
+            "rate": 0.0
+          }
+        }
+      }
+    },
+    "schema": "minority-prophet.dri2-semantic-result.v1",
+    "worldManifestSha256": "1b492d914b54b7f89123d4ea03c0280468e6931589a5d16fb270961ca8b5d69c",
+    "worlds": 12624
+  },
+  "semanticResultSha256Runs": [
+    "982792192e6b6ecde3f89f7fc889d51e87d9299e65cc56460c12dadf94be8f0c",
+    "982792192e6b6ecde3f89f7fc889d51e87d9299e65cc56460c12dadf94be8f0c"
+  ],
+  "startedAt": "2026-09-15T14:50:47.593147+00:00",
+  "status": "confirmatory-complete"
+}

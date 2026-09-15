@@ -31,6 +31,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from functools import reduce
 from typing import Iterable, Literal, Protocol
 
 from aggregation.independence_axes import (
@@ -45,6 +46,7 @@ from aggregation.independence_axes import (
     WitnessIdentity,
     decompose,
     effective_witness_bounds,
+    legacy_basis,
     meet,
     minimal_axes,
 )
@@ -54,8 +56,8 @@ class IndependenceBasis(str, Enum):
     """How a root's independence was established.
 
     Vocabulary aligned byte-for-byte with `invention_engine.models.IndependenceBasis`
-    so the two projects interoperate without translation. Ordered weakest to
-    strongest by `RANK` below.
+    so the two projects interoperate without translation. The four values are
+    labels, not rungs: see the retirement note below.
 
     Minority Prophet had no such concept before 2026-08-13: a root was a root,
     and `flip_budget` counted an attested observation and an anonymous assertion
@@ -69,8 +71,9 @@ class IndependenceBasis(str, Enum):
     must defeat ATTESTATION. A single flip_budget over mixed roots therefore
     overstates the cost of attack.
 
-    KNOWN DEFECT (2026-09-07). These four values are a diagonal through a
-    two-dimensional space, not four points on one. ATTESTED vs DECLARED differ
+    LADDER RETIRED (2026-09-14). Recorded as a known defect on 2026-09-07:
+    these four values are a diagonal through a two-dimensional space, not four
+    points on one. ATTESTED vs DECLARED differ
     only in *who vouched*; INFERRED vs the rest differs only in *how far toward
     the world* the root reached. Ranking them on one scale forces an exchange
     rate between vouching and looking, and produces an inversion: notarised
@@ -78,10 +81,10 @@ class IndependenceBasis(str, Enum):
     rank 1).
 
     `aggregation/independence_axes.py` decomposes the vocabulary onto both axes
-    and replaces the total rank with a partial order. It is additive: this enum,
-    BASIS_RANK and verdict() are unchanged, and the wire vocabulary shared
-    byte-for-byte with invention_engine is preserved. Migration is a separate,
-    deliberate change.
+    and replaces the total rank with a partial order. Every independence output
+    of `verdict()` and `asymmetric_verdict()` is now computed on those axes and
+    projected back onto these four labels only for reporting. The wire
+    vocabulary shared byte-for-byte with invention_engine is unchanged.
     """
 
     ATTESTED = "attested"
@@ -90,6 +93,9 @@ class IndependenceBasis(str, Enum):
     UNKNOWN = "unknown"
 
 
+#: RETIRED 2026-09-14. Nothing in this module reads it. Kept unchanged only so
+#: existing imports keep working; do not use it to compare roots -- it ranks
+#: notarised hearsay above an anonymous eyewitness.
 BASIS_RANK: dict[IndependenceBasis, int] = {
     IndependenceBasis.UNKNOWN: 0,
     IndependenceBasis.INFERRED: 1,
@@ -154,8 +160,8 @@ class AsymmetricClaimError(ValueError):
     decided. For the universal direction,
     `knowledge_ledger.evaluate_transaction_v2` answers correctly today as an
     `absence` claim. For the existential direction its `presence` branch also
-    counts -- see CE-14's mirror note, which is an open semantic question
-    rather than a settled defect.
+    counts -- see CE-14's mirror note; that counting is settled as correct
+    by owner decision A3.
     """
 
 
@@ -189,13 +195,23 @@ class RootVerdict:
     basis_counts: dict[str, int]
     """Roots per independence basis, over the roots that decided this verdict."""
     weakest_basis: str
-    """The weakest basis among counted roots. The margin is only as trustworthy
-    as this, whatever `flip_budget` says."""
+    """The legacy label of the greatest lower bound of the counted roots: the
+    position weaker than or equal to every counted root on every axis at once.
+
+    When one counted root is weakest on every axis this is that root's label.
+    When the weakest roots are weak in different ways -- a notarised statement
+    and a reasoned inference -- no root sits below both, and this reports the
+    label of their meet, typically `unknown`. That is weaker than either and
+    invents no exchange rate between vouching and looking. `weakest_axes` holds
+    the roots themselves."""
     attested_margin: int
-    """Signed margin counting ATTESTED roots ONLY.
+    """Signed margin counting roots attested by an independent or adversarial
+    party ONLY, read from the attestation axis.
 
     This is the margin that survives an adversary who can forge declarations but
-    not attestations. When it disagrees in sign with `margin`, the decisive
+    not attestations. It says nothing about depth: a notarised piece of hearsay
+    counts here, because forging its attestation is exactly as hard. Whether the
+    attested roots actually looked is in `weakest_axes`. When it disagrees in sign with `margin`, the decisive
     evidence is unattested and `flip_budget` is not a security budget -- it is a
     headcount. Reporting both is the point; reporting only `margin` is what this
     field exists to stop."""
@@ -222,15 +238,16 @@ class RootVerdict:
     weakest_basis_well_defined: bool = True
     """False when `weakest_axes` holds more than one element.
 
-    When false, `weakest_basis` reports one value where no single weakest
-    exists -- an anonymous eyewitness and a notarised hearsay are both weakest,
-    in different ways. Treat as a signal to escalate, not as a ranking."""
+    When false, no single weakest root exists -- an anonymous eyewitness and a
+    notarised hearsay are both weakest, in different ways -- and `weakest_basis`
+    reports their greatest lower bound, which is weaker than either. Treat as a
+    signal to escalate, not as a ranking."""
 
 
 def _basis_of(claim: RootedClaim) -> IndependenceBasis:
     """A claim that does not say how its independence was established has not
     established it. Absent, unrecognised and explicitly-unknown all read as
-    UNKNOWN, which is the conservative direction.
+    UNKNOWN, which claims nothing the producer did not state.
 
     A member of this enum is accepted as itself. `IndependenceBasis` mixes in
     `str`, but `str()` on a member of a `(str, Enum)` returns
@@ -261,7 +278,7 @@ def _read_axis(claim: RootedClaim, field: str, table: dict, member_type):
 
     An unrecognised value reads as absent rather than raising: a producer that
     sends a word this version does not know has not stated the axis, and
-    silence is the conservative reading. Wire-level parsing still refuses
+    silence claims nothing. Wire-level parsing still refuses
     unknown strings -- that is `from_wire`'s job, at the boundary.
     """
     raw = getattr(claim, field, None)
@@ -320,18 +337,32 @@ def _sides(
             root_id = f"__unattributed_{unattributed}"
         by_root.setdefault(root_id, set()).add(bool(claim.value))
         values[root_id] = bool(claim.value)
-        # Two claims on one root may disagree about its basis. Take the WEAKER:
-        # a root is only as independently established as its weakest supporting
-        # account of it.
-        seen = _basis_of(claim)
-        if root_id not in basis or BASIS_RANK[seen] < BASIS_RANK[basis[root_id]]:
-            basis[root_id] = seen
-        # Same rule on the axes, but the componentwise meet rather than `min`:
-        # under a partial order there is no single weaker value to pick.
+        # Two claims on one root may disagree about its independence. A root is
+        # only as independently established as its weakest supporting account,
+        # taken as the componentwise meet: under a partial order there is no
+        # single weaker value to pick.
         seen_axes = _axes_of(claim)
         axes[root_id] = (seen_axes if root_id not in axes
                          else meet(axes[root_id], seen_axes))
+    # The legacy label is a projection of the axes, never a rank.
+    basis = {r: IndependenceBasis(legacy_basis(a)) for r, a in axes.items()}
     return by_root, unattributed, basis, values, axes
+
+
+def _weakest_label(roots_axes: list[IndependenceAxes]) -> str:
+    """Legacy label of the greatest lower bound of `roots_axes`.
+
+    The meet always exists, so this never has to pick between incomparable
+    roots. An empty set reads as `unknown`: nothing was established.
+    """
+    if not roots_axes:
+        return IndependenceBasis.UNKNOWN.value
+    return legacy_basis(reduce(meet, roots_axes))
+
+
+def _is_attested(position: IndependenceAxes) -> bool:
+    """Vouched for by a party other than the source's own control domain."""
+    return position.attestation >= Attestation.INDEPENDENT
 
 
 def verdict(
@@ -394,18 +425,14 @@ def verdict(
     for root in counted:
         key = basis.get(root, IndependenceBasis.UNKNOWN).value
         basis_counts[key] = basis_counts.get(key, 0) + 1
-    weakest = min(
-        (basis.get(r, IndependenceBasis.UNKNOWN) for r in counted),
-        key=lambda b: BASIS_RANK[b],
-        default=IndependenceBasis.UNKNOWN,
-    ).value
     counted_axes = [axes.get(r, decompose(IndependenceBasis.UNKNOWN))
                     for r in counted]
+    weakest = _weakest_label(counted_axes)
     weakest_axes = minimal_axes(counted_axes)
     weakest_well_defined = len(weakest_axes) <= 1
     bounds = effective_witness_bounds(counted_axes)
     attested = [r for r in counted
-                if basis.get(r, IndependenceBasis.UNKNOWN) is IndependenceBasis.ATTESTED]
+                if _is_attested(axes.get(r, decompose(IndependenceBasis.UNKNOWN)))]
     attested_margin = (sum(1 for r in attested if values.get(r))
                        - sum(1 for r in attested if not values.get(r)))
 
@@ -562,8 +589,9 @@ class AsymmetricVerdict:
     unattributed: int
     conflicting_roots: frozenset[str]
     weakest_basis: str
-    """Weakest independence basis among the DECISIVE roots. A refutation resting
-    on one UNKNOWN root is one assertion, not a proof."""
+    """Legacy label of the greatest lower bound of the DECISIVE roots, computed
+    on the axes as in `RootVerdict.weakest_basis`. A refutation resting on one
+    UNKNOWN root is one assertion, not a proof."""
     notes: tuple[str, ...] = field(default_factory=tuple)
 
 
@@ -598,7 +626,7 @@ def asymmetric_verdict(
         raise ValueError(f"unknown claim_shape: {claim_shape!r}")
 
     decisive_value = _DECISIVE_SIDE[claim_shape]
-    by_root, unattributed, basis, values, _axes = _sides(
+    by_root, unattributed, _basis, values, axes = _sides(
         claims, promote_unattributed=False)
 
     conflicting = frozenset(r for r, vals in by_root.items() if len(vals) > 1)
@@ -612,9 +640,7 @@ def asymmetric_verdict(
         else AsymmetricOutcome.NOT_ESTABLISHED
 
     def _weakest(roots: frozenset[str]) -> str:
-        return min((basis.get(r, IndependenceBasis.UNKNOWN) for r in roots),
-                   key=lambda b: BASIS_RANK[b],
-                   default=IndependenceBasis.UNKNOWN).value
+        return _weakest_label([axes[r] for r in sorted(roots)])
 
     if conflicting:
         # R2 (side separation) fails, which is a hypothesis of the compiled

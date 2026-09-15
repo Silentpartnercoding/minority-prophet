@@ -18,7 +18,7 @@ as is CE-14 and its mirror
 | CE-05 | **enforced** | R1.4 roots-per-identity bound: durable per-window quota survives restart and key compromise (`tests/test_root_registry.py::test_quota_survives_restart_and_key_compromise_ce05`) |
 | CE-06 | **enforced** | `EvidenceGraph.add` raises `SideConsistencyError` |
 | CE-07 | **open by design** | scope limit; edge polarity proposed, `formal/EXTENSION-SOCKETS.md` §3 |
-| CE-08 | **proposed closure** | root identity defined by proximate cause: `canon/U1-PROXIMATE-ROOTS.md`, `formal/lean/MinorityProphetCore/RootIdentity.lean`. Residual detection exposure bounded by R3, pinned as `test_ATTACK_laundered_provenance_inflates_the_count` |
+| CE-08 | **closed** (2026-09-14, owner decision) | root identity defined by proximate cause: `canon/U1-PROXIMATE-ROOTS.md`, `formal/lean/MinorityProphetCore/RootIdentity.lean`. Residual detection exposure bounded by R3, pinned as `test_ATTACK_laundered_provenance_inflates_the_count` |
 | CE-09 | **fixed** | `EvidenceGraph.add` raises; `strict=False` records instead |
 | CE-10 | **fixed** | `EvidenceGraph.add` raises `PropositionMismatchError` |
 | CE-11 | **fixed in new module; legacy retained** | `aggregation.root_vote.verdict` is order-independent and fails closed. `semantic.evidence_root_vote` is unchanged — its sha256 is bound by a canonical manifest |
@@ -526,9 +526,8 @@ it fails closed. Note the asymmetry it encodes: an unattributed claim can create
 a refutation but can never undo one, which is AC1 read in the direction of
 missing data.
 
-*Still open — the ledger's presence branch.* Unchanged by this repair. See the
-mirror note above: it is an unmade semantic decision, not a defect awaiting
-code.
+*Settled — the ledger's presence branch.* Unchanged by this repair, and correct as
+it stands: owner decision A3 (see the mirror note above) settled its counting.
 
 ---
 

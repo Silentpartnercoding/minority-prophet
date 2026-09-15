@@ -163,8 +163,12 @@ cannot be independently checked.
 
 ## 5. Semantic proposition identity
 
-**New definition required.** A quotient: `≈` on propositions, and separately `≈`
-on roots (ledger U1). The kernel then operates on equivalence classes.
+**New definition required for propositions only.** A quotient: `≈` on
+propositions. The root half is no longer open — ledger U1 closed on 2026-09-14,
+and `canon/U1-PROXIMATE-ROOTS.md` deliberately declines to make `≈` on roots an
+equivalence relation, because shared ancestry is transitive and transitive
+closure swallows the corpus. It declares a cut instead. The kernel then operates
+on equivalence classes of propositions, over roots individuated by that cut.
 
 **Survives unchanged:** every theorem, *given the quotient*. All of them are
 already stated over an abstract index type; nothing inspects what an index means.

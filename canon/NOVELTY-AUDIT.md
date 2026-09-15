@@ -158,11 +158,18 @@ merges all three into one class and drives `N_eff` toward 1 across any
 sufficiently connected corpus — the aggregator becomes maximally conservative
 and useless, which is the `FalseDenyRate` failure again.
 
-This is the known hard problem in entity resolution, and it is the same gap as
-ledger `U1` (root identity undefined). The honest status is **UNRESOLVED**: the
-canon must state whether `∼` is a genuine equivalence (and accept collapse) or a
-clustering (and accept that `N_eff` depends on the clustering algorithm, which
-must then be pinned and published under `A3`).
+This is the known hard problem in entity resolution, and it was the same gap as
+ledger `U1`. **Resolved 2026-09-14, and the answer is neither of the two options
+this paragraph offered.** `canon/U1-PROXIMATE-ROOTS.md` declines to make `∼` an
+equivalence relation precisely because transitive closure drives `N_eff` toward 1
+across a connected corpus, and declines to make it a clustering because the
+result would depend on an algorithm rather than on evidence. It declares a *cut*:
+an intervening independent re-derivation breaks the chain, graded by how far back
+toward the world the re-derivation went (`canon/proximity.py`), and evaluated
+relative to a named class of error rather than in the abstract.
+
+What still requires an owner signature, published in advance under `A3`, is the
+assignment of particular real procedures to rungs — not the relation itself.
 
 ### L7 — Contradictory authority collapses permission · **exploitable**
 

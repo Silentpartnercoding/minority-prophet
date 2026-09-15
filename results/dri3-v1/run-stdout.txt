@@ -1,0 +1,1 @@
+{"criterionSupported": true, "outputSha256": "e41245b961137de97b1e9b272de9370c467b9f362f2ca9248c7b830850e81ab1", "reproducible": true, "semanticSha256": "508282040f5e22760c6bf86e7e53becdb477abedb814643daeef67b2d0d4709e"}

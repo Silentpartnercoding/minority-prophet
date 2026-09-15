@@ -95,6 +95,21 @@ the evidence that this programme re-derived shipped work, which is the finding.
    omitting a field rather than forging one. Filed as
    `minority-prophet-gate#22`, blocked on #115.
 
+## Relation to decision-relative independence
+
+`proximity.py` and `independence_axes.py` do **not** supersede
+`provenance/decision_relative.py`, and this placement should not be read that way.
+The adapter selects which kind of shared cause to group observations by for one
+decision (machine, controller, evidence origin, upstream component). The canon
+grades how far each witness went toward the world and reports independence per
+class of error without selecting. They overlap on source copying and shared
+instruments; control domain sits only on the adapter's side and in HVI-1.
+
+The adapter's one preregistered test, DRI-1A, was adverse and is not canonical.
+The strategic governor still declares the cut, so the placement table above is
+unchanged. The proposed mapping between the two models, and what neither
+answers, is in `research/decision-relative-independence/README.md`.
+
 ## Lesson recorded
 
 Three placement errors in one session, each from substituting a cheap proxy for

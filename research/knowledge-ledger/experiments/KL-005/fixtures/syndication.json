@@ -1,0 +1,134 @@
+{
+  "schema": "minority-prophet.kl005-fixture.v1",
+  "note": "Hand-authored structural fixture. It exercises the root-collapse and metric mechanisms only. It is not a news corpus, carries no rate, and supports no claim about journalism; KL-005 proper requires timestamped closed real events.",
+  "horizonDays": 30,
+  "events": [
+    {
+      "eventId": "E1-true-wire",
+      "isTrue": true,
+      "independentlyReportableAt": 2,
+      "description": "True event. One original, then four wire copies."
+    },
+    {
+      "eventId": "E2-false-cycle",
+      "isTrue": false,
+      "independentlyReportableAt": null,
+      "description": "False event. Three outlets cite each other in a cycle."
+    },
+    {
+      "eventId": "E3-true-three",
+      "isTrue": true,
+      "independentlyReportableAt": 1,
+      "description": "True event with three genuinely independent originals."
+    },
+    {
+      "eventId": "E4-false-single",
+      "isTrue": false,
+      "independentlyReportableAt": null,
+      "description": "False event. One original, syndicated six times."
+    }
+  ],
+  "reports": {
+    "E1-orig": {
+      "event": "E1-true-wire",
+      "derivedFrom": null
+    },
+    "E1-wire1": {
+      "event": "E1-true-wire",
+      "derivedFrom": "E1-orig"
+    },
+    "E1-wire2": {
+      "event": "E1-true-wire",
+      "derivedFrom": "E1-orig"
+    },
+    "E1-wire3": {
+      "event": "E1-true-wire",
+      "derivedFrom": "E1-wire1"
+    },
+    "E1-wire4": {
+      "event": "E1-true-wire",
+      "derivedFrom": "E1-wire3"
+    },
+    "E2-a": {
+      "event": "E2-false-cycle",
+      "derivedFrom": "E2-c"
+    },
+    "E2-b": {
+      "event": "E2-false-cycle",
+      "derivedFrom": "E2-a"
+    },
+    "E2-c": {
+      "event": "E2-false-cycle",
+      "derivedFrom": "E2-b"
+    },
+    "E3-x": {
+      "event": "E3-true-three",
+      "derivedFrom": null
+    },
+    "E3-y": {
+      "event": "E3-true-three",
+      "derivedFrom": null
+    },
+    "E3-z": {
+      "event": "E3-true-three",
+      "derivedFrom": null
+    },
+    "E4-orig": {
+      "event": "E4-false-single",
+      "derivedFrom": null
+    },
+    "E4-s1": {
+      "event": "E4-false-single",
+      "derivedFrom": "E4-orig"
+    },
+    "E4-s2": {
+      "event": "E4-false-single",
+      "derivedFrom": "E4-orig"
+    },
+    "E4-s3": {
+      "event": "E4-false-single",
+      "derivedFrom": "E4-s1"
+    },
+    "E4-s4": {
+      "event": "E4-false-single",
+      "derivedFrom": "E4-s2"
+    },
+    "E4-s5": {
+      "event": "E4-false-single",
+      "derivedFrom": "E4-s3"
+    },
+    "E4-s6": {
+      "event": "E4-false-single",
+      "derivedFrom": "E4-s4"
+    }
+  },
+  "systems": {
+    "silent": {
+      "note": "Never confirms anything. The degenerate winner a one-sided metric rewards.",
+      "judgements": {
+        "E1-true-wire": null,
+        "E2-false-cycle": null,
+        "E3-true-three": null,
+        "E4-false-single": null
+      }
+    },
+    "count_reports": {
+      "note": "Confirms on 3+ reports regardless of descent. Fooled by syndication.",
+      "judgements": {
+        "E1-true-wire": 3,
+        "E2-false-cycle": 4,
+        "E3-true-three": 2,
+        "E4-false-single": 5
+      }
+    },
+    "root_aware": {
+      "note": "Confirms on 2+ independent ORIGINS. Waits on syndicated and circular events.",
+      "judgements": {
+        "E1-true-wire": null,
+        "E2-false-cycle": null,
+        "E3-true-three": 3,
+        "E4-false-single": null
+      }
+    }
+  }
+}

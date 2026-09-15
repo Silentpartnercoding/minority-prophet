@@ -5,19 +5,42 @@
   "state": "seeded",
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
-  "reviewedByRun": "RUN-20260807-8",
-  "nextGate": "Construct the source-laundering packets and preregister accuracy, Brier score, confident-error, abstention, root error, tokens, cost, and latency. The first falsifiable check needs no agent at all: 20 paraphrases of one false source must collapse to one root. KL-000 fixture C07 already demonstrates the evaluator does this for 20 identical rootIds; KL-002's real gate is whether an agent PIPELINE assigns the same rootId to 20 paraphrases, which is a root-ATTRIBUTION question the evaluator never sees.",
+  "reviewedByRun": "RUN-20260915-1",
+  "nextGate": "Write the registration the probe informs: fix the root rule question first, because ADV-004 is now measured rather than suspected, then preregister accuracy, Brier score, confident-error, abstention, root error, tokens, cost and latency. The metered arm still needs founder authorization for paid inference; the probe deliberately did not.",
   "blockers": [
-    "DISCHARGED at RUN-20260807-8, retained for the record: 'preregistration is minority-prophet.preregistration.v0.1 with 14 of 22 keys unpopulated (11 null + 3 empty); see run constraint SCH-001' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
-    "directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001",
-    "DISCHARGED at RUN-20260807-8, retained for the record: 'schema v0.1 has no key for 4 of RESEARCH-METHOD.md's 12 required fields, so a fully populated v0.1 preregistration would still not satisfy the method; migration to v0.2 required first' -- the preregistration is now schema v0.2 with every required field present or unanswered-with-reason (SCH-001 repaired). The remaining work is CONTENT at registration, not schema.",
-    "metered model calls may exceed the approved budget; requires founder authorization before any paid inference",
-    "constraint ADV-004: root identity is byte identity, so a paraphrase pipeline that emits inconsistent rootId strings splits one source into many roots without any adversary"
+    "DISCHARGED 2026-09-15: 'directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001' -- fixtures/, src/, tests/ and REPRODUCE.md are present. results/ is deliberately absent: a seeded experiment must not carry results, and the probe output is in probe/.",
+    "CONFIRMED BY MEASUREMENT 2026-09-15, not discharged: constraint ADV-004 -- root identity is byte identity, so a paraphrase pipeline splits one source into many roots with no adversary. Measured at 20 roots for 1 origin.",
+    "metered model calls may exceed the approved budget; requires founder authorization before any paid inference"
   ],
-  "claimAllowed": "This experiment is seeded and supports no result claim. Its registry question, null, and target are recorded; nothing has been executed.",
+  "claimAllowed": "Nothing. This experiment is seeded and supports no result claim. The unregistered probe establishes only that, on an authored fixture, byte-identity root assignment presents twenty paraphrases of one source as twenty roots -- a property of the two declared rules, not a rate, and not a claim about agents: no model was run.",
   "dependsOn": [
     "KL-000"
   ],
   "dependsOnNote": "EXPERIMENT-REGISTRY.json states one KL-000 violation blocks every downstream kernel. KL-000 reached adversarial-passed in RUN-20260807-1, so this dependency is satisfied for fixture-stage work but NOT for any promotion: KL-000 itself awaits independent reimplementation.",
-  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence."
+  "schemaMigration": "preregistration.json migrated v0.1 -> v0.2 by RUN-20260807-8 (0 schema blocker(s) discharged). State unchanged: seeded. A schema with more fields is not evidence.",
+  "unregisteredProbe": {
+    "ranAt": "2026-09-15",
+    "isAResult": false,
+    "why": "The registration must be committed before confirmatory inspection. This check was run first, so it informs the registration rather than reporting against one. Output is in probe/, not results/.",
+    "check": "Twenty paraphrases of one false source must remain one root.",
+    "outcome": "DOES NOT HOLD under byte identity: 20 distinct roots for 1 true origin. declared_origin yields 1.",
+    "harm": "A false claim laundered through 20 paraphrases reaches confidence 0.99999999996; a true claim with 3 genuinely independent sources reaches 0.973. The false claim outscores the true one with no adversary present.",
+    "bearing": "Confirms constraint ADV-004 by measurement rather than assertion, and shows the repair (declared_origin) relocates the trust assumption to the declaration without touching ADV-001's under-declared search space."
+  },
+  "gateCoverage": {
+    "map": "research/knowledge-ledger/GATE-COVERAGE.json",
+    "reconciliation": "research/knowledge-ledger/CROSS-PROGRAMME-RECONCILIATION.md",
+    "advancesThisExperiment": false,
+    "note": "Other work in this repository addresses part of this experiment's open gate. Recorded so it is not rediscovered as new. It transfers no claim and did not move this experiment's state.",
+    "entries": [
+      {
+        "gatePhrase": "splits one source into many roots",
+        "strength": "covers",
+        "coveredBy": [
+          "experiments/HVI-1-PREREGISTRATION.md"
+        ],
+        "doesNotDischarge": "KL-002 scopes its remainder to an agent PIPELINE assigning rootIds, which HVI-1 does not test."
+      }
+    ]
+  }
 }

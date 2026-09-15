@@ -228,3 +228,83 @@ report — including the finding that the paper's own R3 promises
 `flip_budget` "surfaced with every verdict" and KL-000's receipt has never
 carried it (SCH-005, now traced to its paper root).
 
+---
+
+## Independence verified, 2026-09-14
+
+Promoted by owner decision at RUN-20260807-10. The program had carried
+`adversarial-passed` since RUN-20260807-5, with promotion listed as an open owner
+decision rather than an unmet evidential requirement.
+
+**Recorded on its own axis, and the first attempt got this wrong.** Independence
+was initially added to the test ladder as a rung above `adversarial-passed`. That
+was an error of exactly the kind `aggregation/independence_axes.py` exists to
+prevent: the ladder measures *what testing an experiment survived* and says
+nothing about *who ran it*, so ranking independence against test strength forces
+an exchange rate that does not exist. It produced the same inversion that module
+documents — a `shadow-passed` experiment verified only by its own author would
+have outranked an `adversarial-passed` one reimplemented from scratch in another
+language. KL-000's ladder state therefore remains **`adversarial-passed`**, and
+independence is the separate field `independentVerification: verified`. Neither
+axis dominates the other.
+
+**What the promotion asserts.** Two independent implementations in different
+languages, with no shared code, agree on the evaluator, on the complete
+conclusion function across the exhaustive distribution
+160/49,480/41,820/19,380, and on the canonical form and digests of the two
+pinned receipts C11 and C12.
+
+**What it does not assert, and what travels with every citation of it.**
+
+1. Byte-identical canonical form is established for **C11 and C12 only** — two
+   receipts, not the 110,840 receipt-producing worlds.
+2. **LEAK-101 is not discharged.** The implementer saw expected counts in the
+   v1.1.0 package. The digest result is unaffected and the qualification stands.
+   Discharging it requires a fourth implementation on a reference-free machine.
+3. The promotion is scoped to **protocol v1.2.0**. The independent
+   implementation has not run against v1.3.0. This is defensible rather than
+   evasive: I12 is a checker-side change, the evaluator and all pinned bytes are
+   identical across the two versions, so the conformance evidence is undisturbed
+   — but the independent checker does not carry I12, and this promotion does not
+   claim otherwise.
+
+**A2 was decided separately, later the same day.** See below.
+
+This is a decision, not a derivation, recorded as such in the same manner as A1,
+R1 and R5.2.
+
+---
+
+## A2 decided, 2026-09-14
+
+**Does a presence conclusion require complete search coverage?** Decided by the
+owner at RUN-20260807-11: **no.** Finding the thing is the finding. Searching the
+remaining locations cannot un-find it, and withholding `supported` until coverage
+is complete would make every true positive wait on an exhaustive search that adds
+no evidence for it.
+
+A decision, not a derivation — but one every available reading already pointed
+at. The registered text has no coverage term on `conclusionFunction.presence`.
+Both independent implementations chose this reading. The RUN-20260807-9
+traceability audit found the paper agrees: its aggregator takes no coverage
+input, and coverage is imposed on absence claims only.
+
+**It is recorded now because none of that constituted a decision of record**, and
+19,152 worlds — 17.3% of the kernel, the largest undecided surface in it — were
+resting on a question nobody had answered. A third implementation reading it the
+other way would have diverged on every one of them *while passing every
+invariant*. It now diverges from a decision rather than from an ambiguity, which
+is the whole point of writing it down.
+
+**The rejected reading is preserved**, per the discipline applied to R1, R5.2 and
+A1: that presence should also require `search.complete`, on the argument that a
+claim asserted without knowing what else is out there is a claim about one
+location rather than about the declared scope. Defensible, and rejected —
+absence and presence are not symmetric claims. That is the same asymmetry the
+assay discipline runs on, and the one `Asymmetric.lean` proves as a verdict rule:
+one verified find settles an existential claim, and no number of unsuccessful
+searches out-votes it. Requiring coverage for presence would impose the absence
+rule on a claim shape that does not need it.
+
+**No invariant enforces either reading.** The mechanistic gap recorded for R1 and
+R5.2 still applies: this is a decision of record, not an enforced one.

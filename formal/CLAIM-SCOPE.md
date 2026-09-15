@@ -16,7 +16,7 @@ This file is the prose gate.
 | **Finite exhaustive check** | Every case in a bounded domain enumerated. Says nothing about larger domains | `audit/falsify.py`, `verification/independent_check_2026-08.py` (partly — see F2) |
 | **Randomized experiment** | Sampled, not enumerated. Reports a rate, not a guarantee | `verification/r1_degradation_curve.py`; the Gate's `verify_multivalue` above 200 rewirings (F3) |
 | **Implementation invariant** | A property of shipped code, true until someone edits the code | `audit/test_counterexamples.py` CE-09…CE-12 |
-| **Security assumption** | Imported from a layer these theorems do not model. If it fails, the theorems become vacuous | R1 (root integrity), root identity (U1), acyclicity enforcement |
+| **Security assumption** | Imported from a layer these theorems do not model. If it fails, the theorems become vacuous | R1 (root integrity), acyclicity enforcement. Root identity (U1) is no longer here — it is defined in `canon/U1-PROXIMATE-ROOTS.md`; what remains imported is *detection* of laundered provenance |
 | **Speculative extension** | Not implemented, not proved | `EXTENSION-SOCKETS.md`, ledger `LEDGER-H1`/`LEDGER-H2` |
 
 A statement never changes class by being repeated. In particular: **a Lean file
@@ -68,6 +68,21 @@ finite, acyclic, side-consistent worlds.
    (`T5_needs_assert_fixed`), and without side-consistency one root serves both
    sides (`CE06_…`).
 
+9. **The margin responds to material change, not only invariance** (ledger
+   RS1–RS3). With assertions fixed, the change in margin *equals* the signed
+   count of the roots that appeared and disappeared (`margin_diff_eq_signedCount`),
+   so a material root change must move the margin (`margin_must_move`) and `k`
+   fresh one-sided roots move it by exactly `k` (`margin_shifts_by_added_roots`).
+   This excludes an always-abstaining aggregator, which every invariance result
+   above permits. The margin moving does not imply the verdict changes.
+
+Also compiled, **outside the aggregator core** (ledger NG1–NG5): an abstract
+authority-and-gate model in `NarrowGate.lean`. Authority does not expand along
+a chain; strict contraction exhausts it; a gate preserves viability without any
+invariance hypothesis; controlled invariance is what keeps the gate non-empty;
+and a three-state witness satisfies safety while paralysed. It is not a model of
+Gate or Border, and `canon/narrow_gate.py` is retracted as a proposal.
+
 ---
 
 ## What the core DOES NOT establish
@@ -82,19 +97,54 @@ an aggregator's invariances, not about accuracy.**
 
 ### It does not establish independence
 
-"Independent" is *defined* as "distinct root", and root identity is
-**undefined** (ledger U1). Graded or partial independence is not representable
-in the model that was formalized before this audit, and is representable but
-untheorised in the DAG kernel. Any claim that the system measures genuine
-evidential independence is a claim about the identity criterion, which is
-currently an opaque caller-supplied string.
+"Independent" is *defined* as "distinct root". **Root identity is now defined**
+(ledger U1, closed 2026-09-14): two sources descending from a common ancestor
+remain independent witnesses if each re-established the claim through a channel
+that does not run through that ancestor. The mechanism is the tort doctrine of
+`novus actus interveniens`, and re-derivation is graded rather than boolean by
+the proximity ladder. See `canon/U1-PROXIMATE-ROOTS.md`,
+`formal/lean/MinorityProphetCore/RootIdentity.lean` and `canon/proximity.py`.
+
+**Independence is therefore never a scalar and is always relative to a class of
+error.** `canon/proximity.py` exposes `independent_for(a, b, error)` and no
+aggregate. Two analysts working from one published table are fully independent
+for arithmetic slips and not independent at all for a miscalibrated instrument;
+a single number would hide exactly that distinction.
+
+**Settling only on a robust settlement is sound over recorded dependence** (ledger
+DR1, DR2; `formal/lean/MinorityProphetCore/DependenceRobustness.lean`). When the
+settlements reachable under every combination of recorded possible dependence
+collapse to one, every reading the record allows settles that way, including the
+true grouping whenever it is such a reading. The condition is the whole point:
+dependence the record does not carry is outside the theorem.
+
+**And no rule over the record alone can cover that gap** (ledger DR3). A record
+with no shared identity cannot tell independent observations from copies of one
+source, so any output on it is wrong under one of the two groupings. Protection
+against lost lineage needs an observable the loss does not remove, such as a
+content fingerprint or a lookup.
+
+What this does **not** give you is detection. The system cannot discover a shared
+blind spot, only count under one you have named in advance under `A3`. An
+adversary who launders the provenance record *and* scrubs the shared
+idiosyncratic markers removes edges, and a sparser graph admits a *larger*
+independent set, so the count over-reports. That residual is pinned by
+`test_ATTACK_laundered_provenance_inflates_the_count` and absorbed by **R3
+margin sufficiency**, which requires a margin above the effective witness count
+rather than trusting the count. Per `ASSAYER.md` A5 a report may only ever say
+*"no dependence trace was found"*, never *"these are independent"*.
 
 The adapter in `provenance/decision_relative.py` does not close this gap. It
 requires a caller to name the decision, failure domain and lineage cut, then
 reports whether alternative declared cuts materially change settlement. That
 makes root-identity policy visible and testable; it neither proves that the
 selected cut is causally correct nor extends a theorem. Its constructed fixtures
-are implementation invariants, not empirical evidence.
+are implementation invariants, not empirical evidence. Its one preregistered
+test, DRI-1A, did not support the claim that selecting the relevant cut lowers
+false settlement by 0.15 against every fixed cut (`results/dri1a-v1/`), so the
+adapter is unvalidated as a decision policy. The proximity ladder is a related
+but different model and does not supersede it; see
+`research/decision-relative-independence/README.md`.
 
 ### It does not survive its own headline slogan
 

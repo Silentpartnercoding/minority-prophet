@@ -186,9 +186,10 @@ def independent_lineages(
     WARNING, and it is the whole point of audit item L5: real provenance
     similarity is **not transitive**. Taking the transitive closure -- which is
     what an equivalence relation requires -- collapses chains A~B, B~C, A/~C into
-    a single lineage. This function is deliberately conservative and will
-    under-count on connected corpora. It is correct as a lower bound and wrong as
-    an estimate. Ledger item ``U1`` is the open question.
+    a single lineage. This function will under-count on connected corpora; that
+    is directional, not conservative (see ``canon/independent_set.py``). It is a
+    lower bound and wrong as an estimate. Ledger item ``U1`` is closed; see
+    ``canon/U1-PROXIMATE-ROOTS.md``.
     """
     items = list(sources)
     parent = list(range(len(items)))

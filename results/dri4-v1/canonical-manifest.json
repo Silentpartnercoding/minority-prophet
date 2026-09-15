@@ -1,0 +1,43 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-4",
+  "status": "canonical-incomplete-record-rejected",
+  "files": {
+    "experiments/dri4/PREREGISTRATION.md": "20099a3c028b49394ae5c1e722383b4a765472e3eb6e5b291b60d3cce9fc2051",
+    "experiments/dri4/EXECUTION-CONFIG.json": "c6952b320e05c340a411d080f5ccd173bce4b221aefccaec6157d06490f3138c",
+    "experiments/dri4/world.py": "6a316cc375302f36d7f06449d7a11f2a65bdd2456b56521fc561b25de8f692bf",
+    "experiments/dri4/scoring.py": "ba0d15d67b4adce3b022575848e3652068d322e5ee117965a72d62e5ce58c9ab",
+    "experiments/dri4/run_confirmatory.py": "91c358bac490b0234a2c910a26c3aac8184d4a9cb5f29f6a363a90b6fa413c86",
+    "experiments/dri3/world.py": "f6401442a47ba6179680203914a0c850ace2306ad1eb8101ea0e22996509d592",
+    "experiments/dri3/arms.py": "104fedd3695719ca8fc7d92c0db789c5090d00973813d4eb0cc80004a7983c13",
+    "experiments/dri3/scoring.py": "4c4d02f0bd59eee951c59b06d4527821f0484c00a357387a459200940afb5093",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "provenance/dependence_robustness.py": "c5273b6d4dbe7faa22351ba456c6781ac19a4b911b002167362d41ecd1d921bf",
+    "provenance/decision_relative.py": "f9fe5d9b95982e42c754fa3a187628f09be5408f69f7fa6873029bdad3046b13",
+    "tests/test_dri4_protocol.py": "2433e47b9b9c14549f7d1feeee9304b616c72e602c8ee1a8c79ba4fb182c427c",
+    "results/dri4-v1/README.md": "11c59fb3513ab0b59e8b7f0757bd4d9209482dd8cda4ec3d758cd8579589c4c0",
+    "results/dri4-v1/result.json": "55f9006693b2fcb029260467351602aa3254e1ade9238d5531121475580847de",
+    "results/dri4-v1/run-stdout.txt": "8224d34a282cc52e78d9bb3d1443c8c02e57e4307bb7814e6fa16ad18422d30a",
+    "results/dri4-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "protocol": "dfe938da19f03b81e53520bb4e2dee33f889b2f4",
+    "runner": "4f94db76a078d441fc4c9779324d2a2031043678",
+    "candidateRecord": "1c7c5e2c7f598ff3a330a36793fb0db9d8ede6f9"
+  },
+  "recordNote": "The lifecycle record research/records/DRI-4-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "f3339a486b6098aeffcf8b6e780679221e2d91c9eef328a027f4bf6c0aecacbd",
+    "command": "PYTHONPATH=. python -m experiments.dri4.run_confirmatory --output results/dri4-v1/result.json",
+    "environment": {
+      "commit": "1c7c5e2c7f598ff3a330a36793fb0db9d8ede6f9",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic worlds with truthful lookups and a stated model of missing and spurious shared identities. With a complete record the tiered rule made zero silent false settlements (implementation check of DR2); as true shared identities go missing its advantage erodes, never becoming worse than the agreement rule, but it was not significantly better in two of sixteen powered comparisons, so the criterion is not met. No real-world rates; imperfect lookups deferred; same control domain; no authority claim."
+}

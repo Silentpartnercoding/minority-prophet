@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    "experiments/dri5/PREREGISTRATION.md",
+    "results/dri5-v1/result.json",
+    "results/dri5-v1/canonical-manifest.json"
+  ],
+  "authorityEffect": "none",
+  "id": "DRI-5-V1",
+  "independenceClaims": [],
+  "manifest": {
+    "commit": "d388373e8184468af77266e3693b4cb32e1c5c8d",
+    "path": "results/dri5-v1/canonical-manifest.json",
+    "sha256": "e88f5af21ff43e3ef3912840a64ef91b7864824daff85960fe81a69ecc1b5df3"
+  },
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": {
+    "commit": "f80c6a1b0085fed57352b95dec9e44e7c407e6e3",
+    "path": "experiments/dri5/PREREGISTRATION.md",
+    "sha256": "a5825a3da59a725ceb358c51809a101731b90f0235cabdae89a8cc84ccb7cb14"
+  },
+  "result": {
+    "commit": "d388373e8184468af77266e3693b4cb32e1c5c8d",
+    "path": "results/dri5-v1/result.json",
+    "sha256": "e6a2e80271ab7939b4f7389a96431cd0cc5c3a4f5d79bc46235a9dfb62004301"
+  },
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "canonical",
+  "verdict": "rejected"
+}

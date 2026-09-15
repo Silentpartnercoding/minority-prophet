@@ -1,0 +1,63 @@
+{
+  "schema": "minority-prophet.kl005-first-gate.v1",
+  "gates": {
+    "syndicationCannotManufactureIndependence": true,
+    "twoSidedMetricDeniesSilenceTheWin": true
+  },
+  "counting": {
+    "E1-true-wire": {
+      "reports": 5,
+      "independentOrigins": 1,
+      "collapsedBy": 4,
+      "circular": false
+    },
+    "E2-false-cycle": {
+      "reports": 3,
+      "independentOrigins": 0,
+      "collapsedBy": 3,
+      "circular": true
+    },
+    "E3-true-three": {
+      "reports": 3,
+      "independentOrigins": 3,
+      "collapsedBy": 0,
+      "circular": false
+    },
+    "E4-false-single": {
+      "reports": 7,
+      "independentOrigins": 1,
+      "collapsedBy": 6,
+      "circular": false
+    }
+  },
+  "scores": {
+    "silent": {
+      "note": "Never confirms anything. The degenerate winner a one-sided metric rewards.",
+      "oneSided": 0.0,
+      "delayCost": 1.0,
+      "twoSided": 1.0
+    },
+    "count_reports": {
+      "note": "Confirms on 3+ reports regardless of descent. Fooled by syndication.",
+      "oneSided": 1.0,
+      "delayCost": 0.033333,
+      "twoSided": 1.033333
+    },
+    "root_aware": {
+      "note": "Confirms on 2+ independent ORIGINS. Waits on syndicated and circular events.",
+      "oneSided": 0.0,
+      "delayCost": 0.533333,
+      "twoSided": 0.533333
+    }
+  },
+  "oneSidedWinner": "silent",
+  "twoSidedWinner": "root_aware",
+  "silentWinsUnderOneSided": true,
+  "silentWinsUnderTwoSided": false,
+  "boundaries": [
+    "This is a structural fixture, not a news corpus. No rate is reported and none is derivable; KL-005 proper requires timestamped closed real events.",
+    "The metric's weights are declared equal, not fitted. Any weighting that lets one term dominate reintroduces the single-endpoint defect in the other direction.",
+    "A circular citation resolving to zero origins is fail-closed by choice. It refuses to mint an origin that does not exist, at the cost of discarding a genuine original that is only reachable through a cycle.",
+    "Root collapse here trusts declared descent. It does not detect an undisclosed wire relationship, which is the journalism analogue of ADV-001's under-declared search space."
+  ]
+}

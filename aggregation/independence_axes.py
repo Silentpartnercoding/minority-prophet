@@ -24,10 +24,11 @@ looking, and there is no such rate. The visible consequence is an inversion:
 That is backwards, and no single ordering of four values can fix it, because the
 error is the single ordering.
 
-**This module is additive.** `IndependenceBasis`, `BASIS_RANK` and `verdict()`
-are untouched, and the wire vocabulary shared byte-for-byte with
-`invention_engine.models.IndependenceBasis` is preserved exactly. Decomposition
-is offered alongside so callers can migrate deliberately.
+**The ladder is retired (2026-09-14).** `verdict()` and `asymmetric_verdict()`
+compute every independence output on these axes. `BASIS_RANK` is kept unchanged
+only so existing imports keep working, and nothing reads it. The wire vocabulary
+shared byte-for-byte with `invention_engine.models.IndependenceBasis` is
+preserved exactly.
 
 The replacement for a total rank is a **partial order**: one root dominates
 another only when it is at least as good on *both* axes. Incomparable pairs stay
@@ -114,7 +115,9 @@ class WitnessIdentity(IntEnum):
     anonymous source is fully compliant with R1.4 and tells you nothing about
     whether two such roots came from two people.
 
-    That is the open half of U1, recorded in
+    That is the residual half of U1 -- detection rather than definition, which
+    is what remains after the closure in `canon/U1-PROXIMATE-ROOTS.md`. Recorded
+    in
     `research/knowledge-ledger/experiments/KL-014/CORRECTION-20260813-quota.md`:
     an issuer may supply many distinct `observation_id`s for one real
     observation and stay inside quota. Witness identity is the lever on it,
@@ -390,7 +393,7 @@ def effective_witness_bounds(axes: Sequence[IndependenceAxes]) -> WitnessBounds:
 def minimal_axes(items: Iterable[IndependenceAxes]) -> tuple[IndependenceAxes, ...]:
     """The **weakest** elements: an antichain, not a single value.
 
-    `weakest_basis` assumes a total order and returns one value. Under a partial
+    A single weakest value assumes a total order. Under a partial
     order there may be several minimal elements that no ordering can rank
     against each other -- an anonymous eyewitness and a notarised hearsay are
     both weakest, in different ways.

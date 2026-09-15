@@ -24,7 +24,7 @@
     "mathlib_input_rev": "v4.33.1",
     "build_command": "lake exe cache get && lake build",
     "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.; rebuilt again 2026-09-13, exit 0, 3008 jobs, with Responsiveness.lean added",
-    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]",
+    "axiom_audit": "all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]; DR3 (no_record_rule_is_immune) audited 2026-09-15: depends only on [propext, Classical.choice, Quot.sound]",
     "sorry_count": 0,
     "native_decide_count": 0,
     "kernel_soundness_status": {
@@ -528,6 +528,192 @@
       "security_interpretation": "Counting fails in both directions. Roots reporting an unsuccessful search are absence of evidence and cannot out-vote a find.",
       "prohibited_overstatement": "Whether knowledge_ledger's presence branch is DEFECTIVE depends on an unmade semantic decision about what 'oppose' means for a presence claim. This theorem does not settle it and must not be cited as settling it. asymmetric_verdict decides this shape correctly. The related ledger question is settled separately as owner decision A3 (oppose on a presence claim means positive evidence against, not an unsuccessful search), which makes evaluate_transaction_v2's presence counting correct as written. A3 is a semantic decision, not a consequence of this theorem, and must not be cited as proved by it.",
       "implementation": "aggregation/root_vote.py::asymmetric_verdict"
+    },
+    {
+      "id": "NG1",
+      "short": "Authority does not expand along a chain",
+      "statement": "If each transformation's permitted set is contained in the previous one, then for i <= j the set permitted after j transformations is contained in the set permitted after i, and the effects still authorized after n steps are exactly the n-th permitted set.",
+      "definition_version": "narrow-gate-v1: abstract transition-system model, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "AuthorityChain M: M (i+1) is a subset of M i for every i"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.NarrowGate.no_authority_creation; MinorityProphetCore.NarrowGate.surviving_eq_last",
+      "lean_file": "formal/lean/MinorityProphetCore/NarrowGate.lean",
+      "implementation_tests": [],
+      "security_interpretation": "Within one derivation chain no transformation can widen what is permitted.",
+      "prohibited_overstatement": "An abstract set-theoretic model of authority and gating. It is not a model of Gate or Border, and canon/narrow_gate.py, which encoded these laws, is retracted as a proposal (canon/PLACEMENT.md): the shipped Gate and Border already implement deny-by-default and bounded undertaking in stronger form. surviving_eq_last is a simplification lemma, not a result."
+    },
+    {
+      "id": "NG2",
+      "short": "Strict contraction exhausts authority",
+      "statement": "If a finite permitted set strictly shrinks at every step, each step spends at least one unit, and the set is empty after as many steps as it had elements.",
+      "definition_version": "narrow-gate-v1: abstract transition-system model, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "M : Nat -> Finset E with decidable equality",
+        "M (i+1) is a strict subset of M i for every i"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.NarrowGate.strict_contraction_budget; MinorityProphetCore.NarrowGate.strict_contraction_inert",
+      "lean_file": "formal/lean/MinorityProphetCore/NarrowGate.lean",
+      "implementation_tests": [],
+      "security_interpretation": "Authority that only ever contracts strictly terminates in an inert agent. Monotone contraction is a termination argument, not a safety property, unless authority may be renewed at an authenticated mandate boundary.",
+      "prohibited_overstatement": "An abstract set-theoretic model of authority and gating. It is not a model of Gate or Border, and canon/narrow_gate.py, which encoded these laws, is retracted as a proposal (canon/PLACEMENT.md): the shipped Gate and Border already implement deny-by-default and bounded undertaking in stronger form. Renewal is not modelled, and nothing here shows that any deployed system contracts strictly."
+    },
+    {
+      "id": "NG3",
+      "short": "Gated reachability preserves viability",
+      "statement": "If the start state is in V and every step passes a gate admitting only effects whose successor is in V, every reachable state is in V.",
+      "definition_version": "narrow-gate-v1: abstract transition-system model, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "s0 is in V",
+        "Gate s admits e only if e is admissible at s and T s e is in V",
+        "no controlled-invariance hypothesis"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.NarrowGate.gate_preserves_viability",
+      "lean_file": "formal/lean/MinorityProphetCore/NarrowGate.lean",
+      "implementation_tests": [],
+      "known_counterexamples_outside_scope": [
+        "NG5: a system that satisfies this theorem while its gate empties and it can no longer act."
+      ],
+      "security_interpretation": "Safety needs only one-step containment. That is why safety is not the scarce property.",
+      "prohibited_overstatement": "An abstract set-theoretic model of authority and gating. It is not a model of Gate or Border, and canon/narrow_gate.py, which encoded these laws, is retracted as a proposal (canon/PLACEMENT.md): the shipped Gate and Border already implement deny-by-default and bounded undertaking in stronger form. A paralysed system satisfies this theorem (NG5), so it is not evidence that a gate is well designed, and it assumes nothing about the soundness of world-state verification."
+    },
+    {
+      "id": "NG4",
+      "short": "Controlled invariance makes the gate non-empty",
+      "statement": "If V is controlled-invariant (from every state in V some admissible effect stays in V), the gate is non-empty at every state in V.",
+      "definition_version": "narrow-gate-v1: abstract transition-system model, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "ControlledInvariant sys V",
+        "s is in V"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.NarrowGate.invariant_gate_nonempty",
+      "lean_file": "formal/lean/MinorityProphetCore/NarrowGate.lean",
+      "implementation_tests": [],
+      "security_interpretation": "Liveness, the ability to act while staying safe, requires V to be controlled-invariant, in practice a sound under-approximation of the viability kernel.",
+      "prohibited_overstatement": "An abstract set-theoretic model of authority and gating. It is not a model of Gate or Border, and canon/narrow_gate.py, which encoded these laws, is retracted as a proposal (canon/PLACEMENT.md): the shipped Gate and Border already implement deny-by-default and bounded undertaking in stronger form. Nothing here computes or certifies a viability kernel; computing a sound under-approximation is the engineering requirement and is not done."
+    },
+    {
+      "id": "NG5",
+      "short": "Safety by paralysis (witness)",
+      "statement": "There is a three-state system whose declared-safe set is not controlled-invariant: the gate admits a step into a state where the gate is empty, and safety holds throughout.",
+      "definition_version": "narrow-gate-v1: abstract transition-system model, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "demoSys: states 0 -> 1 -> 2, every effect admissible",
+        "demoV = {n | n <= 1}"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.NarrowGate.demo_not_controlled_invariant; MinorityProphetCore.NarrowGate.demo_stuck_state_reachable; MinorityProphetCore.NarrowGate.demo_gate_one_empty; MinorityProphetCore.NarrowGate.demo_is_safe",
+      "lean_file": "formal/lean/MinorityProphetCore/NarrowGate.lean",
+      "implementation_tests": [],
+      "security_interpretation": "A safety theorem that a paralysed system satisfies is not evidence of good gate design; false denial is the property worth measuring.",
+      "prohibited_overstatement": "An abstract set-theoretic model of authority and gating. It is not a model of Gate or Border, and canon/narrow_gate.py, which encoded these laws, is retracted as a proposal (canon/PLACEMENT.md): the shipped Gate and Border already implement deny-by-default and bounded undertaking in stronger form. This is an existence witness on a toy system, not a statement about any real gate."
+    },
+    {
+      "id": "RS1",
+      "short": "Exact margin identity",
+      "statement": "With assertions fixed and both worlds side-consistent, margin(W) - margin(W') equals the signed count of roots in W but not W' minus the signed count of roots in W' but not W. The margin is the signed count of the root set.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W and SideConsistent W'",
+        "W.assert = W'.assert"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.margin_diff_eq_signedCount; MinorityProphet.margin_eq_signedCount",
+      "lean_file": "formal/lean/MinorityProphetCore/Responsiveness.lean",
+      "implementation_tests": [],
+      "security_interpretation": "Strengthens the bound under T5 (margin_diff_le_rootSet_diff) from an inequality to an equality, which constrains the margin from both directions.",
+      "prohibited_overstatement": "Same scope as T5: units of root-set change with assertions fixed, not real-world incidents. Side conversions change assertions and are outside it."
+    },
+    {
+      "id": "RS2",
+      "short": "Responsiveness",
+      "statement": "With assertions fixed and both worlds side-consistent, if the roots that changed carry unequal signed weight, the margin must differ.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W and SideConsistent W'",
+        "W.assert = W'.assert",
+        "signedCount of lost roots differs from signedCount of gained roots"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.margin_must_move",
+      "lean_file": "formal/lean/MinorityProphetCore/Responsiveness.lean",
+      "implementation_tests": [],
+      "security_interpretation": "A material root change must register. This excludes an always-abstaining aggregator, which satisfies every invariance theorem in the core.",
+      "prohibited_overstatement": "The margin must move; the verdict need not change. Says nothing when assertions change."
+    },
+    {
+      "id": "RS3",
+      "short": "No inert aggregator",
+      "statement": "Adding k fresh roots, disjoint from the existing root set and all asserting one side, moves the margin by exactly k.",
+      "definition_version": "core-v3-dag",
+      "assumptions": [
+        "SideConsistent W and SideConsistent W'",
+        "W.assert = W'.assert",
+        "rootSet W' = rootSet W union K with K disjoint from rootSet W",
+        "every root in K asserts true"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphet.margin_shifts_by_added_roots",
+      "lean_file": "formal/lean/MinorityProphetCore/Responsiveness.lean",
+      "implementation_tests": [],
+      "security_interpretation": "A constant or always-abstaining rule cannot satisfy this, which no invariance theorem alone excludes.",
+      "prohibited_overstatement": "Only for fresh roots all on one side. Mixed changes are covered by RS1, not here."
+    },
+    {
+      "id": "DR1",
+      "short": "Every admissible reading is among the settlements the robustness engine computes",
+      "statement": "For any reading of observations into roots that the record allows (observations on one root joined by recorded shared identities inside that root) and any labelling that same-side shared identities cannot split, the reading's settlement, failing closed on a mixed root, is in the set computed from the corners of the per-side root-count box.",
+      "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "Admissible share kappa",
+        "SideInvariant share value comp"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.DependenceRobustness.reading_mem_reachable",
+      "lean_file": "formal/lean/MinorityProphetCore/DependenceRobustness.lean",
+      "implementation_tests": [
+        "tests/test_dependence_robustness.py"
+      ],
+      "security_interpretation": "The engine never omits a settlement that some reading of the recorded dependence could produce.",
+      "prohibited_overstatement": "Soundness only: that every computed settlement is achieved by some reading is checked by brute force in tests, not proved. The correspondence with provenance/dependence_robustness.py is by construction, not proved. Says nothing about dependence the record does not carry."
+    },
+    {
+      "id": "DR2",
+      "short": "A robust settlement is the true settlement when the record carries the dependence",
+      "statement": "If the settlements computed from recorded possible dependence form a single settlement, every admissible reading settles that way; in particular the true causal grouping does whenever it is an admissible reading.",
+      "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+      "assumptions": [
+        "Admissible share kappa (the true grouping is a reading the record allows)",
+        "SideInvariant share value comp",
+        "reachable share value comp k = {s}"
+      ],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.DependenceRobustness.robust_settlement_is_true",
+      "lean_file": "formal/lean/MinorityProphetCore/DependenceRobustness.lean",
+      "implementation_tests": [
+        "tests/test_dependence_robustness.py"
+      ],
+      "security_interpretation": "Settling only on robust settlements cannot settle silently against the truth when every real dependence is recorded. This is why DRI-3's zero silent false settlements held by construction.",
+      "prohibited_overstatement": "Conditional on admissibility. It does not show that real records carry every dependence, and it provides no protection against unrecorded dependence (DRI-3 family 7) or wrong lineage. DRI-4 is drafted to measure what happens when the assumption fails."
+    },
+    {
+      "id": "DR3",
+      "short": "No rule that reads only the record is immune to an unrecorded dependence",
+      "statement": "There is a record (three observations, two for true and one for false, with no recorded shared identity) consistent with two groupings: the admissible one with every observation its own root settles true, and the inadmissible one with the two true observations as one root is unsettled. Any output on that record is a false settlement under the second grouping or differs from the settlement of the first.",
+      "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+      "assumptions": [],
+      "proof_status": "proved_compiled",
+      "lean_theorem": "MinorityProphetCore.DependenceRobustness.no_record_rule_is_immune",
+      "lean_file": "formal/lean/MinorityProphetCore/DependenceRobustness.lean",
+      "implementation_tests": [
+        "tests/test_dri5_protocol.py"
+      ],
+      "security_interpretation": "Immunity to missing lineage cannot come from a better rule over the same record. It needs an observable the loss does not remove, such as a content fingerprint or a lookup. DRI-5 tests a content fingerprint.",
+      "prohibited_overstatement": "An existence witness, not a rate: it says nothing about how often real records lose their only link. It does not show that any added observable is sufficient; roots that share a component without being copies leave no content trace."
     }
   ],
   "remediation": {
@@ -568,6 +754,18 @@
     {
       "date": "2026-09-14",
       "note": "U3 moves from underspecified to not_pursued. The register now holds no item open merely because nobody got to it: what remains unproved is finite verification, tested implementation, or this recorded decision."
+    },
+    {
+      "date": "2026-09-14",
+      "note": "NarrowGate.lean (ten theorems) and Responsiveness.lean (four) are now ledgered as NG1-NG5 and RS1-RS3, superseding the 2026-09-13 note that they were unledgered. Rebuilt 2026-09-14 from the existing cache with Lean 4.32.2, exit 0, 3002 jobs; not a cold clone. #print axioms on all fourteen theorems reports nothing beyond propext, Classical.choice and Quot.sound. NarrowGate is an abstract model; canon/narrow_gate.py remains retracted as a proposal."
+    },
+    {
+      "date": "2026-09-15",
+      "note": "DependenceRobustness.lean ledgered as DR1 (reading_mem_reachable) and DR2 (robust_settlement_is_true). Built 2026-09-15 from the existing cache with Lean 4.32.2, exit 0, 3009 jobs; not a cold clone. #print axioms on reading_mem_reachable, robust_settlement_is_true, settle_corners and fewest_le_sideRoots reports nothing beyond propext, Classical.choice and Quot.sound. Soundness only; the converse is tested by brute force."
+    },
+    {
+      "date": "2026-09-15",
+      "note": "DR3 (no_record_rule_is_immune) added to DependenceRobustness.lean. The file was compiled on its own with `lake env lean` against the existing Mathlib cache, Lean 4.32.2, exit 0; a full `lake build` was not rerun for this addition. #print axioms: no_record_rule_is_immune depends on propext, Classical.choice and Quot.sound; witness_merged_not_admissible on propext; witness_distinct_admissible on none."
     }
   ]
 }

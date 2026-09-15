@@ -11,7 +11,7 @@ T5 generalise from *k errors* to *k weight-units of error*; T6 is lost outright 
 parity is an artefact of unit weights. This document is about the doctrine rather than
 the algebra.
 
-**First, a defect that is already shipped.** `aggregation/baselines.py::weighted_vote`
+**First, a deliberate baseline that already demonstrates this.** `aggregation/baselines.py::weighted_vote`
 weights each vote by `confidence * competence`, both declared numbers, with no
 provenance and no de-duplication by root. The independence vocabulary in
 `aggregation/independence_axes.py` classifies a declared quantity as `DepthBasis.DECLARED`

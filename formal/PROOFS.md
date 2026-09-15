@@ -45,11 +45,14 @@ a count of adversary actions. One action that *converts* a root from one side to
 the other contributes **2**. Every use of "flow", "budget" or "margin" below
 states its unit, and so must every downstream use (§7 correction C4).
 
-**Not defined anywhere, and load-bearing:** when two roots are *the same root*.
-`S_a` is a set, so the verdict is a function of the identity criterion. Lean
-makes identity the index; `provenance/graph.py` makes it an opaque
-caller-supplied string. Any de-duplication or canonicalisation step is inside the
-trusted base. Ledger `U1`.
+**Load-bearing, and defined since 2026-09-07:** when two roots are *the same
+root*. `S_a` is a set, so the verdict is a function of the identity criterion.
+Lean makes identity the index; `provenance/graph.py` takes a caller-supplied
+string, and `canon/U1-PROXIMATE-ROOTS.md` now says what that string must mean —
+a cut declared at an intervening independent re-derivation, graded by
+`canon/proximity.py`. Any de-duplication or canonicalisation step is still inside
+the trusted base. Ledger `U1`, closed; the residual is detection, not
+definition.
 
 ---
 
@@ -195,9 +198,11 @@ Full detail and minimal witnesses: `formal/COUNTEREXAMPLES.md`.
   every child at once; one compromised signing key mints unboundedly many roots.
   Converting T5's units into an incident budget requires **R1.4** in
   `PROVENANCE-REQUIREMENTS.md`, which is a requirement, not a theorem.
-- **Root identity is undefined** (ledger `U1`) and **the meaning of absent
-  provenance was contradictory** across modules (ledger `U2`); the latter is now
-  an explicit, named policy on `aggregation.root_vote.verdict`.
+- **Root identity is defined** (ledger `U1`, closed 2026-09-14 by
+  `canon/U1-PROXIMATE-ROOTS.md`; what remains is detection of laundered
+  provenance, bounded by R3) and **the meaning of absent provenance was
+  contradictory** across modules (ledger `U2`); the latter is now an explicit,
+  named policy on `aggregation.root_vote.verdict`.
 
 ---
 

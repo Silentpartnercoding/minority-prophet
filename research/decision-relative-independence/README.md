@@ -1,9 +1,11 @@
 # Decision-relative independence
 
-Status: **proposed research primitive with constructed falsification fixtures.**
-The executable adapter and fixtures do not establish that a model can discover
-the correct causal cut in real systems. No existing Minority Prophet theorem is
-extended by this document.
+Status: **proposed research primitive with constructed falsification fixtures
+and one adverse preregistered test.** DRI-1A (run 2026-08-25, not canonical) did
+not support its joint policy-value criterion; see
+[Result so far](#result-so-far-dri-1a). The executable adapter and fixtures do
+not establish that a model can discover the correct causal cut in real systems.
+No existing Minority Prophet theorem is extended by this document.
 
 ## Claim
 
@@ -145,6 +147,263 @@ Measure false settlement, unnecessary abstention, minority preservation,
 selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
+
+## Observation: DRI-7, the same rules on a corpus nobody authored
+
+**Not preregistered, and not a result in the sense of the sections below.** The
+corpus is historical and the analysis was performed before the write-up existed.
+It is recorded as an *exploratory* record for that reason, and the repository's
+own record tooling refuses to pin a protocol for it.
+
+DRI-1 through DRI-6 generate their worlds. That is the right way to establish a
+mechanism and the wrong way to establish a rate, because a rate measured on an
+authored corpus reads back the setting that authored it. DRI-7 runs the same
+rules against 642 records written over six weeks by a production job-control
+plane, for purposes unrelated to this research.
+
+- **Record-only is not inaccurate; it is non-falsifiable.** It accepted 642 of
+  642 records across two corpora that share no identifier scheme. No input
+  present could make it return false: the defect lies entirely outside what it
+  inspects. A check whose outcome has only ever held one value has not been
+  tested, whatever its sample size.
+- **Looking twice removed 100% of the silent failures**, on both corpora,
+  because the first look removed none. That is the top of DRI-6's 68–100% band,
+  reached on data with no author.
+- **The DRI-6 gap is the one that bites.** DRI-6 recorded "a lookup wrong the
+  same way every time" as not covered. Record-only is the limiting case of it —
+  a check whose answer is constant regardless of input — and it is what was
+  running in production.
+- **Content addressing recovered 82% of what location lost.** Absent referents
+  were mostly retrievable by hash from a store already present; they were not
+  lost, they were addressed by a path that did not survive.
+- **What makes a check untested is that its outcome never varies.** A negative
+  control shows the second way to build one: a sibling table of 2,299 rows is
+  genuinely clean and seven more hold zero rows, so a check aimed at those eight
+  reports a sound system — truthfully, and worthlessly, since zero-over-zero and
+  zero-over-2,299 print the same — while 102 absent referents sit in a ninth.
+  Report the denominator; audit outcome distribution, not pass rate.
+- **Boundaries:** one host, one control plane; 235 of 358 records name
+  repositories absent from this host and are *unverifiable*, not clean; the two
+  corpora are independent in identifier scheme and code path, not in root cause.
+
+Refuted by exhibiting a single record that record-only rejects. Full write-up:
+[`experiments/dri7/OBSERVATIONAL-REPORT.md`](../../experiments/dri7/OBSERVATIONAL-REPORT.md),
+[`research/records/DRI-7-V1.json`](../records/DRI-7-V1.json). Rerun:
+`python3 experiments/dri7/measure.py`.
+
+## Result: DRI-6 v1, imperfect lookups
+
+Every earlier experiment assumed a truthful lookup. DRI-6 let each lookup miss or
+invent dependence, independently per call, and was **supported** on all 77 checks.
+
+- **Harm:** with erring lookups, every silent false settlement the tiered rule made
+  came after a look.
+- **Record check:** checking a report against the record caught no missed
+  dependence (DR3 again), and only some invented dependence.
+- **Confirmation:** looking twice and settling only when both reports agree removed
+  68–100% of those errors in every powered comparison, at 2.9–42.6 extra looks per
+  prevented false settlement against missed dependence. Against invented dependence
+  it cost many unneeded abstentions.
+- **Not covered:** a lookup wrong the same way every time.
+
+Full record: [`results/dri6-v1/`](../../results/dri6-v1/README.md),
+[`research/records/DRI-6-V1.json`](../records/DRI-6-V1.json). Design:
+[`DRI-6-DESIGN-DRAFT.md`](DRI-6-DESIGN-DRAFT.md).
+
+## Result: DRI-5 v1, and why the record alone cannot be enough
+
+DRI-4 showed protection eroding as lineage goes missing. Ledger DR3
+(`no_record_rule_is_immune`) proves no rule that reads only the record can be immune:
+one record can come from two groupings that settle differently. Protection needs an
+observable the loss does not remove.
+
+DRI-5 tested one, an exact content fingerprint counted as possible dependence, on
+360,000 synthetic decisions, and was **rejected** on 4 of 193 checks.
+
+- **Forgotten copies:** in the trap family, where the lost dependence is copying,
+  exact content removed every silent and every irreversible false settlement.
+- **Shared components or origins:** content carries no trace of them, and recovery
+  was partial.
+- **Paraphrase:** rewording half of copies largely defeated it.
+- **Why it was rejected:** four recovery comparisons at 25% missing were not
+  significant.
+
+Full record: [`results/dri5-v1/`](../../results/dri5-v1/README.md),
+[`research/records/DRI-5-V1.json`](../records/DRI-5-V1.json). Design:
+[`DRI-5-DESIGN-DRAFT.md`](DRI-5-DESIGN-DRAFT.md).
+
+## Result: DRI-4 v1, and the proof
+
+DRI-3's zero silent false settlements were guaranteed by construction, so the
+guarantee is now proved: `robust_settlement_is_true` (ledger DR2) in
+`formal/lean/MinorityProphetCore/DependenceRobustness.lean`. When the engine reports
+one settlement, every reading the record allows gives it, including the true
+grouping whenever every real dependence is recorded.
+
+DRI-4 tested that assumption on 240,000 fresh synthetic decisions and was
+**rejected** on 2 of 67 checks.
+
+- **Complete record:** the tiered rule made zero silent false settlements in every
+  family, including a repaired side-asymmetric trap on which the old agreement
+  rule settled every decision falsely.
+- **Incomplete record:** as true shared identities went missing, protection eroded.
+  The rule prevented 33–87% of the old rule's silent errors at 10% missing and
+  10–26% at 50%, and never did worse.
+- **Why it was rejected:** two comparisons at 10% missing were not significant.
+
+Imperfect lookups remain the follow-up. Full record:
+[`results/dri4-v1/`](../../results/dri4-v1/README.md),
+[`research/records/DRI-4-V1.json`](../records/DRI-4-V1.json). Design:
+[`DRI-4-DESIGN-DRAFT.md`](DRI-4-DESIGN-DRAFT.md).
+
+## Result: DRI-3 v1
+
+All 14 of the DRI-2 method's false settlements were stacked dependence on which
+every cut agreed. DRI-3 tested the engine fix
+(`provenance/dependence_robustness.py`) under the owner's tiered cost rule on
+42,000 fresh synthetic decisions and was **supported**. It made zero silent false
+settlements and zero irreversible false settlements in six recorded-dependence
+families, where the old agreement rule settled falsely 780 times. The cost was
+extra looks where lineage exists, and lost settlements where it does not.
+Unrecorded dependence remains undetectable, and the side-asymmetric family did not
+produce its intended case. The reversible scorecard chose forced looks, but every
+false settlement it prevented came from one family, so that policy is not adopted
+for real use until tested further. Full record:
+[`results/dri3-v1/`](../../results/dri3-v1/README.md),
+[`research/records/DRI-3-V1.json`](../records/DRI-3-V1.json). Design:
+[`DRI-3-DESIGN-DRAFT.md`](DRI-3-DESIGN-DRAFT.md).
+
+## Result: DRI-2 v2 (final)
+
+DRI-2 v2 reran the unchanged v1 method on 12,624 fresh synthetic worlds with no
+human and speed measured but not a criterion, and was **supported**: all 44
+checks passed. The method had as few false settlements as always abstaining and far fewer than headcount or any fixed cut, with almost no unneeded abstentions. Its
+criterion was fixed after v1 was known. Full record:
+[`results/dri2-v2/`](../../results/dri2-v2/README.md),
+[`research/records/DRI-2-V2.json`](../records/DRI-2-V2.json).
+
+## Result: DRI-2 v1
+
+DRI-2 withheld the failure domain on 12,624 frozen synthetic worlds and was
+**rejected**: the decision-sensitivity guided method had as few false settlements as always
+escalating and far fewer than headcount or any fixed cut, with almost no
+excess human calls, but failed its frozen time criterion. Full record:
+[`results/dri2-v1/`](../../results/dri2-v1/README.md),
+[`research/records/DRI-2-V1.json`](../records/DRI-2-V1.json). Its speed checks were
+misplaced; with them set aside, all 44 other registered checks passed. See the
+[`post-result note`](../../results/dri2-v1/POST-RESULT-NOTE.md), which leaves the verdict unchanged. Terminology notes for both DRI-2 versions:
+[`dri2-v1`](../../results/dri2-v1/TERMINOLOGY-NOTE.md),
+[`dri2-v2`](../../results/dri2-v2/TERMINOLOGY-NOTE.md).
+
+## Result so far: DRI-1A
+
+DRI-1A tested the declared-policy arm on 8,192 frozen synthetic worlds, with the
+failure domain *supplied* to the selector. Full record:
+[`results/dri1a-v1/`](../../results/dri1a-v1/README.md),
+[`research/records/DRI-1A-V1.json`](../records/DRI-1A-V1.json).
+
+Its frozen criterion required false settlement at least 15 points lower than
+**every** fixed cut, including after abstention matching. It was not met:
+
+| Fixed cut | False-settlement reduction by the relevant cut | Against the 0.15 bar |
+|---|---:|---|
+| Agent headcount | 30.21 points | met |
+| Machine | 22.67 points | met |
+| Controller | 13.07 points | short by 1.93 |
+| Evidence origin | 13.06 points | short by 1.94 |
+| Upstream component | −5.75 points | short by 20.75 |
+
+The upstream-component cut settled falsely less often only by abstaining on
+40.23% of worlds, and it had the lowest correct-settlement rate of any method
+(56.51% against the relevant cut's 90.99%). Three of the fixed cuts could not be
+abstention-matched within the frozen tolerance, which also fails the criterion.
+The favourable descriptive numbers are recorded in the result and are not a
+rescued claim.
+
+Against this document's kill criteria below:
+
+- *one fixed, simpler policy matches on false settlement and abstention* — **not
+  triggered**: no fixed cut matched on both;
+- *systems cannot select the relevant cut above a trivial baseline* — **not
+  tested**: the cut was supplied; this is DRI-1B, which has not run;
+- metadata availability, false escalations from sensitivity analysis, and expert
+  agreement on cuts — **not tested**;
+- *joint failure domains dominate* — **not represented**: every DRI-1A world had
+  exactly one failure domain.
+
+What DRI-1A adds to the design of any successor: false settlement read alone
+rewards abstention, so the next test must score correct settlement, abstention
+and false settlement together. A refusal never counts as completing a decision. Handing over
+to a human is part of completing the run only at the junction where a human is genuinely
+needed; stopping before that point, when the system could have carried on, is a
+stall and counts as a failure. In deployment the system should still fail safe;
+the test measures whether it navigates the critical path.
+
+## Relation to the canon's independence model
+
+`canon/proximity.py`, `canon/U1-PROXIMATE-ROOTS.md` and
+`aggregation/independence_axes.py` (2026-09-07 to 2026-09-14) answer a related
+but different question. They do **not** supersede this document or
+`provenance/decision_relative.py`, and neither side cited the other until this
+section.
+
+- **This document asks which kind of shared cause to group observations by** for
+  one decision: the same machine, controller, evidence origin or upstream
+  component. It selects one cut.
+- **The canon asks how far each witness went toward the world, and against which
+  class of error they are independent.** Witness depth runs from observing the
+  world to restating text; an error entering at one rung is invisible to any
+  witness that joined above it. It reports the independent count for every error
+  class (`independence_profile`) and names the least-defended one
+  (`weakest_link`), without selecting. Separately, `IndependenceAxes` records per
+  root how well the depth is backed, who vouched, and whether the observer can
+  be identified.
+
+Both say independence is not a single number. They slice it in different
+directions: this document by what is shared sideways, the canon by depth toward
+the world.
+
+### Proposed mapping
+
+**Proposed, not established.** Nothing in the repository tests this mapping.
+
+| DRI-1A failure domain | Cut | Nearest canon concept | Canon error class | Existing evidence | Fit |
+|---|---|---|---|---|---|
+| `copied_source` | `evidence_origin` | witness depth at the text and analysis rungs; U1's shared-marker test | `TRANSCRIPTION`, `ANALYSIS` | HEO-1, canonical, supported | close |
+| `shared_upstream_component` | `upstream_component` | re-measurement by the same method or instrument | `INSTRUMENT`, `SYSTEMATIC_METHOD` | none canonical | close |
+| `machine_local` | `machine` | no direct rung; nearest is the processing pipeline | `PROCESSING` | none | loose |
+| `shared_controller` | `controller` | **not on the depth ladder**: control domain (`Attestation.INTERNAL`) | none; control is not an error class | HVI-1, canonical, supported | orthogonal |
+| — | `agent` | none; counts records | — | — | n/a |
+
+### How they interact
+
+1. **Selecting versus profiling.** Reading the canon's profile at the error class
+   that matches a declared failure domain is the proposed counterpart of this
+   document's relevant-cut policy. Always acting on `weakest_link` is the
+   proposed counterpart of always taking the coarsest cut.
+2. **What DRI-1A suggests about the second.** The coarsest fixed cut in DRI-1A
+   was the safest on false settlement and the least decisive of all methods. If
+   the counterpart holds, a policy that acts only on the weakest error class
+   inherits that trade, which is the false-denial failure the canon itself warns
+   against. This is untested, and the mechanisms differ: DRI-1A merges roots at a
+   coarse cut, while the canon counts a maximum independent set per error class.
+3. **Control is a separate axis.** HVI-1's matched boundary case kept eight
+   separately controlled roots carrying one adverse claim as eight, with 75.72%
+   decision error. Separate control with shallow depth is not independent
+   evidence, so the controller cut cannot stand in for the depth ladder, or the
+   reverse.
+4. **Joint independence is open in both.** This document's single-cut model
+   cannot represent joint failure domains. The canon evaluates error classes one
+   at a time, and `IndependenceAxes` composes per-root properties by partial
+   order and meet. Neither answers whether a set of observations is independent
+   with respect to controller and evidence origin at once.
+5. **Who chooses is the same unsolved step.** The strategic governor declares the
+   cut here (`canon/PLACEMENT.md`); rung assignments must be published by the
+   owner before any sample under `ASSAYER.md` A3. DRI-1B would test whether that
+   choice can be made from the decision context, and has not run.
+
+The successor experiment that would compare these directly is drafted, not
+frozen, in [`DRI-2-DESIGN-DRAFT.md`](DRI-2-DESIGN-DRAFT.md).
 
 ## Falsification and kill criteria
 
