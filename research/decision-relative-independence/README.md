@@ -148,6 +148,15 @@ selected-cut accuracy, calibration, latency and sensitivity-report accuracy.
 Score cut selection separately from aggregation so a correct vote cannot hide
 an incorrect causal model.
 
+## Result: DRI-2 v1
+
+DRI-2 withheld the failure domain on 12,624 frozen synthetic worlds and was
+**rejected**: the decision-sensitivity guided method crossed as often as always
+escalating and far more often than headcount or any fixed cut, with almost no
+excess human calls, but failed its frozen time criterion. Full record:
+[`results/dri2-v1/`](../../results/dri2-v1/README.md),
+[`research/records/DRI-2-V1.json`](../records/DRI-2-V1.json).
+
 ## Result so far: DRI-1A
 
 DRI-1A tested the declared-policy arm on 8,192 frozen synthetic worlds, with the
