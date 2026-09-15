@@ -1,0 +1,156 @@
+{
+  "schema": "minority-prophet.kl002-fixture.v1",
+  "note": "Hand-authored. No model was used to generate these paraphrases, so the fixture cannot inherit a generator's statistics. The population is not a sample and supports no rate claim; it exists to exercise a deterministic root-assignment mechanism.",
+  "laundered": {
+    "groundTruth": false,
+    "claim": "The Vance Street bridge was closed by order of the city engineer on 14 March.",
+    "trueOriginCount": 1,
+    "documents": [
+      {
+        "docId": "LAUNDERED-01",
+        "text": "The city engineer ordered the Vance Street bridge closed on 14 March.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-02",
+        "text": "On 14 March, the Vance Street bridge was shut by order of the city engineer.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-03",
+        "text": "By order of the city engineer, Vance Street bridge closed 14 March.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-04",
+        "text": "Vance Street bridge: closed 14 March on the city engineer's order.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-05",
+        "text": "The bridge on Vance Street was closed 14 March at the city engineer's direction.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-06",
+        "text": "City engineer ordered a 14 March closure of the Vance Street bridge.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-07",
+        "text": "A 14 March closure of Vance Street bridge was ordered by the city engineer.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-08",
+        "text": "The Vance Street crossing was closed by the city engineer on March 14.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-09",
+        "text": "Per the city engineer, Vance Street bridge shut on 14 March.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-10",
+        "text": "March 14: city engineer closes Vance Street bridge.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-11",
+        "text": "The city engineer's order closed Vance Street bridge on 14 March.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-12",
+        "text": "Vance Street bridge was ordered closed 14 March by the city's engineer.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-13",
+        "text": "Closure of the Vance Street bridge came 14 March from the city engineer.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-14",
+        "text": "The city engineer directed that Vance Street bridge close on 14 March.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-15",
+        "text": "On the 14th of March the city engineer closed the Vance Street bridge.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-16",
+        "text": "Vance Street bridge closed \u2014 14 March, city engineer's order.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-17",
+        "text": "An order from the city engineer closed Vance Street bridge on 14 March.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-18",
+        "text": "The Vance Street bridge shut 14 March under the city engineer's order.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-19",
+        "text": "City engineer's 14 March order closed the Vance Street bridge.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      },
+      {
+        "docId": "LAUNDERED-20",
+        "text": "Vance Street bridge was closed on 14 March per city engineer order.",
+        "declaredOrigin": "SRC-0",
+        "assertsClaim": true
+      }
+    ]
+  },
+  "independent": {
+    "groundTruth": true,
+    "claim": "The Harbour Road culvert failed inspection on 2 April.",
+    "trueOriginCount": 3,
+    "documents": [
+      {
+        "docId": "IND-01",
+        "text": "The Harbour Road culvert failed inspection on 2 April.",
+        "declaredOrigin": "SRC-A",
+        "assertsClaim": true
+      },
+      {
+        "docId": "IND-02",
+        "text": "Inspectors recorded a failure at the Harbour Road culvert, 2 April.",
+        "declaredOrigin": "SRC-B",
+        "assertsClaim": true
+      },
+      {
+        "docId": "IND-03",
+        "text": "A 2 April inspection found the Harbour Road culvert deficient.",
+        "declaredOrigin": "SRC-C",
+        "assertsClaim": true
+      }
+    ]
+  }
+}
