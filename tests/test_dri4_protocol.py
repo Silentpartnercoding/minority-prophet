@@ -116,3 +116,21 @@ def test_evaluation_runs_and_is_deterministic_on_development_worlds():
     assert first == evaluate(CONFIG, DEV, 2)
     assert first["worlds"] == 2 * len(FAMILIES) * len(cells(CONFIG))
     assert set(first["families"]) == set(FAMILIES)
+
+
+def test_runner_pins_hold_and_refuse_changed_inputs(tmp_path):
+    import shutil
+
+    import pytest
+
+    from experiments.dri4.run_confirmatory import PINNED, load_config, verify_pins
+
+    verify_pins()
+    assert load_config()["status"] == "preregistered-unexecuted"
+    for name in PINNED:
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(ROOT / name, tmp_path / name)
+    reused = tmp_path / "experiments/dri3/arms.py"
+    reused.write_text(reused.read_text() + "\n# changed\n")
+    with pytest.raises(ValueError, match="dri3/arms.py"):
+        verify_pins(tmp_path)
