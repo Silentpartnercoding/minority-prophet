@@ -1,0 +1,41 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-2 v2",
+  "status": "canonical-critical-path-supported",
+  "files": {
+    "experiments/dri2v2/PREREGISTRATION.md": "a887ede0423b550f7112966dcaeec65cd0712a4f242aab07a7772cdc506be115",
+    "experiments/dri2v2/EXECUTION-CONFIG.json": "e5895176e71dacc2ed904fdd748d9295acba42049533b9b98efc0d54b7896c4c",
+    "experiments/dri2v2/run_confirmatory.py": "b70e51c71412871d8fdc04d37ae654b0f21074f5d1174f8fc18d0cc16a33a12c",
+    "tests/test_dri2v2_protocol.py": "f153c530d3d6301187370b7bf2a8849122b56a7bc5a0b149280bea0fd0c793e4",
+    "experiments/dri2/PREREGISTRATION.md": "8d05327d3505d943aa7947aacefcd656be0d59be5f6b1d881d8ec2fc0cc2a94e",
+    "experiments/dri2/world.py": "30327cc6a46542f1dba52cbaf4faf5fd2386510cd5b9bcd7d5b5078c4db24161",
+    "experiments/dri2/arms.py": "39bee408c92072ef0b55bfe06d18070dbae843621101b0063ebb4a0d1d47e7a8",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "experiments/dri2/scoring.py": "e9e9275d2e8b9f22d844b4e9e62e2e9b67f46e7a83a67e77d9390570b67a1be1",
+    "results/dri2-v2/README.md": "14615855b491e2e307690b421296f2615183d6d618109ec5883ffd49734d6179",
+    "results/dri2-v2/result.json": "a5342fc55b0491479a951e3e7c8bb8c9e3de63ae360d5e529d19d6225f32c5e3",
+    "results/dri2-v2/run-stdout.txt": "ff7adfee2ec9f2aff132dfb5b8db39702aced535d274536c7bfcac65b9fed768",
+    "results/dri2-v2/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "protocol": "7e4e7f501a6180b488caeb893c479930e771b8eb",
+    "runner": "abd3a1631d4116e4f10bcc6597f5fab1853ca68a",
+    "candidateRecord": "fd79b1f4f999636844ea34a7207c7bf01309ebaa",
+    "v1ImplementationProtocol": "574a6a626845215244f03fa85a5cd689f0ed350c"
+  },
+  "recordNote": "The lifecycle record research/records/DRI-2-V2.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "982792192e6b6ecde3f89f7fc889d51e87d9299e65cc56460c12dadf94be8f0c",
+    "command": "PYTHONPATH=. python -m experiments.dri2v2.run_confirmatory --output results/dri2-v2/result.json",
+    "environment": {
+      "commit": "fd79b1f4f999636844ea34a7207c7bf01309ebaa",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic critical-path worlds with undisclosed lineage and no human. The unchanged v1 method crossed as often as always abstaining and far more often than any fixed cut, with almost no unneeded abstentions. Criterion fixed after v1 was known; no held-back worlds; same control domain; no real-world lineage, cost, or authority claim."
+}
