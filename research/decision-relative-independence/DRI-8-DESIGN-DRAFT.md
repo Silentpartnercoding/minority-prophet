@@ -1,7 +1,7 @@
 # DRI-8 — shaking the tree: passive history against active probing
 
-Status: **DRAFT.** It becomes a preregistration only when the protocol, generator
-and runner are committed and pinned before any confirmatory world is generated.
+Status: **Frozen.** The preregistration is `experiments/dri8/PREREGISTRATION.md`,
+protocol v1. This draft records the design rationale and is not itself pinned.
 
 ## 1. Why this exists
 
