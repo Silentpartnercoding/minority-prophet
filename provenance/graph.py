@@ -247,6 +247,10 @@ class GateReport:
     is False. The count is the same either way, which is the point."""
     refused_by_reason: dict[str, int]
     refused: tuple[str, ...]
+    unusable_ancestry: tuple[str, ...] = ()
+    """Claims that cited ancestry the gate refused, so they are neither a root
+    nor a descendant of one. They cast no vote, and without this list the only
+    trace of them is a violation entry. See `EvidenceGraph.classify`."""
 
     @property
     def roots_admitted(self) -> int:
@@ -264,8 +268,10 @@ class GateReport:
         if not self.roots_offered:
             return "root gate: no roots offered"
         reasons = ", ".join(f"{k}={v}" for k, v in sorted(self.refused_by_reason.items()))
+        unusable = (f", {len(self.unusable_ancestry)} with unusable ancestry"
+                    if self.unusable_ancestry else "")
         return (f"root gate: {self.roots_offered} offered, {self.roots_refused} refused "
-                f"({self.refusal_rate:.1%})" + (f" [{reasons}]" if reasons else ""))
+                f"({self.refusal_rate:.1%})" + unusable + (f" [{reasons}]" if reasons else ""))
 
 
 @dataclass(frozen=True)
@@ -317,6 +323,7 @@ class EvidenceGraph:
         self._root_authority = root_authority
         self._require_root_evidence = require_root_evidence
         self._roots_offered = 0
+        self._unusable_ancestry: list[str] = []
 
     # ------------------------------------------------------------------ ingest
 
@@ -441,6 +448,14 @@ class EvidenceGraph:
                 )
 
         self._nodes[node.node_id] = node
+        if node.read_from and not node.copied_from and not parents:
+            # Every cited source was refused, so this claim is neither a root
+            # nor a descendant of one: `is_root` is False because ancestry was
+            # cited, and the walk finds nothing because no source was minted.
+            # It therefore casts no vote. Recording it is what keeps that
+            # visible to a caller who reads the gate report rather than
+            # diffing `root_set()` against the node list.
+            self._unusable_ancestry.append(node.node_id)
 
     def _reject(self, error: type[ValueError], violation: Violation) -> None:
         self._violations.append(violation)
@@ -470,7 +485,28 @@ class EvidenceGraph:
             roots_refused=len(refused),
             refused_by_reason=by_reason,
             refused=tuple(v.node_id for v in refused),
+            unusable_ancestry=tuple(self._unusable_ancestry),
         )
+
+    def classify(self, node_id: str) -> str:
+        """How this claim counts: `root`, `descendant`, or `unusable_ancestry`.
+
+        `unusable_ancestry` is the third case, and it only arises in permissive
+        mode: the claim cited a source the gate refused, so nothing was minted
+        to descend from. It is not a root either, because ancestry WAS cited.
+        Such a claim contributes no root to either side of a verdict; the name
+        exists so that outcome is stated rather than inferred from an absence.
+        """
+        if node_id not in self._nodes:
+            raise KeyError(node_id)
+        if node_id in self._unusable_ancestry:
+            return "unusable_ancestry"
+        return "root" if self._nodes[node_id].is_root else "descendant"
+
+    @property
+    def unusable_ancestry(self) -> tuple[str, ...]:
+        """Claims whose every cited source was refused. See `classify`."""
+        return tuple(self._unusable_ancestry)
 
     @property
     def violations(self) -> tuple[Violation, ...]:
