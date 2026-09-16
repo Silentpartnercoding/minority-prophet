@@ -9,7 +9,12 @@ from typing import Any
 
 
 def canonical_json(value: object) -> bytes:
-    return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    # ensure_ascii=False is the normative form (provenance/canonical_form.py).
+    # Without it a non-ASCII value serialises to \uXXXX escapes and digests
+    # disagree with every other producer in the estate the moment an accent
+    # appears. Nothing here was frozen, so alignment is safe.
+    return json.dumps(value, sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=False).encode("utf-8")
 
 
 def sha256_uri(value: object) -> str:

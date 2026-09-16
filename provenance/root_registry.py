@@ -93,7 +93,12 @@ class RootRequest:
             stated = getattr(self, field_name)
             if stated is not None:
                 payload[field_name] = stated
-        return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+        # Normative form, per provenance/canonical_form.py. `ensure_ascii=False`
+        # was missing, so any non-ASCII observation_id signed here produced bytes
+        # no other producer in the estate would reproduce. No receipts are
+        # persisted, so no signature is invalidated by aligning it.
+        return json.dumps(payload, sort_keys=True, separators=(",", ":"),
+                          ensure_ascii=False).encode("utf-8")
 
     def with_signature(self, signature: str) -> "RootRequest":
         return RootRequest(**{**self.__dict__, "signature": signature})

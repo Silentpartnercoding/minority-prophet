@@ -50,18 +50,27 @@ def canonical_bytes(value: Any) -> bytes:
 
 # Paths whose convention differs from normative today, with why each is left
 # alone. A new entry here is a decision someone has to defend, not a default.
-DECLARED_EXCEPTIONS = {
-    "provenance/root_registry.py": (
-        "escaped rather than utf8; changing it would alter the bytes existing "
-        "signatures were made over"),
-    "conformance/authority_evidence.py": (
-        "escaped rather than utf8; a conformance fixture, aligned with root_registry"),
-    "interop/memory-evidence-profile-v0.1/validate.py": (
-        "spaced separators AND escaped; the profile an external implementer reads, "
-        "and the furthest from normative -- the highest-value thing to align"),
-}
+DECLARED_EXCEPTIONS: dict[str, str] = {}
+"""Empty, and it should stay that way.
 
-_DUMPS = re.compile(r"json\.dumps\([^\n]*")
+root_registry and conformance/authority_evidence were aligned on 2026-09-16 once
+it was established that neither had a persisted receipt or a frozen fixture
+digest, so nothing was invalidated by the change.
+
+The third entry was never a divergence. `interop/.../validate.py` serialises
+inside a `uniqueItems` check to compare list members -- it produces no digest and
+signs nothing. The detector matched it because it matched ANY sorted json.dumps,
+which is the difference between finding a canonical form and finding a call that
+happens to sort keys. That false positive is now excluded by purpose rather than
+by path, and it is worth remembering: the loudest finding in the first scan was
+the one that did not exist.
+"""
+
+# Spans newlines: a call wrapped across lines is the same call, and reading only
+# to the end of the first line reported an aligned serialiser as divergent. The
+# detector found that in itself, which is the second time its literal reading has
+# been the thing that misled it.
+_DUMPS = re.compile(r"json\.dumps\((?:[^()]|\([^()]*\))*\)", re.S)
 
 # This module defines the convention, so it is not a divergence from it.
 _SELF = "provenance/canonical_form.py"
@@ -70,15 +79,23 @@ _SELF = "provenance/canonical_form.py"
 def convention_of(source: str) -> tuple[str, str, str] | None:
     """The (ordering, spacing, encoding) of the first digest-shaped dumps call.
 
-    LIMIT, stated because it is the detector's blind spot: this reads LITERAL
-    keyword arguments. A module that routes its convention through named
-    constants is invisible here and will read as divergent or not at all. The
-    detector caught itself doing exactly that on first run, which is the only
-    reason the limit is written down rather than assumed away.
+    LIMITS, both found by the detector misreading something:
+
+      * It reads LITERAL keyword arguments. A module routing its convention
+        through named constants is invisible here. It caught itself doing that.
+      * It matched ANY sorted dumps, including one used to compare list members
+        rather than to hash anything -- reporting a correct file as divergent.
+        Purpose is now checked, not just shape.
     """
     for match in _DUMPS.finditer(source):
         call = match.group(0)
         if "sort_keys" not in call:
+            continue
+        # A canonical form is serialised to be hashed or signed. A sorted dumps
+        # used to compare list members is not one, and reporting it as a
+        # divergence sends a reader to fix something that is already correct.
+        window = source[max(0, match.start() - 400): match.end() + 400]
+        if not any(word in window for word in ("sha256", "digest", "sign", "canonical", "encode()")):
             continue
         return (
             "sorted" if "sort_keys=True" in call else "UNSORTED",

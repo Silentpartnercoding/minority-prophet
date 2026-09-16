@@ -44,10 +44,33 @@ def test_no_undeclared_divergence_exists():
 
 def test_every_declared_exception_still_diverges():
     """The other direction: an exception that no longer applies is stale
-    paperwork claiming a problem that was fixed."""
+    paperwork claiming a problem that was fixed. The list is empty now and
+    should stay that way."""
     diverging = {rel for rel, _ in scan(ROOT)["diverging"]}
     stale = [path for path in DECLARED_EXCEPTIONS if path not in diverging]
     assert stale == [], f"declared exceptions that no longer diverge: {stale}"
+
+
+def test_the_estate_now_agrees_on_one_canonical_form():
+    """The alignment. Flips if any producer drifts back."""
+    assert scan(ROOT)["diverging"] == []
+
+
+def test_the_producers_agree_byte_for_byte_on_non_ascii():
+    """The case that was silently broken: ASCII hid it, an accent revealed it."""
+    import hashlib, sys
+    sys.path.insert(0, str(ROOT))
+    from conformance.authority_evidence import canonical_json
+    payload = {"observation_id": "Müller-2026", "value": True}
+    assert canonical_json(payload) == canonical_bytes(payload)
+    assert hashlib.sha256(canonical_json(payload)).hexdigest() == \
+           hashlib.sha256(canonical_bytes(payload)).hexdigest()
+
+
+def test_a_sorted_dumps_that_hashes_nothing_is_not_a_divergence():
+    """The false positive. A uniqueItems comparison sorts keys and produces no
+    digest; reporting it sends a reader to fix a correct file."""
+    assert convention_of("encoded = [json.dumps(item, sort_keys=True) for item in value]") is None
 
 
 def test_the_frozen_evaluator_is_the_normative_one():
@@ -58,19 +81,15 @@ def test_the_frozen_evaluator_is_the_normative_one():
     assert convention_of(source) == NORMATIVE
 
 
-def test_the_interop_profile_is_the_furthest_from_normative():
-    """Recorded because it is the highest-value one to fix: the profile an
-    external implementer reads is the one that differs in two ways, not one."""
-    conventions = dict(scan(ROOT)["diverging"])
-    interop = conventions.get("interop/memory-evidence-profile-v0.1/validate.py")
-    assert interop is not None
-    differences = sum(1 for a, b in zip(interop, NORMATIVE) if a != b)
-    assert differences == 2, "the interop profile differs in spacing AND encoding"
+
 
 
 def test_the_detector_reads_literals_and_says_so():
     """Its blind spot, asserted rather than assumed: a convention routed through
-    named constants is invisible to it."""
-    assert convention_of("json.dumps(v, sort_keys=SORT, separators=SEP)") != NORMATIVE
-    assert convention_of('json.dumps(v, sort_keys=True, separators=(",", ":"), ensure_ascii=False)') \
-        == NORMATIVE
+    named constants is invisible to it. Both samples carry a hashing context,
+    because a dumps that hashes nothing is now skipped by purpose."""
+    indirect = "digest = sha256(json.dumps(v, sort_keys=SORT, separators=SEP).encode())"
+    literal = ('digest = sha256(json.dumps(v, sort_keys=True, separators=(",", ":"), '
+               'ensure_ascii=False).encode())')
+    assert convention_of(indirect) != NORMATIVE
+    assert convention_of(literal) == NORMATIVE
