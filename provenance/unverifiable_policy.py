@@ -14,10 +14,40 @@ nobody could check is not a false conclusion; it is one nobody is entitled to ac
 on yet. So the claim keeps its three-valued verdict and the DECISION abstains.
 Nothing is condemned, and nothing settles on fog.
 
-The asymmetry that makes this safe: abstention withholds action, it does not
-grant it. A policy that could only ever escalate is a policy that cannot cause a
-wrong effect -- which is the same reason Minority Prophet holds no authority in
-the first place.
+CORRECTION. An earlier version claimed abstention "cannot cause a wrong effect".
+That holds only when the status quo is safe. Defer on "should I execute this
+transfer?" and nothing moves; defer on "is there a vulnerability?" and the hole
+stays open. For the second kind, deferring IS the harmful act.
+
+Worse here than in the counterexample case, because fog can outvote a finding
+that WAS checked: one confirmed rejection among seven unreachable roots crosses
+the ceiling and abstains, sitting on a confirmed finding because its neighbours
+were unreachable.
+
+The fix is narrower than it first looked, and the narrowing is the point. Two
+kinds of withholding are not the same:
+
+    withholding a CLEAN verdict        "I cannot certify there is nothing here."
+                                       Always safe. No finding is being sat on,
+                                       because by definition there is no finding.
+
+    withholding ACTION ON A FINDING    "Something was found, but I will wait."
+                                       Dangerous whenever the status quo is
+                                       exposure.
+
+Only the second needs a guard, and it needs a hard one rather than a dial: a
+confirmed rejection is never withheld by fog. If something was actually found,
+the fog around it does not un-find it.
+
+The first needs no guard at all. Refusing to certify clean when most of the
+evidence is unreachable is exactly right, in every domain, and that refusal is
+the whole defence against a prophet who cites only unreachable sources.
+
+An earlier draft of this module also gated the ceiling behind a
+`deferring_is_safe` declaration. That was overcorrection: it reopened the attack,
+because an undeclared decision could then buy a clean bill of health from pure
+fog. The declaration is kept on the policy for callers that want it, and it no
+longer suppresses the clean-certification defence.
 
 Two dials, both declared rather than fitted:
 
@@ -39,7 +69,13 @@ ABSTAIN_UNDERPOWERED = "abstain_underpowered"
 
 @dataclass(frozen=True)
 class UnverifiablePolicy:
-    """Declared before a population is seen, per the repository's own habit."""
+    """Declared before a population is seen, per the repository's own habit.
+
+    The two numbers are defaults chosen for this module rather than measured.
+    They govern one thing only: whether a CLEAN verdict may be issued over fog.
+    They can never withhold action on a confirmed finding, so being wrong about
+    them costs a certification, never a remedy.
+    """
     max_unverifiable_share: float = 0.5
     min_checked_roots: int = 2
 
@@ -68,6 +104,17 @@ def apply_policy(outcomes: dict, policy: UnverifiablePolicy | None = None) -> di
     answered = verified + rejected
     considered = answered + unverifiable
     share = (unverifiable / considered) if considered else None
+
+    # The one guard that is needed. Something was actually found: fog around a
+    # confirmed rejection does not un-find it, and withholding here would mean
+    # sitting on a real finding because its neighbours were unreachable. Below
+    # this line nothing was found, so every remaining outcome withholds a CLEAN
+    # verdict only -- which is safe in every domain.
+    if rejected > 0:
+        out = _decision(SETTLE, share, answered, unverifiable, policy, None)
+        out["note"] = ("a rejection was confirmed; fog around it cannot withhold it. "
+                       "Fog still blocks a CLEAN settlement, which is the attack this guards.")
+        return out
 
     if considered == 0:
         return _decision(ABSTAIN_UNDERPOWERED, share, answered, unverifiable, policy,

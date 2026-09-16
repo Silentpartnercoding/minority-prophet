@@ -111,6 +111,36 @@ def test_a_rejected_root_does_not_block_settlement():
     assert apply_policy({"verified": 3, "rejected": 1, "unverifiable": 0})["decision"] == SETTLE
 
 
+def test_fog_can_never_withhold_action_on_a_confirmed_finding():
+    """The guard. Something was actually found; fog around it does not un-find
+    it. Withholding here would mean sitting on a real finding because its
+    neighbours were unreachable — and deferring is the harmful act whenever the
+    status quo is exposure."""
+    heavy_fog_with_a_finding = {"verified": 1, "rejected": 1, "unverifiable": 7}
+    decision = apply_policy(heavy_fog_with_a_finding)
+    assert decision["decision"] == SETTLE
+    assert decision["unverifiableShare"] > 0.5, "the ceiling was crossed and deliberately ignored"
+    assert "cannot withhold it" in decision["note"]
+
+
+def test_withholding_a_CLEAN_verdict_over_fog_is_still_enforced():
+    """The narrowing, from the other side. Refusing to certify `nothing here`
+    when most evidence is unreachable sits on no finding, so it is safe in every
+    domain — and it is the whole defence against citing only unreachable
+    sources. An earlier draft gated this behind a declaration and reopened the
+    attack."""
+    attack = {"verified": 0, "rejected": 0, "unverifiable": 9}
+    assert apply_policy(attack)["decision"] != SETTLE
+
+
+def test_the_two_kinds_of_withholding_are_treated_differently():
+    """Stated as a property: a finding always settles, fog alone never does."""
+    with_finding = {"verified": 1, "rejected": 1, "unverifiable": 7}
+    without = {"verified": 1, "rejected": 0, "unverifiable": 7}
+    assert apply_policy(with_finding)["decision"] == SETTLE
+    assert apply_policy(without)["decision"] != SETTLE
+
+
 def test_the_attack_now_costs_something():
     """Cite only unreachable sources and the settlement stops, though nothing is
     condemned. This is the hole the schema named and no code answered."""
