@@ -6,7 +6,7 @@
   "resultStatus": "none",
   "lastCompletedGate": "registry-entry",
   "reviewedByRun": "RUN-20260915-1",
-  "nextGate": "Write the registration the probe informs: fix the root rule question first, because ADV-004 is now measured rather than suspected, then preregister accuracy, Brier score, confident-error, abstention, root error, tokens, cost and latency. The metered arm still needs founder authorization for paid inference; the probe deliberately did not.",
+  "nextGate": "Register the metered arm against the `ancestry` rule now that a root definition exists which never manufactures independence. Still blocked on founder authorization for paid inference; the probe and its repair deliberately needed none.",
   "blockers": [
     "DISCHARGED 2026-09-15: 'directory lacks fixtures/, src/, tests/, results/, REPRODUCE.md (5 of 8 required entries); see run constraint ENG-001' -- fixtures/, src/, tests/ and REPRODUCE.md are present. results/ is deliberately absent: a seeded experiment must not carry results, and the probe output is in probe/.",
     "CONFIRMED BY MEASUREMENT 2026-09-15, not discharged: constraint ADV-004 -- root identity is byte identity, so a paraphrase pipeline splits one source into many roots with no adversary. Measured at 20 roots for 1 origin.",
@@ -23,9 +23,22 @@
     "isAResult": false,
     "why": "The registration must be committed before confirmatory inspection. This check was run first, so it informs the registration rather than reporting against one. Output is in probe/, not results/.",
     "check": "Twenty paraphrases of one false source must remain one root.",
-    "outcome": "DOES NOT HOLD under byte identity: 20 distinct roots for 1 true origin. declared_origin yields 1.",
+    "outcome": "DOES NOT HOLD under byte identity: 20 distinct roots for 1 true origin. A repair now exists and is measured beside it: `ancestry` (knowledge_ledger/ancestry.py, shared with KL-005) is the only rule of the three that never manufactures independence on any population.",
     "harm": "A false claim laundered through 20 paraphrases reaches confidence 0.99999999996; a true claim with 3 genuinely independent sources reaches 0.973. The false claim outscores the true one with no adversary present.",
-    "bearing": "Confirms constraint ADV-004 by measurement rather than assertion, and shows the repair (declared_origin) relocates the trust assumption to the declaration without touching ADV-001's under-declared search space."
+    "bearing": "Confirms constraint ADV-004 by measurement rather than assertion, and shows the repair (declared_origin) relocates the trust assumption to the declaration without touching ADV-001's under-declared search space.",
+    "repair": {
+      "rule": "ancestry",
+      "whatIsNew": "not the ancestry walk, which KL-005 already had, but refusing to read silence as originality. A document declaring no ancestry is unattributable, not a root -- which is exactly what a stripped-provenance paraphrase is.",
+      "measured": {
+        "laundered": "20 -> 1",
+        "stripped (provenance removed)": "20 -> 0 (refused)",
+        "chained 6 deep, nothing in it a lie": "declared_origin says 6, ancestry says 1",
+        "genuinely independent": "3 -> 3, preserved"
+      },
+      "noRuleIsCorrectEverywhere": "ancestry is wrong on `stripped` by refusing all twenty rather than finding the one. That is the fail-closed trade: it never mints a root it has not been shown.",
+      "theClaimThatHolds": "only over-counting creates a false belief; under-counting creates an abstention. ancestry never over-counts. byte_identity and declared_origin both do.",
+      "stillNotSolved": "ancestry trusts a declared edge. A document that lies about its parent is believed, and ADV-001's under-declared search space is untouched."
+    }
   },
   "gateCoverage": {
     "map": "research/knowledge-ledger/GATE-COVERAGE.json",

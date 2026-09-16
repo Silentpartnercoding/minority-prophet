@@ -5,6 +5,17 @@ Root collapse over a citation graph. A report's root is the original-reporting
 document it ultimately descends from; wire copies inherit their parent's root,
 and a citation cycle resolves to no original at all rather than to an arbitrary
 member of the cycle.
+
+The walk itself now lives in `knowledge_ledger.ancestry`, shared with KL-002,
+which reached the same mechanism from the source-laundering side. It is kept
+shared rather than duplicated so the two experiments cannot drift into
+disagreeing about what a root is -- which is the thing they both measure.
+
+KL-005's local rule stays here: a report with no `derivedFrom` IS an original,
+because in news a first-hand report is exactly a document with no antecedent.
+KL-002's population is the opposite -- an undeclared paraphrase -- so it passes
+`require_origin_claim=True` and refuses silence. Same walk, different default,
+and the difference is a property of the domain rather than of the code.
 """
 
 from __future__ import annotations
@@ -13,22 +24,11 @@ from __future__ import annotations
 def resolve_root(report_id: str, reports: dict) -> str | None:
     """Walk `derivedFrom` to an original. Returns None on a cycle.
 
-    A cycle means every member's claim to originality rests on another member's,
-    so none of them is an original. Returning None rather than a cycle member is
-    the fail-closed choice: it refuses to mint an origin that does not exist.
+    Delegates to the shared walk. `require_origin_claim=False` keeps KL-005's
+    domain rule: a report with no antecedent is a first-hand report.
     """
-    seen = set()
-    current = report_id
-    while True:
-        if current in seen:
-            return None  # circular citation: no original exists
-        seen.add(current)
-        parent = reports[current].get("derivedFrom")
-        if parent is None:
-            return current
-        if parent not in reports:
-            return None  # dangling ancestor: unresolvable, not independent
-        current = parent
+    from knowledge_ledger.ancestry import resolve_root as shared
+    return shared(report_id, reports, require_origin_claim=False)
 
 
 def independent_origins(report_ids, reports) -> set[str]:

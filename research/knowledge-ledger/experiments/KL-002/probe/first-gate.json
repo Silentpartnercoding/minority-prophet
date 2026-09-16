@@ -1,41 +1,161 @@
 {
-  "schema": "minority-prophet.kl002-first-gate.v1",
+  "schema": "minority-prophet.kl002-first-gate.v2",
   "gate": "Twenty paraphrases of one false source must remain one root.",
-  "gateHolds": false,
-  "laundered": {
-    "trueOriginCount": 1,
-    "groundTruth": false,
-    "documents": 20,
-    "byRule": {
-      "byte_identity": {
-        "distinctRoots": 20,
-        "confidence": 0.999999999965,
-        "overcountsBy": 19
-      },
-      "declared_origin": {
-        "distinctRoots": 1,
-        "confidence": 0.7,
-        "overcountsBy": 0
+  "gateHoldsUnderByteIdentity": false,
+  "populations": {
+    "laundered": {
+      "trueOriginCount": 1,
+      "groundTruth": false,
+      "documents": 20,
+      "byRule": {
+        "byte_identity": {
+          "distinctRoots": 20,
+          "confidence": 0.999999999965,
+          "overcountsBy": 19,
+          "correct": false
+        },
+        "declared_origin": {
+          "distinctRoots": 1,
+          "confidence": 0.7,
+          "overcountsBy": 0,
+          "correct": true
+        },
+        "ancestry": {
+          "distinctRoots": 1,
+          "confidence": 0.7,
+          "overcountsBy": 0,
+          "correct": true
+        }
+      }
+    },
+    "stripped": {
+      "trueOriginCount": 1,
+      "groundTruth": false,
+      "documents": 20,
+      "byRule": {
+        "byte_identity": {
+          "distinctRoots": 20,
+          "confidence": 0.999999999965,
+          "overcountsBy": 19,
+          "correct": false
+        },
+        "declared_origin": {
+          "distinctRoots": 0,
+          "confidence": 0.0,
+          "overcountsBy": -1,
+          "correct": false
+        },
+        "ancestry": {
+          "distinctRoots": 0,
+          "confidence": 0.0,
+          "overcountsBy": -1,
+          "correct": false
+        }
+      }
+    },
+    "chained": {
+      "trueOriginCount": 1,
+      "groundTruth": false,
+      "documents": 6,
+      "byRule": {
+        "byte_identity": {
+          "distinctRoots": 6,
+          "confidence": 0.999271,
+          "overcountsBy": 5,
+          "correct": false
+        },
+        "declared_origin": {
+          "distinctRoots": 6,
+          "confidence": 0.999271,
+          "overcountsBy": 5,
+          "correct": false
+        },
+        "ancestry": {
+          "distinctRoots": 1,
+          "confidence": 0.7,
+          "overcountsBy": 0,
+          "correct": true
+        }
+      }
+    },
+    "independent": {
+      "trueOriginCount": 3,
+      "groundTruth": true,
+      "documents": 3,
+      "byRule": {
+        "byte_identity": {
+          "distinctRoots": 3,
+          "confidence": 0.973,
+          "overcountsBy": 0,
+          "correct": true
+        },
+        "declared_origin": {
+          "distinctRoots": 3,
+          "confidence": 0.973,
+          "overcountsBy": 0,
+          "correct": true
+        },
+        "ancestry": {
+          "distinctRoots": 3,
+          "confidence": 0.973,
+          "overcountsBy": 0,
+          "correct": true
+        }
       }
     }
   },
-  "independent": {
-    "trueOriginCount": 3,
-    "groundTruth": true,
-    "documents": 3,
-    "byRule": {
-      "byte_identity": {
-        "distinctRoots": 3,
-        "confidence": 0.973,
-        "overcountsBy": 0
-      },
-      "declared_origin": {
-        "distinctRoots": 3,
-        "confidence": 0.973,
-        "overcountsBy": 0
-      }
+  "correctnessByRule": {
+    "byte_identity": {
+      "laundered": false,
+      "stripped": false,
+      "chained": false,
+      "independent": true
+    },
+    "declared_origin": {
+      "laundered": true,
+      "stripped": false,
+      "chained": false,
+      "independent": true
+    },
+    "ancestry": {
+      "laundered": true,
+      "stripped": false,
+      "chained": true,
+      "independent": true
     }
   },
+  "rulesCorrectOnEveryPopulation": [],
+  "errorDirection": {
+    "byte_identity": {
+      "overcountsOn": [
+        "laundered",
+        "stripped",
+        "chained"
+      ],
+      "undercountsOn": [],
+      "neverOvercounts": false,
+      "reading": "manufactures independence on: laundered, stripped, chained"
+    },
+    "declared_origin": {
+      "overcountsOn": [
+        "chained"
+      ],
+      "undercountsOn": [
+        "stripped"
+      ],
+      "neverOvercounts": false,
+      "reading": "manufactures independence on: chained"
+    },
+    "ancestry": {
+      "overcountsOn": [],
+      "undercountsOn": [
+        "stripped"
+      ],
+      "neverOvercounts": true,
+      "reading": "never manufactures independence"
+    }
+  },
+  "whyNoRuleIsFullyCorrect": "ancestry is wrong on `stripped` by refusing all twenty rather than finding the one. That is the fail-closed trade stated in knowledge_ledger/ancestry.py: it never mints a root it has not been shown, so it under-counts where the others over-count. Only over-counting creates a false belief; under-counting creates an abstention.",
   "falseClaimOutscoresTrueClaim": true,
   "confidenceGap": 0.026999999965,
   "inflationTable": [
@@ -121,9 +241,17 @@
     }
   ],
   "perRootAccuracyDeclared": 0.7,
+  "theRepair": {
+    "rule": "ancestry",
+    "module": "knowledge_ledger/ancestry.py",
+    "sharedWith": "KL-005, which reached the same mechanism from syndication",
+    "whatIsActuallyNew": "not the walk, which KL-005 already had, but the treatment of a document declaring NO ancestry. byte_identity and declared_origin both read silence as originality, which is how laundering works. ancestry refuses: an undeclared document is unattributable, not a root.",
+    "costAccepted": "a genuine original that never recorded its provenance is discarded with the laundered copies. An origin claim that costs nothing to make is worth nothing, so the cost is the point.",
+    "notSolved": "ancestry still trusts a declared edge. A document that lies about its parent is believed, and ADV-001's under-declared search space is untouched. This narrows the attack from free to auditable; it does not remove it."
+  },
   "boundaries": [
-    "The population is authored and is not a sample. No rate is reported and none is derivable; every number here is a total function of the fixture and the two declared rules.",
-    "The normalizer is deliberately generous. A stricter one yields MORE byte-identity roots, never fewer, so the reported failure is the best case for byte identity.",
-    "declared_origin holding at one root is not evidence that origins are truthfully declared. It relocates the trust assumption from the text to the declaration; ADV-001's under-declared search space is untouched by this gate."
+    "The population is authored and is not a sample. No rate is reported and none is derivable.",
+    "The normalizer is deliberately generous; a stricter one yields MORE byte-identity roots, never fewer.",
+    "The `chained` population contains no lie. Every document truthfully names what it was copied from, and declared_origin is still wrong on it because it reads one hop."
   ]
 }
