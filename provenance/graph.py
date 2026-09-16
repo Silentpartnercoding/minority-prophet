@@ -358,8 +358,10 @@ class EvidenceGraph:
                     "identifies nothing",
                 ),
             )
-            if self._strict:
-                return
+            # Never mint the refused source, including in diagnostic mode.
+            # Two empty citations sharing `source:` would be a dependence
+            # claim the record does not support.
+            return
         node_id = _source_node_id(reference)
         if node_id in self._nodes:
             return
@@ -381,8 +383,12 @@ class EvidenceGraph:
         for reference in node.read_from:
             self._materialise_source(reference, node)
 
-        parents = _parent_ids(node)
-        missing = [parent for parent in parents if parent not in self._nodes]
+        parents = tuple(node.copied_from) + tuple(
+            _source_node_id(ref)
+            for ref in node.read_from
+            if _source_node_id(ref) in self._nodes
+        )
+        missing = [parent for parent in node.copied_from if parent not in self._nodes]
         if missing:
             raise ValueError(f"unknown ancestors: {', '.join(missing)}")
 
@@ -544,12 +550,23 @@ class EvidenceGraph:
         }
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any], *, strict: bool = True) -> "EvidenceGraph":
+    def from_dict(
+        cls,
+        payload: dict[str, Any],
+        *,
+        strict: bool | None = None,
+        require_root_evidence: bool | None = None,
+    ) -> "EvidenceGraph":
         """Validating loader.
 
         Deserialisation previously had no counterpart to `add`, so a payload
         could reintroduce every invariant violation the ingest path rejects.
         This loader replays nodes through `add` in dependency order.
+
+        The caller's `strict` / `require_root_evidence` are a floor, not a
+        default the payload may lower. `from_dict(untrusted, strict=True)`
+        stays strict even if the file says `"strict": false`. Omit the
+        argument to honour the payload. A payload may only raise the floor.
 
         `read_from` is restored (v0.2 dropped it in `_node_from_raw`, so five
         honest readers became six roots after a roundtrip). Materialised
@@ -557,9 +574,15 @@ class EvidenceGraph:
         `source:` ids from older payloads are rewritten to the canonical form
         so a DOI stored under `https://doi.org/...` merges with `10.xxxx/...`.
         """
+        payload_strict = bool(payload.get("strict", True))
+        payload_require = bool(payload.get("require_root_evidence", True))
         graph = cls(
-            strict=payload.get("strict", strict),
-            require_root_evidence=bool(payload.get("require_root_evidence", True)),
+            strict=payload_strict if strict is None else (strict or payload_strict),
+            require_root_evidence=(
+                payload_require
+                if require_root_evidence is None
+                else (require_root_evidence or payload_require)
+            ),
         )
         pending = {n["node_id"]: n for n in payload.get("nodes", [])}
         placed: set[str] = set()
