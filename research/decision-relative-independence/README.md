@@ -191,6 +191,36 @@ Refuted by exhibiting a single record that record-only rejects. Full write-up:
 [`research/records/DRI-7-V1.json`](../records/DRI-7-V1.json). Rerun:
 `python3 experiments/dri7/measure.py`.
 
+## Result: DRI-8 v1, intervention, and a criterion that asked too little
+
+DR3 says no rule reading the record can separate independent sources from two
+sharing an unrecorded origin. DRI-8 stopped reading and acted: a tracer through
+one source's upstream, observed in another's next report, spent only where merging
+the pair would change that decision's outcome.
+
+It was **supported** on all 49 checks, and the result is thinner than that sounds.
+
+- **The mechanism is real.** Probing prevented silent false settlements that no
+  record-only rule can prevent, by stamping them "not robust".
+- **The scale is not.** 80 of 2,281 in the pair family, 10 of 3,084 in the trio,
+  with correct settlements unchanged in every arm.
+- **The price is high.** 16 to 468 probes per error prevented, and a larger budget
+  bought a worse rate.
+- **Time is weaker.** Passive co-error history did nothing at all in the trio
+  family, needed full feedback elsewhere, and merged independent sources an order
+  of magnitude more often than probing did.
+- **The criterion is the lesson.** It asked for significance and set no minimum
+  effect, so 6,000 paired decisions per cell made a 0.3% difference "significant".
+  A successor must state the effect it will accept before it runs.
+- **A disclosed defect.** The margin-critical endpoint merges the whole hidden
+  group, which never flips a trio decision although merging a pair sometimes does.
+  It reads 0 for that family and is unmeasured there; the frozen protocol was not
+  edited.
+
+Full record: [`results/dri8-v1/`](../../results/dri8-v1/README.md),
+[`research/records/DRI-8-V1.json`](../records/DRI-8-V1.json). Design:
+[`DRI-8-DESIGN-DRAFT.md`](DRI-8-DESIGN-DRAFT.md).
+
 ## Result: DRI-6 v1, imperfect lookups
 
 Every earlier experiment assumed a truthful lookup. DRI-6 let each lookup miss or

@@ -1,11 +1,17 @@
 {
   "artifacts": [
-    "experiments/dri8/PREREGISTRATION.md"
+    "experiments/dri8/PREREGISTRATION.md",
+    "results/dri8-v1/result.json",
+    "results/dri8-v1/canonical-manifest.json"
   ],
   "authorityEffect": "none",
   "id": "DRI-8-V1",
   "independenceClaims": [],
-  "manifest": null,
+  "manifest": {
+    "commit": "7b762ba1914d32dbb40fdf00fb6ad0a9ca741a8a",
+    "path": "results/dri8-v1/canonical-manifest.json",
+    "sha256": "06644864d6ce523e5107649aea3e2bbbaa7bc9371096e081876ceb85215770bd"
+  },
   "origin": {
     "controlRelationship": "same-control-domain",
     "mode": "repository-native",
@@ -17,8 +23,12 @@
     "path": "experiments/dri8/PREREGISTRATION.md",
     "sha256": "a2bd1e50efa374b7c73d50107c3943b0caf175f945d92a9d663ee36c8a850e62"
   },
-  "result": null,
+  "result": {
+    "commit": "7b762ba1914d32dbb40fdf00fb6ad0a9ca741a8a",
+    "path": "results/dri8-v1/result.json",
+    "sha256": "3233e673d45cbba4b89365b5a88cb3a471f3fea8cfeba8d369cd3cca8268327e"
+  },
   "schema": "minority-prophet.research-record.v1",
-  "stage": "candidate",
-  "verdict": null
+  "stage": "canonical",
+  "verdict": "supported"
 }
