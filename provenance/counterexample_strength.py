@@ -31,9 +31,29 @@ It is also the right component boundary. Minority Prophet reports how firmly
 something was refuted; it does not know or need to know what acting would cost.
 Whoever holds consequence supplies the threshold.
 
-What this module can do safely in every direction is escalate. Withholding
-action cannot cause a wrong action, which is the same asymmetry that lets the
-unverifiable policy exist at all.
+CORRECTION, and it is the important part of this module. An earlier version
+claimed "withholding action cannot cause a wrong action". That is false, and it
+is false in the case that matters most.
+
+Abstention is only neutral when the STATUS QUO is safe:
+
+    "should I execute this irreversible transfer?"   defer -> nothing moves. Safe.
+    "is there a vulnerability in this code?"         defer -> the hole stays open.
+
+For the second kind, deferring IS the harmful act. Raising the bar on how many
+scanners must agree before a finding is acted on does not make the system more
+careful; it makes it sit on a real hole while it waits for a second opinion.
+
+So this module will not apply a threshold above one unless the decision has
+explicitly stated that deferring is safe. It falls back to one and records why.
+A system that can be configured into ignoring a genuine finding will eventually
+be configured that way by someone in a hurry.
+
+`canon/precedent.py` states the deeper form of this and is worth reading before
+anyone raises the bar here: witnesses are a profile per error class, never a
+single number, because "trading off is exactly the step that requires a
+preference". A single threshold cannot express "two witnesses before I believe a
+consensus, one before I believe a warning". That asymmetry is the whole subject.
 """
 
 from __future__ import annotations
@@ -42,25 +62,44 @@ ACTIONABLE = "actionable"
 ESCALATE_THIN = "escalate_thin_counterexample"
 NOT_APPLICABLE = "not_applicable"
 
+#: A decision may raise the counterexample bar only by saying this outright.
+#: Absent it, deferring is assumed to be harmful, because for absence claims
+#: about safety it usually is.
+DEFERRAL_SAFE_KEY = "deferring_is_safe"
 
-def required_roots(context) -> int:
-    """The threshold this decision declared, or 1 when no context was supplied.
 
-    Accepts a `DecisionContext`, a plain mapping shaped like one, or None. The
-    default of 1 reproduces today's behaviour exactly, so adopting this module
-    changes nothing until a decision declares otherwise.
-    """
+def _declared(context, key):
     if context is None:
-        return 1
-    value = getattr(context, "minimum_winning_roots", None)
+        return None
+    value = getattr(context, key, None)
     if value is None and isinstance(context, dict):
-        value = context.get("minimum_winning_roots")
-    if value is None:
-        return 1
-    value = int(value)
-    if value < 1:
-        raise ValueError("minimum_winning_roots must be at least 1")
+        value = context.get(key)
     return value
+
+
+def required_roots(context) -> tuple[int, str | None]:
+    """The threshold this decision may use, and why it was lowered if it was.
+
+    Returns (threshold, refusal_reason). The threshold is capped at one unless
+    the decision states `deferring_is_safe`, because a bar above one means a
+    single genuine counterexample does not get acted on -- and for a safety
+    absence claim that is the hole staying open, not caution.
+    """
+    declared = _declared(context, "minimum_winning_roots")
+    if declared is None:
+        return 1, None
+    declared = int(declared)
+    if declared < 1:
+        raise ValueError("minimum_winning_roots must be at least 1")
+    if declared == 1:
+        return 1, None
+    if _declared(context, DEFERRAL_SAFE_KEY) is True:
+        return declared, None
+    return 1, (
+        f"the decision asked for {declared} counterexample roots but did not declare "
+        f"`{DEFERRAL_SAFE_KEY}`. Deferring action on a counterexample is only safe when the "
+        "status quo is safe; for a safety absence claim it leaves the finding unremedied. "
+        "Falling back to one.")
 
 
 def assess(receipt: dict, context=None) -> dict:
@@ -69,7 +108,7 @@ def assess(receipt: dict, context=None) -> dict:
     Reads the receipt; never rewrites it. `conclusion` is returned untouched so a
     caller cannot mistake this for a second opinion on the verdict.
     """
-    minimum = required_roots(context)
+    minimum, refusal = required_roots(context)
     conclusion = receipt.get("conclusion")
     opposing = list((receipt.get("evidence") or {}).get("opposingRoots") or [])
 
@@ -93,6 +132,8 @@ def assess(receipt: dict, context=None) -> dict:
         "verdictUnchanged": True,
         "invariantRespected": "I5 — a non-empty opposingRoots still concludes `present`",
     }
+    if refusal:
+        out["thresholdRefused"] = refusal
     if not firm:
         out["reason"] = (
             f"refuted by {len(opposing)} independent root(s); this decision declared that acting "
