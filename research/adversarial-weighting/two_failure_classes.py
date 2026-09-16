@@ -81,6 +81,24 @@ def main() -> None:
     print("other. Recording ancestry properly fixes inflation and does nothing about")
     print("emptiness. Root integrity -- cost, attestation, capture-time signing --")
     print("fixes emptiness and does nothing about inflation.")
+
+    print("\nBOTH DEFENCES NOW EXIST, and the rows above still show the graph alone:")
+    print("  count inflation  knowledge_ledger/ancestry.py -- roots by declared")
+    print("                   ancestry, refusing silence as originality.")
+    print("  root emptiness   provenance/root_dereference.py -- dereference the")
+    print("                   reference instead of shape-matching it.")
+    from provenance.root_dereference import audit_roots
+    registered = {"10.1000/paper"}
+    resolver = lambda form, ref: ref in registered
+    print(f"\n  {'case':<36} {'hollow roots':>13} {'verdict':>12}")
+    for label, (g, truth, kind) in cases().items():
+        report = audit_roots(g._nodes.values(), resolver)
+        caught = len(report["hollowRoots"])
+        verdict = "caught" if (truth == 0 and caught) else ("ok" if truth else "MISSED")
+        print(f"  {label:<36} {caught:>13} {verdict:>12}")
+    print("\nThe inflation rows still read 3-for-1 above: dereference does not and")
+    print("should not fix them. Neither substitutes for the other, which is why")
+    print("both numbers are printed and neither is collapsed into a single score.")
     print("\nAnd the last row is the one to remember. Nine honest people declared")
     print("their ancestry correctly, the collapse worked exactly as designed, the")
     print("graph returned one root, and one is the right number. It is still zero")
