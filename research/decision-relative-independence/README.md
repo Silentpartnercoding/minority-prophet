@@ -213,6 +213,13 @@ owner decision. **Rejected**, 58 of 65.
 - **Refusing is blind to trios.** Fragile refusal prevented half the pair family's
   errors and exactly none in the trio, because it tests pairs.
 
+A dated post-result note corrects three claims made around this result: the decoy
+family planted no markers, so bait's "no harm" there was not a test; the
+margin-critical filter was an identity in all eight cells; and relabelling the
+same result as bait returns 65/65, which is why a successor must not simply
+rename the method on this generator. The verdict is unchanged. See
+[`POST-RESULT-NOTE.md`](../../results/dri9-v1/POST-RESULT-NOTE.md).
+
 Full record: [`results/dri9-v1/`](../../results/dri9-v1/README.md),
 [`research/records/DRI-9-V1.json`](../records/DRI-9-V1.json). Design:
 [`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md).
