@@ -1,0 +1,25 @@
+name: lean
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "formal/lean/**"
+      - ".github/workflows/lean.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  lake-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: formal/lean
+          build: "true"
+          test: "false"
+          # Rebuilds the compiled kernel. A green Python suite is not this.

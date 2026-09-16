@@ -90,9 +90,11 @@ def reversal_metrics(receipt: dict[str, Any]) -> dict[str, Any]:
             "decidedByRootCount is the number of opposing roots that "
             "actually carries it."
         )
+    signed = derive_flip_budget(receipt)
     return {
-        "flipBudget": derive_flip_budget(receipt),
-        "flipBudgetUnits": "net per-side root gain (p0 - p1)",
+        "flipBudget": signed,
+        "flipBudgetMagnitude": abs(signed),
+        "flipBudgetUnits": "net per-side root gain (p0 - p1); signed. Magnitude is |margin|.",
         "conversionsToReverse": evidence["conversionsToReverse"],
         "conversionsToReverseUnits": "side-conversion actions (each worth two units of net gain)",
         **applicability,
