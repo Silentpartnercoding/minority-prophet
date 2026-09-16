@@ -68,6 +68,18 @@ def recheck_outcome(evidence: dict[str, Any], resolver=None, *, now=None) -> dic
     return outcome
 
 
+def _recheck_reference(evidence: dict[str, Any]) -> str | None:
+    """Where a re-check would go, per the schema's own `recheck_reference`.
+
+    The field has existed unwritten alongside `verify_outcome`. The dereference
+    already resolves which reference it looked at, so recording it costs nothing
+    and turns "this failed" into "this failed, and here is the address that did
+    not answer" -- which is the difference between a result and an actionable one.
+    """
+    from .root_dereference import dereference_root
+    return dereference_root(evidence, None).reference
+
+
 def attach_recheck(evidence: dict[str, Any], resolver=None, *, now=None) -> dict[str, Any]:
     """Return a copy of `evidence` whose warrant carries the re-check result.
 
@@ -83,7 +95,11 @@ def attach_recheck(evidence: dict[str, Any], resolver=None, *, now=None) -> dict
     outcome = recheck_outcome(evidence, resolver, now=now)
     if outcome is None:
         return dict(evidence)
-    return {**evidence, WARRANT_KEY: {**warrant, "verify_outcome": outcome}}
+    updated = {**warrant, "verify_outcome": outcome}
+    reference = _recheck_reference(evidence)
+    if reference and not warrant.get("recheck_reference"):
+        updated["recheck_reference"] = reference
+    return {**evidence, WARRANT_KEY: updated}
 
 
 def recheck_report(nodes, resolver=None) -> dict:
