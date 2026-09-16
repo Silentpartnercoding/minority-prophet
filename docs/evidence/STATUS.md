@@ -122,7 +122,10 @@ Later constructed results, none canonical:
   lineage hid copying, but not where it hid a shared component, and paraphrase
   largely defeated it; see [`DRI-5`](../../results/dri5-v1/README.md). DRI-6 was
   supported: erring lookups caused silent false settlements, and looking twice
-  removed most of them; see [`DRI-6`](../../results/dri6-v1/README.md).
+  removed most of them; see [`DRI-6`](../../results/dri6-v1/README.md). DRI-8 met
+  its criterion, but that criterion set no minimum effect: probing prevented
+  0.3–3.5% of silent false settlements at 16–468 probes each; see
+  [`DRI-8`](../../results/dri8-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
