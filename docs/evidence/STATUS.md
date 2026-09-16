@@ -125,7 +125,10 @@ Later constructed results, none canonical:
   removed most of them; see [`DRI-6`](../../results/dri6-v1/README.md). DRI-8 met
   its criterion, but that criterion set no minimum effect: probing prevented
   0.3–3.5% of silent false settlements at 16–468 probes each; see
-  [`DRI-8`](../../results/dri8-v1/README.md).
+  [`DRI-8`](../../results/dri8-v1/README.md). DRI-9 rebuilt belief so it overrides
+  the record and was rejected: the method named in advance cleared its effect floor
+  in 1 of 8 cells, while a simpler reported arm cleared it in 8 of 8; see
+  [`DRI-9`](../../results/dri9-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

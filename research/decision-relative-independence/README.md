@@ -191,6 +191,32 @@ Refuted by exhibiting a single record that record-only rejects. Full write-up:
 [`research/records/DRI-7-V1.json`](../records/DRI-7-V1.json). Rerun:
 `python3 experiments/dri7/measure.py`.
 
+## Result: DRI-9 v1, belief that acts, and a favourite that lost
+
+DRI-8's arms could discover a shared source and then not act on it: a learned
+merge was one identity among six cuts and was outvoted by the five describing the
+disguise. DRI-9 makes belief override the record's identities at every cut, and
+asks which instrument earns that belief. Criterion on reversible decisions, by
+owner decision. **Rejected**, 58 of 65.
+
+- **The named method lost.** The ladder, which required two signals to agree,
+  cleared its 25% effect floor in **1 of 8** powered cells. It was the most precise
+  arm — 0 to 6 false merges, not one correct settlement lost — and the least
+  useful. Combining weak signals cost more than it bought.
+- **The simplest instrument won.** Bait — plant a marker upstream, see who carries
+  it — cleared the floor in **8 of 8** at 34–77%, scaling with pickup rate, and
+  raised correct settlements in the trio family from 1,273 to 1,622. It is a
+  reported arm; naming it the answer now would be choosing after the outcome.
+- **Prevention alone is not a measure.** Reflection cleared the floor while making
+  6,497–8,782 false merges per cell and collapsing correct settlements from 3,000
+  to about 1,300 in the decoy family.
+- **Refusing is blind to trios.** Fragile refusal prevented half the pair family's
+  errors and exactly none in the trio, because it tests pairs.
+
+Full record: [`results/dri9-v1/`](../../results/dri9-v1/README.md),
+[`research/records/DRI-9-V1.json`](../records/DRI-9-V1.json). Design:
+[`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md).
+
 ## Result: DRI-8 v1, intervention, and a criterion that asked too little
 
 DR3 says no rule reading the record can separate independent sources from two
