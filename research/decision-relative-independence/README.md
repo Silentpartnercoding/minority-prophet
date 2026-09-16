@@ -248,6 +248,12 @@ rejected the same instrument at once.
 Specification, including the traps the world must contain for either to lose:
 [`DRI-11-DESIGN-DRAFT.md`](DRI-11-DESIGN-DRAFT.md).
 
+The world is now written, by the review, not by the author of the methods:
+[`experiments/dri11/PREREGISTRATION.md`](../../experiments/dri11/PREREGISTRATION.md).
+It adds the trio DRI-10 omitted (refusal's 0.00 in DRI-9), a family of
+fragile-but-correct decisions, and a shock that makes the marker and the
+co-error record agree for one cause. Frozen, not run.
+
 ## Result: DRI-10 v1, a mark is not dependence
 
 DRI-9's bait story was measured on a world where the marked component *was* the

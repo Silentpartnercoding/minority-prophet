@@ -1,0 +1,55 @@
+{
+  "schema": "minority-prophet.dri11-execution-config.v1",
+  "experiment": "DRI-11",
+  "status": "preregistered-unexecuted",
+  "confirmatory_salt": "minority-prophet-dri11-v1-confirmatory",
+  "development_salt": "minority-prophet-dri11-development",
+  "families": [
+    "unmarked_hidden_pair",
+    "unmarked_hidden_trio",
+    "marked_hidden_pair",
+    "fragile_correct",
+    "common_carrier",
+    "shared_shock",
+    "robust_correct"
+  ],
+  "campaigns_per_family": 400,
+  "decisions_per_campaign": 12,
+  "independents_per_campaign": 5,
+  "source_accuracies": [0.6, 0.75, 0.85, 0.95],
+  "component_fault_rate": 0.35,
+  "decision_classes": {
+    "low_reversible": 2,
+    "high_irreversible": 3
+  },
+  "marker_pickups": [0.5, 0.9],
+  "marker_leaks": [0.02, 0.20],
+  "timing_jitter": 0.1,
+  "shock_rate": 0.55,
+  "cut_together": 0.8,
+  "cut_alone": 0.05,
+  "feedback_rate": 1.0,
+  "marker_cooccurrences_to_merge": 2,
+  "coerror_minimum_joint_decisions": 4,
+  "coerror_threshold": 0.5,
+  "ladder_score_to_merge": 2,
+  "ladder_signals": ["bait", "coerror"],
+  "familywise_alpha": 0.05,
+  "success_criterion": {
+    "primary": "fragile_refusal",
+    "secondary": "composite",
+    "dependence_families": [
+      "unmarked_hidden_pair",
+      "unmarked_hidden_trio",
+      "marked_hidden_pair"
+    ],
+    "collapse_families": ["common_carrier", "shared_shock"],
+    "refusal_prevented_share": 0.40,
+    "minimum_critical_silent_for_test": 12,
+    "refusal_correct_settlement_floor": 0.80,
+    "instrument_correct_settlement_floor": 0.95,
+    "scope": "reversible"
+  },
+  "decision_scope": "reversible",
+  "world_note": "Methods named in DRI-11-DESIGN-DRAFT.md before this world. Trio, fragile-correct, and shared-shock are the families DRI-10 omitted and that the named methods can lose on."
+}
