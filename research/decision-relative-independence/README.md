@@ -217,6 +217,11 @@ It was **supported** on all 49 checks, and the result is thinner than that sound
   It reads 0 for that family and is unmeasured there; the frozen protocol was not
   edited.
 
+A dated post-result note records why the effect was small: a learned merge was
+outvoted by the record's own identities, so the arm could find the dependence and
+not act on it — see
+[`POST-RESULT-NOTE.md`](../../results/dri8-v1/POST-RESULT-NOTE.md).
+
 Full record: [`results/dri8-v1/`](../../results/dri8-v1/README.md),
 [`research/records/DRI-8-V1.json`](../records/DRI-8-V1.json). Design:
 [`DRI-8-DESIGN-DRAFT.md`](DRI-8-DESIGN-DRAFT.md).
