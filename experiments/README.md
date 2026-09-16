@@ -14,6 +14,8 @@ notes. Presence here does not make an experiment canonical.
 - `asymmetric-claims/` — counterexamples for claim shapes where ordinary voting
   is inappropriate.
 - `replications/` — replication runners and fixtures.
+- `dri8/` through `dri10/` — decision-relative independence intervention
+  series. DRI-10 is a frozen candidate; do not infer a verdict from the folder.
 
 ## How to determine status
 

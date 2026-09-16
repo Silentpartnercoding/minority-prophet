@@ -203,10 +203,12 @@ owner decision. **Rejected**, 58 of 65.
   cleared its 25% effect floor in **1 of 8** powered cells. It was the most precise
   arm — 0 to 6 false merges, not one correct settlement lost — and the least
   useful. Combining weak signals cost more than it bought.
-- **The simplest instrument won.** Bait — plant a marker upstream, see who carries
-  it — cleared the floor in **8 of 8** at 34–77%, scaling with pickup rate, and
-  raised correct settlements in the trio family from 1,273 to 1,622. It is a
-  reported arm; naming it the answer now would be choosing after the outcome.
+- **The simplest instrument won inside a world built for it.** Bait — plant a
+  marker upstream, see who carries it — cleared the floor in **8 of 8** at
+  34–77%, scaling with pickup rate, and raised correct settlements in the trio
+  family from 1,273 to 1,622. It is a reported arm. The decoy planted no
+  markers, so the harm clause did not test it. Naming it on that generator
+  and rerunning is not the next experiment; DRI-10 is.
 - **Prevention alone is not a measure.** Reflection cleared the floor while making
   6,497–8,782 false merges per cell and collapsing correct settlements from 3,000
   to about 1,300 in the decoy family.
@@ -215,7 +217,25 @@ owner decision. **Rejected**, 58 of 65.
 
 Full record: [`results/dri9-v1/`](../../results/dri9-v1/README.md),
 [`research/records/DRI-9-V1.json`](../records/DRI-9-V1.json). Design:
-[`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md).
+[`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md). Adversary note on the
+proposed sequel: [`#204`](https://github.com/Silentpartnercoding/minority-prophet/pull/204).
+
+## Candidate: DRI-10 v1, bait against a world that can reject it
+
+Frozen, not run. Error component and marker carrier are separate knobs.
+`marked_hidden_pair` is DRI-9's bait story, kept as a positive control.
+`unmarked_hidden_pair`, `common_carrier` and `leaky_independents` exist so
+that story is not the whole world. Bait is named before the confirmatory
+salt. Quiet (no powered floor cell) is a fail. Same control domain as DRI-9;
+written after that confirmatory was public.
+
+Protocol: [`experiments/dri10/PREREGISTRATION.md`](../../experiments/dri10/PREREGISTRATION.md).
+Design: [`DRI-10-DESIGN-DRAFT.md`](DRI-10-DESIGN-DRAFT.md).
+Run, after the candidate record is committed:
+
+```text
+PYTHONPATH=. python -m experiments.dri10.run_confirmatory --output results/dri10-v1/result.json
+```
 
 ## Result: DRI-8 v1, intervention, and a criterion that asked too little
 
