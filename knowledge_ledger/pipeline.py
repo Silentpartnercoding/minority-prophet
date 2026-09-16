@@ -19,6 +19,9 @@ What this composition can and cannot show is stated in `assemble()`.
 
 from __future__ import annotations
 
+from provenance.unverifiable_policy import UnverifiablePolicy, apply_policy
+from provenance.warrant_recheck import recheck_outcome
+
 from .root_resolution import resolution_report, resolve_transaction_roots
 from .transaction_v2 import evaluate_transaction_v2
 
@@ -45,7 +48,27 @@ def derive_scope(locations: list[dict], **kwargs) -> list[dict]:
     return locations
 
 
-def assemble(payload: dict, documents: dict, *, require_origin_claim: bool = True) -> dict:
+def _recheck_stage(payload: dict, resolver, policy) -> dict:
+    """Dereference every record's evidence, then decide whether a settlement may rest on it.
+
+    The counts and the decision are kept apart on purpose. `unverifiable` stays
+    `unverifiable` in the counts -- the schema is emphatic that it must never
+    become `rejected` -- and the cost lands on the SETTLEMENT instead. Nothing
+    here condemns a claim; it withholds the right to settle on one.
+    """
+    counts = {"verified": 0, "rejected": 0, "unverifiable": 0, "not_rechecked": 0}
+    for record in (payload.get("evidenceLedger") or {}).get("records") or []:
+        evidence = record.get("evidence")
+        if not isinstance(evidence, dict):
+            counts["not_rechecked"] += 1
+            continue
+        outcome = recheck_outcome(evidence, resolver)
+        counts["not_rechecked" if outcome is None else outcome["result"]] += 1
+    return {"outcomes": counts, "settlement": apply_policy(counts, policy)}
+
+
+def assemble(payload: dict, documents: dict, *, require_origin_claim: bool = True,
+             resolver=None, policy: UnverifiablePolicy | None = None) -> dict:
     """Run one transaction through every organ and report each stage.
 
     Returns both the unresolved and resolved verdicts, because the value of the
@@ -75,6 +98,7 @@ def assemble(payload: dict, documents: dict, *, require_origin_claim: bool = Tru
     stages["scope"] = {"derived": True, "suppliedScopeRefused": True}
 
     stages["roots"] = resolution_report(payload, documents, require_origin_claim)
+    stages["recheck"] = _recheck_stage(payload, resolver, policy)
 
     before = evaluate_transaction_v2(payload)
     after = evaluate_transaction_v2(resolve_transaction_roots(payload, documents, require_origin_claim))
@@ -87,6 +111,27 @@ def assemble(payload: dict, documents: dict, *, require_origin_claim: bool = Tru
                      "opposingRoots": len(after["evidence"]["opposingRoots"]),
                      "unattributedRecords": after["evidence"]["unattributedRecords"]},
         "conclusionChanged": before["conclusion"] != after["conclusion"],
+        # Whether the verdict was sensitive to the root count at all. An absence
+        # conclusion turns on whether ANY opposing root survives, so collapsing
+        # five laundered roots into one moves the margin and leaves the answer
+        # alone. Surfacing that stops a reader crediting the root rule for a
+        # verdict it did not affect.
+        "rootCountWasDecisive": (
+            before["conclusion"] != after["conclusion"]
+            or len(before["evidence"]["supportingRoots"]) == len(after["evidence"]["supportingRoots"])
+        ),
+        "marginMovedWithoutVerdict": (
+            before["conclusion"] == after["conclusion"]
+            and len(before["evidence"]["supportingRoots"]) != len(after["evidence"]["supportingRoots"])
+        ),
+    }
+    settlement = stages["recheck"]["settlement"]["decision"]
+    stages["settlement"] = {
+        "decision": settlement,
+        "actionable": settlement == "settle",
+        "note": ("The evaluator still returns its conclusion. This says whether anyone is "
+                 "entitled to act on it, which is a separate question and the only one an "
+                 "unverifiable rate is allowed to affect."),
     }
     return {
         "stages": stages,
