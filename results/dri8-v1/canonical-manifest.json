@@ -1,0 +1,43 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-8",
+  "status": "canonical-intervention-experiment-supported-with-disclosed-defect",
+  "files": {
+    "experiments/dri8/PREREGISTRATION.md": "a2bd1e50efa374b7c73d50107c3943b0caf175f945d92a9d663ee36c8a850e62",
+    "experiments/dri8/EXECUTION-CONFIG.json": "bd1d9e1bd552b88f29f369e33b2a4847987ca8a935e53c950c237423cd76d3dd",
+    "experiments/dri8/world.py": "38c85209be2a5a56bc07224dfe26c6d1e6455f2154575832a6700f69772e3b30",
+    "experiments/dri8/arms.py": "d5491e76d2d98b6ae60ebb1db8b2dba390e4894f60f1d1b72306a454c8698250",
+    "experiments/dri8/scoring.py": "9be9344078bd58b967d10188e95c58481a4c45a8307493661953a1a2cefbb840",
+    "experiments/dri8/run_confirmatory.py": "b3d3de6a59592959ed16480176593b93dabeeb1570e1af78dfe9522722b7b393",
+    "experiments/dri3/world.py": "f6401442a47ba6179680203914a0c850ace2306ad1eb8101ea0e22996509d592",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "provenance/dependence_robustness.py": "c5273b6d4dbe7faa22351ba456c6781ac19a4b911b002167362d41ecd1d921bf",
+    "provenance/decision_relative.py": "f9fe5d9b95982e42c754fa3a187628f09be5408f69f7fa6873029bdad3046b13",
+    "tests/test_dri8_protocol.py": "b72639c03161d84a841cf8cbb433815864c8afbd6678f0c0235e446d438b8dfe",
+    "results/dri8-v1/README.md": "76e0d80e6450dcf817a31d7d057de36d528bcd39b3c65292a3c73924a4a7af83",
+    "results/dri8-v1/result.json": "3233e673d45cbba4b89365b5a88cb3a471f3fea8cfeba8d369cd3cca8268327e",
+    "results/dri8-v1/run-stdout.txt": "84f8fc83684513c852b4269411a97459794cde1021f3e254b2405a317e09ae9a",
+    "results/dri8-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "draft": "ef3434c",
+    "protocol": "489db2418613bdf9bd2c5531feb840fa153721bd",
+    "runner": "cb562c2",
+    "candidateRecord": "84ad243a3ee36059d2369e08cb0dcf2a2bee7a21"
+  },
+  "recordNote": "research/records/DRI-8-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "aa448b3b5d6682ffceae8849ae98e62e79331aa34124709e68be258121c84685",
+    "command": "PYTHONPATH=. python -m experiments.dri8.run_confirmatory --output results/dri8-v1/result.json",
+    "environment": {
+      "commit": "84ad243a3ee36059d2369e08cb0dcf2a2bee7a21",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic campaigns. Active probing prevented silent false settlements that no record-only rule can prevent, the practical counterpart of DR3, but only 0.3-3.5% of the baseline's, at 16-468 probes each, with correct settlements unchanged. The criterion required significance and set no minimum effect, so 'supported' carries no claim that the protection is worth its cost. The margin-critical endpoint merges the whole hidden group and is mis-specified for the trio family, where it reads 0; disclosed, not patched. Passive history was weaker and merged independents an order of magnitude more often. No real-world rates; probing assumes a touchable upstream; same control domain; no authority claim."
+}
