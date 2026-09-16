@@ -164,6 +164,28 @@ class QueryApiTest(unittest.TestCase):
         self.assertEqual(canonical_reference("  10.1000/paper  "), DOI)
         self.assertEqual(canonical_reference(""), "")
 
+    def test_payload_cannot_lower_strict_below_the_caller(self):
+        """Caller's strict=True is a floor. The file does not get to unlock."""
+        loose = EvidenceGraph(strict=False, require_root_evidence=False)
+        loose.add(reader(0, evidence={"hash": "a" * 64}))
+        payload = loose.to_dict()
+        self.assertFalse(payload["strict"])
+        locked = EvidenceGraph.from_dict(payload, strict=True)
+        self.assertTrue(locked._strict)
+        honoured = EvidenceGraph.from_dict(payload)
+        self.assertFalse(honoured._strict)
+
+    def test_non_strict_junk_citation_does_not_mint_a_blank_source(self):
+        """Diagnostic mode records the violation and does not invent source:."""
+        g = EvidenceGraph(strict=False, require_root_evidence=True)
+        g.add(reader(0, read=("",)))
+        g.add(reader(1, read=("",)))
+        self.assertNotIn("source:", g._nodes)
+        self.assertTrue(g.violations)
+        self.assertFalse(g.independent("r0", "r1"))
+        self.assertEqual(g.roots("r0"), frozenset())
+        self.assertEqual(g.roots("r1"), frozenset())
+
 
 class GraphVerdictJoinTest(unittest.TestCase):
     def test_verdict_counts_the_source_not_the_readers(self):
