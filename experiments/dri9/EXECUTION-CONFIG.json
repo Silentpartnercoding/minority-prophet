@@ -1,0 +1,69 @@
+{
+  "schema": "minority-prophet.dri9-execution-config.v1",
+  "experiment": "DRI-9",
+  "status": "draft",
+  "confirmatory_salt": "minority-prophet-dri9-v1-confirmatory",
+  "development_salt": "minority-prophet-dri9-development",
+  "families": [
+    "shared_upstream_pair",
+    "shared_upstream_trio",
+    "coincident_independents"
+  ],
+  "campaigns_per_family": 500,
+  "decisions_per_campaign": 12,
+  "independents_per_campaign": 5,
+  "source_accuracies": [
+    0.6,
+    0.75,
+    0.85,
+    0.95
+  ],
+  "component_fault_rate": 0.35,
+  "decision_classes": {
+    "low_reversible": 2,
+    "high_irreversible": 3
+  },
+  "marker_pickups": [
+    0.5,
+    0.9
+  ],
+  "timing_jitters": [
+    0.1,
+    0.5
+  ],
+  "marker_leak": 0.02,
+  "cut_together": 0.8,
+  "cut_alone": 0.05,
+  "ablation_budget": 2,
+  "feedback_rate": 1.0,
+  "marker_cooccurrences_to_merge": 2,
+  "timing_minimum_decisions": 4,
+  "timing_consistency_threshold": 0.8,
+  "coerror_minimum_joint_decisions": 4,
+  "coerror_threshold": 0.5,
+  "ladder_score_to_merge": 2,
+  "look_cost_ms": 1000,
+  "action_cost_ms": 1,
+  "familywise_alpha": 0.05,
+  "success_criterion": {
+    "method_under_test": "ladder",
+    "hidden_families": [
+      "shared_upstream_pair",
+      "shared_upstream_trio"
+    ],
+    "no_harm_family": "coincident_independents",
+    "minimum_prevented_share_of_critical": 0.25,
+    "minimum_critical_silent_for_test": 12,
+    "correct_settlement_floor": 0.95,
+    "maximum_interventions_per_prevented": 100,
+    "requires_reproducible_semantic_result": true,
+    "scope": "reversible"
+  },
+  "decision_scope": "reversible",
+  "decision_scope_note": "Owner decision 2026-09-16: the criterion is scored on reversible decisions only. In this world the irreversible path settles when the record is robust and otherwise looks, and the lookup is blind to an arm's belief, so belief changed 0 of 360 irreversible decisions per family on the development world against 233 and 279 reversible ones. Irreversible decisions are tallied and reported without a pass mark. What belief must clear before acting on an irreversible decision is left open.",
+  "ladder_signals": [
+    "bait",
+    "coerror"
+  ],
+  "ladder_signals_note": "Timing is excluded from the ladder before the run, on development evidence: on the development world the reflection arm made 476 and 586 false merges and cut correct settlements from 155 to 77 and from 240 to 100, because arrival-order consistency over few decisions is mostly noise. It remains a reported arm so that failure is on the record, but it must not supply a vote to the method under test. With two signals and ladder_score_to_merge = 2, the ladder now requires both to agree."
+}
