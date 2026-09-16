@@ -129,9 +129,12 @@ Later constructed results, none canonical:
   the record and was rejected: the method named in advance cleared its effect floor
   in 1 of 8 cells, while a simpler reported arm cleared it in 8 of 8 on a world
   that planted the mark on the hidden group and planted no markers in the decoy;
-  see [`DRI-9`](../../results/dri9-v1/README.md). DRI-10 is frozen and unrun:
-  bait named against a world where error and mark are separate knobs; see
-  [`experiments/dri10/PREREGISTRATION.md`](../../experiments/dri10/PREREGISTRATION.md).
+  see [`DRI-9`](../../results/dri9-v1/README.md). DRI-10 then named that simpler arm
+  on a world written by the review, where error and mark are separate knobs, and
+  rejected it on 12 of 40 checks: a mark is not dependence. It collapsed a shared
+  library carrying no shared error, lost correct settlements wherever marks leaked,
+  and prevented nothing where the dependence carried no mark; see
+  [`DRI-10`](../../results/dri10-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
