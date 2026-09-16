@@ -274,10 +274,17 @@ def witnessMerged : Fin 3 → Fin 3 := ![0, 0, 2]
 def noShare : Fin 3 → Fin 3 → Prop := fun _ _ => False
 
 theorem witness_true_side : side witnessValue true = {0, 1} := by
-  ext i; fin_cases i <;> simp [side, witnessValue]
+  ext i
+  unfold side
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert,
+    Finset.mem_singleton]
+  fin_cases i <;> simp [witnessValue]
 
 theorem witness_false_side : side witnessValue false = {2} := by
-  ext i; fin_cases i <;> simp [side, witnessValue]
+  ext i
+  unfold side
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+  fin_cases i <;> simp [witnessValue]
 
 theorem witness_distinct_admissible : Admissible noShare (id : Fin 3 → Fin 3) := by
   intro i j h
