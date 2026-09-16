@@ -130,16 +130,22 @@ class WitnessIdentityTests(unittest.TestCase):
 
     def test_two_anonymous_witnesses_cannot_be_shown_distinct(self):
         """They may be one person reporting twice. This is the detection residual U1 leaves open."""
-        anon = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
-                                WitnessIdentity.ANONYMOUS)
-        self.assertTrue(indistinguishable(anon, anon))
+        first = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                 WitnessIdentity.ANONYMOUS)
+        second = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,
+                                  WitnessIdentity.ANONYMOUS)
+        self.assertIsNot(first, second)
+        self.assertTrue(indistinguishable(first, second))
 
     def test_vouching_does_not_make_anonymous_witnesses_distinct(self):
         """A testament about a claim says nothing about whether two sources
         are the same source."""
-        a = IndependenceAxes(WitnessDepth.REALITY, Attestation.ADVERSARIAL,
-                             WitnessIdentity.ANONYMOUS)
-        self.assertTrue(indistinguishable(a, a))
+        first = IndependenceAxes(WitnessDepth.REALITY, Attestation.ADVERSARIAL,
+                                 WitnessIdentity.ANONYMOUS)
+        second = IndependenceAxes(WitnessDepth.REALITY, Attestation.ADVERSARIAL,
+                                  WitnessIdentity.ANONYMOUS)
+        self.assertIsNot(first, second)
+        self.assertTrue(indistinguishable(first, second))
 
     def test_named_witnesses_are_distinguishable_in_principle(self):
         named = IndependenceAxes(WitnessDepth.REALITY, Attestation.NONE,

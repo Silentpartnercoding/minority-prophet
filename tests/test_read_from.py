@@ -12,6 +12,7 @@ import unittest
 
 from provenance.graph import (
     EvidenceGraph, EvidenceNode, SideConsistencyError, UnattributedRootError,
+    canonical_reference,
 )
 
 DOI = "10.1000/paper"
@@ -107,6 +108,96 @@ class GateInteractionTest(unittest.TestCase):
         g.add(reader(0, read=(DOI,), value=True))
         with self.assertRaises(SideConsistencyError):
             g.add(reader(1, read=(DOI,), value=False))
+
+
+class QueryApiTest(unittest.TestCase):
+    """The ingest collapse is not the named API. roots() / independent() must
+    follow read_from edges or the headline invariant inverts."""
+
+    def test_honest_readers_of_one_paper_are_not_independent(self):
+        g = EvidenceGraph(strict=True)
+        g.add(reader(0, read=(DOI,)))
+        g.add(reader(1, read=(DOI,)))
+        self.assertEqual(g.roots("r0"), frozenset({f"source:{DOI}"}))
+        self.assertEqual(g.roots("r1"), frozenset({f"source:{DOI}"}))
+        self.assertFalse(g.independent("r0", "r1"))
+
+    def test_readers_of_different_papers_are_independent(self):
+        g = EvidenceGraph(strict=True)
+        g.add(reader(0, read=("10.1000/a",)))
+        g.add(reader(1, read=("10.1000/b",)))
+        self.assertTrue(g.independent("r0", "r1"))
+
+    def test_roundtrip_keeps_read_from_and_one_root(self):
+        g = EvidenceGraph(strict=True)
+        for i in range(5):
+            g.add(reader(i, read=(DOI,)))
+        g2 = EvidenceGraph.from_dict(g.to_dict())
+        self.assertEqual(list(g2._nodes["r0"].read_from), [DOI])
+        self.assertEqual(sum(1 for n in g2.nodes() if n.is_root), 1)
+        self.assertFalse(g2.independent("r0", "r1"))
+
+    def test_doi_aliases_collapse_to_one_source(self):
+        g = EvidenceGraph(strict=True)
+        aliases = (
+            "10.1000/paper",
+            "https://doi.org/10.1000/paper",
+            "http://dx.doi.org/10.1000/paper",
+            "DOI:10.1000/paper",
+            "10.1000/PAPER",
+            "10.1000/paper ",
+        )
+        for i, ref in enumerate(aliases):
+            g.add(reader(i, read=(ref,), evidence={"doi": ref.strip()}))
+        self.assertEqual(sorted(g.root_set()), [f"source:{DOI}"])
+        self.assertFalse(g.independent("r0", "r1"))
+
+    def test_junk_citation_is_refused(self):
+        g = EvidenceGraph(strict=True, require_root_evidence=True)
+        with self.assertRaises(UnattributedRootError):
+            g.add(reader(0, read=("trust me",)))
+        with self.assertRaises(UnattributedRootError):
+            g.add(reader(1, read=("",)))
+
+    def test_canonical_reference_strips_resolver_and_case(self):
+        self.assertEqual(canonical_reference("https://doi.org/10.1000/Paper"), DOI)
+        self.assertEqual(canonical_reference("  10.1000/paper  "), DOI)
+        self.assertEqual(canonical_reference(""), "")
+
+    def test_payload_cannot_lower_strict_below_the_caller(self):
+        """Caller's strict=True is a floor. The file does not get to unlock."""
+        loose = EvidenceGraph(strict=False, require_root_evidence=False)
+        loose.add(reader(0, evidence={"hash": "a" * 64}))
+        payload = loose.to_dict()
+        self.assertFalse(payload["strict"])
+        locked = EvidenceGraph.from_dict(payload, strict=True)
+        self.assertTrue(locked._strict)
+        honoured = EvidenceGraph.from_dict(payload)
+        self.assertFalse(honoured._strict)
+
+    def test_non_strict_junk_citation_does_not_mint_a_blank_source(self):
+        """Diagnostic mode records the violation and does not invent source:."""
+        g = EvidenceGraph(strict=False, require_root_evidence=True)
+        g.add(reader(0, read=("",)))
+        g.add(reader(1, read=("",)))
+        self.assertNotIn("source:", g._nodes)
+        self.assertTrue(g.violations)
+        self.assertFalse(g.independent("r0", "r1"))
+        self.assertEqual(g.roots("r0"), frozenset())
+        self.assertEqual(g.roots("r1"), frozenset())
+
+
+class GraphVerdictJoinTest(unittest.TestCase):
+    def test_verdict_counts_the_source_not_the_readers(self):
+        from aggregation.root_vote import Verdict, verdict_from_graph
+
+        g = EvidenceGraph(strict=True)
+        for i in range(5):
+            g.add(reader(i, read=(DOI,)))
+        result = verdict_from_graph(g)
+        self.assertEqual(result.verdict, Verdict.TRUE)
+        self.assertEqual(result.margin, 1)
+        self.assertEqual(result.flip_budget, 1)
 
 
 if __name__ == "__main__":
