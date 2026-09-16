@@ -32,7 +32,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
-from typing import Iterable, Literal, Protocol
+from typing import Any, Iterable, Literal, Protocol
 
 from aggregation.independence_axes import (
     ATTESTATION_WIRE,
@@ -519,6 +519,35 @@ def verdict(
         immunity_applicable=True,
         notes=tuple(notes),
     )
+
+
+@dataclass(frozen=True)
+class _GraphClaim:
+    """Internal: one parentless graph node as a RootedClaim."""
+
+    value: bool
+    root_id: str | None
+    independence_basis: str | None = None
+    witness_depth: str | None = None
+    attestation: str | None = None
+    witness_identity: str | None = None
+    depth_basis: str | None = None
+
+
+def verdict_from_graph(graph: Any, **kwargs: Any) -> RootVerdict:
+    """Count each parentless node in `EvidenceGraph` once.
+
+    Uses `root_set()`, never caller node ids. Two honest readers of one
+    paper therefore contribute one vote, which is the join `roots()` /
+    `independent()` and this aggregator previously lacked.
+    """
+    roots = graph.root_set()
+    claims = [
+        _GraphClaim(value=node.value, root_id=node.node_id)
+        for node in graph.nodes()
+        if node.node_id in roots
+    ]
+    return verdict(claims, **kwargs)
 
 
 def tolerated_root_errors(result: RootVerdict) -> int:

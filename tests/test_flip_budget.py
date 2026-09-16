@@ -73,6 +73,7 @@ def test_ce03_both_metrics_always_paired_with_units():
     doc = _fixture("fixtures/v1.2.0/c12-margin-sign.json")
     metrics = reversal_metrics(evaluate_transaction(doc["input"]))
     assert metrics["flipBudget"] == 1
+    assert metrics["flipBudgetMagnitude"] == 1
     assert metrics["conversionsToReverse"] == 1
     assert "net per-side root gain" in metrics["flipBudgetUnits"]
     assert "side-conversion actions" in metrics["conversionsToReverseUnits"]

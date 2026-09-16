@@ -3,9 +3,12 @@
 
   Deliberate difference from `formal/MinorityProphetV2.lean`:
   V2 modelled lineage as `parent : Fin n → Option (Fin n)`, i.e. a FOREST
-  (at most one parent, exactly one root per claim). The implementation
-  (`provenance/graph.py`: `copied_from : tuple[str, ...]`, `roots() -> frozenset`)
-  and FOUNDATIONS.md both describe a DAG. This file formalizes the DAG, which
+  (at most one parent, exactly one root per claim).   The implementation
+  (`provenance/graph.py`: `copied_from` plus materialized `read_from` parents,
+  `roots() -> frozenset`)
+  and FOUNDATIONS.md both describe a DAG. Lean has no `read_from`; Python
+  materialises each cited source as a parentless `source:` node so the walk
+  `roots()` implements `rootsOf` on that DAG. This file formalizes the DAG, which
   subsumes the forest, so no theorem here is a weaker substitute for a V2 claim.
 
   Acyclicity is imposed structurally by the time order (every parent index is

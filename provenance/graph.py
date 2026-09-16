@@ -6,10 +6,16 @@ which every theorem in formal/PROOFS.md assumes and which nothing in this
 codebase checked before 2026-08.
 
 Formal correspondence (formal/lean/MinorityProphetCore/):
-  a node with empty `copied_from`      -> a member of `rootSet`
-  `roots(node_id)`                     -> `rootsOf`
-  the invariant enforced by `add`      -> `SideConsistent`
-  the invariant enforced by `acyclic`  -> `World.acyclic`
+  a node with empty `copied_from` AND empty `read_from` -> a member of `rootSet`
+  `roots(node_id)` walks `copied_from` and materialized `read_from` parents
+                                           -> `rootsOf`
+  the invariant enforced by `add`          -> `SideConsistent`
+  the invariant enforced by `acyclic`      -> `World.acyclic`
+
+Lean has no `read_from`. This module materialises each cited source as a
+parentless `source:{canonical}` node so the DAG Lean sees is still parent
+edges. `_roots()` must walk those edges. Updating `is_root` without updating
+the walk inverts `independent()`.
 
 What this module does NOT do, and no theorem covers (see formal/CLAIM-SCOPE.md):
   * decide whether two distinct `node_id`s denote the same underlying
@@ -60,6 +66,36 @@ _RESOLVABLE_FORMS: tuple[tuple[str, "re.Pattern[str]"], ...] = (
 
 
 WARRANT_KEY = "claim_warrant"
+
+_DOI_PREFIX = re.compile(
+    r"^(?:https?://(?:dx\.)?doi\.org/|doi:)?(10\.\d{4,9}/\S+)$", re.I
+)
+_ARXIV = re.compile(r"^(?:arxiv:)?(\d{4}\.\d{4,5}(?:v\d+)?)$", re.I)
+_URL = re.compile(r"^(https?://)([^/]+)(/.*)?$", re.I)
+
+
+def canonical_reference(reference: str) -> str:
+    """One identity per cited object, so DOI aliases collapse to one source node.
+
+    Shape only: this does not check that the DOI exists. Empty and whitespace
+    become the empty string. DOI resolver prefixes and a leading `doi:` are
+    stripped; the remaining `10.xxxx/...` body is lowercased (Crossref
+    practice). Bare http(s) URLs keep path case and drop a trailing slash.
+    """
+    raw = (reference or "").strip()
+    if not raw:
+        return ""
+    doi = _DOI_PREFIX.match(raw)
+    if doi:
+        return doi.group(1).rstrip("/").lower()
+    arxiv = _ARXIV.match(raw)
+    if arxiv:
+        return arxiv.group(1).lower()
+    url = _URL.match(raw)
+    if url:
+        path = url.group(3) or ""
+        return url.group(1).lower() + url.group(2).lower() + path.rstrip("/")
+    return raw
 
 
 def resolvable_reference(evidence: dict[str, Any]) -> str | None:
@@ -244,7 +280,15 @@ class Violation:
 
 def _source_node_id(reference: str) -> str:
     """One node per external source, so every reader of it shares one parent."""
-    return f"source:{reference}"
+    return f"source:{canonical_reference(reference) or reference.strip()}"
+
+
+def _parent_ids(node: "EvidenceNode") -> tuple[str, ...]:
+    """Every recorded ancestor: copy edges and materialized citation edges."""
+    sources = tuple(
+        _source_node_id(ref) for ref in node.read_from if canonical_reference(ref) or ref.strip()
+    )
+    return tuple(node.copied_from) + sources
 
 
 class EvidenceGraph:
@@ -280,14 +324,42 @@ class EvidenceGraph:
         """Ensure the external source exists as a node, once, shared by all readers.
 
         The source itself is a root: it is the thing that was read, and nothing in
-        the graph stands behind it. It carries the reference as its own evidence,
-        so the root-evidence gate is satisfied by the same string that named it.
+        the graph stands behind it. It carries the canonical reference as its own
+        evidence. This path used to skip `require_root_evidence`, so
+        `read_from=("trust me",)` minted a parentless node the bare-root gate
+        would have refused.
 
         Created on the side the first reader asserts. A later reader asserting the
         opposite side hits the ordinary side-consistency check rather than a
         special case, which is correct: two readers of one source who disagree
         about what it says is a real conflict and not something to paper over.
+
+        Materialised sources are identity-by-canonical-reference, not registry
+        minted IDs. `root_authority` is not consulted here; junk citations are
+        stopped by the resolvable-form gate instead.
         """
+        canon = canonical_reference(reference)
+        offered = {"reference": canon or (reference or "").strip()}
+        if not canon or (
+            self._require_root_evidence and resolvable_reference(offered) is None
+        ):
+            detail = (
+                "empty read_from"
+                if not canon
+                else f"read_from {reference!r} names nothing dereferenceable"
+            )
+            self._reject(
+                UnattributedRootError,
+                Violation(
+                    "unattributed_root",
+                    child.node_id,
+                    "",
+                    f"{detail}, so it would mint a parentless source that "
+                    "identifies nothing",
+                ),
+            )
+            if self._strict:
+                return
         node_id = _source_node_id(reference)
         if node_id in self._nodes:
             return
@@ -298,7 +370,7 @@ class EvidenceGraph:
             observer_id=node_id,
             source_id=node_id,
             confidence=child.confidence,
-            evidence={"reference": reference},
+            evidence={"reference": canon or (reference or "").strip()},
         )
         self._roots_offered += 1
 
@@ -309,8 +381,7 @@ class EvidenceGraph:
         for reference in node.read_from:
             self._materialise_source(reference, node)
 
-        parents = tuple(node.copied_from) + tuple(
-            _source_node_id(r) for r in node.read_from)
+        parents = _parent_ids(node)
         missing = [parent for parent in parents if parent not in self._nodes]
         if missing:
             raise ValueError(f"unknown ancestors: {', '.join(missing)}")
@@ -429,7 +500,9 @@ class EvidenceGraph:
             result = frozenset({node_id})
         else:
             found: set[str] = set()
-            for parent in node.copied_from:
+            for parent in _parent_ids(node):
+                if parent not in self._nodes:
+                    continue
                 found |= self._roots(parent, cache, stack + (node_id,))
             result = frozenset(found)
         cache[node_id] = result
@@ -441,8 +514,17 @@ class EvidenceGraph:
         This is ALL-OR-NOTHING disjointness. Two claims sharing some but not all
         roots are reported as dependent. Graded independence is not modelled and
         no theorem covers it.
+
+        Empty ancestor sets do not count as independent. That was the
+        `read_from` query hole: two honest readers kept `copied_from=()` so
+        both walks were empty and `isdisjoint` was True. "No dependence
+        trace" is not a positive independence claim (ASSAYER A5).
         """
-        return self.roots(left).isdisjoint(self.roots(right))
+        left_roots = self.roots(left)
+        right_roots = self.roots(right)
+        if not left_roots or not right_roots:
+            return False
+        return left_roots.isdisjoint(right_roots)
 
     def root_set(self) -> frozenset[str]:
         """Every parentless claim in the graph (the `rootSet` of the theorems)."""
@@ -455,8 +537,9 @@ class EvidenceGraph:
 
     def to_dict(self) -> dict[str, object]:
         return {
-            "version": "0.2",
+            "version": "0.3",
             "strict": self._strict,
+            "require_root_evidence": self._require_root_evidence,
             "nodes": [vars(node) for node in self._nodes.values()],
         }
 
@@ -467,8 +550,17 @@ class EvidenceGraph:
         Deserialisation previously had no counterpart to `add`, so a payload
         could reintroduce every invariant violation the ingest path rejects.
         This loader replays nodes through `add` in dependency order.
+
+        `read_from` is restored (v0.2 dropped it in `_node_from_raw`, so five
+        honest readers became six roots after a roundtrip). Materialised
+        `source:` nodes already present from a reader are not added twice.
+        `source:` ids from older payloads are rewritten to the canonical form
+        so a DOI stored under `https://doi.org/...` merges with `10.xxxx/...`.
         """
-        graph = cls(strict=strict)
+        graph = cls(
+            strict=payload.get("strict", strict),
+            require_root_evidence=bool(payload.get("require_root_evidence", True)),
+        )
         pending = {n["node_id"]: n for n in payload.get("nodes", [])}
         placed: set[str] = set()
         while pending:
@@ -482,15 +574,26 @@ class EvidenceGraph:
                     "unresolvable ancestry among: " + ", ".join(sorted(pending))
                 )
             for raw in ready:
-                graph.add(_node_from_raw(raw))
-                placed.add(raw["node_id"])
-                del pending[raw["node_id"]]
+                original_id = raw["node_id"]
+                node = _node_from_raw(raw)
+                if node.node_id in graph._nodes:
+                    placed.add(original_id)
+                    placed.add(node.node_id)
+                    del pending[original_id]
+                    continue
+                graph.add(node)
+                placed.add(original_id)
+                placed.add(node.node_id)
+                del pending[original_id]
         return graph
 
 
 def _node_from_raw(raw: dict[str, Any]) -> EvidenceNode:
+    node_id = raw["node_id"]
+    if isinstance(node_id, str) and node_id.startswith("source:"):
+        node_id = _source_node_id(node_id[len("source:"):])
     return EvidenceNode(
-        node_id=raw["node_id"],
+        node_id=node_id,
         proposition_id=raw["proposition_id"],
         value=bool(raw["value"]),
         observer_id=raw["observer_id"],
@@ -498,6 +601,7 @@ def _node_from_raw(raw: dict[str, Any]) -> EvidenceNode:
         confidence=float(raw["confidence"]),
         evidence=dict(raw.get("evidence") or {}),
         copied_from=tuple(raw.get("copied_from") or ()),
+        read_from=tuple(raw.get("read_from") or ()),
         transformations=tuple(raw.get("transformations") or ()),
         signature=raw.get("signature"),
         timestamp=raw["timestamp"],

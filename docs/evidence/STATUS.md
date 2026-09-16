@@ -14,7 +14,7 @@ their own labels.
 
 ## Proved
 
-The formal statements compile in Lean 4.32.2 against pinned Mathlib with zero
+The formal statements compile in Lean 4.33.1 against pinned Mathlib with zero
 `sorry` and no added axioms. Full scope is in
 [`formal/CLAIM-SCOPE.md`](../../formal/CLAIM-SCOPE.md), with statuses in
 [`formal/THEOREM-LEDGER.json`](../../formal/THEOREM-LEDGER.json).

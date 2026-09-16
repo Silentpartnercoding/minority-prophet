@@ -10,6 +10,7 @@ from .graph import (
     UnattributedRootError,
     Violation,
     build,
+    canonical_reference,
     resolvable_reference,
 )
 
