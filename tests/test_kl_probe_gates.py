@@ -50,10 +50,25 @@ class KLProbeGateTests(unittest.TestCase):
         """The probe's value is the negative outcome. If this ever reads True,
         either the root rule changed or the fixture was weakened."""
         probe = json.loads((EXPERIMENTS / "KL-002/probe/first-gate.json").read_text())
-        self.assertFalse(probe["gateHolds"])
-        self.assertEqual(probe["laundered"]["byRule"]["byte_identity"]["distinctRoots"], 20)
-        self.assertEqual(probe["laundered"]["byRule"]["declared_origin"]["distinctRoots"], 1)
+        self.assertFalse(probe["gateHoldsUnderByteIdentity"])
+        laundered = probe["populations"]["laundered"]["byRule"]
+        self.assertEqual(laundered["byte_identity"]["distinctRoots"], 20)
+        self.assertEqual(laundered["declared_origin"]["distinctRoots"], 1)
         self.assertTrue(probe["falseClaimOutscoresTrueClaim"])
+
+    def test_kl002_repair_never_manufactures_independence(self):
+        """The repair's actual claim. Over-counting creates a false belief;
+        under-counting creates an abstention. Only one is dangerous."""
+        probe = json.loads((EXPERIMENTS / "KL-002/probe/first-gate.json").read_text())
+        direction = probe["errorDirection"]
+        self.assertTrue(direction["ancestry"]["neverOvercounts"])
+        self.assertFalse(direction["byte_identity"]["neverOvercounts"])
+        self.assertFalse(direction["declared_origin"]["neverOvercounts"])
+
+    def test_no_root_rule_is_correct_everywhere_and_that_is_recorded(self):
+        probe = json.loads((EXPERIMENTS / "KL-002/probe/first-gate.json").read_text())
+        self.assertEqual(probe["rulesCorrectOnEveryPopulation"], [])
+        self.assertIn("fail-closed", probe["whyNoRuleIsFullyCorrect"])
 
     def test_kl005_probe_shows_silence_winning_the_one_sided_metric(self):
         """The defect must stay demonstrable. If `silent` ever stops winning the
