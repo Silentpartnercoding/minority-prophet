@@ -55,6 +55,15 @@ def assemble(payload: dict, documents: dict, *, require_origin_claim: bool = Tru
     What this shows: that the four organs run together on one input, and where
     the answer moves.
 
+    Where it moves, stated as a boundary rather than a rate: an absence
+    conclusion turns on whether ANY opposing root SURVIVES resolution, never on
+    how many. Resolution flips it exactly when it takes the opposing side from
+    some to none -- unattributable opposition stops refuting the absence -- and
+    moves only the margin otherwise. That asymmetry is correct rather than a
+    defect: one genuine counterexample refutes a universal absence claim and
+    five do not refute it harder. A presence conclusion does depend on the
+    count, so resolution moves it directly.
+
     What it does NOT show: that the composition is correct in general. The
     population here is whatever the caller supplies. And it says nothing about
     root emptiness -- a fabricated root with honest copies collapses to one root

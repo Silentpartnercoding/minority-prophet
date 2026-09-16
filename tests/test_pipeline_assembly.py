@@ -1,13 +1,23 @@
 """What the assembled pipeline reveals that no organ showed alone.
 
-The composition finding: root resolution changes the CONCLUSION for presence
-claims and never for absence claims. The absence rule short-circuits on the
-existence of opposing evidence and never consults the root count, so collapsing
-five laundered roots into one moves the margin and leaves the verdict alone.
+CORRECTED. An earlier version of this file asserted that root resolution never
+changes an absence conclusion. That was false, and it was false in the way this
+repository exists to catch: the four shapes it tested all happened to keep at
+least one genuine opposing root, so the outcome could not vary, and the constant
+was reported as a property. The original error is kept in the git history rather
+than tidied away.
 
-That matters because KL-000 and KL-001 are absence experiments. The organ that
-was built to stop laundered evidence winning does not change the answer on the
-claim type this programme has studied most.
+The true finding is a boundary, not an absence:
+
+    An absence conclusion turns on whether ANY opposing root SURVIVES
+    resolution, never on how many. Resolution therefore changes the verdict
+    exactly when it takes the opposing side from some to none, and changes only
+    the margin otherwise.
+
+That asymmetry is correct rather than a defect. One genuine counterexample
+refutes a universal absence claim; five do not refute it harder. What the root
+rule adds is that a counterexample nobody can attribute is no longer a
+counterexample.
 """
 
 import pytest
@@ -17,7 +27,8 @@ from knowledge_ledger.pipeline import ScopeSuppliedError, assemble, derive_scope
 DOCS = {
     "SRC-0": {"isOriginal": True},
     **{f"C{i}": {"derivedFrom": "SRC-0"} for i in range(1, 6)},
-    "A": {"isOriginal": True}, "B": {"isOriginal": True}, "ORPH": {},
+    "A": {"isOriginal": True}, "B": {"isOriginal": True},
+    "ORPH": {}, "CYC1": {"derivedFrom": "CYC2"}, "CYC2": {"derivedFrom": "CYC1"},
 }
 LAUNDERED = [{"id": f"C{i}", "side": "support", "rootId": f"S{i}"} for i in range(1, 6)]
 OPPOSE = [{"id": "A", "side": "oppose", "rootId": "A"}, {"id": "B", "side": "oppose", "rootId": "B"}]
@@ -43,30 +54,54 @@ def test_the_pipeline_refuses_a_supplied_scope():
 
 
 def test_presence_claim_the_laundered_majority_stops_winning():
-    """The organ's actual payoff. Flips if resolution stops collapsing."""
     ev = _run(LAUNDERED + OPPOSE, "presence")["evaluation"]
     assert ev["unresolved"]["conclusion"] == "supported"
     assert ev["resolved"]["conclusion"] == "not_established"
     assert ev["conclusionChanged"] is True
 
 
-@pytest.mark.parametrize("records", [LAUNDERED + OPPOSE, LAUNDERED,
-                                     [{"id": f"C{i}", "side": "oppose", "rootId": f"S{i}"} for i in range(1, 6)],
-                                     [{"id": "ORPH", "side": "support", "rootId": "X"}]])
-def test_absence_claims_never_change_conclusion_and_that_is_the_finding(records):
-    """Recorded rather than discovered later: for absence claims the conclusion
-    is a function of whether opposing evidence EXISTS, not of how many roots
-    there are. Root resolution therefore moves the margin and not the verdict.
+# ---- the boundary, tested from BOTH sides ----------------------------------
 
-    Flips if the absence rule ever starts consulting root counts -- at which
-    point this test should be deleted and the finding rewritten, not patched."""
+@pytest.mark.parametrize("records,expected_after", [
+    # opposing evidence that cannot be attributed stops refuting the absence
+    ([{"id": "ORPH", "side": "oppose", "rootId": "X"}], "absent_within_declared_scope"),
+    ([{"id": "CYC1", "side": "oppose", "rootId": "Y"}], "absent_within_declared_scope"),
+    ([{"id": "ORPH", "side": "oppose", "rootId": "X"},
+      {"id": "A", "side": "support", "rootId": "A"}], "absent_within_declared_scope"),
+])
+def test_absence_flips_when_resolution_removes_every_opposing_root(records, expected_after):
+    """The side of the boundary the original test set missed entirely."""
     ev = _run(records, "absence")["evaluation"]
+    assert ev["unresolved"]["conclusion"] == "present"
+    assert ev["resolved"]["conclusion"] == expected_after
+    assert ev["conclusionChanged"] is True
+
+
+@pytest.mark.parametrize("records", [
+    LAUNDERED + OPPOSE,                                                    # a real opposing root survives
+    [{"id": f"C{i}", "side": "oppose", "rootId": f"S{i}"} for i in range(1, 6)],   # laundered, but SRC-0 is real
+    [{"id": f"C{i}", "side": "oppose", "rootId": f"S{i}"} for i in range(1, 3)]
+        + [{"id": "ORPH", "side": "oppose", "rootId": "X"}],               # one survives, one refused
+])
+def test_absence_holds_while_any_opposing_root_survives(records):
+    """The other side. Collapsing five opposing roots to one leaves the verdict
+    alone, because one genuine counterexample already refutes an absence claim
+    and five do not refute it harder."""
+    ev = _run(records, "absence")["evaluation"]
+    assert ev["resolved"]["opposingRoots"] >= 1
     assert ev["conclusionChanged"] is False
 
 
-def test_the_margin_does_move_even_when_the_verdict_does_not():
-    """So the organ is not inert on absence claims -- it is invisible to the
-    conclusion while still changing what the receipt reports."""
+def test_the_rule_is_existence_not_count():
+    """States the finding as a property rather than leaving it to the reader:
+    the absence verdict is a function of whether any opposing root survives."""
+    survives = _run(LAUNDERED + OPPOSE, "absence")["evaluation"]
+    none_survive = _run([{"id": "ORPH", "side": "oppose", "rootId": "X"}], "absence")["evaluation"]
+    assert survives["resolved"]["opposingRoots"] > 0 and not survives["conclusionChanged"]
+    assert none_survive["resolved"]["opposingRoots"] == 0 and none_survive["conclusionChanged"]
+
+
+def test_the_margin_moves_even_when_the_verdict_does_not():
     ev = _run(LAUNDERED + OPPOSE, "absence")["evaluation"]
     assert ev["unresolved"]["supportingRoots"] == 5
     assert ev["resolved"]["supportingRoots"] == 1
