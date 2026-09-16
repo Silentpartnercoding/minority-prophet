@@ -227,22 +227,46 @@ Full record: [`results/dri9-v1/`](../../results/dri9-v1/README.md),
 [`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md). Adversary note on the
 proposed sequel: [`#204`](https://github.com/Silentpartnercoding/minority-prophet/pull/204).
 
-## Candidate: DRI-10 v1, bait against a world that can reject it
+## Next: DRI-11, refusal named first
 
-Frozen, not run. Error component and marker carrier are separate knobs.
-`marked_hidden_pair` is DRI-9's bait story, kept as a positive control.
-`unmarked_hidden_pair`, `common_carrier` and `leaky_independents` exist so
-that story is not the whole world. Bait is named before the confirmatory
-salt. Quiet (no powered floor cell) is a fail. Same control domain as DRI-9;
-written after that confirmatory was public.
+Both methods are named before any world exists, and the world is to be written by
+the adversarial reviewer rather than by the author of the methods. DRI-9 was built
+by the instrument's author and flattered it; DRI-10, written by the review,
+rejected the same instrument at once.
 
-Protocol: [`experiments/dri10/PREREGISTRATION.md`](../../experiments/dri10/PREREGISTRATION.md).
-Design: [`DRI-10-DESIGN-DRAFT.md`](DRI-10-DESIGN-DRAFT.md).
-Run, after the candidate record is committed:
+- **Primary: fragile refusal.** Refuse when believing any single winning-side pair
+  would change the answer; otherwise answer. No marks, no probes, no budget. Named
+  first because it is the simplest thing that could work: in DRI-10 it prevented
+  473–521 critical errors in every hidden family, including where dependence
+  carries no mark and bait prevented none. Its sole weakness is cost — correct
+  settlements 2,034 → 1,551 — so its criterion is a cost bound it can fail on one
+  number.
+- **Secondary: corroborated belief with refusal fallback.** Believe a pair when two
+  declared signals agree, refuse when the answer is fragile and no signal supports
+  any pair, otherwise answer. Justified only if refusal fails on cost.
 
-```text
-PYTHONPATH=. python -m experiments.dri10.run_confirmatory --output results/dri10-v1/result.json
-```
+Specification, including the traps the world must contain for either to lose:
+[`DRI-11-DESIGN-DRAFT.md`](DRI-11-DESIGN-DRAFT.md).
+
+## Result: DRI-10 v1, a mark is not dependence
+
+DRI-9's bait story was measured on a world where the marked component *was* the
+hidden component and the decoy emitted no markers. DRI-10, written by the
+adversarial review, separates the error from the mark and adds a carrier that
+shares no error. Bait was named before the run. **Rejected**, 28 of 40.
+
+- **It collapsed the carrier**, in all four `common_carrier` cells, where the
+  baseline makes zero silent false settlements: correct settlements 2,830–2,866 →
+  1,389–2,194, with 1,431–9,118 false merges and **zero** true ones.
+- **Leaked marks hurt it**: 5,539 false merges and correct settlements 2,046 →
+  1,297 at the high leak rate.
+- **Unmarked dependence is invisible to it**: 0 of 1,005 and 0 of 988 prevented.
+- **No arm passed.** Refusing when the answer is fragile prevented 473–521 in every
+  hidden family with no instrument at all, failing only on the cost of refusing.
+
+Full record: [`results/dri10-v1/`](../../results/dri10-v1/README.md),
+[`research/records/DRI-10-V1.json`](../records/DRI-10-V1.json). Protocol:
+[`experiments/dri10/PREREGISTRATION.md`](../../experiments/dri10/PREREGISTRATION.md).
 
 ## Result: DRI-8 v1, intervention, and a criterion that asked too little
 
