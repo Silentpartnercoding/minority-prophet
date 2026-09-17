@@ -19,8 +19,10 @@ notes. Presence here does not make an experiment canonical.
   [`DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md`](DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md).
   Do not infer a verdict from a folder — follow the ID through the records.
 - `aid1/` — attested independence, a **new series** rather than a continuation
-  of the one above. Observational census of who states a witness depth today;
-  see [`research/attested-independence/`](../research/attested-independence/README.md).
+  of the one above. Observational census of who states a witness depth today,
+  plus a frozen unrun confirmatory world for AID-1 itself; see
+  [`research/attested-independence/`](../research/attested-independence/README.md)
+  and [`aid1/PREREGISTRATION.md`](aid1/PREREGISTRATION.md).
 
 ## How to determine status
 

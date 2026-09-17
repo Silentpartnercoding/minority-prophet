@@ -31,9 +31,10 @@ directly measurable.
 - **AID-1 — what attestation costs.**
   [`AID-1-DESIGN-DRAFT.md`](AID-1-DESIGN-DRAFT.md) is the specification: the
   policy under test, the arms, the traps the world must contain, and criteria
-  fixed before any world exists. Specification only; the world is to be written
-  by someone other than the author of the policy, which is the one discipline
-  that worked in the closed series.
+  fixed before any world existed. The confirmatory world, written by the
+  adversarial review, is frozen in
+  [`experiments/aid1/PREREGISTRATION.md`](../../experiments/aid1/PREREGISTRATION.md).
+  Not run. Do not infer a verdict from the folder.
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).

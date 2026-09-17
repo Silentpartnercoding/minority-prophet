@@ -147,9 +147,11 @@ Later constructed results, none canonical:
   unmeasured in cost.
 - Whether counting only attested witnesses leaves enough decisions answerable.
   The policy fails closed instead of converting the record's silence into
-  independence, which is sound and not free. The measurement is specified and not
-  run; see
-  [`AID-1-DESIGN-DRAFT.md`](../../research/attested-independence/AID-1-DESIGN-DRAFT.md),
+  independence, which is sound and not free.   The measurement is specified; the confirmatory world is frozen and not
+  run. See
+  [`AID-1-DESIGN-DRAFT.md`](../../research/attested-independence/AID-1-DESIGN-DRAFT.md)
+  and
+  [`experiments/aid1/PREREGISTRATION.md`](../../experiments/aid1/PREREGISTRATION.md),
   the first experiment of a new series rather than a continuation of the closed
   one. An observational census run first found that the policy's input does not
   exist yet: of 52 claim objects across four corpora, none states a witness

@@ -5,12 +5,14 @@
 inherits that series' question, and it does not. Renamed 2026-09-16, before any
 record was enrolled.*
 
-**Status: SPECIFICATION ONLY. No world, no run, no verdict.** The measurement
-and its criteria are named here before any world exists, and the world is to be
-written by someone other than the author of the policy. That separation is the
-only thing that worked in this programme: DRI-9 was built by the instrument's
-author and flattered it; DRI-10, written by the review, rejected the same
-instrument on the first honest test; DRI-11 rejected both methods named for it.
+**Status: SPECIFICATION. World frozen by the adversarial review; no run, no
+verdict.** The measurement and its criteria were named here before any world
+existed. The world is
+[`experiments/aid1/PREREGISTRATION.md`](../../experiments/aid1/PREREGISTRATION.md).
+Criteria below are unchanged. That separation is the only thing that worked
+in this programme: DRI-9 was built by the instrument's author and flattered
+it; DRI-10, written by the review, rejected the same instrument on the first
+honest test; DRI-11 rejected both methods named for it.
 
 This is the successor chapter to the decision-relative independence series, not
 unfinished evidence from it. See
