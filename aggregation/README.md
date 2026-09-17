@@ -11,6 +11,11 @@ maturity or claim status.
   historical implementation bound into EXPERIMENT-001.
 - [`markets.py`](markets.py) — provider-neutral aggregation of public binary
   market behavior.
+- [`attested_independence.py`](attested_independence.py) — counting under the
+  attestation policy: independence is granted by backing, never by the record's
+  silence. Deflates counts only, so it is scoped to counting that permits an
+  action. Doctrine:
+  [`canon/ATTESTED-INDEPENDENCE.md`](../canon/ATTESTED-INDEPENDENCE.md).
 
 Read [`formal/CLAIM-SCOPE.md`](../formal/CLAIM-SCOPE.md) before describing any
 implementation as proved. Run the related tests through `make verify-python`.

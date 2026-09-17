@@ -139,7 +139,17 @@ Later constructed results, none canonical:
   (0 of 925-961 prevented) and refused all 2,400 decisions in a family the baseline
   settles correctly, while one shock satisfied both signals a corroboration rule
   requires (342-439 false merges, zero true); see
-  [`DRI-11`](../../results/dri11-v1/README.md).
+  [`DRI-11`](../../results/dri11-v1/README.md). The series is now closed on that
+  answer rather than on exhaustion, with the result chain and what stays open in
+  [`the series closure`](../../experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md);
+  what follows from it is policy rather than detection, adopted in
+  [`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md) and
+  unmeasured in cost.
+- Whether counting only attested witnesses leaves enough decisions answerable.
+  The policy fails closed instead of converting the record's silence into
+  independence, which is sound and not free. The measurement is specified and not
+  run; see
+  [`DRI-12-DESIGN-DRAFT.md`](../../research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

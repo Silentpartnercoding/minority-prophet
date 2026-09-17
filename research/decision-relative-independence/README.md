@@ -227,32 +227,51 @@ Full record: [`results/dri9-v1/`](../../results/dri9-v1/README.md),
 [`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md). Adversary note on the
 proposed sequel: [`#204`](https://github.com/Silentpartnercoding/minority-prophet/pull/204).
 
-## Next: DRI-11, refusal named first
+## Series closed
 
-Both methods are named before any world exists, and the world is to be written by
-the adversarial reviewer rather than by the author of the methods. DRI-9 was built
-by the instrument's author and flattered it; DRI-10, written by the review,
-rejected the same instrument at once.
+DRI-1A through DRI-11 are complete, and the series closes on an answer rather
+than on exhaustion: no rule reading the record can separate independent evidence
+from dependence the record does not carry (ledger DR3), and five distinct
+classes of observable — content, probes, marks, co-error, fragility — each
+failed to substitute for the missing record. Result chain, defensible
+conclusion, refutations, and what remains open:
+[`experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md`](../../experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md).
 
-- **Primary: fragile refusal.** Refuse when believing any single winning-side pair
-  would change the answer; otherwise answer. No marks, no probes, no budget. Named
-  first because it is the simplest thing that could work: in DRI-10 it prevented
-  473–521 critical errors in every hidden family, including where dependence
-  carries no mark and bait prevented none. Its sole weakness is cost — correct
-  settlements 2,034 → 1,551 — so its criterion is a cost bound it can fail on one
-  number.
-- **Secondary: corroborated belief with refusal fallback.** Believe a pair when two
-  declared signals agree, refuse when the answer is fragile and no signal supports
-  any pair, otherwise answer. Justified only if refusal fails on cost.
+What follows from it is policy, not detection. The adopted one is
+[`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md):
+absence of recorded shared ancestry stops counting as evidence of independence
+unless someone attested the record is complete, and a depth claim is granted
+only what its backing supports. Its cost is unmeasured, and measuring it is the
+successor chapter: [`DRI-12-DESIGN-DRAFT.md`](DRI-12-DESIGN-DRAFT.md).
 
-Specification, including the traps the world must contain for either to lose:
-[`DRI-11-DESIGN-DRAFT.md`](DRI-11-DESIGN-DRAFT.md).
+## Result: DRI-11 v1, corroboration is not independence
 
-The world is now written, by the review, not by the author of the methods:
+Both methods were named before the world existed, and the world was written by
+the adversarial review rather than by the author of the methods. **Rejected**,
+66 of 134 checks: `fragile_refusal` (primary) on 38, `composite` (secondary) on
+30.
+
+- **Refusal is blind where it must see.** It prevented **0** of 925–961 critical
+  errors in every `unmarked_hidden_trio` cell, because it quantifies over pairs.
+  DRI-9 had already measured that zero; DRI-10 contained no trio, and refusal was
+  named primary on the strength of DRI-10. That selection error is the author's
+  and is disclosed in the result.
+- **And ruinous where it must not act.** In `fragile_correct` it refused **all
+  2,400** reversible decisions and settled none, against a baseline that got all
+  2,400 right. Refusal fires on fragility alone, which says nothing about shared
+  origin.
+- **One shock satisfied both of the composite's signals**: 342–439 false merges
+  per cell in `shared_shock` with **zero** true ones, and it never beat refusal
+  on cost anywhere, which was its entire justification.
+- **Behaviour does not separate a shared source from a shared shock.** Joint-error
+  rates were 0.38–0.42 for the genuinely dependent pairs and **0.58** for the
+  independent shocked pair: the innocents failed together more than the dependent.
+
+Full record: [`results/dri11-v1/`](../../results/dri11-v1/README.md),
+[`research/records/DRI-11-V1.json`](../records/DRI-11-V1.json). Protocol:
 [`experiments/dri11/PREREGISTRATION.md`](../../experiments/dri11/PREREGISTRATION.md).
-It adds the trio DRI-10 omitted (refusal's 0.00 in DRI-9), a family of
-fragile-but-correct decisions, and a shock that makes the marker and the
-co-error record agree for one cause. Frozen, not run.
+Specification that named both methods first:
+[`DRI-11-DESIGN-DRAFT.md`](DRI-11-DESIGN-DRAFT.md).
 
 ## Result: DRI-10 v1, a mark is not dependence
 
