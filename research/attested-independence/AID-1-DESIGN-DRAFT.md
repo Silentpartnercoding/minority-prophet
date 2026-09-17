@@ -1,4 +1,9 @@
-# DRI-12 — what attestation costs
+# AID-1 — what attestation costs
+
+*First experiment of the attested-independence series. It was drafted as
+"DRI-12", which was wrong: numbering it into the closed series implies it
+inherits that series' question, and it does not. Renamed 2026-09-16, before any
+record was enrolled.*
 
 **Status: SPECIFICATION ONLY. No world, no run, no verdict.** The measurement
 and its criteria are named here before any world exists, and the world is to be
@@ -19,7 +24,7 @@ content (no), probes (barely, expensively), marks (no), co-error (no), two
 signals agreeing (no), and fragility (no). DR3 says why: the record admits two
 groupings, so no rule reading it can choose between them.
 
-DRI-12 stops asking for an instrument. The policy in
+AID-1 stops asking for an instrument. The policy in
 [`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md) does
 not detect anything — it refuses to convert the record's silence into
 independence. That is provably safe in the direction that matters and obviously

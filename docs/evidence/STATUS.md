@@ -149,7 +149,21 @@ Later constructed results, none canonical:
   The policy fails closed instead of converting the record's silence into
   independence, which is sound and not free. The measurement is specified and not
   run; see
-  [`DRI-12-DESIGN-DRAFT.md`](../../research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md).
+  [`AID-1-DESIGN-DRAFT.md`](../../research/attested-independence/AID-1-DESIGN-DRAFT.md),
+  the first experiment of a new series rather than a continuation of the closed
+  one. An observational census run first found that the policy's input does not
+  exist yet: of 52 claim objects across four corpora, none states a witness
+  depth, and none of five formats in which evidence crosses a boundary permits
+  stating one, because each closes its origin object to additions. The binding
+  constraint is therefore the contract rather than the policy; see
+  [`AID-1-OBS`](../../experiments/aid1/OBSERVATIONAL-REPORT.md), which is
+  observational and refuted by a single counterexample. The contract was then
+  given a slot —
+  [`authority-evidence-v0.2`](../../contracts/authority-evidence-v0.2/README.md),
+  four optional fields, v0.1 still valid, no digest moved — so the census now
+  returns 1 of 6 formats. No producer states a depth yet: 0 of 52 claim objects,
+  unchanged. Whether witnesses will state one, and what refusing to count those
+  who do not actually costs, are both still open.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

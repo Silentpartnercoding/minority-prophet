@@ -2,7 +2,7 @@
 
 **Status: policy, adopted for counting that permits action on reversible
 decisions. Its cost is unmeasured and is the subject of
-`research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md`.**
+`research/attested-independence/AID-1-DESIGN-DRAFT.md`.**
 
 Implementation: `aggregation/attested_independence.py`.
 Tests: `tests/test_attested_independence.py`.
@@ -126,7 +126,11 @@ this policy.
   depth can be collected from real witnesses without adoption friction or
   self-reporting that destroys its evidentiary value is the fourth kill
   criterion of the decision-relative independence programme, and it is
-  unanswered.
+  unanswered. A census run 2026-09-16 found that no record in this estate stated
+  a depth and that no published format had anywhere to put one; the
+  vendor-neutral contract was given optional fields for it the same day
+  (`contracts/authority-evidence-v0.2`). A slot is a precondition, not an
+  answer: the instance count is still zero.
 - It does not state its own cost. How many decisions become unanswerable under
   this policy is measurable, unmeasured, and specified as the successor
   experiment.
