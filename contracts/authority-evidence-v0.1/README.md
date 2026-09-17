@@ -1,5 +1,12 @@
 # Vendor-neutral authority and evidence contract v0.1
 
+> **Superseded, not deprecated, by
+> [v0.2](../authority-evidence-v0.2/README.md) (2026-09-16).** v0.2 is v0.1 plus
+> four optional fields on `evidence_origin` recording how far the witness went
+> and what backs that claim. Nothing here was removed, renamed or made required,
+> no digest or signature moves, and v0.1 envelopes remain valid. A producer with
+> nothing to say about witness depth has no reason to move.
+
 This draft is the seam between an agent runtime, an authorization provider,
 and an evidence-aware consumer. It deliberately names no vendor. Any provider
 may implement it without becoming a required dependency.

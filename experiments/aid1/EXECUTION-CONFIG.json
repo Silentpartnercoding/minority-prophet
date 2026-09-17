@@ -43,6 +43,13 @@
     "This measures that the policy's input is absent. It does not measure what the policy costs, which is AID-1 and is unrun."
   ],
   "names_next_step": "Propose an additive, omit-if-absent depth object for the vendor-neutral authority-evidence contract, so an outside party can state and sign how far its witness went. A contract others implement is not changed here; it is proposed and waits for an owner decision.",
+  "follow_up": {
+    "date": "2026-09-16",
+    "what_changed": "Owner approved the proposed step. contracts/authority-evidence-v0.2 adds witness_depth, depth_basis, witness_identity and attestation as optional fields on evidence_origin, using the estate's existing wire vocabulary. v0.1 remains valid; nothing was removed or made required; no digest or signature moves.",
+    "census_after": {"formats_checked": 6, "formats_in_which_depth_can_be_stated": 1},
+    "unchanged": "The instance census is still 0 of 52. A field is not a statement: no producer states a depth, and nothing obliges one to. The policy's cost remains unmeasured, and detection remains impossible under DR3.",
+    "note": "The results block above records what the census measured and is not edited. This is a later fact, not a correction."
+  },
   "refutation": "Exhibit one instance, in any corpus, that states a witness depth.",
   "reproduce": "python3 experiments/aid1/measure.py",
   "report": "experiments/aid1/OBSERVATIONAL-REPORT.md"

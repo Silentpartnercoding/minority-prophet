@@ -54,6 +54,11 @@ LEGACY_FIELD = "independence_basis"
 SLOT_TARGETS = (
     ("authority-evidence-v0.1 (signed, vendor-neutral)",
      "contracts/authority-evidence-v0.1/schema.json"),
+    # Added 2026-09-16, after the census below found no format with a slot.
+    # Re-running now returns 1 rather than 0, which is the change and not a
+    # correction to what the census found.
+    ("authority-evidence-v0.2 (signed, vendor-neutral)",
+     "contracts/authority-evidence-v0.2/schema.json"),
     ("evidence-lineage-v0.1", "provenance/evidence-lineage.schema.json"),
     ("decision-context-v0.1", "provenance/decision-context.schema.json"),
     ("memory-evidence-profile-v0.1 (interop)",

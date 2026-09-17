@@ -37,12 +37,18 @@ directly measurable.
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).
-  **Nobody states depth, and in no published format could they.** Of 52 claim
-  objects, none states a witness depth, a backing, or an identity; of five
-  formats in which evidence crosses a boundary, none has a slot for one, each
-  closing its origin object to additions. So the first obstacle is not that
-  witnesses would refuse to say how far they went — it is that we never gave
-  them anywhere to say it. Observational, not preregistered in the strict sense;
+  **Nobody states depth, and when the census ran, in no published format could
+  they.** Of 52 claim objects, none states a witness depth, a backing, or an
+  identity; of the five formats then in use for evidence crossing a boundary,
+  none had a slot for one, each closing its origin object to additions. So the
+  first obstacle was not that witnesses would refuse to say how far they went —
+  it is that we had never given them anywhere to say it.
+
+  **That obstacle is now removed** (2026-09-16, owner-approved):
+  [`contracts/authority-evidence-v0.2`](../../contracts/authority-evidence-v0.2/README.md)
+  adds the four axes as optional fields, and the census returns 1 of 6 formats.
+  The instance count is still 0 of 52 — a field is not a statement, and no
+  producer has been asked to fill it. Observational, not preregistered in the strict sense;
   read its disclosure section before citing any figure, and note it is refuted
   by exhibiting one instance that states a depth.
 

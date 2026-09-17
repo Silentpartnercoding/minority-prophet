@@ -127,3 +127,33 @@ with `AID1_PRIVATE_CORPUS`; it is never copied and its cells are suppressed
 below 10.
 
 **Refutation: exhibit one instance, in any corpus, that states a witness depth.**
+
+## 9. Follow-up, 2026-09-16: the slot exists now
+
+Dated note, appended rather than folded in. Sections 3 through 7 record what was
+true when the census ran and are not edited; this section records what changed
+afterwards, which is a different fact.
+
+The owner approved the step section 7 named. `contracts/authority-evidence-v0.2`
+adds four optional fields to `evidence_origin` — `witness_depth`,
+`depth_basis`, `witness_identity`, `attestation` — using the estate's existing
+wire vocabulary unchanged. v0.1 stays valid, nothing was removed or made
+required, and no digest or signature moves.
+
+Re-running `measure.py` now returns **1 of 6 formats** in which a depth can be
+stated, against 0 of 5 above. That is the change, not a correction: the census
+finding stands as the reason the change was made.
+
+Three things are deliberately still true:
+
+- **The instance census is unchanged: 0 of 52.** Adding a field does not fill
+  it. No producer states a depth yet, and nothing here obliges one to.
+- **The policy's cost is still unmeasured.** AID-1 is specified and unrun.
+- **Detection is still impossible.** DR3 is untouched by a field a producer
+  fills in voluntarily. What changed is whether an honest witness *can* tell
+  you, never whether a dishonest one can be caught.
+
+The obstacle section 5 identified — that we had never given witnesses anywhere
+to say how deep they went — is removed. Whether they will say it, and what it
+costs to stop counting those who do not, are the open questions this series
+exists to answer.
