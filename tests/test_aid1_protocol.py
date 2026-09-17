@@ -136,9 +136,16 @@ def test_adversary_states_reality_with_no_backing_in_every_strain():
                 assert not witness.markers
 
 
-def test_declared_completeness_alone_buys_full_independence_from_the_policy():
+def test_declared_completeness_no_longer_buys_independence():
     """The spec's own family, verbatim: declared REALITY, declared complete
-    ancestry, no backing, no holdable identity. The policy counts them."""
+    ancestry, no backing, no holdable identity.
+
+    Until AID-1 this asserted the opposite, and that assertion was the point:
+    the completeness clause returned before any depth was consulted, so saying
+    the words bought full independence. The clause was removed afterwards,
+    because a witness cannot certify an absence it cannot see. The world is
+    unchanged; only the policy moved.
+    """
     for campaign in campaigns(FREELY_ATTESTING_FAMILY, "declares_completeness", 2, 1.0):
         adversaries = tuple(w for w in campaign.witnesses if w.name.startswith("a"))
         for witness in adversaries:
@@ -146,27 +153,37 @@ def test_declared_completeness_alone_buys_full_independence_from_the_policy():
             assert witness.identity is WitnessIdentity.ANONYMOUS
             # The backing machinery works: the claim is granted TEXT, not REALITY.
             assert witness.admissible is WitnessDepth.TEXT
-        # And it is bypassed anyway, because the completeness clause returns
-        # before any depth is consulted.
-        assert attested_independent(adversaries[0], adversaries[1], ErrorClass.FABRICATION)
+        # And it is no longer bypassed: TEXT cannot clear a fabrication-class
+        # divergence, and the declaration adds nothing on top of it.
+        assert not attested_independent(
+            adversaries[0], adversaries[1], ErrorClass.FABRICATION
+        )
+        # None of them is independent of any other now, so the group that once
+        # counted as three counts as one.
         assert attested_effective(
             adversaries, ErrorClass.FABRICATION, use=Use.PERMIT_ACTION
-        ) == len(adversaries)
+        ) == 1
 
 
-def test_a_self_declared_bond_buys_reality_because_witness_skips_honoured_identity():
-    """`IndependenceAxes.honoured_identity` degrades an unreferenced BONDED claim
-    to NAMED. `Witness.admissible` never calls it, so the free claim stands."""
+def test_a_self_declared_bond_no_longer_buys_reality():
+    """`IndependenceAxes.honoured_identity` degrades an unreferenced BONDED claim.
+
+    Until AID-1 this asserted `REALITY` and a full independent count, because
+    `Witness.admissible` called `admissible_depth` directly and skipped the
+    guard sitting one import away. The guard is wired in now, so a bond with
+    nothing to point at is honoured as a bare claim of identity and buys what
+    that is worth. The world is unchanged; only the policy moved.
+    """
     for campaign in campaigns(FREELY_ATTESTING_FAMILY, "claims_bonded_identity", 2, 1.0):
         adversaries = tuple(w for w in campaign.witnesses if w.name.startswith("a"))
         for witness in adversaries:
             assert witness.identity is WitnessIdentity.BONDED
             assert witness.depth_basis is DepthBasis.DECLARED
             assert witness.ancestry_complete is False
-            assert witness.admissible is WitnessDepth.REALITY
+            assert witness.admissible is not WitnessDepth.REALITY
         assert attested_effective(
             adversaries, ErrorClass.FABRICATION, use=Use.PERMIT_ACTION
-        ) == len(adversaries)
+        ) < len(adversaries)
 
 
 def test_the_depth_only_strain_is_the_one_where_backing_bites():
@@ -266,17 +283,42 @@ def test_baseline_already_right_really_is_already_right():
                     assert outcomes[index].terminal == decision.reference
 
 
-def test_baseline_already_right_costs_the_policy_nothing_only_at_full_adoption():
-    campaign = campaigns("baseline_already_right", "nothing_hidden", 1, 1.0)[0]
-    full = run_campaign(POLICY, campaign, ErrorClass.FABRICATION, CONFIG)
-    none = run_campaign(
+def test_baseline_already_right_costs_the_policy_everything_against_fabrication():
+    """The price the repair introduced, recorded rather than hidden.
+
+    Until AID-1 this asserted that full adoption settled everything here. The
+    repaired policy settles **nothing** in this family against a
+    fabrication-class error even at full adoption, because these witnesses are
+    backed by an artifact and a verified identity, which tops out at `METHOD`.
+    Only a device attestation or a resolved bond reaches `REALITY`, and nothing
+    shallower clears a fabrication divergence.
+
+    Defensible doctrine — a log proves you did something, not that you stood in
+    the room — and expensive. One class up it behaves as the family intends.
+    """
+    full = run_campaign(
         POLICY,
-        campaigns("baseline_already_right", "nothing_hidden", 1, 0.0)[0],
+        campaigns("baseline_already_right", "nothing_hidden", 1, 1.0)[0],
         ErrorClass.FABRICATION,
         CONFIG,
     )
-    assert all(o.terminal in SETTLED for o in full)
-    assert all(o.terminal == "unsettled" for o in none)
+    assert all(o.terminal == "unsettled" for o in full)
+
+    settled_at_full = run_campaign(
+        POLICY,
+        campaigns("baseline_already_right", "nothing_hidden", 1, 1.0)[0],
+        ErrorClass.INSTRUMENT,
+        CONFIG,
+    )
+    settled_at_none = run_campaign(
+        POLICY,
+        campaigns("baseline_already_right", "nothing_hidden", 1, 0.0)[0],
+        ErrorClass.INSTRUMENT,
+        CONFIG,
+    )
+    assert sum(o.terminal in SETTLED for o in settled_at_full) > sum(
+        o.terminal in SETTLED for o in settled_at_none
+    )
 
 
 # --- family 5: minority suppression -----------------------------------------
@@ -303,7 +345,22 @@ def test_minority_family_carries_a_true_contrary_claim_that_cannot_attest():
             assert len({unit for _, unit in campaign.unit_of}) == len(campaign.unit_of)
 
 
-def test_the_count_decides_survival_and_the_policy_deletes_the_true_claim():
+def test_the_count_no_longer_deletes_the_true_claim():
+    """AID-1's outright failure, now repaired.
+
+    Until the repair this asserted `policy_survived == 0`: the attested majority
+    kept its independence, the unattestable minority deflated toward one, and
+    the majority crossed a threshold the baseline refused to cross — 720 of 720
+    decisions settled against a true contrary claim in the confirmatory run.
+
+    It survives now because the repair is strict on *both* sides: the majority's
+    artifact-and-verified backing tops out at `METHOD`, which cannot clear a
+    fabrication divergence either, so it deflates too and no longer crosses.
+    Symmetric strictness removed the asymmetry. That is worth stating precisely,
+    because it is not the same as the structural fix: `witness_bounds` is the
+    principled answer and these arms still ask for a single count, so this world
+    does not exercise it.
+    """
     ladder_survived = policy_survived = total = 0
     for campaign in campaigns(MINORITY_FAMILY, "count_decides_survival", 4, 1.0):
         base = run_campaign(BASELINE, campaign, ErrorClass.FABRICATION, CONFIG)
@@ -316,7 +373,7 @@ def test_the_count_decides_survival_and_the_policy_deletes_the_true_claim():
             policy_survived += contrary_claim_survives(decision, policy[index].terminal)
     assert total >= 12
     assert ladder_survived == total
-    assert policy_survived == 0
+    assert policy_survived == total
 
 
 def test_the_scope_bites_only_when_the_caller_declares_what_it_is_doing():
