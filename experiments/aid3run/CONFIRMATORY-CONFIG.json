@@ -1,0 +1,40 @@
+{
+  "schema": "minority-prophet.aid3-execution-config.v1",
+  "experiment": "AID-3",
+  "series": "attested-independence",
+  "status": "preregistered-unexecuted",
+  "confirmatory_salt": "minority-prophet-aid3-v1-confirmatory",
+  "development_salt": "minority-prophet-aid3-development",
+  "families": [
+    "honest_unattestable",
+    "hidden_source",
+    "adversary_attests",
+    "robust_correct",
+    "minority_suppression",
+    "mixed_attestation"
+  ],
+  "campaigns_per_family": 400,
+  "decisions_per_campaign": 12,
+  "independents_per_campaign": 3,
+  "source_accuracies": [0.65, 0.75, 0.85, 0.95],
+  "component_fault_rate": 0.45,
+  "threshold": 2,
+  "adoption_rates": [0.0, 0.5, 1.0],
+  "error_class": "FABRICATION",
+  "familywise_alpha": 0.05,
+  "success_criterion": {
+    "primary": "attested",
+    "baseline": "ladder",
+    "theatre": "attested_declared_only",
+    "ceiling": "refuse_all_unrecorded",
+    "dependence_families": ["hidden_source"],
+    "theatre_families": ["adversary_attests"],
+    "suppression_families": ["minority_suppression"],
+    "prevention_share": 0.40,
+    "minimum_critical_silent_for_test": 12,
+    "cost_adoption_rate": 1.0,
+    "scope": "reversible"
+  },
+  "decision_scope": "reversible",
+  "world_note": "Arms and criteria named in AID-1-DESIGN-DRAFT.md before this world. Hidden copies can fill the same form as honest attesters; honest witnesses who left no artifact never can. The complete-box short-circuit is the hole."
+}
