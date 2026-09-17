@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "experiments/aid1/PREREGISTRATION.md"
+  ],
+  "authorityEffect": "none",
+  "id": "AID-1-V1",
+  "independenceClaims": [],
+  "manifest": null,
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": {
+    "commit": "e070b7fdcb220241fe89271e850983cb0333b054",
+    "path": "experiments/aid1/PREREGISTRATION.md",
+    "sha256": "b555a256bd101e84f197137b0abb0b5a43c0beae0ba4552641c13ed225cf984b"
+  },
+  "result": null,
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "candidate",
+  "verdict": null
+}
