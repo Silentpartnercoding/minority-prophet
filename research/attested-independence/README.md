@@ -47,8 +47,40 @@ directly measurable.
   caller-declared.
 
   Two defects in the policy were disclosed in the protocol before the run and
-  left in place deliberately, so this measures the policy as shipped. Repairing
+  left in place deliberately, so this measured the policy as shipped. Repairing
   them is a registered successor, not an edit to this record.
+- **AID-2 — does the range do what the number could not. Run, and rejected**,
+  74 of 120 checks.
+  [`AID-2-DESIGN-DRAFT.md`](AID-2-DESIGN-DRAFT.md) froze the criteria before the
+  world existed;
+  [`experiments/aid2run/PREREGISTRATION.md`](../../experiments/aid2run/PREREGISTRATION.md)
+  is the world, written by someone other than the policy's author; the result is
+  [`results/aid2-v1/`](../../results/aid2-v1/README.md).
+
+  **The range does fix what it was built to fix.** In AID-1's suppression
+  construction the bounds arm preserves the true contrary claim **360 of 360**
+  at every adoption rate, where the point estimate deletes all 360. A range
+  serves two decisions that one number could not.
+
+  **And it is inert on a case nobody anticipated.** Where only the minority's
+  *recorded kinship* is a decoy, bounds and point are identical at every rate —
+  360, 306, 204, 48, **0** — while the plain ladder holds 360 throughout. The
+  upper bound runs the ladder at *admissible* depth, so a witness the policy
+  discounts is discounted at both ends and a recorded ancestry token collapses
+  the pair at both ends at once.
+
+  **And it is blind to a backed witness with a shared origin.** Against three
+  device-attested copies of one fabricator it prevents **0 of 360**, while
+  closing three free-declaration strains essentially completely. A device
+  attestation earns depth; it says nothing about shared origin. That is the A5
+  defect still present, gated behind a depth check rather than removed.
+
+  Three defects in the instrument were disclosed before the confirmatory salt
+  was touched and left in place. Two are implementation errors rather than
+  properties of the bounds idea, so **this does not close the bounds question** —
+  a successor that fixes the upper bound and reads all four corners of the count
+  box is a different instrument and must be separately registered.
+
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).
