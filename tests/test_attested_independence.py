@@ -20,6 +20,7 @@ from aggregation.attested_independence import (
     independence_profile,
     independent_for,
     unattested_exposure,
+    witness_bounds,
 )
 from aggregation.independence_axes import DepthBasis, WitnessDepth, WitnessIdentity
 from canon.proximity import ErrorClass, Rung, Source
@@ -72,11 +73,23 @@ class HiddenSharedSourceTests(unittest.TestCase):
         a, b = W("a", WitnessDepth.TEXT), W("b", WitnessDepth.TEXT)
         self.assertTrue(independent_for(a, b, ErrorClass.TRANSCRIPTION))
 
-    def test_attested_completeness_makes_the_silence_informative(self):
-        """Someone has to say the record is complete before absence is evidence."""
+    def test_declaring_completeness_earns_nothing(self):
+        """A witness cannot certify an absence it cannot see.
+
+        This asserted the opposite until AID-1. Two reporters may honestly
+        believe they share no source while drinking from one well, so taking
+        their word for the silence is the same inference from absence that this
+        module exists to refuse — relocated into someone else's mouth.
+        """
         a = W("a", WitnessDepth.TEXT, complete=True)
         b = W("b", WitnessDepth.TEXT, complete=True)
-        self.assertTrue(independent_for(a, b, ErrorClass.FABRICATION))
+        self.assertFalse(independent_for(a, b, ErrorClass.FABRICATION))
+
+    def test_completeness_cannot_rescue_an_adversary_either(self):
+        """The hole it opened: say the words, skip the backing entirely."""
+        a = W("a", WitnessDepth.REALITY, complete=True)
+        b = W("b", WitnessDepth.REALITY, complete=True)
+        self.assertFalse(independent_for(a, b, ErrorClass.FABRICATION))
 
     def test_one_side_attesting_completeness_is_not_enough(self):
         a = W("a", WitnessDepth.TEXT, complete=True)
@@ -126,10 +139,26 @@ class DeclarationIsFreeTests(unittest.TestCase):
             effective_witnesses_for(pair, ErrorClass.SYSTEMATIC_METHOD,
                                     use=Use.PERMIT_ACTION), 2)
 
-    def test_being_findable_and_bonded_pays_for_depth_too(self):
-        """A stake is the other currency: an oath has teeth where perjury does."""
+    def test_an_unreferenced_bond_does_not_reach_the_world(self):
+        """A stake is worth what someone else can enforce.
+
+        This asserted `REALITY` until AID-1, because the module called
+        `admissible_depth` directly and skipped the `honoured_identity` check
+        sitting one import away. A bond with nothing to point at is honoured as
+        a bare claim of identity, and buys what that is worth.
+        """
         sworn = W("sworn", WitnessDepth.REALITY, identity=WitnessIdentity.BONDED)
-        self.assertIs(sworn.admissible, WitnessDepth.REALITY)
+        self.assertIsNot(sworn.admissible, WitnessDepth.REALITY)
+
+    def test_a_referenced_bond_still_caps_below_the_world_with_no_resolver(self):
+        """Checkable and checked are different states. No registry, no top tier."""
+        sworn = Witness("sworn", WitnessDepth.REALITY, DepthBasis.DECLARED,
+                        WitnessIdentity.BONDED, stake_reference="bond-12345")
+        self.assertIsNot(sworn.admissible, WitnessDepth.REALITY)
+
+    def test_a_device_attestation_still_reaches_the_world(self):
+        """The repair must not break what worked: backing still pays."""
+        self.assertIs(witnessed("device").admissible, WitnessDepth.REALITY)
 
     def test_underclaiming_is_honoured_not_inflated(self):
         modest = backed("modest", claimed=WitnessDepth.REPLICATION)
@@ -248,6 +277,57 @@ class ScopeTests(unittest.TestCase):
     def test_the_use_must_be_stated(self):
         with self.assertRaises(TypeError):
             effective_witnesses_for([], ErrorClass.FABRICATION)
+
+
+class BoundsTests(unittest.TestCase):
+    """A range, because one number cannot serve two opposite conservatisms."""
+
+    def test_earned_independence_is_the_lower_bound_and_the_ladder_the_upper(self):
+        pair = [W("a", WitnessDepth.TEXT), W("b", WitnessDepth.TEXT)]
+        bounds = witness_bounds(pair, ErrorClass.FABRICATION)
+        self.assertEqual((bounds.lower, bounds.upper), (1, 2))
+        self.assertFalse(bounds.determined)
+
+    def test_backed_witnesses_determine_the_count(self):
+        pair = [witnessed("a"), witnessed("b")]
+        bounds = witness_bounds(pair, ErrorClass.FABRICATION)
+        self.assertTrue(bounds.determined)
+        self.assertEqual(bounds.lower, 2)
+
+    def test_a_shared_marker_determines_it_the_other_way(self):
+        pair = [witnessed("a", markers="typo7"), witnessed("b", markers="typo7")]
+        bounds = witness_bounds(pair, ErrorClass.FABRICATION)
+        self.assertTrue(bounds.determined)
+        self.assertEqual(bounds.upper, 1)
+
+    def test_the_bound_never_inverts(self):
+        for pool in ([W("q")], [W("a", WitnessDepth.TEXT), witnessed("b")],
+                     [witnessed("a"), W("b"), W("c", WitnessDepth.ANALYSIS)]):
+            for error in ErrorClass:
+                bounds = witness_bounds(pool, error)
+                self.assertLessEqual(bounds.lower, bounds.upper)
+
+    def test_the_suppression_case_is_refused_instead_of_settled(self):
+        """AID-1's failure, as a unit test.
+
+        An attested majority asserting a falsehood against an unattestable
+        minority carrying the truth. The point estimate deflated the minority
+        and settled against it. The range does not: the majority is determined
+        at three, the minority runs from one to three, so at one end the
+        majority carries it and at the other the sides are level. The decision
+        differs across the range, which means the evidence does not decide it.
+        """
+        majority = [witnessed(f"m{i}") for i in range(3)]
+        minority = [W(f"n{i}", WitnessDepth.REALITY) for i in range(3)]
+        maj = witness_bounds(majority, ErrorClass.FABRICATION)
+        mino = witness_bounds(minority, ErrorClass.FABRICATION)
+        self.assertEqual((maj.lower, maj.upper), (3, 3))
+        self.assertEqual((mino.lower, mino.upper), (1, 3))
+        majority_wins_at_lower = maj.lower > mino.lower
+        majority_wins_at_upper = maj.upper > mino.upper
+        self.assertTrue(majority_wins_at_lower)
+        self.assertFalse(majority_wins_at_upper)
+        self.assertNotEqual(majority_wins_at_lower, majority_wins_at_upper)
 
 
 class ExposureTests(unittest.TestCase):

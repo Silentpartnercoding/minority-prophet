@@ -72,11 +72,27 @@ For two witnesses and one class of error:
 3. Where the record *does* show shared ancestry, the ladder's answer stands:
    independent for this error class when the pair's divergence is at or below
    the rung the error enters at.
-4. Where the record shows no shared ancestry:
-   - if **both** witnesses have attested that their ancestry record is complete,
-     the absence is informative and they are independent;
-   - otherwise the absence carries nothing, and the pair must clear the same
-     divergence test as in (3).
+4. Where the record shows no shared ancestry, **the absence carries nothing**
+   and the pair must clear the same divergence test as in (3).
+
+**Revised 2026-09-17 after AID-1.** Rule 4 previously granted independence when
+both witnesses attested that their ancestry record was complete. That was
+wrong, and the experiment measured how wrong: an adversary that simply said the
+words was granted full independence with no backing at all, while witnesses who
+attested completeness in good faith and were mistaken prevented nothing.
+
+The error was conceptual, not clerical. A witness can attest to the path it took
+and what backs that. It cannot attest to what it does not know it shares — two
+reporters may honestly believe they have no common source while drinking from
+one well. Asking for that certificate reinstated the very defect this document
+exists to remove: our code used to infer independence from silence in the
+record, and taking a witness's word for that silence is the same inference with
+the claim moved into someone else's mouth.
+
+Shared origin must therefore be found by comparing witnesses against each other,
+or by intervening upstream and watching what comes back. It cannot be obtained
+by asking each witness separately about an absence. `ancestry_complete` is still
+recorded, because what a party claimed is worth keeping, and it is not honoured.
 
 "Admissible depth" is not the depth claimed. It is
 `aggregation.independence_axes.admissible_depth`, already in the repository:
@@ -112,8 +128,25 @@ So the policy is scoped, not universal:
   report the range the record supports and escalate when the answer depends on
   where inside it the truth lies.
 
-A counting call that cannot say which of the two it is doing does not get to use
-this policy.
+**That scoping failed, and could not have worked.** AID-1 settled 720 of 720
+decisions against a true contrary claim carried by unattestable witnesses, with
+the guard in place and the caller declaring its purpose honestly the whole time.
+A caller deciding whether to act says `PERMIT_ACTION` truthfully while the same
+deflated count deletes the claim. No declaration can repair a number that is
+wrong in one direction or the other.
+
+The structural replacement is `witness_bounds`, which returns the range the
+record supports: a lower bound counting only independence that was earned, and
+an upper bound counting independence wherever the record cannot rule it out.
+Evaluate the decision at both ends. If it comes out the same way, settle it. If
+it differs, the evidence does not determine the decision — refuse and escalate,
+rather than choosing the end that suits. A single number cannot serve both a
+permit decision and a survival decision, because those require opposite
+conservatism, and that is exactly what the experiment demonstrated.
+
+`effective_witnesses_for` remains for callers that genuinely only permit, and
+still refuses `DECIDE_SURVIVAL`. It is no longer the honest default; the bounds
+are.
 
 ## What it does not do
 

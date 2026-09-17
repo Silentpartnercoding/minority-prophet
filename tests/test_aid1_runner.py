@@ -2,13 +2,20 @@
 
 Separate from `tests/test_aid1_protocol.py`, which belongs to the world's
 author. This file tests the runner, which is the operator's part.
+
+**The pins are verified against the freeze commit, not the working tree.** They
+were written to refuse a changed input, and the policy has since been repaired,
+so on the working tree they now correctly refuse. That is the machinery doing
+its job, not a broken test: a closed canonical record names the exact bytes it
+measured, and those bytes live in git at the commit the record binds. Asserting
+the pins still match HEAD would quietly re-bind the record to whatever the policy
+became, which is the one thing the pins exist to prevent.
 """
 
 import hashlib
-import json
 import pathlib
 import re
-import shutil
+import subprocess
 
 import pytest
 
@@ -27,9 +34,41 @@ WORLD_MODULES = (
     "experiments/aid1run/scoring.py",
 )
 
+#: The commit that froze the AID-1 protocol, bound by `research/records/AID-1-V1.json`.
+FREEZE_COMMIT = "ee88928e4ae70f1aea5969a910336795fb960da5"
 
-def test_pins_hold_on_this_tree():
-    verify_pins()
+
+def _blob(path: str) -> bytes:
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "show", f"{FREEZE_COMMIT}:{path}"],
+        capture_output=True,
+    )
+    assert result.returncode == 0, f"{path} absent at {FREEZE_COMMIT[:7]}"
+    return result.stdout
+
+
+@pytest.fixture
+def freeze_tree(tmp_path):
+    """The pinned inputs exactly as they stood when the protocol was frozen."""
+    for name in PINNED:
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(_blob(name))
+    return tmp_path
+
+
+def test_pins_hold_against_the_commit_the_record_binds(freeze_tree):
+    verify_pins(freeze_tree)
+
+
+def test_pins_no_longer_hold_on_a_repaired_working_tree():
+    """The repair changed the artifact under test, so the runner must refuse.
+
+    Recorded as an assertion rather than left implicit: this is how the record
+    stays honest about what it measured after the policy moves on.
+    """
+    with pytest.raises(ValueError, match="attested_independence.py"):
+        verify_pins()
 
 
 def test_the_policy_itself_is_pinned():
@@ -44,7 +83,7 @@ def test_every_repository_module_the_world_imports_is_pinned():
     change under a frozen protocol without anything noticing."""
     imported = set()
     for relative in WORLD_MODULES:
-        for line in (ROOT / relative).read_text().splitlines():
+        for line in _blob(relative).decode().splitlines():
             match = (re.match(r"\s*from ([\w.]+) import", line)
                      or re.match(r"\s*import ([\w.]+)", line))
             if match and match.group(1).startswith(REPO_PACKAGES):
@@ -59,45 +98,40 @@ def test_protocol_and_config_are_pinned():
     assert "experiments/aid1run/EXECUTION-CONFIG.json" in PINNED
 
 
-def test_config_loads_only_in_its_preregistered_state():
-    config = load_config()
+def test_config_loads_only_in_its_preregistered_state(freeze_tree):
+    config = load_config(freeze_tree)
     assert config["status"] == "preregistered-unexecuted"
     assert config["success_criterion"]["policy_arm"] == "attested"
     assert config["success_criterion"]["baseline_arm"] == "ladder"
     assert config["confirmatory_salt"] != config["development_salt"]
 
 
-def test_a_changed_input_refuses_to_run(tmp_path):
+def test_a_changed_input_refuses_to_run(freeze_tree):
     """The pin is only worth what its refusal is worth."""
-    for name in PINNED:
-        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(ROOT / name, tmp_path / name)
-    target = tmp_path / "experiments/aid1run/world.py"
-    target.write_text(target.read_text() + "\n# changed\n")
+    target = freeze_tree / "experiments/aid1run/world.py"
+    target.write_bytes(target.read_bytes() + b"\n# changed\n")
     with pytest.raises(ValueError, match="aid1run/world.py"):
-        verify_pins(tmp_path)
+        verify_pins(freeze_tree)
 
 
-def test_a_changed_policy_also_refuses_to_run(tmp_path):
+def test_a_changed_policy_also_refuses_to_run(freeze_tree):
     """The case that matters most: editing the artifact under test."""
-    for name in PINNED:
-        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(ROOT / name, tmp_path / name)
-    target = tmp_path / ARTIFACT_UNDER_TEST
-    target.write_text(target.read_text() + "\n# changed\n")
+    target = freeze_tree / ARTIFACT_UNDER_TEST
+    target.write_bytes(target.read_bytes() + b"\n# changed\n")
     with pytest.raises(ValueError, match="attested_independence.py"):
-        verify_pins(tmp_path)
+        verify_pins(freeze_tree)
 
 
-def test_pinned_digests_are_real_sha256_of_the_named_files():
+def test_pinned_digests_are_real_sha256_of_the_bytes_that_were_measured():
     for name, digest in PINNED.items():
         assert re.fullmatch(r"[0-9a-f]{64}", digest), name
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest, name
+        assert hashlib.sha256(_blob(name)).hexdigest() == digest, name
 
 
-def test_config_is_valid_json_and_names_every_required_family():
-    config = json.loads(
-        (ROOT / "experiments/aid1run/EXECUTION-CONFIG.json").read_text())
+def test_config_at_the_freeze_commit_names_every_required_family():
+    import json
+
+    config = json.loads(_blob("experiments/aid1run/EXECUTION-CONFIG.json"))
     for family in ("nobody_can_attest", "adversary_attests_freely",
                    "hidden_shared_source", "baseline_already_right",
                    "minority_suppression", "mixed_attestation"):

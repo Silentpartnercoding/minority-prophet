@@ -10,6 +10,11 @@ verdict. The policy works where it was designed to work, at a price that
 adoption removes — and it fails on a case its own scope clause was written to
 prevent and did not.
 
+A dated [post-result note](POST-RESULT-NOTE.md) records what happened to the
+policy *after* this run: both disclosed defects were repaired, and the repair's
+direction was observed on the development salt. The verdict below is unchanged,
+nothing in it was re-scored, and the repair is not promoted by that note.
+
 ## 1. It does prevent what it exists to prevent, at full adoption
 
 `hidden_shared_source` is DR3's case: witnesses drawing on one hidden source

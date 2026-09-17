@@ -48,13 +48,16 @@ from enum import Enum
 from typing import Iterable
 
 from aggregation.independence_axes import (
+    Attestation,
     DepthBasis,
+    IndependenceAxes,
+    WitnessBounds,
     WitnessDepth,
     WitnessIdentity,
-    admissible_depth,
 )
 from canon.independent_set import DEFAULT_BUDGET, maximum_independent_set_size
 from canon.proximity import ErrorClass, Rung, Source
+from canon.proximity import independent_for as ladder_independent_for
 
 
 class Use(Enum):
@@ -99,11 +102,33 @@ class Witness:
     ancestry: frozenset[str] = field(default_factory=frozenset)
     markers: frozenset[str] = field(default_factory=frozenset)
     ancestry_complete: bool = False
+    stake_reference: str | None = None
+    """Where a claimed exposure lives: a case number, licence, bond or registry
+    id. An unreferenced stake is not honoured, which is why this field exists."""
+
+    @property
+    def axes(self) -> IndependenceAxes:
+        """This witness on the three axes, so the existing guards apply.
+
+        Built rather than reimplemented. `IndependenceAxes.admissible` already
+        routes a depth claim through `honoured_identity`, and AID-1 failed in
+        part because this module called `admissible_depth` directly and skipped
+        that check — a guard that existed one import away.
+        """
+        return IndependenceAxes(self.claimed, Attestation.NONE, self.identity,
+                                self.depth_basis, self.stake_reference)
 
     @property
     def admissible(self) -> WitnessDepth:
-        """The depth actually granted: the shallower of claim and backing."""
-        return admissible_depth(self.claimed, self.depth_basis, self.identity)
+        """The depth actually granted: the shallower of claim and backing.
+
+        A self-declared `BONDED` with nothing to point at is honoured as
+        `NAMED`, and with no resolver available a referenced stake caps below
+        `REALITY`. Only a device attestation reaches the world unaided. Fail
+        closed: a stake is worth what someone else can enforce, and this system
+        operates no registries.
+        """
+        return self.axes.admissible
 
     @property
     def has_depth(self) -> bool:
@@ -140,13 +165,27 @@ def independent_for(a: Witness, b: Witness, error: ErrorClass) -> bool:
 
     Never more permissive than `canon.proximity.independent_for` on the same
     pair. It differs only by refusing to convert silence into independence.
+
+    **`ancestry_complete` is recorded and deliberately not honoured** (AID-1,
+    2026-09-17). An earlier version granted independence when both witnesses
+    declared their ancestry record complete. That asks a witness to certify an
+    absence it cannot see: two reporters may honestly believe they share no
+    source while drinking from one well, and the experiment measured exactly
+    that — the good-faith variant prevented nothing, while an adversary that
+    simply said the words walked through untouched.
+
+    Honouring it also reinstated the defect this module exists to remove. Our
+    code used to infer independence from silence in the record; taking a
+    witness's word for that silence is the same forbidden inference with the
+    claim moved into someone else's mouth. A witness may attest to the path it
+    took and what backs that. It may not attest to what it does not know it
+    shares, and shared origin has to be found by comparing witnesses or by
+    intervening upstream, never by asking each one separately about an absence.
     """
     if a.markers & b.markers:
         return False
     if not (a.has_depth and b.has_depth):
         return False
-    if not (a.ancestry & b.ancestry) and a.ancestry_complete and b.ancestry_complete:
-        return True
     return divergence(a, b) <= error
 
 
@@ -172,6 +211,55 @@ def effective_witnesses_for(
     return maximum_independent_set_size(
         items, lambda x, y: not independent_for(x, y, error), budget=budget
     )
+
+
+def _ladder_view(witness: Witness) -> Source:
+    """The permissive reading: what the ladder sees, at admissible depth.
+
+    A witness that states no depth is placed at `TEXT`, because the legacy
+    ladder has no rung for silence and reads an unstated claim as hearsay.
+    """
+    rung = Rung(int(witness.admissible)) if witness.has_depth else Rung.TEXT
+    return Source(witness.name, rung, witness.ancestry, witness.markers)
+
+
+def witness_bounds(
+    witnesses: Iterable[Witness],
+    error: ErrorClass,
+    *,
+    budget: int = DEFAULT_BUDGET,
+) -> WitnessBounds:
+    """What the record supports against one error class: a range, not a number.
+
+    `lower` counts only independence that was **earned** — silence grants
+    nothing. `upper` counts independence wherever the record cannot **rule it
+    out**, which is the ladder's reading. The truth is somewhere inside and the
+    record does not say where.
+
+    This exists because AID-1 established that a single number cannot serve two
+    decisions that need opposite conservatism. Deflating a count is safe when it
+    decides whether to act and is an attack when it decides whether a claim
+    survives: the same figure that prudently withholds permission also deletes
+    an inconvenient minority. The experiment measured that as 720 of 720
+    decisions settled against a true contrary claim, with the caller-declared
+    scope guard powerless to stop it, because the caller was telling the truth
+    about its own purpose the whole time.
+
+    The discipline is the three-outcome one used everywhere else in this system:
+    evaluate the decision at both ends. Same answer at both, settle it. Different
+    answers, the evidence does not determine the decision — refuse and escalate
+    rather than picking the end that suits. A caller that wants one number is
+    asking a question the record cannot answer.
+    """
+    items = list(witnesses)
+    lower = maximum_independent_set_size(
+        items, lambda x, y: not independent_for(x, y, error), budget=budget
+    )
+    sources = [_ladder_view(w) for w in items]
+    upper = maximum_independent_set_size(
+        sources, lambda x, y: not ladder_independent_for(x, y, error), budget=budget
+    )
+    return WitnessBounds(lower, upper)
 
 
 def independence_profile(
