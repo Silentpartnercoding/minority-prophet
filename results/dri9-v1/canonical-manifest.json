@@ -1,0 +1,45 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-9",
+  "status": "canonical-intervention-experiment-rejected",
+  "files": {
+    "experiments/dri9/PREREGISTRATION.md": "67549892cb17cb806af9152304154343609b5ba8b33e692e092b27bfca0eeba4",
+    "experiments/dri9/EXECUTION-CONFIG.json": "96d75f85b0636e7eeda911d8a7283cc7aaa96c7e500f8897c4aff8dbab7ae6ab",
+    "experiments/dri9/rule.py": "6ef60455220f355228878bf9f8585f46e72fe3ac789840a1ea752b9478714405",
+    "experiments/dri9/world.py": "c1ccc28ec16fbb02b4536ef0fe046d4be0710d556c24212d0193623b8a1f1667",
+    "experiments/dri9/arms.py": "76e968ad60a6ff61d0d6a3f2c4e93dbb0daa7b66a24cf07c4cb8d1bf145fed74",
+    "experiments/dri9/scoring.py": "2e8215d6a1eea8937522733bd6d5366b7d5fa0f5d96684f6231a6a03124ad798",
+    "experiments/dri9/run_confirmatory.py": "ab45249ae38d5c21217385d11baa19be90163fedc4321e16480807aa3a26330b",
+    "experiments/dri8/world.py": "38c85209be2a5a56bc07224dfe26c6d1e6455f2154575832a6700f69772e3b30",
+    "experiments/dri3/world.py": "f6401442a47ba6179680203914a0c850ace2306ad1eb8101ea0e22996509d592",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257",
+    "provenance/dependence_robustness.py": "c5273b6d4dbe7faa22351ba456c6781ac19a4b911b002167362d41ecd1d921bf",
+    "provenance/decision_relative.py": "f9fe5d9b95982e42c754fa3a187628f09be5408f69f7fa6873029bdad3046b13",
+    "tests/test_dri9_protocol.py": "14996aaae4bb8327366ab8ea908c24cf1d2c405065ed17c8e7ec415d4ece153c",
+    "results/dri9-v1/README.md": "79c266db732e8d9bab3cd3c7333daabe5c2ba734422b99f091cb77f9879cc49c",
+    "results/dri9-v1/result.json": "8718cce94dd35782ce3758b66ba8592d6a8c9db2c817a569679b855ed9233db5",
+    "results/dri9-v1/run-stdout.txt": "a1cf682080458075d5b10001158390edeedae7a4e75edc094845701f4b04a1c4",
+    "results/dri9-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commits": {
+    "draft": "5baf996",
+    "protocol": "cd4a3630a8a1863e1c854ee74ba4663f974c2736",
+    "runner": "1c552de",
+    "candidateRecord": "4b0b78713"
+  },
+  "recordNote": "research/records/DRI-9-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "executionMode": "two complete evaluations in one runner process",
+    "semanticIdentical": true,
+    "semanticResultSha256": "8a6c42246c164d5ee5239ccfca46210b2c124fc53a27fcf24ad37293094e16e1",
+    "command": "PYTHONPATH=. python -m experiments.dri9.run_confirmatory --output results/dri9-v1/result.json",
+    "environment": {
+      "commit": "4b0b7871313479e76570d89de2cc726808be41ab",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic campaigns, criterion on reversible decisions only. The named method under test (a ladder requiring two signals to agree) cleared the 25% effect floor in 1 of 8 powered cells and the criterion is rejected. Bait, a reported arm, cleared it in 8 of 8 (34-77%) with no harm flags, but declaring it the answer now would be choosing after seeing outcomes; a successor must name it in advance. Reflection cleared the floor while making 6,497-8,782 false merges per cell, which is why prevention without a harm test is not a measure of a detector. No real-world rates; probing assumes a touchable upstream; irreversible decisions out of scope; same control domain; no authority claim."
+}

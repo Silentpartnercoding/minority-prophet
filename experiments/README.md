@@ -14,6 +14,13 @@ notes. Presence here does not make an experiment canonical.
 - `asymmetric-claims/` — counterexamples for claim shapes where ordinary voting
   is inappropriate.
 - `replications/` — replication runners and fixtures.
+- `dri8/` through `dri11/` — decision-relative independence intervention
+  series. Closed; see
+  [`DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md`](DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md).
+  Do not infer a verdict from a folder — follow the ID through the records.
+- `aid1/` — attested independence, a **new series** rather than a continuation
+  of the one above. Observational census of who states a witness depth today;
+  see [`research/attested-independence/`](../research/attested-independence/README.md).
 
 ## How to determine status
 

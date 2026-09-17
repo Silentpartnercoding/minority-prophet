@@ -122,7 +122,55 @@ Later constructed results, none canonical:
   lineage hid copying, but not where it hid a shared component, and paraphrase
   largely defeated it; see [`DRI-5`](../../results/dri5-v1/README.md). DRI-6 was
   supported: erring lookups caused silent false settlements, and looking twice
-  removed most of them; see [`DRI-6`](../../results/dri6-v1/README.md).
+  removed most of them; see [`DRI-6`](../../results/dri6-v1/README.md). DRI-8 met
+  its criterion, but that criterion set no minimum effect: probing prevented
+  0.3–3.5% of silent false settlements at 16–468 probes each; see
+  [`DRI-8`](../../results/dri8-v1/README.md). DRI-9 rebuilt belief so it overrides
+  the record and was rejected: the method named in advance cleared its effect floor
+  in 1 of 8 cells, while a simpler reported arm cleared it in 8 of 8 on a world
+  that planted the mark on the hidden group and planted no markers in the decoy;
+  see [`DRI-9`](../../results/dri9-v1/README.md). DRI-10 then named that simpler arm
+  on a world written by the review, where error and mark are separate knobs, and
+  rejected it on 12 of 40 checks: a mark is not dependence. It collapsed a shared
+  library carrying no shared error, lost correct settlements wherever marks leaked,
+  and prevented nothing where the dependence carried no mark; see
+  [`DRI-10`](../../results/dri10-v1/README.md). DRI-11 named two rules before the
+  reviewer's world existed and rejected both, 66 of 134: refusal is blind to trios
+  (0 of 925-961 prevented) and refused all 2,400 decisions in a family the baseline
+  settles correctly, while one shock satisfied both signals a corroboration rule
+  requires (342-439 false merges, zero true); see
+  [`DRI-11`](../../results/dri11-v1/README.md). The series is now closed on that
+  answer rather than on exhaustion, with the result chain and what stays open in
+  [`the series closure`](../../experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md);
+  what follows from it is policy rather than detection, adopted in
+  [`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md) and
+  unmeasured in cost.
+- Whether counting only attested witnesses leaves enough decisions answerable.
+  The policy fails closed instead of converting the record's silence into
+  independence, which is sound and not free. The measurement is specified and not
+  run; see
+  [`AID-1-DESIGN-DRAFT.md`](../../research/attested-independence/AID-1-DESIGN-DRAFT.md),
+  the first experiment of a new series rather than a continuation of the closed
+  one. An observational census run first found that the policy's input does not
+  exist yet: of 52 claim objects across four corpora, none states a witness
+  depth, and none of five formats in which evidence crosses a boundary permits
+  stating one, because each closes its origin object to additions. The binding
+  constraint is therefore the contract rather than the policy; see
+  [`AID-1-OBS`](../../experiments/aid1/OBSERVATIONAL-REPORT.md), which is
+  observational and refuted by a single counterexample. The contract was then
+  given a slot —
+  [`authority-evidence-v0.2`](../../contracts/authority-evidence-v0.2/README.md),
+  four optional fields, v0.1 still valid, no digest moved — so the census now
+  returns 1 of 6 formats. No producer states a depth yet: 0 of 52 claim objects,
+  unchanged. Whether witnesses will state one is still open; what refusing to
+  count those who do not actually costs was measured and the policy was
+  rejected. At full adoption it prevents about half of the hidden-source silent
+  false settlements at no cost in correct settlements, but it loses every
+  settlement where witnesses cannot attest, loses all protection one error class
+  up as adoption rises, and settles 720 of 720 minority decisions against a true
+  contrary claim. See [`AID-1`](../../results/aid1-v1/README.md). The policy is
+  not usable as scoped, and its scope guard cannot hold because the use is
+  caller-declared.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
