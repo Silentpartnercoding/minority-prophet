@@ -1,0 +1,41 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "AID-3",
+  "series": "attested-independence",
+  "status": "canonical-reviewer-world-policy-rejected",
+  "verdict": "rejected",
+  "artifactUnderTest": "aggregation/attested_independence.py",
+  "primaryMethod": "attested",
+  "worldAuthor": "the adversarial review, submitted as PR #214 against AID-1 and relocated here unchanged in substance; same control domain, not independent validation",
+  "files": {
+    "research/attested-independence/AID-3-REGISTRATION-NOTE.md": "a6930f3a904f8ad767cc13fb23bd3ed5a3e1e3a7c221a17ff2187175b6e0d171",
+    "experiments/aid3run/PREREGISTRATION.md": "174afec11039c8297446a37f8388f835f36bec464a4d62eda36117e89dbb714c",
+    "experiments/aid3run/CONFIRMATORY-CONFIG.json": "597aaa84fdd2cbfc7846e29fdbf01e75f20b506d58617b96dc7d917a6b2eb7c3",
+    "experiments/aid3run/world.py": "b5cb965a12ddec6901280038ece8602c8504ecb4f4c9b6de3b3997e2ee1d82d9",
+    "experiments/aid3run/arms.py": "c15e6a7af7d6e27bee00c276bd295a2fe1430a295ef4bff84df2c2a5d11b4516",
+    "experiments/aid3run/scoring.py": "eba23d4c997a76a298554695a95b0c180bdb2b5fc840d726f5d9081b0545cee2",
+    "experiments/aid3run/run_confirmatory.py": "3d35d9a9917287b9f407277bcced372827856771b7d474a455a28995086279f8",
+    "experiments/aid3run/__init__.py": "d983c99d2d8a615fff60e221f64aafac6ab6d8c862e0f0b63ca5d34952f3c6a7",
+    "tests/test_aid3_protocol.py": "af384374ef368b29f5f1561c9ea2894de278125b9ad839c4d03206f2a3107b81",
+    "results/aid3-v1/result.json": "bf31b3c4abedf5fc7d46c816490c91edbfdef4250730007b819ae9f80296f94e",
+    "aggregation/attested_independence.py": "116d290f88895ec743205643aee442df7454993565f58425b4e92b14c538ea60",
+    "aggregation/independence_axes.py": "324bab7f971ba1a0849329010c76aa048f8157dbbb7f3a440b8426639901c311",
+    "canon/proximity.py": "15398c208bf391c9d150e23b2f18dad6affd9d271303129395df754ccb71ab3b",
+    "canon/independent_set.py": "a0e9b357291f9175b8608d656d03eefc2159aaa9e25ae66477e515fe5206fb3c",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257"
+  },
+  "semanticResultSha256": "1f6be8d016f8b2fc0f4bd2175a6891e3e02ccebc0d05c81b25d28e9570e6aba2",
+  "campaignManifestSha256": "16e033afbfbd19031f3dff13aa4255bc9a3008b249230a237d93401b14f4d46b",
+  "reproducible": true,
+  "protocolCommit": "93531e6ec8707e566867d1eabd1acf3e33ac1d8e",
+  "candidateCommit": "f5792b123dceaa1b7a142ced0c396a965bf9cd90",
+  "checks": {"failed": 17, "total": 23, "powered": 3, "underpowered": 0},
+  "criteriaFailed": {
+    "1": "preventsEnoughOfCritical 3/3, significantlyFewerSilent 3/3",
+    "2": "costBound 2/6",
+    "3": "materiallyWorseThanAttested 3/3",
+    "4": "cheaperThanRefuseAll 3/3",
+    "5": "doesNotSuppress 3/3"
+  },
+  "boundary": "The world was authored by the adversarial review against the PRE-repair policy and is run here against the repaired one; its completeness-short-circuit construction test now asserts the opposite and passes, which is the repair landing. The suppression finding is untouched by the repair: the false side is device-attested and the true side cannot attest, so deflating the unattested settles against a true claim in 4800 of 4800 decisions at every adoption rate. The adoption curve is flat by construction, since ancestry_complete equals adopted and the repaired policy no longer honours completeness; that prediction was recorded before the run. Criterion 3 counts outcomes and cannot distinguish two arms reaching equal totals by different mechanisms. Criterion 4 compares against an arm that abstains on everything unrecorded. Same control domain: author separation, not independent validation. Synthetic throughout."
+}
