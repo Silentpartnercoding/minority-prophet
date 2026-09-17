@@ -131,7 +131,7 @@ could not have flipped the decision, or accept the blindness and price it. Those
 are policy, and the first of them is now written down, implemented and tested.
 
 Its cost is unmeasured, and that is the successor chapter:
-[`DRI-12-DESIGN-DRAFT.md`](../research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md)
+[`AID-1-DESIGN-DRAFT.md`](../research/attested-independence/AID-1-DESIGN-DRAFT.md)
 asks how many decisions become unanswerable when unattested witnesses stop
 counting. It is a new chapter, not unfinished evidence from this series.
 

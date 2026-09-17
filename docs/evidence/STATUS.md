@@ -149,7 +149,15 @@ Later constructed results, none canonical:
   The policy fails closed instead of converting the record's silence into
   independence, which is sound and not free. The measurement is specified and not
   run; see
-  [`DRI-12-DESIGN-DRAFT.md`](../../research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md).
+  [`AID-1-DESIGN-DRAFT.md`](../../research/attested-independence/AID-1-DESIGN-DRAFT.md),
+  the first experiment of a new series rather than a continuation of the closed
+  one. An observational census run first found that the policy's input does not
+  exist yet: of 52 claim objects across four corpora, none states a witness
+  depth, and none of five formats in which evidence crosses a boundary permits
+  stating one, because each closes its origin object to additions. The binding
+  constraint is therefore the contract rather than the policy; see
+  [`AID-1-OBS`](../../experiments/aid1/OBSERVATIONAL-REPORT.md), which is
+  observational and refuted by a single counterexample.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

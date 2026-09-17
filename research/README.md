@@ -9,7 +9,11 @@ reader-oriented overview, start with the [research map](../docs/research/README.
 - [`knowledge-ledger/`](knowledge-ledger/) — methods, conformance, findings, and
   registered experiments for the ledger program.
 - [`decision-relative-independence/`](decision-relative-independence/) — proposed
-  causal-cut primitive and constructed falsification fixtures.
+  causal-cut primitive and constructed falsification fixtures. The experiment
+  series closed 2026-09-16.
+- [`attested-independence/`](attested-independence/) — successor series, opened
+  2026-09-16: whether witnesses can be made to declare and back how far they
+  went, and what refusing to count the ones that do not actually costs.
 - [`field-evidence/`](field-evidence/) — sanitized field observations with
   bounded claims.
 - [`evidence/`](evidence/) — additional evidence material.

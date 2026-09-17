@@ -1,0 +1,49 @@
+{
+  "schema": "minority-prophet.aid1-obs-execution-config.v1",
+  "experiment": "AID-1-OBS",
+  "series": "attested-independence",
+  "status": "observational-analysis-complete",
+  "preregistered": false,
+  "preregistration_note": "The repository-wide search that established the direction of this result was run before this configuration existed, and the direction was already implied by code inspection: no producer in the estate sets the axis fields. What the census adds is the denominator, the slot finding, and a standing refutation. Do not cite it as a preregistered test.",
+  "generated_world": false,
+  "salt": null,
+  "salt_note": "There is no generator. Ground truth is what the formats and records actually contain.",
+  "question": "Who states a witness depth today, and where could one be stated at all?",
+  "censuses": {
+    "slots": "For each format in which evidence crosses a boundary: is there a field for witness depth, and is the evidence object closed to additions?",
+    "instances": "For each corpus of actual records: how many claim objects state any axis, and how many would earn an admissible depth under canon/ATTESTED-INDEPENDENCE.md?"
+  },
+  "corpora": [
+    {"id": "interop", "name": "interop memory-evidence-profile cases", "origin": "authored-fixture", "claim_objects": 18},
+    {"id": "benchmark", "name": "decision-relative independence fixtures", "origin": "authored-fixture", "claim_objects": 12},
+    {"id": "field", "name": "field-evidence claims, 2026-08-06", "origin": "derived-from-a-real-run, sanitised here", "claim_objects": 22},
+    {"id": "records", "name": "research lifecycle records", "origin": "authored-fixture", "claim_objects": 0, "note": "no claim objects: records experiments, not witnesses. Reported so that zero over zero is not mistaken for a finding."}
+  ],
+  "results": {
+    "claim_objects_examined": 52,
+    "claim_objects_stating_any_axis": 0,
+    "claim_objects_stating_legacy_basis_only": 0,
+    "claim_objects_earning_admissible_depth": 0,
+    "formats_checked": 5,
+    "formats_in_which_depth_can_be_stated": 0,
+    "signed_vendor_neutral_contract": {
+      "evidence_origin_closed_to_additions": true,
+      "independence_field": "independence_basis",
+      "independence_enum": ["attested", "declared", "inferred", "unknown"],
+      "depth_expressible": false
+    }
+  },
+  "boundaries": [
+    "A corpus this programme authored says nothing about adoption by anyone else.",
+    "One machine, one estate, one point in time. 52 claim objects is a census, not a rate.",
+    "Three of the four corpora were authored here; only the field-evidence corpus derives from a real run, and its sanitisation was done here, so it carries our vocabulary rather than the producer's.",
+    "Absence of a stated depth is absence of a statement, not evidence that the witness was shallow. The policy fails closed on it; the census claims nothing more.",
+    "Every format measured is one we publish. No external format was examined.",
+    "The control-plane ledger is out of scope: its owner-approved columns carry no observer or witness field, so it cannot answer this question either way.",
+    "This measures that the policy's input is absent. It does not measure what the policy costs, which is AID-1 and is unrun."
+  ],
+  "names_next_step": "Propose an additive, omit-if-absent depth object for the vendor-neutral authority-evidence contract, so an outside party can state and sign how far its witness went. A contract others implement is not changed here; it is proposed and waits for an owner decision.",
+  "refutation": "Exhibit one instance, in any corpus, that states a witness depth.",
+  "reproduce": "python3 experiments/aid1/measure.py",
+  "report": "experiments/aid1/OBSERVATIONAL-REPORT.md"
+}

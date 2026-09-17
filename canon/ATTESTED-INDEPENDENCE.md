@@ -2,7 +2,7 @@
 
 **Status: policy, adopted for counting that permits action on reversible
 decisions. Its cost is unmeasured and is the subject of
-`research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md`.**
+`research/attested-independence/AID-1-DESIGN-DRAFT.md`.**
 
 Implementation: `aggregation/attested_independence.py`.
 Tests: `tests/test_attested_independence.py`.

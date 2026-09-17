@@ -242,7 +242,8 @@ What follows from it is policy, not detection. The adopted one is
 absence of recorded shared ancestry stops counting as evidence of independence
 unless someone attested the record is complete, and a depth claim is granted
 only what its backing supports. Its cost is unmeasured, and measuring it is the
-successor chapter: [`DRI-12-DESIGN-DRAFT.md`](DRI-12-DESIGN-DRAFT.md).
+successor chapter, which is a **new series** rather than a twelfth experiment
+here: [`AID-1-DESIGN-DRAFT.md`](../attested-independence/AID-1-DESIGN-DRAFT.md).
 
 ## Result: DRI-11 v1, corroboration is not independence
 

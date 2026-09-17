@@ -38,7 +38,7 @@ always been worth.
 
 Doctrine, scope and the two policies not implemented here:
 `canon/ATTESTED-INDEPENDENCE.md`. Cost, unmeasured:
-`research/decision-relative-independence/DRI-12-DESIGN-DRAFT.md`.
+`research/attested-independence/AID-1-DESIGN-DRAFT.md`.
 """
 
 from __future__ import annotations
