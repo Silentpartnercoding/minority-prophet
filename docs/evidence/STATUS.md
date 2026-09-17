@@ -179,7 +179,17 @@ Later constructed results, none canonical:
   earns depth and says nothing about shared origin. See
   [`AID-2`](../../results/aid2-v1/README.md). Two of the three disclosed defects
   are implementation errors rather than properties of the bounds idea, so the
-  question is open rather than closed.
+  question is open rather than closed. A third experiment then ran the
+  adversarial review's own world — written against the pre-repair policy, and
+  open in a pull request 35 minutes before the first experiment was run, which
+  the first two records did not use. It closes one question and sharpens the
+  other: the repair demonstrably shuts the defect that world was built around,
+  and the suppression is untouched and total, with the policy settling against a
+  true contrary claim in 4,800 of 4,800 decisions at every adoption rate while
+  every other arm abstains. See [`AID-3`](../../results/aid3-v1/README.md).
+  Three worlds by three authors now agree: requiring attested depth cannot be
+  made minority-safe by tuning, because discounting witnesses who cannot prove
+  themselves is the mechanism and the harm at once.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

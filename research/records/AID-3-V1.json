@@ -1,11 +1,17 @@
 {
   "artifacts": [
-    "experiments/aid3run/PREREGISTRATION.md"
+    "experiments/aid3run/PREREGISTRATION.md",
+    "results/aid3-v1/result.json",
+    "results/aid3-v1/canonical-manifest.json"
   ],
   "authorityEffect": "none",
   "id": "AID-3-V1",
   "independenceClaims": [],
-  "manifest": null,
+  "manifest": {
+    "commit": "48e40cdfe442f1e9017f6c44c8ec9b30a9f99c6e",
+    "path": "results/aid3-v1/canonical-manifest.json",
+    "sha256": "e4656afacb331bbd63a7d88360f47fed0487c41682a42e3720c632a56ff8785e"
+  },
   "origin": {
     "controlRelationship": "same-control-domain",
     "mode": "repository-native",
@@ -17,8 +23,12 @@
     "path": "experiments/aid3run/PREREGISTRATION.md",
     "sha256": "174afec11039c8297446a37f8388f835f36bec464a4d62eda36117e89dbb714c"
   },
-  "result": null,
+  "result": {
+    "commit": "48e40cdfe442f1e9017f6c44c8ec9b30a9f99c6e",
+    "path": "results/aid3-v1/result.json",
+    "sha256": "bf31b3c4abedf5fc7d46c816490c91edbfdef4250730007b819ae9f80296f94e"
+  },
   "schema": "minority-prophet.research-record.v1",
-  "stage": "candidate",
-  "verdict": null
+  "stage": "canonical",
+  "verdict": "rejected"
 }

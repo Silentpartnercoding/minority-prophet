@@ -81,6 +81,35 @@ directly measurable.
   a successor that fixes the upper bound and reads all four corners of the count
   box is a different instrument and must be separately registered.
 
+- **AID-3 — the reviewer's world, against the repaired policy. Run, and
+  rejected**, 17 of 23 checks.
+  [`AID-3-REGISTRATION-NOTE.md`](AID-3-REGISTRATION-NOTE.md) lists every edit
+  made to the reviewer's submission;
+  [`experiments/aid3run/PREREGISTRATION.md`](../../experiments/aid3run/PREREGISTRATION.md)
+  is their world, relocated unchanged in substance; the result is
+  [`results/aid3-v1/`](../../results/aid3-v1/README.md).
+
+  **Why it exists.** AID-1 and AID-2 were run against worlds written by
+  subagents the policy's author spawned, while the adversarial review's world sat
+  open, frozen and green in PR #214 — opened 35 minutes before AID-1 ran. Both
+  records carry "same control domain; not independent validation", and that line
+  was carrying more weight than it should.
+
+  **The repair works where it was aimed.** The review built three families around
+  the completeness short-circuit. Their own construction test asserted two
+  unbacked witnesses ticking the box are granted independence; it now asserts the
+  opposite and passes.
+
+  **The suppression is untouched, and total.** 4,800 of 4,800 decisions settled
+  against the true contrary claim, at **every** adoption rate, where the ladder,
+  the theatre arm and the refusal arm all abstain and the claim survives. AID-1
+  saw 720 of 720 at full adoption only. It is rate-independent because the
+  asymmetry is not about completeness: the false side has backing, the true side
+  can never obtain any, and deflating the unattested is what the policy does.
+
+  Three worlds, three authors, one verdict: the counting rule cannot be made
+  minority-safe by repair, because the harm is the mechanism.
+
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).
