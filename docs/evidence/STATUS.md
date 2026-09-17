@@ -134,10 +134,12 @@ Later constructed results, none canonical:
   rejected it on 12 of 40 checks: a mark is not dependence. It collapsed a shared
   library carrying no shared error, lost correct settlements wherever marks leaked,
   and prevented nothing where the dependence carried no mark; see
-  [`DRI-10`](../../results/dri10-v1/README.md). DRI-11 is frozen and unrun:
-  refusal named first, two-signal composite second, world written by the
-  review and able to fail both (trio, fragile-correct, shared shock); see
-  [`experiments/dri11/PREREGISTRATION.md`](../../experiments/dri11/PREREGISTRATION.md).
+  [`DRI-10`](../../results/dri10-v1/README.md). DRI-11 named two rules before the
+  reviewer's world existed and rejected both, 66 of 134: refusal is blind to trios
+  (0 of 925-961 prevented) and refused all 2,400 decisions in a family the baseline
+  settles correctly, while one shock satisfied both signals a corroboration rule
+  requires (342-439 false merges, zero true); see
+  [`DRI-11`](../../results/dri11-v1/README.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
