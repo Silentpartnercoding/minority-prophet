@@ -3,10 +3,15 @@
   "note": "Illustrative vectors for the requirements in the draft. Not a conformance suite and not a claim about any protocol. Each vector pairs a check that cannot distinguish its populations with one that can; the pair is the evidence, not either half.",
   "schema": "verifier-evidence.vectors.v1",
   "sourceDigests": {
-    "vectors.py": "1d7c7c92cf423eafc171d485cf3a5c2a0aaa0a7a7658a5b95fd6d430408af460"
+    "vectors.py": "2fc41ab0499f6e7165cd950ccc559ca6e39fc3a8841f82428b7ba0ee9cfeb21b"
   },
   "vectors": [
     {
+      "expectationsDeclaredBeforeRun": true,
+      "expectedOutcomes": {
+        "defectAbsent": "accept",
+        "defectPresent": "reject"
+      },
       "fieldsRead": {
         "narrow": [
           "a",
@@ -72,6 +77,11 @@
         "status": "implemented"
       },
       "declaredMinimum": 1,
+      "expectationsDeclaredBeforeRun": true,
+      "expectedOutcomes": {
+        "propertyAbsent": "reject",
+        "propertyPresent": "accept"
+      },
       "id": "V2",
       "name": "constant probe"
     },

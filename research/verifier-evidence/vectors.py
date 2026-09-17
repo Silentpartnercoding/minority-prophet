@@ -43,8 +43,18 @@ def exercise_status(outcomes_positive, outcomes_negative) -> str:
 BASELINE = {"a": 1, "b": 2, "c": 3, "d": 4}
 
 # The defect is a divergence in field "d". The narrow check never reads it.
-V1_POSITIVE = [{"a": 1, "b": 2, "c": 3, "d": 99}, {"a": 1, "b": 2, "c": 3, "d": 77}]
-V1_NEGATIVE = [{"a": 1, "b": 2, "c": 3, "d": 4}, {"a": 1, "b": 2, "c": 3, "d": 4}]
+#
+# EXR-1 requires the expected outcome on each half of a discriminating pair to be
+# stated before the check runs, and warns that it is NOT implied by the labels.
+# This check asserts that the record matches the baseline, so it is the population
+# WITH the defect that must reject. Naming that here rather than leaving it to the
+# word "positive" is the point of the requirement.
+V1_DEFECT_PRESENT = [{"a": 1, "b": 2, "c": 3, "d": 99}, {"a": 1, "b": 2, "c": 3, "d": 77}]
+V1_DEFECT_ABSENT = [{"a": 1, "b": 2, "c": 3, "d": 4}, {"a": 1, "b": 2, "c": 3, "d": 4}]
+V1_EXPECTED = {"defectPresent": REJECT, "defectAbsent": ACCEPT}
+
+# Back-compat aliases; the pair is what matters, not which half is called positive.
+V1_POSITIVE, V1_NEGATIVE = V1_DEFECT_PRESENT, V1_DEFECT_ABSENT
 
 NARROW_FIELDS = ("a", "b")
 FULL_FIELDS = ("a", "b", "c", "d")
@@ -62,6 +72,8 @@ def v1():
     return {
         "id": "V1",
         "name": "check comparing too little",
+        "expectedOutcomes": dict(V1_EXPECTED),
+        "expectationsDeclaredBeforeRun": True,
         "fieldsRead": {"narrow": list(NARROW_FIELDS), "sound": list(FULL_FIELDS)},
         "narrow": {
             "positive": narrow_pos,
@@ -81,8 +93,14 @@ def v1():
 # --------------------------------------------------------------------------
 
 DECLARED_MINIMUM = 1
-V2_POSITIVE = ["marker", "marker", "marker", "marker", "marker"]
-V2_NEGATIVE: list[str] = []
+# This probe asserts that the property is PRESENT at or above a minimum, so the
+# population lacking it is the one that must reject. Opposite polarity to V1, and
+# stated for the same reason.
+V2_PROPERTY_PRESENT = ["marker", "marker", "marker", "marker", "marker"]
+V2_PROPERTY_ABSENT: list[str] = []
+V2_EXPECTED = {"propertyPresent": ACCEPT, "propertyAbsent": REJECT}
+
+V2_POSITIVE, V2_NEGATIVE = V2_PROPERTY_PRESENT, V2_PROPERTY_ABSENT
 
 
 def probe_constant(_population) -> int:
@@ -104,6 +122,8 @@ def v2():
     return {
         "id": "V2",
         "name": "constant probe",
+        "expectedOutcomes": dict(V2_EXPECTED),
+        "expectationsDeclaredBeforeRun": True,
         "declaredMinimum": DECLARED_MINIMUM,
         "constant": {
             "positive": [meets(const_pos)],

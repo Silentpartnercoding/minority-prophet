@@ -116,6 +116,43 @@ class V4Tests(unittest.TestCase):
         self.assertTrue(vec.v4()["allDisclosedSignaturesValid"])
 
 
+class PolarityTests(unittest.TestCase):
+    """EXR-1 requires the expected outcome on each half of a discriminating pair
+    to be declared before the run, and warns it is not implied by the labels.
+
+    These two vectors declare OPPOSITE polarity, which is why. V1 checks that a
+    defect is absent, so the population carrying the defect must reject. V2 checks
+    that a property is present, so the population lacking it must reject. A reader
+    who assumed "positive population always accepts" would get one of them
+    backwards.
+    """
+
+    def test_v1_rejects_where_the_defect_is_present(self):
+        self.assertEqual(vec.V1_EXPECTED["defectPresent"], vec.REJECT)
+        self.assertEqual(vec.V1_EXPECTED["defectAbsent"], vec.ACCEPT)
+
+    def test_v2_rejects_where_the_property_is_absent(self):
+        self.assertEqual(vec.V2_EXPECTED["propertyAbsent"], vec.REJECT)
+        self.assertEqual(vec.V2_EXPECTED["propertyPresent"], vec.ACCEPT)
+
+    def test_the_two_vectors_are_opposite(self):
+        """Flip: make both vectors assert the same direction. Then the draft's
+        warning would have no worked example behind it."""
+        self.assertNotEqual(vec.V1_EXPECTED["defectPresent"],
+                            vec.V2_EXPECTED["propertyPresent"])
+
+    def test_sound_checks_match_their_declared_expectations(self):
+        r1, r2 = vec.v1(), vec.v2()
+        self.assertEqual(set(r1["sound"]["positive"]), {vec.V1_EXPECTED["defectPresent"]})
+        self.assertEqual(set(r1["sound"]["negativeControl"]), {vec.V1_EXPECTED["defectAbsent"]})
+        self.assertEqual(set(r2["counting"]["positive"]), {vec.V2_EXPECTED["propertyPresent"]})
+        self.assertEqual(set(r2["counting"]["negativeControl"]), {vec.V2_EXPECTED["propertyAbsent"]})
+
+    def test_expectations_are_recorded_as_declared_in_advance(self):
+        self.assertTrue(vec.v1()["expectationsDeclaredBeforeRun"])
+        self.assertTrue(vec.v2()["expectationsDeclaredBeforeRun"])
+
+
 class V3Tests(unittest.TestCase):
     """V3 reads the frozen KL-005 artifact rather than recomputing it."""
 
