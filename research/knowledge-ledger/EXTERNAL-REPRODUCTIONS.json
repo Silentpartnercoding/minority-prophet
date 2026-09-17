@@ -1,0 +1,82 @@
+{
+  "schema": "minority-prophet.external-reproductions.v1",
+  "note": "Every independent external reproduction obtained anywhere in this estate, in one place. This file transfers no claim and advances no experiment. A reproduction is admissible for the exact artifact it measured and for nothing adjacent to it; see each entry's doesNotDischarge. Checked by scripts/check_external_reproductions.py.",
+  "whyThisFileExists": "KL-011/EXTERNAL-EVIDENCE.md recorded a stale-self-description instance that, for the first time, spanned repositories: a 2026-09-02 independent execution was thirteen days old and invisible from the experiment whose gate it bore on. That record's own finding was 'No such review spans repositories, so this one was caught by the owner's memory instead.' This index is that review. It does not detect a reproduction nobody has entered; it makes the ones we know about fail loudly instead of rotting quietly.",
+  "strengths": {
+    "implementation-independent": "A different operator ran a different implementation against the frozen artifact and reached the same result, with the reference row not used to fill their observation gaps.",
+    "rerun-only": "An external party re-ran this side's own code at a frozen revision. Reproducible, but not a second implementation.",
+    "review-only": "An external party reviewed and corrected the artifact without executing it."
+  },
+  "independenceVocabulary": {
+    "control-domain-independence": "Whether the reproducer is organizationally independent of this side. 'not-established' is the honest default and is never upgraded by a reproduction alone."
+  },
+  "reproductions": [
+    {
+      "id": "songbo-bu:aip-matrix-fit-002",
+      "reproducer": "Songbo Bu",
+      "date": "2026-08-23",
+      "strength": "rerun-only",
+      "controlDomainIndependence": "not-established",
+      "artifactRepository": "Silentpartnercoding/agent-security-verifier-matrix",
+      "artifact": "AIP-MATRIX-FIT-002 v0.2.0",
+      "pin": {
+        "tag": "aip-matrix-fit-002-v0.2.0",
+        "commit": "373792ecc415374a8d92893d386dc400287ff71b",
+        "resultSha256": "63a567f248fb28e5247270ce4241708acecc7139dac2a18ecfbcf0d1ce36bd42"
+      },
+      "detailRecord": "registry/records/songbo-bu-2026-08-23.external-reproduction.json",
+      "detailRecordRepository": "Silentpartnercoding/agent-security-verifier-matrix",
+      "establishes": "Reproducibility of the frozen evaluator, mapping, cases, and source pins: 25 tests, 6 pinned sources byte-and-hash verified, regenerated JSON byte-for-byte identical, and a fail-closed source-tamper control.",
+      "doesNotDischarge": "Any knowledge-ledger or Minority Prophet gate. Different artifact, different corpus, different question. It also does not establish AIP implementation conformance, independent verifier diversity, network interoperability, deployment security, or working-group agreement, and it is a rerun of this side's code rather than a second implementation.",
+      "citedExternallyBy": [
+        {
+          "document": "draft-bu-agentproto-security-principal-binding-07",
+          "section": "32",
+          "uri": "https://www.ietf.org/archive/id/draft-bu-agentproto-security-principal-binding-07.txt",
+          "sha256": "b24e4b10a181f820a931cee213a5857085d5519f8ef9d9292dd99a32ff3ee716",
+          "note": "Cites the tag, commit, and result hash. Does not acknowledge this repository or its maintainer; correspondence, not causation."
+        }
+      ],
+      "lastReconciled": "2026-09-16"
+    },
+    {
+      "id": "songbo-bu:agtp-matrix-fit-001",
+      "reproducer": "Songbo Bu",
+      "date": "2026-08-26",
+      "strength": "review-only",
+      "controlDomainIndependence": "not-established",
+      "artifactRepository": "Silentpartnercoding/agent-security-verifier-matrix",
+      "artifact": "AGTP-MATRIX-FIT-001 v0.1.0",
+      "pin": {
+        "tag": "agtp-matrix-fit-001-v0.1.0",
+        "commit": "18e26cae7880cd5044d2e917b1b76427388c6b58",
+        "correctionTag": "agtp-matrix-fit-002-v0.2.0",
+        "correctionCommit": "423df0b854be911fe80587a6e016c847834737e7"
+      },
+      "detailRecord": "registry/records/songbo-bu-2026-08-26.agtp-external-reproduction.json",
+      "detailRecordRepository": "Silentpartnercoding/agent-security-verifier-matrix",
+      "establishes": "A second protocol mapping was reviewed and corrected by the same external party, and the correction release is independently pinned.",
+      "doesNotDischarge": "Any knowledge-ledger gate. It is also not a second reproducer: the same party performed both this and the AIP review, so the two entries are not independent of each other.",
+      "lastReconciled": "2026-09-16"
+    },
+    {
+      "id": "handoffprobe:border-a2a-mcp-crossing-v2",
+      "reproducer": "Heaviside479 (handoffprobe)",
+      "date": "2026-09-02",
+      "strength": "implementation-independent",
+      "controlDomainIndependence": "not-established",
+      "artifactRepository": "minority-prophet-border",
+      "artifact": "Border A2A-MCP crossing, frozen 28-case v2 package",
+      "pin": {
+        "mergeCommit": "09aca453f9d5e5552e4ed2cfbda2ed0b22e4d51a",
+        "corpusSha256": "f7a72b5c1c0473080aff468d1af6b0500d035d6a00ebbfce1d2499a0897534fb",
+        "externalPullRequest": "Heaviside479/handoffprobe#20"
+      },
+      "detailRecord": "research/knowledge-ledger/experiments/KL-011/EXTERNAL-EVIDENCE.md",
+      "detailRecordRepository": "minority-prophet",
+      "establishes": "A different operator on a different stack (@a2a-js/sdk 1.1.0, MCP TypeScript SDK 2.0.0) executed all 28 cases in corpus order with 58 attempt-level evidence records and an effect recorder outside the verifier, stating that no reference-fixture observed row was used to fill observation gaps. The grade was withheld on first submission until issuer-authenticated authority artifacts were supplied.",
+      "doesNotDischarge": "KL-011's remaining gate. No independent party has read a KL-011 receipt; this measured Border crossing cases, a different corpus. The key material is fixed RFC 8032 test-fixture material, so this is conformance evidence rather than a production credential setup, and green_eligible applies to that frozen profile only.",
+      "lastReconciled": "2026-09-16"
+    }
+  ]
+}

@@ -112,3 +112,26 @@ one was caught by the owner's memory instead.
 
 The fix is the same as every prior instance: records name their evidence, and
 reviews re-derive rather than re-read. The scope is what is new.
+
+## The cross-repository review this finding asked for
+
+Added 2026-09-16. The finding above ends: *"No such review spans repositories,
+so this one was caught by the owner's memory instead."* That review now exists as
+`research/knowledge-ledger/EXTERNAL-REPRODUCTIONS.json`, checked by
+`scripts/check_external_reproductions.py`.
+
+It indexes every independent external reproduction obtained anywhere in the
+estate — this one, and the two Songbo Bu reruns in
+`Silentpartnercoding/agent-security-verifier-matrix`, which until now were
+recorded in a different repository with no link in either direction. Each entry
+carries its pin, what it establishes, and what it does **not** discharge.
+
+What it does not do, stated here so the entry above is not read as more than it
+is: the check cannot discover a reproduction nobody entered. It is an index
+checker, not a crawler. Its cadence rule fails the build when an entry has not
+been re-derived within thirty days, which is the mechanism aimed at the specific
+failure recorded here — a result that was thirteen days old and invisible.
+Enforcing re-derivation is not the same as detecting the next one automatically.
+
+**KL-011's state is still unchanged by all of this.** The gate still requires an
+independent party to read a KL-011 receipt.
