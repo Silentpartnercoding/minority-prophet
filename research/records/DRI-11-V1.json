@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    "experiments/dri11/PREREGISTRATION.md",
+    "results/dri11-v1/result.json",
+    "results/dri11-v1/canonical-manifest.json"
+  ],
+  "authorityEffect": "none",
+  "id": "DRI-11-V1",
+  "independenceClaims": [],
+  "manifest": {
+    "commit": "bf802125a498820b5ca4d0c3ea5c28e47aa00c5f",
+    "path": "results/dri11-v1/canonical-manifest.json",
+    "sha256": "fe7e3f0f8080503b088bed1b13da008b2e13cf2062cb9c1776a37a3d6e353ad0"
+  },
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": {
+    "commit": "26e037f104b3f73d73ccd5921f0e4c430bb111e3",
+    "path": "experiments/dri11/PREREGISTRATION.md",
+    "sha256": "aa020bf7f69571487475a43e16bfa176c9e16d099e6e88b6afcffc81d22d10ba"
+  },
+  "result": {
+    "commit": "bf802125a498820b5ca4d0c3ea5c28e47aa00c5f",
+    "path": "results/dri11-v1/result.json",
+    "sha256": "dcea2a7d43507f367eaaa43489b76d5f05685c997c8617e26f8ac671836d5c04"
+  },
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "canonical",
+  "verdict": "rejected"
+}

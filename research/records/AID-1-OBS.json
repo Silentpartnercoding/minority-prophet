@@ -1,0 +1,22 @@
+{
+  "artifacts": [
+    "experiments/aid1/OBSERVATIONAL-REPORT.md",
+    "experiments/aid1/EXECUTION-CONFIG.json",
+    "experiments/aid1/measure.py"
+  ],
+  "authorityEffect": "none",
+  "id": "AID-1-OBS",
+  "independenceClaims": [],
+  "manifest": null,
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": null,
+  "result": null,
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "exploratory",
+  "verdict": null
+}

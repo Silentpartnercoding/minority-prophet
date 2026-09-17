@@ -1,0 +1,32 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-10",
+  "status": "canonical-adversarial-world-rejected",
+  "files": {
+    "experiments/dri10/PREREGISTRATION.md": "bae5e3fa1293fe423388f343a0c87c12193d0e4c50a7a1a7c721d931ad2d94f1",
+    "experiments/dri10/EXECUTION-CONFIG.json": "ce86c43871278fc2889d129b66aa9929ac9c7bf23f9c6101984d981b9c103b50",
+    "experiments/dri10/world.py": "ee8b3593c72d0874ea2019d043110e35daa7c3359dd0c50081aea66f46eaa988",
+    "experiments/dri10/arms.py": "c3a8d03fbeaaa548e9716ae6a8c95d930d6a5f23aca490f4726551d334620f80",
+    "experiments/dri10/scoring.py": "37cadab302e7ffaa3e38fc18fa77134ca09e23aa50e0f10963e3c663d58cf539",
+    "experiments/dri10/run_confirmatory.py": "81f30a6d3cb00ba850106474a280b0540dbdd4d800996abf3c9680829873ffa9",
+    "tests/test_dri10_protocol.py": "1effe4322e7d906d8b2dd2cf4c391e2991b746cc6bbb883473575a0b7a27afe1",
+    "results/dri10-v1/README.md": "d0c661c9480589721ec1c47c3b65d3d51d060f28712fb11ad5bc828ab2133288",
+    "results/dri10-v1/result.json": "094c0f14a6723d1d4c1151d63bbd0363dba69218c30444f1f78ccbde46f924ea",
+    "results/dri10-v1/run-stdout.txt": "ff463a2c131d246225c4ffbd8f4fab717f9ba069633a9c85dcf2a6b127d84bfd",
+    "results/dri10-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "recordNote": "research/records/DRI-10-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "semanticIdentical": true,
+    "semanticResultSha256": "4848b9c24dd1654ee4ae052f0053eaf580a3790493b8e349e025400e25e65464",
+    "command": "PYTHONPATH=. python -m experiments.dri10.run_confirmatory --output results/dri10-v1/result.json",
+    "environment": {
+      "commit": "cb2a290ba74ae6b51cafa3ad4109ce21a28753a5",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic campaigns on a world written by an adversarial review of DRI-9, not by the instrument's author. Bait was named before the run and failed: it believed a shared library was a shared source in all four common_carrier cells, cutting correct settlements from 2,830-2,866 to 1,389-2,194 with zero true merges, and prevented nothing where dependence carried no mark. No arm passes this criterion; the per-arm table in the write-up is counterfactual relabelling, not a verdict. Reversible decisions only; no real-world rates; same control domain; no authority claim."
+}

@@ -80,3 +80,123 @@ class AuthorityEvidenceContractTests(unittest.TestCase):
         record = copy.deepcopy(valid_envelope())
         record["receipt"]["evidence_origin"]["origin_type"] = "unknown"
         self.assertIn("unknown origin cannot claim independence", validate(record))
+
+
+def v2_envelope(**axes):
+    """A v0.2 envelope: v0.1 plus whatever witness axes the caller states."""
+    record = copy.deepcopy(valid_envelope())
+    record["schema_version"] = "0.2"
+    record["receipt"]["evidence_origin"].update(axes)
+    return record
+
+
+class WitnessAxesTests(unittest.TestCase):
+    """v0.2 gives a producer somewhere to say how far its witness went.
+
+    The census in `experiments/aid1/` found no published format had such a
+    field, so nobody could state one even if they wanted to. These tests pin
+    what the field accepts and what it refuses.
+    """
+
+    def test_a_stated_eyewitness_is_valid(self):
+        self.assertEqual(validate(v2_envelope(
+            witness_depth="reality", depth_basis="device-attested",
+            witness_identity="verified", attestation="independent")), [])
+
+    def test_v2_without_axes_is_exactly_v1(self):
+        """Omit-if-absent: the addition costs a silent producer nothing."""
+        self.assertEqual(validate(v2_envelope()), [])
+        plain = copy.deepcopy(valid_envelope())
+        self.assertEqual(validate(plain), [])
+        self.assertEqual(plain["receipt"]["action_digest"],
+                         v2_envelope()["receipt"]["action_digest"])
+
+    def test_v1_may_not_carry_the_new_fields(self):
+        """Fail closed: a v0.1 consumer does not know to read these, so a
+        producer must not believe it has said something nobody receives."""
+        record = copy.deepcopy(valid_envelope())
+        record["receipt"]["evidence_origin"]["witness_depth"] = "reality"
+        self.assertIn("schema_version 0.1 cannot carry witness axes",
+                      validate(record))
+
+    def test_unknown_values_are_refused_not_coerced(self):
+        for field, bogus in (("witness_depth", "very-deep"),
+                             ("depth_basis", "vibes"),
+                             ("witness_identity", "famous"),
+                             ("attestation", "enthusiastic")):
+            self.assertIn(f"unrecognised {field}",
+                          validate(v2_envelope(**{field: bogus})))
+
+    def test_a_copy_cannot_claim_to_have_reached_the_world(self):
+        record = v2_envelope(witness_depth="reality")
+        record["receipt"]["evidence_origin"].update(
+            origin_type="copied", root_id="root-1", parent_roots=["root-1"])
+        self.assertIn("copied evidence cannot claim to have reached the world",
+                      validate(record))
+
+    def test_a_copy_may_still_say_it_re_read_the_text(self):
+        record = v2_envelope(witness_depth="text")
+        record["receipt"]["evidence_origin"].update(
+            origin_type="copied", root_id="root-1", parent_roots=["root-1"])
+        self.assertEqual(validate(record), [])
+
+    def test_unknown_independence_cannot_carry_a_testament(self):
+        record = v2_envelope(attestation="independent")
+        record["receipt"]["evidence_origin"].update(
+            origin_type="unknown", independence_basis="unknown")
+        self.assertIn("unknown independence cannot carry a testament",
+                      validate(record))
+
+    def test_unstated_is_a_statement_that_nothing_was_stated(self):
+        self.assertEqual(validate(v2_envelope(witness_depth="unstated")), [])
+
+
+class VocabularyDoesNotDriftTests(unittest.TestCase):
+    """Three copies of one vocabulary. A silent drift is worse than no sharing."""
+
+    def test_checker_matches_the_aggregator(self):
+        from aggregation.independence_axes import (
+            ATTESTATION_WIRE, DEPTH_BASIS_WIRE, DEPTH_WIRE, IDENTITY_WIRE,
+        )
+        from conformance.authority_evidence import WITNESS_AXES
+
+        for field, wire in (("witness_depth", DEPTH_WIRE),
+                            ("depth_basis", DEPTH_BASIS_WIRE),
+                            ("witness_identity", IDENTITY_WIRE),
+                            ("attestation", ATTESTATION_WIRE)):
+            self.assertEqual(set(WITNESS_AXES[field]), set(wire.values()), field)
+
+    def test_schema_matches_the_checker(self):
+        import json
+        from pathlib import Path
+
+        from conformance.authority_evidence import WITNESS_AXES
+
+        schema = json.loads(
+            (Path(__file__).resolve().parents[1]
+             / "contracts/authority-evidence-v0.2/schema.json").read_text())
+        origin = (schema["$defs"]["receipt"]["properties"]
+                  ["evidence_origin"]["properties"])
+        for field, values in WITNESS_AXES.items():
+            self.assertEqual(origin[field]["enum"], list(values), field)
+
+    def test_v2_is_v1_plus_exactly_the_four_axes(self):
+        import json
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[1] / "contracts"
+        v1 = json.loads((root / "authority-evidence-v0.1/schema.json").read_text())
+        v2 = json.loads((root / "authority-evidence-v0.2/schema.json").read_text())
+
+        def origin(schema):
+            return (schema["$defs"]["receipt"]["properties"]
+                    ["evidence_origin"]["properties"])
+
+        self.assertEqual(set(origin(v2)) - set(origin(v1)), {
+            "witness_depth", "depth_basis", "witness_identity", "attestation"})
+        self.assertEqual(set(origin(v1)) - set(origin(v2)), set())
+        for field, definition in origin(v1).items():
+            self.assertEqual(origin(v2)[field], definition, field)
+        v1_required = v1["$defs"]["receipt"]["properties"]["evidence_origin"]["required"]
+        v2_required = v2["$defs"]["receipt"]["properties"]["evidence_origin"]["required"]
+        self.assertEqual(v1_required, v2_required, "no new field may be required")

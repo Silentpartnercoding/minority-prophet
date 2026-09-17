@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    "experiments/aid1run/PREREGISTRATION.md",
+    "results/aid1-v1/result.json",
+    "results/aid1-v1/canonical-manifest.json"
+  ],
+  "authorityEffect": "none",
+  "id": "AID-1-V1",
+  "independenceClaims": [],
+  "manifest": {
+    "commit": "86cab9cca58b5d0561348755f587be648eb950e0",
+    "path": "results/aid1-v1/canonical-manifest.json",
+    "sha256": "f0c4cf3e4772471b741c8e255ac482c0bd580b10d6649fc573fba7147b8ee9ad"
+  },
+  "origin": {
+    "controlRelationship": "same-control-domain",
+    "mode": "repository-native",
+    "sourceCommit": null,
+    "sourceRepository": null
+  },
+  "protocol": {
+    "commit": "ee88928e4ae70f1aea5969a910336795fb960da5",
+    "path": "experiments/aid1run/PREREGISTRATION.md",
+    "sha256": "e138bf6f803174c1dde9911af54f675e7f98fce4808fdbab37529873a787f0cd"
+  },
+  "result": {
+    "commit": "86cab9cca58b5d0561348755f587be648eb950e0",
+    "path": "results/aid1-v1/result.json",
+    "sha256": "9ef4fcc4b8e58ce8216b64d0cc3a922ee341bb92274e4f41ecbfa38b197156fc"
+  },
+  "schema": "minority-prophet.research-record.v1",
+  "stage": "canonical",
+  "verdict": "rejected"
+}

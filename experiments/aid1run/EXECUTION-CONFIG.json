@@ -1,0 +1,58 @@
+{
+  "schema": "minority-prophet.aid1run-execution-config.v1",
+  "experiment": "AID-1",
+  "series": "attested-independence",
+  "status": "preregistered-unexecuted",
+  "confirmatory_salt": "minority-prophet-aid1-v1-confirmatory",
+  "development_salt": "minority-prophet-aid1-development",
+  "families": [
+    "nobody_can_attest",
+    "adversary_attests_freely",
+    "hidden_shared_source",
+    "baseline_already_right",
+    "minority_suppression",
+    "mixed_attestation"
+  ],
+  "campaigns_per_variant": 60,
+  "decisions_per_campaign": 12,
+  "adoption_rates": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "error_classes": ["FABRICATION", "INSTRUMENT", "TRANSCRIPTION"],
+  "decision_classes": {
+    "low_reversible": 2,
+    "high_irreversible": 3
+  },
+  "unit_fault_rates": {
+    "hidden:source": 0.5,
+    "hidden:mixed": 0.5,
+    "recorded:pair": 0.4
+  },
+  "unfindable_witnesses": 5,
+  "unfindable_accuracy": 0.9,
+  "adversary_group_size": 3,
+  "adversary_honest_witnesses": 2,
+  "honest_accuracy": 0.95,
+  "hidden_group_size": 4,
+  "hidden_independents": 3,
+  "independent_accuracy": 0.85,
+  "already_right_witnesses": 3,
+  "majority_size": 3,
+  "minority_size": 3,
+  "counting_budget": 2000000,
+  "familywise_alpha": 0.05,
+  "success_criterion": {
+    "policy_arm": "attested",
+    "baseline_arm": "ladder",
+    "theatre_arm": "attested_declared_only",
+    "refusal_arm": "refuse_all_unrecorded",
+    "hidden_source_family": "hidden_shared_source",
+    "freely_attesting_family": "adversary_attests_freely",
+    "minority_family": "minority_suppression",
+    "prevented_share": 0.40,
+    "minimum_critical_silent_for_test": 12,
+    "cost_bound_alpha": 1.0,
+    "theatre_margin": 0.10,
+    "scope": "reversible"
+  },
+  "decision_scope": "reversible",
+  "world_note": "Policy and criteria named in research/attested-independence/AID-1-DESIGN-DRAFT.md before this world existed. The world was written by someone other than the author of the policy, and every family in section 5 is present. The adoption curve is reported and is not a criterion."
+}

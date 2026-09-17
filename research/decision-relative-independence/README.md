@@ -191,6 +191,144 @@ Refuted by exhibiting a single record that record-only rejects. Full write-up:
 [`research/records/DRI-7-V1.json`](../records/DRI-7-V1.json). Rerun:
 `python3 experiments/dri7/measure.py`.
 
+## Result: DRI-9 v1, belief that acts, and a favourite that lost
+
+DRI-8's arms could discover a shared source and then not act on it: a learned
+merge was one identity among six cuts and was outvoted by the five describing the
+disguise. DRI-9 makes belief override the record's identities at every cut, and
+asks which instrument earns that belief. Criterion on reversible decisions, by
+owner decision. **Rejected**, 58 of 65.
+
+- **The named method lost.** The ladder, which required two signals to agree,
+  cleared its 25% effect floor in **1 of 8** powered cells. It was the most precise
+  arm — 0 to 6 false merges, not one correct settlement lost — and the least
+  useful. Combining weak signals cost more than it bought.
+- **The simplest instrument won inside a world built for it.** Bait — plant a
+  marker upstream, see who carries it — cleared the floor in **8 of 8** at
+  34–77%, scaling with pickup rate, and raised correct settlements in the trio
+  family from 1,273 to 1,622. It is a reported arm. The decoy planted no
+  markers, so the harm clause did not test it. Naming it on that generator
+  and rerunning is not the next experiment; DRI-10 is.
+- **Prevention alone is not a measure.** Reflection cleared the floor while making
+  6,497–8,782 false merges per cell and collapsing correct settlements from 3,000
+  to about 1,300 in the decoy family.
+- **Refusing is blind to trios.** Fragile refusal prevented half the pair family's
+  errors and exactly none in the trio, because it tests pairs.
+
+A dated post-result note corrects three claims made around this result: the decoy
+family planted no markers, so bait's "no harm" there was not a test; the
+margin-critical filter was an identity in all eight cells; and relabelling the
+same result as bait returns 65/65, which is why a successor must not simply
+rename the method on this generator. The verdict is unchanged. See
+[`POST-RESULT-NOTE.md`](../../results/dri9-v1/POST-RESULT-NOTE.md).
+
+Full record: [`results/dri9-v1/`](../../results/dri9-v1/README.md),
+[`research/records/DRI-9-V1.json`](../records/DRI-9-V1.json). Design:
+[`DRI-9-DESIGN-DRAFT.md`](DRI-9-DESIGN-DRAFT.md). Adversary note on the
+proposed sequel: [`#204`](https://github.com/Silentpartnercoding/minority-prophet/pull/204).
+
+## Series closed
+
+DRI-1A through DRI-11 are complete, and the series closes on an answer rather
+than on exhaustion: no rule reading the record can separate independent evidence
+from dependence the record does not carry (ledger DR3), and five distinct
+classes of observable — content, probes, marks, co-error, fragility — each
+failed to substitute for the missing record. Result chain, defensible
+conclusion, refutations, and what remains open:
+[`experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md`](../../experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md).
+
+What follows from it is policy, not detection. The adopted one is
+[`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md):
+absence of recorded shared ancestry stops counting as evidence of independence
+unless someone attested the record is complete, and a depth claim is granted
+only what its backing supports. Its cost is unmeasured, and measuring it is the
+successor chapter, which is a **new series** rather than a twelfth experiment
+here: [`AID-1-DESIGN-DRAFT.md`](../attested-independence/AID-1-DESIGN-DRAFT.md).
+
+## Result: DRI-11 v1, corroboration is not independence
+
+Both methods were named before the world existed, and the world was written by
+the adversarial review rather than by the author of the methods. **Rejected**,
+66 of 134 checks: `fragile_refusal` (primary) on 38, `composite` (secondary) on
+30.
+
+- **Refusal is blind where it must see.** It prevented **0** of 925–961 critical
+  errors in every `unmarked_hidden_trio` cell, because it quantifies over pairs.
+  DRI-9 had already measured that zero; DRI-10 contained no trio, and refusal was
+  named primary on the strength of DRI-10. That selection error is the author's
+  and is disclosed in the result.
+- **And ruinous where it must not act.** In `fragile_correct` it refused **all
+  2,400** reversible decisions and settled none, against a baseline that got all
+  2,400 right. Refusal fires on fragility alone, which says nothing about shared
+  origin.
+- **One shock satisfied both of the composite's signals**: 342–439 false merges
+  per cell in `shared_shock` with **zero** true ones, and it never beat refusal
+  on cost anywhere, which was its entire justification.
+- **Behaviour does not separate a shared source from a shared shock.** Joint-error
+  rates were 0.38–0.42 for the genuinely dependent pairs and **0.58** for the
+  independent shocked pair: the innocents failed together more than the dependent.
+
+Full record: [`results/dri11-v1/`](../../results/dri11-v1/README.md),
+[`research/records/DRI-11-V1.json`](../records/DRI-11-V1.json). Protocol:
+[`experiments/dri11/PREREGISTRATION.md`](../../experiments/dri11/PREREGISTRATION.md).
+Specification that named both methods first:
+[`DRI-11-DESIGN-DRAFT.md`](DRI-11-DESIGN-DRAFT.md).
+
+## Result: DRI-10 v1, a mark is not dependence
+
+DRI-9's bait story was measured on a world where the marked component *was* the
+hidden component and the decoy emitted no markers. DRI-10, written by the
+adversarial review, separates the error from the mark and adds a carrier that
+shares no error. Bait was named before the run. **Rejected**, 28 of 40.
+
+- **It collapsed the carrier**, in all four `common_carrier` cells, where the
+  baseline makes zero silent false settlements: correct settlements 2,830–2,866 →
+  1,389–2,194, with 1,431–9,118 false merges and **zero** true ones.
+- **Leaked marks hurt it**: 5,539 false merges and correct settlements 2,046 →
+  1,297 at the high leak rate.
+- **Unmarked dependence is invisible to it**: 0 of 1,005 and 0 of 988 prevented.
+- **No arm passed.** Refusing when the answer is fragile prevented 473–521 in every
+  hidden family with no instrument at all, failing only on the cost of refusing.
+
+Full record: [`results/dri10-v1/`](../../results/dri10-v1/README.md),
+[`research/records/DRI-10-V1.json`](../records/DRI-10-V1.json). Protocol:
+[`experiments/dri10/PREREGISTRATION.md`](../../experiments/dri10/PREREGISTRATION.md).
+
+## Result: DRI-8 v1, intervention, and a criterion that asked too little
+
+DR3 says no rule reading the record can separate independent sources from two
+sharing an unrecorded origin. DRI-8 stopped reading and acted: a tracer through
+one source's upstream, observed in another's next report, spent only where merging
+the pair would change that decision's outcome.
+
+It was **supported** on all 49 checks, and the result is thinner than that sounds.
+
+- **The mechanism is real.** Probing prevented silent false settlements that no
+  record-only rule can prevent, by stamping them "not robust".
+- **The scale is not.** 80 of 2,281 in the pair family, 10 of 3,084 in the trio,
+  with correct settlements unchanged in every arm.
+- **The price is high.** 16 to 468 probes per error prevented, and a larger budget
+  bought a worse rate.
+- **Time is weaker.** Passive co-error history did nothing at all in the trio
+  family, needed full feedback elsewhere, and merged independent sources an order
+  of magnitude more often than probing did.
+- **The criterion is the lesson.** It asked for significance and set no minimum
+  effect, so 6,000 paired decisions per cell made a 0.3% difference "significant".
+  A successor must state the effect it will accept before it runs.
+- **A disclosed defect.** The margin-critical endpoint merges the whole hidden
+  group, which never flips a trio decision although merging a pair sometimes does.
+  It reads 0 for that family and is unmeasured there; the frozen protocol was not
+  edited.
+
+A dated post-result note records why the effect was small: a learned merge was
+outvoted by the record's own identities, so the arm could find the dependence and
+not act on it — see
+[`POST-RESULT-NOTE.md`](../../results/dri8-v1/POST-RESULT-NOTE.md).
+
+Full record: [`results/dri8-v1/`](../../results/dri8-v1/README.md),
+[`research/records/DRI-8-V1.json`](../records/DRI-8-V1.json). Design:
+[`DRI-8-DESIGN-DRAFT.md`](DRI-8-DESIGN-DRAFT.md).
+
 ## Result: DRI-6 v1, imperfect lookups
 
 Every earlier experiment assumed a truthful lookup. DRI-6 let each lookup miss or

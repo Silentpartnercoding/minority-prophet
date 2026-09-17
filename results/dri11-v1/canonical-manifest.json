@@ -1,0 +1,32 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "DRI-11",
+  "status": "canonical-both-named-methods-rejected",
+  "files": {
+    "experiments/dri11/PREREGISTRATION.md": "aa020bf7f69571487475a43e16bfa176c9e16d099e6e88b6afcffc81d22d10ba",
+    "experiments/dri11/EXECUTION-CONFIG.json": "34f3c7251a8a794d4ac0137b7749b5954beb4bebd257fc660104053118a616e0",
+    "experiments/dri11/world.py": "ee8531432da2fd4b3429c3a17c6889f79cfc2b742e067b445fe88394a306a7a2",
+    "experiments/dri11/arms.py": "6e2dfacda03a671068a950310d651575272bc180187c6754d3cdcc6ed1986203",
+    "experiments/dri11/scoring.py": "9a2d26961e4a6b49f6e832d138997804edee26492f27f5666a6017c324e1b8d8",
+    "experiments/dri11/run_confirmatory.py": "27d4dabff5ce75af4e3d68a76968a8f49af7dec14fadd05cfc6846854fcbaacc",
+    "tests/test_dri11_protocol.py": "84c93f728db6a6b933a1a82e58fa2585f436bfe5310b17fa112f1e399f2054b4",
+    "results/dri11-v1/README.md": "e6bab3d5c58820fbd78a49c845938561ef434d1b1492b9d6a782fd6c840c4210",
+    "results/dri11-v1/result.json": "dcea2a7d43507f367eaaa43489b76d5f05685c997c8617e26f8ac671836d5c04",
+    "results/dri11-v1/run-stdout.txt": "9ab1737ac11ddb418b8e1c7f23646f20d357c90851bc139fcdf312a2e8a784ee",
+    "results/dri11-v1/run-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "recordNote": "research/records/DRI-11-V1.json is bound by commit rather than hashed here, because promotion rewrites it after this manifest is created.",
+  "reproduction": {
+    "executions": 2,
+    "semanticIdentical": true,
+    "semanticResultSha256": "c80d11c87cffcbcd5c0fee44e52bcde224563f0f5cb98e09fbf24963215f7cb1",
+    "command": "PYTHONPATH=. python -m experiments.dri11.run_confirmatory --output results/dri11-v1/result.json",
+    "environment": {
+      "commit": "a3080adbc31069f5f325a4eeba859e5cdeb3cf73",
+      "dirtyWorktree": false,
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    }
+  },
+  "claimBoundary": "Frozen synthetic campaigns on a world written by the adversarial review. Both methods were named before the world existed and both failed: refusal prevented 0 of 925-961 critical errors on trios and refused all 2,400 decisions in a family the baseline settles correctly; the composite made 342-439 false merges with zero true ones where one shock satisfied both of its signals, and never beat refusal on cost. Behaviour does not separate a shared source from a shared shock: joint-error rates were 0.38-0.42 for dependent pairs and 0.58 for the independent shocked pair. Reversible decisions only; no real-world rates; same control domain; no authority claim."
+}
