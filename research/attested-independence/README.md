@@ -28,12 +28,27 @@ directly measurable.
 
 ## Experiments
 
-- **AID-1 — what attestation costs.**
-  [`AID-1-DESIGN-DRAFT.md`](AID-1-DESIGN-DRAFT.md) is the specification: the
-  policy under test, the arms, the traps the world must contain, and criteria
-  fixed before any world exists. Specification only; the world is to be written
-  by someone other than the author of the policy, which is the one discipline
-  that worked in the closed series.
+- **AID-1 — what attestation costs. Run, and rejected**, 61 of 111 checks.
+  [`AID-1-DESIGN-DRAFT.md`](AID-1-DESIGN-DRAFT.md) is the specification;
+  [`experiments/aid1run/PREREGISTRATION.md`](../../experiments/aid1run/PREREGISTRATION.md)
+  is the world, written by someone other than the policy's author; the result is
+  [`results/aid1-v1/`](../../results/aid1-v1/README.md).
+
+  The price is real and unevenly distributed. At full adoption the policy
+  prevents 177 of 350 silent false settlements in DR3's hidden-source case — the
+  case nothing in the closed series could touch — at **zero** cost in correct
+  settlements. One error class up, prevention decays to **zero** as adoption
+  rises, because attestation raises admissible depth and hands back the
+  independence the policy was withholding. Where witnesses genuinely cannot
+  attest, it loses every settlement at every adoption rate and prevents nothing.
+  And it **suppresses**: 720 of 720 minority decisions settled against a true
+  contrary claim at full adoption, while every other arm abstains and the claim
+  lives. The `ScopeViolation` guard did not hold and cannot, because the use is
+  caller-declared.
+
+  Two defects in the policy were disclosed in the protocol before the run and
+  left in place deliberately, so this measures the policy as shipped. Repairing
+  them is a registered successor, not an edit to this record.
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).
