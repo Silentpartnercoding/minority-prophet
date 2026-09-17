@@ -170,7 +170,16 @@ Later constructed results, none canonical:
   up as adoption rises, and settles 720 of 720 minority decisions against a true
   contrary claim. See [`AID-1`](../../results/aid1-v1/README.md). The policy is
   not usable as scoped, and its scope guard cannot hold because the use is
-  caller-declared.
+  caller-declared. The structural replacement was then measured and also
+  rejected: returning the range the record supports removes that suppression
+  entirely — the true claim survives 360 of 360 where a single count deleted all
+  360 — but it is inert where a decoy recorded kinship collapses a witness at
+  both ends, and it is blind to a backed witness with a shared origin, preventing
+  0 of 360 against device-attested copies of one fabricator. Depth attestation
+  earns depth and says nothing about shared origin. See
+  [`AID-2`](../../results/aid2-v1/README.md). Two of the three disclosed defects
+  are implementation errors rather than properties of the bounds idea, so the
+  question is open rather than closed.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
