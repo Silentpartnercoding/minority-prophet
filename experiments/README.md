@@ -15,7 +15,9 @@ notes. Presence here does not make an experiment canonical.
   is inappropriate.
 - `replications/` — replication runners and fixtures.
 - `dri8/` through `dri11/` — decision-relative independence intervention
-  series. DRI-11 is a frozen candidate; do not infer a verdict from the folder.
+  series. Closed; see
+  [`DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md`](DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md).
+  Do not infer a verdict from a folder — follow the ID through the records.
 
 ## How to determine status
 
