@@ -162,8 +162,15 @@ Later constructed results, none canonical:
   [`authority-evidence-v0.2`](../../contracts/authority-evidence-v0.2/README.md),
   four optional fields, v0.1 still valid, no digest moved — so the census now
   returns 1 of 6 formats. No producer states a depth yet: 0 of 52 claim objects,
-  unchanged. Whether witnesses will state one, and what refusing to count those
-  who do not actually costs, are both still open.
+  unchanged. Whether witnesses will state one is still open; what refusing to
+  count those who do not actually costs was measured and the policy was
+  rejected. At full adoption it prevents about half of the hidden-source silent
+  false settlements at no cost in correct settlements, but it loses every
+  settlement where witnesses cannot attest, loses all protection one error class
+  up as adoption rises, and settles 720 of 720 minority decisions against a true
+  contrary claim. See [`AID-1`](../../results/aid1-v1/README.md). The policy is
+  not usable as scoped, and its scope guard cannot hold because the use is
+  caller-declared.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently
