@@ -81,7 +81,12 @@ def test_two_sided_metric_makes_silence_lose():
     counting = two_sided_score(EVENTS, _js("count_reports"))
     assert aware < silent
     assert aware < counting
-    assert silent == max(silent, aware, counting) or counting > silent
+    # Was: `silent == max(...) or counting > silent`. That disjunction passed
+    # whichever of its halves held, so it could not distinguish silence being
+    # worst from silence merely losing -- and REPRODUCE.md asserted the former
+    # while the numbers showed the latter. The full ordering is stated instead,
+    # so the prose and the measurement cannot drift apart again.
+    assert aware < silent < counting
 
 
 def test_silence_pays_the_full_horizon():
