@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime
 from typing import Any
 
@@ -97,6 +98,7 @@ def validate(envelope: dict[str, Any]) -> list[str]:
             errors.append("allow must execute exactly once")
         if attempts not in (0, 1):
             errors.append("attempt_count must be zero or one")
+        errors.extend(_result_digest_errors(effect, status))
 
     authority_status = delegation.get("status") if isinstance(delegation, dict) else None
     issued_at = parse_time(receipt.get("issued_at"))
@@ -130,6 +132,39 @@ def validate(envelope: dict[str, Any]) -> list[str]:
         if origin_type == "unknown" and origin.get("independence_basis") != "unknown":
             errors.append("unknown origin cannot claim independence")
         errors.extend(_witness_axis_errors(origin, version))
+    return errors
+
+
+#: The contract's digest form, from `$defs/digest` in both v0.1 and v0.2.
+_DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
+
+
+def _result_digest_errors(effect: dict[str, Any], status: object) -> list[str]:
+    """Checks for `effect.result_digest`, which nothing validated.
+
+    The field has been declared in both contract versions from the start and no
+    code in this repository ever read it, so a receipt could carry a malformed
+    digest, or a digest of a result that by its own account never happened, and
+    pass conformance.
+
+    Deliberately NOT requiring presence when an action succeeded. The schema
+    leaves `result_digest` optional, and a checker that demanded it would be
+    tightening the contract rather than enforcing it — a change that belongs in
+    a contract version, with the version bump and the interop consequences that
+    implies, not smuggled in through a validator.
+
+    The asymmetry is the point: an absent digest is a producer that chose not to
+    record one, which the contract permits. A digest on a prevented action is a
+    producer contradicting itself, which it does not.
+    """
+    digest = effect.get("result_digest")
+    if digest is None:
+        return []
+    errors: list[str] = []
+    if not isinstance(digest, str) or not _DIGEST.match(digest):
+        errors.append("result_digest must match sha256:<64 hex>")
+    if status == "prevented":
+        errors.append("a prevented action cannot carry a result digest")
     return errors
 
 
