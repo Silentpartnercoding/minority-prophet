@@ -1,0 +1,2712 @@
+{
+  "artifactUnderTest": "aggregation/attested_independence.py",
+  "criterion": {
+    "adoptionCurveReportedOnly": true,
+    "policyB": {
+      "poweredComparisons": [
+        "margin:backed_hidden_source:alpha=0.0",
+        "margin:backed_hidden_source:alpha=0.5",
+        "margin:backed_hidden_source:alpha=1.0",
+        "margin:hidden_source:alpha=0.0",
+        "margin:hidden_source:alpha=0.5",
+        "margin:hidden_source:alpha=1.0"
+      ],
+      "supported": false,
+      "tests": {
+        "hasPoweredDependenceComparison": true,
+        "margin:backed_hidden_source:alpha=0.0:betterThanRefusing": false,
+        "margin:backed_hidden_source:alpha=0.0:costBoundedByBenefit": false,
+        "margin:backed_hidden_source:alpha=0.0:preventsEnoughOfCritical": false,
+        "margin:backed_hidden_source:alpha=0.0:significantlyFewerSilent": false,
+        "margin:backed_hidden_source:alpha=0.5:betterThanRefusing": false,
+        "margin:backed_hidden_source:alpha=0.5:costBoundedByBenefit": false,
+        "margin:backed_hidden_source:alpha=0.5:preventsEnoughOfCritical": false,
+        "margin:backed_hidden_source:alpha=0.5:significantlyFewerSilent": false,
+        "margin:backed_hidden_source:alpha=1.0:betterThanRefusing": false,
+        "margin:backed_hidden_source:alpha=1.0:costBoundedByBenefit": true,
+        "margin:backed_hidden_source:alpha=1.0:preventsEnoughOfCritical": false,
+        "margin:backed_hidden_source:alpha=1.0:significantlyFewerSilent": false,
+        "margin:hidden_source:alpha=0.0:betterThanRefusing": false,
+        "margin:hidden_source:alpha=0.0:costBoundedByBenefit": false,
+        "margin:hidden_source:alpha=0.0:preventsEnoughOfCritical": true,
+        "margin:hidden_source:alpha=0.0:significantlyFewerSilent": true,
+        "margin:hidden_source:alpha=0.5:betterThanRefusing": false,
+        "margin:hidden_source:alpha=0.5:costBoundedByBenefit": false,
+        "margin:hidden_source:alpha=0.5:preventsEnoughOfCritical": true,
+        "margin:hidden_source:alpha=0.5:significantlyFewerSilent": true,
+        "margin:hidden_source:alpha=1.0:betterThanRefusing": false,
+        "margin:hidden_source:alpha=1.0:costBoundedByBenefit": true,
+        "margin:hidden_source:alpha=1.0:preventsEnoughOfCritical": false,
+        "margin:hidden_source:alpha=1.0:significantlyFewerSilent": false,
+        "margin:honest_unattestable:alpha=0.0:notRefusalWithExtraSteps": false,
+        "margin:honest_unattestable:alpha=0.5:notRefusalWithExtraSteps": false,
+        "margin:honest_unattestable:alpha=1.0:notRefusalWithExtraSteps": false,
+        "margin:minority_suppression:alpha=0.0:doesNotSuppress": true,
+        "margin:minority_suppression:alpha=0.5:doesNotSuppress": true,
+        "margin:minority_suppression:alpha=1.0:doesNotSuppress": true,
+        "margin:minority_wins:alpha=0.0:doesNotSuppress": true,
+        "margin:minority_wins:alpha=0.5:doesNotSuppress": true,
+        "margin:minority_wins:alpha=1.0:doesNotSuppress": true,
+        "margin:mixed_populations:alpha=0.0:costBoundedByBenefit": false,
+        "margin:mixed_populations:alpha=0.5:costBoundedByBenefit": false,
+        "margin:mixed_populations:alpha=1.0:costBoundedByBenefit": false,
+        "margin:wide_margin_unattested:alpha=0.0:notRefusalWithExtraSteps": false,
+        "margin:wide_margin_unattested:alpha=0.5:notRefusalWithExtraSteps": true,
+        "margin:wide_margin_unattested:alpha=1.0:notRefusalWithExtraSteps": true,
+        "semanticResultReproducible": true
+      },
+      "underpoweredComparisons": []
+    },
+    "policyC": {
+      "poweredExposureCells": [
+        "priced:backed_hidden_source:alpha=0.0",
+        "priced:backed_hidden_source:alpha=0.5",
+        "priced:backed_hidden_source:alpha=1.0",
+        "priced:hidden_source:alpha=0.0",
+        "priced:hidden_source:alpha=0.5",
+        "priced:hidden_source:alpha=1.0",
+        "priced:mixed_populations:alpha=0.0",
+        "priced:mixed_populations:alpha=0.5",
+        "priced:mixed_populations:alpha=1.0"
+      ],
+      "supported": false,
+      "tests": {
+        "hasPoweredExposureCell": true,
+        "priced:backed_hidden_source:alpha=0.0:discriminates": false,
+        "priced:backed_hidden_source:alpha=0.0:exposureNotConstant": false,
+        "priced:backed_hidden_source:alpha=0.0:identicalToLadder": true,
+        "priced:backed_hidden_source:alpha=0.5:discriminates": false,
+        "priced:backed_hidden_source:alpha=0.5:exposureNotConstant": true,
+        "priced:backed_hidden_source:alpha=0.5:identicalToLadder": true,
+        "priced:backed_hidden_source:alpha=1.0:discriminates": false,
+        "priced:backed_hidden_source:alpha=1.0:exposureNotConstant": false,
+        "priced:backed_hidden_source:alpha=1.0:identicalToLadder": true,
+        "priced:hidden_source:alpha=0.0:discriminates": false,
+        "priced:hidden_source:alpha=0.0:exposureNotConstant": false,
+        "priced:hidden_source:alpha=0.0:identicalToLadder": true,
+        "priced:hidden_source:alpha=0.5:discriminates": false,
+        "priced:hidden_source:alpha=0.5:exposureNotConstant": true,
+        "priced:hidden_source:alpha=0.5:identicalToLadder": true,
+        "priced:hidden_source:alpha=1.0:discriminates": false,
+        "priced:hidden_source:alpha=1.0:exposureNotConstant": false,
+        "priced:hidden_source:alpha=1.0:identicalToLadder": true,
+        "priced:honest_unattestable:alpha=0.0:exposureNotConstant": false,
+        "priced:honest_unattestable:alpha=0.0:identicalToLadder": true,
+        "priced:honest_unattestable:alpha=0.5:exposureNotConstant": false,
+        "priced:honest_unattestable:alpha=0.5:identicalToLadder": true,
+        "priced:honest_unattestable:alpha=1.0:exposureNotConstant": false,
+        "priced:honest_unattestable:alpha=1.0:identicalToLadder": true,
+        "priced:minority_suppression:alpha=0.0:identicalToLadder": true,
+        "priced:minority_suppression:alpha=0.5:identicalToLadder": true,
+        "priced:minority_suppression:alpha=1.0:identicalToLadder": true,
+        "priced:minority_wins:alpha=0.0:exposureNotConstant": false,
+        "priced:minority_wins:alpha=0.0:identicalToLadder": true,
+        "priced:minority_wins:alpha=0.5:exposureNotConstant": true,
+        "priced:minority_wins:alpha=0.5:identicalToLadder": true,
+        "priced:minority_wins:alpha=1.0:exposureNotConstant": false,
+        "priced:minority_wins:alpha=1.0:identicalToLadder": true,
+        "priced:mixed_populations:alpha=0.0:discriminates": false,
+        "priced:mixed_populations:alpha=0.0:exposureNotConstant": false,
+        "priced:mixed_populations:alpha=0.0:identicalToLadder": true,
+        "priced:mixed_populations:alpha=0.5:discriminates": false,
+        "priced:mixed_populations:alpha=0.5:exposureNotConstant": true,
+        "priced:mixed_populations:alpha=0.5:identicalToLadder": true,
+        "priced:mixed_populations:alpha=1.0:discriminates": false,
+        "priced:mixed_populations:alpha=1.0:exposureNotConstant": false,
+        "priced:mixed_populations:alpha=1.0:identicalToLadder": true,
+        "priced:silent_but_correct:alpha=0.0:exposureNotConstant": false,
+        "priced:silent_but_correct:alpha=0.0:identicalToLadder": true,
+        "priced:silent_but_correct:alpha=0.5:exposureNotConstant": true,
+        "priced:silent_but_correct:alpha=0.5:identicalToLadder": true,
+        "priced:silent_but_correct:alpha=1.0:exposureNotConstant": true,
+        "priced:silent_but_correct:alpha=1.0:identicalToLadder": true,
+        "priced:wide_margin_unattested:alpha=0.0:exposureNotConstant": false,
+        "priced:wide_margin_unattested:alpha=0.0:identicalToLadder": true,
+        "priced:wide_margin_unattested:alpha=0.5:exposureNotConstant": true,
+        "priced:wide_margin_unattested:alpha=0.5:identicalToLadder": true,
+        "priced:wide_margin_unattested:alpha=1.0:exposureNotConstant": false,
+        "priced:wide_margin_unattested:alpha=1.0:identicalToLadder": true,
+        "semanticResultReproducible": true
+      },
+      "underpoweredExposureCells": [
+        "priced:honest_unattestable:alpha=0.0",
+        "priced:honest_unattestable:alpha=0.5",
+        "priced:honest_unattestable:alpha=1.0",
+        "priced:minority_suppression:alpha=0.0",
+        "priced:minority_suppression:alpha=0.5",
+        "priced:minority_suppression:alpha=1.0",
+        "priced:minority_wins:alpha=0.0",
+        "priced:minority_wins:alpha=0.5",
+        "priced:minority_wins:alpha=1.0",
+        "priced:silent_but_correct:alpha=0.0",
+        "priced:silent_but_correct:alpha=0.5",
+        "priced:silent_but_correct:alpha=1.0",
+        "priced:wide_margin_unattested:alpha=0.0",
+        "priced:wide_margin_unattested:alpha=0.5",
+        "priced:wide_margin_unattested:alpha=1.0"
+      ]
+    },
+    "reported": {
+      "margin:honest_unattestable:alpha=0.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:honest_unattestable:alpha=0.5:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:honest_unattestable:alpha=1.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_suppression:alpha=0.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 0,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_suppression:alpha=0.0:trueClaimVindicated": {
+        "attested": 0,
+        "ladder": 0,
+        "margin": 0,
+        "priced": 0,
+        "refuse_all_unrecorded": 0
+      },
+      "margin:minority_suppression:alpha=0.5:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 0,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_suppression:alpha=0.5:trueClaimVindicated": {
+        "attested": 0,
+        "ladder": 0,
+        "margin": 0,
+        "priced": 0,
+        "refuse_all_unrecorded": 0
+      },
+      "margin:minority_suppression:alpha=1.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 0,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_suppression:alpha=1.0:trueClaimVindicated": {
+        "attested": 0,
+        "ladder": 0,
+        "margin": 0,
+        "priced": 0,
+        "refuse_all_unrecorded": 0
+      },
+      "margin:minority_wins:alpha=0.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_wins:alpha=0.0:trueClaimVindicated": {
+        "attested": 0,
+        "ladder": 3600,
+        "margin": 0,
+        "priced": 3600,
+        "refuse_all_unrecorded": 0
+      },
+      "margin:minority_wins:alpha=0.5:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_wins:alpha=0.5:trueClaimVindicated": {
+        "attested": 0,
+        "ladder": 3600,
+        "margin": 0,
+        "priced": 3600,
+        "refuse_all_unrecorded": 0
+      },
+      "margin:minority_wins:alpha=1.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:minority_wins:alpha=1.0:trueClaimVindicated": {
+        "attested": 0,
+        "ladder": 3600,
+        "margin": 0,
+        "priced": 3600,
+        "refuse_all_unrecorded": 0
+      },
+      "margin:silent_but_correct:alpha=0.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:silent_but_correct:alpha=0.5:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3144,
+        "silentFalsePrevented": 0
+      },
+      "margin:silent_but_correct:alpha=1.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 1728,
+        "silentFalsePrevented": 0
+      },
+      "margin:wide_margin_unattested:alpha=0.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 3600,
+        "silentFalsePrevented": 0
+      },
+      "margin:wide_margin_unattested:alpha=0.5:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 486,
+        "silentFalsePrevented": 0
+      },
+      "margin:wide_margin_unattested:alpha=1.0:costWhereNoBenefitPossible": {
+        "correctSettlementsLost": 0,
+        "silentFalsePrevented": 0
+      },
+      "pooledExposureAucByCell": {
+        "alpha=0.0": 0.305924315284098,
+        "alpha=0.5": 0.24936294910266402,
+        "alpha=1.0": 0.1929202359816563
+      },
+      "priced:backed_hidden_source:alpha=0.0:aucOnShareDiagnostic": 0.5,
+      "priced:backed_hidden_source:alpha=0.5:aucOnShareDiagnostic": 0.5062608273990388,
+      "priced:backed_hidden_source:alpha=1.0:aucOnShareDiagnostic": 0.5,
+      "priced:hidden_source:alpha=0.0:aucOnShareDiagnostic": 0.5,
+      "priced:hidden_source:alpha=0.5:aucOnShareDiagnostic": 0.5128954821009779,
+      "priced:hidden_source:alpha=1.0:aucOnShareDiagnostic": 0.5,
+      "priced:honest_unattestable:alpha=0.0:aucOnShareDiagnostic": null,
+      "priced:honest_unattestable:alpha=0.5:aucOnShareDiagnostic": null,
+      "priced:honest_unattestable:alpha=1.0:aucOnShareDiagnostic": null,
+      "priced:minority_suppression:alpha=0.0:aucOnShareDiagnostic": null,
+      "priced:minority_suppression:alpha=0.5:aucOnShareDiagnostic": null,
+      "priced:minority_suppression:alpha=1.0:aucOnShareDiagnostic": null,
+      "priced:minority_wins:alpha=0.0:aucOnShareDiagnostic": null,
+      "priced:minority_wins:alpha=0.5:aucOnShareDiagnostic": null,
+      "priced:minority_wins:alpha=1.0:aucOnShareDiagnostic": null,
+      "priced:mixed_populations:alpha=0.0:aucOnShareDiagnostic": 0.5,
+      "priced:mixed_populations:alpha=0.5:aucOnShareDiagnostic": 0.505722474041631,
+      "priced:mixed_populations:alpha=1.0:aucOnShareDiagnostic": 0.5,
+      "priced:silent_but_correct:alpha=0.0:aucOnShareDiagnostic": null,
+      "priced:silent_but_correct:alpha=0.5:aucOnShareDiagnostic": null,
+      "priced:silent_but_correct:alpha=1.0:aucOnShareDiagnostic": null,
+      "priced:wide_margin_unattested:alpha=0.0:aucOnShareDiagnostic": null,
+      "priced:wide_margin_unattested:alpha=0.5:aucOnShareDiagnostic": null,
+      "priced:wide_margin_unattested:alpha=1.0:aucOnShareDiagnostic": null
+    },
+    "supported": false
+  },
+  "environment": {
+    "commit": "c4fa1bef11ed96748eddc5eec252ef4ea495b1be",
+    "dirtyWorktree": true,
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]"
+  },
+  "finishedAt": "2026-09-18T16:56:37.565910+00:00",
+  "pins": {
+    "aggregation/attested_independence.py": "116d290f88895ec743205643aee442df7454993565f58425b4e92b14c538ea60",
+    "aggregation/independence_axes.py": "324bab7f971ba1a0849329010c76aa048f8157dbbb7f3a440b8426639901c311",
+    "canon/independent_set.py": "a0e9b357291f9175b8608d656d03eefc2159aaa9e25ae66477e515fe5206fb3c",
+    "canon/proximity.py": "15398c208bf391c9d150e23b2f18dad6affd9d271303129395df754ccb71ab3b",
+    "experiments/aid4run/EXECUTION-CONFIG.json": "1d9c7dccbb08be040c34f3da0f05cdf775a06fcf0daa49babfc528b199a474e4",
+    "experiments/aid4run/PREREGISTRATION.md": "821c3bf104d25af5e6205ff5df439d2e29d2086b7a85d929ede5aa2323af5f99",
+    "experiments/aid4run/arms.py": "3dda798453281998f36b3ca07f3bf45a8d5eb32fbe797bd9f5d9a485c159404d",
+    "experiments/aid4run/scoring.py": "df2e9c299555bedecd938e2af8de601f255f592ab440129ac3f1771055618149",
+    "experiments/aid4run/world.py": "234b7b1cf0ff819ae2b813794283e18553fba9589881a813d509a1620e28dd66",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257"
+  },
+  "schema": "minority-prophet.aid4-confirmatory-result.v1",
+  "semanticResult": {
+    "campaignManifestSha256": "359f0858762a9ee8a66b991f07ba25c3cb34afc5d38bf39cfb823ac3a4e61e4b",
+    "campaigns": 7200,
+    "families": {
+      "backed_hidden_source": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 1766,
+              "correct_settlement": 2009,
+              "criticalDecisions": 1418,
+              "decisions": 3600,
+              "false_settlement": 1591,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 1766,
+              "silentFalseSettlements": 1591
+            },
+            "ladder": {
+              "claimSurvives": 1845,
+              "correct_settlement": 2182,
+              "criticalDecisions": 1418,
+              "decisions": 3600,
+              "false_settlement": 1418,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 1845,
+              "silentFalseSettlements": 1418
+            },
+            "margin": {
+              "claimSurvives": 1892,
+              "correct_settlement": 2009,
+              "criticalDecisions": 1418,
+              "decisions": 3600,
+              "false_settlement": 1418,
+              "mixedDecisions": 3600,
+              "settlements": 3427,
+              "settlesForTruth": 1719,
+              "silentFalseSettlements": 1418,
+              "unneeded_abstention": 173
+            },
+            "priced": {
+              "claimSurvives": 1845,
+              "correct_settlement": 2182,
+              "criticalDecisions": 1418,
+              "decisions": 3600,
+              "false_settlement": 1418,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 1845,
+              "silentFalseSettlements": 1418
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 1418,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "required_abstention": 310,
+              "unneeded_abstention": 3290
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 173,
+              "criticalPrevented": 0,
+              "criticalSilent": 1418,
+              "ladderOnlySilent": 0,
+              "p": 1.6704779438076223e-52,
+              "silent": 1591,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1418,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1418,
+              "unneeded": 173
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1418,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1418,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 1418,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 1418,
+              "p": 0.0,
+              "silent": 0,
+              "unneeded": 3290
+            }
+          },
+          "criticalLadderSilent": 1418,
+          "exposure": {
+            "auc": 0.5,
+            "aucOnShare": 0.5,
+            "correct": {
+              "2": 2182
+            },
+            "false": {
+              "2": 1418
+            },
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 1418,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 1928,
+              "correct_settlement": 2090,
+              "criticalDecisions": 1386,
+              "decisions": 3600,
+              "false_settlement": 1352,
+              "mixedDecisions": 2721,
+              "required_abstention": 69,
+              "settlements": 3442,
+              "settlesForTruth": 1770,
+              "silentFalseSettlements": 1352,
+              "unneeded_abstention": 89
+            },
+            "ladder": {
+              "claimSurvives": 1915,
+              "correct_settlement": 2214,
+              "criticalDecisions": 1386,
+              "decisions": 3600,
+              "false_settlement": 1386,
+              "mixedDecisions": 2721,
+              "settlements": 3600,
+              "settlesForTruth": 1915,
+              "silentFalseSettlements": 1386
+            },
+            "margin": {
+              "claimSurvives": 1923,
+              "correct_settlement": 2179,
+              "criticalDecisions": 1386,
+              "decisions": 3600,
+              "false_settlement": 1386,
+              "mixedDecisions": 2721,
+              "settlements": 3565,
+              "settlesForTruth": 1888,
+              "silentFalseSettlements": 1386,
+              "unneeded_abstention": 35
+            },
+            "priced": {
+              "claimSurvives": 1915,
+              "correct_settlement": 2214,
+              "criticalDecisions": 1386,
+              "decisions": 3600,
+              "false_settlement": 1386,
+              "mixedDecisions": 2721,
+              "settlements": 3600,
+              "settlesForTruth": 1915,
+              "silentFalseSettlements": 1386
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 1386,
+              "decisions": 3600,
+              "mixedDecisions": 2721,
+              "required_abstention": 302,
+              "unneeded_abstention": 3298
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 35,
+              "criticalPrevented": 69,
+              "criticalSilent": 1317,
+              "ladderOnlySilent": 69,
+              "p": 0.0011086208878113386,
+              "silent": 1352,
+              "unneeded": 89
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1386,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1386,
+              "unneeded": 35
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1386,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1386,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 1386,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 1386,
+              "p": 0.0,
+              "silent": 0,
+              "unneeded": 3298
+            }
+          },
+          "criticalLadderSilent": 1386,
+          "exposure": {
+            "auc": 0.5062608273990388,
+            "aucOnShare": 0.5062608273990388,
+            "correct": {
+              "0": 542,
+              "1": 1122,
+              "2": 550
+            },
+            "false": {
+              "0": 337,
+              "1": 684,
+              "2": 365
+            },
+            "settlements": 3600,
+            "variationShare": 0.49833333333333335
+          },
+          "ladderSilent": 1386,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 1831,
+              "correct_settlement": 2191,
+              "criticalDecisions": 1409,
+              "decisions": 3600,
+              "false_settlement": 1409,
+              "settlements": 3600,
+              "settlesForTruth": 1831,
+              "silentFalseSettlements": 1409
+            },
+            "ladder": {
+              "claimSurvives": 1831,
+              "correct_settlement": 2191,
+              "criticalDecisions": 1409,
+              "decisions": 3600,
+              "false_settlement": 1409,
+              "settlements": 3600,
+              "settlesForTruth": 1831,
+              "silentFalseSettlements": 1409
+            },
+            "margin": {
+              "claimSurvives": 1831,
+              "correct_settlement": 2191,
+              "criticalDecisions": 1409,
+              "decisions": 3600,
+              "false_settlement": 1409,
+              "settlements": 3600,
+              "settlesForTruth": 1831,
+              "silentFalseSettlements": 1409
+            },
+            "priced": {
+              "claimSurvives": 1831,
+              "correct_settlement": 2191,
+              "criticalDecisions": 1409,
+              "decisions": 3600,
+              "false_settlement": 1409,
+              "settlements": 3600,
+              "settlesForTruth": 1831,
+              "silentFalseSettlements": 1409
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 1409,
+              "decisions": 3600,
+              "required_abstention": 296,
+              "unneeded_abstention": 3304
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1409,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1409,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1409,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1409,
+              "unneeded": 0
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 1409,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 1409,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 1409,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 1409,
+              "p": 0.0,
+              "silent": 0,
+              "unneeded": 3304
+            }
+          },
+          "criticalLadderSilent": 1409,
+          "exposure": {
+            "auc": 0.5,
+            "aucOnShare": 0.5,
+            "correct": {
+              "0": 2191
+            },
+            "false": {
+              "0": 1409
+            },
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 1409,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "hidden_source": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 790,
+              "decisions": 3600,
+              "required_abstention": 790,
+              "unneeded_abstention": 2810
+            },
+            "ladder": {
+              "claimSurvives": 2714,
+              "correct_settlement": 2810,
+              "criticalDecisions": 790,
+              "decisions": 3600,
+              "false_settlement": 790,
+              "settlements": 3600,
+              "settlesForTruth": 2714,
+              "silentFalseSettlements": 790
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 790,
+              "decisions": 3600,
+              "required_abstention": 790,
+              "unneeded_abstention": 2810
+            },
+            "priced": {
+              "claimSurvives": 2714,
+              "correct_settlement": 2810,
+              "criticalDecisions": 790,
+              "decisions": 3600,
+              "false_settlement": 790,
+              "settlements": 3600,
+              "settlesForTruth": 2714,
+              "silentFalseSettlements": 790
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 790,
+              "decisions": 3600,
+              "required_abstention": 790,
+              "unneeded_abstention": 2810
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 790,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 790,
+              "p": 3.0713790748582522e-238,
+              "silent": 0,
+              "unneeded": 2810
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 790,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 790,
+              "p": 3.0713790748582522e-238,
+              "silent": 0,
+              "unneeded": 2810
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 790,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 790,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 790,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 790,
+              "p": 3.0713790748582522e-238,
+              "silent": 0,
+              "unneeded": 2810
+            }
+          },
+          "criticalLadderSilent": 790,
+          "exposure": {
+            "auc": 0.5,
+            "aucOnShare": 0.5,
+            "correct": {
+              "5": 2810
+            },
+            "false": {
+              "5": 790
+            },
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 790,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 2990,
+              "correct_settlement": 1713,
+              "criticalDecisions": 810,
+              "decisions": 3600,
+              "false_settlement": 591,
+              "mixedDecisions": 3362,
+              "required_abstention": 375,
+              "settlements": 2304,
+              "settlesForTruth": 1694,
+              "silentFalseSettlements": 591,
+              "unneeded_abstention": 921
+            },
+            "ladder": {
+              "claimSurvives": 2638,
+              "correct_settlement": 2790,
+              "criticalDecisions": 810,
+              "decisions": 3600,
+              "false_settlement": 810,
+              "mixedDecisions": 3362,
+              "settlements": 3600,
+              "settlesForTruth": 2638,
+              "silentFalseSettlements": 810
+            },
+            "margin": {
+              "claimSurvives": 3045,
+              "correct_settlement": 2159,
+              "criticalDecisions": 810,
+              "decisions": 3600,
+              "false_settlement": 412,
+              "mixedDecisions": 3362,
+              "required_abstention": 398,
+              "settlements": 2571,
+              "settlesForTruth": 2016,
+              "silentFalseSettlements": 412,
+              "unneeded_abstention": 631
+            },
+            "priced": {
+              "claimSurvives": 2638,
+              "correct_settlement": 2790,
+              "criticalDecisions": 810,
+              "decisions": 3600,
+              "false_settlement": 810,
+              "mixedDecisions": 3362,
+              "settlements": 3600,
+              "settlesForTruth": 2638,
+              "silentFalseSettlements": 810
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 810,
+              "decisions": 3600,
+              "mixedDecisions": 3362,
+              "required_abstention": 810,
+              "unneeded_abstention": 2790
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 156,
+              "criticalPrevented": 375,
+              "criticalSilent": 435,
+              "ladderOnlySilent": 375,
+              "p": 7.954111884994456e-22,
+              "silent": 591,
+              "unneeded": 921
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 398,
+              "criticalSilent": 412,
+              "ladderOnlySilent": 398,
+              "p": 3.0980735318794546e-120,
+              "silent": 412,
+              "unneeded": 631
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 810,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 810,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 810,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 810,
+              "p": 2.9290953396399042e-244,
+              "silent": 0,
+              "unneeded": 2790
+            }
+          },
+          "criticalLadderSilent": 810,
+          "exposure": {
+            "auc": 0.5128954821009779,
+            "aucOnShare": 0.5128954821009779,
+            "correct": {
+              "0": 94,
+              "1": 438,
+              "2": 925,
+              "3": 811,
+              "4": 429,
+              "5": 93
+            },
+            "false": {
+              "0": 21,
+              "1": 126,
+              "2": 250,
+              "3": 263,
+              "4": 120,
+              "5": 30
+            },
+            "settlements": 3600,
+            "variationShare": 0.6736111111111112
+          },
+          "ladderSilent": 810,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 2679,
+              "correct_settlement": 2826,
+              "criticalDecisions": 774,
+              "decisions": 3600,
+              "false_settlement": 774,
+              "settlements": 3600,
+              "settlesForTruth": 2679,
+              "silentFalseSettlements": 774
+            },
+            "ladder": {
+              "claimSurvives": 2679,
+              "correct_settlement": 2826,
+              "criticalDecisions": 774,
+              "decisions": 3600,
+              "false_settlement": 774,
+              "settlements": 3600,
+              "settlesForTruth": 2679,
+              "silentFalseSettlements": 774
+            },
+            "margin": {
+              "claimSurvives": 2679,
+              "correct_settlement": 2826,
+              "criticalDecisions": 774,
+              "decisions": 3600,
+              "false_settlement": 774,
+              "settlements": 3600,
+              "settlesForTruth": 2679,
+              "silentFalseSettlements": 774
+            },
+            "priced": {
+              "claimSurvives": 2679,
+              "correct_settlement": 2826,
+              "criticalDecisions": 774,
+              "decisions": 3600,
+              "false_settlement": 774,
+              "settlements": 3600,
+              "settlesForTruth": 2679,
+              "silentFalseSettlements": 774
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 774,
+              "decisions": 3600,
+              "required_abstention": 774,
+              "unneeded_abstention": 2826
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 774,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 774,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 774,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 774,
+              "unneeded": 0
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 774,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 774,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 774,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 774,
+              "p": 2.0128589904991042e-233,
+              "silent": 0,
+              "unneeded": 2826
+            }
+          },
+          "criticalLadderSilent": 774,
+          "exposure": {
+            "auc": 0.5,
+            "aucOnShare": 0.5,
+            "correct": {
+              "0": 2826
+            },
+            "false": {
+              "0": 774
+            },
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 774,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "honest_unattestable": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "5": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "5": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "5": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "minority_suppression": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "required_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "required_abstention": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "required_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "required_abstention": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "required_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {},
+            "false": {},
+            "settlements": 0,
+            "variationShare": null
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 2697,
+              "decisions": 3600,
+              "false_settlement": 903,
+              "mixedDecisions": 2696,
+              "required_abstention": 2697,
+              "settlements": 903,
+              "silentFalseSettlements": 903
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2696,
+              "required_abstention": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2696,
+              "required_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2696,
+              "required_abstention": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2696,
+              "required_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 903,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 2.957630465416937e-272,
+              "silent": 903,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {},
+            "false": {},
+            "settlements": 0,
+            "variationShare": null
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "decisions": 3600,
+              "false_settlement": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "silentFalseSettlements": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "required_abstention": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "required_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "required_abstention": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "required_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 3600,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 0.0,
+              "silent": 3600,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {},
+            "false": {},
+            "settlements": 0,
+            "variationShare": null
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "minority_wins": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "5": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 2722,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "false_settlement": 878,
+              "mixedDecisions": 2691,
+              "settlements": 878,
+              "silentFalseSettlements": 878,
+              "unneeded_abstention": 2722
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2691,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2691,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2691,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 2691,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 878,
+              "criticalPrevented": 0,
+              "criticalSilent": 878,
+              "ladderOnlySilent": 0,
+              "p": 9.924161033296096e-265,
+              "silent": 878,
+              "unneeded": 2722
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "3": 878,
+              "4": 1813,
+              "5": 909
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.4963888888888889
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "false_settlement": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "silentFalseSettlements": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 3600,
+              "criticalPrevented": 0,
+              "criticalSilent": 3600,
+              "ladderOnlySilent": 0,
+              "p": 0.0,
+              "silent": 3600,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "3": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "mixed_populations": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 370,
+              "decisions": 3600,
+              "required_abstention": 370,
+              "unneeded_abstention": 3230
+            },
+            "ladder": {
+              "claimSurvives": 3163,
+              "correct_settlement": 3230,
+              "criticalDecisions": 370,
+              "decisions": 3600,
+              "false_settlement": 370,
+              "settlements": 3600,
+              "settlesForTruth": 3163,
+              "silentFalseSettlements": 370
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 370,
+              "decisions": 3600,
+              "required_abstention": 370,
+              "unneeded_abstention": 3230
+            },
+            "priced": {
+              "claimSurvives": 3163,
+              "correct_settlement": 3230,
+              "criticalDecisions": 370,
+              "decisions": 3600,
+              "false_settlement": 370,
+              "settlements": 3600,
+              "settlesForTruth": 3163,
+              "silentFalseSettlements": 370
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 370,
+              "decisions": 3600,
+              "required_abstention": 370,
+              "unneeded_abstention": 3230
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 370,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 370,
+              "p": 8.31632781251592e-112,
+              "silent": 0,
+              "unneeded": 3230
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 370,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 370,
+              "p": 8.31632781251592e-112,
+              "silent": 0,
+              "unneeded": 3230
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 370,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 370,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 370,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 370,
+              "p": 8.31632781251592e-112,
+              "silent": 0,
+              "unneeded": 3230
+            }
+          },
+          "criticalLadderSilent": 370,
+          "exposure": {
+            "auc": 0.5,
+            "aucOnShare": 0.5,
+            "correct": {
+              "7": 3230
+            },
+            "false": {
+              "7": 370
+            },
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 370,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3046,
+              "correct_settlement": 1234,
+              "criticalDecisions": 382,
+              "decisions": 3600,
+              "false_settlement": 555,
+              "mixedDecisions": 3376,
+              "required_abstention": 196,
+              "settlements": 1789,
+              "settlesForTruth": 1235,
+              "silentFalseSettlements": 555,
+              "unneeded_abstention": 1615
+            },
+            "ladder": {
+              "claimSurvives": 3142,
+              "correct_settlement": 3218,
+              "criticalDecisions": 382,
+              "decisions": 3600,
+              "false_settlement": 382,
+              "mixedDecisions": 3376,
+              "settlements": 3600,
+              "settlesForTruth": 3142,
+              "silentFalseSettlements": 382
+            },
+            "margin": {
+              "claimSurvives": 3513,
+              "correct_settlement": 1518,
+              "criticalDecisions": 382,
+              "decisions": 3600,
+              "false_settlement": 41,
+              "mixedDecisions": 3376,
+              "required_abstention": 341,
+              "settlements": 1559,
+              "settlesForTruth": 1472,
+              "silentFalseSettlements": 41,
+              "unneeded_abstention": 1700
+            },
+            "priced": {
+              "claimSurvives": 3142,
+              "correct_settlement": 3218,
+              "criticalDecisions": 382,
+              "decisions": 3600,
+              "false_settlement": 382,
+              "mixedDecisions": 3376,
+              "settlements": 3600,
+              "settlesForTruth": 3142,
+              "silentFalseSettlements": 382
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 382,
+              "decisions": 3600,
+              "mixedDecisions": 3376,
+              "required_abstention": 382,
+              "unneeded_abstention": 3218
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 369,
+              "criticalPrevented": 196,
+              "criticalSilent": 186,
+              "ladderOnlySilent": 196,
+              "p": 3.035040610846404e-13,
+              "silent": 555,
+              "unneeded": 1615
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 341,
+              "criticalSilent": 41,
+              "ladderOnlySilent": 341,
+              "p": 4.464794497196387e-103,
+              "silent": 41,
+              "unneeded": 1700
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 382,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 382,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 382,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 382,
+              "p": 2.0303534698525194e-115,
+              "silent": 0,
+              "unneeded": 3218
+            }
+          },
+          "criticalLadderSilent": 382,
+          "exposure": {
+            "auc": 0.505722474041631,
+            "aucOnShare": 0.505722474041631,
+            "correct": {
+              "3": 189,
+              "4": 802,
+              "5": 1222,
+              "6": 802,
+              "7": 203
+            },
+            "false": {
+              "3": 16,
+              "4": 92,
+              "5": 159,
+              "6": 94,
+              "7": 21
+            },
+            "settlements": 3600,
+            "variationShare": 0.6163888888888889
+          },
+          "ladderSilent": 382,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 2965,
+              "correct_settlement": 1632,
+              "criticalDecisions": 390,
+              "decisions": 3600,
+              "false_settlement": 603,
+              "mixedDecisions": 3600,
+              "required_abstention": 116,
+              "settlements": 2235,
+              "settlesForTruth": 1600,
+              "silentFalseSettlements": 603,
+              "unneeded_abstention": 1249
+            },
+            "ladder": {
+              "claimSurvives": 3153,
+              "correct_settlement": 3210,
+              "criticalDecisions": 390,
+              "decisions": 3600,
+              "false_settlement": 390,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3153,
+              "silentFalseSettlements": 390
+            },
+            "margin": {
+              "claimSurvives": 3279,
+              "correct_settlement": 2381,
+              "criticalDecisions": 390,
+              "decisions": 3600,
+              "false_settlement": 274,
+              "mixedDecisions": 3600,
+              "required_abstention": 116,
+              "settlements": 2655,
+              "settlesForTruth": 2334,
+              "silentFalseSettlements": 274,
+              "unneeded_abstention": 829
+            },
+            "priced": {
+              "claimSurvives": 3153,
+              "correct_settlement": 3210,
+              "criticalDecisions": 390,
+              "decisions": 3600,
+              "false_settlement": 390,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3153,
+              "silentFalseSettlements": 390
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "criticalDecisions": 390,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "required_abstention": 390,
+              "unneeded_abstention": 3210
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 329,
+              "criticalPrevented": 116,
+              "criticalSilent": 274,
+              "ladderOnlySilent": 116,
+              "p": 1.1191405244453885e-24,
+              "silent": 603,
+              "unneeded": 1249
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 116,
+              "criticalSilent": 274,
+              "ladderOnlySilent": 116,
+              "p": 2.407412430484045e-35,
+              "silent": 274,
+              "unneeded": 829
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 390,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 390,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 390,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 390,
+              "p": 7.931068241611404e-118,
+              "silent": 0,
+              "unneeded": 3210
+            }
+          },
+          "criticalLadderSilent": 390,
+          "exposure": {
+            "auc": 0.5,
+            "aucOnShare": 0.5,
+            "correct": {
+              "3": 3210
+            },
+            "false": {
+              "3": 390
+            },
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 390,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "silent_but_correct": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "5": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 2837,
+              "correct_settlement": 340,
+              "decisions": 3600,
+              "false_settlement": 763,
+              "mixedDecisions": 3046,
+              "settlements": 1103,
+              "settlesForTruth": 340,
+              "silentFalseSettlements": 763,
+              "unneeded_abstention": 2497
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3046,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "correct_settlement": 456,
+              "decisions": 3600,
+              "mixedDecisions": 3046,
+              "settlements": 456,
+              "settlesForTruth": 456,
+              "unneeded_abstention": 3144
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3046,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3046,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 763,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 4.1223352125421653e-230,
+              "silent": 763,
+              "unneeded": 2497
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3144
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "1": 116,
+              "2": 465,
+              "3": 1108,
+              "4": 1357,
+              "5": 554
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.6230555555555556
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 1872,
+              "decisions": 3600,
+              "false_settlement": 1728,
+              "mixedDecisions": 3600,
+              "settlements": 1728,
+              "silentFalseSettlements": 1728,
+              "unneeded_abstention": 1872
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "correct_settlement": 1872,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 1872,
+              "settlesForTruth": 1872,
+              "unneeded_abstention": 1728
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 1728,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 0.0,
+              "silent": 1728,
+              "unneeded": 1872
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 1728
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "1": 1872,
+              "3": 1728
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.48
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        }
+      },
+      "wide_margin_unattested": {
+        "alpha=0.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "5": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=0.5": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "correct_settlement": 1768,
+              "decisions": 3600,
+              "mixedDecisions": 3349,
+              "settlements": 1768,
+              "settlesForTruth": 1768,
+              "unneeded_abstention": 1832
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3349,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3114,
+              "decisions": 3600,
+              "mixedDecisions": 3349,
+              "settlements": 3114,
+              "settlesForTruth": 3114,
+              "unneeded_abstention": 486
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3349,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3349,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 1832
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 486
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "1": 232,
+              "2": 865,
+              "3": 1348,
+              "4": 904,
+              "5": 251
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.6255555555555555
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        },
+        "alpha=1.0": {
+          "arms": {
+            "attested": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "ladder": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "margin": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "priced": {
+              "claimSurvives": 3600,
+              "correct_settlement": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "settlements": 3600,
+              "settlesForTruth": 3600
+            },
+            "refuse_all_unrecorded": {
+              "claimSurvives": 3600,
+              "decisions": 3600,
+              "mixedDecisions": 3600,
+              "unneeded_abstention": 3600
+            }
+          },
+          "comparisons": {
+            "attested": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "margin": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "priced": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 0
+            },
+            "refuse_all_unrecorded": {
+              "armOnlySilent": 0,
+              "criticalPrevented": 0,
+              "criticalSilent": 0,
+              "ladderOnlySilent": 0,
+              "p": 1.0,
+              "silent": 0,
+              "unneeded": 3600
+            }
+          },
+          "criticalLadderSilent": 0,
+          "exposure": {
+            "auc": null,
+            "aucOnShare": null,
+            "correct": {
+              "1": 3600
+            },
+            "false": {},
+            "settlements": 3600,
+            "variationShare": 0.0
+          },
+          "ladderSilent": 0,
+          "pricedDivergesFromLadder": 0
+        }
+      }
+    },
+    "pooledExposureByCell": {
+      "alpha=0.0": {
+        "auc": 0.305924315284098,
+        "correct": {
+          "2": 2182,
+          "5": 17210,
+          "7": 3230
+        },
+        "false": {
+          "2": 1418,
+          "5": 790,
+          "7": 370
+        }
+      },
+      "alpha=0.5": {
+        "auc": 0.24936294910266402,
+        "correct": {
+          "0": 636,
+          "1": 1908,
+          "2": 2805,
+          "3": 4334,
+          "4": 5305,
+          "5": 6629,
+          "6": 802,
+          "7": 203
+        },
+        "false": {
+          "0": 358,
+          "1": 810,
+          "2": 615,
+          "3": 279,
+          "4": 212,
+          "5": 189,
+          "6": 94,
+          "7": 21
+        }
+      },
+      "alpha=1.0": {
+        "auc": 0.1929202359816563,
+        "correct": {
+          "0": 5017,
+          "1": 5472,
+          "3": 8538,
+          "5": 3600
+        },
+        "false": {
+          "0": 2183,
+          "3": 390
+        }
+      }
+    },
+    "schema": "minority-prophet.aid4-semantic-result.v1",
+    "scope": "criterion on reversible decisions; adoption curve reported, not a pass mark"
+  },
+  "semanticResultSha256Runs": [
+    "8b145002384e2322a63de00f5b0f281dfaf2cc0b7863d497f54e0e2c5eb68b05",
+    "8b145002384e2322a63de00f5b0f281dfaf2cc0b7863d497f54e0e2c5eb68b05"
+  ],
+  "startedAt": "2026-09-18T16:56:04.606887+00:00",
+  "status": "confirmatory-complete"
+}

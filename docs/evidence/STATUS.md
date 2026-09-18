@@ -189,7 +189,19 @@ Later constructed results, none canonical:
   every other arm abstains. See [`AID-3`](../../results/aid3-v1/README.md).
   Three worlds by three authors now agree: requiring attested depth cannot be
   made minority-safe by tuning, because discounting witnesses who cannot prove
-  themselves is the mechanism and the harm at once.
+  themselves is the mechanism and the harm at once. The two remaining roads were
+  then tested together and both were rejected: a collapse-robust margin rule
+  vindicates a true minority claim 0 times where the baseline vindicates it
+  3,600, and a published exposure figure is a coin flip where powered and
+  anti-correlated when pooled, so it predicts nothing. See
+  [`AID-4`](../../results/aid4-v1/README.md). Every policy in the series tried to
+  convert *we do not know* into a decision rule, and ignorance does not convert —
+  it relocates, onto whoever cannot produce papers, whoever needed a decision, or
+  a reader who now trusts a meaningless number. The series is closed in
+  [`the attested-independence closure`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md),
+  which records the one constructive finding: the link that would break the
+  theorem can only be written by whoever makes the copy, the field for it already
+  exists and is enforced, and nothing in the estate emits it.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

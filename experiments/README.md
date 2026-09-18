@@ -17,6 +17,12 @@ notes. Presence here does not make an experiment canonical.
 - `dri8/` through `dri11/` — decision-relative independence intervention
   series. Closed; see
   [`DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md`](DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md).
+- `aid1/`, `aid1run/`, `aid2run/`, `aid3run/`, `aid4run/` — attested
+  independence, the successor series. Closed; all four experiments rejected. See
+  [`ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md`](ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md),
+  which records the constructive finding the negative results point at: the link
+  that would break the identical-record theorem can only be written by whoever
+  makes the copy, not by the witness afterwards.
   Do not infer a verdict from a folder — follow the ID through the records.
 - `aid1/` — attested independence, a **new series** rather than a continuation
   of the one above. Observational census of who states a witness depth today;
