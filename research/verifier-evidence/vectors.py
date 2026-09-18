@@ -20,10 +20,15 @@ REJECT = "reject"
 IMPLEMENTED = "implemented"
 UNEXERCISED = "implemented-unexercised"
 
-# Completeness vocabulary from CMP-1 and CMP-2.
+# Completeness vocabulary. The three-outcome form is adopted from
+# draft-sergeev-claim-boundaries-00 Section 11; see ADOPTED-EXTERNAL.md. We had
+# only ESTABLISHED / UNESTABLISHED / FAILED. DOWNGRADED is the move we lacked:
+# report the strongest claim the evidence DOES support, rather than only that
+# the asserted one is unsupported.
 ESTABLISHED = "established"
 UNESTABLISHED = "unestablished"
 FAILED = "failed"
+DOWNGRADED = "downgraded"
 
 
 def exercise_status(outcomes_positive, outcomes_negative) -> str:
@@ -161,35 +166,51 @@ V4_USES = (
 V4_USES_SINGLE = (Use("use-1", True, True),)
 
 
-def evaluate_single_use(uses, detector_sees_undisclosed: bool) -> str:
-    """CMP-1 and CMP-2.
+def evaluate_single_use(uses, detector_sees_undisclosed: bool) -> dict:
+    """Return the strongest supportable claim, not only the failure.
 
-    detector_sees_undisclosed is the stated basis for coverage of the
-    consumption domain. Where it is False the detector is confined to what the
-    effecting party chose to disclose, which is the material-party case.
+    Two axes, kept apart after Bradley B on the agentproto list, 2026-09-16:
+    independence constrains WHO attests; completeness constrains WHAT THEY SEE.
+    detector_sees_undisclosed is the completeness axis alone. A detector may be
+    entirely independent of the effecting party and still be fed only what that
+    party disclosed, which satisfies independence and fails completeness.
+
+    Outcomes follow draft-sergeev-claim-boundaries-00 Section 11. See
+    ADOPTED-EXTERNAL.md for what was taken and from whom.
     """
     visible = [u for u in uses if u.disclosed or detector_sees_undisclosed]
     if not all(u.signature_valid for u in visible):
-        return FAILED
+        return {"outcome": FAILED, "supported": None,
+                "evidenceBasis": "disclosed records", "axis": "validity"}
     if len(visible) > 1:
-        return FAILED
+        return {"outcome": FAILED, "supported": None,
+                "evidenceBasis": "all records", "axis": "completeness"}
     if not detector_sees_undisclosed:
         # Every disclosed artifact is valid and there is exactly one. That is
         # consistent with single use and with an omitted second use, and the
-        # record cannot separate them.
-        return UNESTABLISHED
-    return ESTABLISHED
+        # record cannot separate them. Rather than report only the failure of
+        # the asserted claim, report what the record does support.
+        return {"outcome": DOWNGRADED,
+                "supported": "at least one use, each disclosed use valid",
+                "asserted": "at most one use",
+                "evidenceBasis": "records the effecting party disclosed",
+                "axis": "completeness",
+                "note": ("Independence of the detector, if any, is not at issue "
+                         "here; its field of view is.")}
+    return {"outcome": ESTABLISHED, "supported": "at most one use",
+            "evidenceBasis": "all records", "axis": "completeness"}
 
 
 def v4():
     return {
         "id": "V4",
         "name": "withheld record under a completeness claim",
-        "materialPartyDetector": {
+        "adoptedFrom": "draft-sergeev-claim-boundaries-00 S11; see ADOPTED-EXTERNAL.md",
+        "limitedFieldOfView": {
             "twoUsesOneWithheld": evaluate_single_use(V4_USES, False),
             "genuinelySingleUse": evaluate_single_use(V4_USES_SINGLE, False),
         },
-        "independentDetector": {
+        "fullFieldOfView": {
             "twoUsesOneWithheld": evaluate_single_use(V4_USES, True),
             "genuinelySingleUse": evaluate_single_use(V4_USES_SINGLE, True),
         },
