@@ -110,6 +110,34 @@ directly measurable.
   Three worlds, three authors, one verdict: the counting rule cannot be made
   minority-safe by repair, because the harm is the mechanism.
 
+- **AID-4 — the two roads that were left. Run, and both rejected.**
+  [`AID-4-DESIGN-DRAFT.md`](AID-4-DESIGN-DRAFT.md) froze criteria for both
+  policies before the world existed;
+  [`experiments/aid4run/PREREGISTRATION.md`](../../experiments/aid4run/PREREGISTRATION.md)
+  is the world, by an author who designed neither; the result is
+  [`results/aid4-v1/`](../../results/aid4-v1/README.md).
+
+  **The margin rule never convicts the minority and never believes them.** It
+  fails 25 of 41. In the family where the truthful minority is the *winning*
+  side, the baseline vindicates them 3,600 of 3,600 and the margin rule
+  vindicates them **0**, at every adoption rate. It also prevents nothing against
+  backed copies of one hidden parent — AID-2's finding again, from a different
+  direction: a credential earns depth and says nothing about shared origin.
+
+  **The priced exposure figure predicts nothing.** It fails 23 of 56. AUC is
+  0.500, 0.506 and 0.513 in the powered cells against a 0.70 floor, constant at
+  the extremes, and **anti-correlated** when pooled — 0.31, 0.25, 0.19 — so
+  settlements resting on silence were if anything slightly *more* likely to be
+  right. It did pass the one check a disclosure rule must: it changed no decision
+  anywhere.
+
+  **Criterion 4 passed in all six cells, and passed vacuously.** That is a defect
+  in my own criteria, disclosed by the world's author before any salt was read
+  and frozen unrepaired. I had conflated not being convicted with being believed.
+
+  Both frozen kill criteria fire. The series is closed in
+  [`experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md).
+
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).
