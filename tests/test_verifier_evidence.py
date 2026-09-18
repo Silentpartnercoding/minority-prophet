@@ -87,29 +87,54 @@ class V2Tests(unittest.TestCase):
 
 
 class V4Tests(unittest.TestCase):
-    def test_material_party_detector_cannot_establish_single_use(self):
-        self.assertEqual(
-            vec.v4()["materialPartyDetector"]["twoUsesOneWithheld"], vec.UNESTABLISHED
-        )
+    """Outcomes follow draft-sergeev-claim-boundaries-00 S11, adopted after it
+    was published; see research/verifier-evidence/ADOPTED-EXTERNAL.md.
 
-    def test_material_party_detector_reports_the_same_on_a_genuine_single_use(self):
-        """The whole point of CMP-2: the two worlds are indistinguishable to it.
+    The axis under test is COMPLETENESS - what the detector can see - which is
+    separate from independence, who attests. Bradley B drew that line on the
+    agentproto list on 2026-09-16 and it is the reason these keys are named for
+    field of view rather than for party.
+    """
+
+    def test_limited_view_downgrades_rather_than_only_failing(self):
+        """The improvement taken from Sergeev: report what IS supported.
+
+        Flip: return a bare UNESTABLISHED with no supported claim, as this
+        package did before 2026-09-18.
+        """
+        r = vec.v4()["limitedFieldOfView"]["twoUsesOneWithheld"]
+        self.assertEqual(r["outcome"], vec.DOWNGRADED)
+        self.assertEqual(r["supported"], "at least one use, each disclosed use valid")
+        self.assertEqual(r["asserted"], "at most one use")
+
+    def test_limited_view_cannot_tell_the_two_worlds_apart(self):
+        """The whole point: a curated set looks the same either way.
 
         Flip: give the detector sight of undisclosed records.
         """
-        m = vec.v4()["materialPartyDetector"]
-        self.assertEqual(m["twoUsesOneWithheld"], m["genuinelySingleUse"])
+        v = vec.v4()["limitedFieldOfView"]
+        self.assertEqual(v["twoUsesOneWithheld"]["outcome"],
+                         v["genuinelySingleUse"]["outcome"])
 
-    def test_independent_detector_separates_the_two_worlds(self):
-        i = vec.v4()["independentDetector"]
-        self.assertEqual(i["twoUsesOneWithheld"], vec.FAILED)
-        self.assertEqual(i["genuinelySingleUse"], vec.ESTABLISHED)
-        self.assertNotEqual(i["twoUsesOneWithheld"], i["genuinelySingleUse"])
+    def test_full_view_separates_them(self):
+        f = vec.v4()["fullFieldOfView"]
+        self.assertEqual(f["twoUsesOneWithheld"]["outcome"], vec.FAILED)
+        self.assertEqual(f["genuinelySingleUse"]["outcome"], vec.ESTABLISHED)
+        self.assertNotEqual(f["twoUsesOneWithheld"]["outcome"],
+                            f["genuinelySingleUse"]["outcome"])
 
-    def test_unestablished_is_not_failed(self):
-        """CMP-2 requires the weaker result, not a negative one."""
-        m = vec.v4()["materialPartyDetector"]
-        self.assertNotEqual(m["twoUsesOneWithheld"], vec.FAILED)
+    def test_downgraded_is_not_failed(self):
+        """'We could not check' and 'we checked and it failed' are different
+        findings, and collapsing them costs the relying party the difference."""
+        self.assertNotEqual(vec.v4()["limitedFieldOfView"]["twoUsesOneWithheld"]["outcome"],
+                            vec.FAILED)
+
+    def test_every_result_names_the_basis_it_ranged_over(self):
+        """A verdict over a named evidence basis is a verdict over that basis."""
+        r = vec.v4()
+        for group in ("limitedFieldOfView", "fullFieldOfView"):
+            for case in r[group].values():
+                self.assertTrue(case["evidenceBasis"])
 
     def test_every_disclosed_signature_is_valid(self):
         """The attack works with no invalid artifact anywhere."""
