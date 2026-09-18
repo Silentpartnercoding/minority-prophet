@@ -49,6 +49,12 @@ class ClockError(RootIssuanceError):
     pass
 
 
+#: The vendor-neutral contract's origin vocabulary, duplicated here so issuance
+#: and the contract boundary refuse the same things. `contracts/
+#: authority-evidence-v0.2/schema.json` is the other copy; neither may drift.
+ORIGIN_TYPES = ("observation", "derived", "copied", "unknown")
+
+
 class IssuerVerifier(Protocol):
     def verify(self, issuer_id: str, key_id: str, message: bytes, signature: str) -> bool: ...
 
@@ -73,6 +79,22 @@ class RootRequest:
     attestation: str | None = None
     witness_identity: str | None = None
     depth_basis: str | None = None
+    #: The duplication link, also optional and also signature-covered.
+    #:
+    #: `origin_type` is the vendor-neutral contract's vocabulary —
+    #: `observation | derived | copied | unknown` — and `parent_roots` names the
+    #: roots this one came from. The contract has carried both since v0.1 and
+    #: `conformance/authority_evidence.py` enforces that a copy may not mint a
+    #: fresh root, but until now a `RootRequest` had nowhere to say it, so the
+    #: rule could only be applied at the contract boundary and never at
+    #: issuance — which is the moment the copier actually holds both the source
+    #: and the destination.
+    #:
+    #: Absent means the issuer did not say. That is silence, not a claim of
+    #: independence: `unknown` and "unstated" both read as unattributable
+    #: downstream rather than as a fresh root.
+    origin_type: str | None = None
+    parent_roots: tuple[str, ...] = ()
 
     def canonical_bytes(self) -> bytes:
         payload = {
@@ -88,11 +110,16 @@ class RootRequest:
         # Omit-if-absent. A request that states none of the v3 axes produces a
         # byte-identical payload to before, so signatures made against the
         # previous version still verify and no re-signing is required.
-        for field_name in ("attestation", "depth_basis", "witness_depth",
-                           "witness_identity"):
+        for field_name in ("attestation", "depth_basis", "origin_type",
+                           "witness_depth", "witness_identity"):
             stated = getattr(self, field_name)
             if stated is not None:
                 payload[field_name] = stated
+        # The link is signature-covered for the same reason the axes are: an
+        # intermediary must not be able to strip a parent and turn a copy back
+        # into an apparently fresh observation.
+        if self.parent_roots:
+            payload["parent_roots"] = sorted(self.parent_roots)
         # Normative form, per provenance/canonical_form.py. `ensure_ascii=False`
         # was missing, so any non-ASCII observation_id signed here produced bytes
         # no other producer in the estate would reproduce. No receipts are
@@ -314,7 +341,22 @@ class RootRegistry:
         the root's id, so one observation would exist twice as a phantom root.
 
         Consequently no root id changes under v3, and there is no id migration.
+
+        **The duplication link is the opposite case, and is deliberately
+        included.** `parent_roots` is not metadata *about* an observation; it is
+        a statement that this is the *same* observation as another one. So a
+        request declaring `copied` or `derived` resolves to its parent's id
+        rather than to a fresh one, which makes the contract's rule — a copy may
+        not mint a fresh root — true by construction at issuance, instead of
+        merely checked later at the contract boundary.
+
+        With several parents the smallest id is chosen, for determinism. Whether
+        a derivation from several roots deserves an identity of its own is a
+        real modelling question this does not settle; it fails toward reuse,
+        which cannot inflate a count.
         """
+        if request.origin_type in ("copied", "derived") and request.parent_roots:
+            return min(request.parent_roots)
         material = {
             "evidence_digest": request.evidence_digest,
             "issuer_id": request.issuer_id,
@@ -336,6 +378,22 @@ class RootRegistry:
             raise RootIssuanceError("evidence_digest must be lowercase SHA-256 hex")
         if abs(now - request.observed_at) > self.max_clock_skew_seconds:
             raise ClockError("observation is outside the accepted clock window")
+        if request.origin_type is not None and request.origin_type not in ORIGIN_TYPES:
+            raise RootIssuanceError(
+                f"unrecognised origin_type {request.origin_type!r}; "
+                f"expected one of {', '.join(sorted(ORIGIN_TYPES))}"
+            )
+        if request.origin_type in ("copied", "derived") and not request.parent_roots:
+            raise RootIssuanceError(
+                f"{request.origin_type} evidence must name its parent roots; "
+                "a copy that names no parent is indistinguishable from a fresh "
+                "observation, which is the gap this field exists to close"
+            )
+        if request.parent_roots and request.origin_type is None:
+            raise RootIssuanceError(
+                "parent_roots was stated without an origin_type; say what the "
+                "relationship is rather than leaving it to be inferred"
+            )
         if not self.verifier.verify(
             request.issuer_id, request.key_id, request.canonical_bytes(), request.signature
         ):
