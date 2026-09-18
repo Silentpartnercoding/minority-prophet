@@ -170,7 +170,38 @@ Later constructed results, none canonical:
   up as adoption rises, and settles 720 of 720 minority decisions against a true
   contrary claim. See [`AID-1`](../../results/aid1-v1/README.md). The policy is
   not usable as scoped, and its scope guard cannot hold because the use is
-  caller-declared.
+  caller-declared. The structural replacement was then measured and also
+  rejected: returning the range the record supports removes that suppression
+  entirely — the true claim survives 360 of 360 where a single count deleted all
+  360 — but it is inert where a decoy recorded kinship collapses a witness at
+  both ends, and it is blind to a backed witness with a shared origin, preventing
+  0 of 360 against device-attested copies of one fabricator. Depth attestation
+  earns depth and says nothing about shared origin. See
+  [`AID-2`](../../results/aid2-v1/README.md). Two of the three disclosed defects
+  are implementation errors rather than properties of the bounds idea, so the
+  question is open rather than closed. A third experiment then ran the
+  adversarial review's own world — written against the pre-repair policy, and
+  open in a pull request 35 minutes before the first experiment was run, which
+  the first two records did not use. It closes one question and sharpens the
+  other: the repair demonstrably shuts the defect that world was built around,
+  and the suppression is untouched and total, with the policy settling against a
+  true contrary claim in 4,800 of 4,800 decisions at every adoption rate while
+  every other arm abstains. See [`AID-3`](../../results/aid3-v1/README.md).
+  Three worlds by three authors now agree: requiring attested depth cannot be
+  made minority-safe by tuning, because discounting witnesses who cannot prove
+  themselves is the mechanism and the harm at once. The two remaining roads were
+  then tested together and both were rejected: a collapse-robust margin rule
+  vindicates a true minority claim 0 times where the baseline vindicates it
+  3,600, and a published exposure figure is a coin flip where powered and
+  anti-correlated when pooled, so it predicts nothing. See
+  [`AID-4`](../../results/aid4-v1/README.md). Every policy in the series tried to
+  convert *we do not know* into a decision rule, and ignorance does not convert —
+  it relocates, onto whoever cannot produce papers, whoever needed a decision, or
+  a reader who now trusts a meaningless number. The series is closed in
+  [`the attested-independence closure`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md),
+  which records the one constructive finding: the link that would break the
+  theorem can only be written by whoever makes the copy, the field for it already
+  exists and is enforced, and nothing in the estate emits it.
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

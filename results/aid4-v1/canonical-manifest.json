@@ -1,0 +1,37 @@
+{
+  "schema": "minority-prophet.canonical-manifest.v1",
+  "experiment": "AID-4",
+  "series": "attested-independence",
+  "status": "canonical-both-remaining-policies-rejected",
+  "verdict": "rejected",
+  "artifactUnderTest": "aggregation/attested_independence.py",
+  "policies": {"B": "margin, collapse-robust", "C": "priced exposure"},
+  "worldAuthor": "an author who designed neither policy; same control domain, author separation, not independent validation",
+  "files": {
+    "research/attested-independence/AID-4-DESIGN-DRAFT.md": "1ee24a1417df018b2dd739a07088eac2e4c6a3aea0514ea7eebc27398975576b",
+    "experiments/aid4run/PREREGISTRATION.md": "821c3bf104d25af5e6205ff5df439d2e29d2086b7a85d929ede5aa2323af5f99",
+    "experiments/aid4run/EXECUTION-CONFIG.json": "1d9c7dccbb08be040c34f3da0f05cdf775a06fcf0daa49babfc528b199a474e4",
+    "experiments/aid4run/world.py": "234b7b1cf0ff819ae2b813794283e18553fba9589881a813d509a1620e28dd66",
+    "experiments/aid4run/arms.py": "3dda798453281998f36b3ca07f3bf45a8d5eb32fbe797bd9f5d9a485c159404d",
+    "experiments/aid4run/scoring.py": "df2e9c299555bedecd938e2af8de601f255f592ab440129ac3f1771055618149",
+    "results/aid4-v1/result.json": "52986a906a84b4add8ffc57fec54a1c903e5710c02000358466cd6fbdb807b86",
+    "aggregation/attested_independence.py": "116d290f88895ec743205643aee442df7454993565f58425b4e92b14c538ea60",
+    "aggregation/independence_axes.py": "324bab7f971ba1a0849329010c76aa048f8157dbbb7f3a440b8426639901c311",
+    "canon/proximity.py": "15398c208bf391c9d150e23b2f18dad6affd9d271303129395df754ccb71ab3b",
+    "canon/independent_set.py": "a0e9b357291f9175b8608d656d03eefc2159aaa9e25ae66477e515fe5206fb3c",
+    "experiments/dri2/stats.py": "6f65060ff5cd366e6ca2a65fe85395210212e32f2abc3dfb0f72e7e3f06c9257"
+  },
+  "semanticResultSha256": "8b145002384e2322a63de00f5b0f281dfaf2cc0b7863d497f54e0e2c5eb68b05",
+  "campaignManifestSha256": "359f0858762a9ee8a66b991f07ba25c3cb34afc5d38bf39cfb823ac3a4e61e4b",
+  "reproducible": true,
+  "criteriaFrozenCommit": "b35962abddb096cd612c945236fbcae685ff1a13",
+  "protocolCommit": "535f77d4ba1480b08793765a48442b6686d68b54",
+  "candidateCommit": "c4fa1bef11ed96748eddc5eec252ef4ea495b1be",
+  "checks": {"policyB": {"failed": 25, "total": 41}, "policyC": {"failed": 23, "total": 56}},
+  "headline": {
+    "trueClaimVindicatedInMinorityWins": {"ladder": 3600, "margin": 0},
+    "exposureAucPowered": [0.5, 0.506, 0.513],
+    "exposureAucPooled": [0.306, 0.249, 0.193]
+  },
+  "boundary": "Both kill criteria in the frozen draft fire. Criterion 4 passes in all six cells and passes vacuously: the margin policy's floor gates the baseline's answer rather than holding a second election, so it only converts settlements into abstentions and a survival test cannot fall. That defect was disclosed in the protocol before any salt was read, was frozen unrepaired because editing criteria after seeing them fail is the error this methodology prevents, and is carried instead by the reported vindication counter, where the baseline vindicates a true minority claim 3,600 times and the policy never does. Repairing the criterion would not rescue the policy. Policy C changed no decision anywhere, as a disclosure rule must, and its exposure figure is a coin flip where powered and anti-correlated when pooled. Synthetic throughout; adoption is a generator dial. Same control domain: author separation, not independent validation. Nothing here bears on recorded dependence, where the proved robustness rule remains the method."
+}

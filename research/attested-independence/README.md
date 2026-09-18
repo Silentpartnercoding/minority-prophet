@@ -47,8 +47,97 @@ directly measurable.
   caller-declared.
 
   Two defects in the policy were disclosed in the protocol before the run and
-  left in place deliberately, so this measures the policy as shipped. Repairing
+  left in place deliberately, so this measured the policy as shipped. Repairing
   them is a registered successor, not an edit to this record.
+- **AID-2 — does the range do what the number could not. Run, and rejected**,
+  74 of 120 checks.
+  [`AID-2-DESIGN-DRAFT.md`](AID-2-DESIGN-DRAFT.md) froze the criteria before the
+  world existed;
+  [`experiments/aid2run/PREREGISTRATION.md`](../../experiments/aid2run/PREREGISTRATION.md)
+  is the world, written by someone other than the policy's author; the result is
+  [`results/aid2-v1/`](../../results/aid2-v1/README.md).
+
+  **The range does fix what it was built to fix.** In AID-1's suppression
+  construction the bounds arm preserves the true contrary claim **360 of 360**
+  at every adoption rate, where the point estimate deletes all 360. A range
+  serves two decisions that one number could not.
+
+  **And it is inert on a case nobody anticipated.** Where only the minority's
+  *recorded kinship* is a decoy, bounds and point are identical at every rate —
+  360, 306, 204, 48, **0** — while the plain ladder holds 360 throughout. The
+  upper bound runs the ladder at *admissible* depth, so a witness the policy
+  discounts is discounted at both ends and a recorded ancestry token collapses
+  the pair at both ends at once.
+
+  **And it is blind to a backed witness with a shared origin.** Against three
+  device-attested copies of one fabricator it prevents **0 of 360**, while
+  closing three free-declaration strains essentially completely. A device
+  attestation earns depth; it says nothing about shared origin. That is the A5
+  defect still present, gated behind a depth check rather than removed.
+
+  Three defects in the instrument were disclosed before the confirmatory salt
+  was touched and left in place. Two are implementation errors rather than
+  properties of the bounds idea, so **this does not close the bounds question** —
+  a successor that fixes the upper bound and reads all four corners of the count
+  box is a different instrument and must be separately registered.
+
+- **AID-3 — the reviewer's world, against the repaired policy. Run, and
+  rejected**, 17 of 23 checks.
+  [`AID-3-REGISTRATION-NOTE.md`](AID-3-REGISTRATION-NOTE.md) lists every edit
+  made to the reviewer's submission;
+  [`experiments/aid3run/PREREGISTRATION.md`](../../experiments/aid3run/PREREGISTRATION.md)
+  is their world, relocated unchanged in substance; the result is
+  [`results/aid3-v1/`](../../results/aid3-v1/README.md).
+
+  **Why it exists.** AID-1 and AID-2 were run against worlds written by
+  subagents the policy's author spawned, while the adversarial review's world sat
+  open, frozen and green in PR #214 — opened 35 minutes before AID-1 ran. Both
+  records carry "same control domain; not independent validation", and that line
+  was carrying more weight than it should.
+
+  **The repair works where it was aimed.** The review built three families around
+  the completeness short-circuit. Their own construction test asserted two
+  unbacked witnesses ticking the box are granted independence; it now asserts the
+  opposite and passes.
+
+  **The suppression is untouched, and total.** 4,800 of 4,800 decisions settled
+  against the true contrary claim, at **every** adoption rate, where the ladder,
+  the theatre arm and the refusal arm all abstain and the claim survives. AID-1
+  saw 720 of 720 at full adoption only. It is rate-independent because the
+  asymmetry is not about completeness: the false side has backing, the true side
+  can never obtain any, and deflating the unattested is what the policy does.
+
+  Three worlds, three authors, one verdict: the counting rule cannot be made
+  minority-safe by repair, because the harm is the mechanism.
+
+- **AID-4 — the two roads that were left. Run, and both rejected.**
+  [`AID-4-DESIGN-DRAFT.md`](AID-4-DESIGN-DRAFT.md) froze criteria for both
+  policies before the world existed;
+  [`experiments/aid4run/PREREGISTRATION.md`](../../experiments/aid4run/PREREGISTRATION.md)
+  is the world, by an author who designed neither; the result is
+  [`results/aid4-v1/`](../../results/aid4-v1/README.md).
+
+  **The margin rule never convicts the minority and never believes them.** It
+  fails 25 of 41. In the family where the truthful minority is the *winning*
+  side, the baseline vindicates them 3,600 of 3,600 and the margin rule
+  vindicates them **0**, at every adoption rate. It also prevents nothing against
+  backed copies of one hidden parent — AID-2's finding again, from a different
+  direction: a credential earns depth and says nothing about shared origin.
+
+  **The priced exposure figure predicts nothing.** It fails 23 of 56. AUC is
+  0.500, 0.506 and 0.513 in the powered cells against a 0.70 floor, constant at
+  the extremes, and **anti-correlated** when pooled — 0.31, 0.25, 0.19 — so
+  settlements resting on silence were if anything slightly *more* likely to be
+  right. It did pass the one check a disclosure rule must: it changed no decision
+  anywhere.
+
+  **Criterion 4 passed in all six cells, and passed vacuously.** That is a defect
+  in my own criteria, disclosed by the world's author before any salt was read
+  and frozen unrepaired. I had conflated not being convicted with being believed.
+
+  Both frozen kill criteria fire. The series is closed in
+  [`experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md).
+
 - **AID-1-OBS — who states depth today.** An observational census of corpora and
   exchange formats, in
   [`experiments/aid1/OBSERVATIONAL-REPORT.md`](../../experiments/aid1/OBSERVATIONAL-REPORT.md).
