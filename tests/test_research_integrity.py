@@ -272,6 +272,12 @@ def test_ci_runs_imported_evaluation_with_full_history():
     assert "make verify-evaluation" in workflow
 
 
+def test_ci_runs_canonical_model_reconciliation():
+    workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
+    assert "Reconcile canonical evidence model" in workflow
+    assert "make check-canonical-model" in workflow
+
+
 def test_ci_checks_runtime_supply_chain_without_publishing():
     workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
     assert "runtime-supply-chain:" in workflow

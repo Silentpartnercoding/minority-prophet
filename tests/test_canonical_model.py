@@ -44,6 +44,16 @@ class CanonicalModelTests(unittest.TestCase):
         self.assert_problem(problems, "unknown layer")
         self.assert_problem(problems, "unknown disposition")
 
+    def test_declared_json_schema_is_enforced(self):
+        def mutate(model):
+            del model["terms"][0]["definition"]
+            model["terms"][0]["unexpected"] = True
+
+        problems = self.problems_for(mutate)
+        self.assert_problem(problems, "schema")
+        self.assert_problem(problems, "required property 'definition'")
+        self.assert_problem(problems, "additional property 'unexpected'")
+
     def test_artifact_and_authority_references_must_resolve(self):
         def mutate(model):
             model["terms"][0]["authority"][0]["artifact"] = "missing/nope.py"

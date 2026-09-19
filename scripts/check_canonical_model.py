@@ -10,6 +10,7 @@ documents that can otherwise be mistaken for current doctrine.
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import hashlib
 import json
 import re
@@ -35,6 +36,88 @@ def _digest(path: Path) -> str:
 
 def _duplicates(values: list[str]) -> list[str]:
     return sorted(value for value, count in Counter(values).items() if count > 1)
+
+
+def _schema_ref(document: dict[str, Any], ref: str) -> dict[str, Any]:
+    if not ref.startswith("#/"):
+        raise ValueError(f"only local schema references are supported: {ref!r}")
+    value: Any = document
+    for part in ref[2:].split("/"):
+        value = value[part.replace("~1", "/").replace("~0", "~")]
+    if not isinstance(value, dict):
+        raise ValueError(f"schema reference does not resolve to an object: {ref!r}")
+    return value
+
+
+def _matches_type(value: Any, expected: str) -> bool:
+    return {
+        "array": lambda: isinstance(value, list),
+        "boolean": lambda: isinstance(value, bool),
+        "integer": lambda: isinstance(value, int) and not isinstance(value, bool),
+        "null": lambda: value is None,
+        "number": lambda: isinstance(value, (int, float)) and not isinstance(value, bool),
+        "object": lambda: isinstance(value, dict),
+        "string": lambda: isinstance(value, str),
+    }.get(expected, lambda: False)()
+
+
+def _schema_errors(
+    value: Any,
+    rule: dict[str, Any],
+    document: dict[str, Any],
+    path: str = "$",
+) -> list[str]:
+    """Validate the JSON-Schema subset used by model-registry.schema.json."""
+    if "$ref" in rule:
+        try:
+            rule = _schema_ref(document, rule["$ref"])
+        except (KeyError, TypeError, ValueError) as exc:
+            return [f"schema {path}: invalid schema reference: {exc}"]
+
+    problems: list[str] = []
+    expected = rule.get("type")
+    if expected is not None:
+        expected_types = [expected] if isinstance(expected, str) else expected
+        if not isinstance(expected_types, list) or not any(
+            isinstance(item, str) and _matches_type(value, item) for item in expected_types
+        ):
+            return [f"schema {path}: expected type {expected!r}"]
+    if "const" in rule and value != rule["const"]:
+        problems.append(f"schema {path}: expected constant {rule['const']!r}")
+    if "enum" in rule and value not in rule["enum"]:
+        problems.append(f"schema {path}: value {value!r} is outside enum {rule['enum']!r}")
+
+    if isinstance(value, dict):
+        properties = rule.get("properties", {})
+        for required in rule.get("required", []):
+            if required not in value:
+                problems.append(f"schema {path}: required property {required!r} is missing")
+        if rule.get("additionalProperties") is False:
+            for extra in sorted(set(value) - set(properties)):
+                problems.append(f"schema {path}: additional property {extra!r} is not allowed")
+        for key in sorted(set(value) & set(properties)):
+            problems.extend(_schema_errors(value[key], properties[key], document, f"{path}.{key}"))
+    elif isinstance(value, list):
+        minimum = rule.get("minItems")
+        if isinstance(minimum, int) and len(value) < minimum:
+            problems.append(f"schema {path}: requires at least {minimum} item(s)")
+        item_rule = rule.get("items")
+        if isinstance(item_rule, dict):
+            for index, item in enumerate(value):
+                problems.extend(_schema_errors(item, item_rule, document, f"{path}[{index}]"))
+    elif isinstance(value, str):
+        minimum = rule.get("minLength")
+        if isinstance(minimum, int) and len(value) < minimum:
+            problems.append(f"schema {path}: requires at least {minimum} character(s)")
+        pattern = rule.get("pattern")
+        if isinstance(pattern, str) and re.search(pattern, value) is None:
+            problems.append(f"schema {path}: value does not match pattern {pattern!r}")
+        if rule.get("format") == "date":
+            try:
+                dt.date.fromisoformat(value)
+            except ValueError:
+                problems.append(f"schema {path}: value is not an ISO date")
+    return problems
 
 
 def _authority_ids(root: Path) -> tuple[set[str], dict[str, dict[str, Any]], list[str]]:
@@ -107,12 +190,20 @@ def validate_registry_data(root: Path, model: dict[str, Any]) -> list[str]:
     """Return deterministic reconciliation problems for an already-loaded registry."""
     root = root.resolve()
     problems: list[str] = []
+    schema_path = root / "canon/model-registry.schema.json"
+    try:
+        schema = _json(schema_path)
+        problems.extend(_schema_errors(model, schema, schema))
+    except (OSError, TypeError, json.JSONDecodeError) as exc:
+        problems.append(f"cannot load registry schema {schema_path}: {exc}")
     if model.get("schemaVersion") != 1:
         problems.append("registry: schemaVersion must equal 1")
+    collections_valid = True
     for collection in REQUIRED_COLLECTIONS:
         if not isinstance(model.get(collection), list):
             problems.append(f"registry: {collection} must be a list")
-    if problems:
+            collections_valid = False
+    if not collections_valid:
         return sorted(problems)
 
     theorem_ids, research, authority_problems = _authority_ids(root)
