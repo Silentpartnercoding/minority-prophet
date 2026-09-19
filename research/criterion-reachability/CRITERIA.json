@@ -1,0 +1,24 @@
+{
+  "schema": "minority-prophet.criterion-reachability.v1",
+  "note": "Preregistered criteria expressed in a form a machine can check for REACHABILITY: could any possible result have satisfied this criterion, given the bounds of the metrics it is scored on? This registry declares the criterion's shape; it never restates its meaning, and it never scores the criterion itself. Only forms listed in scripts/check_criterion_reachability.py SUPPORTED_FORMS may appear.",
+  "criteria": [
+    {
+      "id": "HGD-1g",
+      "experiment": "HGD-1",
+      "protocol": "experiments/HGD-1-PREREGISTRATION.md",
+      "result": "results/hgd1-v1/result.json",
+      "quoted": "on the frozen EPA counterfactuals, interval accounting has no higher false-confident-error rate than head count at every injected shift, with at least one shift lower by `0.05` or more",
+      "form": "absolute-difference",
+      "comparison": ">=",
+      "threshold": 0.05,
+      "quantifier": "any",
+      "minuend": "observational.pooled.*.head.false_confident_error",
+      "subtrahend": "observational.pooled.*.interval.false_confident_error",
+      "subtrahendFloor": 0.0,
+      "floorBasis": "A false-confident-error rate is a proportion of cases and cannot fall below zero. The floor is a property of the metric, declared here rather than inferred.",
+      "scoredOn": "observational.pooled",
+      "scoringNote": "experiments/hgd1/run_hgd1.py lines 358-365 score this on the pooled block only. by_sample_duration is computed and reported but never scored.",
+      "acknowledged": "research/criterion-reachability/FINDINGS.md"
+    }
+  ]
+}
