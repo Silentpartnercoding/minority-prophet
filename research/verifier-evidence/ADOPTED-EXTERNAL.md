@@ -11,6 +11,11 @@ idea that appears to be ours.
 Nothing here is a claim that these authors endorse this repository or have
 reviewed it. Each entry cites public, dated material.
 
+An entry here means a specific improvement was taken from outside. It does not
+mean the surrounding idea originated outside. Where this repository reached
+something first, the date is in [`PROVENANCE.md`](../../PROVENANCE.md) and is
+stated in the entry.
+
 ---
 
 ## 1. Independence and completeness are two axes, not one
@@ -54,10 +59,14 @@ independence axis, with this attribution.
 > available, or the premise was outside the evaluation's scope. […] It does not
 > establish the negation of the claim either."
 
-**What we had.** Two outcomes, `unestablished` and `failed`, plus `established`.
-Correct as far as it went, and it is the distinction our own draft argued for.
+**What we had, and when.** Two outcomes, `unestablished` and `failed`, plus
+`established`. `unverifiable` appears in this repository's public history on
+**2026-08-05** (`e1403a7`) and `not_established` on **2026-08-07** (`f6904c0`),
+six weeks before the draft cited above. The distinction was reached here
+independently and is dated in [`PROVENANCE.md`](../../PROVENANCE.md). Nothing
+below is an account of learning it from someone else.
 
-**Why theirs is better.** It adds a third move we did not have: *downgrade*.
+**What theirs adds.** A third move we did not have: *downgrade*.
 Rather than reporting only that the asserted claim is not supported, report the
 strongest claim the evidence **does** support. That is strictly more useful to a
 relying party, and it is the difference between a verdict and a diagnosis.
