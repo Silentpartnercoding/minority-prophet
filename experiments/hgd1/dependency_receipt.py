@@ -96,13 +96,26 @@ def build_receipt(
     components: Iterable[Mapping[str, Any]],
     *,
     support_status: str = "supported",
-    receipt_digest: str,
+    receipt_digest: str | None,
 ) -> dict[str, Any]:
-    """A dependency receipt in the published schema's shape."""
+    """A dependency receipt in the published schema's shape.
+
+    `receipt_digest` is keyword-only with no default, so a caller must decide
+    explicitly. It may be `None`: the schema types `receiptDigest` as
+    `["string", "null"]`, which is deliberate — a support status of `unknown`,
+    `conflicting` or `revoked` can have no supporting receipt to point at, and a
+    placeholder digest would assert one exists.
+
+    Null is not the same as omitted. The key stays `required`, so a receipt must
+    say "there is no supporting receipt" rather than stay silent about whether
+    it looked.
+    """
     if not _DIGEST.match(origin_digest):
         raise DependencyReceiptError("originDigest must match sha256:<64 hex>")
-    if not _DIGEST.match(receipt_digest):
-        raise DependencyReceiptError("support.receiptDigest must match sha256:<64 hex>")
+    if receipt_digest is not None and not _DIGEST.match(receipt_digest):
+        raise DependencyReceiptError(
+            "support.receiptDigest must match sha256:<64 hex>, or be null"
+        )
     if support_status not in SUPPORT_STATUSES:
         raise DependencyReceiptError(
             f"unrecognised support status {support_status!r}; "
@@ -153,9 +166,19 @@ def receipt_errors(document: object) -> list[str]:
     else:
         if support.get("status") not in SUPPORT_STATUSES:
             errors.append("unrecognised support status")
-        digest = support.get("receiptDigest")
-        if not isinstance(digest, str) or not _DIGEST.match(digest):
-            errors.append("support.receiptDigest must match sha256:<64 hex>")
+        # `receiptDigest` is typed `["string", "null"]` and is `required`. Null
+        # and absent mean different things: null says the producer looked and
+        # there is no supporting receipt; absent says nothing at all. A
+        # validator stricter than its own schema is worse than none, because it
+        # rejects documents the published contract permits.
+        if "receiptDigest" not in support:
+            errors.append("support.receiptDigest is required (it may be null)")
+        else:
+            digest = support["receiptDigest"]
+            if digest is not None and (
+                not isinstance(digest, str) or not _DIGEST.match(digest)
+            ):
+                errors.append("support.receiptDigest must match sha256:<64 hex>, or be null")
     return errors
 
 

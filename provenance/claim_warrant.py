@@ -177,22 +177,61 @@ def warrant_errors(warrant: object) -> list[str]:
                 f"{claim_type!r}, which derives {expected!r}"
             )
 
+    # STRICT IN WHAT WE EMIT, EXACTLY CONFORMANT IN WHAT WE ACCEPT.
+    #
+    # `build_warrant` requires `source_digest` to match the accepted `hash` form
+    # and refuses an empty `recheck_reference`, because those are the shapes the
+    # estate has agreed to produce. This function must NOT enforce either.
+    #
+    # The schema types both as plain `string` — the hash form appears only in
+    # prose, and `recheck_reference` is documented "free-form: this schema does
+    # not constrain external vocabularies". A validator that rejected a
+    # schema-valid document would refuse conforming evidence from a producer
+    # that read the contract correctly, which is a worse failure than not
+    # checking: it makes this implementation, rather than the published schema,
+    # the real contract.
     digest = warrant.get("source_digest")
-    if digest is not None and (not isinstance(digest, str) or not _HASH_FORM.match(digest)):
-        errors.append("source_digest must be 32-128 hex characters")
+    if digest is not None and not isinstance(digest, str):
+        errors.append("source_digest must be a string")
 
     reference = warrant.get("recheck_reference")
-    if reference is not None and (not isinstance(reference, str) or not reference.strip()):
-        errors.append("recheck_reference must be a non-empty string when present")
+    if reference is not None and not isinstance(reference, str):
+        errors.append("recheck_reference must be a string")
 
     attestation = warrant.get("external_attestation")
     if attestation is not None and not isinstance(attestation, Mapping):
         errors.append("external_attestation must be an object")
 
-    outcome = warrant.get("verify_outcome")
-    if outcome is not None:
-        if not isinstance(outcome, Mapping):
-            errors.append("verify_outcome must be an object")
-        elif outcome.get("result") not in ("verified", "rejected", "unverifiable"):
-            errors.append("verify_outcome.result must be verified, rejected or unverifiable")
+    errors.extend(_verify_outcome_errors(warrant.get("verify_outcome")))
+    return errors
+
+
+#: `verify_outcome`'s own keys, from the schema. It sets
+#: `additionalProperties: false` and requires `result`.
+_OUTCOME_PERMITTED = frozenset({"result", "reason", "checked_at", "checked_by"})
+
+_OUTCOME_RESULTS = ("verified", "rejected", "unverifiable")
+
+
+def _verify_outcome_errors(outcome: object) -> list[str]:
+    """Checks for the nested re-check result.
+
+    `unverifiable` is never collapsed into `rejected`. The schema is emphatic
+    about why: "a claim whose source has become unreachable is not a claim that
+    failed, and the difference is exactly the signal false-prophet screening
+    depends on. A prophet can make claims unverifiable at no cost."
+    """
+    if outcome is None:
+        return []
+    if not isinstance(outcome, Mapping):
+        return ["verify_outcome must be an object"]
+
+    errors: list[str] = []
+    unknown = sorted(set(outcome) - _OUTCOME_PERMITTED)
+    if unknown:
+        errors.append("unpermitted verify_outcome keys: " + ", ".join(unknown))
+    if "result" not in outcome:
+        errors.append("verify_outcome.result is required")
+    elif outcome["result"] not in _OUTCOME_RESULTS:
+        errors.append("verify_outcome.result must be verified, rejected or unverifiable")
     return errors
