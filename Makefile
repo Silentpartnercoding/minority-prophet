@@ -6,7 +6,7 @@ HEAD_REF ?= HEAD
 .PHONY: help setup paper-setup paper-pdf paper-check verify verify-python verify-integrity verify-site verify-evaluation \
 	check-doc-navigation \
 	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
-	check-research-integrity
+	check-research-integrity check-canonical-model
 
 help:
 	@echo "make setup       Create local Python and Node development dependencies"
@@ -19,6 +19,7 @@ help:
 	@echo "make verify-site"
 	@echo "make verify-evaluation"
 	@echo "make check-doc-navigation"
+	@echo "make check-canonical-model"
 
 setup:
 	"$(BOOTSTRAP_PYTHON)" -m venv .venv
@@ -40,7 +41,10 @@ verify: verify-python verify-integrity verify-site verify-evaluation
 verify-python:
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q
 
-verify-integrity: check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity check-gate-coverage check-criterion-reachability
+verify-integrity: check-canonical-model check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity check-gate-coverage check-criterion-reachability
+
+check-canonical-model:
+	"$(PYTHON)" scripts/check_canonical_model.py
 
 check-doc-navigation:
 	"$(PYTHON)" scripts/check_documentation_navigation.py

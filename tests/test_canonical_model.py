@@ -163,6 +163,17 @@ class CanonicalModelTests(unittest.TestCase):
         self.assertIn("docs/evidence/MODEL.md", readme)
         self.assertNotIn("one recorded source against one independent source", readme)
 
+    def test_reconciliation_is_a_local_and_ci_integrity_gate(self):
+        makefile = (ROOT / "Makefile").read_text()
+        ci = (ROOT / ".github/workflows/ci.yml").read_text()
+        verify_line = next(
+            line for line in makefile.splitlines() if line.startswith("verify-integrity:")
+        )
+        self.assertIn("check-canonical-model", verify_line)
+        self.assertIn("check-canonical-model:", makefile)
+        self.assertIn("scripts/check_canonical_model.py", makefile)
+        self.assertIn("make check-canonical-model", ci)
+
 
 if __name__ == "__main__":
     unittest.main()
