@@ -1,0 +1,94 @@
+{
+  "agent_votes": {
+    "answer_a": 5,
+    "answer_b": 1,
+    "naive_result": "answer_a"
+  },
+  "claim_boundary": "This fixture shows dependence collapse under declared ancestry. It does not prove either answer true or infer hidden real-world copying.",
+  "epistemic_assessment": {
+    "interventions": [
+      "PRESERVE_MINORITY",
+      "REQUIRE_INDEPENDENT_SOURCE"
+    ],
+    "reason": "The recorded 5:1 agent majority collapses to a 1:1 evidence-root tie.",
+    "verdict": "abstain"
+  },
+  "independent_evidence": {
+    "answer_a": [
+      "claim-a1"
+    ],
+    "answer_b": [
+      "claim-b1"
+    ],
+    "effective_ratio": "1:1"
+  },
+  "question": "Which answer has more independent recorded support?",
+  "recorded_lineage": [
+    {
+      "agent_id": "agent-a1",
+      "asserted_answer": "answer_a",
+      "claim_id": "claim-a1",
+      "derived_from": [],
+      "evidence_roots": [
+        "claim-a1"
+      ]
+    },
+    {
+      "agent_id": "agent-a2",
+      "asserted_answer": "answer_a",
+      "claim_id": "claim-a2",
+      "derived_from": [
+        "claim-a1"
+      ],
+      "evidence_roots": [
+        "claim-a1"
+      ]
+    },
+    {
+      "agent_id": "agent-a3",
+      "asserted_answer": "answer_a",
+      "claim_id": "claim-a3",
+      "derived_from": [
+        "claim-a1"
+      ],
+      "evidence_roots": [
+        "claim-a1"
+      ]
+    },
+    {
+      "agent_id": "agent-a4",
+      "asserted_answer": "answer_a",
+      "claim_id": "claim-a4",
+      "derived_from": [
+        "claim-a2"
+      ],
+      "evidence_roots": [
+        "claim-a1"
+      ]
+    },
+    {
+      "agent_id": "agent-a5",
+      "asserted_answer": "answer_a",
+      "claim_id": "claim-a5",
+      "derived_from": [
+        "claim-a3"
+      ],
+      "evidence_roots": [
+        "claim-a1"
+      ]
+    },
+    {
+      "agent_id": "agent-b1",
+      "asserted_answer": "answer_b",
+      "claim_id": "claim-b1",
+      "derived_from": [],
+      "evidence_roots": [
+        "claim-b1"
+      ]
+    }
+  ],
+  "result_hash": "sha256:1a40d38515dbb1a2f3d60598e4d56b206fe8c6acecd7e6672f835840375467ff",
+  "schema_version": "mp.demo.v1",
+  "status": "SYNTHETIC_DEMONSTRATION",
+  "world_id": "MP.01-CANONICAL-6A"
+}
