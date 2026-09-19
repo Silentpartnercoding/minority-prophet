@@ -1,5 +1,13 @@
 # Decision-relative independence series closure
 
+<!-- mp-status: {"id":"dri-series-closure","class":"historical_snapshot","asOf":"2026-09-16","replacement":"aid-series-closure","immutable":false,"theorems":["DR1","DR2","DR3"],"researchRecords":["DRI-2-V1","DRI-2-V2","DRI-3-V1","DRI-4-V1","DRI-5-V1","DRI-6-V1","DRI-8-V1","DRI-9-V1","DRI-10-V1","DRI-11-V1"],"describesMechanisms":["recorded_dependence_robust_settlement","attested_independence_point_policy"],"recommendedMechanisms":["recorded_dependence_robust_settlement"]} -->
+
+**Later outcome:** this document records the state when DRI closed on
+2026-09-16. Its proposed attested-independence successor was subsequently tested
+through AID-1 to AID-4 and rejected, as were the two remaining downstream
+policies. See the
+[`attested-independence series closure`](ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md).
+
 **Status:** DRI-1A through DRI-11 are complete. The series closes at the
 question it was built to answer: whether a rule that reads the record can tell
 independent evidence from dependence that the record does not carry.
@@ -123,14 +131,16 @@ and DRI-11 then tried five distinct classes of observable — content, probes,
 marks, co-error, and fragility — and each failed in a way the next one could
 predict. Adding a sixth instrument to the same list is not a new experiment.
 
-The residue is not an instrument problem. Where dependence is recorded, the
-engine already handles it. Where it is not recorded, the only remaining moves are
-about **records and incentives**: refuse to count a witness that has not declared
-and backed how far it went, require a margin large enough that an undetected echo
-could not have flipped the decision, or accept the blindness and price it. Those
-are policy, and the first of them is now written down, implemented and tested.
+At this closure, the residue was not an instrument problem. Where dependence is
+recorded, the engine already handles it. Where it is not recorded, the only
+remaining moves are about **records and incentives**: refuse to count a witness
+that has not declared and backed how far it went, require a margin large enough
+that an undetected echo could not have flipped the decision, or accept the
+blindness and price it. Those were the three policy proposals carried into the
+successor chapter. All were later rejected; this paragraph records the handoff,
+not current doctrine.
 
-Its cost is unmeasured, and that is the successor chapter:
+The cost was unmeasured at this closure, and the successor chapter was:
 [`AID-1-DESIGN-DRAFT.md`](../research/attested-independence/AID-1-DESIGN-DRAFT.md)
 asks how many decisions become unanswerable when unattested witnesses stop
 counting. It is a new chapter, not unfinished evidence from this series.
@@ -139,7 +149,9 @@ counting. It is a new chapter, not unfinished evidence from this series.
 
 - Whether declared, backed witness depth can be obtained in real systems without
   adoption friction or self-reporting that destroys its evidentiary value. This
-  is the programme's own fourth kill criterion and it is now the live question.
+  was the programme's fourth kill criterion and remains unestablished, but its
+  answer cannot rescue the downstream counting policies rejected by AID-1 to
+  AID-4.
 - Whether a system can select the relevant cut from the decision context
   (DRI-1B, not run).
 - Joint independence across two cuts at once. Neither the single-cut model here

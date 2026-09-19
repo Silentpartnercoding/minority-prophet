@@ -56,10 +56,13 @@ class CanonicalModelTests(unittest.TestCase):
         self.assert_problem(problems, "unknown research record id")
 
     def test_replacement_ids_must_resolve(self):
-        problems = self.problems_for(
-            lambda model: model["mechanisms"][0].update(replacement="missing-mechanism")
-        )
+        def mutate(model):
+            model["mechanisms"][0]["replacement"] = "missing-mechanism"
+            model["artifacts"][0]["replacement"] = "missing-artifact"
+
+        problems = self.problems_for(mutate)
         self.assert_problem(problems, "unknown replacement")
+        self.assert_problem(problems, "missing-artifact")
 
     def test_rejected_experiment_cannot_promote_a_current_mechanism(self):
         def mutate(model):
@@ -96,6 +99,36 @@ class CanonicalModelTests(unittest.TestCase):
 
         problems = self.problems_for(mutate)
         self.assert_problem(problems, "unknown research record id")
+
+    def test_load_bearing_status_surfaces_are_registered(self):
+        by_path = {entry["path"]: entry for entry in self.registry["artifacts"]}
+        expected = {
+            "canon/ATTESTED-INDEPENDENCE.md": "rejected_policy",
+            "aggregation/README.md": "current",
+            "research/attested-independence/README.md": "current",
+            "docs/evidence/STATUS.md": "current",
+            "formal/CLAIM-SCOPE.md": "current",
+            "formal/DEFINITION-AUDIT.md": "historical_snapshot",
+            "experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md": "historical_snapshot",
+            "experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md": "historical_snapshot",
+        }
+        for path, artifact_class in expected.items():
+            self.assertIn(path, by_path)
+            self.assertEqual(by_path[path]["class"], artifact_class)
+
+        aid_records = {"AID-1-V1", "AID-2-V1", "AID-3-V1", "AID-4-V1"}
+        self.assertTrue(
+            aid_records.issubset(by_path["docs/evidence/STATUS.md"]["researchRecords"])
+        )
+
+    def test_rejected_mechanisms_cannot_be_recommended(self):
+        def mutate(model):
+            model["artifacts"][0]["recommendedMechanisms"] = [
+                "attested_independence_point_policy"
+            ]
+
+        problems = self.problems_for(mutate)
+        self.assert_problem(problems, "recommends rejected mechanism")
 
 
 if __name__ == "__main__":

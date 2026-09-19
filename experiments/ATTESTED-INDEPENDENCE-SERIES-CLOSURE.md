@@ -1,5 +1,12 @@
 # Attested-independence series closure
 
+<!-- mp-status: {"id":"aid-series-closure","class":"historical_snapshot","asOf":"2026-09-18","replacement":"emission-census","immutable":false,"theorems":["DR3"],"researchRecords":["AID-1-OBS","AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["attested_independence_point_policy","attested_independence_bounds_policy","collapse_robust_margin_policy","priced_exposure_policy","bounded_root_issuance"],"recommendedMechanisms":["bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
+**Later implementation state:** this closure correctly identified three copy
+seams and recorded that none emitted the origin link at closure time. Root
+issuance now does. Transport/relay and cache/fan-out remain unwired, and no
+deployment use is established. See [`EMISSION-CENSUS.md`](../docs/EMISSION-CENSUS.md).
+
 **Status:** AID-1 through AID-4 are complete. The series closes on an answer, and
 the answer is negative for every policy it proposed.
 
@@ -92,10 +99,12 @@ knowledge ledger honours a declared link independently, walking `derivedFrom` to
 an original and treating a document that declares no ancestry as *unattributable*
 rather than as a root.
 
-What is missing is emission. `origin_type`, `derived_from` and `parent_roots`
-appear nowhere in `provenance/` or `aggregation/`, and the only producing call
-sites in the estate are inside one experiment's constructed scenario. The socket
-is wired and enforced; nothing real plugs into it.
+What was missing at series closure was emission. At that revision,
+`origin_type`, `derived_from` and `parent_roots` appeared nowhere in
+`provenance/` or `aggregation/`, and the only producing call sites in the estate
+were inside one experiment's constructed scenario. The later root-issuance
+repair closes that one seam without changing the closure's result; the other two
+seams below remain open.
 
 ### The three seams where duplication happens
 

@@ -154,6 +154,7 @@ def validate_registry_data(root: Path, model: dict[str, Any]) -> list[str]:
                 problems.append(f"{owner}: authority artifact must be a path")
 
     mechanism_ids = {entry.get("id") for entry in model["mechanisms"]}
+    mechanism_by_id = {entry.get("id"): entry for entry in model["mechanisms"]}
     for mechanism in model["mechanisms"]:
         owner = f"mechanism {mechanism.get('id', '<missing>')}"
         if mechanism.get("layer") not in layer_ids:
@@ -217,6 +218,7 @@ def validate_registry_data(root: Path, model: dict[str, Any]) -> list[str]:
             problems=problems,
         )
 
+    artifact_ids = {entry.get("id") for entry in model["artifacts"]}
     for artifact in model["artifacts"]:
         owner = f"artifact {artifact.get('id', '<missing>')}"
         artifact_class = artifact.get("class")
@@ -224,6 +226,9 @@ def validate_registry_data(root: Path, model: dict[str, Any]) -> list[str]:
             problems.append(f"{owner}: unknown artifact class {artifact_class!r}")
         path_value = artifact.get("path", "")
         path = _check_path(root, owner, path_value, problems)
+        replacement = artifact.get("replacement")
+        if replacement is not None and replacement not in mechanism_ids | artifact_ids:
+            problems.append(f"{owner}: unknown replacement {replacement!r}")
         _check_refs(
             owner=owner,
             entry=artifact,
@@ -231,6 +236,18 @@ def validate_registry_data(root: Path, model: dict[str, Any]) -> list[str]:
             research=research,
             problems=problems,
         )
+        for mechanism_id in artifact.get("describesMechanisms", []):
+            if mechanism_id not in mechanism_ids:
+                problems.append(f"{owner}: describes unknown mechanism {mechanism_id!r}")
+        for mechanism_id in artifact.get("recommendedMechanisms", []):
+            if mechanism_id not in mechanism_ids:
+                problems.append(f"{owner}: recommends unknown mechanism {mechanism_id!r}")
+            elif mechanism_by_id[mechanism_id].get("disposition") != "current":
+                problems.append(
+                    f"{owner}: recommends rejected mechanism {mechanism_id!r}"
+                    if mechanism_by_id[mechanism_id].get("disposition") == "rejected"
+                    else f"{owner}: recommends non-current mechanism {mechanism_id!r}"
+                )
         if path.is_file() and artifact.get("statusBanner", True):
             banner, error = _status_banner(path)
             if error:
@@ -242,6 +259,10 @@ def validate_registry_data(root: Path, model: dict[str, Any]) -> list[str]:
                     "asOf": artifact.get("asOf"),
                     "replacement": artifact.get("replacement"),
                     "immutable": artifact.get("immutable", False),
+                    "theorems": artifact.get("theorems", []),
+                    "researchRecords": artifact.get("researchRecords", []),
+                    "describesMechanisms": artifact.get("describesMechanisms", []),
+                    "recommendedMechanisms": artifact.get("recommendedMechanisms", []),
                 }
                 for key, expected_value in expected.items():
                     if banner.get(key) != expected_value:

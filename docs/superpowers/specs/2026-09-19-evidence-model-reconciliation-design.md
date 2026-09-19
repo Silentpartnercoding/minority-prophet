@@ -1,6 +1,6 @@
 # Evidence-model canonical reconciliation
 
-<!-- mp-status: {"id":"evidence-model-reconciliation-design","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false} -->
+<!-- mp-status: {"id":"evidence-model-reconciliation-design","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["DR1","DR2","DR3","U1"],"researchRecords":["AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","proximate_mis_count","recorded_dependence_robust_settlement","attested_independence_point_policy","attested_independence_bounds_policy","collapse_robust_margin_policy","priced_exposure_policy"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
 
 **Status:** approved design, implementation not started
 

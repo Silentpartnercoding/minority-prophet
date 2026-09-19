@@ -71,14 +71,16 @@
     },
     "artifact": {
       "type": "object", "additionalProperties": false,
-      "required": ["id", "path", "class", "asOf", "replacement", "immutable", "statusBanner", "theorems", "researchRecords"],
+      "required": ["id", "path", "class", "asOf", "replacement", "immutable", "statusBanner", "theorems", "researchRecords", "describesMechanisms", "recommendedMechanisms"],
       "properties": {
         "id": {"$ref": "#/$defs/id"}, "path": {"$ref": "#/$defs/path"},
         "class": {"enum": ["current", "historical_snapshot", "rejected_policy", "superseded"]},
         "asOf": {"type": "string", "format": "date"}, "replacement": {"type": ["string", "null"]},
         "immutable": {"type": "boolean"}, "statusBanner": {"type": "boolean"},
         "theorems": {"type": "array", "items": {"$ref": "#/$defs/id"}},
-        "researchRecords": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+        "researchRecords": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "describesMechanisms": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "recommendedMechanisms": {"type": "array", "items": {"$ref": "#/$defs/id"}}
       }
     }
   }

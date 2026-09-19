@@ -1,5 +1,7 @@
 # CLAIM-SCOPE.md
 
+<!-- mp-status: {"id":"formal-claim-scope","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["T1","T2","T3","DR1","DR2","DR3","U1"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots","proximate_mis_count","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","recorded_dependence_robust_settlement"]} -->
+
 What the formal core establishes, and what it does not. This file exists so that
 a later reader — human or agent — cannot confuse the six evidence classes.
 
@@ -173,12 +175,15 @@ not 9. The margin *is* the budget in units of `p₀ − p₁`; the two readings 
 
 ### Side-consistency is not a mild hygiene condition
 
-It is the single hypothesis the entire stack consumes; it has **no enforcement
-point in the implementation** (CE-09); its failure mode is double-counting, not
-graceful degradation (CE-06, 100% of non-side-consistent worlds tested); and in
-the DAG the implementation actually uses, it **forbids any claim synthesised from
-evidence on both sides** (CE-07). Its apparent mildness is an artefact of having
-been read off a single-parent forest model.
+It is the single hypothesis the entire stack consumes. The audited implementation
+had **no enforcement point** (CE-09); current `EvidenceGraph.add` rejects a child
+whose proposition or value differs from a parent and records typed integrity
+failures. That repair does not weaken the hypothesis: bypassing validated ingest
+still produces double-counting rather than graceful degradation (CE-06, 100% of
+non-side-consistent worlds tested), and in the DAG the implementation uses it
+**forbids any claim synthesised from evidence on both sides** (CE-07). Its
+apparent mildness is an artefact of having been read off a single-parent forest
+model.
 
 ### Weights, time, multiple values and multiple propositions are not covered
 

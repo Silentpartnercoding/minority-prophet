@@ -1,6 +1,15 @@
 # Attested independence
 
-**A new series, opened 2026-09-16.** It is not a continuation of
+<!-- mp-status: {"id":"attested-independence-series-index","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["DR3"],"researchRecords":["AID-1-OBS","AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["attested_independence_point_policy","attested_independence_bounds_policy","collapse_robust_margin_policy","priced_exposure_policy","bounded_root_issuance"],"recommendedMechanisms":["bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
+**Closed series, 2026-09-18.** Every policy it proposed was rejected. Its
+constructive finding is not another counting rule: record the relationship when
+the copy is made. Root issuance now implements that link; transport/relay and
+cache/fan-out do not. See the
+[`series closure`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md) and
+the later [`emission census`](../../docs/EMISSION-CENSUS.md).
+
+This series opened 2026-09-16. It is not a continuation of
 [decision-relative independence](../decision-relative-independence/README.md),
 which closed on the finding that no rule reading the record can separate
 independent evidence from dependence the record does not carry. Naming this
@@ -18,13 +27,12 @@ That is a question about records and incentives rather than about instruments.
 Nothing in it needs a detector, and no result here can be rescued by building a
 better one.
 
-## Why it is worth asking
+## Why it was worth asking
 
 The policy in [`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md)
-refuses to convert the record's silence into independence. That is sound in the
-direction that matters and obviously not free. Its price is the only open
-question about it, and unlike everything in the closed series, the price is
-directly measurable.
+refused to convert the record's silence into independence. The series measured
+the price and then attacked each repair. All four proposed downstream policies
+failed; the details below are retained as the result chain, not an open queue.
 
 ## Experiments
 

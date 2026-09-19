@@ -1,5 +1,7 @@
 # Aggregation methods
 
+<!-- mp-status: {"id":"aggregation-index","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["DR1","DR2","DR3"],"researchRecords":["AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["recorded_graph_roots","recorded_dependence_robust_settlement","attested_independence_point_policy","attested_independence_bounds_policy","collapse_robust_margin_policy","priced_exposure_policy"],"recommendedMechanisms":["recorded_graph_roots","recorded_dependence_robust_settlement"]} -->
+
 This package contains transparent reference methods. They do not share one
 maturity or claim status.
 
@@ -11,11 +13,11 @@ maturity or claim status.
   historical implementation bound into EXPERIMENT-001.
 - [`markets.py`](markets.py) — provider-neutral aggregation of public binary
   market behavior.
-- [`attested_independence.py`](attested_independence.py) — counting under the
-  attestation policy: independence is granted by backing, never by the record's
-  silence. Deflates counts only, so it is scoped to counting that permits an
-  action. Doctrine:
-  [`canon/ATTESTED-INDEPENDENCE.md`](../canon/ATTESTED-INDEPENDENCE.md).
+- [`attested_independence.py`](attested_independence.py) — hash-pinned research
+  implementation for the rejected AID-1 through AID-4 policies. It is preserved
+  so the canonical results remain reproducible; it is not a recommended package
+  method. Current status:
+  [`ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md`](../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md).
 
 Read [`formal/CLAIM-SCOPE.md`](../formal/CLAIM-SCOPE.md) before describing any
 implementation as proved. Run the related tests through `make verify-python`.

@@ -1,5 +1,7 @@
 # Emission census — which declared fields does nothing actually emit?
 
+<!-- mp-status: {"id":"emission-census","class":"current","asOf":"2026-09-18","replacement":null,"immutable":false,"theorems":["DR3","LEDGER-H2"],"researchRecords":["AID-4-V1"],"describesMechanisms":["bounded_root_issuance"],"recommendedMechanisms":["bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
 A field can be declared in a schema, enforced by a checker, and read by a
 consumer, and still be written by nothing outside a fixture. That gap is
 invisible to every test in this repository, because a test that supplies the
