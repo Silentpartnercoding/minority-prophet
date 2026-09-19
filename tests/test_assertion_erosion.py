@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]
 
 from assertion_erosion import (  # noqa: E402
     ASSERTION_STRENGTH,
+    _assertions,
     check_assertion_erosion,
     covered_modules,
     module_changed,
@@ -221,4 +222,86 @@ import aggregation.root_vote
 
     def test_no_changes_is_not_a_review_trigger(self):
         self.assertFalse(module_changed(self.SOURCE, [], roots=("provenance",)))
+
+
+class BareAssertTests(unittest.TestCase):
+    """A bare `assert` in pytest carries its comparison, not the keyword.
+
+    Scoring the keyword made every pytest-style assertion strength 1, and at
+    strength 1 nothing can be WEAKENED -- only removed. Measured on
+    tests/test_root_duplication_link.py as submitted: 13 of 13 assertions were
+    bare, all scored 1, and an equality downgraded to truthiness returned
+    eroded=False. The check was blind to every downgrade in this repository.
+    """
+
+    def test_equality_downgraded_to_truthiness_is_erosion(self):
+        report = check_assertion_erosion("def test_x():\n    assert a == b\n",
+                                         "def test_x():\n    assert a\n")
+        self.assertTrue(report.eroded)
+        self.assertEqual(report.weakened, [("test_x", "assert ==", "assert")])
+
+    def test_membership_downgraded_to_truthiness_is_erosion(self):
+        report = check_assertion_erosion("def test_x():\n    assert a in b\n",
+                                         "def test_x():\n    assert a\n")
+        self.assertTrue(report.eroded)
+
+    def test_equality_is_not_weakened_by_changing_the_expected_value(self):
+        """The negative fixture from the issue, in bare-assert form."""
+        report = check_assertion_erosion("def test_x():\n    assert s == APPROVED\n",
+                                         "def test_x():\n    assert s == PENDING\n")
+        self.assertFalse(report.eroded)
+
+    def test_negation_is_classified_by_what_it_negates(self):
+        report = check_assertion_erosion("def test_x():\n    assert not a == b\n",
+                                         "def test_x():\n    assert not a\n")
+        self.assertTrue(report.eroded)
+
+    def test_pytest_raises_is_an_assertion(self):
+        source = """
+def test_x():
+    with pytest.raises(ValueError):
+        boom()
+"""
+        report = check_assertion_erosion(source, "def test_x():\n    boom()\n")
+        self.assertTrue(report.eroded)
+        self.assertEqual([a.method for a in report.removed], ["assert raises"])
+
+    def test_this_repository_no_longer_scores_everything_one(self):
+        """Regression guard for the measured defect."""
+        from collections import Counter
+        import pathlib as _p
+        source = (_p.Path(__file__).resolve().parents[1]
+                  / "tests" / "test_root_duplication_link.py").read_text()
+        kinds = Counter(m for calls in _assertions(source).values() for m in calls)
+        self.assertGreater(len(kinds), 1,
+                           "a pytest-style suite must not collapse to one kind")
+        self.assertIn("assert ==", kinds)
+
+
+class DerivedFlagTests(unittest.TestCase):
+    """changed_paths wires covered_modules to its caller. Before this, the
+    deriver existed and nothing called it."""
+
+    SOURCE = "from provenance.graph import x\ndef test_x():\n    assert a\n"
+
+    def test_changed_paths_derives_the_flag(self):
+        report = check_assertion_erosion(
+            "def test_x():\n    assert a == b\n",
+            self.SOURCE,
+            changed_paths=["provenance/graph.py"], roots=("provenance",))
+        self.assertTrue(report.needs_review)
+
+    def test_an_unrelated_change_does_not_demand_review(self):
+        report = check_assertion_erosion(
+            "def test_x():\n    assert a == b\n",
+            self.SOURCE,
+            changed_paths=["app/page.tsx"], roots=("provenance",))
+        self.assertTrue(report.eroded)
+        self.assertFalse(report.needs_review)
+
+    def test_the_explicit_flag_still_works(self):
+        report = check_assertion_erosion("def test_x():\n    assert a == b\n",
+                                         "def test_x():\n    assert a\n",
+                                         covered_module_changed=True)
+        self.assertTrue(report.needs_review)
 

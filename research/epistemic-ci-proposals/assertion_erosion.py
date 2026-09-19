@@ -46,7 +46,41 @@ ASSERTION_STRENGTH: dict[str, int] = {
     "assertGreaterEqual": 1, "assertLessEqual": 1,
     "assertTrue": 1, "assertFalse": 1,
     "assertIsNone": 1, "assertIsNotNone": 1,
+
+    # A bare `assert` in pytest is not one assertion kind. It carries whatever
+    # comparison sits under it, so scoring the keyword made every pytest-style
+    # test strength 1 -- and at strength 1 nothing can be WEAKENED, only removed.
+    # Measured on tests/test_root_duplication_link.py: 13 of 13 assertions were
+    # bare, all scored 1, so every downgrade in that file was invisible. The
+    # node is classified by its expression instead.
+    "assert ==": 3, "assert is": 3, "assert raises": 3,
+    "assert in": 2, "assert <": 2, "assert isinstance": 2,
+    "assert": 1,
 }
+
+
+#: Comparison operators, by how many states survive them. `==` admits one; a
+#: bound admits a range; truthiness admits nearly everything.
+_COMPARE_STRENGTH = {
+    ast.Eq: "assert ==", ast.NotEq: "assert ==",
+    ast.Is: "assert is", ast.IsNot: "assert is",
+    ast.In: "assert in", ast.NotIn: "assert in",
+    ast.Lt: "assert <", ast.Gt: "assert <",
+    ast.LtE: "assert <", ast.GtE: "assert <",
+}
+
+
+def _assert_kind(node: ast.Assert) -> str:
+    """Classify a bare `assert` by the expression under it."""
+    test = node.test
+    if isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not):
+        test = test.operand
+    if isinstance(test, ast.Compare) and test.ops:
+        return _COMPARE_STRENGTH.get(type(test.ops[0]), "assert")
+    if (isinstance(test, ast.Call) and isinstance(test.func, ast.Name)
+            and test.func.id == "isinstance"):
+        return "assert isinstance"
+    return "assert"
 
 
 @dataclass(frozen=True)
@@ -113,24 +147,36 @@ def _assertions(source: str) -> dict[str, list[str]]:
             elif isinstance(inner, ast.With):
                 for item in inner.items:
                     call = item.context_expr
-                    if (isinstance(call, ast.Call)
-                            and isinstance(call.func, ast.Attribute)
-                            and call.func.attr.startswith("assert")):
-                        found.append(call.func.attr)
+                    if isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute):
+                        # `with pytest.raises(...)` is an assertion that the
+                        # block raises. Matching only names starting "assert"
+                        # made it invisible in every pytest-style suite.
+                        if call.func.attr.startswith("assert"):
+                            found.append(call.func.attr)
+                        elif call.func.attr == "raises":
+                            found.append("assert raises")
             elif isinstance(inner, ast.Assert):
-                found.append("assert")
+                found.append(_assert_kind(inner))
         out[node.name] = found
     return out
 
 
 def check_assertion_erosion(before: str, after: str, *,
-                            covered_module_changed: bool = False) -> ErosionReport:
+                            covered_module_changed: bool = False,
+                            changed_paths: Iterable[str] | None = None,
+                            roots: Iterable[str] = ()) -> ErosionReport:
     """Compare two versions of a test file for weakened guarantees.
 
     Positional comparison within each test: the nth assertion before against the
     nth after. Crude, and it will report noise on a genuine restructure -- which
     is acceptable for a flag and would not be for a gate.
     """
+    if changed_paths is not None:
+        # covered_modules existed with no caller -- declared, tested, and used by
+        # nothing, which is the emission gap this estate keeps finding. Supplying
+        # changed_paths derives the flag here instead of asking every caller to.
+        covered_module_changed = module_changed(after, changed_paths, roots=roots)
+
     old, new = _assertions(before), _assertions(after)
     report = ErosionReport(covered_module_changed=covered_module_changed)
 
