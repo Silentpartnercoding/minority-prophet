@@ -1,15 +1,12 @@
-# Priority record
+# Provenance
 
-A dated record of when the claims in this repository first appeared in public,
-what is proved about them, and what is deliberately **not** claimed.
+The claims this repository makes, what is proved about each, what is
+deliberately **not** claimed, when each entered the public record, and what was
+adopted from other people's work.
 
-It exists because a commit is not a publication. Work here was held quietly for
-weeks while equivalent distinctions were published elsewhere by other people,
-who now own them and deserve to. This file does not dispute any of that. It
-states what was here, when, and how to check.
-
-Every date below is a commit in this repository's public history. Verify any of
-them with:
+Dates are here because provenance is part of evidence. A claim is checkable only
+if you can see when it entered the record and run the check yourself. Every date
+below is a commit in this repository's public history:
 
 ```
 git log --reverse --format='%ad %H' --date=short -S'<term>' -- .
@@ -103,7 +100,7 @@ than its sources.
 
 ---
 
-## Dated first public appearance
+## When each claim entered the public record
 
 | Concept | First public | Commit |
 |---|---|---|
@@ -117,33 +114,34 @@ than its sources.
 
 ---
 
-## What priority means here, and what it does not
+## What a date here means
 
 It means: **this text existed in a public Apache-2.0 repository on this date.**
 
 It does **not** mean anyone read it, that it was submitted anywhere, or that it
-constitutes a publication. It is not a claim of invention and it is not directed
-at anyone.
+constitutes a publication. It is not a claim of invention, and it is not
+directed at anyone.
 
 ---
 
-## Where this was overtaken, recorded rather than hidden
+## Work adopted from others
 
-`unverifiable` and `not_established` appeared here on 2026-08-05 and 2026-08-07.
-Equivalent distinctions were published on 2026-09-16 by Mikhail Sergeev in
-`draft-sergeev-claim-boundaries-00`, and by Bradley B in IETF `agentproto` list
+Two distinctions this repository had been using internally were published, and
+published better, by other people on 2026-09-16: **Mikhail Sergeev** in
+`draft-sergeev-claim-boundaries-00`, and **Bradley B** in IETF `agentproto` list
 discussion separating independence from completeness.
 
-**Their published treatment is better than what was here**, and it is adopted
-rather than contested — see
-`research/verifier-evidence/ADOPTED-EXTERNAL.md`, which records what was taken,
-from whom, and what changed as a result. Sergeev's three outcomes add
-*downgrade*, a move this work did not have. Bradley's axis split distinguishes
-two failures this work had folded into one verdict.
+Sergeev's three outcomes add *downgrade* — report the strongest claim the
+evidence does support — which this work did not have. Bradley's axis split
+distinguishes two failures this work had folded into one verdict, and the two
+failures need different repairs.
 
-A draft prepared here dropped its completeness half entirely rather than restate
-theirs.
+Both are adopted here rather than contested.
+`research/verifier-evidence/ADOPTED-EXTERNAL.md` records what was taken, from
+whom, and what changed as a result. A draft prepared here dropped its
+completeness half entirely rather than restate theirs.
 
-This section is in the priority record deliberately. A file that listed only
-what this work was first to say, and omitted what it was second to say, would be
-selective reporting of exactly the kind the repository exists to detect.
+This section belongs in a provenance record for the same reason the rest of it
+does: a file that traced only the ideas originating here, and stayed silent on
+the ones that came from elsewhere, would be the selective attribution this
+repository exists to detect.
