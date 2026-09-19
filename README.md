@@ -19,7 +19,7 @@ depends on missing or unreliable lineage.
 |---|---|
 | Understand the idea in five minutes | [Public claims](PUBLIC-CLAIMS.md) |
 | See exactly what is proved, measured, and still unknown | [Evidence status](docs/evidence/STATUS.md) |
-| See when each claim first appeared in public, and its limits | [Priority record](PRIORITY.md) |
+| Trace a claim to its proof, its limits, and its date | [Provenance](PROVENANCE.md) |
 | Run the benchmark or engine | [Using Minority Prophet](docs/use/README.md) |
 | Inspect the research and preserved results | [Research map](docs/research/README.md) |
 | Understand the components and boundaries | [Architecture map](docs/architecture/README.md) |
