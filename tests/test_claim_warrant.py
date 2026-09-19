@@ -156,6 +156,71 @@ def test_verify_outcome_stays_three_valued():
     assert any("verified, rejected or unverifiable" in e for e in warrant_errors(warrant))
 
 
+def test_verify_outcome_requires_a_result_and_permits_no_extras():
+    warrant = build_warrant("cited")
+    warrant["verify_outcome"] = {"reason": "fetch_failed"}
+    assert any("result is required" in e for e in warrant_errors(warrant))
+    warrant["verify_outcome"] = {"result": "verified", "confidence": 0.9}
+    assert any("unpermitted verify_outcome keys" in e for e in warrant_errors(warrant))
+
+
+# --- strict in what we emit, exactly conformant in what we accept ---------
+#
+# The validator must not be stricter than the published schema. An earlier cut
+# of this module required `source_digest` to match the hash form and refused an
+# empty `recheck_reference`, and would therefore have rejected documents the
+# contract permits — making this implementation, rather than the schema, the
+# real contract.
+
+
+def test_the_schema_constrains_these_fields_only_as_strings():
+    """Read off the schema file, because mis-reading it from memory is what
+    produced the defect these tests exist for."""
+    import json
+    import pathlib
+
+    root = pathlib.Path(__file__).resolve().parents[1]
+    schema = json.loads(
+        (root / "provenance" / "claim-warrant.schema.json").read_text(encoding="utf-8")
+    )
+    for field in ("source_digest", "recheck_reference"):
+        declared = schema["properties"][field]
+        assert declared["type"] == "string"
+        assert "pattern" not in declared
+        assert "minLength" not in declared
+
+
+def test_validator_accepts_a_schema_valid_source_digest_that_is_not_hex():
+    """The hash form is a producer convention stated in prose, not a schema
+    constraint. A producer that read the contract correctly must not be
+    refused."""
+    warrant = build_warrant("measured")
+    warrant["source_digest"] = "blake3:not-hex-at-all"
+    assert warrant_errors(warrant) == []
+
+
+def test_validator_accepts_an_empty_recheck_reference():
+    """`recheck_reference` is documented free-form; the schema sets no minimum
+    length."""
+    warrant = build_warrant("cited")
+    warrant["recheck_reference"] = ""
+    assert warrant_errors(warrant) == []
+
+
+def test_validator_still_enforces_the_declared_types():
+    warrant = build_warrant("cited")
+    warrant["source_digest"] = 12345
+    assert any("source_digest must be a string" in e for e in warrant_errors(warrant))
+
+
+def test_the_producer_stays_strict():
+    """Relaxing the validator must not relax what this estate emits."""
+    with pytest.raises(ClaimWarrantError, match="hash form"):
+        build_warrant("measured", source_digest="blake3:not-hex-at-all")
+    with pytest.raises(ClaimWarrantError, match="recheck_reference"):
+        build_warrant("cited", recheck_reference="   ")
+
+
 # --- placement ------------------------------------------------------------
 
 

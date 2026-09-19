@@ -122,12 +122,47 @@ assert that experiments frozen weeks ago ran against code written tonight. The
 pins are not a build inconvenience to be routed around; they are the only reason
 a frozen result means anything.
 
-So the rule this census ends on: **closing an emission gap must never modify a
-pinned file.** The loader moved to its own module and imports `DecisionContext`
-unchanged. `conformance/authority_evidence.py` was checked against every `PINNED`
-map before being edited, and appears in none. The hgd1 serialiser is a sibling
-file precisely because `run_hgd1.py` is a frozen runner; converting its output
-after the fact changes no measured result.
+So the first rule this census ends on: **closing an emission gap must never
+modify a pinned file.** The loader moved to its own module and imports
+`DecisionContext` unchanged. `conformance/authority_evidence.py` was checked
+against every `PINNED` map before being edited, and appears in none. The hgd1
+serialiser is a sibling file precisely because `run_hgd1.py` is a frozen runner;
+converting its output after the fact changes no measured result.
+
+## The conformance lesson, which was shipped twice
+
+Writing the first producer for a long-declared field means reading the schema
+closely for the first time. Twice, that reading was wrong in the same direction:
+the validator came out **stricter than the schema it claimed to enforce**.
+
+`experiments/hgd1/dependency_receipt.py` required `support.receiptDigest` to be
+a digest string. The schema types it `["string", "null"]`, deliberately — a
+support status of `unknown`, `conflicting` or `revoked` has no supporting
+receipt to point at, and a placeholder digest would assert one exists.
+
+`provenance/claim_warrant.py` required `source_digest` to match the accepted
+`hash` form and refused an empty `recheck_reference`. The schema types both as
+plain `string`. The hash form appears only in prose, and `recheck_reference` is
+documented "free-form: this schema does not constrain external vocabularies".
+
+Both would have rejected documents the published contract permits. That is a
+worse failure than not checking at all, because it quietly makes the
+implementation, rather than the schema, the real contract — and the producer it
+refuses is the one that read the contract correctly.
+
+The resolution is an asymmetry, stated once and applied in both places: **strict
+in what we emit, exactly conformant in what we accept.** `build_warrant` still
+requires the hash form, because that is the shape this estate has agreed to
+produce. `warrant_errors` accepts any string, because that is what the contract
+says. Where a validator now differs from its schema, it is documented and
+deliberate: `conformance/authority_evidence.py` adds semantic checks the schema
+cannot express — a `deny` that executed, a digest on a prevented action — which
+is that module's stated purpose rather than an accident of implementation.
+
+Both defects were found by reading the schema file against the validator, and
+both now have tests that assert the constraint by reading the schema at test
+time rather than restating it from memory. Restating it from memory is what
+produced them.
 
 ## What was fixed
 

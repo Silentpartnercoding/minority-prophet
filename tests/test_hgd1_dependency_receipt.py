@@ -102,6 +102,42 @@ def test_malformed_digests_are_refused():
         build_receipt(ORIGIN, [], receipt_digest="c" * 64)
 
 
+# --- null support, which the schema permits and the first cut refused ------
+
+
+@pytest.mark.parametrize("status", ["unknown", "conflicting", "revoked"])
+def test_unsupported_status_may_carry_a_null_receipt_digest(status):
+    """`receiptDigest` is typed `["string", "null"]` in the published schema.
+
+    That is deliberate: a status of `unknown`, `conflicting` or `revoked` can
+    have no supporting receipt to point at, and inventing a placeholder digest
+    would assert one exists. The first version of this module required a string
+    and was therefore stricter than the schema it claims to enforce — rejecting
+    documents the published contract permits, which is worse than not checking.
+    """
+    document = build_receipt(ORIGIN, [internal()], support_status=status,
+                             receipt_digest=None)
+    assert document["support"]["receiptDigest"] is None
+    assert receipt_errors(document) == []
+
+
+def test_null_is_not_the_same_as_omitted():
+    """The key stays required. Null says the producer looked and there is no
+    supporting receipt; absent says nothing about whether it looked."""
+    document = build_receipt(ORIGIN, [], receipt_digest=None)
+    del document["support"]["receiptDigest"]
+    assert any("required" in error for error in receipt_errors(document))
+
+
+def test_the_schema_really_does_permit_null():
+    """Asserted against the schema file rather than trusted from memory, since
+    mis-reading it in the other direction is what produced the defect."""
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    digest = schema["properties"]["support"]["properties"]["receiptDigest"]
+    assert "null" in digest["type"]
+    assert "receiptDigest" in schema["properties"]["support"]["required"]
+
+
 def test_unrecognised_support_status_is_refused():
     with pytest.raises(DependencyReceiptError, match="unrecognised support status"):
         build_receipt(ORIGIN, [], support_status="probably", receipt_digest=RECEIPT)
