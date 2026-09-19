@@ -1,13 +1,15 @@
 # Minority Prophet
 
-**Count independent evidence, not repeated claims.**
+<!-- mp-status: {"id":"repository-readme","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["T2","DR1","DR2","DR3","U1"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
+**Count attributable support, not repeated claims.**
 
 ![Minority Prophet: truth is not popularity](public/og.png)
 
 Five agents repeating one source are still one source. Minority Prophet is a
 research project, benchmark, and deterministic evidence-structure engine for
-testing whether independently grounded minority evidence survives a copied
-majority.
+testing whether independently generated minority evidence survives a copied
+majority in controlled worlds.
 
 It does **not** decide truth, certify sources, or authorize actions. It counts
 recorded evidence roots, preserves uncertainty, and exposes where the answer
@@ -18,6 +20,7 @@ depends on missing or unreliable lineage.
 | If you want to… | Go to… |
 |---|---|
 | Understand the idea in five minutes | [Public claims](PUBLIC-CLAIMS.md) |
+| Understand the canonical evidence objects | [Evidence model](docs/evidence/MODEL.md) |
 | See exactly what is proved, measured, and still unknown | [Evidence status](docs/evidence/STATUS.md) |
 | Trace a claim to its proof, its limits, and its date | [Provenance](PROVENANCE.md) |
 | Run the benchmark or engine | [Using Minority Prophet](docs/use/README.md) |
@@ -36,14 +39,15 @@ which are current sources of truth, and which are immutable historical records.
 
 Photocopying one witness statement does not create more witnesses. In a copied
 majority, naive voting sees five votes against one. Root-aware aggregation sees
-one recorded source against one independent source and reports the unresolved
-structure instead of manufacturing confidence.
+one recorded root against one recorded root. Because the record alone cannot
+establish whether either is an independent observation, it reports the
+unresolved structure instead of manufacturing confidence.
 
 This guarantee is conditional. Roots must not be freely forged, opposing claims
 must not be merged, and missing lineage must remain unknown. Root identity can
 also be [decision-relative](research/decision-relative-independence/README.md):
-separate machines may be independent for a compatibility test while sharing one
-controller for an operator-consensus question.
+separate machines may be treated as distinct under a declared compatibility-error
+model while sharing one controller under an operator-consensus error model.
 
 ## What exists today
 

@@ -1,5 +1,13 @@
 # DEFINITION-AUDIT.md
 
+<!-- mp-status: {"id":"definition-audit","class":"historical_snapshot","asOf":"2026-08-08","replacement":"formal-claim-scope","immutable":false,"theorems":["T1","T2","T3"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots"],"recommendedMechanisms":["recorded_graph_roots"]} -->
+
+**Historical snapshot.** Present-tense implementation findings below describe
+the audited revisions named here, not the 2026-09-19 tree. In particular,
+`EvidenceGraph.add` now enforces parent/child proposition and value consistency.
+Use [`CLAIM-SCOPE.md`](CLAIM-SCOPE.md) for the current boundary; the historical
+counterexamples and measurements remain unchanged.
+
 Workstream A. Base commit `e1403a7` (minority-prophet), `a120274`
 (minority-prophet-gate). The audited revisions are recorded in
 `formal/THEOREM-LEDGER.json`.
@@ -132,11 +140,12 @@ must be supplied by infrastructure.
 ### 1.5 Side consistency (R2)
 
 - **Exact meaning (formal):** `∀ i j, j ∈ parents i → assert j = assert i`.
-- **Exact meaning (implementation):** **absent.** `EvidenceGraph.add` never
-  compares `value` across an edge (CE-09), and never compares `proposition_id`
-  across an edge either (CE-10).
-- **Consistent?** No. `PROVENANCE-REQUIREMENTS.md` calls R2 a *hard requirement*
-  and the "surprising minimum"; it has no enforcement point in code.
+- **Exact meaning (implementation at the audited revision):** **absent.**
+  `EvidenceGraph.add` did not compare `value` across an edge (CE-09), or compare
+  `proposition_id` across an edge (CE-10). Current code performs both checks.
+- **Consistent at the audited revision?** No. `PROVENANCE-REQUIREMENTS.md`
+  called R2 a *hard requirement* and the "surprising minimum" while that
+  revision had no enforcement point in code.
 - **Implicit assumption, and it is a big one:** in the DAG, side-consistency
   forbids any claim derived from evidence on *both* sides — i.e. it forbids
   synthesis, not merely "camp blending" (CE-07). In the single-parent forest

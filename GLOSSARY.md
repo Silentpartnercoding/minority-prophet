@@ -1,5 +1,7 @@
 # Glossary
 
+<!-- mp-status: {"id":"glossary","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["DR1","DR2","DR3","U1"],"researchRecords":["AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","proximate_mis_count","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
 **Belief** — A versioned claim about a proposition, held with stated confidence.
 
 **Claim lineage** — Directed ancestry describing copying, derivation, and transformation.
@@ -8,7 +10,9 @@
 
 **Competence** — Empirically estimated reliability scoped to a task or domain; not general reputation.
 
-**Evidence root** — A lineage node grounded in an observation rather than copied from another claim.
+**Observation** — A world-level event or measurement. A repository record may
+claim to describe one, but record shape alone does not establish that it was
+independently observed.
 
 **Independence** — Absence of relevant shared causal ancestry under a stated model; never inferred solely from different agent names.
 
@@ -28,7 +32,20 @@
 
 **Truth aggregation** — Mapping claims and evidence into a belief distribution or abstention.
 
-**Evidence root (recorded)** — A lineage node with no recorded ancestry. NOTE: this means "no ancestry *recorded*", not "independently observed". An undetected copy is indistinguishable from an evidence root and is governed by the margin theorems, not by copy invariance. See `formal/CLAIM-SCOPE.md`.
+**Recorded root** — A claim record with no usable ancestry in the named record.
+This means “no ancestry recorded,” not “independently observed.” An unrecorded
+copy is indistinguishable from a recorded root to that graph and is governed by
+the margin theorems, not by copy invariance. See `formal/CLAIM-SCOPE.md`.
+
+**Issued root identity** — An authenticated, quota-bounded identity minted by
+`provenance.RootRegistry`. It can preserve a declared copy relationship and
+limit issuance. Distinct issued identities do not prove distinct observations,
+issuer honesty, truth, or deployment adoption.
+
+**Effective witness** — One unit in an exact maximum independent set relative
+to a named possible-dependence graph and error class. It is a model-relative
+counting unit, not a claim that the world contains that many independent
+observations. Exact counting is used or the implementation refuses.
 
 **Root identity** — The criterion by which two roots count as the same root. `S_a` is a *set*, so every verdict is a function of this criterion. Defined in `canon/U1-PROXIMATE-ROOTS.md`: dependence is not an equivalence, so the count is a **maximum independent set** rather than a quotient, and shared ancestry is cause-in-fact rather than dependence. Any de-duplication or canonicalisation step is still inside the trusted base. Ledger `U1`, `proved_compiled`; worked in `canon/U1-WORKED-EXAMPLE.md`.
 
@@ -38,7 +55,7 @@
 
 | term | measures | what is varied |
 |---|---|---|
-| **Flip budget** (above) | how many evidence roots must be converted to reverse a verdict | the evidence graph |
+| **Flip budget** (above) | how many counted support units must be converted to reverse a verdict | the named evidence model |
 | **False-reversal rate** and **copied-minority recovery** | how often an aggregator overturns wrongly, and how often rightly | the world, against known ground truth |
 | **Pressure susceptibility** | how easily a judge moves when nothing evidential has changed | prestige, consensus, framing, source repetition, who is speaking |
 

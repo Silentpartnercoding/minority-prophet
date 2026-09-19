@@ -1,16 +1,18 @@
 # What is actually established
 
+<!-- mp-status: {"id":"evidence-status","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["DR1","DR2","DR3","U1"],"researchRecords":["DRI-2-V1","DRI-2-V2","DRI-3-V1","DRI-4-V1","DRI-5-V1","DRI-6-V1","DRI-8-V1","DRI-9-V1","DRI-10-V1","DRI-11-V1","AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","proximate_mis_count","recorded_dependence_robust_settlement","attested_independence_point_policy","attested_independence_bounds_policy","collapse_robust_margin_policy","priced_exposure_policy"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
 This is a reader-oriented status guide, not a new source of claim authority.
 When wording conflicts, defer to [`PUBLIC-CLAIMS.md`](../../PUBLIC-CLAIMS.md),
 [`EVIDENCE-ALIGNMENT.md`](../../EVIDENCE-ALIGNMENT.md),
 [`CANONICAL-RECORDS.md`](../../CANONICAL-RECORDS.md), and the formal ledgers.
 
 Current record status is listed in full in
-[`CANONICAL-RECORDS.md`](../../CANONICAL-RECORDS.md): the EXP series, HVI-1,
-HEO-1, HGD-1, HGD-2, HES-1, EAA-P5 and the LIR series, including every rejected
-and incomplete record. None establishes real-world provenance recovery. Results
-added after 2026-08-09 are not canonical records; they are summarized below with
-their own labels.
+[`CANONICAL-RECORDS.md`](../../CANONICAL-RECORDS.md), including the EXP, HVI,
+HEO, HGD, HES, EAA, LIR, DRI and AID series and every rejected or incomplete
+record registered there. Date is not a lifecycle class: records added after
+2026-08-09 include canonical DRI and AID results. None establishes real-world
+provenance recovery.
 
 ## Proved
 
@@ -142,13 +144,13 @@ Later constructed results, none canonical:
   [`DRI-11`](../../results/dri11-v1/README.md). The series is now closed on that
   answer rather than on exhaustion, with the result chain and what stays open in
   [`the series closure`](../../experiments/DECISION-RELATIVE-INDEPENDENCE-SERIES-CLOSURE.md);
-  what follows from it is policy rather than detection, adopted in
-  [`canon/ATTESTED-INDEPENDENCE.md`](../../canon/ATTESTED-INDEPENDENCE.md) and
-  unmeasured in cost.
-- Whether counting only attested witnesses leaves enough decisions answerable.
-  The policy fails closed instead of converting the record's silence into
-  independence, which is sound and not free. The measurement is specified and not
-  run; see
+  what followed from it was a policy proposal rather than detection. That
+  attested-independence proposal was subsequently rejected with every other AID
+  counting-time policy; see the
+  [`AID series closure`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md).
+- Why counting only attested witnesses is not current policy. The proposal was
+  intended to fail closed instead of converting the record's silence into
+  independence. Its first specification, before the experiments ran, is
   [`AID-1-DESIGN-DRAFT.md`](../../research/attested-independence/AID-1-DESIGN-DRAFT.md),
   the first experiment of a new series rather than a continuation of the closed
   one. An observational census run first found that the policy's input does not
@@ -200,8 +202,11 @@ Later constructed results, none canonical:
   a reader who now trusts a meaningless number. The series is closed in
   [`the attested-independence closure`](../../experiments/ATTESTED-INDEPENDENCE-SERIES-CLOSURE.md),
   which records the one constructive finding: the link that would break the
-  theorem can only be written by whoever makes the copy, the field for it already
-  exists and is enforced, and nothing in the estate emits it.
+  theorem can only be written by whoever makes the copy. At series closure the
+  field existed and was enforced but no production path emitted it. Root issuance
+  now emits and preserves the link; transport/relay and cache/fan-out remain
+  unwired, and deployment use is not established. See the
+  [`emission census`](../EMISSION-CENSUS.md).
 - Whether any weighted aggregator is safe. Weighted roots are closed by decision
   (`not_pursued`), not solved.
 - Whether the development-set model lift survives a hidden, independently

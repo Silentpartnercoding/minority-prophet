@@ -53,6 +53,8 @@ jobs:
         run: make check-registration-chain HEAD_REF="${{ github.sha }}" PYTHON=python
       - name: Check graduated research integrity
         run: make check-research-integrity BASE="${{ steps.comparison.outputs.base }}" HEAD_REF="${{ github.sha }}" PYTHON=python
+      - name: Reconcile canonical evidence model
+        run: make check-canonical-model PYTHON=python
 
   python:
     runs-on: ubuntu-latest

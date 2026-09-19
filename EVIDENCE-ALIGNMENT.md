@@ -1,7 +1,18 @@
 # Evidence alignment ledger
 
+<!-- mp-status: {"id":"evidence-alignment","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["T2","DR1","DR2","DR3","U1"],"researchRecords":["AID-1-V1","AID-2-V1","AID-3-V1","AID-4-V1"],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","proximate_mis_count","recorded_dependence_robust_settlement","attested_independence_point_policy","attested_independence_bounds_policy","collapse_robust_margin_policy","priced_exposure_policy"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
 This ledger states which public claims are supported by which immutable record.
 `CANONICAL-RECORDS.md` controls status; a paper cannot promote an experiment.
+
+## 2026-09-19 model reconciliation
+
+The machine-readable terminology and mechanism dispositions now live in
+`canon/model-registry.json`. It distinguishes recorded roots, issued root
+identities, and effective witnesses; classifies every AID counting-time policy
+as rejected; and retains recorded-dependence robust settlement as current only
+within its named basis. This reconciliation changes no theorem, lifecycle
+record, canonical result, numeric outcome, or manifest pin.
 
 ## EXP007 correction
 

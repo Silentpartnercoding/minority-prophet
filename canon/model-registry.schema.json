@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.example/canon/model-registry.schema.json",
+  "title": "Minority Prophet canonical evidence-model registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "layers", "terms", "mechanisms", "claimBindings", "artifacts"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "layers": {"type": "array", "items": {"$ref": "#/$defs/layer"}},
+    "terms": {"type": "array", "items": {"$ref": "#/$defs/term"}},
+    "mechanisms": {"type": "array", "items": {"$ref": "#/$defs/mechanism"}},
+    "claimBindings": {"type": "array", "items": {"$ref": "#/$defs/claimBinding"}},
+    "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"},
+    "path": {"type": "string", "minLength": 1},
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "label": {"type": "string", "minLength": 1}}
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact"],
+      "properties": {"artifact": {"$ref": "#/$defs/path"}, "symbol": {"type": "string"}}
+    },
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "layer", "definition", "notEquivalentTo", "authority"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "label": {"type": "string", "minLength": 1},
+        "layer": {"$ref": "#/$defs/id"}, "definition": {"type": "string", "minLength": 1},
+        "notEquivalentTo": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "authority": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/authority"}}
+      }
+    },
+    "pin": {
+      "type": "object", "additionalProperties": false, "required": ["manifest", "path", "sha256"],
+      "properties": {"manifest": {"$ref": "#/$defs/path"}, "path": {"$ref": "#/$defs/path"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    },
+    "mechanism": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "layer", "disposition", "artifacts", "theorems", "researchRecords", "prohibitedClaims"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "label": {"type": "string", "minLength": 1},
+        "layer": {"$ref": "#/$defs/id"},
+        "disposition": {"enum": ["current", "research_only", "rejected", "historical", "superseded"]},
+        "artifacts": {"type": "array", "items": {"$ref": "#/$defs/path"}},
+        "theorems": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "researchRecords": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "prohibitedClaims": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "replacement": {"type": ["string", "null"]},
+        "pins": {"type": "array", "items": {"$ref": "#/$defs/pin"}}
+      }
+    },
+    "claimBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "theorems", "researchRecords", "requiredQualifiers", "prohibitedOverstatement"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "theorems": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "researchRecords": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "requiredQualifiers": {"type": "array", "items": {"type": "string"}},
+        "prohibitedOverstatement": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "path", "class", "asOf", "replacement", "immutable", "statusBanner", "theorems", "researchRecords", "describesMechanisms", "recommendedMechanisms"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "path": {"$ref": "#/$defs/path"},
+        "class": {"enum": ["current", "historical_snapshot", "rejected_policy", "superseded"]},
+        "asOf": {"type": "string", "format": "date"}, "replacement": {"type": ["string", "null"]},
+        "immutable": {"type": "boolean"}, "statusBanner": {"type": "boolean"},
+        "theorems": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "researchRecords": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "describesMechanisms": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "recommendedMechanisms": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+      }
+    }
+  }
+}
