@@ -285,6 +285,84 @@
       "researchRecords": ["AID-4-V1"],
       "describesMechanisms": ["bounded_root_issuance"],
       "recommendedMechanisms": ["bounded_root_issuance", "recorded_dependence_robust_settlement"]
+    },
+    {
+      "id": "glossary",
+      "path": "GLOSSARY.md",
+      "class": "current",
+      "asOf": "2026-09-19",
+      "replacement": null,
+      "immutable": false,
+      "statusBanner": true,
+      "theorems": ["DR1", "DR2", "DR3", "U1"],
+      "researchRecords": ["AID-1-V1", "AID-2-V1", "AID-3-V1", "AID-4-V1"],
+      "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "proximate_mis_count", "recorded_dependence_robust_settlement"],
+      "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]
+    },
+    {
+      "id": "foundations",
+      "path": "FOUNDATIONS.md",
+      "class": "current",
+      "asOf": "2026-09-19",
+      "replacement": null,
+      "immutable": false,
+      "statusBanner": true,
+      "theorems": ["T1", "T2", "T3", "DR1", "DR2", "DR3", "U1"],
+      "researchRecords": [],
+      "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"],
+      "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]
+    },
+    {
+      "id": "evidence-model",
+      "path": "docs/evidence/MODEL.md",
+      "class": "current",
+      "asOf": "2026-09-19",
+      "replacement": null,
+      "immutable": false,
+      "statusBanner": true,
+      "theorems": ["T2", "DR1", "DR2", "DR3", "U1"],
+      "researchRecords": ["AID-1-V1", "AID-2-V1", "AID-3-V1", "AID-4-V1"],
+      "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "proximate_mis_count", "recorded_dependence_robust_settlement", "attested_independence_point_policy", "attested_independence_bounds_policy", "collapse_robust_margin_policy", "priced_exposure_policy"],
+      "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]
+    },
+    {
+      "id": "evidence-index",
+      "path": "docs/evidence/README.md",
+      "class": "current",
+      "asOf": "2026-09-19",
+      "replacement": null,
+      "immutable": false,
+      "statusBanner": true,
+      "theorems": ["DR1", "DR2", "DR3", "U1"],
+      "researchRecords": [],
+      "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"],
+      "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]
+    },
+    {
+      "id": "evidence-alignment",
+      "path": "EVIDENCE-ALIGNMENT.md",
+      "class": "current",
+      "asOf": "2026-09-19",
+      "replacement": null,
+      "immutable": false,
+      "statusBanner": true,
+      "theorems": ["T2", "DR1", "DR2", "DR3", "U1"],
+      "researchRecords": ["AID-1-V1", "AID-2-V1", "AID-3-V1", "AID-4-V1"],
+      "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "proximate_mis_count", "recorded_dependence_robust_settlement", "attested_independence_point_policy", "attested_independence_bounds_policy", "collapse_robust_margin_policy", "priced_exposure_policy"],
+      "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]
+    },
+    {
+      "id": "repository-readme",
+      "path": "README.md",
+      "class": "current",
+      "asOf": "2026-09-19",
+      "replacement": null,
+      "immutable": false,
+      "statusBanner": true,
+      "theorems": ["T2", "DR1", "DR2", "DR3", "U1"],
+      "researchRecords": [],
+      "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"],
+      "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]
     }
   ]
 }

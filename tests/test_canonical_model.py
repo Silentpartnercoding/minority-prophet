@@ -130,6 +130,39 @@ class CanonicalModelTests(unittest.TestCase):
         problems = self.problems_for(mutate)
         self.assert_problem(problems, "recommends rejected mechanism")
 
+    def test_current_guidance_uses_layered_root_terms(self):
+        terms = {entry["id"]: entry["label"] for entry in self.registry["terms"]}
+        self.assertEqual(terms["recorded_root"], "recorded root")
+        self.assertEqual(terms["issued_root_identity"], "issued root identity")
+        self.assertEqual(terms["effective_witness"], "effective witness")
+
+        glossary = (ROOT / "GLOSSARY.md").read_text()
+        for heading in ("**Recorded root**", "**Issued root identity**", "**Effective witness**"):
+            self.assertIn(heading, glossary)
+        self.assertNotIn("**Evidence root**", glossary)
+        self.assertNotIn("**Evidence root (recorded)**", glossary)
+
+    def test_reader_model_is_linked_and_preserves_the_negative_boundary(self):
+        model = (ROOT / "docs/evidence/MODEL.md").read_text()
+        evidence_index = (ROOT / "docs/evidence/README.md").read_text()
+        foundations = (ROOT / "FOUNDATIONS.md").read_text()
+        alignment = (ROOT / "EVIDENCE-ALIGNMENT.md").read_text()
+        readme = (ROOT / "README.md").read_text()
+        model_prose = " ".join(model.split())
+
+        self.assertIn("MODEL.md", evidence_index)
+        self.assertIn("A missing edge means", model)
+        self.assertIn("not proof of independent observation", model_prose)
+        self.assertIn("transport/relay", model)
+        self.assertIn("cache/fan-out", model)
+        self.assertIn("conceptual framing", foundations.casefold())
+        self.assertIn("recorded copy link", foundations)
+        self.assertNotIn("The next formal step is", foundations)
+        self.assertIn("2026-09-19 model reconciliation", alignment)
+        self.assertIn("canon/model-registry.json", alignment)
+        self.assertIn("docs/evidence/MODEL.md", readme)
+        self.assertNotIn("one recorded source against one independent source", readme)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,7 @@
 # Evidence and claim map
 
+<!-- mp-status: {"id":"evidence-index","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["DR1","DR2","DR3","U1"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
 Use this section to answer two different questions:
 
 1. What does Minority Prophet currently claim?
@@ -7,21 +9,25 @@ Use this section to answer two different questions:
 
 ## Fastest audit path
 
-1. Read [`STATUS.md`](STATUS.md) for the plain-language boundary between proved,
+1. Read [`MODEL.md`](MODEL.md) for the canonical objects, mechanisms, and
+   non-equivalences.
+2. Read [`STATUS.md`](STATUS.md) for the plain-language boundary between proved,
    measured, experimental, and unestablished work.
-2. Read [`PUBLIC-CLAIMS.md`](../../PUBLIC-CLAIMS.md) for the shortest supported
+3. Read [`PUBLIC-CLAIMS.md`](../../PUBLIC-CLAIMS.md) for the shortest supported
    public claim set.
-3. Use [`EVIDENCE-ALIGNMENT.md`](../../EVIDENCE-ALIGNMENT.md) to follow a claim
+4. Use [`EVIDENCE-ALIGNMENT.md`](../../EVIDENCE-ALIGNMENT.md) to follow a claim
    to its exact record.
-4. Confirm status and promotion rules in
+5. Confirm status and promotion rules in
    [`CANONICAL-RECORDS.md`](../../CANONICAL-RECORDS.md).
-5. Inspect the content-bound record in [`research/records/`](../../research/records/)
+6. Inspect the content-bound record in [`research/records/`](../../research/records/)
    and the referenced material in [`results/`](../../results/).
 
 ## Evidence surfaces
 
 | Surface | Role | Authority |
 |---|---|---|
+| [`MODEL.md`](MODEL.md) | Canonical evidence objects and mechanism dispositions | Derived from the machine registry |
+| [`canon/model-registry.json`](../../canon/model-registry.json) | Machine-readable terms, mechanisms, and navigation status | Controls model vocabulary and disposition |
 | [`PUBLIC-CLAIMS.md`](../../PUBLIC-CLAIMS.md) | Concise public summary | Derived from the ledgers below |
 | [`CLAIMS.md`](../../CLAIMS.md) | Detailed and adversarial claim review | Explanatory audit surface |
 | [`formal/CLAIM-SCOPE.md`](../../formal/CLAIM-SCOPE.md) | Exact scope of proved statements | Controls formal wording |

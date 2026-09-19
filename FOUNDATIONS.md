@@ -1,5 +1,13 @@
 # Foundations
 
+<!-- mp-status: {"id":"foundations","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["T1","T2","T3","DR1","DR2","DR3","U1"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+
+**Conceptual framing.** This page states the motivating benchmark, not the
+repository's normative root semantics or current empirical status. For those,
+use [`docs/evidence/MODEL.md`](docs/evidence/MODEL.md) and
+[`docs/evidence/STATUS.md`](docs/evidence/STATUS.md). In particular, a recorded
+root is not thereby an independent observation.
+
 ## Problem
 
 Most multi-agent aggregation answers *which proposition has the most support?* Minority Prophet studies a different problem: *which proposition is best supported by attributable, sufficiently independent evidence?*
@@ -16,13 +24,22 @@ where \(C\) is the claim set, \(K\) is available competence information, \(\tau\
 
 ## Philosophy
 
-Truth is not popularity. A thousand copied claims may contain one underlying observation. Three causally independent measurements may contain three. Accordingly, aggregation must distinguish agents from evidence roots, confidence from calibration, global reputation from domain competence, and disagreement from error.
+Truth is not popularity. A thousand copied claims may contain one underlying
+observation. Three causally independent measurements may contain three.
+Accordingly, aggregation must distinguish agents from recorded roots, recorded
+roots from effective witnesses, confidence from calibration, global reputation
+from domain competence, and disagreement from error.
 
 The present work makes no claims beyond evidence aggregation in controlled synthetic worlds.
 
 ## The Minority Prophet property
 
-Let \(I_T\) be a minority coalition whose claims match ground truth and whose evidence roots are mutually independent. Let \(M_F\) be a larger coalition supporting a false claim primarily through copied ancestry. For ratio \(\rho=|M_F|/|I_T|\), an aggregator has minority-truth recovery at level \((\rho,\alpha)\) on distribution \(D\) when:
+Let \(I_T\) be a minority coalition whose claims match ground truth and whose
+observations are generated independently in the benchmark world. Let \(M_F\) be
+a larger coalition supporting a false claim primarily through copied ancestry.
+The generator supplies that ground truth; the record does not infer it. For
+ratio \(\rho=|M_F|/|I_T|\), an aggregator has minority-truth recovery at level
+\((\rho,\alpha)\) on distribution \(D\) when:
 
 \[
 \Pr_{w\sim D}[F(w)=T(w)\mid |M_F|\ge\rho|I_T|] \ge \alpha.
@@ -33,7 +50,9 @@ This is a distributional benchmark property, not a proof that minority views are
 ## Desiderata
 
 1. **Anonymity of labels:** renaming agents does not change the result when their attributes and lineage are unchanged.
-2. **Copy invariance:** duplicating a claim without adding an independent evidence root should not increase its evidential mass.
+2. **Copy invariance:** duplicating a claim with a recorded copy link should not
+   increase recorded-root support. No claim is made for a copy whose link is
+   absent from the record.
 3. **Evidence monotonicity:** adding reliable independent evidence for a proposition should not reduce its support, all else equal.
 4. **Calibration:** among outputs assigned probability \(q\), the long-run truth frequency should approach \(q\).
 5. **Abstention:** insufficient or contradictory evidence should permit no decision.
@@ -43,8 +62,8 @@ This is a distributional benchmark property, not a proof that minority views are
    third party. Its rules must be transparent, it must remain independent of
    the evidence producer, it must expose uncertainty through abstention, and
    it must be unable to mint, alter, or promote the evidence it verifies. A
-   component that both manufactures and verifies an evidence root cannot make
-   that root independent by attesting to itself.
+   component that both manufactures and verifies an issued root identity cannot
+   make the underlying observation independent by attesting to itself.
 
 These properties can conflict. For example, monotonicity can fail under newly discovered dependence, and competence estimates can encode feedback loops. Experiments must state which assumptions are active.
 
@@ -62,4 +81,9 @@ who can verify them, which rules each applies, and what happens when those
 roles overlap. Unknown or overlapping provenance widens uncertainty; it never
 creates permission.
 
-The immediate research task is to make those assumptions visible and test their failure boundaries. The next formal step is a machine-checked statement of copy invariance; the next experimental step is an ancestry-aware reference method evaluated against controls.
+Subsequent work compiled recorded-copy invariance, defined model-relative
+effective-witness counting, and proved robust settlement over dependence the
+record actually carries. It also proved that a record-only rule cannot recover
+dependence the record omits. The current engineering task is therefore to
+preserve copy links at issuance, transport/relay, and cache/fan-out seams, while
+reporting the coverage that remains unestablished.
