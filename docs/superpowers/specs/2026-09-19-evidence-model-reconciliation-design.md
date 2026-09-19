@@ -1,5 +1,7 @@
 # Evidence-model canonical reconciliation
 
+<!-- mp-status: {"id":"evidence-model-reconciliation-design","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false} -->
+
 **Status:** approved design, implementation not started
 
 **Date:** 2026-09-19
