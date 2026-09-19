@@ -40,10 +40,17 @@ verify: verify-python verify-integrity verify-site verify-evaluation
 verify-python:
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q
 
-verify-integrity: check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity check-gate-coverage
+verify-integrity: check-doc-navigation check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain check-research-integrity check-gate-coverage check-criterion-reachability
 
 check-doc-navigation:
 	"$(PYTHON)" scripts/check_documentation_navigation.py
+
+# The only gate here that examines a CRITERION rather than an artifact. Every
+# other check passed on HGD-1 while HGD-1g demanded a 5-point error reduction
+# from a 4.349-point baseline -- unsatisfiable by any possible result, and
+# invisible to a check that only ever looks at what was produced.
+check-criterion-reachability:
+	"$(PYTHON)" scripts/check_criterion_reachability.py
 
 check-gate-coverage:
 	"$(PYTHON)" scripts/check_gate_coverage.py
