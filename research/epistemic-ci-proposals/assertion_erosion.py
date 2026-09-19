@@ -30,6 +30,8 @@ intent. Drift is the common failure; intent is the rare one.
 from __future__ import annotations
 
 import ast
+import sys
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 
 #: How much an assertion promises. Deleting one drops it to zero.
@@ -155,3 +157,65 @@ def check_assertion_erosion(before: str, after: str, *,
             report.added.extend(Assertion(test, m) for m in new_calls)
 
     return report
+
+
+#: Modules that ship with Python. A test importing these says nothing about
+#: which code it covers, and including them would make every test look as though
+#: it covered the standard library.
+_STDLIB = frozenset(sys.stdlib_module_names) if hasattr(sys, "stdlib_module_names") else frozenset()
+
+
+def covered_modules(test_source: str, *, roots: Iterable[str] = ()) -> set[str]:
+    """First-party modules a test file imports, as repository-relative paths.
+
+    `covered_module_changed` is the input `needs_review` turns on, and nothing
+    derived it -- the property that separates a correction from a convenience
+    depended on a boolean no caller was shown how to produce. This derives the
+    CANDIDATES from the test's own imports.
+
+    It deliberately stops there. Whether one of these actually changed is a
+    question about a diff, which this module cannot see and should not guess at:
+    inferring it would be the static analysis the proposal disclaims. The caller
+    holds the diff; this names what to look for in it.
+
+    `roots` limits the result to first-party top-level packages when given. Left
+    empty, anything outside the standard library counts, which over-reports
+    third-party imports rather than silently dropping a real one.
+    """
+    try:
+        tree = ast.parse(test_source)
+    except SyntaxError:
+        return set()
+
+    allowed = tuple(roots)
+    found: set[str] = set()
+    for node in ast.walk(tree):
+        names: list[str] = []
+        if isinstance(node, ast.ImportFrom):
+            if node.level:          # relative import: no dotted path to resolve
+                continue
+            if node.module:
+                names.append(node.module)
+        elif isinstance(node, ast.Import):
+            names.extend(alias.name for alias in node.names)
+        for name in names:
+            top = name.split(".", 1)[0]
+            if top in _STDLIB:
+                continue
+            if allowed and top not in allowed:
+                continue
+            found.add(name.replace(".", "/") + ".py")
+    return found
+
+
+def module_changed(test_source: str, changed_paths: Iterable[str], *,
+                   roots: Iterable[str] = ()) -> bool:
+    """Whether any module this test covers appears in `changed_paths`.
+
+    The caller supplies what changed -- from a diff, a commit, a CI event. This
+    only answers whether the overlap is non-empty, so the judgement stays where
+    the evidence is.
+    """
+    covered = covered_modules(test_source, roots=roots)
+    changed = {str(path).lstrip("./") for path in changed_paths}
+    return bool(covered & changed)

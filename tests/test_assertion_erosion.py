@@ -10,6 +10,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]
 from assertion_erosion import (  # noqa: E402
     ASSERTION_STRENGTH,
     check_assertion_erosion,
+    covered_modules,
+    module_changed,
 )
 
 STRONG = """
@@ -160,3 +162,63 @@ class LimitsTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CoveredModuleTests(unittest.TestCase):
+    """`covered_module_changed` is what `needs_review` turns on, and nothing
+    derived it. These cover the deriver, not the judgement: it names candidates
+    from the test's own imports and leaves the diff to the caller."""
+
+    SOURCE = """
+import json
+from pathlib import Path
+import pytest
+
+from provenance.claim_warrant import build_warrant
+from provenance.graph import resolvable_reference
+import aggregation.root_vote
+"""
+
+    def test_first_party_imports_become_repository_paths(self):
+        found = covered_modules(self.SOURCE, roots=("provenance", "aggregation"))
+        self.assertEqual(found, {"provenance/claim_warrant.py",
+                                 "provenance/graph.py",
+                                 "aggregation/root_vote.py"})
+
+    def test_the_standard_library_is_not_covered_code(self):
+        """A test importing json does not cover json. Including stdlib would
+        make every test look as though it covered the standard library."""
+        found = covered_modules(self.SOURCE, roots=("provenance", "aggregation"))
+        self.assertNotIn("json.py", found)
+        self.assertNotIn("pathlib.py", found)
+
+    def test_roots_limit_the_result(self):
+        found = covered_modules(self.SOURCE, roots=("aggregation",))
+        self.assertEqual(found, {"aggregation/root_vote.py"})
+
+    def test_without_roots_third_party_over_reports_rather_than_dropping(self):
+        """Over-reporting is the safe direction: a missed real module would
+        silently disarm needs_review."""
+        found = covered_modules(self.SOURCE)
+        self.assertIn("pytest.py", found)
+        self.assertIn("provenance/claim_warrant.py", found)
+
+    def test_relative_imports_are_skipped(self):
+        self.assertEqual(covered_modules("from . import sibling"), set())
+
+    def test_unparseable_source_yields_nothing(self):
+        self.assertEqual(covered_modules("def (:"), set())
+
+    def test_module_changed_is_the_overlap(self):
+        self.assertTrue(module_changed(self.SOURCE, ["provenance/graph.py"],
+                                       roots=("provenance",)))
+        self.assertFalse(module_changed(self.SOURCE, ["app/page.tsx"],
+                                        roots=("provenance",)))
+
+    def test_leading_dot_slash_is_tolerated(self):
+        self.assertTrue(module_changed(self.SOURCE, ["./provenance/graph.py"],
+                                       roots=("provenance",)))
+
+    def test_no_changes_is_not_a_review_trigger(self):
+        self.assertFalse(module_changed(self.SOURCE, [], roots=("provenance",)))
+
