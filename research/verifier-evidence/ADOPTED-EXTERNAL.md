@@ -101,15 +101,23 @@ result explicit rather than implied by the file it sits in.
 
 ---
 
-## What this changed in the published draft
+## What this changed in the draft under review
 
-The draft `draft-he-agentproto-exercised-rejection-00` **dropped its
-completeness requirements entirely** rather than restate these. Two parties
-reached the same result publicly and first: Bradley B in list discussion and
-Mikhail Sergeev in a published Internet-Draft, both dated 2026-09-16. The draft
-now covers only the exercised-check question, which no one else has treated, and
-cites them for the rest.
+An earlier private review branch narrowed the proposed Internet-Draft to
+exercised rejection and omitted the completeness requirements. It was not
+submitted or published as an Internet-Draft. The current, still-unfiled private
+review draft, `draft-he-agentproto-verifier-evidence-00`, includes both
+EXR-1/EXR-2 and revised CMP-1/CMP-2 requirements.
 
-That was the correct outcome and it was not obvious in advance. The work here
-is not wasted by it — the model improved, and the published claim got smaller
-and truer.
+That inclusion does not claim priority over adjacent work. Bradley B's public
+independence-versus-completeness distinction and Mikhail Sergeev's published
+reporting vocabulary are attributed above. The revised CMP text addresses a
+narrower question: what domain and omission-detection mechanism a completeness
+claim names, and what independent basis the deciding verifier actually
+appraises for that particular result. It does not make every independently
+checked observation a completeness claim or turn an unestablished completeness
+claim into a failed predicate check.
+
+The author's draft remains under review. Approval of its private wording does
+not file or publish it. No named reviewer is implied to endorse this repository
+or the draft.

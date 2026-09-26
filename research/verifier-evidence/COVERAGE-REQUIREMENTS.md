@@ -1,13 +1,12 @@
-# Coverage requirements for a claim of independent observation
+# Coverage requirements for completeness claims
 
-Two requirements, CMP-1 and CMP-2, on what a verifier result must name before
-it may be read as supporting a claim of independent observation.
-
-They were written for an Internet-Draft and then cut from it, because adjacent
-work was published the same week and restating it would have been duplication.
-On re-reading, they are not a restatement: the adjacent work defines a reporting
-vocabulary, and these are requirements on what a result must name. They are
-published here so the work exists, is dated, and can be cited.
+These are public research notes on CMP-1 and CMP-2: what a completeness claim
+must name and what independent omission-detection basis a deciding verifier
+must appraise before reporting completeness as established. An earlier private
+review branch omitted them. The current, still-unfiled private review draft,
+`draft-he-agentproto-verifier-evidence-00`, includes revised CMP-1/CMP-2 text.
+The notes below explain the research boundary; they are not the authoritative
+text of that draft, and neither has been submitted to a standards body.
 
 ## Provenance, stated accurately
 
@@ -30,11 +29,13 @@ CMP-2, which applies the exercised-check requirement to CMP-2 itself.
 
 ## CMP-1: Coverage domain
 
-A result claiming independent observation MUST name the coverage domain over
-which completeness is asserted, and MUST name the mechanism by which an omission
-within that domain would be revealed.
+A result claiming completeness over a stated coverage domain, including a claim
+of independent observation of that complete domain, MUST name that domain and
+the mechanism by which an omission within it would be revealed. Independently
+checking one identified artifact does not by itself claim completeness of a
+wider event or artifact history.
 
-A result that names neither does not support a completeness claim, whatever the
+A result that does not name both does not support a completeness claim, whatever the
 number of individually valid artifacts it presents. Validity of disclosed
 artifacts is a property of those artifacts and carries no information about
 records that were not disclosed.
@@ -49,20 +50,22 @@ must act on the difference cannot infer it from the fact of absence.
 ## CMP-2: Material-party detection
 
 Where the mechanism that would reveal an omission is operated by a material
-party, or where its inputs are selected by a material party, the result is
-same-party regardless of the number of independently valid artifacts it
-presents, and the evaluator MUST report the claim as unestablished rather than
-as failed.
+party, or its inputs are selected by a material party, that mechanism alone is
+same-party regardless of the number of independently valid artifacts presented.
+Unless an independent basis has been appraised for this result, the evaluator
+MUST NOT report the completeness claim as verified. Lack of an independent
+omission-detection basis alone does not establish a violation. A violation of a
+separately completed predicate check remains reportable.
 
-Unestablished and failed are distinct signals and a relying party acts
-differently on each. A claim reported as failed asserts that the check ran and
-the condition did not hold. A claim reported as unestablished asserts that the
-record cannot settle the question.
+A predicate reported as a violation asserts that its check ran and its
+condition did not hold. A completeness appraisal left unestablished says the
+available record cannot settle whether an omission remains. These are separate
+checks and verdicts.
 
-CMP-2 is bounded by what counts as an independent basis, and a profile that
-cannot state one for any result has not satisfied CMP-1. An independent basis is
-a constraint on the record set that was not under the sole control of a material
-party when the records were produced:
+CMP-2 is bounded by what counts as an independent basis. A profile may name a
+domain and mechanism under CMP-1 yet still be unable to establish completeness
+under CMP-2. An independent basis is a constraint on the record set that was not
+under the sole control of a material party when the records were produced:
 
 - an append-only log whose inclusion is witnessed by parties not material to the
   claim;
@@ -70,8 +73,12 @@ party when the records were produced:
 - a substrate that cannot produce the effect without emitting a record a
   material party cannot suppress.
 
-Naming one, and stating how a later verifier establishes it held, satisfies
-CMP-1 and takes the result out of CMP-2.
+Naming an independent basis is necessary but does not establish that it
+constrained the record set for this result. Before reporting a completeness
+claim as verified, the deciding verifier must establish the basis's authority,
+its binding to this result and coverage domain, the extent of its coverage,
+and the relevant time, and retain evidence of those checks. A basis for a
+different scope or time leaves this result's completeness claim unestablished.
 
 ### CMP-2 is itself subject to the exercised-check requirement
 
@@ -94,9 +101,10 @@ what a verdict should say when evidence does not support the asserted claim,
 including *downgrade*, which this work did not have and has adopted — see
 [`ADOPTED-EXTERNAL.md`](ADOPTED-EXTERNAL.md).
 
-CMP-1 and CMP-2 are a different kind of statement. They do not define what to
-report; they define what a result must name before a completeness reading is
-available at all. A profile can satisfy one and not the other.
+CMP-1 and CMP-2 do not replace that general reporting vocabulary. They set
+conditions for a completeness reading of a particular result: naming the
+domain and mechanism does not by itself establish that an independent basis
+covered that result. A profile can satisfy one requirement and not the other.
 
 The separation of a detector's independence from its field of view was stated
 publicly by Bradley B on the IETF agentproto list on 2026-09-16, and is the
@@ -105,5 +113,7 @@ distinct from who operates the detector.
 
 ## Status
 
-Not submitted to any standards body. No independent party has implemented these
-requirements or reproduced anything in this file.
+This note is public research material, not an Internet-Draft submission. The
+broader verifier-evidence draft remains private and unfiled. No independent
+party has implemented CMP-1 or CMP-2 as specified in that draft, and no
+reviewer's comments imply endorsement.
