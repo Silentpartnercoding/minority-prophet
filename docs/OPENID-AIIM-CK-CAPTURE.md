@@ -4,7 +4,7 @@ This is a one-run, opt-in evidence path for the OpenID AIIM CK SaaS rerun. Keith
 
 ## Before contacting CK SaaS
 
-1. Apply `migrations/0007_openid_aiim_ck_capture.sql` to the D1 database bound as `DB`, then deploy the Worker. A missing or unwritable table stops the recorded path before its first CK request.
+1. Confirm the deployed Sites version includes the Drizzle migration in `drizzle/` and that the live `DB` binding contains `openid_aiim_ck_capture`. Sites applies that migration during deployment; do **not** also apply `migrations/0007_openid_aiim_ck_capture.sql` to production. That file is retained as a local SQLite test fixture. A missing or unwritable table stops the recorded path before its first CK request.
 2. Use a browser session with no `mp_aiim_ck_oauth` flow cookie. The Worker has no token or metadata cache; a recorded start rejects a pre-existing flow cookie.
 3. Confirm the exact intended OAuth mode and a time with Keith. Do not run `/openid-aiim/ck/start` until that is agreed.
 
@@ -16,7 +16,7 @@ For a CIMD rerun only if requested, use `/openid-aiim/ck/start?mode=cimd&capture
 
 ## Private evidence review
 
-Read the `run_id` from the callback report. Query the private D1 database by exact ID, ordered by `seq`:
+Read the `run_id` from the callback report. Query the private D1 database by exact ID, ordered by `seq` (or read the `openid_aiim_ck_capture` table through the Sites database viewer and select/sort the exact run):
 
 ```sql
 SELECT seq, at, record_json
