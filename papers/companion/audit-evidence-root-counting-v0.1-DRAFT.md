@@ -1,10 +1,13 @@
 # An Echo Is Not a Witness: Evidence-Root Counting for Agent Audit Records
 
-**Status: DRAFT v0.1. Not submitted to the IETF. Not adopted by any working
+**Status: DRAFT v0.2. Not submitted to the IETF. Not adopted by any working
 group. Not deposited. No DOI.**
 
-Drafted 2026-09-20 as a standards-facing mapping of existing Minority Prophet
-results. This note proposes no change to the published foundation paper.
+Drafted 2026-09-20 and updated 2026-10-01 as a standards-facing mapping of
+existing Minority Prophet results. The submission-candidate RFCXML source and
+generated renderings are in
+[`papers/ietf/`](../ietf/README.md). This note proposes no change to the
+published foundation paper.
 
 ---
 
@@ -25,11 +28,14 @@ truth, causal independence, search completeness, or operational authority.
 
 ## 1. The seam
 
-Decision-record discussion around the proposed IETF AUDIT work asks whether an
-authorization decision leaves a signed, checkable audit artifact. The August
-2026 individual draft *Signed Decision Records for Agent Authorization:
-Disclosures, Entry Artifacts, and Causal Linkage* requires artifacts for allow,
-deny, and other states a relying party may need to reason about. Its
+The active individual AUDIT architecture draft links user intent, delegation,
+authorization, actions, and outcomes through distributed audit records.
+Decision-record discussion around the proposed IETF AUDIT work also asks
+whether an authorization decision leaves a signed, checkable audit artifact.
+The August 2026 individual draft *Signed Decision Records for Agent
+Authorization: Disclosures, Entry Emission, and Ordering Evidence* requires
+artifacts for allow, deny, and other states a relying party may need to reason
+about. Its
 accompanying implementation notes identify a remaining failure: some requests
 that cannot be canonicalized leave no record at all.
 
@@ -48,6 +54,23 @@ Both checks are needed:
    they cannot manufacture additional evidentiary weight?
 
 Passing either check does not imply passing the other.
+
+The counting problem is already on the public AgentProto record: a September
+2026 charter-review comment states that a record containing multiple
+attestations does not thereby establish multiple units of support. That comment
+announced an individual draft in preparation; it did not establish AgentProto
+adoption or make audit-record semantics part of its charter.
+
+### Separate verification dimensions
+
+| Dimension | Question answered | What success does not establish |
+| --- | --- | --- |
+| Authenticity and integrity | Did the identified signer produce these unchanged bytes? | Truth, completeness, causation, or independent support |
+| Recomputation | Does the stated result follow from the available inputs and named procedure? | Fresh external state or complete inputs |
+| Freshness | Was an external fact current at the claimed time? | Causal use or evidence multiplicity |
+| Completeness | Did every attempt in a separately committed scope produce the required record? | That present records are independent evidence |
+| Precedence or effect | Did a decision precede and govern an action, or did the claimed effect occur? | More than one underlying observation |
+| Evidence multiplicity | How many declared evidence-provenance roots support the proposition? | Truth, absolute independence, or authority to act |
 
 ## 2. Candidate audit rule
 
@@ -106,12 +129,15 @@ freezes three attempts and checks their signed terminal artifacts. Its decisive
 case removes the refusal record for an unencodable request. The remaining
 signatures and hash chain still verify, but the separately frozen attempt
 manifest makes the omission a violation. That fixture tests completeness; it
-does not implement the evidence-root counting rule in this note and is not a
-conformance claim for another implementation or draft.
+also exercises the narrow declared-root copy case, but it is not a general
+implementation of this note or a conformance claim for another implementation
+or draft.
 
-Prepared implementation revision:
-`de9153e5d199eaa95fef89db2d6036c0916b3d76`. It remains unpublished while this
-draft is reviewed.
+The fixture is public at merge revision
+`7114ae58bdc2efb13417e4624762f8f9b1ff6ba4`. It includes the external attempt
+commitment, the terminal-deletion counterexample, and the declared-root
+photocopy cases. It is supporting implementation evidence, not an IETF
+conformance claim or an independent implementation of another draft.
 
 ## 5. What the foundation establishes
 
@@ -167,13 +193,21 @@ from being mistaken for independent evidentiary support.
 1. James He, *The Minority Prophet Property: Copy-Invariant Evidence
    Aggregation in Rooted Claim Graphs*, archival record and versions,
    <https://doi.org/10.5281/zenodo.21965712>.
-2. Bradley Behrens, *Signed Decision Records for Agent Authorization:
-   Disclosures, Entry Artifacts, and Causal Linkage*, Internet-Draft work in
-   progress,
+2. Bradley B, *Signed Decision Records for Agent Authorization: Disclosures,
+   Entry Emission, and Ordering Evidence*, Internet-Draft work in progress,
    <https://datatracker.ietf.org/doc/draft-bradleyb-audit-decision-records/>.
-3. Bradley Behrens, implementation receipt notes at frozen revision
+3. Bradley B, implementation receipt notes at frozen revision
    `f2efb313d113149c6ddc9656307a605a7619f8ea`,
    <https://github.com/11-11AI/execution-governance/blob/f2efb313d113149c6ddc9656307a605a7619f8ea/docs/RECEIPTS.md>.
 4. Agent-to-Agent Protocol working-group mailing-list discussion, 24 August
    2026,
    <https://mailarchive.ietf.org/arch/msg/agentproto/ujxE1J-394TnVw9gXmT1h2TeMew/>.
+5. Mirja Kuehlewind and Henk Birkholz, *An Architecture for Auditing Agent
+   Delegation and Interactions*, Internet-Draft work in progress,
+   <https://datatracker.ietf.org/doc/draft-kuehlewind-audit-architecture/>.
+6. J S He, AgentProto charter-review comment on evidence limits and copy
+   counting, 19 September 2026,
+   <https://mailarchive.ietf.org/arch/msg/agentproto/N8CtuCJ5jYeEv4F4vKn9ybnKwDw/>.
+7. *Audit Refusal Completeness and Declared Evidence-Root Fixture*, frozen at
+   `7114ae58bdc2efb13417e4624762f8f9b1ff6ba4`,
+   <https://github.com/Silentpartnercoding/agent-security-verifier-matrix/tree/7114ae58bdc2efb13417e4624762f8f9b1ff6ba4/experiments/audit-refusal-completeness-001>.
