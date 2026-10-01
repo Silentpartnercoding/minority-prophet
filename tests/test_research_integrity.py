@@ -278,6 +278,12 @@ def test_ci_runs_canonical_model_reconciliation():
     assert "make check-canonical-model" in workflow
 
 
+def test_ci_rebuilds_the_internet_draft_package():
+    workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
+    assert "ietf-draft:" in workflow
+    assert "make ietf-check" in workflow
+
+
 def test_ci_checks_runtime_supply_chain_without_publishing():
     workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
     assert "runtime-supply-chain:" in workflow
