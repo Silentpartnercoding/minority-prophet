@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "formal/lean/.lake/**",
+    // Python tooling is installed in the repository-local environment. Some
+    // packages ship browser assets that are not project JavaScript.
+    ".venv/**",
     "next-env.d.ts",
     // Sibling clones that live inside this working tree. They are separate
     // repositories, not part of this one, and CI never sees them because they

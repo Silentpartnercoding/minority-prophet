@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+     category="info"
+     consensus="false"
+     docName="draft-he-audit-evidence-root-counting-00"
+     ipr="trust200902"
+     submissionType="IETF"
+     version="3">
+  <front>
+    <title abbrev="Evidence-Root Counting">An Echo Is Not a Witness: Evidence-Root Counting for Agent Audit Records</title>
+    <seriesInfo name="Internet-Draft" value="draft-he-audit-evidence-root-counting-00"/>
+    <author fullname="James He" initials="J." surname="He">
+      <organization>Independent</organization>
+      <address>
+        <postal>
+          <city>Yorba Linda</city>
+          <region>California</region>
+          <country>United States of America</country>
+        </postal>
+        <email>jsiyuanhe@gmail.com</email>
+        <uri>https://minorityprophet.org/</uri>
+      </address>
+    </author>
+    <date day="1" month="October" year="2026"/>
+    <area>Security</area>
+    <keyword>agent</keyword>
+    <keyword>audit</keyword>
+    <keyword>evidence</keyword>
+    <keyword>provenance</keyword>
+    <abstract>
+      <t>An agent audit trail can contain many authentic records that ultimately repeat one observation.  Signatures can establish the origin and integrity of records, but they do not establish that the records represent independent evidentiary support.</t>
+      <t>This document defines evidence-root counting as a separate audit semantic.  Records derived from one declared evidence-provenance root contribute one unit of support, regardless of the number of copies, relays, summaries, translations, or re-signatures in the trail.  The document describes the minimum provenance information needed to state such a count and the conditions under which the count remains not established.  It does not define a wire format or claim to prove truth, causal independence, record completeness, or operational authority.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="introduction">
+      <name>Introduction</name>
+      <t>Agent audit architectures correlate user intent, delegation, authorization, actions, and outcomes across administrative domains.  Existing work distinguishes record integrity from questions such as whether a record was emitted, whether a decision preceded an effect, and whether an observed boundary can establish an external outcome.  These distinctions are necessary, but they leave a separate counting problem.</t>
+      <t>Multiple audit records can repeat the same underlying observation.  A relay can sign a received statement, a model can summarize it, or several services can repackage the same source event.  Treating the resulting record count as an evidence count can manufacture apparent support without adding an observation.</t>
+      <t>The counting problem was raised during the AgentProto charter review in <xref target="COUNTING-DISCUSSION"/>.  That discussion is a motivating record, not evidence that AgentProto has adopted the rule or that audit semantics fall within its current charter.</t>
+      <t>The rule in this document is narrow: when an audit report makes a multiplicity claim about support for a proposition, it counts declared evidence-provenance roots rather than record identifiers, signers, keys, services, agents, or messages.  Five records derived from one evidence-provenance root still represent one evidence-provenance root.  Adding a recorded descendant of an existing root does not change that count.</t>
+      <t>This document is an individual submission.  It is not an adopted product of an IETF working group and does not claim endorsement by authors of the related work cited here.</t>
+    </section>
+
+    <section anchor="scope">
+      <name>Scope and Terminology</name>
+      <t>This document concerns post-hoc interpretation of audit records.  It does not define an agent communication protocol, authorization protocol, signature scheme, transparency service, or complete audit-record format.</t>
+      <dl newline="true" spacing="normal">
+        <dt>Proposition</dt>
+        <dd>A question or assertion for which an audit report describes evidentiary support.</dd>
+        <dt>Record</dt>
+        <dd>An audit artifact that carries or references an assertion, observation, decision, action, or derived statement.</dd>
+        <dt>Derivation edge</dt>
+        <dd>A declared relation indicating that one record copied, transformed, summarized, translated, relayed, or otherwise derived its relevant assertion from another record or source.</dd>
+        <dt>Evidence-provenance root</dt>
+        <dd>A declared source node reached by following derivation edges for the proposition and error class under evaluation.  This term is not a cryptographic trust anchor, certification root, or assertion that the source is true or independent.</dd>
+        <dt>Error class</dt>
+        <dd>The kind of shared failure or dependence relative to which sources are being distinguished.  Independence is not a context-free property.</dd>
+      </dl>
+      <t>A report can establish that its declared graph contains two evidence-provenance roots.  That fact alone does not establish that those roots are independent, truthful, complete, or correctly bounded.  The strongest safe statement after an incomplete provenance investigation is that no declared dependence trace was found for the stated error class.</t>
+    </section>
+
+    <section anchor="dimensions">
+      <name>Evidence Multiplicity Is a Separate Verification Dimension</name>
+      <t>Audit systems need to keep the following questions separate.  A successful check in one row does not imply success in another.</t>
+      <table anchor="verification-dimensions">
+        <name>Distinct verification dimensions</name>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Question</th>
+            <th>Success does not establish</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Authenticity and integrity</td>
+            <td>Did the identified signer produce these unchanged bytes?</td>
+            <td>Truth, completeness, causation, or independent support</td>
+          </tr>
+          <tr>
+            <td>Recomputation</td>
+            <td>Does the stated result follow from the available inputs and named procedure?</td>
+            <td>Fresh external state or complete inputs</td>
+          </tr>
+          <tr>
+            <td>Freshness</td>
+            <td>Was an external fact current at the claimed time?</td>
+            <td>Causal use or evidence multiplicity</td>
+          </tr>
+          <tr>
+            <td>Completeness</td>
+            <td>Did every attempt in a separately committed scope produce the required record?</td>
+            <td>That present records are independent evidence</td>
+          </tr>
+          <tr>
+            <td>Precedence or effect</td>
+            <td>Did a decision precede and govern an action, or did the claimed effect occur?</td>
+            <td>More than one underlying observation</td>
+          </tr>
+          <tr>
+            <td>Evidence multiplicity</td>
+            <td>How many declared evidence-provenance roots support the proposition?</td>
+            <td>Truth, absolute independence, or authority to act</td>
+          </tr>
+        </tbody>
+      </table>
+      <t>The architecture in <xref target="I-D.kuehlewind-audit-architecture"/> links intent, delegation, authorization, and execution through distributed records.  The signed-decision-record work in <xref target="I-D.bradleyb-audit-decision-records"/> distinguishes correspondence from stronger ordering claims.  Evidence-root counting composes with those efforts without replacing their checks.</t>
+    </section>
+
+    <section anchor="rule">
+      <name>Copy-Invariant Counting Rule</name>
+      <t>For a named proposition and declared error class, an audit report that states an evidence count follows this procedure:</t>
+      <ol type="1">
+        <li><t>Identify the terminal records included in the report.</t></li>
+        <li><t>Identify the derivation path from each terminal record to its declared evidence-provenance root or roots.</t></li>
+        <li><t>State the basis used to qualify a root and to distinguish it from other roots for the declared error class.</t></li>
+        <li><t>Count each distinct qualified root once, regardless of the number of descendant records.</t></li>
+        <li><t>Report the multiplicity claim as not established when required derivation or distinction information is unavailable, cyclic, contradictory, or unsupported.</t></li>
+      </ol>
+      <t>The copy-invariance requirement is:</t>
+      <blockquote>
+        <t>Adding a same-side record with a declared derivation parent does not change the set of evidence-provenance roots, the root count, or the resulting root-count verdict.</t>
+      </blockquote>
+      <t>A second signature can authenticate a second signer.  It does not, by itself, create a second evidence-provenance root.  The same restriction applies to a new agent, model, prompt, host, process, service, organization name, or public key when the relevant assertion remains derived from the same source observation.</t>
+    </section>
+
+    <section anchor="mapping">
+      <name>Minimal Semantic Mapping</name>
+      <t>This document does not require a particular serialization.  An audit format or profile can support the rule by carrying or referencing the following logical items:</t>
+      <table anchor="minimal-items">
+        <name>Logical items for evidence-root counting</name>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>proposition_id</td>
+            <td>Binds records to the same question before counts are compared.</td>
+          </tr>
+          <tr>
+            <td>assertion</td>
+            <td>Names the side or value supported by the record.</td>
+          </tr>
+          <tr>
+            <td>derivation_parent_ids</td>
+            <td>Preserves declared copy and transformation relationships.</td>
+          </tr>
+          <tr>
+            <td>root_basis_ref</td>
+            <td>References the declared qualification, distinction basis, and error class used for the root.</td>
+          </tr>
+        </tbody>
+      </table>
+      <t>The count is computed from roots reached under the cited rule, not from the number of records or unique identifiers.  When a root basis is absent or does not support the claimed distinction, the report exposes the limitation instead of silently promoting each record to a root.</t>
+    </section>
+
+    <section anchor="completeness">
+      <name>Completeness Requires an External Scope Commitment</name>
+      <t>No set of present records can, by itself, prove that an expected terminal record is missing.  Completeness requires a separately committed finite set of expected attempts, or another auditable scope boundary against which omissions can be detected.</t>
+      <t>The public fixture at merge revision <xref target="MATRIX-FIXTURE"/> freezes three attempts and their terminal records.  Deleting the terminal refusal leaves the remaining signatures and chain internally valid, while the separate attempt commitment makes the omission detectable.  The fixture reports the missing record as a completeness violation.  Without that external commitment, silence remains unverifiable.</t>
+      <t>Completeness and evidence multiplicity therefore produce separate verdicts.  A trail can be complete and contain only one evidence-provenance root, or contain multiple declared roots while remaining incomplete.</t>
+    </section>
+
+    <section anchor="evaluation">
+      <name>Interoperability Exercise</name>
+      <t>A minimal evaluation publishes frozen inputs and expected outcomes for at least the following cases:</t>
+      <ol type="1">
+        <li><t>One root with five direct copies; the root count remains one.</t></li>
+        <li><t>Two separately qualified roots with any number of copies; the root count remains two.</t></li>
+        <li><t>Two signatures over the same source observation; the root count remains one.</t></li>
+        <li><t>Unknown, cyclic, or unsupported derivation; the multiplicity claim is not established.</t></li>
+        <li><t>An expected attempt without its required terminal record; completeness is violated even when every present signature verifies.</t></li>
+      </ol>
+      <t>The first four cases exercise evidence multiplicity.  The fifth exercises completeness.  Implementations do not collapse unavailable or unattempted checks into successful verification.</t>
+    </section>
+
+    <section anchor="limitations">
+      <name>Limitations and Non-Claims</name>
+      <ul>
+        <li><t>A declared root is not automatically true, authentic, qualified, or causally independent.</t></li>
+        <li><t>Different controllers can repeat one underlying observation, while one controller can operate genuinely separate measurement channels.  Controller separation and evidence-provenance separation are different facts.</t></li>
+        <li><t>The procedure cannot detect dependence omitted from the declared provenance graph.</t></li>
+        <li><t>A root count is not a probability, confidence score, or authorization decision.</t></li>
+        <li><t>The symmetric counting rule is not directly applicable to universal or existential propositions whose opposing sides have different logical force.</t></li>
+        <li><t>External replay of supplied code demonstrates reproducibility of that implementation.  It does not establish a separately developed implementation or an independent control domain.</t></li>
+      </ul>
+      <t>The formal copy-invariance result underlying this mapping is described in <xref target="MINORITY-PROPHET"/>.  Its guarantees are conditional on the declared provenance and root boundary.</t>
+    </section>
+
+    <section anchor="security">
+      <name>Security Considerations</name>
+      <t>An attacker benefits when copies, aliases, re-signatures, or transformations are counted as new support.  A format that omits derivation relationships permits this inflation while every individual record can remain authentic.</t>
+      <t>The opposite failure is also possible: falsely declaring distinct observations to share a root can suppress legitimate support.  Implementations therefore expose the distinction basis and the relevant error class rather than treating either merging or splitting as universally conservative.</t>
+      <t>Provenance is itself an assertion.  Forged, incomplete, selectively disclosed, or stale lineage can change the reported count.  This document does not provide a mechanism for discovering undisclosed dependence.  Reports preserve an unresolved state when the required provenance cannot be established.</t>
+      <t>Evidence assessment does not grant authority to execute an action.  Authorization and enforcement remain the responsibility of the applicable protocol and deployment.</t>
+    </section>
+
+    <section anchor="privacy">
+      <name>Privacy Considerations</name>
+      <t>Derivation and root-basis information can reveal relationships between people, organizations, services, or data sources.  Implementations minimize disclosure and can carry digest references, selectively disclosed statements, or other privacy-preserving representations when a verifier can still evaluate the declared relationship.</t>
+      <t>Stable proposition, source, or lineage identifiers can enable correlation across contexts.  Profiles should limit identifier scope, retention, and reuse to what the audit purpose requires.</t>
+    </section>
+
+    <section anchor="iana">
+      <name>IANA Considerations</name>
+      <t>This document has no IANA actions.</t>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>Informative References</name>
+
+      <reference anchor="I-D.kuehlewind-audit-architecture" target="https://datatracker.ietf.org/doc/draft-kuehlewind-audit-architecture/">
+        <front>
+          <title>An Architecture for Auditing Agent Delegation and Interactions</title>
+          <author fullname="Mirja Kuehlewind" initials="M." surname="Kuehlewind"/>
+          <author fullname="Henk Birkholz" initials="H." surname="Birkholz"/>
+          <date day="7" month="September" year="2026"/>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-kuehlewind-audit-architecture-01"/>
+      </reference>
+
+      <reference anchor="I-D.bradleyb-audit-decision-records" target="https://datatracker.ietf.org/doc/draft-bradleyb-audit-decision-records/">
+        <front>
+          <title>Signed Decision Records for Agent Authorization: Disclosures, Entry Emission, and Ordering Evidence</title>
+          <author fullname="Bradley B" initials="B." surname="B"/>
+          <date day="13" month="August" year="2026"/>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-bradleyb-audit-decision-records-00"/>
+      </reference>
+
+      <reference anchor="MINORITY-PROPHET" target="https://doi.org/10.5281/zenodo.21965712">
+        <front>
+          <title>The Minority Prophet Property: Copy-Invariant Evidence Aggregation in Rooted Claim Graphs</title>
+          <author fullname="James He" initials="J." surname="He"/>
+          <date month="August" year="2026"/>
+        </front>
+        <seriesInfo name="DOI" value="10.5281/zenodo.21965712"/>
+      </reference>
+
+      <reference anchor="MATRIX-FIXTURE" target="https://github.com/Silentpartnercoding/agent-security-verifier-matrix/tree/7114ae58bdc2efb13417e4624762f8f9b1ff6ba4/experiments/audit-refusal-completeness-001">
+        <front>
+          <title>Audit Refusal Completeness and Declared Evidence-Root Fixture</title>
+          <author fullname="James He" initials="J." surname="He"/>
+          <date day="1" month="October" year="2026"/>
+        </front>
+        <seriesInfo name="Git revision" value="7114ae58bdc2efb13417e4624762f8f9b1ff6ba4"/>
+      </reference>
+
+      <reference anchor="COUNTING-DISCUSSION" target="https://mailarchive.ietf.org/arch/msg/agentproto/N8CtuCJ5jYeEv4F4vKn9ybnKwDw/">
+        <front>
+          <title>AgentProto discussion of evidence limits and copy counting</title>
+          <author fullname="J S He" initials="J. S." surname="He"/>
+          <date day="19" month="September" year="2026"/>
+        </front>
+        <seriesInfo name="IETF mailing list" value="agentproto"/>
+      </reference>
+    </references>
+  </back>
+</rfc>

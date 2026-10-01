@@ -1,9 +1,9 @@
-PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python3)
-BOOTSTRAP_PYTHON ?= python3
+BOOTSTRAP_PYTHON ?= $(shell command -v python3.12 || command -v python3.11 || command -v python3)
+PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,$(BOOTSTRAP_PYTHON))
 BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEAD^)
 HEAD_REF ?= HEAD
 
-.PHONY: help setup paper-setup paper-pdf paper-check verify verify-python verify-integrity verify-site verify-evaluation \
+.PHONY: help setup paper-setup paper-pdf paper-check ietf-setup ietf-draft ietf-check verify verify-python verify-integrity verify-site verify-evaluation \
 	check-doc-navigation \
 	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
 	check-research-integrity check-canonical-model
@@ -13,6 +13,9 @@ help:
 	@echo "make paper-setup Install the pinned peer-review PDF dependency"
 	@echo "make paper-pdf   Build the peer-review manuscript PDF"
 	@echo "make paper-check Validate the peer-review source, metadata, citations, and PDF"
+	@echo "make ietf-setup  Install the pinned Internet-Draft renderer"
+	@echo "make ietf-draft  Build the AUDIT Internet-Draft text and HTML"
+	@echo "make ietf-check  Rebuild and validate the AUDIT Internet-Draft package"
 	@echo "make verify      Run every required local check"
 	@echo "make verify-python"
 	@echo "make verify-integrity BASE=origin/main HEAD_REF=HEAD"
@@ -35,6 +38,29 @@ paper-pdf:
 paper-check: paper-pdf
 	"$(PYTHON)" scripts/check_peer_review_package.py
 	pdfinfo output/pdf/minority-prophet-peer-review-v1.2.0.pdf | rg "^(Pages|Page size|PDF version):"
+
+IETF_DRAFT := draft-he-audit-evidence-root-counting-00
+IETF_DIR := papers/ietf
+IETF_VENV := .venv
+
+ietf-setup:
+	@test -x "$(IETF_VENV)/bin/python" || "$(BOOTSTRAP_PYTHON)" -m venv "$(IETF_VENV)"
+	"$(IETF_VENV)/bin/python" -m pip install --upgrade pip
+	"$(IETF_VENV)/bin/python" -m pip install -r requirements-ietf.txt
+
+ietf-draft: ietf-setup
+	"$(IETF_VENV)/bin/xml2rfc" --text --out "$(IETF_DIR)/$(IETF_DRAFT).txt" "$(IETF_DIR)/$(IETF_DRAFT).xml"
+	"$(IETF_VENV)/bin/xml2rfc" --html --out "$(IETF_DIR)/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).xml"
+
+ietf-check: ietf-setup
+	@tmpdir=$$(mktemp -d /tmp/mp-ietf-check.XXXXXX); \
+	trap 'rm -rf "$$tmpdir"' EXIT; \
+	"$(IETF_VENV)/bin/xml2rfc" --text --out "$$tmpdir/$(IETF_DRAFT).txt" "$(IETF_DIR)/$(IETF_DRAFT).xml"; \
+	"$(IETF_VENV)/bin/xml2rfc" --html --out "$$tmpdir/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).xml"; \
+	cmp "$$tmpdir/$(IETF_DRAFT).txt" "$(IETF_DIR)/$(IETF_DRAFT).txt"; \
+	cmp "$$tmpdir/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).html"
+	PYTHONPATH=. "$(PYTHON)" -m pytest -q tests/test_ietf_audit_draft.py
+	! rg -n "TBD|TODO|Wesleyan|Zinglez" "$(IETF_DIR)/$(IETF_DRAFT).xml"
 
 verify: verify-python verify-integrity verify-site verify-evaluation
 
