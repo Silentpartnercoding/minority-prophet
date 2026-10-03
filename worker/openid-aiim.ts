@@ -16,6 +16,7 @@ const FLOW_TTL_MS = 10 * 60 * 1000;
 interface AiimEnv {
   MP_AIIM_STATE_SECRET?: string;
   MP_AIIM_CLIENT_PRIVATE_KEY?: string;
+  DB?: D1Database;
 }
 
 function stateSecret(env?: AiimEnv): string | undefined {
@@ -40,6 +41,20 @@ interface FlowState {
   verifier: string;
   issuedAt: number;
   issuer: string;
+  captureRunId?: string;
+  captureNextSeq?: number;
+}
+
+interface CaptureContext {
+  db: D1Database;
+  runId: string;
+  nextSeq: number;
+}
+
+interface CaptureRecord {
+  phase: string;
+  at: string;
+  [key: string]: unknown;
 }
 
 interface OAuthMetadata {
@@ -214,27 +229,138 @@ function reportPage(title: string, report: Record<string, unknown>, status = 200
 <a class="button secondary" href="/openid-aiim/reproduce">Back to reproduction page</a>`, status, { "set-cookie": clearFlowCookie() });
 }
 
-async function fetchJson<T>(url: string): Promise<{ response: Response; data: T }> {
-  const response = await fetch(url, {
+const REDACTED = "<redacted>";
+const SECRET_FIELDS = new Set(["access_token", "refresh_token", "id_token", "code", "code_verifier", "client_assertion", "client_secret", "state", "password"]);
+const SECRET_HEADERS = new Set(["authorization", "proxy-authorization", "cookie", "set-cookie", "mcp-session-id"]);
+const MAX_CAPTURE_BODY_BYTES = 64 * 1024;
+
+function redactUrl(value: string): string {
+  const url = new URL(value);
+  for (const key of url.searchParams.keys()) if (SECRET_FIELDS.has(key.toLowerCase())) url.searchParams.set(key, REDACTED);
+  return url.toString();
+}
+
+function redactHeaders(headers: Headers): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const [key, value] of headers) {
+    result[key] = SECRET_HEADERS.has(key.toLowerCase()) ? REDACTED : key.toLowerCase() === "location" ? redactUrl(value) : value;
+  }
+  return result;
+}
+
+function redactJson(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(redactJson);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, SECRET_FIELDS.has(key.toLowerCase()) ? REDACTED : redactJson(item)]));
+  }
+  return value;
+}
+
+async function boundedText(body: ReadableStream<Uint8Array> | null): Promise<string> {
+  const reader = body?.getReader();
+  if (!reader) return "";
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_CAPTURE_BODY_BYTES) throw new Error("Descope capture body exceeded 64 KiB; run aborted before retaining an incomplete trace");
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+  return new TextDecoder().decode(bytes);
+}
+
+function redactBody(body: string, contentType: string | null): string {
+  if (!body) return body;
+  if (contentType?.includes("application/x-www-form-urlencoded")) {
+    const params = new URLSearchParams(body);
+    for (const key of params.keys()) if (SECRET_FIELDS.has(key.toLowerCase())) params.set(key, REDACTED);
+    return params.toString();
+  }
+  if (contentType?.includes("json")) return JSON.stringify(redactJson(JSON.parse(body)));
+  if (contentType?.includes("text/event-stream")) {
+    return body.split(/(\r?\n)/u).map((part) => {
+      if (!part.startsWith("data:")) return part;
+      const payload = part.slice(5).trim();
+      return payload === "[DONE]" ? part : `data: ${JSON.stringify(redactJson(JSON.parse(payload)))}`;
+    }).join("");
+  }
+  throw new Error("Descope capture refused an unrecognized body format");
+}
+
+async function saveCapture(trace: CaptureContext, record: CaptureRecord): Promise<void> {
+  const result = await trace.db.prepare("INSERT INTO openid_aiim_descope_capture (run_id, seq, at, record_json) VALUES (?, ?, ?, ?)")
+    .bind(trace.runId, trace.nextSeq++, record.at, JSON.stringify(record)).run();
+  if (!result.success) throw new Error("Descope capture storage did not confirm the evidence write");
+}
+
+async function captureExchange(
+  trace: CaptureContext,
+  phase: string,
+  request: Pick<Request, "url" | "method" | "headers" | "body">,
+  response: Response | null,
+  extra?: Record<string, unknown>,
+): Promise<void> {
+  const requestBody = redactBody(await boundedText(request.body), request.headers.get("content-type"));
+  const responseBody = response ? redactBody(await boundedText(response.clone().body), response.headers.get("content-type")) : null;
+  await saveCapture(trace, {
+    phase,
+    at: new Date().toISOString(),
+    request: { method: request.method, url: redactUrl(request.url), headers: redactHeaders(request.headers), body: requestBody },
+    response: response ? { status: response.status, headers: redactHeaders(response.headers), body: responseBody } : null,
+    ...extra,
+  });
+}
+
+async function capturedFetch(url: string, init: RequestInit, trace: CaptureContext | undefined, phase: string, extra?: Record<string, unknown>): Promise<Response> {
+  const request = new Request(url, init);
+  const captureRequest = trace ? request.clone() : undefined;
+  const response = await fetch(request);
+  if (trace && captureRequest) await captureExchange(trace, phase, captureRequest, response, extra);
+  return response;
+}
+
+async function fetchJson<T>(url: string, trace?: CaptureContext, phase = "metadata"): Promise<{ response: Response; data: T }> {
+  const response = await capturedFetch(url, {
     headers: { accept: "application/json" },
     redirect: "manual",
     signal: AbortSignal.timeout(10_000),
-  });
+  }, trace, phase);
   if (response.status >= 300 && response.status < 400) throw new Error(`${url} attempted to redirect`);
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
   return { response, data: await response.json() as T };
 }
 
-async function validateDiscovery(): Promise<{
+async function validateDiscovery(trace?: CaptureContext): Promise<{
   protectedResource: ProtectedResourceMetadata;
   authorizationServer: OAuthMetadata;
 }> {
-  const { data: protectedResource } = await fetchJson<ProtectedResourceMetadata>(RESOURCE_METADATA);
+  if (trace) {
+    const challenge = await capturedFetch(RESOURCE, {
+      method: "POST",
+      headers: { accept: "application/json, text/event-stream", "content-type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "2.0", id: 0, method: "initialize", params: { protocolVersion: MCP_VERSION, capabilities: {}, clientInfo: { name: "minority-prophet-openid-aiim", version: "1.0.0" } } }),
+      redirect: "manual",
+      signal: AbortSignal.timeout(15_000),
+    }, trace, "tokenless_mcp");
+    const challengeHeader = challenge.headers.get("www-authenticate") ?? "";
+    const metadataUrl = /resource_metadata="([^"]+)"/u.exec(challengeHeader)?.[1];
+    if (challenge.status !== 401 || metadataUrl !== RESOURCE_METADATA) throw new Error("Tokenless MCP challenge did not advertise the expected OPRM URL");
+  }
+  const { data: protectedResource } = await fetchJson<ProtectedResourceMetadata>(RESOURCE_METADATA, trace, "oprm");
   if (protectedResource.resource !== RESOURCE) throw new Error("Protected resource identifier does not match the MCP endpoint");
   if (!protectedResource.authorization_servers?.includes(EXPECTED_ISSUER)) throw new Error("Expected authorization server is not advertised");
   if (!protectedResource.scopes_supported?.includes(REQUESTED_SCOPE)) throw new Error("The read-only scope is not advertised");
 
-  const { data: authorizationServer } = await fetchJson<OAuthMetadata>(`${EXPECTED_ISSUER}/.well-known/oauth-authorization-server`);
+  const { data: authorizationServer } = await fetchJson<OAuthMetadata>(`${EXPECTED_ISSUER}/.well-known/oauth-authorization-server`, trace, "authorization_server_metadata");
   if (authorizationServer.issuer !== EXPECTED_ISSUER) throw new Error("Authorization-server issuer mismatch");
   if (authorizationServer.authorization_endpoint !== AUTHORIZATION_ENDPOINT) throw new Error("Unexpected authorization endpoint");
   if (authorizationServer.token_endpoint !== TOKEN_ENDPOINT) throw new Error("Unexpected token endpoint");
@@ -267,9 +393,10 @@ function reproducePage(): Response {
 <dt>Public JWKS</dt><dd><a href="${JWKS_URI}">${JWKS_URI}</a></dd><dt>Callback</dt><dd>${REDIRECT_URI}</dd>
 <dt>OAuth shape</dt><dd>Authorization Code + PKCE S256 · confidential client · private_key_jwt (RS256)</dd>
 <dt>Requested scope</dt><dd>${REQUESTED_SCOPE}</dd><dt>MCP action ceiling</dt><dd>initialize → notifications/initialized → tools/list only</dd>
-</dl><form method="get" action="/openid-aiim/start"><button type="submit">Start read-only CIMD attempt →</button></form>
+</dl><a class="button" href="/openid-aiim/start?capture=1">Record Descope run →</a>
+<a class="button secondary" href="/openid-aiim/start">Run without recording</a>
 <a class="button secondary" href="/openid-aiim/diagnostics.json">View live discovery checks</a></section>
-<p class="boundary">The private signing key remains a hosted secret; only the matching public key is published. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only, and no MCP tool call is permitted by this harness.</p>`);
+<p class="boundary">Recorded runs use private durable storage and stop if any evidence write fails. The private signing key remains a hosted secret; only the matching public key is published. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only, and no MCP tool call is permitted by this harness.</p>`);
 }
 
 async function diagnostics(): Promise<Response> {
@@ -309,16 +436,24 @@ async function diagnostics(): Promise<Response> {
   }
 }
 
-async function startAuthorization(env?: AiimEnv): Promise<Response> {
+async function startAuthorization(request: Request, env?: AiimEnv): Promise<Response> {
   const secret = stateSecret(env);
   if (!secret || secret.length < 32) {
     return reportPage("Test surface is not configured", { step: "local_configuration", ok: false, error: "State-signing secret is unavailable" }, 503);
   }
+  const capture = new URL(request.url).searchParams.get("capture") === "1";
+  if (capture && !env?.DB) {
+    return reportPage("Descope capture is not configured", { step: "local_configuration", ok: false, error: "Durable capture binding is unavailable" }, 503);
+  }
+  if (capture && readCookie(request, COOKIE_NAME)) {
+    return reportPage("Descope cold start rejected", { step: "cold_start", ok: false, error: "An earlier Descope flow cookie is present" }, 409);
+  }
+  const trace: CaptureContext | undefined = capture && env?.DB ? { db: env.DB, runId: crypto.randomUUID(), nextSeq: 0 } : undefined;
   try {
-    await validateDiscovery();
+    if (trace) await saveCapture(trace, { phase: "capture_start", at: new Date().toISOString(), cold_start: { flow_cookie_present: false, token_cache: "none", metadata_cache: "none" } });
+    await validateDiscovery(trace);
     const verifier = randomValue(48);
     const state = randomValue(32);
-    const cookie = await encodeFlow({ state, verifier, issuedAt: Date.now(), issuer: EXPECTED_ISSUER }, secret);
     const authorizationUrl = new URL(AUTHORIZATION_ENDPOINT);
     authorizationUrl.search = new URLSearchParams({
       response_type: "code",
@@ -330,6 +465,8 @@ async function startAuthorization(env?: AiimEnv): Promise<Response> {
       code_challenge_method: "S256",
       resource: RESOURCE,
     }).toString();
+    if (trace) await captureExchange(trace, "authorization_redirect", new Request(authorizationUrl), null);
+    const cookie = await encodeFlow({ state, verifier, issuedAt: Date.now(), issuer: EXPECTED_ISSUER, captureRunId: trace?.runId, captureNextSeq: trace?.nextSeq }, secret);
     return new Response(null, {
       status: 302,
       headers: {
@@ -364,7 +501,14 @@ async function parseMcpEnvelope(response: Response): Promise<McpEnvelope> {
   return JSON.parse(body) as McpEnvelope;
 }
 
-async function mcpPost(accessToken: string, body: Record<string, unknown>, sessionId?: string, protocolVersion?: string): Promise<Response> {
+async function mcpPost(
+  accessToken: string,
+  body: Record<string, unknown>,
+  sessionId?: string,
+  protocolVersion?: string,
+  trace?: CaptureContext,
+  phase = "mcp",
+): Promise<Response> {
   const headers: Record<string, string> = {
     accept: "application/json, text/event-stream",
     authorization: `Bearer ${accessToken}`,
@@ -372,27 +516,32 @@ async function mcpPost(accessToken: string, body: Record<string, unknown>, sessi
   };
   if (sessionId) headers["Mcp-Session-Id"] = sessionId;
   if (protocolVersion) headers["MCP-Protocol-Version"] = protocolVersion;
-  const response = await fetch(RESOURCE, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual", signal: AbortSignal.timeout(15_000) });
+  const response = await capturedFetch(RESOURCE, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual", signal: AbortSignal.timeout(15_000) }, trace, phase);
   if (response.status >= 300 && response.status < 400) throw new Error("MCP endpoint attempted to redirect a bearer-token request");
   return response;
 }
 
 async function callback(request: Request, env?: AiimEnv): Promise<Response> {
-  const runId = crypto.randomUUID();
+  const provisionalRunId = crypto.randomUUID();
   const completedAt = new Date().toISOString();
   const secret = stateSecret(env);
-  const signingPem = clientPrivateKey(env);
   if (!secret || secret.length < 32) {
-    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "State-signing secret is unavailable" }, 503);
-  }
-  if (!signingPem?.includes("-----BEGIN PRIVATE KEY-----")) {
-    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "Client signing key is unavailable" }, 503);
+    return reportPage("Callback rejected", { run_id: provisionalRunId, completed_at: completedAt, step: "local_configuration", ok: false, error: "State-signing secret is unavailable" }, 503);
   }
   const url = new URL(request.url);
   const encodedFlow = readCookie(request, COOKIE_NAME);
   const flow = encodedFlow ? await decodeFlow(encodedFlow, secret) : null;
   if (!flow || Date.now() - flow.issuedAt > FLOW_TTL_MS || Date.now() < flow.issuedAt - 30_000) {
-    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "state_validation", ok: false, error: "Missing, invalid, or expired signed flow state" }, 400);
+    return reportPage("Callback rejected", { run_id: provisionalRunId, completed_at: completedAt, step: "state_validation", ok: false, error: "Missing, invalid, or expired signed flow state" }, 400);
+  }
+  const runId = flow.captureRunId ?? provisionalRunId;
+  if (flow.captureRunId && (!env?.DB || !Number.isInteger(flow.captureNextSeq))) {
+    return reportPage("Descope capture is not configured", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "Durable capture binding or sequence is unavailable" }, 503);
+  }
+  const trace: CaptureContext | undefined = flow.captureRunId && env?.DB ? { db: env.DB, runId, nextSeq: flow.captureNextSeq! } : undefined;
+  const signingPem = clientPrivateKey(env);
+  if (!signingPem?.includes("-----BEGIN PRIVATE KEY-----")) {
+    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "Client signing key is unavailable" }, 503);
   }
   if (url.searchParams.get("state") !== flow.state) {
     return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "state_validation", ok: false, error: "OAuth state mismatch" }, 400);
@@ -424,8 +573,18 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   }
 
   try {
+    if (trace) await captureExchange(trace, "authorization_callback", request, null);
     const assertion = await clientAssertion(signingPem);
-    const tokenResponse = await fetch(TOKEN_ENDPOINT, {
+    const [assertionHeader, assertionClaims] = assertion.split(".");
+    const decodedHeader = JSON.parse(new TextDecoder().decode(decodeB64url(assertionHeader))) as Record<string, unknown>;
+    const decodedClaims = JSON.parse(new TextDecoder().decode(decodeB64url(assertionClaims))) as Record<string, unknown>;
+    const assertionEvidence = {
+      assertion: {
+        header: { alg: decodedHeader.alg, kid: decodedHeader.kid },
+        claims: { iss: decodedClaims.iss, sub: decodedClaims.sub, aud: decodedClaims.aud, exp: decodedClaims.exp },
+      },
+    };
+    const tokenResponse = await capturedFetch(TOKEN_ENDPOINT, {
       method: "POST",
       headers: { accept: "application/json", "content-type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -440,7 +599,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
       }),
       redirect: "manual",
       signal: AbortSignal.timeout(15_000),
-    });
+    }, trace, "token_exchange", assertionEvidence);
     if (tokenResponse.status >= 300 && tokenResponse.status < 400) throw new Error("Token endpoint attempted to redirect the authorization-code exchange");
     const tokenBody = await tokenResponse.json() as Record<string, unknown>;
     if (!tokenResponse.ok || typeof tokenBody.access_token !== "string") {
@@ -467,7 +626,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         capabilities: {},
         clientInfo: { name: "minority-prophet-openid-aiim", title: "Minority Prophet OpenID AIIM Test Client", version: "1.0.0" },
       },
-    });
+    }, undefined, undefined, trace, "mcp_initialize");
     const initializeBody = await parseMcpEnvelope(initializeResponse);
     if (!initializeResponse.ok || initializeBody.error || !initializeBody.result) {
       return reportPage("MCP initialization failed", {
@@ -501,7 +660,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
     const initializedResponse = await mcpPost(accessToken, {
       jsonrpc: "2.0",
       method: "notifications/initialized",
-    }, sessionId, negotiatedVersion);
+    }, sessionId, negotiatedVersion, trace, "mcp_initialized_notification");
     if (!initializedResponse.ok) {
       return reportPage("MCP initialized notification failed", {
         run_id: runId,
@@ -515,7 +674,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         tool_invocation_performed: false,
       }, 502);
     }
-    const toolsResponse = await mcpPost(accessToken, { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }, sessionId, negotiatedVersion);
+    const toolsResponse = await mcpPost(accessToken, { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }, sessionId, negotiatedVersion, trace, "tools_list");
     const toolsBody = await parseMcpEnvelope(toolsResponse);
     if (!toolsResponse.ok || toolsBody.error || !toolsBody.result) {
       return reportPage("MCP tools listing failed", {
@@ -583,7 +742,7 @@ export async function handleOpenIdAiim(request: Request, env?: AiimEnv): Promise
   }
   if (url.pathname === "/openid-aiim/reproduce" && request.method === "GET") return reproducePage();
   if (url.pathname === "/openid-aiim/diagnostics.json" && request.method === "GET") return diagnostics();
-  if (url.pathname === "/openid-aiim/start" && request.method === "GET") return startAuthorization(env);
+  if (url.pathname === "/openid-aiim/start" && request.method === "GET") return startAuthorization(request, env);
   if (url.pathname === "/openid-aiim/callback" && request.method === "GET") return callback(request, env);
   return null;
 }

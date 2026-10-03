@@ -22,9 +22,11 @@ test('Sites build packages an executable capture migration for production D1', (
   const base = new URL('../dist/.openai/drizzle/', import.meta.url);
   const journal = JSON.parse(readFileSync(new URL('meta/_journal.json', base), 'utf8'));
   assert.ok(journal.entries.length > 0);
-  const sql = readFileSync(new URL(`${journal.entries.at(-1).tag}.sql`, base), 'utf8');
   const db = new DatabaseSync(':memory:');
-  db.exec(sql.replaceAll('--> statement-breakpoint', ''));
+  for (const { tag } of journal.entries) {
+    const sql = readFileSync(new URL(`${tag}.sql`, base), 'utf8');
+    db.exec(sql.replaceAll('--> statement-breakpoint', ''));
+  }
   const tables = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'openid_aiim_ck_capture'").all();
   assert.deepEqual(tables.map(({ name }) => name), ['openid_aiim_ck_capture']);
   db.close();
