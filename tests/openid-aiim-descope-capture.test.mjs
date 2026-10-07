@@ -99,8 +99,17 @@ test('recording fails before partner traffic when the first D1 write fails', asy
 test('reproduce page exposes the explicit recorded Descope run', async () => {
   const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/reproduce'));
   const html = await response.text();
-  assert.match(html, /\/openid-aiim\/start\?capture=1/u);
-  assert.match(html, /Record Descope run/u);
+  assert.match(html, /\/openid-aiim\/start/u);
+  assert.match(html, /Start recorded Descope run/u);
+  assert.doesNotMatch(html, /Run without recording/u);
+});
+
+test('every authorization run requires durable capture before partner traffic', async () => {
+  let networkCalls = 0;
+  globalThis.fetch = async () => { networkCalls += 1; throw new Error('Partner must not be contacted'); };
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/start'), { MP_AIIM_STATE_SECRET: SECRET });
+  assert.equal(response.status, 503);
+  assert.equal(networkCalls, 0);
 });
 
 test('recorded start captures the tokenless challenge, metadata, and PKCE redirect', async () => {
@@ -109,7 +118,11 @@ test('recorded start captures the tokenless challenge, metadata, and PKCE redire
     const request = input instanceof Request ? input : new Request(input, init);
     calls.push(`${request.method} ${request.url}`);
     const response = metadataResponse(request);
-    if (response) return response;
+    if (response) {
+      response.headers.set('x-request-id', `request-${calls.length}`);
+      response.headers.set('traceparent', `00-${'1'.repeat(32)}-${'2'.repeat(16)}-01`);
+      return response;
+    }
     throw new Error(`Unexpected network request: ${request.url}`);
   };
   const db = fakeDb();
@@ -122,6 +135,13 @@ test('recorded start captures the tokenless challenge, metadata, and PKCE redire
   const records = db.rows.map(([, , , body]) => JSON.parse(body));
   assert.deepEqual(records.map(({ phase }) => phase), ['capture_start', 'tokenless_mcp', 'oprm', 'authorization_server_metadata', 'authorization_redirect']);
   assert.equal(records[1].response.status, 401);
+  assert.match(records[1].started_at, /^\d{4}-\d{2}-\d{2}T/u);
+  assert.match(records[1].completed_at, /^\d{4}-\d{2}-\d{2}T/u);
+  assert.ok(Date.parse(records[1].completed_at) >= Date.parse(records[1].started_at));
+  assert.deepEqual(records[1].correlation_ids, {
+    'traceparent': `00-${'1'.repeat(32)}-${'2'.repeat(16)}-01`,
+    'x-request-id': 'request-1',
+  });
   assert.match(records[1].response.headers['www-authenticate'], /resource_metadata=/u);
   assert.equal(new URL(records[4].request.url).searchParams.get('code_challenge_method'), 'S256');
   assert.equal(new URL(records[4].request.url).searchParams.get('state'), '<redacted>');
@@ -156,7 +176,21 @@ test('one Descope run records token exchange and MCP calls while redacting every
   assert.deepEqual(records.map(({ phase }) => phase), [
     'capture_start', 'tokenless_mcp', 'oprm', 'authorization_server_metadata', 'authorization_redirect',
     'authorization_callback', 'token_exchange', 'mcp_initialize', 'mcp_initialized_notification', 'tools_list',
+    'capture_complete',
   ]);
+  assert.deepEqual(records.at(-1), {
+    schema: 'minority-prophet.openid-aiim-capture.v1',
+    phase: 'capture_complete',
+    at: records.at(-1).at,
+    run_id: db.rows.at(-1)[0],
+    evidence_record_count: 11,
+    outcome: 'success',
+    required_phases: [
+      'capture_start', 'tokenless_mcp', 'oprm', 'authorization_server_metadata', 'authorization_redirect',
+      'authorization_callback', 'token_exchange', 'mcp_initialize', 'mcp_initialized_notification', 'tools_list',
+    ],
+    tool_invocation_performed: false,
+  });
   const token = records.find(({ phase }) => phase === 'token_exchange');
   const form = new URLSearchParams(token.request.body);
   assert.equal(form.get('code'), '<redacted>');
@@ -191,4 +225,26 @@ test('a failed evidence write after token exchange aborts before any authenticat
   const callback = await handleOpenIdAiim(new Request(`https://minorityprophet.org/openid-aiim/callback?code=TEST_AUTH_CODE&state=${state}`, { headers: { cookie } }), env);
   assert.equal(callback.status, 502);
   assert.equal(authenticatedMcpCalls, 0);
+});
+
+test('an OAuth error callback is durably captured instead of requiring a blind rerun', async () => {
+  const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048, privateKeyEncoding: { type: 'pkcs8', format: 'pem' }, publicKeyEncoding: { type: 'spki', format: 'pem' } });
+  const db = fakeDb();
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    const metadata = metadataResponse(request);
+    if (metadata) return metadata;
+    throw new Error(`Unexpected network request: ${request.url}`);
+  };
+  const env = { MP_AIIM_STATE_SECRET: SECRET, MP_AIIM_CLIENT_PRIVATE_KEY: privateKey, DB: db };
+  const start = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/start'), env);
+  const state = new URL(start.headers.get('location')).searchParams.get('state');
+  const cookie = start.headers.get('set-cookie').split(';')[0];
+  const callback = await handleOpenIdAiim(new Request(`https://minorityprophet.org/openid-aiim/callback?error=access_denied&error_description=operator_declined&state=${state}&iss=${encodeURIComponent(ISSUER)}`, { headers: { cookie } }), env);
+  assert.equal(callback.status, 400);
+  const records = db.rows.map(([, , , body]) => JSON.parse(body));
+  assert.equal(records.at(-1).phase, 'authorization_callback');
+  const callbackUrl = new URL(records.at(-1).request.url);
+  assert.equal(callbackUrl.searchParams.get('error'), 'access_denied');
+  assert.equal(callbackUrl.searchParams.get('state'), '<redacted>');
 });

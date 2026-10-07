@@ -229,6 +229,16 @@ function reportPage(title: string, report: Record<string, unknown>, status = 200
 <a class="button secondary" href="/openid-aiim/reproduce">Back to reproduction page</a>`, status, { "set-cookie": clearFlowCookie() });
 }
 
+function correlations(headers: Headers): Record<string, string> | undefined {
+  const keys = ["x-request-id", "x-correlation-id", "traceparent", "cf-ray", "seal_in"];
+  const found: Record<string, string> = {};
+  for (const key of keys) {
+    const value = headers.get(key);
+    if (value) found[key] = value.slice(0, 256);
+  }
+  return Object.keys(found).length ? found : undefined;
+}
+
 const REDACTED = "<redacted>";
 const SECRET_FIELDS = new Set(["access_token", "refresh_token", "id_token", "code", "code_verifier", "client_assertion", "client_secret", "state", "password"]);
 const SECRET_HEADERS = new Set(["authorization", "proxy-authorization", "cookie", "set-cookie", "mcp-session-id"]);
@@ -308,12 +318,17 @@ async function captureExchange(
   request: Pick<Request, "url" | "method" | "headers" | "body">,
   response: Response | null,
   extra?: Record<string, unknown>,
+  startedAt = new Date().toISOString(),
+  completedAt = new Date().toISOString(),
 ): Promise<void> {
   const requestBody = redactBody(await boundedText(request.body), request.headers.get("content-type"));
   const responseBody = response ? redactBody(await boundedText(response.clone().body), response.headers.get("content-type")) : null;
   await saveCapture(trace, {
     phase,
-    at: new Date().toISOString(),
+    at: completedAt,
+    started_at: startedAt,
+    completed_at: completedAt,
+    correlation_ids: response ? correlations(response.headers) : undefined,
     request: { method: request.method, url: redactUrl(request.url), headers: redactHeaders(request.headers), body: requestBody },
     response: response ? { status: response.status, headers: redactHeaders(response.headers), body: responseBody } : null,
     ...extra,
@@ -323,8 +338,10 @@ async function captureExchange(
 async function capturedFetch(url: string, init: RequestInit, trace: CaptureContext | undefined, phase: string, extra?: Record<string, unknown>): Promise<Response> {
   const request = new Request(url, init);
   const captureRequest = trace ? request.clone() : undefined;
+  const startedAt = new Date().toISOString();
   const response = await fetch(request);
-  if (trace && captureRequest) await captureExchange(trace, phase, captureRequest, response, extra);
+  const completedAt = new Date().toISOString();
+  if (trace && captureRequest) await captureExchange(trace, phase, captureRequest, response, extra, startedAt, completedAt);
   return response;
 }
 
@@ -393,10 +410,9 @@ function reproducePage(): Response {
 <dt>Public JWKS</dt><dd><a href="${JWKS_URI}">${JWKS_URI}</a></dd><dt>Callback</dt><dd>${REDIRECT_URI}</dd>
 <dt>OAuth shape</dt><dd>Authorization Code + PKCE S256 · confidential client · private_key_jwt (RS256)</dd>
 <dt>Requested scope</dt><dd>${REQUESTED_SCOPE}</dd><dt>MCP action ceiling</dt><dd>initialize → notifications/initialized → tools/list only</dd>
-</dl><a class="button" href="/openid-aiim/start?capture=1">Record Descope run →</a>
-<a class="button secondary" href="/openid-aiim/start">Run without recording</a>
+</dl><a class="button" href="/openid-aiim/start">Start recorded Descope run →</a>
 <a class="button secondary" href="/openid-aiim/diagnostics.json">View live discovery checks</a></section>
-<p class="boundary">Recorded runs use private durable storage and stop if any evidence write fails. The private signing key remains a hosted secret; only the matching public key is published. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only, and no MCP tool call is permitted by this harness.</p>`);
+<p class="boundary">Every run uses private durable storage and stops if any evidence write fails. The private signing key remains a hosted secret; only the matching public key is published. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only, and no MCP tool call is permitted by this harness.</p>`);
 }
 
 async function diagnostics(): Promise<Response> {
@@ -441,16 +457,15 @@ async function startAuthorization(request: Request, env?: AiimEnv): Promise<Resp
   if (!secret || secret.length < 32) {
     return reportPage("Test surface is not configured", { step: "local_configuration", ok: false, error: "State-signing secret is unavailable" }, 503);
   }
-  const capture = new URL(request.url).searchParams.get("capture") === "1";
-  if (capture && !env?.DB) {
+  if (!env?.DB) {
     return reportPage("Descope capture is not configured", { step: "local_configuration", ok: false, error: "Durable capture binding is unavailable" }, 503);
   }
-  if (capture && readCookie(request, COOKIE_NAME)) {
+  if (readCookie(request, COOKIE_NAME)) {
     return reportPage("Descope cold start rejected", { step: "cold_start", ok: false, error: "An earlier Descope flow cookie is present" }, 409);
   }
-  const trace: CaptureContext | undefined = capture && env?.DB ? { db: env.DB, runId: crypto.randomUUID(), nextSeq: 0 } : undefined;
+  const trace: CaptureContext = { db: env.DB, runId: crypto.randomUUID(), nextSeq: 0 };
   try {
-    if (trace) await saveCapture(trace, { phase: "capture_start", at: new Date().toISOString(), cold_start: { flow_cookie_present: false, token_cache: "none", metadata_cache: "none" } });
+    await saveCapture(trace, { phase: "capture_start", at: new Date().toISOString(), cold_start: { flow_cookie_present: false, token_cache: "none", metadata_cache: "none" } });
     await validateDiscovery(trace);
     const verifier = randomValue(48);
     const state = randomValue(32);
@@ -465,8 +480,8 @@ async function startAuthorization(request: Request, env?: AiimEnv): Promise<Resp
       code_challenge_method: "S256",
       resource: RESOURCE,
     }).toString();
-    if (trace) await captureExchange(trace, "authorization_redirect", new Request(authorizationUrl), null);
-    const cookie = await encodeFlow({ state, verifier, issuedAt: Date.now(), issuer: EXPECTED_ISSUER, captureRunId: trace?.runId, captureNextSeq: trace?.nextSeq }, secret);
+    await captureExchange(trace, "authorization_redirect", new Request(authorizationUrl), null);
+    const cookie = await encodeFlow({ state, verifier, issuedAt: Date.now(), issuer: EXPECTED_ISSUER, captureRunId: trace.runId, captureNextSeq: trace.nextSeq }, secret);
     return new Response(null, {
       status: 302,
       headers: {
@@ -553,6 +568,21 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   if (responseIssuer && responseIssuer !== flow.issuer) {
     return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "issuer_validation", ok: false, error: "Authorization response issuer mismatch" }, 400);
   }
+  if (trace) {
+    try {
+      await captureExchange(trace, "authorization_callback", request, null);
+    } catch (error) {
+      return reportPage("CIMD evidence capture failed", {
+        run_id: runId,
+        completed_at: completedAt,
+        step: "authorization_callback_capture",
+        ok: false,
+        error: error instanceof Error ? error.message : "Evidence write failed",
+        token_issued: false,
+        tool_invocation_performed: false,
+      }, 502);
+    }
+  }
   const authorizationError = url.searchParams.get("error");
   if (authorizationError) {
     return reportPage("Authorization server returned an error", {
@@ -573,7 +603,6 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   }
 
   try {
-    if (trace) await captureExchange(trace, "authorization_callback", request, null);
     const assertion = await clientAssertion(signingPem);
     const [assertionHeader, assertionClaims] = assertion.split(".");
     const decodedHeader = JSON.parse(new TextDecoder().decode(decodeB64url(assertionHeader))) as Record<string, unknown>;
@@ -698,6 +727,21 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         title: typeof candidate.title === "string" ? candidate.title : null,
       };
     });
+    if (trace) {
+      await saveCapture(trace, {
+        schema: "minority-prophet.openid-aiim-capture.v1",
+        phase: "capture_complete",
+        at: new Date().toISOString(),
+        run_id: trace.runId,
+        evidence_record_count: trace.nextSeq + 1,
+        outcome: "success",
+        required_phases: [
+          "capture_start", "tokenless_mcp", "oprm", "authorization_server_metadata", "authorization_redirect",
+          "authorization_callback", "token_exchange", "mcp_initialize", "mcp_initialized_notification", "tools_list",
+        ],
+        tool_invocation_performed: false,
+      });
+    }
     return reportPage("Read-only CIMD test completed", {
       schema: "minority-prophet.openid-aiim-run.v1",
       lane: "exploratory-interoperability",
