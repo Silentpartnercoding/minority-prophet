@@ -310,6 +310,25 @@ test('Ferentin start is a fixed captured profile discovered only through approve
   assert.equal(new URL(records[4].request.url).origin, 'https://mock-test.auth.ferentin.net');
 });
 
+test('Ferentin capture accepts a valid JSON challenge when the response omits its media type', async () => {
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    if (request.url === FERENTIN_RESOURCE && !request.headers.has('authorization')) {
+      const body = new TextEncoder().encode(JSON.stringify({ jsonrpc: '2.0', error: { code: -32001, message: 'Authentication required: Not Authenticated' } }));
+      return new Response(body, { status: 401, headers: { 'www-authenticate': `Bearer resource_metadata="${FERENTIN_OPRM}", scope="openid profile mcp"` } });
+    }
+    const response = ferentinMetadataResponse(request);
+    if (response) return response;
+    throw new Error(`Unexpected network request: ${request.url}`);
+  };
+  const db = fakeDb();
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/partners/ferentin/start'), { MP_AIIM_STATE_SECRET: SECRET, DB: db });
+  assert.equal(response.status, 302);
+  const records = db.rows.map(([, , , body]) => JSON.parse(body));
+  assert.deepEqual(records.map(({ phase }) => phase), ['capture_start', 'tokenless_mcp', 'oprm', 'authorization_server_metadata', 'authorization_redirect']);
+  assert.deepEqual(JSON.parse(records[1].response.body), { jsonrpc: '2.0', error: { code: '<redacted>', message: 'Authentication required: Not Authenticated' } });
+});
+
 test('Ferentin callback uses the captured fixed profile and completes one redacted client run', async () => {
   const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048, privateKeyEncoding: { type: 'pkcs8', format: 'pem' }, publicKeyEncoding: { type: 'spki', format: 'pem' } });
   const db = fakeDb();

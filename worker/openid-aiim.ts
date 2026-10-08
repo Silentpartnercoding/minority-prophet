@@ -344,7 +344,11 @@ function redactBody(body: string, contentType: string | null): string {
       return payload === "[DONE]" ? part : `data: ${JSON.stringify(redactJson(JSON.parse(payload)))}`;
     }).join("");
   }
-  throw new Error("Descope capture refused an unrecognized body format");
+  try {
+    return JSON.stringify(redactJson(JSON.parse(body)));
+  } catch {
+    throw new Error("Evidence capture refused a non-JSON body with an unrecognized media type");
+  }
 }
 
 async function saveCapture(trace: CaptureContext, record: CaptureRecord): Promise<void> {
