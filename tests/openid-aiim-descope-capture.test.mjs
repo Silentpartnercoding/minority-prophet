@@ -329,6 +329,20 @@ test('Ferentin capture accepts a valid JSON challenge when the response omits it
   assert.deepEqual(JSON.parse(records[1].response.body), { jsonrpc: '2.0', error: { code: '<redacted>', message: 'Authentication required: Not Authenticated' } });
 });
 
+test('Ferentin start identifies every server-side HTTP request with a stable client User-Agent', async () => {
+  const userAgents = [];
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    userAgents.push(request.headers.get('user-agent'));
+    const response = ferentinMetadataResponse(request);
+    if (response) return response;
+    throw new Error(`Unexpected network request: ${request.url}`);
+  };
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/partners/ferentin/start'), { MP_AIIM_STATE_SECRET: SECRET, DB: fakeDb() });
+  assert.equal(response.status, 302);
+  assert.deepEqual(userAgents, Array(3).fill('MinorityProphet-OpenID-AIIM/1.0'));
+});
+
 test('capture records safe response metadata when a partner returns an unsupported body', async () => {
   globalThis.fetch = async (input, init = {}) => {
     const request = input instanceof Request ? input : new Request(input, init);

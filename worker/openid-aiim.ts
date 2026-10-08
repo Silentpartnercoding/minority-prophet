@@ -416,7 +416,9 @@ async function captureExchange(
 }
 
 async function capturedFetch(url: string, init: RequestInit, trace: CaptureContext | undefined, phase: string, extra?: Record<string, unknown>): Promise<Response> {
-  const request = new Request(url, init);
+  const headers = new Headers(init.headers);
+  if (!headers.has("user-agent")) headers.set("user-agent", "MinorityProphet-OpenID-AIIM/1.0");
+  const request = new Request(url, { ...init, headers });
   const captureRequest = trace ? request.clone() : undefined;
   const startedAt = new Date().toISOString();
   const response = await fetch(request);
