@@ -10,6 +10,11 @@ const OPRM = 'https://mp-interop-referee.tradearmory.workers.dev/.well-known/oau
 const ISSUER = 'https://api.descope.com/v1/apps/agentic/P3IEQH7e0pGsj5aPR5PQPZQI6pfA/RS3IQSxDIjEhYYhuVkuey7uly21NB';
 const AUTHORIZE = `${ISSUER.replace('/v1/', '/oauth2/v1/')}/authorize`;
 const TOKEN = `${ISSUER.replace('/v1/', '/oauth2/v1/')}/token`;
+const FERENTIN_RESOURCE = 'https://mock-test.mcp.ferentin.net/v1/ferentin-docs-server';
+const FERENTIN_OPRM = `${FERENTIN_RESOURCE}/.well-known/oauth-protected-resource`;
+const FERENTIN_ISSUER = 'https://mock-test.auth.ferentin.net';
+const FERENTIN_AUTHORIZE = `${FERENTIN_ISSUER}/authorize`;
+const FERENTIN_TOKEN = `${FERENTIN_ISSUER}/token`;
 const SECRET = 'local-only-synthetic-secret-1234567890';
 const originalFetch = globalThis.fetch;
 
@@ -31,6 +36,26 @@ function metadataResponse(request) {
       issuer: ISSUER,
       authorization_endpoint: AUTHORIZE,
       token_endpoint: TOKEN,
+      code_challenge_methods_supported: ['S256'],
+      token_endpoint_auth_methods_supported: ['private_key_jwt'],
+      client_id_metadata_document_supported: true,
+    });
+  }
+  return null;
+}
+
+function ferentinMetadataResponse(request) {
+  if (request.url === FERENTIN_RESOURCE && !request.headers.has('authorization')) {
+    return json({ error: 'unauthorized' }, 401, { 'www-authenticate': `Bearer resource_metadata="${FERENTIN_OPRM}", scope="openid profile mcp"` });
+  }
+  if (request.url === FERENTIN_OPRM) {
+    return json({ resource: FERENTIN_RESOURCE, authorization_servers: [FERENTIN_ISSUER], scopes_supported: ['openid', 'profile', 'mcp'] });
+  }
+  if (request.url === `${FERENTIN_ISSUER}/.well-known/oauth-authorization-server`) {
+    return json({
+      issuer: FERENTIN_ISSUER,
+      authorization_endpoint: FERENTIN_AUTHORIZE,
+      token_endpoint: FERENTIN_TOKEN,
       code_challenge_methods_supported: ['S256'],
       token_endpoint_auth_methods_supported: ['private_key_jwt'],
       client_id_metadata_document_supported: true,
@@ -102,6 +127,14 @@ test('reproduce page exposes the explicit recorded Descope run', async () => {
   assert.match(html, /\/openid-aiim\/start/u);
   assert.match(html, /Start recorded Descope run/u);
   assert.doesNotMatch(html, /Run without recording/u);
+});
+
+test('reproduce page exposes a distinct recorded Ferentin run without a custom URL input', async () => {
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/reproduce'));
+  const html = await response.text();
+  assert.match(html, /href="\/openid-aiim\/partners\/ferentin\/start"/u);
+  assert.match(html, /Start recorded Ferentin run/u);
+  assert.doesNotMatch(html, /name="(?:url|resource|issuer)"/u);
 });
 
 test('every authorization run requires durable capture before partner traffic', async () => {
@@ -247,4 +280,84 @@ test('an OAuth error callback is durably captured instead of requiring a blind r
   const callbackUrl = new URL(records.at(-1).request.url);
   assert.equal(callbackUrl.searchParams.get('error'), 'access_denied');
   assert.equal(callbackUrl.searchParams.get('state'), '<redacted>');
+});
+
+test('Ferentin start is a fixed captured profile discovered only through approved origins', async () => {
+  const calls = [];
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    calls.push(`${request.method} ${request.url}`);
+    const response = ferentinMetadataResponse(request);
+    if (response) return response;
+    throw new Error(`Unexpected network request: ${request.url}`);
+  };
+  const db = fakeDb();
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/partners/ferentin/start'), { MP_AIIM_STATE_SECRET: SECRET, DB: db });
+  assert.equal(response.status, 302);
+  assert.deepEqual(calls, [
+    `POST ${FERENTIN_RESOURCE}`,
+    `GET ${FERENTIN_OPRM}`,
+    `GET ${FERENTIN_ISSUER}/.well-known/oauth-authorization-server`,
+  ]);
+  const authorizationUrl = new URL(response.headers.get('location'));
+  assert.equal(authorizationUrl.origin + authorizationUrl.pathname, FERENTIN_AUTHORIZE);
+  assert.equal(authorizationUrl.searchParams.get('client_id'), 'https://minorityprophet.org/openid-aiim/client.json');
+  assert.equal(authorizationUrl.searchParams.get('resource'), FERENTIN_RESOURCE);
+  assert.equal(authorizationUrl.searchParams.get('scope'), 'openid profile mcp');
+  const records = db.rows.map(([, , , body]) => JSON.parse(body));
+  assert.deepEqual(records.map(({ phase }) => phase), ['capture_start', 'tokenless_mcp', 'oprm', 'authorization_server_metadata', 'authorization_redirect']);
+  assert.equal(records[0].profile, 'ferentin');
+  assert.equal(new URL(records[4].request.url).origin, 'https://mock-test.auth.ferentin.net');
+});
+
+test('Ferentin callback uses the captured fixed profile and completes one redacted client run', async () => {
+  const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048, privateKeyEncoding: { type: 'pkcs8', format: 'pem' }, publicKeyEncoding: { type: 'spki', format: 'pem' } });
+  const db = fakeDb();
+  const calls = [];
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    calls.push(`${request.method} ${request.url}`);
+    const metadata = ferentinMetadataResponse(request);
+    if (metadata) return metadata;
+    const body = await request.text();
+    if (request.url === FERENTIN_TOKEN) return json({ access_token: 'FERENTIN_ACCESS_TOKEN', token_type: 'Bearer', scope: 'openid profile mcp' });
+    if (request.url === FERENTIN_RESOURCE && request.headers.get('authorization') === 'Bearer FERENTIN_ACCESS_TOKEN') {
+      const method = JSON.parse(body).method;
+      if (method === 'initialize') return json({ jsonrpc: '2.0', id: 1, result: { protocolVersion: '2026-07-28', capabilities: {} } }, 200, { 'Mcp-Session-Id': 'FERENTIN_SESSION' });
+      if (method === 'notifications/initialized') return new Response(null, { status: 202 });
+      if (method === 'tools/list') return json({ jsonrpc: '2.0', id: 2, result: { tools: [{ name: 'ferentin_docs', title: 'Ferentin Docs' }] } });
+    }
+    throw new Error(`Unexpected network request: ${request.url}`);
+  };
+  const env = { MP_AIIM_STATE_SECRET: SECRET, MP_AIIM_CLIENT_PRIVATE_KEY: privateKey, DB: db };
+  const start = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/partners/ferentin/start'), env);
+  const state = new URL(start.headers.get('location')).searchParams.get('state');
+  const cookie = start.headers.get('set-cookie').split(';')[0];
+  const callback = await handleOpenIdAiim(new Request(`https://minorityprophet.org/openid-aiim/callback?code=FERENTIN_AUTH_CODE&state=${state}&iss=${encodeURIComponent(FERENTIN_ISSUER)}`, { headers: { cookie } }), env);
+  assert.equal(callback.status, 200);
+  assert.ok(calls.includes(`POST ${FERENTIN_TOKEN}`));
+  assert.equal(calls.filter((entry) => entry === `POST ${FERENTIN_RESOURCE}`).length, 4);
+  const records = db.rows.map(([, , , body]) => JSON.parse(body));
+  const token = records.find(({ phase }) => phase === 'token_exchange');
+  assert.equal(token.assertion.claims.aud, FERENTIN_TOKEN);
+  assert.equal(new URL(token.request.url).origin, 'https://mock-test.auth.ferentin.net');
+  assert.equal(records.at(-1).phase, 'capture_complete');
+  assert.equal(JSON.stringify(records).includes('FERENTIN_ACCESS_TOKEN'), false);
+  const html = await callback.text();
+  assert.match(html, /profile.*ferentin/us);
+});
+
+test('Ferentin discovery refuses an unapproved OPRM origin before fetching it', async () => {
+  const calls = [];
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    calls.push(`${request.method} ${request.url}`);
+    if (request.url === FERENTIN_RESOURCE) {
+      return json({ error: 'unauthorized' }, 401, { 'www-authenticate': 'Bearer resource_metadata="https://attacker.invalid/oprm"' });
+    }
+    return json({ resource: FERENTIN_RESOURCE, authorization_servers: [FERENTIN_ISSUER], scopes_supported: ['mcp:tools'] });
+  };
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/partners/ferentin/start'), { MP_AIIM_STATE_SECRET: SECRET, DB: fakeDb() });
+  assert.equal(response.status, 502);
+  assert.deepEqual(calls, [`POST ${FERENTIN_RESOURCE}`]);
 });

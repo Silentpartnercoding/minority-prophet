@@ -13,6 +13,43 @@ const MCP_VERSION = "2026-07-28";
 const SUPPORTED_MCP_VERSIONS = new Set(["2026-07-28", "2025-11-25", "2025-06-18"]);
 const FLOW_TTL_MS = 10 * 60 * 1000;
 
+interface InteropProfile {
+  key: "descope" | "ferentin";
+  label: string;
+  resource: string;
+  resourceMetadata?: string;
+  expectedIssuer?: string;
+  expectedAuthorizationEndpoint?: string;
+  expectedTokenEndpoint?: string;
+  allowedOrigins: ReadonlySet<string>;
+  scope: string;
+}
+
+const DESCOPE_PROFILE: InteropProfile = {
+  key: "descope",
+  label: "Descope",
+  resource: RESOURCE,
+  resourceMetadata: RESOURCE_METADATA,
+  expectedIssuer: EXPECTED_ISSUER,
+  expectedAuthorizationEndpoint: AUTHORIZATION_ENDPOINT,
+  expectedTokenEndpoint: TOKEN_ENDPOINT,
+  allowedOrigins: new Set(["https://api.descope.com", "https://mp-interop-referee.tradearmory.workers.dev"]),
+  scope: REQUESTED_SCOPE,
+};
+
+const FERENTIN_PROFILE: InteropProfile = {
+  key: "ferentin",
+  label: "Ferentin",
+  resource: "https://mock-test.mcp.ferentin.net/v1/ferentin-docs-server",
+  allowedOrigins: new Set(["https://mock-test.mcp.ferentin.net", "https://mock-test.auth.ferentin.net"]),
+  scope: "openid profile mcp",
+};
+
+const PROFILES: Readonly<Record<InteropProfile["key"], InteropProfile>> = {
+  descope: DESCOPE_PROFILE,
+  ferentin: FERENTIN_PROFILE,
+};
+
 interface AiimEnv {
   MP_AIIM_STATE_SECRET?: string;
   MP_AIIM_CLIENT_PRIVATE_KEY?: string;
@@ -40,7 +77,11 @@ interface FlowState {
   state: string;
   verifier: string;
   issuedAt: number;
+  profileKey: InteropProfile["key"];
+  resource: string;
+  scope: string;
   issuer: string;
+  tokenEndpoint: string;
   captureRunId?: string;
   captureNextSeq?: number;
 }
@@ -127,13 +168,13 @@ async function privateKey(pem: string): Promise<CryptoKey> {
   );
 }
 
-async function clientAssertion(pem: string): Promise<string> {
+async function clientAssertion(pem: string, audience = TOKEN_ENDPOINT): Promise<string> {
   const issuedAt = Math.floor(Date.now() / 1000);
   const header = b64url(new TextEncoder().encode(JSON.stringify({ alg: "RS256", kid: CLIENT_KEY_ID, typ: "JWT" })));
   const payload = b64url(new TextEncoder().encode(JSON.stringify({
     iss: CLIENT_ID,
     sub: CLIENT_ID,
-    aud: TOKEN_ENDPOINT,
+    aud: audience,
     iat: issuedAt,
     exp: issuedAt + 300,
     jti: crypto.randomUUID(),
@@ -356,12 +397,25 @@ async function fetchJson<T>(url: string, trace?: CaptureContext, phase = "metada
   return { response, data: await response.json() as T };
 }
 
-async function validateDiscovery(trace?: CaptureContext): Promise<{
+function requireApprovedUrl(value: string | undefined, profile: InteropProfile, label: string): string {
+  if (!value) throw new Error(`${label} is missing`);
+  const url = new URL(value);
+  if (url.protocol !== "https:" || !profile.allowedOrigins.has(url.origin)) {
+    throw new Error(`${label} is outside the fixed ${profile.label} origin allowlist`);
+  }
+  return url.toString();
+}
+
+async function validateDiscovery(profile: InteropProfile, trace?: CaptureContext): Promise<{
   protectedResource: ProtectedResourceMetadata;
   authorizationServer: OAuthMetadata;
+  issuer: string;
+  authorizationEndpoint: string;
+  tokenEndpoint: string;
 }> {
+  let resourceMetadata = profile.resourceMetadata;
   if (trace) {
-    const challenge = await capturedFetch(RESOURCE, {
+    const challenge = await capturedFetch(profile.resource, {
       method: "POST",
       headers: { accept: "application/json, text/event-stream", "content-type": "application/json" },
       body: JSON.stringify({ jsonrpc: "2.0", id: 0, method: "initialize", params: { protocolVersion: MCP_VERSION, capabilities: {}, clientInfo: { name: "minority-prophet-openid-aiim", version: "1.0.0" } } }),
@@ -370,21 +424,33 @@ async function validateDiscovery(trace?: CaptureContext): Promise<{
     }, trace, "tokenless_mcp");
     const challengeHeader = challenge.headers.get("www-authenticate") ?? "";
     const metadataUrl = /resource_metadata="([^"]+)"/u.exec(challengeHeader)?.[1];
-    if (challenge.status !== 401 || metadataUrl !== RESOURCE_METADATA) throw new Error("Tokenless MCP challenge did not advertise the expected OPRM URL");
+    if (challenge.status !== 401 || !metadataUrl) throw new Error("Tokenless MCP challenge did not advertise an OPRM URL");
+    resourceMetadata = requireApprovedUrl(metadataUrl, profile, "OPRM URL");
+    if (profile.resourceMetadata && resourceMetadata !== profile.resourceMetadata) throw new Error("Tokenless MCP challenge did not advertise the expected OPRM URL");
   }
-  const { data: protectedResource } = await fetchJson<ProtectedResourceMetadata>(RESOURCE_METADATA, trace, "oprm");
-  if (protectedResource.resource !== RESOURCE) throw new Error("Protected resource identifier does not match the MCP endpoint");
-  if (!protectedResource.authorization_servers?.includes(EXPECTED_ISSUER)) throw new Error("Expected authorization server is not advertised");
-  if (!protectedResource.scopes_supported?.includes(REQUESTED_SCOPE)) throw new Error("The read-only scope is not advertised");
+  if (!resourceMetadata) throw new Error("A fixed OPRM URL is required outside a captured run");
+  const { data: protectedResource } = await fetchJson<ProtectedResourceMetadata>(resourceMetadata, trace, "oprm");
+  if (protectedResource.resource !== profile.resource) throw new Error("Protected resource identifier does not match the MCP endpoint");
+  const advertisedScopes = new Set(protectedResource.scopes_supported ?? []);
+  if (!profile.scope.split(/\s+/u).every((scope) => advertisedScopes.has(scope))) throw new Error("The read-only scope is not advertised");
+  const advertisedIssuers = protectedResource.authorization_servers ?? [];
+  const issuer = profile.expectedIssuer ?? advertisedIssuers.find((candidate) => {
+    try { return profile.allowedOrigins.has(new URL(candidate).origin); } catch { return false; }
+  });
+  if (!issuer || !advertisedIssuers.includes(issuer)) throw new Error("Expected authorization server is not advertised");
+  requireApprovedUrl(issuer, profile, "Authorization-server issuer");
 
-  const { data: authorizationServer } = await fetchJson<OAuthMetadata>(`${EXPECTED_ISSUER}/.well-known/oauth-authorization-server`, trace, "authorization_server_metadata");
-  if (authorizationServer.issuer !== EXPECTED_ISSUER) throw new Error("Authorization-server issuer mismatch");
-  if (authorizationServer.authorization_endpoint !== AUTHORIZATION_ENDPOINT) throw new Error("Unexpected authorization endpoint");
-  if (authorizationServer.token_endpoint !== TOKEN_ENDPOINT) throw new Error("Unexpected token endpoint");
+  const metadataUrl = `${issuer.replace(/\/$/u, "")}/.well-known/oauth-authorization-server`;
+  const { data: authorizationServer } = await fetchJson<OAuthMetadata>(metadataUrl, trace, "authorization_server_metadata");
+  if (authorizationServer.issuer !== issuer) throw new Error("Authorization-server issuer mismatch");
+  const authorizationEndpoint = requireApprovedUrl(authorizationServer.authorization_endpoint, profile, "Authorization endpoint");
+  const tokenEndpoint = requireApprovedUrl(authorizationServer.token_endpoint, profile, "Token endpoint");
+  if (profile.expectedAuthorizationEndpoint && authorizationEndpoint !== profile.expectedAuthorizationEndpoint) throw new Error("Unexpected authorization endpoint");
+  if (profile.expectedTokenEndpoint && tokenEndpoint !== profile.expectedTokenEndpoint) throw new Error("Unexpected token endpoint");
   if (authorizationServer.client_id_metadata_document_supported !== true) throw new Error("Authorization server does not advertise CIMD");
   if (!authorizationServer.code_challenge_methods_supported?.includes("S256")) throw new Error("Authorization server does not advertise PKCE S256");
   if (!authorizationServer.token_endpoint_auth_methods_supported?.includes("private_key_jwt")) throw new Error("Authorization server does not advertise private_key_jwt");
-  return { protectedResource, authorizationServer };
+  return { protectedResource, authorizationServer, issuer, authorizationEndpoint, tokenEndpoint };
 }
 
 function clientMetadata(): Record<string, unknown> {
@@ -404,13 +470,14 @@ function clientMetadata(): Record<string, unknown> {
 function reproducePage(): Response {
   return page("Reproduce the Descope CIMD test", `<p class="kicker">OpenID AIIM · read-only test surface</p>
 <h1>One stable client. One exact rerun.</h1>
-<p class="lede">This page runs a standards-shaped confidential-client authorization attempt against the Minority Prophet MCP server protected by Descope. It requests only <code>${REQUESTED_SCOPE}</code>. If authorization succeeds, it proves the client's identity with <code>private_key_jwt</code>, initializes MCP, and lists tool names; it never calls a tool.</p>
+<p class="lede">This page runs standards-shaped confidential-client authorization attempts against fixed OpenID AIIM partner profiles. Each path requests only <code>${REQUESTED_SCOPE}</code>. If authorization succeeds, it proves the client's identity with <code>private_key_jwt</code>, initializes MCP, and lists tool names; it never calls a tool.</p>
 <section class="card"><p class="label">Fixed inputs</p><dl>
 <dt>MCP resource</dt><dd>${RESOURCE}</dd><dt>Client ID / metadata</dt><dd><a href="${CLIENT_ID}">${CLIENT_ID}</a></dd>
 <dt>Public JWKS</dt><dd><a href="${JWKS_URI}">${JWKS_URI}</a></dd><dt>Callback</dt><dd>${REDIRECT_URI}</dd>
 <dt>OAuth shape</dt><dd>Authorization Code + PKCE S256 · confidential client · private_key_jwt (RS256)</dd>
 <dt>Requested scope</dt><dd>${REQUESTED_SCOPE}</dd><dt>MCP action ceiling</dt><dd>initialize → notifications/initialized → tools/list only</dd>
 </dl><a class="button" href="/openid-aiim/start">Start recorded Descope run →</a>
+<a class="button secondary" href="/openid-aiim/partners/ferentin/start">Start recorded Ferentin run →</a>
 <a class="button secondary" href="/openid-aiim/diagnostics.json">View live discovery checks</a></section>
 <p class="boundary">Every run uses private durable storage and stops if any evidence write fails. The private signing key remains a hosted secret; only the matching public key is published. The fixed client ID above lets the Descope operator find the matching validator request. Boundary: this is an exploratory interoperability probe, not a canonical result. Successful listing shows tool names and titles only, and no MCP tool call is permitted by this harness.</p>`);
 }
@@ -418,7 +485,7 @@ function reproducePage(): Response {
 async function diagnostics(): Promise<Response> {
   const checkedAt = new Date().toISOString();
   try {
-    const { protectedResource, authorizationServer } = await validateDiscovery();
+    const { protectedResource, authorizationServer } = await validateDiscovery(DESCOPE_PROFILE);
     return Response.json({
       schema: "minority-prophet.openid-aiim-diagnostics.v1",
       lane: "exploratory-interoperability",
@@ -452,7 +519,7 @@ async function diagnostics(): Promise<Response> {
   }
 }
 
-async function startAuthorization(request: Request, env?: AiimEnv): Promise<Response> {
+async function startAuthorization(request: Request, env: AiimEnv | undefined, profile: InteropProfile): Promise<Response> {
   const secret = stateSecret(env);
   if (!secret || secret.length < 32) {
     return reportPage("Test surface is not configured", { step: "local_configuration", ok: false, error: "State-signing secret is unavailable" }, 503);
@@ -465,23 +532,34 @@ async function startAuthorization(request: Request, env?: AiimEnv): Promise<Resp
   }
   const trace: CaptureContext = { db: env.DB, runId: crypto.randomUUID(), nextSeq: 0 };
   try {
-    await saveCapture(trace, { phase: "capture_start", at: new Date().toISOString(), cold_start: { flow_cookie_present: false, token_cache: "none", metadata_cache: "none" } });
-    await validateDiscovery(trace);
+    await saveCapture(trace, { phase: "capture_start", at: new Date().toISOString(), profile: profile.key, cold_start: { flow_cookie_present: false, token_cache: "none", metadata_cache: "none" } });
+    const discovery = await validateDiscovery(profile, trace);
     const verifier = randomValue(48);
     const state = randomValue(32);
-    const authorizationUrl = new URL(AUTHORIZATION_ENDPOINT);
+    const authorizationUrl = new URL(discovery.authorizationEndpoint);
     authorizationUrl.search = new URLSearchParams({
       response_type: "code",
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
-      scope: REQUESTED_SCOPE,
+      scope: profile.scope,
       state,
       code_challenge: await sha256(verifier),
       code_challenge_method: "S256",
-      resource: RESOURCE,
+      resource: profile.resource,
     }).toString();
     await captureExchange(trace, "authorization_redirect", new Request(authorizationUrl), null);
-    const cookie = await encodeFlow({ state, verifier, issuedAt: Date.now(), issuer: EXPECTED_ISSUER, captureRunId: trace.runId, captureNextSeq: trace.nextSeq }, secret);
+    const cookie = await encodeFlow({
+      state,
+      verifier,
+      issuedAt: Date.now(),
+      profileKey: profile.key,
+      resource: profile.resource,
+      scope: profile.scope,
+      issuer: discovery.issuer,
+      tokenEndpoint: discovery.tokenEndpoint,
+      captureRunId: trace.runId,
+      captureNextSeq: trace.nextSeq,
+    }, secret);
     return new Response(null, {
       status: 302,
       headers: {
@@ -517,6 +595,7 @@ async function parseMcpEnvelope(response: Response): Promise<McpEnvelope> {
 }
 
 async function mcpPost(
+  resource: string,
   accessToken: string,
   body: Record<string, unknown>,
   sessionId?: string,
@@ -531,7 +610,7 @@ async function mcpPost(
   };
   if (sessionId) headers["Mcp-Session-Id"] = sessionId;
   if (protocolVersion) headers["MCP-Protocol-Version"] = protocolVersion;
-  const response = await capturedFetch(RESOURCE, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual", signal: AbortSignal.timeout(15_000) }, trace, phase);
+  const response = await capturedFetch(resource, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual", signal: AbortSignal.timeout(15_000) }, trace, phase);
   if (response.status >= 300 && response.status < 400) throw new Error("MCP endpoint attempted to redirect a bearer-token request");
   return response;
 }
@@ -554,6 +633,16 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
     return reportPage("Descope capture is not configured", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "Durable capture binding or sequence is unavailable" }, 503);
   }
   const trace: CaptureContext | undefined = flow.captureRunId && env?.DB ? { db: env.DB, runId, nextSeq: flow.captureNextSeq! } : undefined;
+  const profile = PROFILES[flow.profileKey];
+  if (!profile || flow.resource !== profile.resource || flow.scope !== profile.scope) {
+    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "profile_validation", ok: false, error: "Recorded interoperability profile mismatch" }, 400);
+  }
+  try {
+    requireApprovedUrl(flow.issuer, profile, "Recorded issuer");
+    requireApprovedUrl(flow.tokenEndpoint, profile, "Recorded token endpoint");
+  } catch (error) {
+    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "profile_validation", ok: false, error: error instanceof Error ? error.message : "Recorded interoperability profile is invalid" }, 400);
+  }
   const signingPem = clientPrivateKey(env);
   if (!signingPem?.includes("-----BEGIN PRIVATE KEY-----")) {
     return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "local_configuration", ok: false, error: "Client signing key is unavailable" }, 503);
@@ -561,9 +650,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   if (url.searchParams.get("state") !== flow.state) {
     return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "state_validation", ok: false, error: "OAuth state mismatch" }, 400);
   }
-  if (flow.issuer !== EXPECTED_ISSUER) {
-    return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "issuer_validation", ok: false, error: "Recorded issuer mismatch" }, 400);
-  }
+  if (profile.expectedIssuer && flow.issuer !== profile.expectedIssuer) return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "issuer_validation", ok: false, error: "Recorded issuer mismatch" }, 400);
   const responseIssuer = url.searchParams.get("iss");
   if (responseIssuer && responseIssuer !== flow.issuer) {
     return reportPage("Callback rejected", { run_id: runId, completed_at: completedAt, step: "issuer_validation", ok: false, error: "Authorization response issuer mismatch" }, 400);
@@ -603,7 +690,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
   }
 
   try {
-    const assertion = await clientAssertion(signingPem);
+    const assertion = await clientAssertion(signingPem, flow.tokenEndpoint);
     const [assertionHeader, assertionClaims] = assertion.split(".");
     const decodedHeader = JSON.parse(new TextDecoder().decode(decodeB64url(assertionHeader))) as Record<string, unknown>;
     const decodedClaims = JSON.parse(new TextDecoder().decode(decodeB64url(assertionClaims))) as Record<string, unknown>;
@@ -613,7 +700,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         claims: { iss: decodedClaims.iss, sub: decodedClaims.sub, aud: decodedClaims.aud, exp: decodedClaims.exp },
       },
     };
-    const tokenResponse = await capturedFetch(TOKEN_ENDPOINT, {
+    const tokenResponse = await capturedFetch(flow.tokenEndpoint, {
       method: "POST",
       headers: { accept: "application/json", "content-type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -622,7 +709,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         client_id: CLIENT_ID,
         redirect_uri: REDIRECT_URI,
         code_verifier: flow.verifier,
-        resource: RESOURCE,
+        resource: flow.resource,
         client_assertion_type: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
         client_assertion: assertion,
       }),
@@ -646,7 +733,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
       }, 502);
     }
     const accessToken = tokenBody.access_token;
-    const initializeResponse = await mcpPost(accessToken, {
+    const initializeResponse = await mcpPost(flow.resource, accessToken, {
       jsonrpc: "2.0",
       id: 1,
       method: "initialize",
@@ -686,7 +773,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         tool_invocation_performed: false,
       }, 502);
     }
-    const initializedResponse = await mcpPost(accessToken, {
+    const initializedResponse = await mcpPost(flow.resource, accessToken, {
       jsonrpc: "2.0",
       method: "notifications/initialized",
     }, sessionId, negotiatedVersion, trace, "mcp_initialized_notification");
@@ -703,7 +790,7 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
         tool_invocation_performed: false,
       }, 502);
     }
-    const toolsResponse = await mcpPost(accessToken, { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }, sessionId, negotiatedVersion, trace, "tools_list");
+    const toolsResponse = await mcpPost(flow.resource, accessToken, { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }, sessionId, negotiatedVersion, trace, "tools_list");
     const toolsBody = await parseMcpEnvelope(toolsResponse);
     if (!toolsResponse.ok || toolsBody.error || !toolsBody.result) {
       return reportPage("MCP tools listing failed", {
@@ -748,10 +835,11 @@ async function callback(request: Request, env?: AiimEnv): Promise<Response> {
       run_id: runId,
       completed_at: completedAt,
       ok: true,
-      resource: RESOURCE,
+      profile: profile.key,
+      resource: flow.resource,
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
-      requested_scope: REQUESTED_SCOPE,
+      requested_scope: flow.scope,
       token_endpoint_auth_method: "private_key_jwt",
       client_assertion_signing_alg: "RS256",
       response_issuer: responseIssuer ?? "not_returned",
@@ -786,7 +874,8 @@ export async function handleOpenIdAiim(request: Request, env?: AiimEnv): Promise
   }
   if (url.pathname === "/openid-aiim/reproduce" && request.method === "GET") return reproducePage();
   if (url.pathname === "/openid-aiim/diagnostics.json" && request.method === "GET") return diagnostics();
-  if (url.pathname === "/openid-aiim/start" && request.method === "GET") return startAuthorization(request, env);
+  if (url.pathname === "/openid-aiim/start" && request.method === "GET") return startAuthorization(request, env, DESCOPE_PROFILE);
+  if (url.pathname === "/openid-aiim/partners/ferentin/start" && request.method === "GET") return startAuthorization(request, env, FERENTIN_PROFILE);
   if (url.pathname === "/openid-aiim/callback" && request.method === "GET") return callback(request, env);
   return null;
 }

@@ -1,10 +1,12 @@
 # OpenID AIIM CIMD evidence capture
 
-The hosted `/openid-aiim/start` path is evidence-mandatory. It will not contact an interoperability partner unless the private D1 binding is present and the first append-only evidence write succeeds. There is no unrecorded browser-run path.
+The hosted `/openid-aiim/start` Descope path and `/openid-aiim/partners/ferentin/start` Ferentin path are evidence-mandatory. Neither path contacts an interoperability partner unless the private D1 binding is present and the first append-only evidence write succeeds. There is no unrecorded browser-run path.
+
+The Ferentin path is a fixed profile for `https://mock-test.mcp.ferentin.net/v1/ferentin-docs-server` and the challenge's advertised `openid profile mcp` scopes. Discovery may continue only through HTTPS URLs on `mock-test.mcp.ferentin.net` or `mock-test.auth.ferentin.net`; the UI has no arbitrary resource, issuer, or endpoint input. The signed flow cookie binds the selected profile, resource, scope, issuer, and token endpoint through the callback.
 
 ## What one successful run retains
 
-All records share one random `run_id` and consecutive `seq` values. Every HTTP exchange records UTC `started_at` and `completed_at` values, the request method and exact redacted URL, redacted request and response headers and bodies, the response status, and bounded partner correlation headers (`x-request-id`, `x-correlation-id`, `traceparent`, `cf-ray`, or `seal_in`) when returned.
+All records share one random `run_id` and consecutive `seq` values. The first record identifies the fixed profile. Every HTTP exchange records UTC `started_at` and `completed_at` values, the request method and exact redacted URL, redacted request and response headers and bodies, the response status, and bounded partner correlation headers (`x-request-id`, `x-correlation-id`, `traceparent`, `cf-ray`, or `seal_in`) when returned.
 
 The required phase order is:
 
