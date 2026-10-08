@@ -366,8 +366,43 @@ async function captureExchange(
   startedAt = new Date().toISOString(),
   completedAt = new Date().toISOString(),
 ): Promise<void> {
-  const requestBody = redactBody(await boundedText(request.body), request.headers.get("content-type"));
-  const responseBody = response ? redactBody(await boundedText(response.clone().body), response.headers.get("content-type")) : null;
+  const requestMediaType = request.headers.get("content-type");
+  const rawRequestBody = await boundedText(request.body);
+  let requestBody: string;
+  try {
+    requestBody = redactBody(rawRequestBody, requestMediaType);
+  } catch (error) {
+    await saveCapture(trace, {
+      phase: "capture_refused_body",
+      at: completedAt,
+      attempted_phase: phase,
+      side: "request",
+      media_type: requestMediaType,
+      body_bytes: new TextEncoder().encode(rawRequestBody).byteLength,
+      reason: "unrecognized_media_type",
+    });
+    throw error;
+  }
+  let responseBody: string | null = null;
+  if (response) {
+    const responseMediaType = response.headers.get("content-type");
+    const rawResponseBody = await boundedText(response.clone().body);
+    try {
+      responseBody = redactBody(rawResponseBody, responseMediaType);
+    } catch (error) {
+      await saveCapture(trace, {
+        phase: "capture_refused_body",
+        at: completedAt,
+        attempted_phase: phase,
+        side: "response",
+        status: response.status,
+        media_type: responseMediaType,
+        body_bytes: new TextEncoder().encode(rawResponseBody).byteLength,
+        reason: "unrecognized_media_type",
+      });
+      throw error;
+    }
+  }
   await saveCapture(trace, {
     phase,
     at: completedAt,

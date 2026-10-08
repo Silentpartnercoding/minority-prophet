@@ -329,6 +329,31 @@ test('Ferentin capture accepts a valid JSON challenge when the response omits it
   assert.deepEqual(JSON.parse(records[1].response.body), { jsonrpc: '2.0', error: { code: '<redacted>', message: 'Authentication required: Not Authenticated' } });
 });
 
+test('capture records safe response metadata when a partner returns an unsupported body', async () => {
+  globalThis.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : new Request(input, init);
+    if (request.url === FERENTIN_RESOURCE) {
+      return new Response('<html>blocked</html>', { status: 403, headers: { 'content-type': 'text/html; charset=utf-8' } });
+    }
+    throw new Error(`Unexpected network request: ${request.url}`);
+  };
+  const db = fakeDb();
+  const response = await handleOpenIdAiim(new Request('https://minorityprophet.org/openid-aiim/partners/ferentin/start'), { MP_AIIM_STATE_SECRET: SECRET, DB: db });
+  assert.equal(response.status, 502);
+  const records = db.rows.map(([, , , body]) => JSON.parse(body));
+  assert.deepEqual(records.map(({ phase }) => phase), ['capture_start', 'capture_refused_body']);
+  assert.deepEqual(records[1], {
+    phase: 'capture_refused_body',
+    at: records[1].at,
+    attempted_phase: 'tokenless_mcp',
+    side: 'response',
+    status: 403,
+    media_type: 'text/html; charset=utf-8',
+    body_bytes: 20,
+    reason: 'unrecognized_media_type',
+  });
+});
+
 test('Ferentin callback uses the captured fixed profile and completes one redacted client run', async () => {
   const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048, privateKeyEncoding: { type: 'pkcs8', format: 'pem' }, publicKeyEncoding: { type: 'spki', format: 'pem' } });
   const db = fakeDb();
