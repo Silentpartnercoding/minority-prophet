@@ -37,7 +37,7 @@
           "note": "Cites the tag, commit, and result hash. Does not acknowledge this repository or its maintainer; correspondence, not causation."
         }
       ],
-      "lastReconciled": "2026-09-16"
+      "lastReconciled": "2026-10-15"
     },
     {
       "id": "songbo-bu:agtp-matrix-fit-001",
@@ -57,7 +57,7 @@
       "detailRecordRepository": "Silentpartnercoding/agent-security-verifier-matrix",
       "establishes": "A second protocol mapping was reviewed and corrected by the same external party, and the correction release is independently pinned.",
       "doesNotDischarge": "Any knowledge-ledger gate. It is also not a second reproducer: the same party performed both this and the AIP review, so the two entries are not independent of each other.",
-      "lastReconciled": "2026-09-16"
+      "lastReconciled": "2026-10-15"
     },
     {
       "id": "handoffprobe:border-a2a-mcp-crossing-v2",
@@ -76,7 +76,27 @@
       "detailRecordRepository": "minority-prophet",
       "establishes": "A different operator on a different stack (@a2a-js/sdk 1.1.0, MCP TypeScript SDK 2.0.0) executed all 28 cases in corpus order with 58 attempt-level evidence records and an effect recorder outside the verifier, stating that no reference-fixture observed row was used to fill observation gaps. The grade was withheld on first submission until issuer-authenticated authority artifacts were supplied.",
       "doesNotDischarge": "KL-011's remaining gate. No independent party has read a KL-011 receipt; this measured Border crossing cases, a different corpus. The key material is fixed RFC 8032 test-fixture material, so this is conformance evidence rather than a production credential setup, and green_eligible applies to that frozen profile only.",
-      "lastReconciled": "2026-09-16"
+      "lastReconciled": "2026-10-15"
+    },
+    {
+      "id": "citizen01-sid:1f916-two-stranger-001",
+      "reproducer": "citizen01-sid",
+      "date": "2026-10-09",
+      "strength": "implementation-independent",
+      "controlDomainIndependence": "not-established",
+      "artifactRepository": "1f916-ai/protocol",
+      "artifact": "1F916 v0.1 verifier two-stranger candidate corpus",
+      "pin": {
+        "implementationCommit": "2bde63e7b13f296d572922aeb189543e2dfd1c53",
+        "referenceCommit": "890f4f9f41c0f4b7f6b142a00a78fefdbf184a83",
+        "specCommit": "b0261b53d5d1e4e482c23d7f41653294355ee78b",
+        "externalIssue": "1f916-ai/protocol#10"
+      },
+      "detailRecord": "issues/10",
+      "detailRecordRepository": "1f916-ai/protocol",
+      "establishes": "A separately written Python verifier and its immutable six-case offline bundle can be installed and rerun: all manifest cases, 13 fixture digests, the registry-key digest, four published dossier/witness verdict-and-exit pairs, and the saved consistency proof reproduced. Static inspection found no bundled, imported, or executed copy of the JavaScript reference verifier.",
+      "doesNotDischarge": "The 1F916 specification's section 8a two-stranger gate remains open. Two added differential checks disagree with the pinned reference: first-observation continuity can be promoted to witnessed, and witness-unusable has a different exit code. The published bundle also does not contain the reported 105-dossier population, and five decoding boundaries were learned from the reference rather than the specification text alone. This external artifact does not discharge any Minority Prophet knowledge-ledger gate.",
+      "lastReconciled": "2026-10-15"
     }
   ]
 }

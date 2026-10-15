@@ -58,7 +58,8 @@ ietf-check: ietf-setup
 	"$(IETF_VENV)/bin/xml2rfc" --text --out "$$tmpdir/$(IETF_DRAFT).txt" "$(IETF_DIR)/$(IETF_DRAFT).xml"; \
 	"$(IETF_VENV)/bin/xml2rfc" --html --out "$$tmpdir/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).xml"; \
 	cmp "$$tmpdir/$(IETF_DRAFT).txt" "$(IETF_DIR)/$(IETF_DRAFT).txt"; \
-	cmp "$$tmpdir/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).html"
+	"$(PYTHON)" scripts/check_ietf_reproducibility.py \
+		"$$tmpdir/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).html"
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q tests/test_ietf_audit_draft.py
 	! rg -n "TBD|TODO|Wesleyan|Zinglez" "$(IETF_DIR)/$(IETF_DRAFT).xml"
 

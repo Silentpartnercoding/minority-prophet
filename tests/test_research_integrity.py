@@ -287,7 +287,8 @@ def test_ci_rebuilds_the_internet_draft_package():
 def test_ci_checks_runtime_supply_chain_without_publishing():
     workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
     assert "runtime-supply-chain:" in workflow
-    assert "npm audit" in workflow
+    assert "python scripts/check_npm_audit.py" in workflow
+    assert "npm audit" in pathlib.Path("scripts/check_npm_audit.py").read_text()
     assert "run pack:evidence" in workflow
     assert "npm publish" not in workflow
     assert "attest-build-provenance" not in workflow

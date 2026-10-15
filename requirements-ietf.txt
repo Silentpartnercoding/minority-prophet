@@ -1,2 +1,6 @@
 xml2rfc==3.31.0
 urllib3==1.26.20
+# xml2rfc embeds these transitive versions in generated HTML. Keep them pinned
+# so `make ietf-check` remains reproducible after upstream point releases.
+platformdirs==4.12.2
+wcwidth==0.9.1

@@ -20,9 +20,9 @@ INDEX = ROOT / "research/knowledge-ledger/EXTERNAL-REPRODUCTIONS.json"
 SCRIPT = ROOT / "scripts/check_external_reproductions.py"
 
 # Fixed so the cadence tests do not drift as the calendar moves. The committed
-# entries are reconciled 2026-09-16 and the interval is 30 days.
-INSIDE = "2026-10-10"
-OUTSIDE = "2026-11-01"
+# entries are reconciled 2026-10-15 and the interval is 30 days.
+INSIDE = "2026-10-20"
+OUTSIDE = "2026-11-16"
 
 
 def _run(today=INSIDE):
@@ -119,6 +119,18 @@ class ExternalReproductionTests(unittest.TestCase):
         silently counted as verified."""
         result = _run()
         self.assertIn("NOT CHECKED from this repository", result.stdout)
+
+    def test_two_stranger_result_is_indexed_without_promoting_conformance(self):
+        """A separate executable verifier can be reproducible while the
+        protocol's two-stranger gate remains open on differential failures."""
+        document = json.loads(self.original)
+        entry = next(
+            item for item in document["reproductions"]
+            if item["id"] == "citizen01-sid:1f916-two-stranger-001"
+        )
+        self.assertEqual(entry["strength"], "implementation-independent")
+        self.assertIn("gate remains open", entry["doesNotDischarge"])
+        self.assertIn("2bde63e7b13f296d572922aeb189543e2dfd1c53", entry["pin"].values())
 
 
 if __name__ == "__main__":

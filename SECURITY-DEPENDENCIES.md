@@ -15,6 +15,14 @@ After the change, `npm audit` reports zero known vulnerabilities and the complet
 site build and rendered-page tests pass. CI now runs the full audit, not only the
 production-dependency subset.
 
+On 2026-10-15, runtime dependencies were advanced to remove new `sharp` and
+`source-map-js` advisories. The remaining audit graph traces only to
+`GHSA-vfj7-8cjw-p6xm` in `braces`, for which npm publishes no patched release.
+It is reachable through development-only glob consumers (`eslint-config-next`
+and `vinext`), not through the deployed production dependency set; `npm audit
+--omit=dev` reports zero findings. CI still audits the full tree and permits only
+that exact advisory and dependency chain. Any different advisory fails the build.
+
 This is a temporary bounded resolution. Any future vinext upgrade must rerun the
 full audit and the site build before merge. A zero audit result does not replace
 code review, secret scanning, runtime hardening, or an external security review.
