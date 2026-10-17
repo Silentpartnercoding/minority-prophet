@@ -1,0 +1,32 @@
+{
+  "document": "draft-he-agentproto-verifier-evidence-00",
+  "submission_state": "not-submitted",
+  "prepared_on": "2026-10-17",
+  "reviewed_document_date": "2026-09-27",
+  "renderer": {
+    "name": "xml2rfc",
+    "version": "3.34.1",
+    "requirements_file": "requirements-agentproto.txt"
+  },
+  "current_internet_draft_revisions_checked_on_2026_10_17": {
+    "draft-wadkins-agentproto-action-determinability": "00",
+    "draft-bu-agentproto-security-principal-binding": "08",
+    "draft-bradleyb-audit-decision-records": "00",
+    "draft-schrock-ep-bounded-capability-receipts": "06",
+    "draft-laurie-tmif": "02"
+  },
+  "files": {
+    "papers/ietf/draft-he-agentproto-verifier-evidence-00.xml": {
+      "bytes": 49384,
+      "sha256": "8fe023661c7cdddd19c7ad6bf9dfe2a517b06208a5181f5d860aa1d9556380df"
+    },
+    "papers/ietf/draft-he-agentproto-verifier-evidence-00.txt": {
+      "bytes": 48826,
+      "sha256": "bc7aa809eb51489b1f8cb225db3e493724b9ae34d93f06c8556a4ad505e44bc4"
+    },
+    "papers/ietf/draft-he-agentproto-verifier-evidence-00.html": {
+      "bytes": 104352,
+      "sha256": "51e81006d0423ad0759dba60957d5c407ed987ed93baad12d5e384a1eb761425"
+    }
+  }
+}

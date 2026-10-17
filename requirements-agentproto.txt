@@ -1,0 +1,5 @@
+xml2rfc==3.34.1
+urllib3==1.26.20
+platformdirs==4.12.2
+wcwidth==0.9.1
+pytest==9.1.1

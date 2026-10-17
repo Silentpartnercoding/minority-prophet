@@ -3,7 +3,7 @@ PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,$(BOOTSTRAP_PYTHON)
 BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEAD^)
 HEAD_REF ?= HEAD
 
-.PHONY: help setup paper-setup paper-pdf paper-check ietf-setup ietf-draft ietf-check verify verify-python verify-integrity verify-site verify-evaluation \
+.PHONY: help setup paper-setup paper-pdf paper-check ietf-setup ietf-draft ietf-check agentproto-setup agentproto-draft agentproto-check verify verify-python verify-integrity verify-site verify-evaluation \
 	check-doc-navigation \
 	check-public-boundary check-public-boundary-sweep check-withheld-leak check-registration-chain \
 	check-research-integrity check-canonical-model
@@ -16,6 +16,8 @@ help:
 	@echo "make ietf-setup  Install the pinned Internet-Draft renderer"
 	@echo "make ietf-draft  Build the AUDIT Internet-Draft text and HTML"
 	@echo "make ietf-check  Rebuild and validate the AUDIT Internet-Draft package"
+	@echo "make agentproto-draft  Build the AgentProto verifier-evidence Internet-Draft"
+	@echo "make agentproto-check  Rebuild and validate the AgentProto package"
 	@echo "make verify      Run every required local check"
 	@echo "make verify-python"
 	@echo "make verify-integrity BASE=origin/main HEAD_REF=HEAD"
@@ -62,6 +64,28 @@ ietf-check: ietf-setup
 		"$$tmpdir/$(IETF_DRAFT).html" "$(IETF_DIR)/$(IETF_DRAFT).html"
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q tests/test_ietf_audit_draft.py
 	! rg -n "TBD|TODO|Wesleyan|Zinglez" "$(IETF_DIR)/$(IETF_DRAFT).xml"
+
+AGENTPROTO_DRAFT := draft-he-agentproto-verifier-evidence-00
+AGENTPROTO_VENV := .venv-agentproto
+
+agentproto-setup:
+	@test -x "$(AGENTPROTO_VENV)/bin/python" || "$(BOOTSTRAP_PYTHON)" -m venv "$(AGENTPROTO_VENV)"
+	"$(AGENTPROTO_VENV)/bin/python" -m pip install -r requirements-agentproto.txt
+
+agentproto-draft: agentproto-setup
+	"$(AGENTPROTO_VENV)/bin/xml2rfc" --text --out "$(IETF_DIR)/$(AGENTPROTO_DRAFT).txt" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).xml"
+	"$(AGENTPROTO_VENV)/bin/xml2rfc" --html --out "$(IETF_DIR)/$(AGENTPROTO_DRAFT).html" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).xml"
+
+agentproto-check: agentproto-setup
+	@tmpdir=$$(mktemp -d /tmp/mp-agentproto-check.XXXXXX); \
+	trap 'rm -rf "$$tmpdir"' EXIT; \
+	"$(AGENTPROTO_VENV)/bin/xml2rfc" --text --out "$$tmpdir/$(AGENTPROTO_DRAFT).txt" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).xml"; \
+	"$(AGENTPROTO_VENV)/bin/xml2rfc" --html --out "$$tmpdir/$(AGENTPROTO_DRAFT).html" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).xml"; \
+	cmp "$$tmpdir/$(AGENTPROTO_DRAFT).txt" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).txt"; \
+	"$(PYTHON)" scripts/check_ietf_reproducibility.py \
+		"$$tmpdir/$(AGENTPROTO_DRAFT).html" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).html"
+	PYTHONPATH=. "$(AGENTPROTO_VENV)/bin/python" -m pytest -q tests/test_agentproto_verifier_evidence_draft.py
+	! rg -n "TBD|TODO|Wesleyan|Zinglez" "$(IETF_DIR)/$(AGENTPROTO_DRAFT).xml"
 
 verify: verify-python verify-integrity verify-site verify-evaluation
 
