@@ -33,11 +33,13 @@ IETF 127 upload cutoff: **November 2, 2026 at 23:59 UTC**
 These are not delegated to the build system and remain incomplete until the
 named author performs them:
 
-- [ ] Confirm the author block: `J. S. He`, `Independent`, and
+- [x] Confirm the author block: `James Siyuan He`, `Independent`, and
       `jsiyuanhe@gmail.com`.
-- [ ] Read the final text and HTML from beginning to end.
-- [ ] Confirm the IPR disclosure answer presented by the Datatracker.
-- [ ] Recheck cited Internet-Draft revisions immediately before upload.
+- [x] Read the final text and HTML from beginning to end.
+- [x] Confirm the good-faith IPR disclosure answer presented by the Datatracker:
+      the author is not aware of undisclosed relevant intellectual property.
+- [x] Recheck cited Internet-Draft revisions immediately before upload; the
+      five pinned revisions remained current on October 17, 2026.
 - [ ] Upload the XML or text in the Datatracker and complete its email
       confirmation.
 - [ ] After a stable Datatracker URL exists, decide whether to introduce the

@@ -41,6 +41,19 @@ def test_agentproto_source_has_explicit_reviewed_date_and_current_pb_revision():
         assert forbidden not in source
 
 
+def test_agentproto_source_has_confirmed_author_identity():
+    root = ET.parse(SOURCE).getroot()
+    author = root.find("./front/author")
+    assert author is not None
+    assert author.attrib == {
+        "fullname": "James Siyuan He",
+        "initials": "J. S.",
+        "surname": "He",
+    }
+    assert author.findtext("organization") == "Independent"
+    assert author.findtext("./address/email") == "jsiyuanhe@gmail.com"
+
+
 def test_agentproto_source_preserves_reviewed_scope_boundaries():
     source = " ".join(SOURCE.read_text(encoding="utf-8").split())
     for required in (
