@@ -3,7 +3,8 @@
 Document: `draft-he-agentproto-verifier-evidence-00`
 Intended status: Informational
 Stream: IETF individual submission
-Current state: **not submitted**
+Current state: **submitted and confirmed** on October 17, 2026
+Datatracker: <https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/>
 IETF 127 upload cutoff: **November 2, 2026 at 23:59 UTC**
 
 ## Completed locally
@@ -30,8 +31,8 @@ IETF 127 upload cutoff: **November 2, 2026 at 23:59 UTC**
 
 ## Final author checks
 
-These are not delegated to the build system and remain incomplete until the
-named author performs them:
+These checks were completed by the named author or in the authenticated
+Datatracker submission flow:
 
 - [x] Confirm the author block: `James Siyuan He`, `Independent`, and
       `jsiyuanhe@gmail.com`.
@@ -40,9 +41,10 @@ named author performs them:
       the author is not aware of undisclosed relevant intellectual property.
 - [x] Recheck cited Internet-Draft revisions immediately before upload; the
       five pinned revisions remained current on October 17, 2026.
-- [ ] Upload the XML or text in the Datatracker and complete its email
+- [x] Upload the XML or text in the Datatracker and complete its email
       confirmation.
-- [ ] After a stable Datatracker URL exists, decide whether to introduce the
+- [x] Record the stable Datatracker URL for the confirmed individual draft.
+- [ ] Decide whether to introduce the
       individual draft to AgentProto and in what thread.
 
 Do not describe a successful upload as working-group adoption. Do not describe

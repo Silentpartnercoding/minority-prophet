@@ -1,9 +1,13 @@
 # AgentProto verifier-evidence Internet-Draft package
 
-This package prepares the reviewed individual Internet-Draft
-`draft-he-agentproto-verifier-evidence-00` for a possible Datatracker upload.
-It is **not submitted**, is not a working-group document, and does not claim
-AgentProto adoption or reviewer endorsement.
+This package contains the source and generated renderings for the reviewed
+individual Internet-Draft `draft-he-agentproto-verifier-evidence-00`, submitted
+and confirmed on October 17, 2026:
+
+<https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/>
+
+It is not a working-group document and does not claim AgentProto adoption or
+reviewer endorsement.
 
 The document proposes two distinct reporting obligations for agent-protocol
 verifier results:
@@ -44,4 +48,4 @@ make verify
 - `VERIFIER-EVIDENCE-SUBMISSION-CHECKLIST.md` separates completed mechanical
   work from the decisions and confirmations that remain with the author.
 
-Submission and mailing-list outreach are intentionally outside this package.
+Mailing-list outreach is intentionally outside this package.

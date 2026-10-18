@@ -86,23 +86,34 @@ def test_agentproto_package_records_review_scope_and_human_submission_boundary()
     for required in (
         "bounded source replay",
         "not a second implementation or conformance result",
-        "This completes the requested wording/parity review.",
+        "The wording and parity review concluded at that point.",
         "draft-bu-agentproto-security-principal-binding-07",
         "draft-bu-agentproto-security-principal-binding-08",
     ):
         assert required in ledger
+    assert "This completes the requested wording/parity review." not in ledger
 
     checklist = CHECKLIST.read_text(encoding="utf-8")
-    assert "not submitted" in checklist.lower()
+    assert "submitted and confirmed" in checklist.lower()
+    assert "https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/" in checklist
     assert "Datatracker" in checklist
     assert "IPR" in checklist
     assert "working-group adoption" in checklist
+
+    internal_plan = (
+        ROOT
+        / "docs"
+        / "superpowers"
+        / "plans"
+        / "2026-10-17-agentproto-datatracker-submission.md"
+    )
+    assert not internal_plan.exists()
 
 
 def test_agentproto_manifest_binds_current_rendered_package():
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     assert manifest["document"] == DRAFT_NAME
-    assert manifest["submission_state"] == "not-submitted"
+    assert manifest["submission_state"] == "submitted-confirmed"
     assert manifest["renderer"] == {
         "name": "xml2rfc",
         "version": "3.34.1",

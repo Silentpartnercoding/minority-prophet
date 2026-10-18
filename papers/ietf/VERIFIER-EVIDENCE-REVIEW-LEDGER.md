@@ -1,7 +1,9 @@
 # Verifier-evidence review ledger
 
 Document: `draft-he-agentproto-verifier-evidence-00`
-Prepared state: local individual-submission package; not submitted
+Publication state: submitted and confirmed as an individual Internet-Draft on
+October 17, 2026:
+<https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/>
 
 This ledger distinguishes review, reproduction, and adoption. It is not a list
 of endorsements.
@@ -22,11 +24,12 @@ of endorsements.
   CMP-2 requirements. Two final wording changes were requested and incorporated.
 - **September 28, 2026 — matching package.** XML, text, and HTML were sent as a
   matching set for parity review.
-- **October 2, 2026 — parity review.** Songbo rerendered the received XML. The
+- **October 2, 2026 — parity review.** A named technical reviewer rerendered the
+  received XML. The
   text was byte-identical, and the HTML document body matched apart from
   generator metadata and stylesheet material. The review found one
   reproducibility defect: the RFCXML did not contain an explicit date. The
-  review concluded: “This completes the requested wording/parity review.”
+  wording and parity review concluded at that point.
 - **October 2, 2026 — date correction.** The author added the explicit
   September 27 date and rerendered with `xml2rfc` 3.34.1. The text remained
   byte-identical and the HTML body remained unchanged apart from generator

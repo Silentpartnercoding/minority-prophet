@@ -63,14 +63,9 @@ def test_ci_rebuilds_and_checks_the_internet_draft_package():
     assert "make ietf-check" in workflow
 
 
-def test_pre_submission_packet_separates_preparation_from_human_actions():
+def test_pre_submission_packet_keeps_internal_outreach_plans_out_of_public_tree():
     checklist = (DRAFT_DIR / "PRE-SUBMISSION.md").read_text(encoding="utf-8")
-    review_packet = (DRAFT_DIR / "REVIEW-REQUESTS.md").read_text(
-        encoding="utf-8"
-    )
 
     assert "Human-only submission steps" in checklist
     assert "Confirm the IPR disclosure answer" in checklist
-    assert "Do not send from this file" in review_packet
-    for reviewer in ("Bradley", "Songbo", "Iman", "AUDIT architecture authors"):
-        assert reviewer in review_packet
+    assert not (DRAFT_DIR / "REVIEW-REQUESTS.md").exists()
