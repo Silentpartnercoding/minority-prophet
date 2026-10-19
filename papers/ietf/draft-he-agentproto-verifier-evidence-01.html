@@ -1533,10 +1533,12 @@ li > p:last-of-type:only-child {
         <dd class="break"></dd>
 <dt id="section-3-1.15">discriminating pair:</dt>
         <dd style="margin-left: 1.5em" id="section-3-1.16">Two populations supplied together with the outcome expected on each
-        stated in advance, one accepting and one rejecting, used to detect a check
-        that cannot tell them apart. Which population is expected to reject depends
-        on what the check asserts, and is stated by the profile rather than implied
-        by the labels.<a href="#section-3-1.16" class="pilcrow">¶</a>
+        stated in advance, one expected to accept and one expected to produce the
+        declared non-accepting outcome on the exercise path, whether that outcome
+        is rejecting or neither. The pair is used to detect a check that cannot tell
+        the populations apart. Which population is expected to produce each outcome
+        depends on what the check asserts, and is stated by the profile rather than
+        implied by the labels.<a href="#section-3-1.16" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 <dt id="section-3-1.17">coverage domain:</dt>
@@ -2077,13 +2079,15 @@ li > p:last-of-type:only-child {
 <p id="section-13-5">The same repository refuses a registration that omits the declaration
       entirely, on the grounds stated in EXR-2 that an absent declaration is not
       consent.<a href="#section-13-5" class="pilcrow">¶</a></p>
-<p id="section-13-6">The vectors in <a href="#vectors" class="auto internal xref">Appendix A</a> are published in executable
-      form at the pinned commit above, with a test suite of twenty-eight cases. Three
-      of those vectors are constructed fixtures written for this document rather
-      than observations of a deployed system; they show that the requirements
+<p id="section-13-6">The original four vectors in <a href="#vectors" class="auto internal xref">Appendix A</a> are published in
+      executable form at the pinned commit above, with a test suite of twenty-eight
+      cases. Three of those vectors are constructed fixtures written for this
+      document rather than observations of a deployed system; they show that the requirements
       have content and that a check can fail them, not that any particular check
-      does. The fourth reads a frozen artifact from an earlier experiment and
-      pins its digest.<a href="#section-13-6" class="pilcrow">¶</a></p>
+      does. The fourth reads a frozen artifact from an earlier experiment and pins
+      its digest. The two additional vectors in this revision are prose vectors;
+      they are not part of that pinned executable suite and do not constitute
+      implementation evidence.<a href="#section-13-6" class="pilcrow">¶</a></p>
 <p id="section-13-7">Songbo Bu replayed the author's source and fixtures at the pinned
       commit: twenty-eight verifier-evidence tests and thirty-eight related
       dereference, warrant, resolver, and policy tests passed. This is a

@@ -23,16 +23,16 @@
   },
   "files": {
     "papers/ietf/draft-he-agentproto-verifier-evidence-01.xml": {
-      "bytes": 61077,
-      "sha256": "d5bcc353c83ccec38f7716d6bd5dd2f762c79f126e21012358674b89e8da5e13"
+      "bytes": 61437,
+      "sha256": "d1cbb698c27b9060e45a3c3ebe0ffcfde2635780f502b92f75837f21db68829b"
     },
     "papers/ietf/draft-he-agentproto-verifier-evidence-01.txt": {
-      "bytes": 59998,
-      "sha256": "ae07eb29cf3ac9c8e67de475919b2772302ca3de865446b591cf01a9871b2594"
+      "bytes": 60348,
+      "sha256": "313ae79ffbc66893b8616a69b20f6ce7b0159dc43b1c38df7b2db5f83181e485"
     },
     "papers/ietf/draft-he-agentproto-verifier-evidence-01.html": {
-      "bytes": 121054,
-      "sha256": "5387d5bb91cf57b8b3cab030cf129fc17ee896c2feea998d61d51f6cb538f22b"
+      "bytes": 121414,
+      "sha256": "6762e339c27cbf82fbe70417696f9b68466a5c8b7e7c9eb3cb6be5ad64cba137"
     }
   }
 }

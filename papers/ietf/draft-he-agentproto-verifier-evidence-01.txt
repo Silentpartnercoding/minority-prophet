@@ -210,14 +210,14 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
       record.
 
    discriminating pair:  Two populations supplied together with the
-      outcome expected on each stated in advance, one accepting and one
-      rejecting, used to detect a check that cannot tell them apart.
-      Which population is expected to reject depends on what the check
-      asserts, and is stated by the profile rather than implied by the
-      labels.
+      outcome expected on each stated in advance, one expected to accept
+      and one expected to produce the declared non-accepting outcome on
+      the exercise path, whether that outcome is rejecting or neither.
+      The pair is used to detect a check that cannot tell the
+      populations apart.  Which population is expected to produce each
+      outcome depends on what the check asserts, and is stated by the
+      profile rather than implied by the labels.
 
-   coverage domain:  The set of records over which a completeness claim
-      is asserted.
 
 
 
@@ -225,6 +225,9 @@ He                        Expires 21 April 2027                 [Page 4]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   coverage domain:  The set of records over which a completeness claim
+      is asserted.
 
    material party:  A party whose conduct or assertion is at issue in
       the claim a result supports.  The term is taken from
@@ -269,10 +272,7 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    the same corpora, found the condition absent in 284 of 284 cases
    where it could be checked.
 
-   These differ in mechanism and are identical on the page.  None was
-   found by reading the check.  Each was found by asking what input
-   would produce the other outcome, and then looking in the record for
-   that input.
+
 
 
 
@@ -281,6 +281,11 @@ He                        Expires 21 April 2027                 [Page 5]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   These differ in mechanism and are identical on the page.  None was
+   found by reading the check.  Each was found by asking what input
+   would produce the other outcome, and then looking in the record for
+   that input.
 
    The coverage domain of this evidence is one research programme, and
    the instances were selected from its records by the author of this
@@ -324,11 +329,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    each separately.  Exercising one path establishes nothing about the
    others, and a report that does not say which paths were exercised
    does not satisfy this requirement for any of them.
-
-
-
-
-
 
 
 
@@ -869,13 +869,16 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    entirely, on the grounds stated in EXR-2 that an absent declaration
    is not consent.
 
-   The vectors in Appendix A are published in executable form at the
-   pinned commit above, with a test suite of twenty-eight cases.  Three
-   of those vectors are constructed fixtures written for this document
-   rather than observations of a deployed system; they show that the
-   requirements have content and that a check can fail them, not that
-   any particular check does.  The fourth reads a frozen artifact from
-   an earlier experiment and pins its digest.
+   The original four vectors in Appendix A are published in executable
+   form at the pinned commit above, with a test suite of twenty-eight
+   cases.  Three of those vectors are constructed fixtures written for
+   this document rather than observations of a deployed system; they
+   show that the requirements have content and that a check can fail
+   them, not that any particular check does.  The fourth reads a frozen
+   artifact from an earlier experiment and pins its digest.  The two
+   additional vectors in this revision are prose vectors; they are not
+   part of that pinned executable suite and do not constitute
+   implementation evidence.
 
    Songbo Bu replayed the author's source and fixtures at the pinned
    commit: twenty-eight verifier-evidence tests and thirty-eight related
@@ -885,11 +888,8 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    been verified, and no interoperability between independent
    implementations is claimed for any requirement in this document.
 
-   Lars Kersten Kroehl published a separately authored report reader at
-   commit 6d8ee54b01d20a819869ceb9fcea096d59251f8c [MOLTRUST-READER].
-   On 165 report objects the pinned reader produced 82 accept, 28
-   reject, and 55 cannot-tell results.  Twenty-five of its rejections
-   agreed with the upstream expected verdict; four of those reached a
+
+
 
 
 
@@ -898,6 +898,11 @@ He                        Expires 21 April 2027                [Page 16]
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
 
+   Lars Kersten Kroehl published a separately authored report reader at
+   commit 6d8ee54b01d20a819869ceb9fcea096d59251f8c [MOLTRUST-READER].
+   On 165 report objects the pinned reader produced 82 accept, 28
+   reject, and 55 cannot-tell results.  Twenty-five of its rejections
+   agreed with the upstream expected verdict; four of those reached a
    different requirement line than the member name suggested.  The
    published selection includes a corpus digest, covered-member list,
    and selection rule, making the boundary of that selected run
@@ -939,11 +944,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    supports the distinction among exercised, reachable-unexercised, and
    shadowed-unreachable paths without establishing the correctness or
    completeness of the underlying protocol.
-
-
-
-
-
 
 
 

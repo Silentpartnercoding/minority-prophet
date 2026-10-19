@@ -126,10 +126,12 @@
         both the input and the outcome are identified in the record.</dd>
         <dt>discriminating pair:</dt>
         <dd>Two populations supplied together with the outcome expected on each
-        stated in advance, one accepting and one rejecting, used to detect a check
-        that cannot tell them apart. Which population is expected to reject depends
-        on what the check asserts, and is stated by the profile rather than implied
-        by the labels.</dd>
+        stated in advance, one expected to accept and one expected to produce the
+        declared non-accepting outcome on the exercise path, whether that outcome
+        is rejecting or neither. The pair is used to detect a check that cannot tell
+        the populations apart. Which population is expected to produce each outcome
+        depends on what the check asserts, and is stated by the profile rather than
+        implied by the labels.</dd>
         <dt>coverage domain:</dt>
         <dd>The set of records over which a completeness claim is asserted.</dd>
         <dt>material party:</dt>
@@ -676,13 +678,15 @@
       entirely, on the grounds stated in EXR-2 that an absent declaration is not
       consent.</t>
 
-      <t>The vectors in <xref target="vectors"/> are published in executable
-      form at the pinned commit above, with a test suite of twenty-eight cases. Three
-      of those vectors are constructed fixtures written for this document rather
-      than observations of a deployed system; they show that the requirements
+      <t>The original four vectors in <xref target="vectors"/> are published in
+      executable form at the pinned commit above, with a test suite of twenty-eight
+      cases. Three of those vectors are constructed fixtures written for this
+      document rather than observations of a deployed system; they show that the requirements
       have content and that a check can fail them, not that any particular check
-      does. The fourth reads a frozen artifact from an earlier experiment and
-      pins its digest.</t>
+      does. The fourth reads a frozen artifact from an earlier experiment and pins
+      its digest. The two additional vectors in this revision are prose vectors;
+      they are not part of that pinned executable suite and do not constitute
+      implementation evidence.</t>
 
       <t>Songbo Bu replayed the author's source and fixtures at the pinned
       commit: twenty-eight verifier-evidence tests and thirty-eight related

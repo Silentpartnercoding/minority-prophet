@@ -72,6 +72,7 @@ def test_agentproto_source_answers_public_review_without_overclaiming():
     source = " ".join(SOURCE.read_text(encoding="utf-8").split())
     for required in (
         "paths to outcomes classified as neither",
+        "one expected to accept and one expected to produce the declared non-accepting outcome",
         "outcome token alone does not identify the rule or condition that fired",
         "reachable-unexercised",
         "shadowed-unreachable",
@@ -91,8 +92,11 @@ def test_agentproto_source_records_external_results_and_their_limits():
         "128 vectors",
         "more than 200000 verified headers",
         "nobody outside the MUSUBI project has rerun the exercise script",
+        "The original four vectors",
+        "The two additional vectors in this revision are prose vectors",
     ):
         assert required in source
+    assert "The vectors in <xref target=\"vectors\"/> are published in executable form" not in source
 
 
 def test_agentproto_rendered_text_preserves_title_and_nonclaim():
