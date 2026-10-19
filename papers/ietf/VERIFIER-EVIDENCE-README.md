@@ -1,9 +1,9 @@
 # AgentProto verifier-evidence Internet-Draft package
 
-This package contains the source and generated renderings for the prepared
-individual Internet-Draft revision `draft-he-agentproto-verifier-evidence-01`.
-It has not yet been submitted. Revision `-00` was submitted and confirmed on
-October 17, 2026:
+This package contains the source and generated renderings for individual
+Internet-Draft revision `draft-he-agentproto-verifier-evidence-01`. Revision
+`-01` was submitted and confirmed on October 18, 2026, following revision
+`-00` on October 17, 2026:
 
 <https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/>
 

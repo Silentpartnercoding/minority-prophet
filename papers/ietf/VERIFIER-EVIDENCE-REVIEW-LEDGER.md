@@ -1,7 +1,7 @@
 # Verifier-evidence review ledger
 
 Current document: `draft-he-agentproto-verifier-evidence-01`
-Current state: prepared locally; not submitted
+Current state: submitted and confirmed as revision `-01` on October 18, 2026
 Published predecessor: `draft-he-agentproto-verifier-evidence-00`, submitted
 and confirmed as an individual Internet-Draft on October 17, 2026:
 <https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/>
@@ -85,7 +85,7 @@ implementation-status language remained the reviewed text.
   of Kroehl's reader at agent-security-verifier-matrix commit
   `635f3d57eb6f90fdf4c6945778020c34521be0a1`.
 
-## Changes prepared for -01
+## Changes in -01
 
 Revision `-01` changes normative text. It is not represented as parity-only
 editing of the earlier reviewed package.

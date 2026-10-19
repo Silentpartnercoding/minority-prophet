@@ -1,7 +1,18 @@
 {
   "document": "draft-he-agentproto-verifier-evidence-01",
-  "submission_state": "prepared-not-submitted",
+  "submission_state": "submitted-confirmed",
   "prepared_on": "2026-10-18",
+  "submitted_on": "2026-10-18",
+  "submission_id": "170563",
+  "datatracker_url": "https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/",
+  "revision_url": "https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/01/",
+  "submission_checks": {
+    "required_checks": "passed",
+    "idnits3_nonblocking": {
+      "code": "SUBMISSION_TYPE_UNEXPECTED",
+      "reason": "The RFCXML intentionally retains submissionType=IETF, as did revision -00 and comparable individual IETF drafts, while Datatracker has not assigned the document an RFC stream."
+    }
+  },
   "published_predecessor": {
     "document": "draft-he-agentproto-verifier-evidence-00",
     "submitted_on": "2026-10-17",

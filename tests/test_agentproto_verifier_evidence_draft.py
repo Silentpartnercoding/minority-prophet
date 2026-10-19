@@ -153,7 +153,11 @@ def test_agentproto_package_records_review_scope_and_human_submission_boundary()
 def test_agentproto_manifest_binds_current_rendered_package():
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     assert manifest["document"] == DRAFT_NAME
-    assert manifest["submission_state"] == "prepared-not-submitted"
+    assert manifest["submission_state"] == "submitted-confirmed"
+    assert manifest["submission_id"] == "170563"
+    assert manifest["revision_url"].endswith(
+        "/draft-he-agentproto-verifier-evidence/01/"
+    )
     assert manifest["renderer"] == {
         "name": "xml2rfc",
         "version": "3.34.1",
