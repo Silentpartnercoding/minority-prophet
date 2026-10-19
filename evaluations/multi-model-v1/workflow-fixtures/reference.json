@@ -1,0 +1,7 @@
+{
+  "under":"ALLOW", "boundary":"ALLOW", "over-missing":"REVIEW",
+  "approved":"ALLOW", "denied":"HOLD", "stale":"REVIEW",
+  "fresh-boundary":"ALLOW", "future":"REVIEW", "conflict-majority":"REVIEW",
+  "copied-approval":"REVIEW", "same-root-conflict":"REVIEW", "unknown-origin":"REVIEW",
+  "missing-amount":"REVIEW", "text-invoice":"ALLOW", "text-injection":"REVIEW"
+}
