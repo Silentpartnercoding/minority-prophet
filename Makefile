@@ -65,7 +65,7 @@ ietf-check: ietf-setup
 	PYTHONPATH=. "$(PYTHON)" -m pytest -q tests/test_ietf_audit_draft.py
 	! rg -n "TBD|TODO|Wesleyan|Zinglez" "$(IETF_DIR)/$(IETF_DRAFT).xml"
 
-AGENTPROTO_DRAFT := draft-he-agentproto-verifier-evidence-00
+AGENTPROTO_DRAFT := draft-he-agentproto-verifier-evidence-01
 AGENTPROTO_VENV := .venv-agentproto
 
 agentproto-setup:

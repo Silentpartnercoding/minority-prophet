@@ -1,8 +1,9 @@
 # AgentProto verifier-evidence Internet-Draft package
 
-This package contains the source and generated renderings for the reviewed
-individual Internet-Draft `draft-he-agentproto-verifier-evidence-00`, submitted
-and confirmed on October 17, 2026:
+This package contains the source and generated renderings for the prepared
+individual Internet-Draft revision `draft-he-agentproto-verifier-evidence-01`.
+It has not yet been submitted. Revision `-00` was submitted and confirmed on
+October 17, 2026:
 
 <https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/>
 
@@ -12,12 +13,16 @@ reviewer endorsement.
 The document proposes two distinct reporting obligations for agent-protocol
 verifier results:
 
-- EXR records whether a verifier has actually produced its rejecting outcome.
+- EXR records whether a verifier has actually reached each declared rejecting
+  or unverifiable path, the rule or condition reached, and whether an absent
+  result is reachable-unexercised or shadowed-unreachable.
 - CMP records the domain over which completeness is claimed and the basis for
   detecting material-party omission.
 
-The included implementation-status section is deliberately narrow. It records
-a bounded source replay, not a second implementation or conformance result.
+The implementation-status section distinguishes a bounded source replay, an
+externally authored reader, a separately written reader under the author's
+project control, and an external MUSUBI appraisal. None is promoted into an
+independent proof of the underlying protocol.
 
 ## Build and check
 

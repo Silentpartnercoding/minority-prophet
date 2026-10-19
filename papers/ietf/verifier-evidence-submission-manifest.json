@@ -1,32 +1,38 @@
 {
-  "document": "draft-he-agentproto-verifier-evidence-00",
-  "submission_state": "submitted-confirmed",
-  "prepared_on": "2026-10-17",
+  "document": "draft-he-agentproto-verifier-evidence-01",
+  "submission_state": "prepared-not-submitted",
+  "prepared_on": "2026-10-18",
+  "published_predecessor": {
+    "document": "draft-he-agentproto-verifier-evidence-00",
+    "submitted_on": "2026-10-17",
+    "url": "https://datatracker.ietf.org/doc/draft-he-agentproto-verifier-evidence/"
+  },
   "reviewed_document_date": "2026-09-27",
   "renderer": {
     "name": "xml2rfc",
     "version": "3.34.1",
     "requirements_file": "requirements-agentproto.txt"
   },
-  "current_internet_draft_revisions_checked_on_2026_10_17": {
+  "current_internet_draft_revisions_checked_on_2026_10_18": {
     "draft-wadkins-agentproto-action-determinability": "00",
     "draft-bu-agentproto-security-principal-binding": "08",
     "draft-bradleyb-audit-decision-records": "00",
     "draft-schrock-ep-bounded-capability-receipts": "06",
-    "draft-laurie-tmif": "02"
+    "draft-laurie-tmif": "02",
+    "draft-oga-musubi-settlement": "01"
   },
   "files": {
-    "papers/ietf/draft-he-agentproto-verifier-evidence-00.xml": {
-      "bytes": 49391,
-      "sha256": "a2db5c1257d76dcc44ae34c4d7e0afe6eaa2c80d439eb7bc9899f32a49262c12"
+    "papers/ietf/draft-he-agentproto-verifier-evidence-01.xml": {
+      "bytes": 61077,
+      "sha256": "d5bcc353c83ccec38f7716d6bd5dd2f762c79f126e21012358674b89e8da5e13"
     },
-    "papers/ietf/draft-he-agentproto-verifier-evidence-00.txt": {
-      "bytes": 48833,
-      "sha256": "18f80e2cb721ecc8246dcc67014c0cccf676389724ce795c9e08e32fdd0672cc"
+    "papers/ietf/draft-he-agentproto-verifier-evidence-01.txt": {
+      "bytes": 59998,
+      "sha256": "ae07eb29cf3ac9c8e67de475919b2772302ca3de865446b591cf01a9871b2594"
     },
-    "papers/ietf/draft-he-agentproto-verifier-evidence-00.html": {
-      "bytes": 104366,
-      "sha256": "f6943415ce5de2c5b5b93942cb0094d1dd7099280db82c126425602dd0faae73"
+    "papers/ietf/draft-he-agentproto-verifier-evidence-01.html": {
+      "bytes": 121054,
+      "sha256": "5387d5bb91cf57b8b3cab030cf129fc17ee896c2feea998d61d51f6cb538f22b"
     }
   }
 }

@@ -9,11 +9,12 @@
 <meta content="
        A verifier result reports what a check returned. It does not report
       whether the check could have returned anything else. A check that
-      inspects too narrow a set of fields, and a check whose rejecting input
-      has never occurred, both report the same accepting value as a check that
-      distinguishes, and a conformance matrix does not tell them apart. 
+      inspects too narrow a set of fields, and a check whose rejecting or
+      unverifiable input has never occurred, both report the same accepting
+      value as a check that distinguishes, and a conformance matrix does not
+      tell them apart. 
        This document defines requirements for reporting whether a check has been
-      exercised into its rejecting outcome, and requirements for results that
+      exercised into its declared rejecting and unverifiable outcomes, and requirements for results that
       claim completeness: that the records relied on were the whole of some
       stated set. Those are two separate obligations. A result must name the set
       it claims to have seen, and must not treat a party with an interest in the
@@ -28,7 +29,7 @@
 <meta content="verifier" name="keyword">
 <meta content="conformance" name="keyword">
 <meta content="evidence" name="keyword">
-<meta content="draft-he-agentproto-verifier-evidence-00" name="ietf.draft">
+<meta content="draft-he-agentproto-verifier-evidence-01" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.1
     Python 3.12.14
@@ -44,7 +45,7 @@
     requests 2.34.2
     wcwidth 0.9.1
 -->
-<link href="draft-he-agentproto-verifier-evidence-00.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-he-agentproto-verifier-evidence-01.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1244,7 +1245,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">He</td>
-<td class="center">Expires 20 April 2027</td>
+<td class="center">Expires 21 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1254,15 +1255,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-he-agentproto-verifier-evidence-00</dd>
+<dd class="internet-draft">draft-he-agentproto-verifier-evidence-01</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-10-17" class="published">17 October 2026</time>
+<time datetime="2026-10-18" class="published">18 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-04-20">20 April 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-21">21 April 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1277,11 +1278,12 @@ li > p:last-of-type:only-child {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">A verifier result reports what a check returned. It does not report
       whether the check could have returned anything else. A check that
-      inspects too narrow a set of fields, and a check whose rejecting input
-      has never occurred, both report the same accepting value as a check that
-      distinguishes, and a conformance matrix does not tell them apart.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+      inspects too narrow a set of fields, and a check whose rejecting or
+      unverifiable input has never occurred, both report the same accepting
+      value as a check that distinguishes, and a conformance matrix does not
+      tell them apart.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">This document defines requirements for reporting whether a check has been
-      exercised into its rejecting outcome, and requirements for results that
+      exercised into its declared rejecting and unverifiable outcomes, and requirements for results that
       claim completeness: that the records relied on were the whole of some
       stated set. Those are two separate obligations. A result must name the set
       it claims to have seen, and must not treat a party with an interest in the
@@ -1311,7 +1313,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1353,7 +1355,7 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-problem-statement" class="internal xref">Problem Statement</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-exr-1-exercised-rejection-p" class="internal xref">EXR-1: Exercised Rejection Path</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-exr-1-exercised-rejection-a" class="internal xref">EXR-1: Exercised Rejection and Unverifiable Paths</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-outcome-vocabulary" class="internal xref">Outcome Vocabulary</a></p>
@@ -1371,48 +1373,60 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-what-these-requirements-do-" class="internal xref">What These Requirements Do Not Establish</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-relationship-to-adjacent-wo" class="internal xref">Relationship to Adjacent Work</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-scope-relative-to-agent-pro" class="internal xref">Scope Relative to Agent Protocol and Audit Work</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-relationship-to-adjacent-wo" class="internal xref">Relationship to Adjacent Work</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#section-13" class="auto internal xref">13</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#section-13" class="auto internal xref">13</a>. <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#section-14" class="auto internal xref">14</a>. <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#section-14" class="auto internal xref">14</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#section-15" class="auto internal xref">15</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#section-15" class="auto internal xref">15</a>. <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#section-16" class="auto internal xref">16</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#section-16" class="auto internal xref">16</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#section-17" class="auto internal xref">17</a>. <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#section-17" class="auto internal xref">17</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-negative-vectors" class="internal xref">Negative Vectors</a></p>
+            <p id="section-toc.1-1.18.1"><a href="#section-18" class="auto internal xref">18</a>. <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19">
+            <p id="section-toc.1-1.19.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-negative-vectors" class="internal xref">Negative Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1">
-                <p id="section-toc.1-1.18.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-check-comparing-too-little" class="internal xref">Check Comparing Too Little</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.1">
+                <p id="section-toc.1-1.19.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-check-comparing-too-little" class="internal xref">Check Comparing Too Little</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.2">
-                <p id="section-toc.1-1.18.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-constant-probe" class="internal xref">Constant Probe</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.2">
+                <p id="section-toc.1-1.19.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-constant-probe" class="internal xref">Constant Probe</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.3">
-                <p id="section-toc.1-1.18.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-a-silent-system-under-a-one" class="internal xref">A Silent System Under a One-Sided Endpoint</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.3">
+                <p id="section-toc.1-1.19.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-a-silent-system-under-a-one" class="internal xref">A Silent System Under a One-Sided Endpoint</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.4">
-                <p id="section-toc.1-1.18.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-withheld-record-under-a-com" class="internal xref">Withheld Record Under a Completeness Claim</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.4">
+                <p id="section-toc.1-1.19.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-withheld-record-under-a-com" class="internal xref">Withheld Record Under a Completeness Claim</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.5">
+                <p id="section-toc.1-1.19.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-one-outcome-token-two-rules" class="internal xref">One Outcome Token, Two Rules</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.6">
+                <p id="section-toc.1-1.19.2.6.1"><a href="#appendix-A.6" class="auto internal xref">A.6</a>.  <a href="#name-path-shadowed-by-an-earlier" class="internal xref">Path Shadowed by an Earlier Rule</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19">
-            <p id="section-toc.1-1.19.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
-</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.20.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-changes-from-00" class="internal xref">Changes from -00</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21">
+            <p id="section-toc.1-1.21.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.22">
+            <p id="section-toc.1-1.22.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1428,7 +1442,7 @@ li > p:last-of-type:only-child {
       verifies it, and what the verifier returned. The value of such a matrix
       rests on an assumption that is rarely stated, which is that a row
       reporting an accepting outcome would have reported something else had the
-      protocol misbehaved.<a href="#section-1-1" class="pilcrow">¶</a></p>
+      protocol misbehaved or the evidence could not settle the question.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">That assumption fails in two ways, and both produce the same printed
       result.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">In the first, the check compares too little. It runs, it returns an
@@ -1436,14 +1450,14 @@ li > p:last-of-type:only-child {
       expressible in what it reads. Increasing the number of observations does
       not help, because every observation is drawn from the same blind
       region.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">In the second, the check reads the right material but the rejecting
-      input has never occurred. The rejection path is written down and may be
-      correct, but nothing has driven the check into it, so its accepting
-      results carry no information about what it would do with a rejecting
-      input.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-4">In the second, the check reads the right material but an input leading
+      to a rejecting or unverifiable outcome has never occurred. The path is
+      written down and may be correct, but nothing has driven the check into it,
+      so its accepting results carry no information about what it would do with
+      that input.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">Neither failure is addressed by the presence of negative test vectors.
-      A suite can contain many and still contain checks whose rejecting outcome
-      has never occurred on the record. A vector's existence is not its
+      A suite can contain many and still contain checks whose rejecting or
+      unverifiable outcome has never occurred on the record. A vector's existence is not its
       execution, and a matrix that records outcomes does not record which
       outcomes were reachable.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">The interoperability problem is not that checks differ between
@@ -1489,29 +1503,52 @@ li > p:last-of-type:only-child {
         as neither accepting nor rejecting is not a rejection path.<a href="#section-3-1.4" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-1.5">exercised:</dt>
-        <dd style="margin-left: 1.5em" id="section-3-1.6">An input was supplied that produced the outcome in question, and
-        both the input and the outcome are identified in the record.<a href="#section-3-1.6" class="pilcrow">¶</a>
+<dt id="section-3-1.5">neither path:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.6">The condition, stated by the specification or profile, under which a
+        check returns an outcome classified as neither accepting nor rejecting,
+        including a path to an <code>unverifiable</code> outcome.<a href="#section-3-1.6" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-1.7">discriminating pair:</dt>
-        <dd style="margin-left: 1.5em" id="section-3-1.8">Two populations supplied together with the outcome expected on each
+<dt id="section-3-1.7">exercise path:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.8">A declared rejection path or neither path for which the profile
+        requires exercise evidence.<a href="#section-3-1.8" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-1.9">reachable-unexercised:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.10">An exercise path for which the defined input domain contains a
+        reaching input, but no identified input in the exercise record produced
+        the path's outcome under the current check revision.<a href="#section-3-1.10" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-1.11">shadowed-unreachable:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.12">An exercise path that no input in the defined input domain can reach
+        under the current check revision because an earlier rule or structural
+        precondition necessarily returns first.<a href="#section-3-1.12" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-1.13">exercised:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.14">An input was supplied that produced the outcome in question, and
+        both the input and the outcome are identified in the record.<a href="#section-3-1.14" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-1.15">discriminating pair:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.16">Two populations supplied together with the outcome expected on each
         stated in advance, one accepting and one rejecting, used to detect a check
         that cannot tell them apart. Which population is expected to reject depends
         on what the check asserts, and is stated by the profile rather than implied
-        by the labels.<a href="#section-3-1.8" class="pilcrow">¶</a>
+        by the labels.<a href="#section-3-1.16" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-1.9">coverage domain:</dt>
-        <dd style="margin-left: 1.5em" id="section-3-1.10">The set of records over which a completeness claim is asserted.<a href="#section-3-1.10" class="pilcrow">¶</a>
+<dt id="section-3-1.17">coverage domain:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.18">The set of records over which a completeness claim is asserted.<a href="#section-3-1.18" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-1.11">material party:</dt>
-        <dd style="margin-left: 1.5em" id="section-3-1.12">A party whose conduct or assertion is at issue in the claim a result
+<dt id="section-3-1.19">material party:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-1.20">A party whose conduct or assertion is at issue in the claim a result
         supports. The term is taken from
         <span>[<a href="#I-D.wadkins-agentproto-action-determinability" class="cite xref">I-D.wadkins-agentproto-action-determinability</a>]</span>, where it
         qualifies a claimed transition. It is applied here to the claim a verifier
-        result supports; the test is unchanged and only the object differs.<a href="#section-3-1.12" class="pilcrow">¶</a>
+        result supports; the test is unchanged and only the object differs.<a href="#section-3-1.20" class="pilcrow">¶</a>
 </dd>
       <dd class="break"></dd>
 </dl>
@@ -1570,15 +1607,16 @@ li > p:last-of-type:only-child {
 </div>
 <div id="exr-1">
 <section id="section-5">
-      <h2 id="name-exr-1-exercised-rejection-p">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-exr-1-exercised-rejection-p" class="section-name selfRef">EXR-1: Exercised Rejection Path</a>
+      <h2 id="name-exr-1-exercised-rejection-a">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-exr-1-exercised-rejection-a" class="section-name selfRef">EXR-1: Exercised Rejection and Unverifiable Paths</a>
       </h2>
 <p id="section-5-1">A specification or profile claiming conformance to EXR-1 and
       permitting a check to be reported as implemented under its
       exercise-evidence requirement <span class="bcp14">MUST</span> require that the
-      check's stated rejection path has been exercised by an input that
-      produced the rejecting outcome, and that the input and the resulting
-      outcome are identified in the record.<a href="#section-5-1" class="pilcrow">¶</a></p>
+      check's declared exercise paths have each been exercised by an input that
+      produced the path's stated outcome, and that the input, the resulting
+      outcome, and the rule or condition reached are identified in the
+      record.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">A check whose outcomes have only ever held one value
       <span class="bcp14">MUST NOT</span> be reported as satisfying this exercise-evidence
       requirement, irrespective of the number of observations.<a href="#section-5-2" class="pilcrow">¶</a></p>
@@ -1595,15 +1633,23 @@ li > p:last-of-type:only-child {
       separately. Exercising one path establishes nothing about the others, and a
       report that does not say which paths were exercised does not satisfy this
       requirement for any of them.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">Accepting and rejecting do not exhaust the outcomes a check may return. A
+<p id="section-5-6">Each exercise record <span class="bcp14">MUST</span> name a stable rule or
+      condition identifier from the governing specification or profile. An
+      outcome token alone does not identify the rule or condition that fired
+      when more than one condition produces that outcome. Where multiple
+      conditions are reached, the record <span class="bcp14">MUST</span> identify each and
+      preserve the order needed to reproduce the reported result.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">Accepting and rejecting do not exhaust the outcomes a check may return. A
       check may report that the record could not settle the question, which is
       neither. Where a check has such an outcome the profile <span class="bcp14">MUST</span>
       classify each outcome as accepting, rejecting, or neither, and
-      <span class="bcp14">MUST</span> do so before the check is exercised. An outcome
-      classified as neither is exercised in its own right: it is exercised when an
-      input has produced it and some other input has produced a different outcome.
-      CMP-2 below returns such an outcome and is subject to this paragraph.<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">EXR-1 does not grade an exercising input by who supplied it. An input
+      <span class="bcp14">MUST</span> do so before the check is exercised. Where a check
+      specifies paths to outcomes classified as neither, including
+      <code>unverifiable</code>, EXR-1 applies to each declared path in the same way:
+      it is exercised when an input has produced that outcome and some other
+      input has produced a different outcome. CMP-2 below returns such an
+      outcome and is subject to this paragraph.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-8">EXR-1 does not grade an exercising input by who supplied it. An input
       supplied by the party reporting the result can satisfy EXR-1. For a
       separate completeness claim relying on that input, its party-controlled
       provenance does not by itself establish the independent omission-detection
@@ -1611,23 +1657,24 @@ li > p:last-of-type:only-child {
       supplied each exercising input, and
       <span class="bcp14">MUST</span> permit a later reader to establish that the input
       preceded the report relying on it. Co-presence in one record does not
-      establish that order.<a href="#section-5-7" class="pilcrow">¶</a></p>
-<p id="section-5-8">An exercising input establishes the property only for the revision of the
+      establish that order.<a href="#section-5-8" class="pilcrow">¶</a></p>
+<p id="section-5-9">An exercising input establishes the property only for the revision of the
       check it was supplied to. Where the check changes, prior exercise
       <span class="bcp14">MUST NOT</span> be carried forward, and the record
       <span class="bcp14">MUST</span> identify the revision each exercising input was supplied
-      to. A check whose rejecting outcome was last observed under an earlier
-      revision is unexercised for the current one.<a href="#section-5-8" class="pilcrow">¶</a></p>
-<p id="section-5-9">For each declared rejection path, the exercise record
+      to. A check whose non-accepting outcome was last observed under an earlier
+      revision is unexercised for the current one.<a href="#section-5-9" class="pilcrow">¶</a></p>
+<p id="section-5-10">For each declared exercise path, the exercise record
       <span class="bcp14">MUST</span> identify a discriminating pair under the same check
-      revision: one population expected to accept and one expected to reject.
+      revision: one population expected to accept and one expected to produce
+      the path's rejecting or neither outcome.
       The profile <span class="bcp14">MUST</span> state those expectations before the check
       is run, and the check <span class="bcp14">MUST</span> return the stated outcome on
       each. A check that returns the same outcome on both has not satisfied
       this requirement, whichever outcome it returned. The expected outcomes
       are not implied by which population is called positive: a check
       asserting that a defect is absent rejects where the defect is present,
-      and a check asserting that a property holds rejects where it does not.<a href="#section-5-9" class="pilcrow">¶</a></p>
+      and a check asserting that a property holds rejects where it does not.<a href="#section-5-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="outcomes">
@@ -1698,12 +1745,13 @@ li > p:last-of-type:only-child {
       <h2 id="name-exr-2-reporting-an-unexerci">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-exr-2-reporting-an-unexerci" class="section-name selfRef">EXR-2: Reporting an Unexercised Check</a>
       </h2>
-<p id="section-7-1">Where a check has not been exercised into its rejecting outcome, the
+<p id="section-7-1">Where a check has not been exercised into a declared exercise-path
+      outcome, the
       evaluator <span class="bcp14">MUST NOT</span> report that check as satisfying this
       document's implemented exercise-evidence condition. It
       <span class="bcp14">MAY</span> use implemented-unexercised as an EXR exercise
       annotation for a check with implementation evidence under another
-      profile, identifying the rejection path for which no exercising input
+      profile, identifying the exercise path for which no exercising input
       appears in the record. That annotation is not an upgrade to the other
       profile's implementation status.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <p id="section-7-2">A record produced to satisfy EXR-1 or EXR-2 is orthogonal to any
@@ -1719,29 +1767,44 @@ li > p:last-of-type:only-child {
       rejection path was exercised and one whose rejection path remains
       unexercised.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">An absent declaration <span class="bcp14">MUST NOT</span> be treated as a statement
-      that no rejection path exists. A specification that means a check has no
-      reachable rejecting outcome <span class="bcp14">MUST</span> state that, because it is
-      a strong claim about the check and is itself reviewable.<a href="#section-7-4" class="pilcrow">¶</a></p>
+      that no rejection or neither path exists. A specification that means a
+      check has no reachable non-accepting outcome <span class="bcp14">MUST</span> state
+      that, because it is a strong claim about the check and is itself
+      reviewable.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <p id="section-7-5">implemented-unexercised does not by itself distinguish a check whose
       rejecting outcome is unreachable for every input the verifier can receive
       from one that has simply not received such an input. These are different
       facts: the first is a property of the check, the second of the sample. Where
       a profile can tell them apart it <span class="bcp14">SHOULD</span> report which, and
       where it cannot it <span class="bcp14">MUST NOT</span> imply either.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<p id="section-7-6">A report of implemented-unexercised <span class="bcp14">SHOULD</span> carry a
-      machine-readable reason identifying the unexercised rejection path, so that
+<p id="section-7-6">Where the profile establishes that an input in the defined domain can
+      reach the path, but the exercise record contains no such input, the
+      evaluator <span class="bcp14">SHOULD</span> report
+      <code>reachable-unexercised</code>. Where the specification's rule order and
+      input-domain constraints establish that an earlier rule necessarily
+      returns first, the evaluator <span class="bcp14">SHOULD</span> report
+      <code>shadowed-unreachable</code>. Absence from a sample establishes neither
+      classification.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-7">A <code>shadowed-unreachable</code> report <span class="bcp14">MUST</span> identify the
+      shadowing rule and the rule or condition that cannot be reached. It
+      <span class="bcp14">MUST NOT</span> count the path as exercised or as measured
+      coverage. If the record cannot distinguish reachability from absence of
+      an exercising input, it <span class="bcp14">MUST</span> retain the broader
+      implemented-unexercised annotation.<a href="#section-7-7" class="pilcrow">¶</a></p>
+<p id="section-7-8">A report of implemented-unexercised <span class="bcp14">SHOULD</span> carry a
+      machine-readable reason identifying the unexercised exercise path, so that
       two implementations can compare results without reading prose. A single
-      token is not sufficient for cross-implementation diagnosis.<a href="#section-7-6" class="pilcrow">¶</a></p>
-<p id="section-7-7">implemented-unexercised is not a failure grade. It reports that the
+      token is not sufficient for cross-implementation diagnosis.<a href="#section-7-8" class="pilcrow">¶</a></p>
+<p id="section-7-9">implemented-unexercised is not a failure grade. It reports that the
       record does not establish that the check can reject, which is a different
-      fact from a check that ran and rejected.<a href="#section-7-7" class="pilcrow">¶</a></p>
-<p id="section-7-8">A check whose rejecting condition is not expected to arise in normal
+      fact from a check that ran and rejected.<a href="#section-7-9" class="pilcrow">¶</a></p>
+<p id="section-7-10">A check whose rejecting or unverifiable condition is not expected to arise in normal
       operation will hold implemented-unexercised indefinitely, and that is the
       intended reading rather than a defect in the requirement. A safety check
       that has never fired has not been shown to work; saying so is the point.
       Where a profile can construct a synthetic input that drives such a check
       into its rejecting outcome, EXR-1 is satisfied by that input, and
-      <a href="#privacy" class="auto internal xref">Section 14</a> permits a synthetic input for this purpose.<a href="#section-7-8" class="pilcrow">¶</a></p>
+      <a href="#privacy" class="auto internal xref">Section 15</a> permits a synthetic input for this purpose.<a href="#section-7-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cmp-1">
@@ -1831,8 +1894,8 @@ li > p:last-of-type:only-child {
       does not establish that the rejection path is the right one, that its
       condition is correctly specified, or that the accepting outcomes were
       correct.<a href="#section-10-2" class="pilcrow">¶</a></p>
-<p id="section-10-3">An exercised rejection path establishes nothing about paths that were
-      not exercised. EXR-1 is a floor and is not a coverage claim.<a href="#section-10-3" class="pilcrow">¶</a></p>
+<p id="section-10-3">An exercised path establishes nothing about paths that were not
+      exercised. EXR-1 is a floor and is not a coverage claim.<a href="#section-10-3" class="pilcrow">¶</a></p>
 <p id="section-10-4">implemented-unexercised is not evidence of a defect. A check may be
       correct, well specified, and simply never driven into its rejecting
       condition.<a href="#section-10-4" class="pilcrow">¶</a></p>
@@ -1852,24 +1915,49 @@ li > p:last-of-type:only-child {
       protocol, the honesty of any party, or the security of any deployment.<a href="#section-10-7" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="adjacent">
+<div id="scope-and-venue">
 <section id="section-11">
-      <h2 id="name-relationship-to-adjacent-wo">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-relationship-to-adjacent-wo" class="section-name selfRef">Relationship to Adjacent Work</a>
+      <h2 id="name-scope-relative-to-agent-pro">
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-scope-relative-to-agent-pro" class="section-name selfRef">Scope Relative to Agent Protocol and Audit Work</a>
       </h2>
-<p id="section-11-1"><span>[<a href="#I-D.wadkins-agentproto-action-determinability" class="cite xref">I-D.wadkins-agentproto-action-determinability</a>]</span> states
+<p id="section-11-1">The protocol-facing obligation in this document is conditional. Where
+      an agent protocol, profile, or reference architecture relies on or exposes
+      a verifier result as evidence of coverage, it can require the result to
+      carry the exercise and completeness facts defined here. A protocol that
+      makes no such claim need not acquire an audit data model merely because
+      this document exists.<a href="#section-11-1" class="pilcrow">¶</a></p>
+<p id="section-11-2">This document does not define an audit record, corpus-commitment
+      encoding, interaction-trace format, transport, or validation testbed.
+      Work concerned with how evidence records cross component or
+      administrative boundaries can define those mechanisms and use these
+      requirements as acceptance conditions. A protocol or architecture
+      document can state the dependency without defining the mechanism that
+      satisfies it.<a href="#section-11-2" class="pilcrow">¶</a></p>
+<p id="section-11-3">This document does not assign either obligation to a working group and
+      does not claim adoption by AgentProto, AUDIT, or any other IETF group. It
+      states a separable requirements layer so that a group can adopt, profile,
+      reference, or decline it without treating the present individual
+      submission as a venue decision.<a href="#section-11-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="adjacent">
+<section id="section-12">
+      <h2 id="name-relationship-to-adjacent-wo">
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-relationship-to-adjacent-wo" class="section-name selfRef">Relationship to Adjacent Work</a>
+      </h2>
+<p id="section-12-1"><span>[<a href="#I-D.wadkins-agentproto-action-determinability" class="cite xref">I-D.wadkins-agentproto-action-determinability</a>]</span> states
       in DET-4 that presentation of individually valid evidence must not by
       itself be treated as proof that all material evidence has been presented.
-      CMP-1 and CMP-2 narrow that concern to the detecting mechanism itself.<a href="#section-11-1" class="pilcrow">¶</a></p>
-<p id="section-11-2"><span>[<a href="#I-D.bu-agentproto-security-principal-binding" class="cite xref">I-D.bu-agentproto-security-principal-binding</a>]</span> Section 14
+      CMP-1 and CMP-2 narrow that concern to the detecting mechanism itself.<a href="#section-12-1" class="pilcrow">¶</a></p>
+<p id="section-12-2"><span>[<a href="#I-D.bu-agentproto-security-principal-binding" class="cite xref">I-D.bu-agentproto-security-principal-binding</a>]</span> Section 14
       already requires that a row not be reported implemented merely because a
       carrier is emitted or a positive exchange completes: the evidence must
       show the stated verifier decision and at least one security-relevant
       rejection path, and Section 11 draws the same distinction against a
       happy-path exchange. That floor is established there. It is not
       introduced here, and a row lacking such evidence is already not fully
-      implemented under that definition.<a href="#section-11-2" class="pilcrow">¶</a></p>
-<p id="section-11-3">Section 33 of the same document lists as open issues which negative
+      implemented under that definition.<a href="#section-12-2" class="pilcrow">¶</a></p>
+<p id="section-12-3">Section 33 of the same document lists as open issues which negative
       test cases authors should provide, whether a row may claim implemented
       status without a public or reviewable negative test exercising the stated
       rejection path, and when same-party evidence may support a row claiming
@@ -1878,12 +1966,12 @@ li > p:last-of-type:only-child {
       pinned to a revision, that a discriminating pair be exhibited rather than
       a single rejecting input, and that the record name the outcome observed
       for each declared rejection path. A row satisfying Section 14 may still
-      carry no such record.<a href="#section-11-3" class="pilcrow">¶</a></p>
-<p id="section-11-4">CMP-1 and CMP-2 address the completeness and omission subcase of the
+      carry no such record.<a href="#section-12-3" class="pilcrow">¶</a></p>
+<p id="section-12-4">CMP-1 and CMP-2 address the completeness and omission subcase of the
       third open issue. They do not resolve that issue for every kind of row,
       and independently checking one scoped observation is not the same as
-      establishing completeness over a domain.<a href="#section-11-4" class="pilcrow">¶</a></p>
-<p id="section-11-5">That document's rules governing
+      establishing completeness over a domain.<a href="#section-12-4" class="pilcrow">¶</a></p>
+<p id="section-12-5">That document's rules governing
       coverage denominators, and its prohibition on relabelling a not-run
       scenario as not-applicable to improve a denominator, are complementary and
       are deliberately not restated here. That document's implementation-status
@@ -1894,21 +1982,21 @@ li > p:last-of-type:only-child {
       stronger EXR record for every declared rejection path or lacking EXR's
       revision-pinned discriminating-pair evidence. Those gaps remain explicit;
       an EXR record does not raise Principal Binding implementation status. A
-      profile using both states them separately.<a href="#section-11-5" class="pilcrow">¶</a></p>
-<p id="section-11-6"><span>[<a href="#I-D.bradleyb-audit-decision-records" class="cite xref">I-D.bradleyb-audit-decision-records</a>]</span> distinguishes
+      profile using both states them separately.<a href="#section-12-5" class="pilcrow">¶</a></p>
+<p id="section-12-6"><span>[<a href="#I-D.bradleyb-audit-decision-records" class="cite xref">I-D.bradleyb-audit-decision-records</a>]</span> distinguishes
       correspondence, where two records agree about what happened, from
       precedence, where the order of decision and effect is established. The
       present document addresses the same shape one level down, where a check's
       outcome is taken to establish a property the check was never shown able to
-      contradict.<a href="#section-11-6" class="pilcrow">¶</a></p>
-<p id="section-11-7"><span>[<a href="#IA9-OVERLAY" class="cite xref">IA9-OVERLAY</a>]</span> argues that non-repudiation over a
+      contradict.<a href="#section-12-6" class="pilcrow">¶</a></p>
+<p id="section-12-7"><span>[<a href="#IA9-OVERLAY" class="cite xref">IA9-OVERLAY</a>]</span> argues that non-repudiation over a
       self-asserted subject lacks a testable assertion about actor identity.
       That is an adjacent warning about the evidentiary force of a control,
       not an implementation or derivation of EXR-1: this document asks whether
       a stated rejection path has actually been exercised. A check that could
       not run is also kept distinct from one that ran and established a
-      violation in <a href="#outcomes" class="auto internal xref">Section 6</a>.<a href="#section-11-7" class="pilcrow">¶</a></p>
-<p id="section-11-8"><span>[<a href="#I-D.schrock-ep-bounded-capability-receipts" class="cite xref">I-D.schrock-ep-bounded-capability-receipts</a>]</span> requires,
+      violation in <a href="#outcomes" class="auto internal xref">Section 6</a>.<a href="#section-12-7" class="pilcrow">¶</a></p>
+<p id="section-12-8"><span>[<a href="#I-D.schrock-ep-bounded-capability-receipts" class="cite xref">I-D.schrock-ep-bounded-capability-receipts</a>]</span> requires,
       in its treatment of action scope, that the basis for a transitivity claim
       be classified as definition-derived, mechanically-checkable, or asserted,
       and states that an asserted claim is profile-author testimony rather than
@@ -1921,8 +2009,8 @@ li > p:last-of-type:only-child {
       to that verifier. EXR-2 and CMP-2 apply the same discipline to the two
       cases treated here: a result that could not be established is reported as
       such, and is not merged with a result that was established and
-      negative.<a href="#section-11-8" class="pilcrow">¶</a></p>
-<p id="section-11-9"><span>[<a href="#I-D.laurie-tmif" class="cite xref">I-D.laurie-tmif</a>]</span> defines falsifiability as the design
+      negative.<a href="#section-12-8" class="pilcrow">¶</a></p>
+<p id="section-12-9"><span>[<a href="#I-D.laurie-tmif" class="cite xref">I-D.laurie-tmif</a>]</span> defines falsifiability as the design
       property ensuring that subversion of a system's stated claims carries a
       high risk of independent discovery, and specifies metadata by which an
       evaluator assesses that property. That is falsifiability of the claims a
@@ -1931,18 +2019,18 @@ li > p:last-of-type:only-child {
       return its rejecting outcome at all. The two compose rather than overlap.
       A system whose claims are highly falsifiable, assessed by a check that has
       never rejected anything, is not thereby verified, and EXR-2 requires that
-      to be visible in the report.<a href="#section-11-9" class="pilcrow">¶</a></p>
+      to be visible in the report.<a href="#section-12-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="impl">
-<section id="section-12">
+<section id="section-13">
       <h2 id="name-implementation-status">
-<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+<a href="#section-13" class="section-number selfRef">13. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
       </h2>
-<p id="section-12-1">This section records the status of implementations known to the author
+<p id="section-13-1">This section records the status of implementations known to the author
       at the time of writing, per <span>[<a href="#RFC7942" class="cite xref">RFC7942</a>]</span>. It is intended to be
-      removed before publication as an RFC.<a href="#section-12-1" class="pilcrow">¶</a></p>
-<p id="section-12-2">The outcome vocabulary of <a href="#outcomes" class="auto internal xref">Section 6</a> draws on, but is
+      removed before publication as an RFC.<a href="#section-13-1" class="pilcrow">¶</a></p>
+<p id="section-13-2">The outcome vocabulary of <a href="#outcomes" class="auto internal xref">Section 6</a> draws on, but is
       not a one-to-one copy of, the public implementation in <span>[<a href="#MP" class="cite xref">MP</a>]</span>
       at commit b4ee46924ebe8fd0bee38b4986a01229e859764b. Its
       dereference layer separates verified, absent, unverifiable, and
@@ -1957,8 +2045,8 @@ li > p:last-of-type:only-child {
       The pinned implementation does not yet establish the mandatory
       capability-versus-skipped diagnostic distinction specified here. Its V4
       weaker supported claim is reported as downgraded in that layer, not as
-      one of the four check outcomes.<a href="#section-12-2" class="pilcrow">¶</a></p>
-<p id="section-12-3">A worked case for CMP-1 and CMP-2. A verdict is sought over a set of
+      one of the four check outcomes.<a href="#section-13-2" class="pilcrow">¶</a></p>
+<p id="section-13-3">A worked case for CMP-1 and CMP-2. A verdict is sought over a set of
       records in a profile that requires each root to name a reference. Some
       references resolve, one resolver is unreachable, and one root names no
       reference. Reporting the resolved subset as a completeness figure would
@@ -1973,8 +2061,8 @@ li > p:last-of-type:only-child {
       a verified completeness claim based solely on a material party's
       mechanism. An independently appraised basis would be needed for that
       claim. These check verdicts and the completeness appraisal remain
-      separate; one unsettled label cannot express all of them.<a href="#section-12-3" class="pilcrow">¶</a></p>
-<p id="section-12-4">A discipline close to EXR-1 is in use in the public repository
+      separate; one unsettled label cannot express all of them.<a href="#section-13-3" class="pilcrow">¶</a></p>
+<p id="section-13-4">A discipline close to EXR-1 is in use in the public repository
       <span>[<a href="#MP" class="cite xref">MP</a>]</span>, where a declaration must name a contrasting
       population in which the declared property is absent, and the probe must
       report below the declared minimum on that population. A probe that cannot
@@ -1985,76 +2073,118 @@ li > p:last-of-type:only-child {
       that genuinely has the property. That code predates this document and was
       not written as a conformance implementation of EXR-1; it is offered as
       evidence that the requirement is implementable and has been lived with,
-      not that it has been implemented as specified here.<a href="#section-12-4" class="pilcrow">¶</a></p>
-<p id="section-12-5">The same repository refuses a registration that omits the declaration
+      not that it has been implemented as specified here.<a href="#section-13-4" class="pilcrow">¶</a></p>
+<p id="section-13-5">The same repository refuses a registration that omits the declaration
       entirely, on the grounds stated in EXR-2 that an absent declaration is not
-      consent.<a href="#section-12-5" class="pilcrow">¶</a></p>
-<p id="section-12-6">The vectors in <a href="#vectors" class="auto internal xref">Appendix A</a> are published in executable
+      consent.<a href="#section-13-5" class="pilcrow">¶</a></p>
+<p id="section-13-6">The vectors in <a href="#vectors" class="auto internal xref">Appendix A</a> are published in executable
       form at the pinned commit above, with a test suite of twenty-eight cases. Three
       of those vectors are constructed fixtures written for this document rather
       than observations of a deployed system; they show that the requirements
       have content and that a check can fail them, not that any particular check
       does. The fourth reads a frozen artifact from an earlier experiment and
-      pins its digest.<a href="#section-12-6" class="pilcrow">¶</a></p>
-<p id="section-12-7">Songbo Bu replayed the author's source and fixtures at the pinned
+      pins its digest.<a href="#section-13-6" class="pilcrow">¶</a></p>
+<p id="section-13-7">Songbo Bu replayed the author's source and fixtures at the pinned
       commit: twenty-eight verifier-evidence tests and thirty-eight related
       dereference, warrant, resolver, and policy tests passed. This is a
       bounded source replay, not a second implementation or a conformance
       result. No independently implemented CMP-1 or CMP-2 appraisal has been
       verified, and no interoperability between independent implementations
-      is claimed for any requirement in this document.<a href="#section-12-7" class="pilcrow">¶</a></p>
-<p id="section-12-8">One consequence is worth stating rather than leaving to be derived. A
+      is claimed for any requirement in this document.<a href="#section-13-7" class="pilcrow">¶</a></p>
+<p id="section-13-8">Lars Kersten Kroehl published a separately authored report reader at
+      commit 6d8ee54b01d20a819869ceb9fcea096d59251f8c
+      <span>[<a href="#MOLTRUST-READER" class="cite xref">MOLTRUST-READER</a>]</span>. On 165 report objects the pinned reader
+      produced 82 accept, 28 reject, and 55 cannot-tell results. Twenty-five of
+      its rejections agreed with the upstream expected verdict; four of those
+      reached a different requirement line than the member name suggested.
+      The published selection includes a corpus digest, covered-member list,
+      and selection rule, making the boundary of that selected run inspectable.
+      It does not establish that the named checkers ran or that the supplied
+      report objects describe genuine underlying artifacts.<a href="#section-13-8" class="pilcrow">¶</a></p>
+<p id="section-13-9">The present author reproduced that pinned run and published a bounded
+      audit at commit 635f3d57eb6f90fdf4c6945778020c34521be0a1
+      <span>[<a href="#MOLTRUST-AUDIT" class="cite xref">MOLTRUST-AUDIT</a>]</span>. The package freezes 35 mutation
+      scenarios, including the baseline, and a separately written
+      specification-only reader. The latter rejects 34 cases and reports 131
+      as cannot-tell. Ten cases rejected by that reader are cannot-tell under
+      Kroehl's documented refusal policy; case-by-case adjudication finds eight
+      explicit contradictions or omissions whose mandatory-rejection policy is
+      disputed and two cases underdetermined by the source text. The audit does
+      not promote those disagreements into reader errors. The separately
+      written reader shares the present author's project control and is not a
+      second external evidence root.<a href="#section-13-9" class="pilcrow">¶</a></p>
+<p id="section-13-10">Toshikatsu Oga applied EXR-1 and EXR-2 to the MUSUBI settle core and
+      froze the result at horizon-shield commit dd64d0e2
+      <span>[<a href="#MUSUBI-N17" class="cite xref">MUSUBI-N17</a>]</span>, also described in
+      <span>[<a href="#I-D.oga-musubi-settlement" class="cite xref">I-D.oga-musubi-settlement</a>]</span>. Among the original 123
+      vectors, every one of ten deviation codes was produced, while 18 of 28 underspecified reasons
+      were produced and ten were not. The project added five vectors, yielding
+      128 vectors, drove two further paths through an in-memory exercise
+      script, and marked four specified reasons as shadowed by earlier contract
+      checks and therefore unreachable. The branch for more than 200000
+      verified headers remains unexercised. A separately written implementation
+      reproduces all 128 vectors, run by its author; nobody outside the MUSUBI
+      project has rerun the exercise script.<a href="#section-13-10" class="pilcrow">¶</a></p>
+<p id="section-13-11">The MUSUBI result is an external appraisal of whether the requirements
+      in this document expose useful distinctions. It is not independent
+      verification of MUSUBI: the counts are outputs of the MUSUBI reference
+      implementation, and the added vectors and exercise script were produced
+      and run within that project. The result supports the distinction among
+      exercised, reachable-unexercised, and shadowed-unreachable paths without
+      establishing the correctness or completeness of the underlying
+      protocol.<a href="#section-13-11" class="pilcrow">¶</a></p>
+<p id="section-13-12">One consequence is worth stating rather than leaving to be derived. A
       profile with no independent omission-detection basis can identify its
       coverage domain but cannot demonstrate the accepting side of CMP-2 for a
       completeness claim. EXR-1 then forbids reporting that check as
       implemented on the strength of only its unestablished outcomes. The
       worked case above illustrates the reporting distinction; it is not a
-      claim that CMP-1 or CMP-2 has been implemented as specified here.<a href="#section-12-8" class="pilcrow">¶</a></p>
+      claim that CMP-1 or CMP-2 has been implemented as specified here.<a href="#section-13-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security">
-<section id="section-13">
+<section id="section-14">
       <h2 id="name-security-considerations">
-<a href="#section-13" class="section-number selfRef">13. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-14" class="section-number selfRef">14. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-13-1">The failure mode these requirements address is a system that appears
+<p id="section-14-1">The failure mode these requirements address is a system that appears
       verified. An unexercised check is worse for a relying party than an absent
       one, because it occupies the position in a matrix where a reviewer would
-      otherwise notice that nothing is checking the claim.<a href="#section-13-1" class="pilcrow">¶</a></p>
-<p id="section-13-2">An adversary who knows which checks are unexercised knows where a
+      otherwise notice that nothing is checking the claim.<a href="#section-14-1" class="pilcrow">¶</a></p>
+<p id="section-14-2">An adversary who knows which checks are unexercised knows where a
       conformance matrix will not look. Because the property is visible from a
       published matrix and published vectors, and because a check that compares
       too little is often evident to an implementer, this information may be
-      more available to an adversary than to a reviewer.<a href="#section-13-2" class="pilcrow">¶</a></p>
-<p id="section-13-3">Reporting implemented-unexercised discloses that a rejection path is
+      more available to an adversary than to a reviewer.<a href="#section-14-2" class="pilcrow">¶</a></p>
+<p id="section-14-3">Reporting implemented-unexercised discloses that an exercise path is
       untested, and profiles should weigh that. The alternative is that the same
       fact remains true and is not written down, which does not reduce the
-      exposure and removes the relying party's ability to account for it.<a href="#section-13-3" class="pilcrow">¶</a></p>
+      exposure and removes the relying party's ability to account for it.<a href="#section-14-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy">
-<section id="section-14">
+<section id="section-15">
       <h2 id="name-privacy-considerations">
-<a href="#section-14" class="section-number selfRef">14. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
+<a href="#section-15" class="section-number selfRef">15. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
-<p id="section-14-1">These requirements concern verifier results and test inputs. Where an
+<p id="section-15-1">These requirements concern verifier results and test inputs. Where an
       exercising input is drawn from production data, publishing it to satisfy
       EXR-1 may disclose personal data. A profile <span class="bcp14">SHOULD</span> permit a
       synthetic exercising input where the rejecting outcome does not depend on
-      the provenance of the input.<a href="#section-14-1" class="pilcrow">¶</a></p>
+      the provenance of the input.<a href="#section-15-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana">
-<section id="section-15">
+<section id="section-16">
       <h2 id="name-iana-considerations">
-<a href="#section-15" class="section-number selfRef">15. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-16" class="section-number selfRef">16. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-15-1">This document has no IANA actions.<a href="#section-15-1" class="pilcrow">¶</a></p>
+<p id="section-16-1">This document has no IANA actions.<a href="#section-16-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<section id="section-16">
+<section id="section-17">
       <h2 id="name-normative-references">
-<a href="#section-16" class="section-number selfRef">16. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-17" class="section-number selfRef">17. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
@@ -2067,14 +2197,30 @@ li > p:last-of-type:only-child {
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-17">
+<section id="section-18">
       <h2 id="name-informative-references">
-<a href="#section-17" class="section-number selfRef">17. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-18" class="section-number selfRef">18. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
 <dt id="RFC7942">[RFC7942]</dt>
       <dd>
 <span class="refAuthor">Sheffer, Y.</span> and <span class="refAuthor">A. Farrel</span>, <span class="refTitle">"Improving Awareness of Running Code: The Implementation Status Section"</span>, <span class="seriesInfo">BCP 205</span>, <span class="seriesInfo">RFC 7942</span>, <time datetime="2016-07" class="refDate">July 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7942">https://www.rfc-editor.org/info/rfc7942</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.oga-musubi-settlement">[I-D.oga-musubi-settlement]</dt>
+      <dd>
+<span class="refAuthor">Oga, T.</span>, <span class="refTitle">"MUSUBI Settlement: Recomputing Whether an Agent Acted Within a Signed Grant"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-oga-musubi-settlement-01</span>, <time datetime="2026-10" class="refDate">October 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/draft-oga-musubi-settlement/">https://datatracker.ietf.org/doc/draft-oga-musubi-settlement/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MOLTRUST-READER">[MOLTRUST-READER]</dt>
+      <dd>
+<span class="refAuthor">Kroehl, L. K.</span>, <span class="refTitle">"Reporting Format v0.1 Reader, frozen-run-1"</span>, <span class="seriesInfo">Git commit 6d8ee54b01d20a819869ceb9fcea096d59251f8c</span>, <time datetime="2026-10" class="refDate">October 2026</time>, <span>&lt;<a href="https://github.com/MoltyCel/reporting-format-v01-reader/tree/6d8ee54b01d20a819869ceb9fcea096d59251f8c">https://github.com/MoltyCel/reporting-format-v01-reader/tree/6d8ee54b01d20a819869ceb9fcea096d59251f8c</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MOLTRUST-AUDIT">[MOLTRUST-AUDIT]</dt>
+      <dd>
+<span class="refAuthor">He, J. S.</span>, <span class="refTitle">"MolTrust v0.1 Reader Audit"</span>, <span class="seriesInfo">Git commit 635f3d57eb6f90fdf4c6945778020c34521be0a1</span>, <time datetime="2026-10" class="refDate">October 2026</time>, <span>&lt;<a href="https://github.com/Silentpartnercoding/agent-security-verifier-matrix/tree/635f3d57eb6f90fdf4c6945778020c34521be0a1/experiments/moltrust-reader-audit-001">https://github.com/Silentpartnercoding/agent-security-verifier-matrix/tree/635f3d57eb6f90fdf4c6945778020c34521be0a1/experiments/moltrust-reader-audit-001</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MUSUBI-N17">[MUSUBI-N17]</dt>
+      <dd>
+<span class="refAuthor">Oga, T.</span>, <span class="refTitle">"MUSUBI Settle Core v0 Exercise Record, N17"</span>, <span class="seriesInfo">Git commit dd64d0e2</span>, <time datetime="2026-10" class="refDate">October 2026</time>, <span>&lt;<a href="https://github.com/ogasurfproject-jpg/horizon-shield/tree/dd64d0e2/workers/hs-ledger/nenrin/musubi-v0/settle-core-v0">https://github.com/ogasurfproject-jpg/horizon-shield/tree/dd64d0e2/workers/hs-ledger/nenrin/musubi-v0/settle-core-v0</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.wadkins-agentproto-action-determinability">[I-D.wadkins-agentproto-action-determinability]</dt>
       <dd>
@@ -2213,33 +2359,96 @@ li > p:last-of-type:only-child {
 <p id="appendix-A.4-3">This vector is due to Iman Schrock.<a href="#appendix-A.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="v5">
+<section id="appendix-A.5">
+        <h3 id="name-one-outcome-token-two-rules">
+<a href="#appendix-A.5" class="section-number selfRef">A.5. </a><a href="#name-one-outcome-token-two-rules" class="section-name selfRef">One Outcome Token, Two Rules</a>
+        </h3>
+<p id="appendix-A.5-1">Construct two inputs that produce the same non-accepting outcome
+        token through two different rules. Publish an exercise record containing
+        only the input identifiers and shared outcome token.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-2">Expected under EXR-1: the record does not establish which rule or
+        condition fired for either input. A conforming record identifies the
+        governing rule or condition for each result even though the outcome
+        token is unchanged.<a href="#appendix-A.5-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="v6">
+<section id="appendix-A.6">
+        <h3 id="name-path-shadowed-by-an-earlier">
+<a href="#appendix-A.6" class="section-number selfRef">A.6. </a><a href="#name-path-shadowed-by-an-earlier" class="section-name selfRef">Path Shadowed by an Earlier Rule</a>
+        </h3>
+<p id="appendix-A.6-1">Define a later rule that is evaluated only after an earlier rule
+        accepts, while making the later rule's stated condition imply that the
+        earlier rule rejects. Supply inputs satisfying the later condition.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-2">Expected under EXR-2: every such input returns at the earlier rule.
+        The later path is reported <code>shadowed-unreachable</code>, with both rules
+        identified. It is not counted as exercised, and absence of its outcome
+        is not reported merely as reachable-unexercised.<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="changes-01">
+<section id="appendix-B">
+      <h2 id="name-changes-from-00">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-changes-from-00" class="section-name selfRef">Changes from -00</a>
+      </h2>
+<ul class="normal">
+<li class="normal" id="appendix-B-1.1">Expanded exercise accounting from rejecting outcomes to declared
+        paths producing rejecting or neither outcomes, including
+        <code>unverifiable</code>.<a href="#appendix-B-1.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-1.2">Required the exercise record to identify the rule or condition
+        reached rather than relying on an outcome token alone.<a href="#appendix-B-1.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-1.3">Distinguished reachable-but-unexercised paths from paths made
+        unreachable by an earlier rule or structural precondition.<a href="#appendix-B-1.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-1.4">Stated the conditional protocol-facing requirement separately from
+        audit-record formats, corpus commitments, transports, and testbeds.<a href="#appendix-B-1.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-1.5">Added bounded MolTrust and MUSUBI implementation evidence and its
+        limitations.<a href="#appendix-B-1.5" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
 <div id="ack">
-<section id="appendix-B">
+<section id="appendix-C">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-B-1">Bradley B drew attention to keeping a check that could not run
+<p id="appendix-C-1">Bradley B drew attention to keeping a check that could not run
       distinct from a check that ran and failed. His published IA-9 analysis
       is cited for the separate problem of an unauthenticated subject in a
-      control's evidence.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">Iman Schrock contributed the withheld-record vector in
+      control's evidence.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-2">Iman Schrock contributed the withheld-record vector in
       <a href="#vectors" class="auto internal xref">Appendix A</a> and reviewed its attribution and outcome
-      wording. The coverage requirements were developed separately.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
-<p id="appendix-B-3">Songbo Bu raised the related questions in Principal Binding Section
+      wording. The coverage requirements were developed separately.<a href="#appendix-C-2" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">Songbo Bu raised the related questions in Principal Binding Section
       33, reviewed this document's outcome and evidence boundaries, and
       replayed the author's pinned source and fixtures as described in
-      <a href="#impl" class="auto internal xref">Section 12</a>.<a href="#appendix-B-3" class="pilcrow">¶</a></p>
-<p id="appendix-B-4">Henri Sirkkavaara stated the reproduction bar under which a candidate
+      <a href="#impl" class="auto internal xref">Section 13</a>.<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+<p id="appendix-C-4">Henri Sirkkavaara stated the reproduction bar under which a candidate
       counts as demonstrated only when a party controlling neither end reaches
       the same verdict using an implementation sharing no code with the
-      proposer.<a href="#appendix-B-4" class="pilcrow">¶</a></p>
-<p id="appendix-B-5">Acknowledgment does not imply endorsement of this document.<a href="#appendix-B-5" class="pilcrow">¶</a></p>
+      proposer.<a href="#appendix-C-4" class="pilcrow">¶</a></p>
+<p id="appendix-C-5">Lars Kersten Kroehl supplied the frozen report-reader case, identified
+      the need to retain the rule that fired, and published the corpus digest,
+      covered-member list, and selection rule used in the run.<a href="#appendix-C-5" class="pilcrow">¶</a></p>
+<p id="appendix-C-6">Toshikatsu Oga applied the EXR requirements to MUSUBI, published the
+      resulting vectors and exercise record at an immutable commit, and stated
+      the remaining unexercised and rerun limits.<a href="#appendix-C-6" class="pilcrow">¶</a></p>
+<p id="appendix-C-7">Orie Steele asked that the draft state how its protocol-facing
+      requirement differs from the mechanisms and records considered in audit
+      work. <a href="#scope-and-venue" class="auto internal xref">Section 11</a> is the author's answer; it does not
+      imply Orie's agreement with that boundary.<a href="#appendix-C-7" class="pilcrow">¶</a></p>
+<p id="appendix-C-8">Acknowledgment does not imply endorsement of this document.<a href="#appendix-C-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-C">
+<section id="appendix-D">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>

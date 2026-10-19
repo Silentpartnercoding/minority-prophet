@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 DRAFT_DIR = ROOT / "papers" / "ietf"
-DRAFT_NAME = "draft-he-agentproto-verifier-evidence-00"
+DRAFT_NAME = "draft-he-agentproto-verifier-evidence-01"
 SOURCE = DRAFT_DIR / f"{DRAFT_NAME}.xml"
 TEXT = DRAFT_DIR / f"{DRAFT_NAME}.txt"
 HTML = DRAFT_DIR / f"{DRAFT_NAME}.html"
@@ -22,7 +22,7 @@ def test_agentproto_package_contains_source_and_generated_formats():
     assert HTML.is_file()
 
 
-def test_agentproto_source_has_explicit_reviewed_date_and_current_pb_revision():
+def test_agentproto_source_has_explicit_revision_date_and_current_references():
     root = ET.parse(SOURCE).getroot()
     assert root.attrib["docName"] == DRAFT_NAME
     assert root.attrib["submissionType"] == "IETF"
@@ -32,11 +32,14 @@ def test_agentproto_source_has_explicit_reviewed_date_and_current_pb_revision():
     assert front is not None
     date = front.find("date")
     assert date is not None
-    assert date.attrib == {"year": "2026", "month": "October", "day": "17"}
+    assert date.attrib == {"year": "2026", "month": "October", "day": "18"}
 
     source = SOURCE.read_text(encoding="utf-8")
     assert "draft-bu-agentproto-security-principal-binding-08" in source
     assert "draft-bu-agentproto-security-principal-binding-07" not in source
+    assert "draft-oga-musubi-settlement-01" in source
+    assert "635f3d57eb6f90fdf4c6945778020c34521be0a1" in source
+    assert "dd64d0e2" in source
     for forbidden in ("TBD", "TODO", "Wesleyan", "Zinglez"):
         assert forbidden not in source
 
@@ -65,10 +68,39 @@ def test_agentproto_source_preserves_reviewed_scope_boundaries():
         assert required in source
 
 
+def test_agentproto_source_answers_public_review_without_overclaiming():
+    source = " ".join(SOURCE.read_text(encoding="utf-8").split())
+    for required in (
+        "paths to outcomes classified as neither",
+        "outcome token alone does not identify the rule or condition that fired",
+        "reachable-unexercised",
+        "shadowed-unreachable",
+        "This document does not assign either obligation to a working group",
+        "not a second external evidence root",
+        "not independent verification of MUSUBI",
+    ):
+        assert required in source
+
+
+def test_agentproto_source_records_external_results_and_their_limits():
+    source = " ".join(SOURCE.read_text(encoding="utf-8").split())
+    for required in (
+        "165 report objects",
+        "82 accept, 28 reject, and 55 cannot-tell",
+        "35 mutation scenarios, including the baseline",
+        "128 vectors",
+        "more than 200000 verified headers",
+        "nobody outside the MUSUBI project has rerun the exercise script",
+    ):
+        assert required in source
+
+
 def test_agentproto_rendered_text_preserves_title_and_nonclaim():
     rendered = " ".join(TEXT.read_text(encoding="utf-8").split())
     assert "Exercise and Completeness Evidence for Agent Protocol Verifier Results" in rendered
     assert "bounded source replay, not a second implementation or a conformance result" in rendered
+    assert "shadowed-unreachable" in rendered
+    assert "not independent verification of MUSUBI" in rendered
     assert "This document has no IANA actions." in rendered
 
 
@@ -89,6 +121,10 @@ def test_agentproto_package_records_review_scope_and_human_submission_boundary()
         "The wording and parity review concluded at that point.",
         "draft-bu-agentproto-security-principal-binding-07",
         "draft-bu-agentproto-security-principal-binding-08",
+        "Public review after -00",
+        "Lars Kersten Kroehl",
+        "Toshikatsu Oga",
+        "Orie Steele",
     ):
         assert required in ledger
     assert "This completes the requested wording/parity review." not in ledger
@@ -113,7 +149,7 @@ def test_agentproto_package_records_review_scope_and_human_submission_boundary()
 def test_agentproto_manifest_binds_current_rendered_package():
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     assert manifest["document"] == DRAFT_NAME
-    assert manifest["submission_state"] == "submitted-confirmed"
+    assert manifest["submission_state"] == "prepared-not-submitted"
     assert manifest["renderer"] == {
         "name": "xml2rfc",
         "version": "3.34.1",

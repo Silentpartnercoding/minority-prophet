@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
      category="info"
-     docName="draft-he-agentproto-verifier-evidence-00"
+     docName="draft-he-agentproto-verifier-evidence-01"
      consensus="false"
      ipr="trust200902"
      submissionType="IETF"
@@ -10,12 +10,12 @@
 
   <front>
     <title abbrev="Verifier Exercise Evidence">Exercise and Completeness Evidence for Agent Protocol Verifier Results</title>
-    <seriesInfo name="Internet-Draft" value="draft-he-agentproto-verifier-evidence-00"/>
+    <seriesInfo name="Internet-Draft" value="draft-he-agentproto-verifier-evidence-01"/>
     <author fullname="James Siyuan He" initials="J. S." surname="He">
       <organization>Independent</organization>
       <address><email>jsiyuanhe@gmail.com</email></address>
     </author>
-    <date year="2026" month="October" day="17"/>
+    <date year="2026" month="October" day="18"/>
     <area>ART</area>
     <keyword>verifier</keyword>
     <keyword>conformance</keyword>
@@ -24,12 +24,13 @@
     <abstract>
       <t>A verifier result reports what a check returned. It does not report
       whether the check could have returned anything else. A check that
-      inspects too narrow a set of fields, and a check whose rejecting input
-      has never occurred, both report the same accepting value as a check that
-      distinguishes, and a conformance matrix does not tell them apart.</t>
+      inspects too narrow a set of fields, and a check whose rejecting or
+      unverifiable input has never occurred, both report the same accepting
+      value as a check that distinguishes, and a conformance matrix does not
+      tell them apart.</t>
 
       <t>This document defines requirements for reporting whether a check has been
-      exercised into its rejecting outcome, and requirements for results that
+      exercised into its declared rejecting and unverifiable outcomes, and requirements for results that
       claim completeness: that the records relied on were the whole of some
       stated set. Those are two separate obligations. A result must name the set
       it claims to have seen, and must not treat a party with an interest in the
@@ -51,7 +52,7 @@
       verifies it, and what the verifier returned. The value of such a matrix
       rests on an assumption that is rarely stated, which is that a row
       reporting an accepting outcome would have reported something else had the
-      protocol misbehaved.</t>
+      protocol misbehaved or the evidence could not settle the question.</t>
 
       <t>That assumption fails in two ways, and both produce the same printed
       result.</t>
@@ -62,15 +63,15 @@
       not help, because every observation is drawn from the same blind
       region.</t>
 
-      <t>In the second, the check reads the right material but the rejecting
-      input has never occurred. The rejection path is written down and may be
-      correct, but nothing has driven the check into it, so its accepting
-      results carry no information about what it would do with a rejecting
-      input.</t>
+      <t>In the second, the check reads the right material but an input leading
+      to a rejecting or unverifiable outcome has never occurred. The path is
+      written down and may be correct, but nothing has driven the check into it,
+      so its accepting results carry no information about what it would do with
+      that input.</t>
 
       <t>Neither failure is addressed by the presence of negative test vectors.
-      A suite can contain many and still contain checks whose rejecting outcome
-      has never occurred on the record. A vector's existence is not its
+      A suite can contain many and still contain checks whose rejecting or
+      unverifiable outcome has never occurred on the record. A vector's existence is not its
       execution, and a matrix that records outcomes does not record which
       outcomes were reachable.</t>
 
@@ -105,6 +106,21 @@
         <dd>The condition, stated by the specification or profile, under which a
         check returns an outcome classified as rejecting. An outcome classified
         as neither accepting nor rejecting is not a rejection path.</dd>
+        <dt>neither path:</dt>
+        <dd>The condition, stated by the specification or profile, under which a
+        check returns an outcome classified as neither accepting nor rejecting,
+        including a path to an <tt>unverifiable</tt> outcome.</dd>
+        <dt>exercise path:</dt>
+        <dd>A declared rejection path or neither path for which the profile
+        requires exercise evidence.</dd>
+        <dt>reachable-unexercised:</dt>
+        <dd>An exercise path for which the defined input domain contains a
+        reaching input, but no identified input in the exercise record produced
+        the path's outcome under the current check revision.</dd>
+        <dt>shadowed-unreachable:</dt>
+        <dd>An exercise path that no input in the defined input domain can reach
+        under the current check revision because an earlier rule or structural
+        precondition necessarily returns first.</dd>
         <dt>exercised:</dt>
         <dd>An input was supplied that produced the outcome in question, and
         both the input and the outcome are identified in the record.</dd>
@@ -179,13 +195,14 @@
       producing no useful output.</t>
     </section>
 
-    <section anchor="exr-1"><name>EXR-1: Exercised Rejection Path</name>
+    <section anchor="exr-1"><name>EXR-1: Exercised Rejection and Unverifiable Paths</name>
       <t>A specification or profile claiming conformance to EXR-1 and
       permitting a check to be reported as implemented under its
       exercise-evidence requirement <bcp14>MUST</bcp14> require that the
-      check's stated rejection path has been exercised by an input that
-      produced the rejecting outcome, and that the input and the resulting
-      outcome are identified in the record.</t>
+      check's declared exercise paths have each been exercised by an input that
+      produced the path's stated outcome, and that the input, the resulting
+      outcome, and the rule or condition reached are identified in the
+      record.</t>
 
       <t>A check whose outcomes have only ever held one value
       <bcp14>MUST NOT</bcp14> be reported as satisfying this exercise-evidence
@@ -207,14 +224,23 @@
       report that does not say which paths were exercised does not satisfy this
       requirement for any of them.</t>
 
+      <t>Each exercise record <bcp14>MUST</bcp14> name a stable rule or
+      condition identifier from the governing specification or profile. An
+      outcome token alone does not identify the rule or condition that fired
+      when more than one condition produces that outcome. Where multiple
+      conditions are reached, the record <bcp14>MUST</bcp14> identify each and
+      preserve the order needed to reproduce the reported result.</t>
+
       <t>Accepting and rejecting do not exhaust the outcomes a check may return. A
       check may report that the record could not settle the question, which is
       neither. Where a check has such an outcome the profile <bcp14>MUST</bcp14>
       classify each outcome as accepting, rejecting, or neither, and
-      <bcp14>MUST</bcp14> do so before the check is exercised. An outcome
-      classified as neither is exercised in its own right: it is exercised when an
-      input has produced it and some other input has produced a different outcome.
-      CMP-2 below returns such an outcome and is subject to this paragraph.</t>
+      <bcp14>MUST</bcp14> do so before the check is exercised. Where a check
+      specifies paths to outcomes classified as neither, including
+      <tt>unverifiable</tt>, EXR-1 applies to each declared path in the same way:
+      it is exercised when an input has produced that outcome and some other
+      input has produced a different outcome. CMP-2 below returns such an
+      outcome and is subject to this paragraph.</t>
 
       <t>EXR-1 does not grade an exercising input by who supplied it. An input
       supplied by the party reporting the result can satisfy EXR-1. For a
@@ -230,12 +256,13 @@
       check it was supplied to. Where the check changes, prior exercise
       <bcp14>MUST NOT</bcp14> be carried forward, and the record
       <bcp14>MUST</bcp14> identify the revision each exercising input was supplied
-      to. A check whose rejecting outcome was last observed under an earlier
+      to. A check whose non-accepting outcome was last observed under an earlier
       revision is unexercised for the current one.</t>
 
-      <t>For each declared rejection path, the exercise record
+      <t>For each declared exercise path, the exercise record
       <bcp14>MUST</bcp14> identify a discriminating pair under the same check
-      revision: one population expected to accept and one expected to reject.
+      revision: one population expected to accept and one expected to produce
+      the path's rejecting or neither outcome.
       The profile <bcp14>MUST</bcp14> state those expectations before the check
       is run, and the check <bcp14>MUST</bcp14> return the stated outcome on
       each. A check that returns the same outcome on both has not satisfied
@@ -305,12 +332,13 @@
     </section>
 
     <section anchor="exr-2"><name>EXR-2: Reporting an Unexercised Check</name>
-      <t>Where a check has not been exercised into its rejecting outcome, the
+      <t>Where a check has not been exercised into a declared exercise-path
+      outcome, the
       evaluator <bcp14>MUST NOT</bcp14> report that check as satisfying this
       document's implemented exercise-evidence condition. It
       <bcp14>MAY</bcp14> use implemented-unexercised as an EXR exercise
       annotation for a check with implementation evidence under another
-      profile, identifying the rejection path for which no exercising input
+      profile, identifying the exercise path for which no exercising input
       appears in the record. That annotation is not an upgrade to the other
       profile's implementation status.</t>
 
@@ -329,9 +357,10 @@
       unexercised.</t>
 
       <t>An absent declaration <bcp14>MUST NOT</bcp14> be treated as a statement
-      that no rejection path exists. A specification that means a check has no
-      reachable rejecting outcome <bcp14>MUST</bcp14> state that, because it is
-      a strong claim about the check and is itself reviewable.</t>
+      that no rejection or neither path exists. A specification that means a
+      check has no reachable non-accepting outcome <bcp14>MUST</bcp14> state
+      that, because it is a strong claim about the check and is itself
+      reviewable.</t>
 
       <t>implemented-unexercised does not by itself distinguish a check whose
       rejecting outcome is unreachable for every input the verifier can receive
@@ -340,8 +369,24 @@
       a profile can tell them apart it <bcp14>SHOULD</bcp14> report which, and
       where it cannot it <bcp14>MUST NOT</bcp14> imply either.</t>
 
+      <t>Where the profile establishes that an input in the defined domain can
+      reach the path, but the exercise record contains no such input, the
+      evaluator <bcp14>SHOULD</bcp14> report
+      <tt>reachable-unexercised</tt>. Where the specification's rule order and
+      input-domain constraints establish that an earlier rule necessarily
+      returns first, the evaluator <bcp14>SHOULD</bcp14> report
+      <tt>shadowed-unreachable</tt>. Absence from a sample establishes neither
+      classification.</t>
+
+      <t>A <tt>shadowed-unreachable</tt> report <bcp14>MUST</bcp14> identify the
+      shadowing rule and the rule or condition that cannot be reached. It
+      <bcp14>MUST NOT</bcp14> count the path as exercised or as measured
+      coverage. If the record cannot distinguish reachability from absence of
+      an exercising input, it <bcp14>MUST</bcp14> retain the broader
+      implemented-unexercised annotation.</t>
+
       <t>A report of implemented-unexercised <bcp14>SHOULD</bcp14> carry a
-      machine-readable reason identifying the unexercised rejection path, so that
+      machine-readable reason identifying the unexercised exercise path, so that
       two implementations can compare results without reading prose. A single
       token is not sufficient for cross-implementation diagnosis.</t>
 
@@ -349,7 +394,7 @@
       record does not establish that the check can reject, which is a different
       fact from a check that ran and rejected.</t>
 
-      <t>A check whose rejecting condition is not expected to arise in normal
+      <t>A check whose rejecting or unverifiable condition is not expected to arise in normal
       operation will hold implemented-unexercised indefinitely, and that is the
       intended reading rather than a defect in the requirement. A safety check
       that has never fired has not been shown to work; saying so is the point.
@@ -441,8 +486,8 @@
       condition is correctly specified, or that the accepting outcomes were
       correct.</t>
 
-      <t>An exercised rejection path establishes nothing about paths that were
-      not exercised. EXR-1 is a floor and is not a coverage claim.</t>
+      <t>An exercised path establishes nothing about paths that were not
+      exercised. EXR-1 is a floor and is not a coverage claim.</t>
 
       <t>implemented-unexercised is not evidence of a defect. A check may be
       correct, well specified, and simply never driven into its rejecting
@@ -464,6 +509,29 @@
 
       <t>None of these requirements reaches the correctness of an underlying
       protocol, the honesty of any party, or the security of any deployment.</t>
+    </section>
+
+    <section anchor="scope-and-venue"><name>Scope Relative to Agent Protocol and Audit Work</name>
+      <t>The protocol-facing obligation in this document is conditional. Where
+      an agent protocol, profile, or reference architecture relies on or exposes
+      a verifier result as evidence of coverage, it can require the result to
+      carry the exercise and completeness facts defined here. A protocol that
+      makes no such claim need not acquire an audit data model merely because
+      this document exists.</t>
+
+      <t>This document does not define an audit record, corpus-commitment
+      encoding, interaction-trace format, transport, or validation testbed.
+      Work concerned with how evidence records cross component or
+      administrative boundaries can define those mechanisms and use these
+      requirements as acceptance conditions. A protocol or architecture
+      document can state the dependency without defining the mechanism that
+      satisfies it.</t>
+
+      <t>This document does not assign either obligation to a working group and
+      does not claim adoption by AgentProto, AUDIT, or any other IETF group. It
+      states a separable requirements layer so that a group can adopt, profile,
+      reference, or decline it without treating the present individual
+      submission as a venue decision.</t>
     </section>
 
     <section anchor="adjacent"><name>Relationship to Adjacent Work</name>
@@ -624,6 +692,52 @@
       verified, and no interoperability between independent implementations
       is claimed for any requirement in this document.</t>
 
+      <t>Lars Kersten Kroehl published a separately authored report reader at
+      commit 6d8ee54b01d20a819869ceb9fcea096d59251f8c
+      <xref target="MOLTRUST-READER"/>. On 165 report objects the pinned reader
+      produced 82 accept, 28 reject, and 55 cannot-tell results. Twenty-five of
+      its rejections agreed with the upstream expected verdict; four of those
+      reached a different requirement line than the member name suggested.
+      The published selection includes a corpus digest, covered-member list,
+      and selection rule, making the boundary of that selected run inspectable.
+      It does not establish that the named checkers ran or that the supplied
+      report objects describe genuine underlying artifacts.</t>
+
+      <t>The present author reproduced that pinned run and published a bounded
+      audit at commit 635f3d57eb6f90fdf4c6945778020c34521be0a1
+      <xref target="MOLTRUST-AUDIT"/>. The package freezes 35 mutation
+      scenarios, including the baseline, and a separately written
+      specification-only reader. The latter rejects 34 cases and reports 131
+      as cannot-tell. Ten cases rejected by that reader are cannot-tell under
+      Kroehl's documented refusal policy; case-by-case adjudication finds eight
+      explicit contradictions or omissions whose mandatory-rejection policy is
+      disputed and two cases underdetermined by the source text. The audit does
+      not promote those disagreements into reader errors. The separately
+      written reader shares the present author's project control and is not a
+      second external evidence root.</t>
+
+      <t>Toshikatsu Oga applied EXR-1 and EXR-2 to the MUSUBI settle core and
+      froze the result at horizon-shield commit dd64d0e2
+      <xref target="MUSUBI-N17"/>, also described in
+      <xref target="I-D.oga-musubi-settlement"/>. Among the original 123
+      vectors, every one of ten deviation codes was produced, while 18 of 28 underspecified reasons
+      were produced and ten were not. The project added five vectors, yielding
+      128 vectors, drove two further paths through an in-memory exercise
+      script, and marked four specified reasons as shadowed by earlier contract
+      checks and therefore unreachable. The branch for more than 200000
+      verified headers remains unexercised. A separately written implementation
+      reproduces all 128 vectors, run by its author; nobody outside the MUSUBI
+      project has rerun the exercise script.</t>
+
+      <t>The MUSUBI result is an external appraisal of whether the requirements
+      in this document expose useful distinctions. It is not independent
+      verification of MUSUBI: the counts are outputs of the MUSUBI reference
+      implementation, and the added vectors and exercise script were produced
+      and run within that project. The result supports the distinction among
+      exercised, reachable-unexercised, and shadowed-unreachable paths without
+      establishing the correctness or completeness of the underlying
+      protocol.</t>
+
       <t>One consequence is worth stating rather than leaving to be derived. A
       profile with no independent omission-detection basis can identify its
       coverage domain but cannot demonstrate the accepting side of CMP-2 for a
@@ -645,7 +759,7 @@
       too little is often evident to an implementer, this information may be
       more available to an adversary than to a reviewer.</t>
 
-      <t>Reporting implemented-unexercised discloses that a rejection path is
+      <t>Reporting implemented-unexercised discloses that an exercise path is
       untested, and profiles should weigh that. The alternative is that the same
       fact remains true and is not written down, which does not reduce the
       exposure and removes the relying party's ability to account for it.</t>
@@ -686,6 +800,29 @@
         <author initials="Y." surname="Sheffer"/><author initials="A." surname="Farrel"/>
         <date year="2016" month="July"/></front>
         <seriesInfo name="BCP" value="205"/><seriesInfo name="RFC" value="7942"/>
+      </reference>
+      <reference anchor="I-D.oga-musubi-settlement" target="https://datatracker.ietf.org/doc/draft-oga-musubi-settlement/">
+        <front><title>MUSUBI Settlement: Recomputing Whether an Agent Acted Within a Signed Grant</title>
+        <author initials="T." surname="Oga"/><date year="2026" month="October"/></front>
+        <seriesInfo name="Internet-Draft" value="draft-oga-musubi-settlement-01"/>
+      </reference>
+      <reference anchor="MOLTRUST-READER" target="https://github.com/MoltyCel/reporting-format-v01-reader/tree/6d8ee54b01d20a819869ceb9fcea096d59251f8c">
+        <front><title>Reporting Format v0.1 Reader, frozen-run-1</title>
+        <author fullname="Lars Kersten Kroehl" initials="L. K." surname="Kroehl"/>
+        <date year="2026" month="October"/></front>
+        <seriesInfo name="Git commit" value="6d8ee54b01d20a819869ceb9fcea096d59251f8c"/>
+      </reference>
+      <reference anchor="MOLTRUST-AUDIT" target="https://github.com/Silentpartnercoding/agent-security-verifier-matrix/tree/635f3d57eb6f90fdf4c6945778020c34521be0a1/experiments/moltrust-reader-audit-001">
+        <front><title>MolTrust v0.1 Reader Audit</title>
+        <author fullname="James Siyuan He" initials="J. S." surname="He"/>
+        <date year="2026" month="October"/></front>
+        <seriesInfo name="Git commit" value="635f3d57eb6f90fdf4c6945778020c34521be0a1"/>
+      </reference>
+      <reference anchor="MUSUBI-N17" target="https://github.com/ogasurfproject-jpg/horizon-shield/tree/dd64d0e2/workers/hs-ledger/nenrin/musubi-v0/settle-core-v0">
+        <front><title>MUSUBI Settle Core v0 Exercise Record, N17</title>
+        <author fullname="Toshikatsu Oga" initials="T." surname="Oga"/>
+        <date year="2026" month="October"/></front>
+        <seriesInfo name="Git commit" value="dd64d0e2"/>
       </reference>
       <reference anchor="I-D.wadkins-agentproto-action-determinability" target="https://datatracker.ietf.org/doc/draft-wadkins-agentproto-action-determinability/">
         <front><title>Independent Determinability of Agent Actions</title>
@@ -792,6 +929,42 @@
         incorrect, because that record does not establish the omission.</t>
         <t>This vector is due to Iman Schrock.</t>
       </section>
+
+      <section anchor="v5"><name>One Outcome Token, Two Rules</name>
+        <t>Construct two inputs that produce the same non-accepting outcome
+        token through two different rules. Publish an exercise record containing
+        only the input identifiers and shared outcome token.</t>
+        <t>Expected under EXR-1: the record does not establish which rule or
+        condition fired for either input. A conforming record identifies the
+        governing rule or condition for each result even though the outcome
+        token is unchanged.</t>
+      </section>
+
+      <section anchor="v6"><name>Path Shadowed by an Earlier Rule</name>
+        <t>Define a later rule that is evaluated only after an earlier rule
+        accepts, while making the later rule's stated condition imply that the
+        earlier rule rejects. Supply inputs satisfying the later condition.</t>
+        <t>Expected under EXR-2: every such input returns at the earlier rule.
+        The later path is reported <tt>shadowed-unreachable</tt>, with both rules
+        identified. It is not counted as exercised, and absence of its outcome
+        is not reported merely as reachable-unexercised.</t>
+      </section>
+    </section>
+
+    <section anchor="changes-01"><name>Changes from -00</name>
+      <ul>
+        <li>Expanded exercise accounting from rejecting outcomes to declared
+        paths producing rejecting or neither outcomes, including
+        <tt>unverifiable</tt>.</li>
+        <li>Required the exercise record to identify the rule or condition
+        reached rather than relying on an outcome token alone.</li>
+        <li>Distinguished reachable-but-unexercised paths from paths made
+        unreachable by an earlier rule or structural precondition.</li>
+        <li>Stated the conditional protocol-facing requirement separately from
+        audit-record formats, corpus commitments, transports, and testbeds.</li>
+        <li>Added bounded MolTrust and MUSUBI implementation evidence and its
+        limitations.</li>
+      </ul>
     </section>
 
     <section anchor="ack" numbered="false"><name>Acknowledgments</name>
@@ -813,6 +986,19 @@
       counts as demonstrated only when a party controlling neither end reaches
       the same verdict using an implementation sharing no code with the
       proposer.</t>
+
+      <t>Lars Kersten Kroehl supplied the frozen report-reader case, identified
+      the need to retain the rule that fired, and published the corpus digest,
+      covered-member list, and selection rule used in the run.</t>
+
+      <t>Toshikatsu Oga applied the EXR requirements to MUSUBI, published the
+      resulting vectors and exercise record at an immutable commit, and stated
+      the remaining unexercised and rerun limits.</t>
+
+      <t>Orie Steele asked that the draft state how its protocol-facing
+      requirement differs from the mechanisms and records considered in audit
+      work. <xref target="scope-and-venue"/> is the author's answer; it does not
+      imply Orie's agreement with that boundary.</t>
 
       <t>Acknowledgment does not imply endorsement of this document.</t>
     </section>
