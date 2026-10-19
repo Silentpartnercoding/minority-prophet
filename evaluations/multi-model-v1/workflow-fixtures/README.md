@@ -70,6 +70,24 @@ No customer savings, statistical generalization, or market demand established.
 
 ## Next experiment, if pursued
 
+### Adapter correction (development regression only)
+
+The original result above and `mp_root_vote_composition` remain unchanged as a
+historical failed ablation (original commit `517faf33bc97d700c666a55e6cd12e076c655cd8`).
+The corrected `mp_shared_policy` lane uses the **same** `rules()` decision as
+the baseline. MP's actual root-vote output is recorded separately in
+`mp_evidence`, including root sets, conflicts and unknown provenance; it cannot
+override the workflow rule. The majority-conflict case therefore returns REVIEW
+even while the diagnostic root vote is true. Repeated declared roots collapse
+in the diagnostic, but declared IDs do not authenticate independence.
+
+On these already-seen fixtures both current lanes score 14/15, with zero wrong
+approvals and one unnecessary review of narrative-only input. This tie is by
+construction: it verifies the policy boundary, **not added decision value from
+MP**. Text extraction remains absent. No inputs or reference labels were changed.
+These are post-result development regressions, not a new confirmatory run.
+Establishing incremental value requires the fresh evaluation described below.
+
 1. Select an actual anonymized workflow with its owner. Establish correct
    decisions from its policy and authoritative records, not model agreement.
 2. Separate development from a newly frozen, unseen evaluation set. Freeze

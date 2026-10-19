@@ -106,3 +106,32 @@ def test_reference_changes_cannot_change_contestant_predictions():
         assert first["lanes"][name]["cases"][0]["actual"] == second["lanes"][name]["cases"][0]["actual"]
     assert first["input_sha256"] == second["input_sha256"]
     assert first["reference_sha256"] != second["reference_sha256"]
+
+
+def test_mp_evidence_cannot_override_shared_conflict_policy():
+    w = load()
+    evidence = [{"root_id": r, "approved": True, "at": 99} for r in ["a", "b"]]
+    evidence += [{"root_id": "c", "approved": False, "at": 99}]
+    result = w.mp_policy_assessment(packet(evidence=evidence))
+    assert result["decision"] == "REVIEW"
+    assert result["evidence"]["root_vote"] == "true"
+    assert result["evidence"]["grants_authority"] is False
+
+
+def test_mp_reports_copies_without_inventing_independence():
+    w = load()
+    row = {"root_id": "a", "approved": True, "at": 99}
+    result = w.mp_policy_assessment(packet(evidence=[row] * 20))
+    assert result["decision"] == "ALLOW"
+    assert result["evidence"]["positive_roots"] == ["a"]
+    assert result["evidence"]["weakest_basis"] == "unknown"
+
+
+def test_corrected_lane_scores_shared_policy_and_retains_adverse_lane():
+    w = load()
+    evidence = [{"root_id": r, "approved": True, "at": 99} for r in ["a", "b"]]
+    evidence += [{"root_id": "c", "approved": False, "at": 99}]
+    report = w.run([packet(evidence=evidence)], {"test": "REVIEW"})
+    assert report["lanes"]["mp_shared_policy"]["wrong_approvals"] == 0
+    assert report["lanes"]["mp_root_vote_composition"]["wrong_approvals"] == 1
+    assert report["mp_evidence"]["test"]["root_vote"] == "true"

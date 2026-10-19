@@ -72,12 +72,32 @@ def rules(packet):
 
 
 def mp_composition(packet):
+    """Historical failed composition, retained only as an adverse ablation."""
     early, rows = prepared(packet)
     if early:
         return early
     result = verdict([SimpleNamespace(root_id=r["root_id"], value=r["approved"])
                       for r in rows])
     return {"true": "ALLOW", "false": "HOLD", "abstain": "REVIEW"}[result.verdict.value]
+
+
+def mp_policy_assessment(packet):
+    """Shared workflow policy decides; MP reports evidence, never permission."""
+    decision = rules(packet)
+    early, rows = prepared(packet)
+    evidence = {"status": "not_assessed", "grants_authority": False}
+    if early is None:
+        result = verdict([SimpleNamespace(root_id=r["root_id"], value=r["approved"])
+                          for r in rows])
+        evidence.update({
+            "status": "assessed", "root_vote": result.verdict.value,
+            "positive_roots": sorted(result.support_true),
+            "negative_roots": sorted(result.support_false),
+            "conflicting_roots": sorted(result.conflicting_roots),
+            "weakest_basis": result.weakest_basis,
+            "notes": list(result.notes),
+        })
+    return {"decision": decision, "evidence": evidence}
 
 
 def score(packets, reference, predictions):
@@ -113,6 +133,8 @@ def run(packets, reference):
     # Finish predictions before the reference is consulted by the scorer.
     predictions = {name: {p["id"]: method(copy.deepcopy(p)) for p in packets}
                    for name, method in [("ordinary_rules", rules), ("mp_root_vote_composition", mp_composition)]}
+    assessments = {p["id"]: mp_policy_assessment(copy.deepcopy(p)) for p in packets}
+    predictions["mp_shared_policy"] = {key: value["decision"] for key, value in assessments.items()}
     return {
         "classification": "exploratory_synthetic_not_confirmatory",
         "control_domain": "same_operator_builder_runner_reviewer",
@@ -121,6 +143,10 @@ def run(packets, reference):
         "source_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
                           for path in [Path(__file__), ROOT / "aggregation/root_vote.py", ROOT / "aggregation/independence_axes.py"]},
         "lanes": {name: score(packets, reference, answers) for name, answers in predictions.items()},
+        "mp_evidence": {key: value["evidence"] for key, value in assessments.items()},
+        "lane_roles": {"ordinary_rules": "shared_policy_baseline",
+                       "mp_shared_policy": "shared_policy_with_non_authorizing_evidence",
+                       "mp_root_vote_composition": "historical_failed_ablation_not_current_adapter"},
         "external_lanes": {name: {"status": "not_run"} for name in ["Jev", "OpenJev", "frontier_model"]},
         "claims": "Development fixtures only; no deployment authority, independent validation, or general superiority claim.",
     }
