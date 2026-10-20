@@ -1,7 +1,9 @@
 import hashlib
 import json
+import os
 import pathlib
 import subprocess
+import textwrap
 
 from scripts.check_research_integrity import (
     check,
@@ -270,6 +272,48 @@ def test_ci_runs_imported_evaluation_with_full_history():
     assert "evaluation:" in workflow
     assert "fetch-depth: 0" in workflow
     assert "make verify-evaluation" in workflow
+
+
+def _ci_run_script(step_name):
+    workflow = pathlib.Path(".github/workflows/ci.yml").read_text()
+    step = workflow.split(f"      - name: {step_name}\n", 1)[1]
+    block = step.split("        run: |\n", 1)[1].split("\n      - ", 1)[0]
+    return textwrap.dedent(block)
+
+
+def test_ci_manual_dispatch_has_a_real_comparison_base(tmp_path):
+    root, base = _repo(tmp_path)
+    _write(root / "README.md", "second revision\n")
+    _commit(root, "head")
+    script = _ci_run_script("Select trusted comparison base")
+    for event, expected in (("pull_request", "a" * 40), ("push", "b" * 40),
+                            ("workflow_dispatch", base)):
+        output = tmp_path / f"{event}.out"
+        expanded = (script.replace("${{ github.event_name }}", event)
+                    .replace("${{ github.event.pull_request.base.sha }}", "a" * 40)
+                    .replace("${{ github.event.before }}", "b" * 40))
+        subprocess.run(
+            ["bash", "-eu", "-c", expanded], cwd=root, check=True,
+            env={"PATH": os.environ["PATH"], "GITHUB_OUTPUT": str(output)},
+        )
+        assert output.read_text().strip() == f"base={expected}"
+
+
+def test_ci_retains_failed_demo_output_and_nonzero_status(tmp_path):
+    source = tmp_path / "source"
+    source.mkdir()
+    root, _ = _repo(source)
+    _write(root / "Makefile", "demo:\n\t@echo 'FAIL: injected regression'\n\t@exit 7\n")
+    _commit(root, "failing demo")
+    runner = tmp_path / "runner"
+    runner.mkdir()
+    result = subprocess.run(
+        ["bash", "-c", _ci_run_script("Run advertised demo from a fresh clone of the tested revision")],
+        cwd=root, capture_output=True, text=True,
+        env={"PATH": os.environ["PATH"], "GITHUB_WORKSPACE": str(root), "RUNNER_TEMP": str(runner)},
+    )
+    assert result.returncode != 0
+    assert "FAIL: injected regression" in (runner / "demo-output.txt").read_text()
 
 
 def test_ci_runs_canonical_model_reconciliation():
