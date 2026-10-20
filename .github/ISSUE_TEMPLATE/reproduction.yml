@@ -1,0 +1,52 @@
+name: Reproduction report
+description: Report a pinned MP rerun, failure, or separately implemented check.
+title: "Reproduction: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read docs/CHECK.md and REPRODUCTIONS.md first. Report the exact scope you ran.
+        A report is evidence to review, not automatic validation. Never include secrets.
+  - type: input
+    id: reproducer
+    attributes:
+      label: Name or public handle (organization optional)
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Full commit SHA and clean or modified worktree
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: UTC date, OS/architecture, and Python or Lean version
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope executed
+      options:
+        - Supplied make demo (bounded checks)
+        - Lean build and/or axiom audit
+        - Separately written implementation
+        - Another explicitly described check
+    validations:
+      required: true
+  - type: textarea
+    id: execution
+    attributes:
+      label: Exact command, complete output, and exit code
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: provenance
+    attributes:
+      label: Changes, reused code, and relationship to the project
+      description: Describe any modifications and operator relationship; say unknown where appropriate.
+    validations:
+      required: true

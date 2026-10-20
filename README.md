@@ -1,10 +1,38 @@
 # Minority Prophet
 
-<!-- mp-status: {"id":"repository-readme","class":"current","asOf":"2026-09-19","replacement":null,"immutable":false,"theorems":["T2","DR1","DR2","DR3","U1"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
+<!-- mp-status: {"id":"repository-readme","class":"current","asOf":"2026-10-19","replacement":null,"immutable":false,"theorems":["T1","T2","DR1","DR2","DR3","U1"],"researchRecords":[],"describesMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"],"recommendedMechanisms":["recorded_graph_roots","bounded_root_issuance","recorded_dependence_robust_settlement"]} -->
 
-**Count attributable support, not repeated claims.**
+**For side-consistent claim graphs with unchanged assertions and the same root
+set, changing non-root lineage cannot change the root-counting verdict.**
 
-![Minority Prophet: truth is not popularity](public/og.png)
+Run the offline illustration and bounded checks (Git, Make, Python 3.11+):
+
+```bash
+git clone https://github.com/Silentpartnercoding/minority-prophet.git
+cd minority-prophet
+make demo
+```
+
+Expected summary, alongside the commit SHA, worktree state, UTC time, and individual checks:
+
+```text
+PASS: 3 citations resolve to 1 declared root (constructed fixture)
+PASS: bounded immunity checks and negative controls (6 checks)
+```
+
+[Paper PDF v1.2.0](output/pdf/minority-prophet-peer-review-v1.2.0.pdf) ·
+[Formal proof and assumptions](formal/PROOFS.md) ·
+[Exact check and failure conditions](docs/CHECK.md) ·
+[Report a reproduction](REPRODUCTIONS.md)
+
+[![CI](https://github.com/Silentpartnercoding/minority-prophet/actions/workflows/ci.yml/badge.svg)](https://github.com/Silentpartnercoding/minority-prophet/actions/workflows/ci.yml)
+
+No setup, credentials, model calls, or network access are needed after cloning.
+Lineage accuracy among non-roots is not load-bearing; root integrity and side
+separation are, with assertions fixed. The citation illustration supplies its
+root IDs explicitly. The bounded checks exercise existing forest-model tests
+and negative controls; the general DAG theorem requires the separate Lean build.
+They establish neither provenance recovery nor real-world truth.
 
 Five agents repeating one source are still one source. Minority Prophet is a
 research project, benchmark, and deterministic evidence-structure engine for
@@ -69,38 +97,15 @@ the decision-relevant independence cut did not beat every fixed cut in its
 preregistered test. See [Evidence status](docs/evidence/STATUS.md)
 and [Public claims](PUBLIC-CLAIMS.md) before quoting results.
 
-## Try it
+## Further use
 
-```bash
-git clone https://github.com/Silentpartnercoding/minority-prophet.git
-cd minority-prophet
-python -m pip install .
-python -m benchmark --worlds 500 --seed 7
-python -m experiments.los_inspired_v01
-```
+Benchmark, read-only MCP/HTTP engine, full verification, and Node setup commands
+are in [Using Minority Prophet](docs/use/README.md). These serve different tasks;
+none is required for the headline demo.
 
-That prints the baselines and the evidence-root verdict side by side, with a
-`reading` block explaining why the baselines score zero.
-
-Anything JavaScript needs **Node 22 or newer**, pinned in `.nvmrc` and matching
-CI. On an older Node the site tests fail with a confusing `glob` import error
-rather than a version message:
-
-```bash
-nvm use          # reads .nvmrc
-```
-
-For the read-only MCP/HTTP engine:
-
-```bash
-npm --prefix evaluations/multi-model-v1 install
-MP_ENGINE_ALLOW_INSECURE_LOCAL=1 \
-  npm --prefix evaluations/multi-model-v1 exec mp-engine -- doctor
-```
-
-The runtime assesses evidence structure only. Installation never authorizes an
-agent to perform protected actions. Full setup, API, and verification commands
-are in [Using Minority Prophet](docs/use/README.md).
+For the separate protocol-mapping artifact, see the
+[verifier matrix's pinned-source rerun](https://github.com/Silentpartnercoding/agent-security-verifier-matrix#run).
+Its results and external reproductions do not validate MP's immunity theorem.
 
 ## Research discipline
 

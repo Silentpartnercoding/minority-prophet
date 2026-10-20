@@ -94,9 +94,11 @@ than its sources.
 - Finite verification is `verified_finite` — exhaustive over a bounded domain.
   It is **not** a proof of the universally quantified statement, and the ledger
   keeps the two statuses distinct for exactly that reason.
-- Nothing here has been independently reproduced except where
-  `research/knowledge-ledger/EXTERNAL-REPRODUCTIONS.json` records it, with what
-  each reproduction does **not** discharge.
+- Accepted external-reproduction evidence is indexed in
+  `research/knowledge-ledger/EXTERNAL-REPRODUCTIONS.json`, with what each
+  reproduction does **not** discharge. The historical Christopher He credit is
+  [unresolved against that registry](docs/evidence/REPRODUCTION-STATUS.md);
+  absence of an entry is not evidence that no verification work occurred.
 
 ---
 

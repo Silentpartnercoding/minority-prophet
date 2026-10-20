@@ -355,11 +355,11 @@
       "id": "repository-readme",
       "path": "README.md",
       "class": "current",
-      "asOf": "2026-09-19",
+      "asOf": "2026-10-19",
       "replacement": null,
       "immutable": false,
       "statusBanner": true,
-      "theorems": ["T2", "DR1", "DR2", "DR3", "U1"],
+      "theorems": ["T1", "T2", "DR1", "DR2", "DR3", "U1"],
       "researchRecords": [],
       "describesMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"],
       "recommendedMechanisms": ["recorded_graph_roots", "bounded_root_issuance", "recorded_dependence_robust_settlement"]

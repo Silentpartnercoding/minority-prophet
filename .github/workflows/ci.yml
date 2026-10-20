@@ -2,6 +2,7 @@ name: ci
 
 on:
   pull_request:
+  workflow_dispatch:
   push:
     branches: [main]
 
@@ -9,6 +10,33 @@ permissions:
   contents: read
 
 jobs:
+  demo:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run advertised demo from a fresh clone of the tested revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Clone the checked-out PR/push revision, not a potentially older main.
+          git clone --no-local "$GITHUB_WORKSPACE" "$RUNNER_TEMP/minority-prophet"
+          cd "$RUNNER_TEMP/minority-prophet"
+          make demo DEMO_PYTHON=python 2>&1 | tee "$RUNNER_TEMP/demo-output.txt"
+      - name: Preserve dated demo receipt (including failures)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-output-python-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/demo-output.txt
+          if-no-files-found: error
+
   public-boundary:
     runs-on: ubuntu-latest
     steps:
@@ -24,8 +52,10 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
-          else
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
             echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=$(git rev-parse HEAD^)" >> "$GITHUB_OUTPUT"
           fi
       - name: Check newly added public material
         env:
