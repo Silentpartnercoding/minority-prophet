@@ -1,9 +1,8 @@
 # BLK-101 — a public blocklist is a directory of what is worth hiding
 
-Audit prompted by the owner: *"whats these block lists exposing what should be
-blocked is there any more of that please audit."* Repaired in the same change,
-because the repair is small and leaving a disclosure recorded-but-live would be
-worse than the disclosure.
+This audit checks whether a public blocklist exposes the material it is intended
+to protect. The repair landed with the finding because leaving a known
+disclosure active would have been worse than making the small correction.
 
 ## The class
 
@@ -108,9 +107,10 @@ falls to a wordlist immediately. The genuinely distinctive terms -- a coined
 component name, an internal tooling name -- are the ones the digest set protects
 usefully.
 
-**BL-052 — owner decision, 2026-08-08: "generic english does not belong".**
-Five inherited entries were ordinary business English and are removed. Two more
-were hyphenated variants the matcher can never reach — it tokenises on word
+**BL-052 — owner decision, 2026-08-08.** Generic English is outside this
+blocklist's scope. Five inherited entries were ordinary business English and
+are removed. Two more were hyphenated variants the matcher can never reach—it
+tokenises on word
 characters, so the one-word digest already covered them; they were dead weight
 that made the list look larger than its coverage.
 

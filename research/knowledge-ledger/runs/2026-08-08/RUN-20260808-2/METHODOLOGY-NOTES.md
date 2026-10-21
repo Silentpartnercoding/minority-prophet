@@ -1,10 +1,10 @@
 # Methodology notes — RUN-20260808-2
 
-## M29 — a finding that exists only in conversation is not recorded
+## M29 — a finding outside the record is not recorded
 
-The owner asked "did you log these findings to github". The answer was no. The
-BL-044 result -- the answer to the program's sharpest open question -- existed
-only in a working directory outside the repository and in an owner conversation.
+A record-integrity check found that the BL-044 result—the answer to the
+program's sharpest open question—existed only in a working directory outside
+the repository.
 `BL-044` appeared in eight files on the published branch, every one of them the
 commission rather than the answer.
 

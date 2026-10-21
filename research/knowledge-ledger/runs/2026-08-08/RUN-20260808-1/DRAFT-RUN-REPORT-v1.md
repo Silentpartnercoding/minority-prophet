@@ -1,11 +1,11 @@
 # RUN-20260808-1 — draft run report
 
-Short run, three recording tasks and one commission, all owner-directed.
+Short run with three recording tasks and one commission.
 
 ## (a) XRP-101 recorded — `research/knowledge-ledger/FINDING-XRP-101.md`
 
-The cross-repository alignment check the owner asked for had run outside the run
-system and existed only as merged pull requests. Now recorded with evidence
+The cross-repository alignment check had run outside the run system and existed
+only as merged pull requests. It is now recorded with evidence
 regenerated at write time (`logs/xrp101-evidence.txt`): 77 configurations, all
 three implementations agreeing 77/77 on all three compared quantities after the
 repair, and the pre-repair divergence stated in the terms that matter — Gate

@@ -33,10 +33,9 @@ This program ends with a genuine cross-implementation reproduction and with
 its two decisions unenforced and its largest ambiguity (A2, 19,152 worlds)
 undecided. The final record states all three with equal prominence, because
 the reader who inherits this work needs the gaps more than the pass: the
-pass cannot be un-passed, but the gaps can be silently inherited. "A final
-report that records an unenforced decision and an undecided ambiguity is
-worth more than one that reads as completion" — the owner's sentence, and
-the operating rule for every future close-out.
+pass cannot be un-passed, but the gaps can be silently inherited. The operating
+rule for every future close-out is therefore to value an honest account of
+unenforced decisions and unresolved ambiguity over a narrative of completion.
 
 ## M21 — Projected verification values are labelled as projections until executed
 

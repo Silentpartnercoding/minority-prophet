@@ -6,7 +6,7 @@ computed, not transcribed.
 
 ## Why this exists
 
-The owner asked whether Gate, Border and the research repository agree. Three
+This audit asks whether Gate, Border and the research repository agree. Three
 codebases carry the same quantities: this repository's reference aggregator
 (`aggregation/root_vote.py`), the knowledge-ledger evaluator
 (`knowledge_ledger/transaction.py`), and the Gate product
@@ -106,7 +106,7 @@ boolean is not worth spending that.
 
 ## Honest note on how this was found
 
-Not by the run system. RUN-10 had closed; the check ran in an owner conversation
+Not by the run system. RUN-10 had closed; the check ran outside the recorded run
 and its result existed only as merged pull requests in two product repositories
-until this run recorded it. The finding is real and the repair is landed, but the
-program did not surface it — a direct owner question did.
+until this run recorded it. The finding and repair are real, but the program did
+not surface them on its own.

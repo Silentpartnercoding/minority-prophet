@@ -1,11 +1,9 @@
 # The defect-class taxonomy question, and why most of it dissolves
 
-Recorded 2026-08-09, prompted by the owner asking: *"isn't there the risk they
-identified different bugs still... why can't they normalize their finding? What
-is the more integrity path"*.
-
-Both halves of that were right, and the recommendation they were responding to
-was worse than it needed to be.
+Recorded 2026-08-09 to resolve whether two scanners can report different bugs
+at the same location and whether their findings can be normalized without
+silently merging distinct defects. The recommendation under review was worse
+than it needed to be.
 
 ## The recommendation that was wrong
 

@@ -70,6 +70,45 @@ def test_allows_public_technical_language():
     assert violations(lines) == []
 
 
+def test_rejects_private_conversation_capture_without_repeating_private_text():
+    """Public research may record a decision, but not the surrounding chat.
+
+    The fixtures are invented.  The regression must protect the class without
+    copying an owner's real words into the test that protects them.
+    """
+    lines = [
+        ("research/run.md", 1, "Owner instruction, verbatim: an invented example"),
+        ("research/run.md", 2, "Mid-run operator message, transcribed in the report"),
+        ("research/run.md", 3, 'The owner asked "an invented question"'),
+        ("research/run.md", 4, "The finding existed only in an owner conversation"),
+        ("research/run.md", 5, "Mid-run operator message: an invented example"),
+        ("research/run.md", 6, 'Audit prompted by the owner: "an invented example"'),
+        ("research/run.md", 7, 'Recorded, prompted by the owner asking: "an invented question"'),
+    ]
+    results = violations(lines)
+    assert len([result for result in results if "private conversation capture" in result]) == 7
+
+
+def test_research_tree_contains_no_private_conversation_capture():
+    root = pathlib.Path(__file__).resolve().parents[1] / "research"
+    lines = []
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        try:
+            content = path.read_text()
+        except (UnicodeDecodeError, OSError):
+            continue
+        relative = str(path.relative_to(root.parent))
+        lines.extend((relative, number, line)
+                     for number, line in enumerate(content.splitlines(), 1))
+
+    captures = [result for result in violations(lines)
+                if "private conversation capture" in result]
+    message = "public research records must be technical records, not chat transcripts:\n"
+    assert captures == [], message + "\n".join(captures)
+
+
 SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "scripts/check_public_boundary.py"
 
 

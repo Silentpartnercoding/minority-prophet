@@ -3,10 +3,9 @@
 **Post-close addendum to RUN-20260807-3.** After the closing packet was
 committed (`252bfb0`), the owner ratified R5.2.
 
-Owner instruction, verbatim (agent-transcribed, same capture caveat as all
-prompt text this run):
-
-> Ratify absolute
+Decision record: before the independent commission ran, the owner ratified the
+absolute-difference interpretation. The decision is preserved here; the private
+wording that conveyed it is not part of the public research record.
 
 ## What this changes
 

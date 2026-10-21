@@ -29,6 +29,19 @@ RULES = (
     Rule("Bearer credential", re.compile(r"\bBearer\s+[A-Za-z0-9._~-]{24,}\b", re.IGNORECASE), "remove and rotate the credential"),
     Rule("assigned secret", re.compile(r"\b(?:api[_-]?key|client[_-]?secret|access[_-]?token|auth[_-]?token|password)\s*[:=]\s*['\"]?[A-Za-z0-9._~+/=-]{24,}['\"]?", re.IGNORECASE), "replace the value with an obvious placeholder and rotate any real credential"),
     Rule("local user path", re.compile(r"(?<![A-Za-z0-9._~-])/(?:Users|home)/[^/\s'\"`]+/"), "replace it with a repository-relative or generic path"),
+    Rule(
+        "private conversation capture",
+        re.compile(
+            r"(?:\b(?:owner|operator)(?:'s)?\s+(?:instruction|message|principle)\b[^\n]{0,120}\b(?:verbatim|transcrib(?:ed|tion)|quoted)\b"
+            r"|\b(?:verbatim|transcrib(?:ed|tion)|quoted)\b[^\n]{0,120}\b(?:owner|operator)(?:'s)?\s+(?:instruction|message|conversation|principle)\b"
+            r"|\b(?:owner|operator)\s+(?:asked|said)\b[^\n]{0,80}[\"“]"
+            r"|\bin an owner conversation\b"
+            r"|\bmid-run operator message\b"
+            r"|\bprompted by the owner(?:\s+asking)?\b[^\n]{0,40}[\"“])",
+            re.IGNORECASE,
+        ),
+        "retain the technical decision and provenance, but remove private conversational wording",
+    ),
 )
 
 # --- Sensitive vocabulary, matched by digest -------------------------------

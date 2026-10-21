@@ -7,7 +7,7 @@ protocol v1. This draft records the design rationale and is not itself pinned.
 
 Every DRI experiment so far assumed a truthful lookup. When the tiered rule cannot
 settle robustly it looks, then settles on whatever the lookup reports. Imperfect
-lookups were deferred at DRI-3 by owner decision. On 2026-09-15 the owner asked
+lookups were deferred at DRI-3 by owner decision. The 2026-09-15 follow-on asks
 whether imperfect lookups do anything other than cost time.
 
 They can change correctness, not only time. A lookup that misses a dependence

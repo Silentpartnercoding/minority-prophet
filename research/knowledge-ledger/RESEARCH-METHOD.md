@@ -58,6 +58,9 @@ Each run must write a manifest containing prompt digest, model and tool versions
 repository commit, dirty-worktree state, environment lock, start/end timestamps,
 inputs, outputs, stdout/stderr, tests, hashes, and every human intervention.
 Secrets and private data are referenced by opaque identifiers and never committed.
+Public run inputs are normalized technical briefs, not transcripts of private
+operator correspondence. When exact private bytes matter to provenance, record
+an opaque digest and retain the source only in an access-controlled archive.
 
 ## Reproduction and independent verification
 

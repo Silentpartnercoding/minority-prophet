@@ -15,9 +15,10 @@ One record can come from two groupings that settle differently. So no rule that
 reads only the lineage record can be immune. Immunity needs an observable the loss
 does not remove.
 
-The owner asked, on 2026-09-15, for the engine to catch missing pages. DRI-5 tests
-the most direct candidate: a **content fingerprint**. Copies of one source usually
-repeat its content even when the lineage record forgets they are copies.
+The 2026-09-15 design requirement was for the engine to catch missing pages.
+DRI-5 tests the most direct candidate: a **content fingerprint**. Copies of one
+source usually repeat its content even when the lineage record forgets they are
+copies.
 
 ## 2. Questions
 

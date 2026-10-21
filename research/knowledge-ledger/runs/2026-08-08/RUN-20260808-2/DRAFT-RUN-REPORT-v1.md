@@ -1,12 +1,12 @@
 # RUN-20260808-2 — draft run report
 
-A logging run, opened because the answer to "did you log these findings to
-github" was no.
+A logging run opened after a record-integrity check found that several findings
+had not entered the repository.
 
 ## What was unrecorded
 
-**BL-044's result** — the answer to the program's sharpest open question — lived
-only in a working directory outside the repository and in an owner conversation.
+**BL-044's result**—the answer to the program's sharpest open question—lived
+only in a working directory outside the repository.
 `BL-044` appeared in eight files on the published branch; every one was the
 commission, none the answer.
 

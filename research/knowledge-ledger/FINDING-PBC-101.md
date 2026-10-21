@@ -50,11 +50,11 @@ not hypothetical: it is demonstrated by the check's own output on the commit tha
 documents it — and the fact that the real values then sat on public main until a
 later sweep is the cost of demonstrating a leak with a live example.
 
-## Gap 2 — the term the owner named is not on the list
+## Gap 2 — a designated never-public term is not on the list
 
 The rule carries a short list of internal-strategy phrases. It does not include
-the internal tooling term the owner has explicitly said must never appear in
-public — the term that had to be redacted from a run brief on 2026-08-07 before
+the internal tooling term designated never-public—the term that had to be
+redacted from a run brief on 2026-08-07 before
 publication. A sentence naming that toolbox was measured as **allowed**.
 
 The phrases the rule *does* carry are deliberately not quoted here; see

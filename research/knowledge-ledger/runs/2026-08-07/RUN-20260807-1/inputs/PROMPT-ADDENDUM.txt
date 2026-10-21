@@ -1,15 +1,9 @@
-Mid-run operator message, received during RUN-20260807-1 orientation, after the
-agent had fetched remotes and before the KL-000 preregistration was written.
-Transcribed by the executing agent from its run context (see
-PROMPT-CAPTURE-NOTE.md for the limits of that transcription).
+# RUN-20260807-1 — technical addendum
 
----
-
-One thing worth telling it, since it's mid-run: github/main is at 335b34e and
-the base is 887bd2f, so the divergence is real and should go in the run's
-constraints file rather than being quietly rebased away.
-
----
+During orientation, after remotes were fetched and before the KL-000
+preregistration was written, the run received a provenance correction:
+`github/main` was at `335b34e` and the base was `887bd2f`. The divergence was to
+be recorded in the constraints rather than removed by rebasing.
 
 Agent disposition: accepted and acted on. The divergence was independently
 verified (`git rev-list --left-right --count 335b34e...887bd2f` -> `2 2`) and

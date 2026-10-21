@@ -51,7 +51,7 @@ is real and is registered as a **secondary** endpoint with a labelling protocol,
 an agreement threshold fixed in advance, and an unassignable path if agreement
 fails.
 
-## The distinction the owner asked to have settled
+## The distinction this experiment must settle
 
 In mathematics, a work citing conjecture `C` may be doing one of two opposite
 things:

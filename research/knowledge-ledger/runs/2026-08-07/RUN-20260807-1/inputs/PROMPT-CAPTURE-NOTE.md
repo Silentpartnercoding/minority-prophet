@@ -26,14 +26,9 @@ that the correction was needed.
 ## What went wrong, exactly
 
 The agent's first `PROMPT.txt` was a transcription from its own run context, not
-a captured byte stream. It differed from the authoritative bytes on **exactly one
-line** — line 457, inside the ELI5 block — and nowhere else:
-
-```
-457c457
-< > missing, the package said “we do not know.” When every declared location was   (authoritative)
-> > missing, the package said "we do not know." When every declared location was   (transcribed)
-```
+a captured byte stream. It differed from the authoritative bytes on **exactly
+one line**—line 457—and nowhere else. The lexical content was identical; one
+curly quotation pair had been normalized to straight quotes.
 
 Verified at byte level rather than accepted on assertion:
 

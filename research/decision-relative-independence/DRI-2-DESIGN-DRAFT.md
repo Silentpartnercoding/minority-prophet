@@ -19,7 +19,7 @@ words, and "crossing" belongs to RubiconTest. DRI results use these words instea
 
 In every DRI run a stall does not end the run. Frozen DRI-2 protocols and results
 keep the words they were registered with, and the same mapping applies to them. The
-owner's principle is quoted below as it was said.
+scoring principle below applies to all of them.
 
 ## 1. Why this exists
 
@@ -61,12 +61,10 @@ independent of the method exists yet, so it stays a stated limit of DRI-2 as wel
 
 ## 2. Scoring principle
 
-The owner's principle:
-
-> A refusal will never cross the Rubicon, but it may mean you don't fall.
-
-and its clarification: stopping correctly is part of crossing, but only at the
-right junction. Stopping short is a stall, and a stall is a failure. What the test
+The scoring principle separates safe refusal from task completion: refusing can
+prevent a false settlement, but cannot complete the critical path. Stopping
+correctly is part of completion only at the right junction; stopping short is an
+unneeded abstention. What the test
 measures is whether the machine understands and navigates the critical path:
 asking a human at the right time, and not at the wrong time.
 
