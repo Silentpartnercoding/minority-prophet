@@ -1,0 +1,40 @@
+{
+  "schema": "minority-prophet.openrouter-confirmatory-evidence-archive.v1",
+  "experiment_id": "openrouter-confirmatory-v1",
+  "archive_date": "2026-10-19",
+  "artifact": {
+    "path": "evaluations/multi-model-v1/data/published/openrouter-confirmatory-v1/trials.jsonl.gz",
+    "format": "gzip-compressed JSON Lines",
+    "compressed_bytes": 739050,
+    "compressed_sha256": "18fa75e26b339ca75a50453a566a2355d7ca4b9b849d7734c3651854a218cb25",
+    "decompressed_bytes": 5529506,
+    "decompressed_sha256": "97d9cf63992b4f95a0b4d94b099320e32239d8d386081c02e34bc9f77bd29a48"
+  },
+  "source_state": {
+    "path": "evaluations/multi-model-v1/data/runtime/openrouter-confirmatory-v1-state.json",
+    "sha256": "f3ebd23b1e13b18c97a7073db20d61e9665ea8f399d9be70ba28296d3682c4d5",
+    "published": false,
+    "note": "The full raw and parsed response bodies remain private."
+  },
+  "counts": {
+    "attempt_rows": 2730,
+    "unique_cells": 2646,
+    "latest_completed_cells": 2587,
+    "latest_failed_cells": 59,
+    "latest_structured_response_failure_cells": 52,
+    "latest_budget_guard_cells": 7
+  },
+  "time_window": {
+    "first_attempt_at": "2026-09-13T21:19:16.352Z",
+    "last_attempt_at": "2026-09-14T09:14:19.587Z"
+  },
+  "provider_reported_total_cost_usd": 27.20486259,
+  "reconciliation": {
+    "original_public_snapshot_completed_cells": 2576,
+    "final_archived_completed_cells": 2587,
+    "original_public_paired_worlds": 859,
+    "final_archived_paired_worlds": 862,
+    "conclusion_changed": false
+  },
+  "claim_boundary": "Supporting archive only. It is not an independent validation, external replication, or retroactive canonical promotion."
+}
