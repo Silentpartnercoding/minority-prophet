@@ -129,6 +129,37 @@ def apply_mutation(document: dict[str, Any], mutation: dict[str, Any]) -> None:
         target[final] = mutation["value"]
 
 
+def assess(document: dict[str, Any], prop: str) -> str:
+    """Field 3 for the two catalogue cases: verified, unverified, or unobservable."""
+    if prop == "independence of the observations":
+        if any("derived_from" not in claim for claim in document["claims"]):
+            return "unobservable"
+        all_roots = set().union(*(roots(document, c["id"]) for c in document["claims"]))
+        return "verified" if len(all_roots) == len(document["claims"]) else "unverified"
+    if prop == "coverage of the declared scope":
+        search = document.get("search")
+        if not search or search.get("coverage") in (None, "unknown") or search.get("total_known") is None:
+            return "unobservable"
+        complete = search["coverage"] == "complete" and search["queried"] == search["total_known"]
+        return "verified" if complete else "unverified"
+    raise AssertionError(f"unknown property: {prop}")
+
+
+def check_expected_results() -> int:
+    expected = load("expected-results.json")
+    for case in expected["cases"]:
+        document = load(case["fixture"])
+        drop = case.get("drop")
+        if drop == "claims[].derived_from":
+            for claim in document["claims"]:
+                claim.pop("derived_from", None)
+        elif drop:
+            document.pop(drop, None)
+        got = assess(document, case["property"])
+        assert got == case["expected_result"], f"{case['fixture']} ({case['variant']}): {got}"
+    return len(expected["cases"])
+
+
 def main() -> None:
     schema = load("schema.json")
     names = [
@@ -179,7 +210,8 @@ def main() -> None:
 
     nonces = [document["lifecycle"]["nonce"] for document in documents]
     assert len(nonces) == len(set(nonces)), "replayed nonce across examples"
-    print(f"PASS: {len(documents)} examples; {len(adversarial)} adversarial cases rejected")
+    results = check_expected_results()
+    print(f"PASS: {len(documents)} examples; {len(adversarial)} adversarial cases rejected; {results} four-field results matched")
 
 
 if __name__ == "__main__":
