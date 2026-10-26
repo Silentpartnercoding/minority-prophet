@@ -125,6 +125,24 @@ theorem no_reversal_of_margin_ge (W W' : World n)
   rw [F_zero_iff] at hcon
   omega
 
+/-- **T5, reversal form, negative side.** The mirror of
+`no_reversal_of_margin_ge`: `k` root-set errors with `margin W ≤ -k` cannot
+reverse a `zero` decision into `one`; the most they can buy is abstention. -/
+theorem no_reversal_of_margin_le_neg (W W' : World n)
+    (hW : SideConsistent W) (hW' : SideConsistent W') (k : ℕ)
+    (hassert : W.assert = W'.assert)
+    (herr : (rootSet W \ rootSet W').card + (rootSet W' \ rootSet W).card ≤ k)
+    (hmargin : margin W ≤ -(k : ℤ)) :
+    F W' ≠ .one := by
+  have hb := margin_diff_le_rootSet_diff W W' hW hW' hassert
+  have hk : ((rootSet W \ rootSet W').card : ℤ) + ((rootSet W' \ rootSet W).card : ℤ)
+      ≤ (k : ℤ) := by exact_mod_cast herr
+  have hd : |margin W - margin W'| ≤ (k : ℤ) := le_trans hb hk
+  rw [abs_le] at hd
+  intro hcon
+  rw [F_one_iff] at hcon
+  omega
+
 /-- Net phantom flow, as defined in PROOFS.md T4: the net root gain of side 0
 minus the net root gain of side 1. Equivalently the drop in the margin.
 
