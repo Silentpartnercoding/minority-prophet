@@ -1,0 +1,15 @@
+{
+  "case": "Valid baseline: Appendix A signed",
+  "change_from_baseline": "None. This is the Appendix A story signed with the published keys.",
+  "time": 1792972800,
+  "rp": "https://bank.example",
+  "profile": {
+    "uri": "https://bank.example/profiles/agents/3",
+    "dig": "piDpzEhpQ73OrTFkmm162vb6Z-oFNfJpBTp2AzkP3Cg"
+  },
+  "pop": {
+    "outcome": "ok",
+    "nonce": "vector-nonce-0001"
+  },
+  "status_list_tokens": []
+}

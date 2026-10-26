@@ -1,0 +1,7 @@
+{
+  "kty": "OKP",
+  "crv": "Ed25519",
+  "x": "yV06egzfqOq6HA-QEMCtm6-_Ljv42YWJiz3la15QlZA",
+  "d": "6c0qpMCf5rZH4tfrRHC_wMfcWFvTEOl5yeCDUbb9eic",
+  "kid": "ai-reconcile-1"
+}
