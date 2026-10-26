@@ -39,6 +39,7 @@
     natsort 8.4.0
     platformdirs 4.13.5
     pycountry 26.2.16
+    pypdf 6.21.2
     PyYAML 6.0.3
     requests 2.34.2
     wcwidth 0.9.4
@@ -1648,6 +1649,15 @@ li > p:last-of-type:only-child {
       this requirement, whichever outcome it returned. The name of a population does not fix its expected outcome: a check
       asserting that a defect is absent rejects where the defect is present,
       and a check asserting that a property holds rejects where it does not.<a href="#section-5-10" class="pilcrow">¶</a></p>
+<p id="section-5-11">Where this document requires an expectation, outcome classification,
+      or discriminating pair to be stated before a check is run, the record
+      <span class="bcp14">MUST</span> permit a later reader to establish that the statement
+      preceded the outcomes it governs, and that it applies to the same check
+      revision. Co-presence in one record does not establish that order. A
+      profile <span class="bcp14">MAY</span> meet this with a commitment digest published
+      before the run, an entry in an append-only log, or a timestamp from a
+      source not controlled by a material party, and <span class="bcp14">MUST</span> state
+      which it uses.<a href="#section-5-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="outcomes">
@@ -2307,7 +2317,9 @@ li > p:last-of-type:only-child {
 </li>
         <li class="normal" id="appendix-B-1.5">Removed the claim in <a href="#not-established" class="auto internal xref">Section 10</a> that the self-application regress terminates, and gave the reasoning for the claim in <a href="#security" class="auto internal xref">Section 14</a> about unexercised checks.<a href="#appendix-B-1.5" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-B-1.6">Editorial tightening throughout. No other requirement changed.<a href="#appendix-B-1.6" class="pilcrow">¶</a>
+        <li class="normal" id="appendix-B-1.6">Added a final paragraph to <a href="#exr-1" class="auto internal xref">Section 5</a>: the record must let a later reader establish that stated expectations preceded the outcomes they govern.<a href="#appendix-B-1.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-1.7">Editorial tightening throughout. No other requirement changed.<a href="#appendix-B-1.7" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>

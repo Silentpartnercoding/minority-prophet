@@ -79,30 +79,30 @@ Table of Contents
    3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
    4.  Problem Statement . . . . . . . . . . . . . . . . . . . . . .   5
    5.  EXR-1: Exercised Rejection and Unverifiable Paths . . . . . .   6
-   6.  Outcome Vocabulary  . . . . . . . . . . . . . . . . . . . . .   7
+   6.  Outcome Vocabulary  . . . . . . . . . . . . . . . . . . . . .   8
    7.  EXR-2: Reporting an Unexercised Check . . . . . . . . . . . .   9
    8.  CMP-1: Coverage Domain  . . . . . . . . . . . . . . . . . . .  10
    9.  CMP-2: Material-Party Detection . . . . . . . . . . . . . . .  11
    10. What These Requirements Do Not Establish  . . . . . . . . . .  12
-   11. Scope Relative to Agent Protocol and Audit Work . . . . . . .  12
+   11. Scope Relative to Agent Protocol and Audit Work . . . . . . .  13
    12. Relationship to Adjacent Work . . . . . . . . . . . . . . . .  13
    13. Implementation Status . . . . . . . . . . . . . . . . . . . .  15
    14. Security Considerations . . . . . . . . . . . . . . . . . . .  18
    15. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  18
    16. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
    17. Normative References  . . . . . . . . . . . . . . . . . . . .  18
-   18. Informative References  . . . . . . . . . . . . . . . . . . .  18
-   Appendix A.  Negative Vectors . . . . . . . . . . . . . . . . . .  20
+   18. Informative References  . . . . . . . . . . . . . . . . . . .  19
+   Appendix A.  Negative Vectors . . . . . . . . . . . . . . . . . .  21
      A.1.  Check Comparing Too Little  . . . . . . . . . . . . . . .  21
      A.2.  Constant Probe  . . . . . . . . . . . . . . . . . . . . .  21
      A.3.  A Silent System Under a One-Sided Endpoint  . . . . . . .  21
      A.4.  Withheld Record Under a Completeness Claim  . . . . . . .  22
      A.5.  One Outcome Token, Two Rules  . . . . . . . . . . . . . .  22
-     A.6.  Path Shadowed by an Earlier Rule  . . . . . . . . . . . .  22
-   Appendix B.  Changes from -01 . . . . . . . . . . . . . . . . . .  22
+     A.6.  Path Shadowed by an Earlier Rule  . . . . . . . . . . . .  23
+   Appendix B.  Changes from -01 . . . . . . . . . . . . . . . . . .  23
    Appendix C.  Changes from -00 . . . . . . . . . . . . . . . . . .  23
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  23
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  24
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  24
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  25
 
 
 
@@ -374,6 +374,26 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    that a defect is absent rejects where the defect is present, and a
    check asserting that a property holds rejects where it does not.
 
+   Where this document requires an expectation, outcome classification,
+   or discriminating pair to be stated before a check is run, the record
+   MUST permit a later reader to establish that the statement preceded
+   the outcomes it governs, and that it applies to the same check
+   revision.  Co-presence in one record does not establish that order.
+   A profile MAY meet this with a commitment digest published before the
+   run, an entry in an append-only log, or a timestamp from a source not
+   controlled by a material party, and MUST state which it uses.
+
+
+
+
+
+
+
+He                        Expires 28 April 2027                 [Page 7]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
 6.  Outcome Vocabulary
 
    An evaluator reporting the result of a check MUST distinguish at
@@ -386,13 +406,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    violation  The check ran over the evidence it names and the condition
       did not hold.  This is the only outcome that condemns, and it is
       available only where the check actually reached an answer.
-
-
-
-He                        Expires 28 April 2027                 [Page 7]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    unverifiable  The check was attempted and could not reach an answer,
       because required evidence was unavailable, a resolver did not
@@ -430,25 +443,18 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    capability and attempt context rather than treating a bare
    unverifiable value as proof of unsupported.
 
-   An outcome of unverifiable or not-evaluated MUST NOT contribute to a
-   coverage figure as though it were verified, and MUST NOT be
-   relabelled to improve one.  This is the same prohibition
-   [I-D.bu-agentproto-security-principal-binding] places on relabelling
-   a not-run scenario as not-applicable.
-
-
-
-
-
-
-
-
 
 
 He                        Expires 28 April 2027                 [Page 8]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   An outcome of unverifiable or not-evaluated MUST NOT contribute to a
+   coverage figure as though it were verified, and MUST NOT be
+   relabelled to improve one.  This is the same prohibition
+   [I-D.bu-agentproto-security-principal-binding] places on relabelling
+   a not-run scenario as not-applicable.
 
 7.  EXR-2: Reporting an Unexercised Check
 
@@ -486,13 +492,7 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    of the sample.  Where a profile can tell them apart it SHOULD report
    which, and where it cannot it MUST NOT imply either.
 
-   Where the profile establishes that an input in the defined domain can
-   reach the path, but the exercise record contains no such input, the
-   evaluator SHOULD report reachable-unexercised.  Where the
-   specification's rule order and input-domain constraints establish
-   that an earlier rule necessarily returns first, the evaluator SHOULD
-   report shadowed-unreachable.  Absence from a sample establishes
-   neither classification.
+
 
 
 
@@ -505,6 +505,14 @@ He                        Expires 28 April 2027                 [Page 9]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   Where the profile establishes that an input in the defined domain can
+   reach the path, but the exercise record contains no such input, the
+   evaluator SHOULD report reachable-unexercised.  Where the
+   specification's rule order and input-domain constraints establish
+   that an earlier rule necessarily returns first, the evaluator SHOULD
+   report shadowed-unreachable.  Absence from a sample establishes
+   neither classification.
 
    A shadowed-unreachable report MUST identify the shadowing rule and
    the rule or condition that cannot be reached.  It MUST NOT count the
@@ -546,14 +554,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    created, it was created but not observed, it was observed but not
    recorded, or it was recorded and later removed.  CMP-1 requires the
    revealing mechanism to be named; it does not require that mechanism
-   to separate these causes.  A profile whose mechanism can separate
-   them SHOULD say which it separates, because a relying party that must
-   act on the difference cannot infer it from the fact of absence.
-
-
-
-
-
 
 
 
@@ -561,6 +561,10 @@ He                        Expires 28 April 2027                [Page 10]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   to separate these causes.  A profile whose mechanism can separate
+   them SHOULD say which it separates, because a relying party that must
+   act on the difference cannot infer it from the fact of absence.
 
 9.  CMP-2: Material-Party Detection
 
@@ -606,10 +610,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    has not been shown to bear on this result, and the completeness claim
    remains unestablished.
 
-   The available exercise record MUST demonstrate, under the same check
-   revision and expectations stated in advance, both a result whose
-   completeness appraisal remains unestablished and one whose
-   completeness is verified after the required independent appraisal.  A
 
 
 
@@ -618,6 +618,10 @@ He                        Expires 28 April 2027                [Page 11]
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
 
+   The available exercise record MUST demonstrate, under the same check
+   revision and expectations stated in advance, both a result whose
+   completeness appraisal remains unestablished and one whose
+   completeness is verified after the required independent appraisal.  A
    record containing only the former does not satisfy this exercise
    condition; it does not by itself establish that the latter outcome is
    unreachable.
@@ -656,14 +660,10 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    protocol, the honesty of any party, or the security of any
    deployment.
 
-11.  Scope Relative to Agent Protocol and Audit Work
 
-   The protocol-facing obligation in this document is conditional.
-   Where an agent protocol, profile, or reference architecture relies on
-   or exposes a verifier result as evidence of coverage, it can require
-   the result to carry the exercise and completeness facts defined here.
-   A protocol that makes no such claim need not acquire an audit data
-   model merely because this document exists.
+
+
+
 
 
 
@@ -673,6 +673,15 @@ He                        Expires 28 April 2027                [Page 12]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+11.  Scope Relative to Agent Protocol and Audit Work
+
+   The protocol-facing obligation in this document is conditional.
+   Where an agent protocol, profile, or reference architecture relies on
+   or exposes a verifier result as evidence of coverage, it can require
+   the result to carry the exercise and completeness facts defined here.
+   A protocol that makes no such claim need not acquire an audit data
+   model merely because this document exists.
 
    This document does not define an audit record, corpus-commitment
    encoding, interaction-trace format, transport, or validation testbed.
@@ -713,6 +722,14 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    are addressed to the first two.  What they add to the existing floor
    is that the exercising input be pinned to a revision, that a
    discriminating pair be exhibited (a single rejecting input is
+
+
+
+He                        Expires 28 April 2027                [Page 13]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
    insufficient), and that the record name the outcome observed for each
    declared rejection path.  A row satisfying Section 14 may still carry
    no such record.
@@ -721,14 +738,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    third open issue.  They do not resolve that issue for every kind of
    row.  Independently checking one scoped observation falls short of
    establishing completeness over a domain.
-
-
-
-
-He                        Expires 28 April 2027                [Page 13]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    That document's rules governing coverage denominators, and its
    prohibition on relabelling a not-run scenario as not-applicable to
@@ -769,6 +778,14 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    comparisons, and that an undecided comparison state why the deciding
    verifier could not establish a result, distinguishing the case where
    the governing profile supplies no applicable relation from the case
+
+
+
+He                        Expires 28 April 2027                [Page 14]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
    where the exact profile definition was unavailable to that verifier.
    EXR-2 and CMP-2 apply the same discipline to the two cases treated
    here: a result that could not be established is reported as such and
@@ -778,14 +795,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    ensuring that subversion of a system's stated claims carries a high
    risk of independent discovery, and specifies metadata by which an
    evaluator assesses that property.  That is falsifiability of the
-
-
-
-He                        Expires 28 April 2027                [Page 14]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
-
    claims a system makes about itself.  The present document concerns a
    different object: whether the check an evaluator applies has been
    shown able to return its rejecting outcome at all.  The two compose.
@@ -825,6 +834,14 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    dereference check was not attempted and its not-evaluated record
    names the missing-reference reason.  Separately, the mandatory-
    reference presence check completes and reports a violation.  If
+
+
+
+He                        Expires 28 April 2027                [Page 15]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
    references were optional, their absence would not violate that
    presence rule but would still provide no reference coverage or
    completeness assurance.  CMP-1 names the domain and omission-
@@ -833,14 +850,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    appraised basis would be needed for that claim.  These check verdicts
    and the completeness appraisal remain separate; one unsettled label
    cannot express all of them.
-
-
-
-
-He                        Expires 28 April 2027                [Page 15]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    A discipline close to EXR-1 is in use in the public repository [MP],
    where a declaration must name a contrasting population in which the
@@ -879,6 +888,16 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    independent implementations is claimed for any requirement in this
    document.
 
+
+
+
+
+
+He                        Expires 28 April 2027                [Page 16]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
    Lars Kersten Kroehl published a separately authored report reader at
    commit 6d8ee54b01d20a819869ceb9fcea096d59251f8c [MOLTRUST-READER].
    On 165 report objects the pinned reader produced 82 accept, 28
@@ -890,13 +909,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    inspectable.  It does not establish that the named checkers ran or
    that the supplied report objects describe genuine underlying
    artifacts.
-
-
-
-He                        Expires 28 April 2027                [Page 16]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    The present author reproduced that pinned run and published a bounded
    audit at commit 635f3d57eb6f90fdf4c6945778020c34521be0a1
@@ -933,18 +945,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    unexercised, and shadowed-unreachable paths without establishing the
    correctness or completeness of the underlying protocol.
 
-   A profile with no independent omission-detection basis can identify
-   its coverage domain but cannot demonstrate the accepting side of
-   CMP-2 for a completeness claim.  Under the final paragraph of
-   Section 9, an exercise record containing only unestablished
-   completeness appraisals does not satisfy the CMP-2 exercise
-   condition.  The worked case above illustrates the reporting
-   distinction; it makes no claim that CMP-1 or CMP-2 has been
-   implemented as specified here.
-
-
-
-
 
 
 
@@ -953,6 +953,15 @@ He                        Expires 28 April 2027                [Page 17]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   A profile with no independent omission-detection basis can identify
+   its coverage domain but cannot demonstrate the accepting side of
+   CMP-2 for a completeness claim.  Under the final paragraph of
+   Section 9, an exercise record containing only unestablished
+   completeness appraisals does not satisfy the CMP-2 exercise
+   condition.  The worked case above illustrates the reporting
+   distinction; it makes no claim that CMP-1 or CMP-2 has been
+   implemented as specified here.
 
 14.  Security Considerations
 
@@ -991,6 +1000,16 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
               Requirement Levels", BCP 14, RFC 2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+
+He                        Expires 28 April 2027                [Page 18]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, May 2017,
               <https://www.rfc-editor.org/info/rfc8174>.
@@ -1001,14 +1020,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
               Code: The Implementation Status Section", BCP 205,
               RFC 7942, July 2016,
               <https://www.rfc-editor.org/info/rfc7942>.
-
-
-
-
-He                        Expires 28 April 2027                [Page 18]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    [I-D.oga-musubi-settlement]
               Oga, T., "MUSUBI Settlement: Recomputing Whether an Agent
@@ -1045,17 +1056,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
               <https://datatracker.ietf.org/doc/draft-wadkins-
               agentproto-action-determinability/>.
 
-   [I-D.bu-agentproto-security-principal-binding]
-              Bu, S., "Security Principal and Verifier Binding for Agent
-              Communication Protocols", Work in Progress, Internet-
-              Draft, draft-bu-agentproto-security-principal-binding-08,
-              October 2026, <https://datatracker.ietf.org/doc/draft-bu-
-              agentproto-security-principal-binding/>.
-
-
-
-
-
 
 
 
@@ -1065,6 +1065,13 @@ He                        Expires 28 April 2027                [Page 19]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   [I-D.bu-agentproto-security-principal-binding]
+              Bu, S., "Security Principal and Verifier Binding for Agent
+              Communication Protocols", Work in Progress, Internet-
+              Draft, draft-bu-agentproto-security-principal-binding-08,
+              October 2026, <https://datatracker.ietf.org/doc/draft-bu-
+              agentproto-security-principal-binding/>.
 
    [I-D.bradleyb-audit-decision-records]
               B, B., "Signed Decision Records for Agent Authorization:
@@ -1100,16 +1107,9 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
               2026,
               <https://github.com/Silentpartnercoding/minority-prophet>.
 
-Appendix A.  Negative Vectors
 
-   These vectors are stated so that a reader can construct them
-   independently.  They are illustrative; this appendix defines no
-   normative test suite.  An executable form, with a deterministic
-   machine-readable result and its source pinned by digest, is published
-   at [MP] under research/verifier-evidence.  Each vector there supplies
-   a positive population and its contrasting population and runs both a
-   check that cannot distinguish them and one that can; the evidence is
-   the pair.
+
+
 
 
 
@@ -1121,6 +1121,17 @@ He                        Expires 28 April 2027                [Page 20]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+Appendix A.  Negative Vectors
+
+   These vectors are stated so that a reader can construct them
+   independently.  They are illustrative; this appendix defines no
+   normative test suite.  An executable form, with a deterministic
+   machine-readable result and its source pinned by digest, is published
+   at [MP] under research/verifier-evidence.  Each vector there supplies
+   a positive population and its contrasting population and runs both a
+   check that cannot distinguish them and one that can; the evidence is
+   the pair.
 
 A.1.  Check Comparing Too Little
 
@@ -1150,19 +1161,8 @@ A.3.  A Silent System Under a One-Sided Endpoint
    counting only incorrect confirmations, then on a two-sided endpoint
    adding a cost for indefinite non-confirmation.  Lower is better.
 
-     +=========================+===========+============+===========+
-     | system                  | one-sided | delay cost | two-sided |
-     +=========================+===========+============+===========+
-     | silent, never confirms  |     0.000 |      1.000 |     1.000 |
-     +-------------------------+-----------+------------+-----------+
-     | count-based, confirms   |     1.000 |      0.033 |     1.033 |
-     | on 3 or more reports    |           |            |           |
-     +-------------------------+-----------+------------+-----------+
-     | origin-aware, 2 or more |     0.000 |      0.533 |     0.533 |
-     | independent origins     |           |            |           |
-     +-------------------------+-----------+------------+-----------+
 
-                                 Table 1
+
 
 
 
@@ -1177,6 +1177,20 @@ He                        Expires 28 April 2027                [Page 21]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+     +=========================+===========+============+===========+
+     | system                  | one-sided | delay cost | two-sided |
+     +=========================+===========+============+===========+
+     | silent, never confirms  |     0.000 |      1.000 |     1.000 |
+     +-------------------------+-----------+------------+-----------+
+     | count-based, confirms   |     1.000 |      0.033 |     1.033 |
+     | on 3 or more reports    |           |            |           |
+     +-------------------------+-----------+------------+-----------+
+     | origin-aware, 2 or more |     0.000 |      0.533 |     0.533 |
+     | independent origins     |           |            |           |
+     +-------------------------+-----------+------------+-----------+
+
+                                 Table 1
 
    The silent system attains the best available one-sided score, tying
    with the origin-aware system, so a one-sided endpoint cannot
@@ -1212,6 +1226,14 @@ A.5.  One Outcome Token, Two Rules
    governing rule or condition for each result even though the outcome
    token is unchanged.
 
+
+
+
+He                        Expires 28 April 2027                [Page 22]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
 A.6.  Path Shadowed by an Earlier Rule
 
    Define a later rule that is evaluated only after an earlier rule
@@ -1225,14 +1247,6 @@ A.6.  Path Shadowed by an Earlier Rule
    unexercised.
 
 Appendix B.  Changes from -01
-
-
-
-
-He                        Expires 28 April 2027                [Page 22]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    *  Defined "exercised" once, in Section 3, as a discriminating pair
       under the current check revision, and used that definition
@@ -1253,6 +1267,10 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
       terminates, and gave the reasoning for the claim in Section 14
       about unexercised checks.
 
+   *  Added a final paragraph to Section 5: the record must let a later
+      reader establish that stated expectations preceded the outcomes
+      they govern.
+
    *  Editorial tightening throughout.  No other requirement changed.
 
 Appendix C.  Changes from -00
@@ -1263,6 +1281,14 @@ Appendix C.  Changes from -00
 
    *  Required the exercise record to identify the rule or condition
       reached rather than relying on an outcome token alone.
+
+
+
+
+He                        Expires 28 April 2027                [Page 23]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
 
    *  Distinguished reachable-but-unexercised paths from paths made
       unreachable by an earlier rule or structural precondition.
@@ -1280,15 +1306,6 @@ Acknowledgments
    distinct from a check that ran and failed.  His published IA-9
    analysis is cited for the separate problem of an unauthenticated
    subject in a control's evidence.
-
-
-
-
-
-He                        Expires 28 April 2027                [Page 23]
-
-Internet-Draft         Verifier Exercise Evidence           October 2026
-
 
    Iman Schrock contributed the withheld-record vector in Appendix A and
    reviewed its attribution and outcome wording.  The coverage
@@ -1320,6 +1337,15 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
 
    Acknowledgment does not imply endorsement of this document.
 
+
+
+
+
+He                        Expires 28 April 2027                [Page 24]
+
+Internet-Draft         Verifier Exercise Evidence           October 2026
+
+
 Author's Address
 
    James Siyuan He
@@ -1341,4 +1367,34 @@ Author's Address
 
 
 
-He                        Expires 28 April 2027                [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+He                        Expires 28 April 2027                [Page 25]

@@ -1,5 +1,5 @@
 --- draft-he-agentproto-verifier-evidence-01.xml	2026-10-25 23:30:42.337715692 -0700
-+++ draft-he-agentproto-verifier-evidence-02.xml	2026-10-25 23:32:53.564024014 -0700
++++ draft-he-agentproto-verifier-evidence-02.xml	2026-10-26 06:34:44.752049321 -0700
 @@ -1,7 +1,7 @@
  <?xml version='1.0' encoding='utf-8'?>
  <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -172,7 +172,7 @@
        outcome and is subject to this paragraph.</t>
  
        <t>EXR-1 does not grade an exercising input by who supplied it. An input
-@@ -268,8 +239,7 @@
+@@ -268,10 +239,19 @@
        The profile <bcp14>MUST</bcp14> state those expectations before the check
        is run, and the check <bcp14>MUST</bcp14> return the stated outcome on
        each. A check that returns the same outcome on both has not satisfied
@@ -181,8 +181,20 @@
 +      this requirement, whichever outcome it returned. The name of a population does not fix its expected outcome: a check
        asserting that a defect is absent rejects where the defect is present,
        and a check asserting that a property holds rejects where it does not.</t>
++
++      <t>Where this document requires an expectation, outcome classification,
++      or discriminating pair to be stated before a check is run, the record
++      <bcp14>MUST</bcp14> permit a later reader to establish that the statement
++      preceded the outcomes it governs, and that it applies to the same check
++      revision. Co-presence in one record does not establish that order. A
++      profile <bcp14>MAY</bcp14> meet this with a commitment digest published
++      before the run, an entry in an append-only log, or a timestamp from a
++      source not controlled by a material party, and <bcp14>MUST</bcp14> state
++      which it uses.</t>
      </section>
-@@ -291,8 +261,7 @@
+ 
+     <section anchor="outcomes"><name>Outcome Vocabulary</name>
+@@ -291,8 +271,7 @@
          <dt>unverifiable</dt>
          <dd>The check was attempted and could not reach an answer, because
          required evidence was unavailable, a resolver did not respond, or no
@@ -192,7 +204,7 @@
  
          <dt>not-evaluated</dt>
          <dd>The check was not reached, or the record names nothing for it to
-@@ -300,13 +269,7 @@
+@@ -300,13 +279,7 @@
          record identifies the unattempted check and the reason.</dd>
        </dl>
  
@@ -207,7 +219,7 @@
        <bcp14>MUST NOT</bcp14> collapse these four.</t>
  
        <t>The evaluator <bcp14>MUST</bcp14> distinguish a known absence of a
-@@ -341,8 +304,7 @@
+@@ -341,8 +314,7 @@
        <bcp14>MAY</bcp14> use implemented-unexercised as an EXR exercise
        annotation for a check with implementation evidence under another
        profile, identifying the exercise path for which no exercising input
@@ -217,7 +229,7 @@
  
        <t>A record produced to satisfy EXR-1 or EXR-2 is orthogonal to any
        implementation-status field a profile already maintains. It
-@@ -353,8 +315,7 @@
+@@ -353,8 +325,7 @@
        per-input outcomes required here are separate records of separate
        properties and <bcp14>MUST NOT</bcp14> be merged into one figure.</t>
  
@@ -227,7 +239,7 @@
        rejection path was exercised and one whose rejection path remains
        unexercised.</t>
  
-@@ -389,17 +350,12 @@
+@@ -389,17 +360,12 @@
  
        <t>A report of implemented-unexercised <bcp14>SHOULD</bcp14> carry a
        machine-readable reason identifying the unexercised exercise path, so that
@@ -248,7 +260,7 @@
        Where a profile can construct a synthetic input that drives such a check
        into its rejecting outcome, EXR-1 is satisfied by that input, and
        <xref target="privacy"/> permits a synthetic input for this purpose.</t>
-@@ -440,8 +396,7 @@
+@@ -440,8 +406,7 @@
        <bcp14>MUST NOT</bcp14> be reported as a violation. A violation of a
        separately completed predicate check remains reportable.</t>
  
@@ -258,7 +270,7 @@
        ran and the condition did not hold; for example, two authenticated
        occurrences can refute an at-most-once predicate even if completeness
        of the wider record set remains unknown. A completeness appraisal
-@@ -480,20 +435,14 @@
+@@ -480,20 +445,14 @@
      </section>
  
      <section anchor="not-established"><name>What These Requirements Do Not Establish</name>
@@ -283,7 +295,7 @@
  
        <t>CMP-2 does not establish that an omission occurred. It establishes that
        the record as presented cannot exclude one. A profile that supplies an
-@@ -501,13 +450,7 @@
+@@ -501,13 +460,7 @@
        claim only when the deciding verifier appraises that basis for this
        result. The disclosed artifacts need not change.</t>
  
@@ -298,7 +310,7 @@
  
        <t>None of these requirements reaches the correctness of an underlying
        protocol, the honesty of any party, or the security of any deployment.</t>
-@@ -547,9 +490,7 @@
+@@ -547,9 +500,7 @@
        carrier is emitted or a positive exchange completes: the evidence must
        show the stated verifier decision and at least one security-relevant
        rejection path, and Section 11 draws the same distinction against a
@@ -309,7 +321,7 @@
  
        <t>Section 33 of the same document lists as open issues which negative
        test cases authors should provide, whether a row may claim implemented
-@@ -557,23 +498,19 @@
+@@ -557,23 +508,19 @@
        rejection path, and when same-party evidence may support a row claiming
        independent observation. EXR-1 and EXR-2 are addressed to the first two.
        What they add to the existing floor is that the exercising input be
@@ -336,7 +348,7 @@
        Binding's minimum rejection-evidence requirement while lacking the
        stronger EXR record for every declared rejection path or lacking EXR's
        revision-pinned discriminating-pair evidence. Those gaps remain explicit;
-@@ -589,8 +526,7 @@
+@@ -589,8 +536,7 @@
  
        <t><xref target="IA9-OVERLAY"/> argues that non-repudiation over a
        self-asserted subject lacks a testable assertion about actor identity.
@@ -346,7 +358,7 @@
        a stated rejection path has actually been exercised. A check that could
        not run is also kept distinct from one that ran and established a
        violation in <xref target="outcomes"/>.</t>
-@@ -606,9 +542,7 @@
+@@ -606,9 +552,7 @@
        distinguishing the case where the governing profile supplies no applicable
        relation from the case where the exact profile definition was unavailable
        to that verifier. EXR-2 and CMP-2 apply the same discipline to the two
@@ -357,7 +369,7 @@
  
        <t><xref target="I-D.laurie-tmif"/> defines falsifiability as the design
        property ensuring that subversion of a system's stated claims carries a
-@@ -616,9 +550,7 @@
+@@ -616,9 +560,7 @@
        evaluator assesses that property. That is falsifiability of the claims a
        system makes about itself. The present document concerns a different
        object: whether the check an evaluator applies has been shown able to
@@ -368,7 +380,7 @@
        to be visible in the report.</t>
      </section>
  
-@@ -627,8 +559,7 @@
+@@ -627,8 +569,7 @@
        at the time of writing, per <xref target="RFC7942"/>. It is intended to be
        removed before publication as an RFC.</t>
  
@@ -378,7 +390,7 @@
        at commit b4ee46924ebe8fd0bee38b4986a01229e859764b. Its
        dereference layer separates verified, absent, unverifiable, and
        no_reference. A resolver that is offline, rate-limited, or not configured
-@@ -637,19 +568,16 @@
+@@ -637,19 +578,16 @@
        A separate mandatory-reference presence check may establish a violation
        from that absence, while an optional-reference profile would not. The
        report and policy layers carry these facts into further dispositions;
@@ -401,7 +413,7 @@
        dereference check was not attempted and its not-evaluated record names
        the missing-reference reason. Separately, the mandatory-reference
        presence check completes and reports a violation. If references were
-@@ -669,30 +597,19 @@
+@@ -669,30 +607,19 @@
        refusal is reported before any other verdict, on the stated grounds that
        if the probe cannot fail the other result is meaningless in both
        directions. A probe that reports a constant is refused on a population
@@ -438,7 +450,7 @@
        verified, and no interoperability between independent implementations
        is claimed for any requirement in this document.</t>
  
-@@ -717,8 +634,7 @@
+@@ -717,8 +644,7 @@
        explicit contradictions or omissions whose mandatory-rejection policy is
        disputed and two cases underdetermined by the source text. The audit does
        not promote those disagreements into reader errors. The separately
@@ -448,7 +460,7 @@
  
        <t>Toshikatsu Oga applied EXR-1 and EXR-2 to the MUSUBI settle core and
        froze the result at horizon-shield commit dd64d0e2
-@@ -734,28 +650,19 @@
+@@ -734,28 +660,19 @@
        project has rerun the exercise script.</t>
  
        <t>The MUSUBI result is an external appraisal of whether the requirements
@@ -480,7 +492,7 @@
  
        <t>An adversary who knows which checks are unexercised knows where a
        conformance matrix will not look. Because the property is visible from a
-@@ -764,9 +671,7 @@
+@@ -764,9 +681,7 @@
        more available to an adversary than to a reviewer.</t>
  
        <t>Reporting implemented-unexercised discloses that an exercise path is
@@ -491,7 +503,7 @@
      </section>
  
      <section anchor="privacy"><name>Privacy Considerations</name>
-@@ -871,13 +776,11 @@
+@@ -871,13 +786,11 @@
  
      <section anchor="vectors"><name>Negative Vectors</name>
        <t>These vectors are stated so that a reader can construct them
@@ -507,7 +519,7 @@
  
        <section anchor="v1"><name>Check Comparing Too Little</name>
          <t>Construct a check whose accepting condition is evaluated over a proper
-@@ -913,12 +816,7 @@
+@@ -913,12 +826,7 @@
          </table>
          <t>The silent system attains the best available one-sided score, tying
          with the origin-aware system, so a one-sided endpoint cannot distinguish
@@ -521,7 +533,7 @@
        </section>
  
        <section anchor="v4"><name>Withheld Record Under a Completeness Claim</name>
-@@ -950,11 +848,21 @@
+@@ -950,11 +858,22 @@
          earlier rule rejects. Supply inputs satisfying the later condition.</t>
          <t>Expected under EXR-2: every such input returns at the earlier rule.
          The later path is reported <tt>shadowed-unreachable</tt>, with both rules
@@ -538,6 +550,7 @@
 +        <li>Corrected two cross-references in <xref target="impl"/>: the absent-declaration rule is in <xref target="exr-2"/>, and the exercise condition for completeness appraisals is the final paragraph of <xref target="cmp-2"/>.</li>
 +        <li>Stated in <xref target="outcomes"/> that the evaluator's policy fixes the direction of an outcome collapse and that the party presenting evidence decides whether to trigger it.</li>
 +        <li>Removed the claim in <xref target="not-established"/> that the self-application regress terminates, and gave the reasoning for the claim in <xref target="security"/> about unexercised checks.</li>
++        <li>Added a final paragraph to <xref target="exr-1"/>: the record must let a later reader establish that stated expectations preceded the outcomes they govern.</li>
 +        <li>Editorial tightening throughout. No other requirement changed.</li>
 +      </ul>
 +    </section>

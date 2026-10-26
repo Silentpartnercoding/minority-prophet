@@ -242,6 +242,16 @@
       this requirement, whichever outcome it returned. The name of a population does not fix its expected outcome: a check
       asserting that a defect is absent rejects where the defect is present,
       and a check asserting that a property holds rejects where it does not.</t>
+
+      <t>Where this document requires an expectation, outcome classification,
+      or discriminating pair to be stated before a check is run, the record
+      <bcp14>MUST</bcp14> permit a later reader to establish that the statement
+      preceded the outcomes it governs, and that it applies to the same check
+      revision. Co-presence in one record does not establish that order. A
+      profile <bcp14>MAY</bcp14> meet this with a commitment digest published
+      before the run, an entry in an append-only log, or a timestamp from a
+      source not controlled by a material party, and <bcp14>MUST</bcp14> state
+      which it uses.</t>
     </section>
 
     <section anchor="outcomes"><name>Outcome Vocabulary</name>
@@ -859,6 +869,7 @@
         <li>Corrected two cross-references in <xref target="impl"/>: the absent-declaration rule is in <xref target="exr-2"/>, and the exercise condition for completeness appraisals is the final paragraph of <xref target="cmp-2"/>.</li>
         <li>Stated in <xref target="outcomes"/> that the evaluator's policy fixes the direction of an outcome collapse and that the party presenting evidence decides whether to trigger it.</li>
         <li>Removed the claim in <xref target="not-established"/> that the self-application regress terminates, and gave the reasoning for the claim in <xref target="security"/> about unexercised checks.</li>
+        <li>Added a final paragraph to <xref target="exr-1"/>: the record must let a later reader establish that stated expectations preceded the outcomes they govern.</li>
         <li>Editorial tightening throughout. No other requirement changed.</li>
       </ul>
     </section>
