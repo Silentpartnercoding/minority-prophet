@@ -282,6 +282,11 @@
       <t>The separation of <tt>unverifiable</tt> from <tt>violation</tt> matters most. Reading <tt>unverifiable</tt> as <tt>violation</tt> produces false alarms, and reading it as <tt>verified</tt> produces false confidence. The evaluator's policy fixes which of these errors a collapse produces. The party presenting evidence then decides whether to trigger it, because evidence that cannot be checked is cheap to produce. Under a policy that reads <tt>unverifiable</tt> as <tt>violation</tt>, that party can force violations by presenting such evidence. Under a policy that reads it as <tt>verified</tt>, that party can obtain acceptance by presenting nothing else. A profile <bcp14>MAY</bcp14> define finer outcome values, but
       <bcp14>MUST NOT</bcp14> collapse these four.</t>
 
+      <t>The record of each outcome <bcp14>MUST</bcp14> state when the check
+      was performed and, for each item of evidence the check relied on, that
+      evidence's issue time and expiry time where the evidence carries
+      them.</t>
+
       <t>The evaluator <bcp14>MUST</bcp14> distinguish a known absence of a
       required verifier capability from a supported check that was not
       attempted. The record <bcp14>MUST</bcp14> identify the capability or
@@ -870,6 +875,7 @@
         <li>Stated in <xref target="outcomes"/> that the evaluator's policy fixes the direction of an outcome collapse and that the party presenting evidence decides whether to trigger it.</li>
         <li>Removed the claim in <xref target="not-established"/> that the self-application regress terminates, and gave the reasoning for the claim in <xref target="security"/> about unexercised checks.</li>
         <li>Added a final paragraph to <xref target="exr-1"/>: the record must let a later reader establish that stated expectations preceded the outcomes they govern.</li>
+        <li>Required in <xref target="outcomes"/> that the record of each outcome state when the check was performed, and the issue and expiry times of the evidence it relied on.</li>
         <li>Editorial tightening throughout. No other requirement changed.</li>
       </ul>
     </section>

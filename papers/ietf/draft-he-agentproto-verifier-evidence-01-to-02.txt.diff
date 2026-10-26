@@ -1,5 +1,5 @@
 --- draft-he-agentproto-verifier-evidence-01.txt	2026-10-25 23:30:42.337715692 -0700
-+++ draft-he-agentproto-verifier-evidence-02.txt	2026-10-26 06:34:51.087967643 -0700
++++ draft-he-agentproto-verifier-evidence-02.txt	2026-10-26 06:44:41.240359831 -0700
 @@ -4,12 +4,12 @@
  
  Network Working Group                                           J. S. He
@@ -195,16 +195,16 @@
 +      populations apart.  The profile states which population is
 +      expected to produce each outcome.  That depends on what the check
 +      asserts; the labels do not imply it.
-+
+ 
 +   coverage domain:  The set of records over which a completeness claim
 +      is asserted.
-+
+ 
 +   material party:  A party whose conduct or assertion is at issue in
  
  
- 
- 
 -He                        Expires 21 April 2027                 [Page 4]
++
++
 +
 +He                        Expires 28 April 2027                 [Page 4]
  
@@ -395,7 +395,7 @@
  
  Internet-Draft         Verifier Exercise Evidence           October 2026
  
-@@ -409,22 +409,24 @@
+@@ -409,22 +409,28 @@
  
     unverifiable  The check was attempted and could not reach an answer,
        because required evidence was unavailable, a resolver did not
@@ -427,10 +427,21 @@
 +   that party can obtain acceptance by presenting nothing else.  A
 +   profile MAY define finer outcome values, but MUST NOT collapse these
 +   four.
++
++   The record of each outcome MUST state when the check was performed
++   and, for each item of evidence the check relied on, that evidence's
++   issue time and expiry time where the evidence carries them.
  
     The evaluator MUST distinguish a known absence of a required verifier
     capability from a supported check that was not attempted.  The record
-@@ -443,9 +445,7 @@
+@@ -436,20 +442,19 @@
+    uncertainty and MUST NOT infer either condition from a broad outcome
+    label alone.  Missing resolver configuration, for example, does not
+    by itself establish that the verifier revision lacks resolver
+-   capability.  A profile mapping these results into another
+-   specification's outcome vocabulary MUST retain its required
+-   capability and attempt context rather than treating a bare
+-   unverifiable value as proof of unsupported.
  
  
  
@@ -441,7 +452,16 @@
  
  Internet-Draft         Verifier Exercise Evidence           October 2026
  
-@@ -464,8 +464,8 @@
+ 
++   capability.  A profile mapping these results into another
++   specification's outcome vocabulary MUST retain its required
++   capability and attempt context rather than treating a bare
++   unverifiable value as proof of unsupported.
++
+    An outcome of unverifiable or not-evaluated MUST NOT contribute to a
+    coverage figure as though it were verified, and MUST NOT be
+    relabelled to improve one.  This is the same prohibition
+@@ -464,8 +469,8 @@
     implemented-unexercised as an EXR exercise annotation for a check
     with implementation evidence under another profile, identifying the
     exercise path for which no exercising input appears in the record.
@@ -452,7 +472,7 @@
  
     A record produced to satisfy EXR-1 or EXR-2 is orthogonal to any
     implementation-status field a profile already maintains.  It MUST NOT
-@@ -476,10 +476,9 @@
+@@ -476,10 +481,9 @@
     outcomes required here are separate records of separate properties
     and MUST NOT be merged into one figure.
  
@@ -466,12 +486,15 @@
  
     An absent declaration MUST NOT be treated as a statement that no
     rejection or neither path exists.  A specification that means a check
-@@ -501,7 +500,8 @@
+@@ -497,11 +501,7 @@
  
  
  
+-
+-
+-
+-
 -He                        Expires 21 April 2027                 [Page 9]
-+
 +He                        Expires 28 April 2027                 [Page 9]
  
  Internet-Draft         Verifier Exercise Evidence           October 2026
@@ -561,11 +584,11 @@
 +   authoritative for a different scope, or in force at a different time,
 +   has not been shown to bear on this result, and the completeness claim
 +   remains unestablished.
-+
  
  
  
 -He                        Expires 21 April 2027                [Page 11]
++
 +He                        Expires 28 April 2027                [Page 11]
  
  Internet-Draft         Verifier Exercise Evidence           October 2026
@@ -1070,7 +1093,7 @@
  A.6.  Path Shadowed by an Earlier Rule
  
     Define a later rule that is evaluated only after an earlier rule
-@@ -1248,10 +1243,37 @@
+@@ -1248,15 +1243,53 @@
  
     Expected under EXR-2: every such input returns at the earlier rule.
     The later path is reported shadowed-unreachable, with both rules
@@ -1078,8 +1101,7 @@
 -   outcome is not reported merely as reachable-unexercised.
 +   identified.  It is counted neither as exercised nor as reachable-
 +   unexercised.
- 
--Appendix B.  Changes from -00
++
 +Appendix B.  Changes from -01
 +
 +   *  Defined "exercised" once, in Section 3, as a discriminating pair
@@ -1092,7 +1114,8 @@
 +   *  Corrected two cross-references in Section 13: the absent-
 +      declaration rule is in Section 7, and the exercise condition for
 +      completeness appraisals is the final paragraph of Section 9.
-+
+ 
+-Appendix B.  Changes from -00
 +   *  Stated in Section 6 that the evaluator's policy fixes the
 +      direction of an outcome collapse and that the party presenting
 +      evidence decides whether to trigger it.
@@ -1105,17 +1128,18 @@
 +      reader establish that stated expectations preceded the outcomes
 +      they govern.
 +
++   *  Required in Section 6 that the record of each outcome state when
++      the check was performed, and the issue and expiry times of the
++      evidence it relied on.
++
 +   *  Editorial tightening throughout.  No other requirement changed.
 +
 +Appendix C.  Changes from -00
  
     *  Expanded exercise accounting from rejecting outcomes to declared
        paths producing rejecting or neither outcomes, including
-@@ -1260,6 +1282,14 @@
-    *  Required the exercise record to identify the rule or condition
-       reached rather than relying on an outcome token alone.
+       unverifiable.
  
-+
 +
 +
 +He                        Expires 28 April 2027                [Page 23]
@@ -1123,10 +1147,10 @@
 +Internet-Draft         Verifier Exercise Evidence           October 2026
 +
 +
-    *  Distinguished reachable-but-unexercised paths from paths made
-       unreachable by an earlier rule or structural precondition.
+    *  Required the exercise record to identify the rule or condition
+       reached rather than relying on an outcome token alone.
  
-@@ -1281,15 +1311,6 @@
+@@ -1281,15 +1314,6 @@
     reviewed its attribution and outcome wording.  The coverage
     requirements were developed separately.
  
@@ -1142,11 +1166,10 @@
     Songbo Bu raised the related questions in Principal Binding
     Section 33, reviewed this document's outcome and evidence boundaries,
     and replayed the author's pinned source and fixtures as described in
-@@ -1316,6 +1337,15 @@
+@@ -1314,6 +1338,14 @@
+    audit work.  Section 11 is the author's answer; it does not imply
+    Orie's agreement with that boundary.
  
-    Acknowledgment does not imply endorsement of this document.
- 
-+
 +
 +
 +
@@ -1155,16 +1178,14 @@
 +Internet-Draft         Verifier Exercise Evidence           October 2026
 +
 +
- Author's Address
+    Acknowledgment does not imply endorsement of this document.
  
-    James Siyuan He
-@@ -1341,4 +1371,30 @@
+ Author's Address
+@@ -1341,4 +1373,28 @@
  
  
  
 -He                        Expires 21 April 2027                [Page 24]
-+
-+
 +
 +
 +

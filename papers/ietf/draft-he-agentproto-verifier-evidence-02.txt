@@ -428,6 +428,10 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    profile MAY define finer outcome values, but MUST NOT collapse these
    four.
 
+   The record of each outcome MUST state when the check was performed
+   and, for each item of evidence the check relied on, that evidence's
+   issue time and expiry time where the evidence carries them.
+
    The evaluator MUST distinguish a known absence of a required verifier
    capability from a supported check that was not attempted.  The record
    MUST identify the capability or evaluation-plan evidence supporting
@@ -438,10 +442,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    uncertainty and MUST NOT infer either condition from a broad outcome
    label alone.  Missing resolver configuration, for example, does not
    by itself establish that the verifier revision lacks resolver
-   capability.  A profile mapping these results into another
-   specification's outcome vocabulary MUST retain its required
-   capability and attempt context rather than treating a bare
-   unverifiable value as proof of unsupported.
 
 
 
@@ -449,6 +449,11 @@ He                        Expires 28 April 2027                 [Page 8]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   capability.  A profile mapping these results into another
+   specification's outcome vocabulary MUST retain its required
+   capability and attempt context rather than treating a bare
+   unverifiable value as proof of unsupported.
 
    An outcome of unverifiable or not-evaluated MUST NOT contribute to a
    coverage figure as though it were verified, and MUST NOT be
@@ -491,11 +496,6 @@ Internet-Draft         Verifier Exercise Evidence           October 2026
    are different facts: the first is a property of the check, the second
    of the sample.  Where a profile can tell them apart it SHOULD report
    which, and where it cannot it MUST NOT imply either.
-
-
-
-
-
 
 
 
@@ -1271,6 +1271,10 @@ Appendix B.  Changes from -01
       reader establish that stated expectations preceded the outcomes
       they govern.
 
+   *  Required in Section 6 that the record of each outcome state when
+      the check was performed, and the issue and expiry times of the
+      evidence it relied on.
+
    *  Editorial tightening throughout.  No other requirement changed.
 
 Appendix C.  Changes from -00
@@ -1279,16 +1283,15 @@ Appendix C.  Changes from -00
       paths producing rejecting or neither outcomes, including
       unverifiable.
 
-   *  Required the exercise record to identify the rule or condition
-      reached rather than relying on an outcome token alone.
-
-
 
 
 He                        Expires 28 April 2027                [Page 23]
 
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
+
+   *  Required the exercise record to identify the rule or condition
+      reached rather than relying on an outcome token alone.
 
    *  Distinguished reachable-but-unexercised paths from paths made
       unreachable by an earlier rule or structural precondition.
@@ -1335,9 +1338,6 @@ Acknowledgments
    audit work.  Section 11 is the author's answer; it does not imply
    Orie's agreement with that boundary.
 
-   Acknowledgment does not imply endorsement of this document.
-
-
 
 
 
@@ -1346,13 +1346,13 @@ He                        Expires 28 April 2027                [Page 24]
 Internet-Draft         Verifier Exercise Evidence           October 2026
 
 
+   Acknowledgment does not imply endorsement of this document.
+
 Author's Address
 
    James Siyuan He
    Independent
    Email: jsiyuanhe@gmail.com
-
-
 
 
 

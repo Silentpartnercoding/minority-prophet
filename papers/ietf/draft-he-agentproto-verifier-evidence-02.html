@@ -1693,7 +1693,11 @@ li > p:last-of-type:only-child {
 </dl>
 <p id="section-6-3">The separation of <code>unverifiable</code> from <code>violation</code> matters most. Reading <code>unverifiable</code> as <code>violation</code> produces false alarms, and reading it as <code>verified</code> produces false confidence. The evaluator's policy fixes which of these errors a collapse produces. The party presenting evidence then decides whether to trigger it, because evidence that cannot be checked is cheap to produce. Under a policy that reads <code>unverifiable</code> as <code>violation</code>, that party can force violations by presenting such evidence. Under a policy that reads it as <code>verified</code>, that party can obtain acceptance by presenting nothing else. A profile <span class="bcp14">MAY</span> define finer outcome values, but
       <span class="bcp14">MUST NOT</span> collapse these four.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">The evaluator <span class="bcp14">MUST</span> distinguish a known absence of a
+<p id="section-6-4">The record of each outcome <span class="bcp14">MUST</span> state when the check
+      was performed and, for each item of evidence the check relied on, that
+      evidence's issue time and expiry time where the evidence carries
+      them.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">The evaluator <span class="bcp14">MUST</span> distinguish a known absence of a
       required verifier capability from a supported check that was not
       attempted. The record <span class="bcp14">MUST</span> identify the capability or
       evaluation-plan evidence supporting that diagnosis. This distinction
@@ -1707,13 +1711,13 @@ li > p:last-of-type:only-child {
       A profile mapping these results into another specification's outcome
       vocabulary <span class="bcp14">MUST</span> retain its required capability and
       attempt context rather than treating a bare <code>unverifiable</code> value
-      as proof of <code>unsupported</code>.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">An outcome of <code>unverifiable</code> or <code>not-evaluated</code>
+      as proof of <code>unsupported</code>.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-6">An outcome of <code>unverifiable</code> or <code>not-evaluated</code>
         <span class="bcp14">MUST NOT</span> contribute to a coverage figure as though it were
       <code>verified</code>, and <span class="bcp14">MUST NOT</span> be relabelled to improve
       one. This is the same prohibition
       <span>[<a href="#I-D.bu-agentproto-security-principal-binding" class="cite xref">I-D.bu-agentproto-security-principal-binding</a>]</span> places on
-      relabelling a not-run scenario as not-applicable.<a href="#section-6-5" class="pilcrow">¶</a></p>
+      relabelling a not-run scenario as not-applicable.<a href="#section-6-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="exr-2">
@@ -2319,7 +2323,9 @@ li > p:last-of-type:only-child {
 </li>
         <li class="normal" id="appendix-B-1.6">Added a final paragraph to <a href="#exr-1" class="auto internal xref">Section 5</a>: the record must let a later reader establish that stated expectations preceded the outcomes they govern.<a href="#appendix-B-1.6" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-B-1.7">Editorial tightening throughout. No other requirement changed.<a href="#appendix-B-1.7" class="pilcrow">¶</a>
+        <li class="normal" id="appendix-B-1.7">Required in <a href="#outcomes" class="auto internal xref">Section 6</a> that the record of each outcome state when the check was performed, and the issue and expiry times of the evidence it relied on.<a href="#appendix-B-1.7" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-1.8">Editorial tightening throughout. No other requirement changed.<a href="#appendix-B-1.8" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
