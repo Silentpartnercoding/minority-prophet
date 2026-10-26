@@ -1,0 +1,547 @@
+--- draft-he-agentproto-verifier-evidence-01.xml	2026-10-25 23:30:42.337715692 -0700
++++ draft-he-agentproto-verifier-evidence-02.xml	2026-10-25 23:32:53.564024014 -0700
+@@ -1,7 +1,7 @@
+ <?xml version='1.0' encoding='utf-8'?>
+ <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+      category="info"
+-     docName="draft-he-agentproto-verifier-evidence-01"
++     docName="draft-he-agentproto-verifier-evidence-02"
+      consensus="false"
+      ipr="trust200902"
+      submissionType="IETF"
+@@ -10,12 +10,12 @@
+ 
+   <front>
+     <title abbrev="Verifier Exercise Evidence">Exercise and Completeness Evidence for Agent Protocol Verifier Results</title>
+-    <seriesInfo name="Internet-Draft" value="draft-he-agentproto-verifier-evidence-01"/>
++    <seriesInfo name="Internet-Draft" value="draft-he-agentproto-verifier-evidence-02"/>
+     <author fullname="James Siyuan He" initials="J. S." surname="He">
+       <organization>Independent</organization>
+       <address><email>jsiyuanhe@gmail.com</email></address>
+     </author>
+-    <date year="2026" month="October" day="18"/>
++    <date year="2026" month="October" day="25"/>
+     <area>ART</area>
+     <keyword>verifier</keyword>
+     <keyword>conformance</keyword>
+@@ -37,9 +37,7 @@
+       answer as the only thing looking.</t>
+ 
+       <t>This document defines no wire format, encoding, token, claim vocabulary,
+-      test harness, or registry. It does require a record to identify certain
+-      facts, which is a constraint on what a record must be able to express
+-      rather than on how it is written down. A profile satisfying these
++      test harness, or registry. It does require a record to identify certain facts. That constrains what a record must be able to express and leaves its encoding open. A profile satisfying these
+       requirements will need a place to put those facts.</t>
+     </abstract>
+   </front>
+@@ -58,8 +56,7 @@
+       result.</t>
+ 
+       <t>In the first, the check compares too little. It runs, it returns an
+-      accepting outcome, and the difference it was written to detect is not
+-      expressible in what it reads. Increasing the number of observations does
++      accepting outcome, and the difference it was written to detect cannot be expressed in the fields it reads. Increasing the number of observations does
+       not help, because every observation is drawn from the same blind
+       region.</t>
+ 
+@@ -71,17 +68,13 @@
+ 
+       <t>Neither failure is addressed by the presence of negative test vectors.
+       A suite can contain many and still contain checks whose rejecting or
+-      unverifiable outcome has never occurred on the record. A vector's existence is not its
+-      execution, and a matrix that records outcomes does not record which
+-      outcomes were reachable.</t>
++      unverifiable outcome has never occurred on the record. A conformance matrix records only the outcomes that occurred.</t>
+ 
+-      <t>The interoperability problem is not that checks differ between
+-      implementations. It is that two implementations can publish the same
++      <t>The interoperability problem: two implementations can publish the same
+       conformance row, with the same accepting outcome, where one check would have
+       rejected a malformed input and the other could not have. A relying party
+       comparing candidate protocols, or composing across administrative domains,
+-      cannot tell those apart from what is published, so rows that are not
+-      comparable are compared anyway. What follows is a reporting requirement aimed
++      cannot tell those apart from what is published, so incomparable rows get compared anyway. What follows is a reporting requirement aimed
+       at that. It does not prescribe test methodology, coverage arithmetic, or the
+       correctness of any protocol.</t>
+     </section>
+@@ -104,8 +97,7 @@
+         given input.</dd>
+         <dt>rejection path:</dt>
+         <dd>The condition, stated by the specification or profile, under which a
+-        check returns an outcome classified as rejecting. An outcome classified
+-        as neither accepting nor rejecting is not a rejection path.</dd>
++        check returns an outcome classified as rejecting. Paths to outcomes classified as neither accepting nor rejecting are neither paths, defined next.</dd>
+         <dt>neither path:</dt>
+         <dd>The condition, stated by the specification or profile, under which a
+         check returns an outcome classified as neither accepting nor rejecting,
+@@ -115,23 +107,19 @@
+         requires exercise evidence.</dd>
+         <dt>reachable-unexercised:</dt>
+         <dd>An exercise path for which the defined input domain contains a
+-        reaching input, but no identified input in the exercise record produced
+-        the path's outcome under the current check revision.</dd>
++        reaching input, but the path has not been exercised under the current check revision.</dd>
+         <dt>shadowed-unreachable:</dt>
+         <dd>An exercise path that no input in the defined input domain can reach
+         under the current check revision because an earlier rule or structural
+         precondition necessarily returns first.</dd>
+         <dt>exercised:</dt>
+-        <dd>An input was supplied that produced the outcome in question, and
+-        both the input and the outcome are identified in the record.</dd>
++        <dd>An exercise path is exercised under a given check revision when the record identifies, for that revision, a discriminating pair for the path on which the check returned the expected outcome on each population, together with the inputs, the outcomes, and the rule or condition reached. This is the only sense in which this document uses the term.</dd>
+         <dt>discriminating pair:</dt>
+         <dd>Two populations supplied together with the outcome expected on each
+         stated in advance, one expected to accept and one expected to produce the
+         declared non-accepting outcome on the exercise path, whether that outcome
+         is rejecting or neither. The pair is used to detect a check that cannot tell
+-        the populations apart. Which population is expected to produce each outcome
+-        depends on what the check asserts, and is stated by the profile rather than
+-        implied by the labels.</dd>
++        the populations apart. The profile states which population is expected to produce each outcome. That depends on what the check asserts; the labels do not imply it.</dd>
+         <dt>coverage domain:</dt>
+         <dd>The set of records over which a completeness claim is asserted.</dd>
+         <dt>material party:</dt>
+@@ -144,11 +132,8 @@
+     </section>
+ 
+     <section anchor="problem-statement"><name>Problem Statement</name>
+-      <t>The instances below are why the author noticed the problem. They are not
+-      offered as a survey, a rate, or evidence that the failure is widespread,
+-      and no requirement in this document rests on them. Each is in a public
+-      repository <xref target="MP"/> so that a reader can check the
+-      characterisation against the artifact rather than take it on trust.
++      <t>The instances below are why the author noticed the problem. They establish no rate and no claim that the failure is widespread, and no requirement in this document rests on them. Each is in a public
++      repository <xref target="MP"/> so that a reader can check the characterisation against the artifact.
+       Instances known to the author that are not public are omitted, because an
+       unpublished instance is author testimony.</t>
+ 
+@@ -165,16 +150,12 @@
+       silently stops being a comparison.</t>
+ 
+       <t>A positive test case was found to be an identity. Its verdict is a
+-      function of a multiset that the transformation under test preserves, so
+-      the case cannot fail under the intended reading and its zero is not
+-      evidence about the schema. This was published as a correction to two
++      function of a multiset that the transformation under test preserves, so the case cannot fail under the intended reading and its zero carries no evidence about the schema. This was published as a correction to two
+       earlier findings by the same author, and the neighbouring cases that do
+       carry information were identified at the same time.</t>
+ 
+       <t>A record-only rule accepted 642 of 642 records written over six weeks
+-      by a production job-control system. The rule is not inaccurate; it is
+-      non-falsifiable, because the condition it was written to detect is not
+-      expressible in the fields it reads. A second rule, evaluated on the same
++      by a production job-control system. The rule is non-falsifiable: the condition it was written to detect cannot be expressed in the fields it reads. A second rule, evaluated on the same
+       corpora, found the condition absent in 284 of 284 cases where it could be
+       checked.</t>
+ 
+@@ -198,22 +179,14 @@
+     </section>
+ 
+     <section anchor="exr-1"><name>EXR-1: Exercised Rejection and Unverifiable Paths</name>
+-      <t>A specification or profile claiming conformance to EXR-1 and
+-      permitting a check to be reported as implemented under its
+-      exercise-evidence requirement <bcp14>MUST</bcp14> require that the
+-      check's declared exercise paths have each been exercised by an input that
+-      produced the path's stated outcome, and that the input, the resulting
+-      outcome, and the rule or condition reached are identified in the
+-      record.</t>
++      <t>A specification or profile claiming conformance to EXR-1 <bcp14>MUST NOT</bcp14> permit a check to be reported as satisfying its exercise-evidence requirement unless each of the check's declared exercise paths has been exercised, as defined in <xref target="terminology"/>, under the current check revision.</t>
+ 
+       <t>A check whose outcomes have only ever held one value
+       <bcp14>MUST NOT</bcp14> be reported as satisfying this exercise-evidence
+       requirement, irrespective of the number of observations.</t>
+ 
+       <t>The classification <bcp14>MUST</bcp14> be computable from the record
+-      alone. Two evaluators holding the same record and the same profile that
+-      reach different classifications indicate an underspecified record rather
+-      than a disagreement to be settled by judgement, and the profile
++      alone. Two evaluators holding the same record and the same profile that reach different classifications show that the record is underspecified, and the profile
+       <bcp14>MUST</bcp14> state the form in which an exercising input and its
+       outcome are identified.</t>
+ 
+@@ -239,9 +212,7 @@
+       classify each outcome as accepting, rejecting, or neither, and
+       <bcp14>MUST</bcp14> do so before the check is exercised. Where a check
+       specifies paths to outcomes classified as neither, including
+-      <tt>unverifiable</tt>, EXR-1 applies to each declared path in the same way:
+-      it is exercised when an input has produced that outcome and some other
+-      input has produced a different outcome. CMP-2 below returns such an
++      <tt>unverifiable</tt>, EXR-1 applies to each declared path in the same way. CMP-2 below returns such an
+       outcome and is subject to this paragraph.</t>
+ 
+       <t>EXR-1 does not grade an exercising input by who supplied it. An input
+@@ -268,8 +239,7 @@
+       The profile <bcp14>MUST</bcp14> state those expectations before the check
+       is run, and the check <bcp14>MUST</bcp14> return the stated outcome on
+       each. A check that returns the same outcome on both has not satisfied
+-      this requirement, whichever outcome it returned. The expected outcomes
+-      are not implied by which population is called positive: a check
++      this requirement, whichever outcome it returned. The name of a population does not fix its expected outcome: a check
+       asserting that a defect is absent rejects where the defect is present,
+       and a check asserting that a property holds rejects where it does not.</t>
+     </section>
+@@ -291,8 +261,7 @@
+         <dt>unverifiable</dt>
+         <dd>The check was attempted and could not reach an answer, because
+         required evidence was unavailable, a resolver did not respond, or no
+-        resolver was configured. A claim whose source has become unreachable is
+-        not a claim that failed.</dd>
++        resolver was configured. </dd>
+ 
+         <dt>not-evaluated</dt>
+         <dd>The check was not reached, or the record names nothing for it to
+@@ -300,13 +269,7 @@
+         record identifies the unattempted check and the reason.</dd>
+       </dl>
+ 
+-      <t>The separation of <tt>unverifiable</tt> from <tt>violation</tt> is the
+-      load-bearing one. Collapsing it in one direction manufactures false
+-      confidence and in the other manufactures false alarms, and the party
+-      making a claim controls which way the collapse runs: producing evidence
+-      that cannot be checked is cheap, so an evaluator that treats unreachable
+-      as refuted can be driven, and one that treats it as satisfied can be
+-      starved. A profile <bcp14>MAY</bcp14> define finer outcome values, but
++      <t>The separation of <tt>unverifiable</tt> from <tt>violation</tt> matters most. Reading <tt>unverifiable</tt> as <tt>violation</tt> produces false alarms, and reading it as <tt>verified</tt> produces false confidence. The evaluator's policy fixes which of these errors a collapse produces. The party presenting evidence then decides whether to trigger it, because evidence that cannot be checked is cheap to produce. Under a policy that reads <tt>unverifiable</tt> as <tt>violation</tt>, that party can force violations by presenting such evidence. Under a policy that reads it as <tt>verified</tt>, that party can obtain acceptance by presenting nothing else. A profile <bcp14>MAY</bcp14> define finer outcome values, but
+       <bcp14>MUST NOT</bcp14> collapse these four.</t>
+ 
+       <t>The evaluator <bcp14>MUST</bcp14> distinguish a known absence of a
+@@ -341,8 +304,7 @@
+       <bcp14>MAY</bcp14> use implemented-unexercised as an EXR exercise
+       annotation for a check with implementation evidence under another
+       profile, identifying the exercise path for which no exercising input
+-      appears in the record. That annotation is not an upgrade to the other
+-      profile's implementation status.</t>
++      appears in the record. That annotation leaves the other profile's implementation status unchanged.</t>
+ 
+       <t>A record produced to satisfy EXR-1 or EXR-2 is orthogonal to any
+       implementation-status field a profile already maintains. It
+@@ -353,8 +315,7 @@
+       per-input outcomes required here are separate records of separate
+       properties and <bcp14>MUST NOT</bcp14> be merged into one figure.</t>
+ 
+-      <t>An explicit weaker result is required rather than silence. Without a
+-      name for it, a report can conceal the difference between a check whose
++      <t>An explicit weaker result is required. Without a name for it, a report can conceal the difference between a check whose
+       rejection path was exercised and one whose rejection path remains
+       unexercised.</t>
+ 
+@@ -389,17 +350,12 @@
+ 
+       <t>A report of implemented-unexercised <bcp14>SHOULD</bcp14> carry a
+       machine-readable reason identifying the unexercised exercise path, so that
+-      two implementations can compare results without reading prose. A single
+-      token is not sufficient for cross-implementation diagnosis.</t>
++      two implementations can compare results without reading prose. A single token is insufficient for cross-implementation diagnosis.</t>
+ 
+-      <t>implemented-unexercised is not a failure grade. It reports that the
+-      record does not establish that the check can reject, which is a different
+-      fact from a check that ran and rejected.</t>
++      <t>implemented-unexercised reports only that the record does not establish that the check can reject. It carries no grade of failure.</t>
+ 
+       <t>A check whose rejecting or unverifiable condition is not expected to arise in normal
+-      operation will hold implemented-unexercised indefinitely, and that is the
+-      intended reading rather than a defect in the requirement. A safety check
+-      that has never fired has not been shown to work; saying so is the point.
++      operation will hold implemented-unexercised indefinitely. This is intended. A safety check that has never fired stays implemented-unexercised.
+       Where a profile can construct a synthetic input that drives such a check
+       into its rejecting outcome, EXR-1 is satisfied by that input, and
+       <xref target="privacy"/> permits a synthetic input for this purpose.</t>
+@@ -440,8 +396,7 @@
+       <bcp14>MUST NOT</bcp14> be reported as a violation. A violation of a
+       separately completed predicate check remains reportable.</t>
+ 
+-      <t>The distinction a relying party acts on is not settled versus
+-      unsettled. A predicate reported as a violation asserts that its check
++      <t>A relying party needs to tell two kinds of result apart. A predicate reported as a violation asserts that its check
+       ran and the condition did not hold; for example, two authenticated
+       occurrences can refute an at-most-once predicate even if completeness
+       of the wider record set remains unknown. A completeness appraisal
+@@ -480,20 +435,14 @@
+     </section>
+ 
+     <section anchor="not-established"><name>What These Requirements Do Not Establish</name>
+-      <t>These requirements separate claims. They do not make claims true.</t>
++      <t>These requirements make claims distinguishable. They add nothing to whether a claim is true.</t>
+ 
+-      <t>An exercised check is not a correct check. Exercising a rejection path
+-      establishes that the check can return its other outcome for some input. It
+-      does not establish that the rejection path is the right one, that its
+-      condition is correctly specified, or that the accepting outcomes were
+-      correct.</t>
++      <t>Exercising a rejection path shows only that the check can return a non-accepting outcome for some input. It says nothing about whether the rejection path is the right one, whether its condition is correctly specified, or whether the accepting outcomes were correct.</t>
+ 
+       <t>An exercised path establishes nothing about paths that were not
+-      exercised. EXR-1 is a floor and is not a coverage claim.</t>
++      exercised. EXR-1 is a floor; it makes no coverage claim.</t>
+ 
+-      <t>implemented-unexercised is not evidence of a defect. A check may be
+-      correct, well specified, and simply never driven into its rejecting
+-      condition.</t>
++      <t>An implemented-unexercised check may be correct, well specified, and simply never given an input that reaches its rejecting condition.</t>
+ 
+       <t>CMP-2 does not establish that an omission occurred. It establishes that
+       the record as presented cannot exclude one. A profile that supplies an
+@@ -501,13 +450,7 @@
+       claim only when the deciding verifier appraises that basis for this
+       result. The disclosed artifacts need not change.</t>
+ 
+-      <t>These requirements apply to themselves. A check implementing EXR-1 is
+-      subject to EXR-1, and a report of CMP-2 is subject to CMP-2. The regress
+-      terminates rather than continuing without limit, because exercising a check
+-      is itself the discriminating pair the requirement asks for: a checker that
+-      classifies a discriminating check and a non-discriminating one identically
+-      has been shown unexercised by that pair, and no further level is needed.
+-      <xref target="vectors"/> exercises the checker this way.</t>
++      <t>These requirements apply to themselves. A checker that classifies checks under EXR-1 is itself a check, and a report that it satisfies EXR-1 needs its own discriminating pair: a check that distinguishes its populations and one that does not. <xref target="vectors"/> supplies such pairs. Likewise, a report of CMP-2 is subject to CMP-2. This document sets no limit on how many levels of such checking a profile requires.</t>
+ 
+       <t>None of these requirements reaches the correctness of an underlying
+       protocol, the honesty of any party, or the security of any deployment.</t>
+@@ -547,9 +490,7 @@
+       carrier is emitted or a positive exchange completes: the evidence must
+       show the stated verifier decision and at least one security-relevant
+       rejection path, and Section 11 draws the same distinction against a
+-      happy-path exchange. That floor is established there. It is not
+-      introduced here, and a row lacking such evidence is already not fully
+-      implemented under that definition.</t>
++      happy-path exchange. That floor comes from that document, and under its definition a row lacking such evidence already falls short of implemented.</t>
+ 
+       <t>Section 33 of the same document lists as open issues which negative
+       test cases authors should provide, whether a row may claim implemented
+@@ -557,23 +498,19 @@
+       rejection path, and when same-party evidence may support a row claiming
+       independent observation. EXR-1 and EXR-2 are addressed to the first two.
+       What they add to the existing floor is that the exercising input be
+-      pinned to a revision, that a discriminating pair be exhibited rather than
+-      a single rejecting input, and that the record name the outcome observed
++      pinned to a revision, that a discriminating pair be exhibited (a single rejecting input is insufficient), and that the record name the outcome observed
+       for each declared rejection path. A row satisfying Section 14 may still
+       carry no such record.</t>
+ 
+       <t>CMP-1 and CMP-2 address the completeness and omission subcase of the
+-      third open issue. They do not resolve that issue for every kind of row,
+-      and independently checking one scoped observation is not the same as
+-      establishing completeness over a domain.</t>
++      third open issue. They do not resolve that issue for every kind of row. Independently checking one scoped observation falls short of establishing completeness over a domain.</t>
+ 
+       <t>That document's rules governing
+       coverage denominators, and its prohibition on relabelling a not-run
+       scenario as not-applicable to improve a denominator, are complementary and
+       are deliberately not restated here. That document's implementation-status
+       vocabulary is a closed set of implemented, partial, none, and external.
+-      implemented-unexercised is not proposed as a fifth member of it: it reports a
+-      different property on a different axis. A row may satisfy Principal
++      implemented-unexercised reports a different property on a different axis, and this document does not propose it as a fifth member. A row may satisfy Principal
+       Binding's minimum rejection-evidence requirement while lacking the
+       stronger EXR record for every declared rejection path or lacking EXR's
+       revision-pinned discriminating-pair evidence. Those gaps remain explicit;
+@@ -589,8 +526,7 @@
+ 
+       <t><xref target="IA9-OVERLAY"/> argues that non-repudiation over a
+       self-asserted subject lacks a testable assertion about actor identity.
+-      That is an adjacent warning about the evidentiary force of a control,
+-      not an implementation or derivation of EXR-1: this document asks whether
++      That is an adjacent warning about the evidentiary force of a control. EXR-1 neither implements nor derives from it; this document asks whether
+       a stated rejection path has actually been exercised. A check that could
+       not run is also kept distinct from one that ran and established a
+       violation in <xref target="outcomes"/>.</t>
+@@ -606,9 +542,7 @@
+       distinguishing the case where the governing profile supplies no applicable
+       relation from the case where the exact profile definition was unavailable
+       to that verifier. EXR-2 and CMP-2 apply the same discipline to the two
+-      cases treated here: a result that could not be established is reported as
+-      such, and is not merged with a result that was established and
+-      negative.</t>
++      cases treated here: a result that could not be established is reported as such and kept apart from a result that was established and negative.</t>
+ 
+       <t><xref target="I-D.laurie-tmif"/> defines falsifiability as the design
+       property ensuring that subversion of a system's stated claims carries a
+@@ -616,9 +550,7 @@
+       evaluator assesses that property. That is falsifiability of the claims a
+       system makes about itself. The present document concerns a different
+       object: whether the check an evaluator applies has been shown able to
+-      return its rejecting outcome at all. The two compose rather than overlap.
+-      A system whose claims are highly falsifiable, assessed by a check that has
+-      never rejected anything, is not thereby verified, and EXR-2 requires that
++      return its rejecting outcome at all. The two compose. A system whose claims are highly falsifiable, assessed by a check that has never rejected anything, remains unverified by that check, and EXR-2 requires that
+       to be visible in the report.</t>
+     </section>
+ 
+@@ -627,8 +559,7 @@
+       at the time of writing, per <xref target="RFC7942"/>. It is intended to be
+       removed before publication as an RFC.</t>
+ 
+-      <t>The outcome vocabulary of <xref target="outcomes"/> draws on, but is
+-      not a one-to-one copy of, the public implementation in <xref target="MP"/>
++      <t>The outcome vocabulary of <xref target="outcomes"/> draws on, and differs in places from, the public implementation in <xref target="MP"/>
+       at commit b4ee46924ebe8fd0bee38b4986a01229e859764b. Its
+       dereference layer separates verified, absent, unverifiable, and
+       no_reference. A resolver that is offline, rate-limited, or not configured
+@@ -637,19 +568,16 @@
+       A separate mandatory-reference presence check may establish a violation
+       from that absence, while an optional-reference profile would not. The
+       report and policy layers carry these facts into further dispositions;
+-      their labels are not interchangeable with either the four values in
++      their labels do not map one-to-one onto either the four values in
+       <xref target="outcomes"/> or another profile's implementation statuses.
+       The pinned implementation does not yet establish the mandatory
+-      capability-versus-skipped diagnostic distinction specified here. Its V4
+-      weaker supported claim is reported as downgraded in that layer, not as
+-      one of the four check outcomes.</t>
++      capability-versus-skipped diagnostic distinction specified here. Its V4 weaker supported claim is reported as downgraded in that layer and is outside the four check outcomes.</t>
+ 
+       <t>A worked case for CMP-1 and CMP-2. A verdict is sought over a set of
+       records in a profile that requires each root to name a reference. Some
+       references resolve, one resolver is unreachable, and one root names no
+       reference. Reporting the resolved subset as a completeness figure would
+-      claim a domain that was never covered. The unreachable dereference is
+-      unverifiable rather than a violation. For the unreferenced root, the
++      claim a domain that was never covered. The unreachable dereference is unverifiable. For the unreferenced root, the
+       dereference check was not attempted and its not-evaluated record names
+       the missing-reference reason. Separately, the mandatory-reference
+       presence check completes and reports a violation. If references were
+@@ -669,30 +597,19 @@
+       refusal is reported before any other verdict, on the stated grounds that
+       if the probe cannot fail the other result is meaningless in both
+       directions. A probe that reports a constant is refused on a population
+-      that genuinely has the property. That code predates this document and was
+-      not written as a conformance implementation of EXR-1; it is offered as
+-      evidence that the requirement is implementable and has been lived with,
+-      not that it has been implemented as specified here.</t>
+-
+-      <t>The same repository refuses a registration that omits the declaration
+-      entirely, on the grounds stated in EXR-2 that an absent declaration is not
+-      consent.</t>
++      that genuinely has the property. That code predates this document and was written without reference to EXR-1. It shows that the requirement is implementable and usable in practice. It makes no claim to implement EXR-1 as specified here.</t>
++
++      <t>The same repository refuses a registration that omits the declaration entirely. This matches the rule in <xref target="exr-2"/> that an absent declaration <bcp14>MUST NOT</bcp14> be treated as a statement that no rejection or neither path exists.</t>
+ 
+       <t>The original four vectors in <xref target="vectors"/> are published in
+       executable form at the pinned commit above, with a test suite of twenty-eight
+-      cases. Three of those vectors are constructed fixtures written for this
+-      document rather than observations of a deployed system; they show that the requirements
+-      have content and that a check can fail them, not that any particular check
+-      does. The fourth reads a frozen artifact from an earlier experiment and pins
++      cases. Three of those vectors are fixtures constructed for this document. They show that the requirements have content and that a check can fail them; they say nothing about whether any deployed check does. The fourth reads a frozen artifact from an earlier experiment and pins
+       its digest. The two additional vectors in this revision are prose vectors;
+-      they are not part of that pinned executable suite and do not constitute
+-      implementation evidence.</t>
++      they are outside that pinned executable suite and provide no implementation evidence.</t>
+ 
+       <t>Songbo Bu replayed the author's source and fixtures at the pinned
+       commit: twenty-eight verifier-evidence tests and thirty-eight related
+-      dereference, warrant, resolver, and policy tests passed. This is a
+-      bounded source replay, not a second implementation or a conformance
+-      result. No independently implemented CMP-1 or CMP-2 appraisal has been
++      dereference, warrant, resolver, and policy tests passed. This is a bounded source replay. It is neither a second implementation nor a conformance result. No independently implemented CMP-1 or CMP-2 appraisal has been
+       verified, and no interoperability between independent implementations
+       is claimed for any requirement in this document.</t>
+ 
+@@ -717,8 +634,7 @@
+       explicit contradictions or omissions whose mandatory-rejection policy is
+       disputed and two cases underdetermined by the source text. The audit does
+       not promote those disagreements into reader errors. The separately
+-      written reader shares the present author's project control and is not a
+-      second external evidence root.</t>
++      written reader shares the present author's project control, so it adds no second external evidence root.</t>
+ 
+       <t>Toshikatsu Oga applied EXR-1 and EXR-2 to the MUSUBI settle core and
+       froze the result at horizon-shield commit dd64d0e2
+@@ -734,28 +650,19 @@
+       project has rerun the exercise script.</t>
+ 
+       <t>The MUSUBI result is an external appraisal of whether the requirements
+-      in this document expose useful distinctions. It is not independent
+-      verification of MUSUBI: the counts are outputs of the MUSUBI reference
++      in this document expose useful distinctions. It falls short of independent verification of MUSUBI: the counts are outputs of the MUSUBI reference
+       implementation, and the added vectors and exercise script were produced
+       and run within that project. The result supports the distinction among
+       exercised, reachable-unexercised, and shadowed-unreachable paths without
+       establishing the correctness or completeness of the underlying
+       protocol.</t>
+ 
+-      <t>One consequence is worth stating rather than leaving to be derived. A
+-      profile with no independent omission-detection basis can identify its
+-      coverage domain but cannot demonstrate the accepting side of CMP-2 for a
+-      completeness claim. EXR-1 then forbids reporting that check as
+-      implemented on the strength of only its unestablished outcomes. The
+-      worked case above illustrates the reporting distinction; it is not a
+-      claim that CMP-1 or CMP-2 has been implemented as specified here.</t>
++      <t>A profile with no independent omission-detection basis can identify its coverage domain but cannot demonstrate the accepting side of CMP-2 for a completeness claim. Under the final paragraph of <xref target="cmp-2"/>, an exercise record containing only unestablished completeness appraisals does not satisfy the CMP-2 exercise condition. The worked case above illustrates the reporting distinction; it makes no claim that CMP-1 or CMP-2 has been implemented as specified here.</t>
+     </section>
+ 
+     <section anchor="security"><name>Security Considerations</name>
+       <t>The failure mode these requirements address is a system that appears
+-      verified. An unexercised check is worse for a relying party than an absent
+-      one, because it occupies the position in a matrix where a reviewer would
+-      otherwise notice that nothing is checking the claim.</t>
++      verified. An unexercised check can be worse for a relying party than an absent one. A matrix row with no check is visibly empty. A row with an unexercised check shows an accepting outcome in the same place, so a reviewer scanning the matrix for gaps sees none there.</t>
+ 
+       <t>An adversary who knows which checks are unexercised knows where a
+       conformance matrix will not look. Because the property is visible from a
+@@ -764,9 +671,7 @@
+       more available to an adversary than to a reviewer.</t>
+ 
+       <t>Reporting implemented-unexercised discloses that an exercise path is
+-      untested, and profiles should weigh that. The alternative is that the same
+-      fact remains true and is not written down, which does not reduce the
+-      exposure and removes the relying party's ability to account for it.</t>
++      untested, and profiles should weigh that. Leaving it unreported keeps the same fact true, leaves the exposure unchanged, and removes the relying party's ability to account for it.</t>
+     </section>
+ 
+     <section anchor="privacy"><name>Privacy Considerations</name>
+@@ -871,13 +776,11 @@
+ 
+     <section anchor="vectors"><name>Negative Vectors</name>
+       <t>These vectors are stated so that a reader can construct them
+-      independently. They are illustrative and are not a normative test suite.
++      independently. They are illustrative; this appendix defines no normative test suite.
+       An executable form, with a deterministic machine-readable result and its
+       source pinned by digest, is published at <xref target="MP"/> under
+       research/verifier-evidence. Each vector there supplies a positive
+-      population and its contrasting population and runs both a check that cannot
+-      distinguish them and one that can; the pair is the evidence, not either
+-      half.</t>
++      population and its contrasting population and runs both a check that cannot distinguish them and one that can; the evidence is the pair.</t>
+ 
+       <section anchor="v1"><name>Check Comparing Too Little</name>
+         <t>Construct a check whose accepting condition is evaluated over a proper
+@@ -913,12 +816,7 @@
+         </table>
+         <t>The silent system attains the best available one-sided score, tying
+         with the origin-aware system, so a one-sided endpoint cannot distinguish
+-        a system that never confirms from one that confirms correctly. Under the
+-        two-sided score the silent system no longer ties for best and is beaten
+-        by the origin-aware system. It is not last: the count-based system
+-        scores worse, having confirmed every false event. The point of the
+-        second term is that it removes silence from the winning set, not that it
+-        makes silence the worst available strategy.</t>
++        a system that never confirms from one that confirms correctly. Under the two-sided score the silent system no longer ties for best and is beaten by the origin-aware system, while the count-based system, having confirmed every false event, scores worse than both. The second term removes silence from the winning set.</t>
+       </section>
+ 
+       <section anchor="v4"><name>Withheld Record Under a Completeness Claim</name>
+@@ -950,11 +848,21 @@
+         earlier rule rejects. Supply inputs satisfying the later condition.</t>
+         <t>Expected under EXR-2: every such input returns at the earlier rule.
+         The later path is reported <tt>shadowed-unreachable</tt>, with both rules
+-        identified. It is not counted as exercised, and absence of its outcome
+-        is not reported merely as reachable-unexercised.</t>
++        identified. It is counted neither as exercised nor as reachable-unexercised.</t>
+       </section>
+     </section>
+ 
++    <section anchor="changes-02"><name>Changes from -01</name>
++      <ul>
++        <li>Defined "exercised" once, in <xref target="terminology"/>, as a discriminating pair under the current check revision, and used that definition throughout.</li>
++        <li>Restated the opening requirement of EXR-1 as a testable prohibition.</li>
++        <li>Corrected two cross-references in <xref target="impl"/>: the absent-declaration rule is in <xref target="exr-2"/>, and the exercise condition for completeness appraisals is the final paragraph of <xref target="cmp-2"/>.</li>
++        <li>Stated in <xref target="outcomes"/> that the evaluator's policy fixes the direction of an outcome collapse and that the party presenting evidence decides whether to trigger it.</li>
++        <li>Removed the claim in <xref target="not-established"/> that the self-application regress terminates, and gave the reasoning for the claim in <xref target="security"/> about unexercised checks.</li>
++        <li>Editorial tightening throughout. No other requirement changed.</li>
++      </ul>
++    </section>
++
+     <section anchor="changes-01"><name>Changes from -00</name>
+       <ul>
+         <li>Expanded exercise accounting from rejecting outcomes to declared
