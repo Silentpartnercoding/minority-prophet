@@ -207,7 +207,7 @@
    ],
    "proof_status": "proved_compiled",
    "lean_theorem": "MinorityProphet.root_error_tolerance",
-   "lean_theorem_alt": "MinorityProphet.no_reversal_of_margin_ge (reversal form), MinorityProphet.margin_diff_le_rootSet_diff (the underlying counting bound)",
+   "lean_theorem_alt": "MinorityProphet.no_reversal_of_margin_ge (reversal form, positive margin), MinorityProphet.no_reversal_of_margin_le_neg (reversal form, negative margin), MinorityProphet.margin_diff_le_rootSet_diff (the underlying counting bound)",
    "lean_file": "formal/lean/MinorityProphetCore/Margin.lean",
    "narrowed_from_repository": true,
    "generalized_from_repository": true,

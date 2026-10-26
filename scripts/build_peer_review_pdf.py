@@ -266,7 +266,7 @@ def story_from_markdown(source: Path, doc_width: float):
 def _version_of(source: Path) -> str:
     """Version taken from the source filename, so the stamped metadata cannot
     disagree with the document it describes."""
-    match = re.search(r"-v(\d+\.\d+\.\d+)\.md$", source.name)
+    match = re.search(r"-v(\d+\.\d+\.\d+(?:-[a-z]+)?)\.md$", source.name)
     return match.group(1) if match else PAPER_VERSION
 
 

@@ -41,7 +41,7 @@ about it.
 ```text
 SHA-256  487dfe143b4db3102e2e9e97c2830b3f48f5378cdff12866fcda3bbd142cf38b
 File     minority-prophet-peer-review-v1.2.0.pdf
-DOI      not yet assigned; no v1.2.0 deposit exists
+DOI      10.5281/zenodo.21997434 (deposited 2026-08-18; verified on Zenodo 2026-10-25)
 ```
 
 ## RESOLVED: the tracked v1.1.0 artifacts are now the deposited ones

@@ -155,7 +155,8 @@ and the minimum cost equalled `⌊m/2⌋+1` in **4,638 / 4,638**.
 > `|margin W| > k` survives unchanged; and one with `|margin W| ≥ k` cannot be
 > reversed.
 
-`root_error_tolerance`, `no_reversal_of_margin_ge`, and the underlying counting
+`root_error_tolerance`, `no_reversal_of_margin_ge` (positive margin),
+`no_reversal_of_margin_le_neg` (negative margin), and the underlying counting
 bound `margin_diff_le_rootSet_diff`.
 
 **Narrowed and generalized from v2.**
