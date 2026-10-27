@@ -5,6 +5,7 @@ authors:
   - family-names: "He"
     given-names: "James Siyuan"
     alias: "Silentpartnercoding"
+    orcid: "https://orcid.org/0009-0005-7883-4966"
 version: 0.1.0
 date-released: 2026-08-07
 repository-code: "https://github.com/Silentpartnercoding/minority-prophet"
@@ -17,6 +18,7 @@ preferred-citation:
     - family-names: "He"
       given-names: "James Siyuan"
       alias: "Silentpartnercoding"
+      orcid: "https://orcid.org/0009-0005-7883-4966"
   year: 2026
   version: "1.2.0"
   doi: "10.5281/zenodo.21997434"

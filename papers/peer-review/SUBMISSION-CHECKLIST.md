@@ -16,7 +16,8 @@ The focused preprint is publicly archived. The record below separates completed 
 
 ## Publication record
 
-- [ ] Add an ORCID and preferred correspondence email if the author wants them in the public record.
+- [x] Add the author's ORCID to the repository citation and deposit metadata.
+- [ ] Add a preferred correspondence email if the author wants it in the public record.
 - [ ] Choose a venue and apply its template, page limit, and anonymity rules. The current artifact is venue-neutral and author-identified.
 - [x] Merge the approved candidate in PR #91.
 - [x] Create the immutable `paper-v1.1.0` tag and GitHub release.
