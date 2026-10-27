@@ -1,0 +1,32 @@
+{
+  "result_fields": ["property", "evidence", "result", "detection_point_and_treatment"],
+  "result_values": ["verified", "unverified", "unobservable"],
+  "detection_points": ["read-time", "audit"],
+  "treatments": {
+    "accepted": "proceeded as if the property were verified",
+    "rejected": "held or declined to use the memory; not a finding that the property is false",
+    "reported": "proceeded with a signal raised"
+  },
+  "scoring_rule": "result unobservable with treatment accepted fails the case",
+  "stale_evidence": "present but too stale for the decision counts as absent",
+  "cases": [
+    {"fixture": "copied-consensus.json", "variant": "evidence carried",
+     "property": "independence of the observations",
+     "evidence_required": ["claims[].derived_from"], "evidence_missing": [],
+     "expected_result": "unverified", "failing_treatments": ["accepted"]},
+    {"fixture": "copied-consensus.json", "variant": "evidence dropped in transport",
+     "drop": "claims[].derived_from",
+     "property": "independence of the observations",
+     "evidence_required": ["claims[].derived_from"], "evidence_missing": ["claims[].derived_from"],
+     "expected_result": "unobservable", "failing_treatments": ["accepted"]},
+    {"fixture": "incomplete-search.json", "variant": "evidence carried",
+     "property": "coverage of the declared scope",
+     "evidence_required": ["search.coverage", "search.queried", "search.total_known"], "evidence_missing": [],
+     "expected_result": "unverified", "failing_treatments": ["accepted"]},
+    {"fixture": "incomplete-search.json", "variant": "evidence dropped in transport",
+     "drop": "search",
+     "property": "coverage of the declared scope",
+     "evidence_required": ["search.coverage", "search.queried", "search.total_known"], "evidence_missing": ["search.coverage", "search.queried", "search.total_known"],
+     "expected_result": "unobservable", "failing_treatments": ["accepted"]}
+  ]
+}
