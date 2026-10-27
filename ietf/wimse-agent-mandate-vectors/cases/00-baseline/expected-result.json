@@ -2,16 +2,16 @@
   "outcome": "valid",
   "profile": {
     "uri": "https://bank.example/profiles/agents/3",
-    "dig": "piDpzEhpQ73OrTFkmm162vb6Z-oFNfJpBTp2AzkP3Cg"
+    "dig": "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
   },
   "time": 1792972800,
   "tf": "https://tf.example/finance",
   "chain": [
     {
-      "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+      "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
     },
     {
-      "dig": "JKucrgl7ZaOb4cCIeba2wZIxoGVkPj2H2LQAaxWygpo"
+      "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
     }
   ],
   "errors": [],
@@ -22,7 +22,7 @@
       "claim": "iss",
       "value": "https://mandates.treasury.example",
       "artifact": {
-        "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
       },
       "role": "mandate_issuer"
     },
@@ -30,7 +30,7 @@
       "claim": "sub",
       "value": "spiffe://treasury.example/agents/payments-7",
       "artifact": {
-        "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
       },
       "role": "mandate_issuer"
     },
@@ -41,7 +41,7 @@
         "scheme": "urn:example:reg"
       },
       "artifact": {
-        "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
       },
       "role": "mandate_issuer"
     },
@@ -52,7 +52,7 @@
         "scheme": "urn:example:pairwise"
       },
       "artifact": {
-        "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
       },
       "role": "mandate_issuer"
     },
@@ -102,7 +102,7 @@
         }
       ],
       "artifact": {
-        "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
       },
       "role": "mandate_issuer"
     },
@@ -110,7 +110,7 @@
       "claim": "loa",
       "value": "substantial",
       "artifact": {
-        "dig": "Yna6HCdJFY950d6bYQ6DScQDQu6YyFYhpPG3fU27CeI"
+        "dig": "ceR2Zv6oZSFCZDB32MEhdjrA4SNPUyOmx9XtMBWJksY"
       },
       "role": "mandate_issuer"
     },
@@ -118,7 +118,7 @@
       "claim": "iss",
       "value": "spiffe://treasury.example/agents/payments-7",
       "artifact": {
-        "dig": "JKucrgl7ZaOb4cCIeba2wZIxoGVkPj2H2LQAaxWygpo"
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
       },
       "role": "agent_instance"
     },
@@ -126,7 +126,7 @@
       "claim": "sub",
       "value": "spiffe://treasury.example/agents/reconcile-2",
       "artifact": {
-        "dig": "JKucrgl7ZaOb4cCIeba2wZIxoGVkPj2H2LQAaxWygpo"
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
       },
       "role": "agent_instance"
     },
@@ -137,7 +137,7 @@
         "scheme": "urn:example:reg"
       },
       "artifact": {
-        "dig": "JKucrgl7ZaOb4cCIeba2wZIxoGVkPj2H2LQAaxWygpo"
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
       },
       "role": "agent_instance"
     },
@@ -148,7 +148,7 @@
         "scheme": "urn:example:workload"
       },
       "artifact": {
-        "dig": "JKucrgl7ZaOb4cCIeba2wZIxoGVkPj2H2LQAaxWygpo"
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
       },
       "role": "agent_instance"
     },
@@ -195,7 +195,7 @@
         }
       ],
       "artifact": {
-        "dig": "JKucrgl7ZaOb4cCIeba2wZIxoGVkPj2H2LQAaxWygpo"
+        "dig": "VYaNKvR1R_PY9nGZC4qQ8G4VNm2R0zwv0A9yXyGhEOA"
       },
       "role": "agent_instance"
     },
@@ -203,7 +203,7 @@
       "claim": "iss",
       "value": "https://register.example",
       "artifact": {
-        "dig": "JN98SWLUNrf8zuT0Nv9sUXrqzLMZBWl020n-twqr71k"
+        "dig": "Mh6IRjiP12zJj9aJ6cV2RqJn1j4QSI00ppkmQLM1Ac0"
       },
       "role": "authority_source"
     },
@@ -214,7 +214,7 @@
         "scheme": "urn:example:reg"
       },
       "artifact": {
-        "dig": "JN98SWLUNrf8zuT0Nv9sUXrqzLMZBWl020n-twqr71k"
+        "dig": "Mh6IRjiP12zJj9aJ6cV2RqJn1j4QSI00ppkmQLM1Ac0"
       },
       "role": "authority_source"
     },
@@ -225,7 +225,7 @@
         "scheme": "urn:example:pairwise"
       },
       "artifact": {
-        "dig": "JN98SWLUNrf8zuT0Nv9sUXrqzLMZBWl020n-twqr71k"
+        "dig": "Mh6IRjiP12zJj9aJ6cV2RqJn1j4QSI00ppkmQLM1Ac0"
       },
       "role": "authority_source"
     },
@@ -249,7 +249,7 @@
         }
       ],
       "artifact": {
-        "dig": "JN98SWLUNrf8zuT0Nv9sUXrqzLMZBWl020n-twqr71k"
+        "dig": "Mh6IRjiP12zJj9aJ6cV2RqJn1j4QSI00ppkmQLM1Ac0"
       },
       "role": "authority_source"
     },
@@ -257,7 +257,7 @@
       "claim": "max_depth",
       "value": 1,
       "artifact": {
-        "dig": "JN98SWLUNrf8zuT0Nv9sUXrqzLMZBWl020n-twqr71k"
+        "dig": "Mh6IRjiP12zJj9aJ6cV2RqJn1j4QSI00ppkmQLM1Ac0"
       },
       "role": "authority_source"
     },
@@ -265,7 +265,7 @@
       "claim": "iss",
       "value": "https://treasury.example",
       "artifact": {
-        "dig": "bmOQkg_fxv6lqa91pj95mjJ9OyMF3FwRXN9VrgOdJnE"
+        "dig": "0fnzJ0bzgIAknh22uoJZQhrXEZX7h9H2ggtB3iNW8HM"
       },
       "role": "operator"
     },
@@ -273,7 +273,7 @@
       "claim": "sub",
       "value": "spiffe://treasury.example/agents/reconcile-2",
       "artifact": {
-        "dig": "bmOQkg_fxv6lqa91pj95mjJ9OyMF3FwRXN9VrgOdJnE"
+        "dig": "0fnzJ0bzgIAknh22uoJZQhrXEZX7h9H2ggtB3iNW8HM"
       },
       "role": "operator"
     }

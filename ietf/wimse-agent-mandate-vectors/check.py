@@ -155,7 +155,7 @@ def constrained_members(perm):
 def admitted(member, perm, type_profile):
     return (member == "type" or member in LIST_MEMBERS or member in perm
             or member in constrained_members(perm)
-            or member in type_profile.get("admitted_members", []))
+            or member in type_profile.get("admitted", []))
 
 
 def constraint_satisfied(c, req, T, predicates):
@@ -284,7 +284,7 @@ def sum_max_budgets_ok(perms):
 
 
 def validate(vdir, cdir):
-    profile_bytes = open(os.path.join(vdir, "profile", "profile.json"), "rb").read()
+    profile_bytes = open(os.path.join(vdir, "profile", "profil.json"), "rb").read()
     profile = json.loads(profile_bytes)
     anchors = json.load(open(os.path.join(vdir, "trust-anchors.json")))
     pres = json.load(open(os.path.join(cdir, "presentation.json")))
@@ -383,8 +383,15 @@ def validate(vdir, cdir):
         err("malformed", wit)
 
     # Step 3: profile conformance
+    # max_lifetime member names as chosen by the published profile (see README).
+    lifetime_names = {
+        "authority+jwt": "authority", "authority+sd-jwt": "authority",
+        "mandate+jwt": "mandate", "wit+jwt": "wit",
+        "eat+jwt": "attestation_result", "agent-exposure+jwt": "exposure_statement",
+    }
+
     def lifetime_key(a):
-        return a.typ
+        return lifetime_names.get(a.typ)
 
     if fw is not None:
         for a in chain + presented + [wit]:
@@ -413,7 +420,7 @@ def validate(vdir, cdir):
         for m in chain:
             for perm in m.payload.get("perms", []):
                 for c in perm.get("constraints", []):
-                    if c.get("pred") == "sum_max" and c.get("period", 0) > fw["max_lifetime"]["sum_max_period"]:
+                    if c.get("pred") == "sum_max" and c.get("period", 0) > fw["max_lifetime"]["max_period"]:
                         err("lifetime_exceeded", m)
 
     # Step 4: signatures and keys

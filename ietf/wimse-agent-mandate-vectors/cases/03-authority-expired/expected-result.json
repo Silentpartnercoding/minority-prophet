@@ -2,29 +2,29 @@
   "outcome": "invalid",
   "profile": {
     "uri": "https://bank.example/profiles/agents/3",
-    "dig": "piDpzEhpQ73OrTFkmm162vb6Z-oFNfJpBTp2AzkP3Cg"
+    "dig": "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
   },
   "time": 1792972800,
   "tf": "https://tf.example/finance",
   "chain": [
     {
-      "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+      "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
     },
     {
-      "dig": "Q312qXpJlJwFyhXrE26Nc0nSQBz-AMD_Vdl8AYXwyW8"
+      "dig": "xdR1r_jePM1YQqkViIAMj4JQnUOobaJEp0rPMZBM42w"
     }
   ],
   "errors": [
     {
       "code": "authority_insufficient",
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       }
     },
     {
       "code": "expired",
       "artifact": {
-        "dig": "tOJn5uW0t7mCS7YifxSOoW2TJofd2g4Xl7ro1mHKBH4"
+        "dig": "EloxqCZ7ViosMCY9jmMWEl8_B0YKbogRQM_RZ14_L-Y"
       }
     }
   ],
@@ -35,7 +35,7 @@
       "claim": "iss",
       "value": "https://mandates.treasury.example",
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       },
       "role": "mandate_issuer"
     },
@@ -43,7 +43,7 @@
       "claim": "sub",
       "value": "spiffe://treasury.example/agents/payments-7",
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       },
       "role": "mandate_issuer"
     },
@@ -54,7 +54,7 @@
         "scheme": "urn:example:reg"
       },
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       },
       "role": "mandate_issuer"
     },
@@ -65,7 +65,7 @@
         "scheme": "urn:example:pairwise"
       },
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       },
       "role": "mandate_issuer"
     },
@@ -115,7 +115,7 @@
         }
       ],
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       },
       "role": "mandate_issuer"
     },
@@ -123,7 +123,7 @@
       "claim": "loa",
       "value": "substantial",
       "artifact": {
-        "dig": "UUTMYP-xm8WWlBAKSr0HY0Ic6GbdWD55nfvRuk3CC9o"
+        "dig": "AkQUAYCfqHERtSpIRpAL38vPkX_CUgDHzMZ_-zw8TPE"
       },
       "role": "mandate_issuer"
     },
@@ -131,7 +131,7 @@
       "claim": "iss",
       "value": "spiffe://treasury.example/agents/payments-7",
       "artifact": {
-        "dig": "Q312qXpJlJwFyhXrE26Nc0nSQBz-AMD_Vdl8AYXwyW8"
+        "dig": "xdR1r_jePM1YQqkViIAMj4JQnUOobaJEp0rPMZBM42w"
       },
       "role": "agent_instance"
     },
@@ -139,7 +139,7 @@
       "claim": "sub",
       "value": "spiffe://treasury.example/agents/reconcile-2",
       "artifact": {
-        "dig": "Q312qXpJlJwFyhXrE26Nc0nSQBz-AMD_Vdl8AYXwyW8"
+        "dig": "xdR1r_jePM1YQqkViIAMj4JQnUOobaJEp0rPMZBM42w"
       },
       "role": "agent_instance"
     },
@@ -150,7 +150,7 @@
         "scheme": "urn:example:reg"
       },
       "artifact": {
-        "dig": "Q312qXpJlJwFyhXrE26Nc0nSQBz-AMD_Vdl8AYXwyW8"
+        "dig": "xdR1r_jePM1YQqkViIAMj4JQnUOobaJEp0rPMZBM42w"
       },
       "role": "agent_instance"
     },
@@ -161,7 +161,7 @@
         "scheme": "urn:example:workload"
       },
       "artifact": {
-        "dig": "Q312qXpJlJwFyhXrE26Nc0nSQBz-AMD_Vdl8AYXwyW8"
+        "dig": "xdR1r_jePM1YQqkViIAMj4JQnUOobaJEp0rPMZBM42w"
       },
       "role": "agent_instance"
     },
@@ -208,7 +208,7 @@
         }
       ],
       "artifact": {
-        "dig": "Q312qXpJlJwFyhXrE26Nc0nSQBz-AMD_Vdl8AYXwyW8"
+        "dig": "xdR1r_jePM1YQqkViIAMj4JQnUOobaJEp0rPMZBM42w"
       },
       "role": "agent_instance"
     },
@@ -216,7 +216,7 @@
       "claim": "iss",
       "value": "https://treasury.example",
       "artifact": {
-        "dig": "bmOQkg_fxv6lqa91pj95mjJ9OyMF3FwRXN9VrgOdJnE"
+        "dig": "0fnzJ0bzgIAknh22uoJZQhrXEZX7h9H2ggtB3iNW8HM"
       },
       "role": "operator"
     },
@@ -224,7 +224,7 @@
       "claim": "sub",
       "value": "spiffe://treasury.example/agents/reconcile-2",
       "artifact": {
-        "dig": "bmOQkg_fxv6lqa91pj95mjJ9OyMF3FwRXN9VrgOdJnE"
+        "dig": "0fnzJ0bzgIAknh22uoJZQhrXEZX7h9H2ggtB3iNW8HM"
       },
       "role": "operator"
     }

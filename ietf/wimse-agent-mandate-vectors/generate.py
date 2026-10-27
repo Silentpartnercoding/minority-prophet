@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Regenerate the signed vectors for draft-hulea-wimse-agent-mandate-00.
 
-Every output byte is a function of this file alone: keys come from fixed seed
-labels, Ed25519 signing is deterministic, JSON is written with a fixed member
-order and fixed whitespace, and all times are fixed epoch values.
+Every output byte is a function of this file and two published inputs: the
+test keys in keys/chei.json and the Validation Profile in profile/profil.json,
+both as published by the draft author. Ed25519 signing is deterministic, JSON
+is written with a fixed member order and fixed whitespace, and all times are
+fixed epoch values. The two published inputs are read and never rewritten.
 
 Usage: python generate.py [output_dir]   (default: the directory of this file)
 """
@@ -18,8 +20,12 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 DRAFT = "draft-hulea-wimse-agent-mandate-00"
-SEED_PREFIX = "draft-hulea-wimse-agent-mandate-00 test vector key "
-KEY_NAMES = ["as-1", "mi-1", "op-1", "ai-treasury-1", "ai-reconcile-1"]
+HERE = os.path.dirname(os.path.abspath(__file__))
+KEYS_FILE = os.path.join(HERE, "keys", "chei.json")
+PROFILE_FILE = os.path.join(HERE, "profile", "profil.json")
+# Published with the keys and the profile: base64url SHA-256 of profil.json.
+PUBLISHED_PROFILE_DIGEST = "ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc"
+KEY_NAMES = ["as-1", "mi-1", "op-1", "ai-treasury-1", "ai-reconcile-1", "sl-1"]
 
 # Identifiers from Appendix A.
 TF = "https://tf.example/finance"
@@ -34,7 +40,7 @@ DELEGATOR = {"id": "p-41f9", "scheme": "urn:example:pairwise"}
 # Not named in Appendix A; chosen for these vectors (see README).
 OPERATOR = "https://treasury.example"
 
-T_BASELINE = 1792972800  # Appendix A Validation Result time
+T_APPENDIX_A = 1792972800  # Appendix A Validation Result time
 POP_NONCE = "vector-nonce-0001"
 
 
@@ -56,14 +62,6 @@ def sha256_b64u(data: bytes) -> str:
 
 # ---------------------------------------------------------------- keys
 
-def derive_key(name: str):
-    seed = hashlib.sha256((SEED_PREFIX + name).encode("utf-8")).digest()
-    priv = Ed25519PrivateKey.from_private_bytes(seed)
-    x = priv.public_key().public_bytes(
-        serialization.Encoding.Raw, serialization.PublicFormat.Raw
-    )
-    return priv, seed, x
-
 
 def public_jwk(x: bytes) -> dict:
     return {"kty": "OKP", "crv": "Ed25519", "x": b64u(x)}
@@ -75,10 +73,29 @@ def thumbprint(jwk: dict) -> str:
     return sha256_b64u(canon)
 
 
-KEYS = {}
-for _n in KEY_NAMES:
-    _priv, _seed, _x = derive_key(_n)
-    KEYS[_n] = {"priv": _priv, "seed": _seed, "x": _x, "pub": public_jwk(_x)}
+def _b64u_dec(s: str) -> bytes:
+    return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
+
+
+def load_keys():
+    published = json.load(open(KEYS_FILE, encoding="utf-8"))
+    keys = {}
+    for name in KEY_NAMES:
+        entry = published[name]
+        jwk = entry["jwk"]
+        priv = Ed25519PrivateKey.from_private_bytes(_b64u_dec(jwk["d"]))
+        x = priv.public_key().public_bytes(
+            serialization.Encoding.Raw, serialization.PublicFormat.Raw
+        )
+        pub = public_jwk(x)
+        if (jwk["kid"] != name or jwk["kty"] != "OKP" or jwk["crv"] != "Ed25519"
+                or jwk["x"] != pub["x"] or thumbprint(pub) != entry["jkt"]):
+            raise SystemExit(f"published key {name} is inconsistent")
+        keys[name] = {"priv": priv, "x": x, "pub": pub}
+    return keys
+
+
+KEYS = load_keys()
 
 
 def jkt(name: str) -> str:
@@ -99,69 +116,12 @@ def ref(jws: str, **hints) -> dict:
 
 # ---------------------------------------------------------------- profile
 
-PAYMENT_SCHEMA = {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "required": ["type", "actions", "locations", "instructedAmount", "creditorAccount"],
-    "properties": {
-        "type": {"const": "payment_initiation"},
-        "actions": {"type": "array", "items": {"type": "string"}},
-        "locations": {"type": "array", "items": {"type": "string"}},
-        "instructedAmount": {
-            "type": "object",
-            "required": ["currency", "amount"],
-            "properties": {
-                "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
-                "amount": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"},
-            },
-            "additionalProperties": False,
-        },
-        "creditorAccount": {
-            "type": "object",
-            "required": ["iban"],
-            "properties": {"iban": {"type": "string"}},
-            "additionalProperties": False,
-        },
-        "remittanceInformation": {"type": "string"},
-    },
-}
-
-PROFILE = {
-    "max_clock_skew": 60,
-    "max_pop_window": 60,
-    "max_token_lifetime": 300,
-    "max_status_age": 3600,
-    "max_chain_length": 3,
-    "predicates": ["eq", "in", "max", "min", "window", "sum_max", "cosign_above"],
-    "types": {
-        "payment_initiation": {
-            "schema": PAYMENT_SCHEMA,
-            "admitted_members": ["instructedAmount", "creditorAccount", "remittanceInformation"],
-            "member_meanings": {
-                "instructedAmount": "Currency and decimal amount of the payment to be initiated.",
-                "creditorAccount": "Account of the payee, identified by IBAN.",
-                "remittanceInformation": "Free text passed to the payee; it has no effect on the amount or the payee.",
-            },
-        }
-    },
-    "eat_profiles": [],
-    "frameworks": {
-        TF: {
-            "algs": ["EdDSA"],
-            "party_schemes": ["urn:example:pairwise", "urn:example:reg", "urn:example:workload"],
-            "max_lifetime": {
-                "mandate+jwt": 2592000,
-                "authority+jwt": 31536000,
-                "wit+jwt": 86400,
-                "eat+jwt": 3600,
-                "agent-exposure+jwt": 300,
-                "sum_max_period": 2592000,
-            },
-            "status_required": [],
-            "authority_frameworks": [TF],
-        }
-    },
-}
+PROFILE_BYTES = open(PROFILE_FILE, "rb").read()
+if sha256_b64u(PROFILE_BYTES) != PUBLISHED_PROFILE_DIGEST:
+    raise SystemExit("profil.json does not match its published digest")
+PROFILE = json.loads(PROFILE_BYTES)
+if PROFILE.get("uri") != PROFILE_URI:
+    raise SystemExit("profil.json names a different URI")
 
 TRUST_ANCHORS = {
     "mandate_issuer": [{"name": "mi-1", "iss": MANDATE_ISSUER, "keys": ["mi-1"], "frameworks": [TF]}],
@@ -318,6 +278,7 @@ def build_case(variant):
 CASES = [
     {
         "dir": "00-baseline",
+        "time": T_APPENDIX_A,
         "variant": "baseline",
         "title": "Valid baseline: Appendix A signed",
         "change": "None. This is the Appendix A story signed with the published keys.",
@@ -328,6 +289,7 @@ CASES = [
     },
     {
         "dir": "01-root-broader-than-powers",
+        "time": T_APPENDIX_A,
         "variant": "root_broader",
         "title": "Root perms broader than powers",
         "change": "Root mandate max on /instructedAmount/amount is 200000.00 instead of 20000.00. "
@@ -339,6 +301,7 @@ CASES = [
     },
     {
         "dir": "02-authority-not-presented",
+        "time": T_APPENDIX_A,
         "variant": "aa_not_presented",
         "title": "Authority reference present, assertion not presented",
         "change": "The Authority Assertion is left out of mandate_evidence. "
@@ -350,6 +313,7 @@ CASES = [
     },
     {
         "dir": "03-authority-expired",
+        "time": T_APPENDIX_A,
         "variant": "aa_expired",
         "title": "Supporting assertion past exp",
         "change": "Authority Assertion exp is 1792886400 instead of 1824336000, "
@@ -388,7 +352,7 @@ def expected_result(case, c, profile_ref):
     return {
         "outcome": case["outcome"],
         "profile": profile_ref,
-        "time": T_BASELINE,
+        "time": case["time"],
         "tf": TF,
         "chain": [ref(c["root"]), ref(c["sub"])],
         "errors": errors,
@@ -418,25 +382,14 @@ def write(path, data: bytes):
 
 
 def main(out):
-    # keys
-    thumbs = {}
-    for name in KEY_NAMES:
-        k = KEYS[name]
-        jwk = dict(k["pub"])
-        jwk["d"] = b64u(k["seed"])
-        jwk["kid"] = name
-        write(os.path.join(out, "keys", name + ".jwk.json"), pretty(jwk))
-        thumbs[name] = {
-            "seed_label": SEED_PREFIX + name,
-            "seed_derivation": "d = SHA-256(UTF-8 bytes of seed_label)",
-            "jkt": jkt(name),
-        }
-    write(os.path.join(out, "keys", "thumbprints.json"), pretty(thumbs))
-
-    # profile
-    profile_bytes = pretty(PROFILE)
-    write(os.path.join(out, "profile", "profile.json"), profile_bytes)
-    profile_ref = {"uri": PROFILE_URI, "dig": sha256_b64u(profile_bytes)}
+    # keys/chei.json and profile/profil.json are published inputs. When writing
+    # somewhere else, copy them unchanged so the output directory is complete.
+    for src, rel in ((KEYS_FILE, ("keys", "chei.json")), (PROFILE_FILE, ("profile", "profil.json")),
+                     (os.path.join(HERE, "profile", "profil.digest"), ("profile", "profil.digest"))):
+        dst = os.path.join(out, *rel)
+        if os.path.abspath(dst) != os.path.abspath(src):
+            write(dst, open(src, "rb").read())
+    profile_ref = {"uri": PROFILE_URI, "dig": sha256_b64u(PROFILE_BYTES)}
     write(os.path.join(out, "profile", "profile-ref.json"), pretty(profile_ref))
 
     # trust anchors: keys inlined as public JWKs
@@ -471,7 +424,7 @@ def main(out):
         inputs = {
             "case": case["title"],
             "change_from_baseline": case["change"],
-            "time": T_BASELINE,
+            "time": case["time"],
             "rp": RP,
             "profile": profile_ref,
             "pop": {"outcome": "ok", "nonce": POP_NONCE},

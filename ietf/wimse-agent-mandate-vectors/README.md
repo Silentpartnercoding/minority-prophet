@@ -17,50 +17,68 @@ case 02 every presented artifact is byte-identical to the baseline.
 ## Layout
 
 ```
-keys/                 one Ed25519 JWK per role, with d, and thumbprints.json (RFC 7638)
-profile/profile.json  the Validation Profile, exact bytes that are digested
+keys/chei.json        the published test keys: one Ed25519 private JWK per role, with kid and RFC 7638 jkt
+profile/profil.json   the published Validation Profile, exact bytes that are digested
+profile/profil.digest the published digest of profil.json
 profile/profile-ref.json  {uri, dig}
 trust-anchors.json    the Trust Anchor Set the Validator is configured with
 cases/<case>/
   *.jws                       compact JWS of each artifact
   authorization_details.json  exact request bytes
   presentation.json           subject_token, actor_token, mandate_evidence, authorization_details
-  inputs.json                 time, RP identifier, profile reference, PoP outcome
+  inputs.json                 time T for the case, RP identifier, profile reference, PoP outcome
   decoded.json                headers and payloads, for reading only
   expected-result.json        the Validation Result (Section 9.6)
-generate.py           regenerates every file above
+generate.py           regenerates every case file from keys/chei.json and profile/profil.json
 check.py              independent checker
 ```
 
 ## Keys
 
-| kid | role | signs |
-|---|---|---|
-| as-1 | authority_source (https://register.example) | Authority Assertion |
-| mi-1 | mandate_issuer (https://mandates.treasury.example) | root mandate |
-| op-1 | operator (https://treasury.example) | WIT |
-| ai-treasury-1 | agent instance payments-7 | sub-mandate, bound by root `cnf.jkt` |
-| ai-reconcile-1 | agent instance reconcile-2 | key in WIT `cnf.jwk`, bound by sub-mandate `cnf.jkt` |
+The keys and the Validation Profile are the ones the draft author published
+for Appendix B on 27 October 2026 (`chei.json`, `profil.json` and a README).
+They are stored here byte for byte. `generate.py` reads them, checks every
+key's `kid`, its public part against `d`, and its RFC 7638 thumbprint, and
+checks the profile bytes against the published digest before it signs.
 
-Each private key is the 32-byte seed
-`SHA-256("draft-hulea-wimse-agent-mandate-00 test vector key " || kid)`.
-These keys are published for testing. Never use them for anything else.
+| kid | role | signs | jkt |
+|---|---|---|---|
+| as-1 | authority_source (https://register.example) | Authority Assertion | `__imVWcQLM0Eu_zeFJP4gPy-cT2GHpxsDIc3Q6BB9P0` |
+| mi-1 | mandate_issuer (https://mandates.treasury.example) | root mandate | `m1L1fJ7hE4J3T5ICutV1puXJmaTOumHGmilPJ0Eq1eg` |
+| op-1 | operator (https://treasury.example) | WIT | `T3rk4eVrInQUEZKVFF5lnJEVRXMFAEDP9EW9GZmLZPY` |
+| ai-treasury-1 | agent instance payments-7 | sub-mandate, bound by root `cnf.jkt` | `N8aKNGo4023KqM-puSWZHXDMtol87u6100ZO-8PGadw` |
+| ai-reconcile-1 | agent instance reconcile-2 | the request; key in WIT `cnf.jwk`, bound by sub-mandate `cnf.jkt` | `5tMZm1nM0jQHv9qvNzz0k-i6rXD4UZIJGjkQsPF8ans` |
+| sl-1 | status_issuer | unused here, since no case uses status | `nQMFpQx_-ORFbLEf-liXJQJ8zU2G9xawnwcnwtddhpE` |
+
+These keys are test keys, published with their private parts on purpose.
+Never use them for anything else.
 
 Anchor-signed artifacts carry `kid` in the JOSE header. The sub-mandate
-carries the ai-treasury-1 public key in `jwk`.
+carries the ai-treasury-1 public key in `jwk`. The request signature by
+ai-reconcile-1 is represented by the PoP outcome input (Section 9.1 item 8),
+so no request signature is included.
 
 ## Profile
 
-URI `https://bank.example/profiles/agents/3`. The digest is the base64url
-SHA-256 of the bytes of `profile/profile.json`:
-`piDpzEhpQ73OrTFkmm162vb6Z-oFNfJpBTp2AzkP3Cg`.
-`max_clock_skew` is 60. `status_required` is empty, so no case uses status
-and there is no status_issuer key.
+URI `https://bank.example/profiles/agents/3`, as in Appendix A. The digest is
+the base64url SHA-256, without padding, of the bytes of `profile/profil.json`:
+`ucNBmXOcdTPn2RcRLMmgQBCdfDRnF3r_KofHgRIbFsc`. It matches the published
+digest. The file uses sorted member names, no whitespace and no trailing
+newline; do not reformat it.
+
+One framework, `https://tf.example/finance`, with `algs` EdDSA only and
+`status_required` empty, so an authority case cannot fail for a status reason.
+`max_clock_skew` is 60. The profile names the `max_lifetime` artifact types
+(`authority`, `mandate`, `wit`, `attestation_result`, `exposure_statement`,
+`max_period`) and the Type Profile members (`schema`, `admitted`, `meaning`),
+which the draft leaves open. `check.py` reads those names.
 
 ## Fixed values
 
-T = 1792972800. RP = `https://bank.example`. PoP outcome `ok` with nonce
-`vector-nonce-0001`. All other times are in `decoded.json`.
+Each case declares its own T as `time` in `inputs.json`. Cases 00 to 03 all
+use T = 1792972800, the Appendix A Validation Result time. RP =
+`https://bank.example`. PoP outcome `ok` with nonce `vector-nonce-0001`. All
+other times are in `decoded.json`.
 
 ## Regenerate and check
 
@@ -88,11 +106,11 @@ canonicalization; numbers compare by their text, and `true` never equals 1).
 2. Sections 9.6 and 11: claim `role` values are not enumerated, and the
    sub-delegated mandate is signed by an agent instance key rather than an
    anchor role. These vectors use `agent_instance` for it.
-3. Sections 8 and 8.1: the Validation Profile has no defined JSON shape (the
-   `types` and `frameworks` layout, Type Profile member names, `max_lifetime`
-   keys, `status_required` item names). The shape here is a guess.
-4. Section 8: which bytes the profile digest covers. These vectors digest the
-   file bytes as published.
+3. Sections 8 and 8.1: the Validation Profile has no defined JSON shape. The
+   published profile chooses the `max_lifetime` artifact type names and the
+   Type Profile members, and revision -01 is expected to name both.
+4. Section 8: which bytes the profile digest covers. The published profile
+   digests the file bytes as published, and these vectors follow that.
 5. Section 9.1 item 5: the Trust Anchor Set has no defined format.
    `trust-anchors.json` is one possible layout.
 6. Sections 4.3 and 9.6: whether Artifact References in the result carry

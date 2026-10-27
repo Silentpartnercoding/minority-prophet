@@ -1,7 +1,0 @@
-{
-  "kty": "OKP",
-  "crv": "Ed25519",
-  "x": "IjXkXRrUNTqtLaRZJ-79UjYpoYYQCMp_wyexj_mzNJ8",
-  "d": "OuyzBf9XNxypf7nUcQ9LxDiv5hO1qZZ5RHEIFVG5x_o",
-  "kid": "ai-treasury-1"
-}

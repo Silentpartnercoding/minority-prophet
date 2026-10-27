@@ -7,7 +7,7 @@
         {
           "kty": "OKP",
           "crv": "Ed25519",
-          "x": "JD4vMGgWqxCf9RGZzk7YAKni8udDzhlMyVpTmcFChQQ",
+          "x": "XUcsEPKUfKayvcEcGMmx-C6mnnhhda3FtGl5ah0-gSc",
           "kid": "mi-1"
         }
       ],
@@ -24,7 +24,7 @@
         {
           "kty": "OKP",
           "crv": "Ed25519",
-          "x": "VWzhKsrUqfSsrymGSwU_xXKZctyunaLkTCsa1HeWA-E",
+          "x": "Wr4AKjhmZuhLGsx3UT_k9iO-DAHt-0MJ-Qb9BLPv6Ds",
           "kid": "as-1"
         }
       ],
@@ -41,7 +41,7 @@
         {
           "kty": "OKP",
           "crv": "Ed25519",
-          "x": "5lyKsemHH1xe1GkKl3Fvw7PNFiCdwNfBoJK-9nrniKk",
+          "x": "_KC-Ha68Cl7hqsjWFrPNggCCwJfhbrUPWlFkcxzFF9c",
           "kid": "op-1"
         }
       ],
