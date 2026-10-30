@@ -233,7 +233,7 @@ the DAG. The mismatch costs expressiveness, not soundness.
 
 | Class | Meaning | Here |
 |---|---|---|
-| Theorem | compiled from a pinned clean environment | §2 to §5, `formal/lean/` |
+| Theorem | compiled from a pinned clean environment | §2 to §5 and §9, `formal/lean/` |
 | Finite exhaustive check | every case in a bounded domain | `verification/independent_check_2026-08.py`, `audit/falsify.py` |
 | Randomized experiment | sampled; reports a rate | `verification/r1_degradation_curve.py` |
 | Implementation invariant | true until the code changes | `provenance/graph.py`, `aggregation/root_vote.py` |
@@ -243,3 +243,89 @@ the DAG. The mismatch costs expressiveness, not soundness.
 A statement does not change class by being repeated. A Lean file that does not
 compile is not a proof, which is exactly what `formal/MinorityProphetV2.lean`
 was, and it is retained only as a historical record.
+
+---
+
+## 9. Modules added after v3
+
+Each module below compiles under the same pinned toolchain and the same three
+axioms as §2 to §5. Ledger IDs are given in each heading.
+
+### Asymmetric claims (AC1 to AC5)
+> For a universal claim, one counterexample root refutes it whatever the
+> confirming count. For an existential claim, one root reporting a find
+> establishes it.
+
+`universal_one_counterexample_suffices`, `existential_one_find_suffices`,
+`universal_indifferent_to_confirming_side`,
+`existential_indifferent_to_unsuccessful_search`,
+`universal_refuted_at_arbitrarily_large_margin`,
+`CE14_counting_reports_the_confirming_side`,
+`CE14_mirror_counting_reports_absence` ·
+`formal/lean/MinorityProphetCore/Asymmetric.lean`
+
+The verdicts `universalF` and `existentialF` read one side's roots only, so
+the first four results follow directly from their definitions. The substance
+is the separation. `universal_refuted_at_arbitrarily_large_margin` builds a
+refuted world at every margin `k`, and the two CE-14 worlds show `F` and the
+asymmetric verdict giving opposite answers on the same roots. Narration:
+`formal/COUNTEREXAMPLES.md` CE-14.
+
+### Responsiveness (RS1 to RS3)
+> If `W` and `W'` are side-consistent and have the same assertions, then
+> `margin W - margin W'` equals the signed count of the roots only `W` has
+> minus the signed count of the roots only `W'` has.
+
+`margin_diff_eq_signedCount`, `margin_eq_signedCount`, `margin_must_move`,
+`margin_shifts_by_added_roots` ·
+`formal/lean/MinorityProphetCore/Responsiveness.lean`
+
+This sharpens the bound `margin_diff_le_rootSet_diff` of §5 to an equality.
+The invariance results above say which changes leave the verdict alone. This
+one says the margin must move when the roots that changed carry nonzero signed
+weight (`margin_must_move`), and that adding `k` fresh roots on the true side
+raises the margin by exactly `k` (`margin_shifts_by_added_roots`). Since `F`
+reads only the margin, the counting verdict responds to new independent roots.
+The statements concern `F` and its margin and say nothing about other
+aggregators.
+
+### Root identity (U1)
+> If every two distinct witnesses sharing a true lineage are detected as
+> dependent, then a set of pairwise independent witnesses has at most one
+> member per lineage.
+
+`independent_card_le_lineages`, `path_indep_two`, `path_indep_card`,
+`clique_indep_one` · `formal/lean/MinorityProphetCore/RootIdentity.lean`
+
+This is the formal side of the root identity definition in §1. Dependence is a
+graph relation, and the count is an independent set in that graph. On the path
+`0, 1, 2` with `0` and `2` unrelated, `{0, 2}` is independent and counts 2.
+When every pair is dependent, an independent set has at most one member. The
+bound rests on the detection hypothesis `DetectsLineage`, which is exactly what
+laundered provenance attacks (`canon/U1-PROXIMATE-ROOTS.md`). The model uses
+its own types, separate from `World`.
+
+### Dependence robustness (DR1 to DR3)
+> Every grouping of observations into roots that the record cannot rule out
+> settles to one of the outcomes the robustness engine computes. So when the
+> engine computes a single outcome, every such grouping settles that way.
+
+`reading_mem_reachable`, `robust_settlement_is_true`,
+`no_record_rule_is_immune` ·
+`formal/lean/MinorityProphetCore/DependenceRobustness.lean`
+
+The true causal grouping is one of those groupings whenever every real
+dependence appears in the record. `no_record_rule_is_immune` gives one record
+with two groupings: one settles for the true side, and one merges two
+observations without a recorded link and leaves the decision unsettled. Any
+rule that reads only that record is wrong under one of them. Only the soundness
+direction is compiled. The converse, that every computed outcome is reached by
+some grouping, is checked by brute force in
+`tests/test_dependence_robustness.py`. The match between these definitions and
+`provenance/dependence_robustness.py` holds by construction and is unproved.
+
+### Axiom audit
+`formal/lean/MinorityProphetCore/AxiomAudit.lean` runs `#print axioms` under
+`#guard_msgs` on the main DependenceRobustness theorems, so the build fails if
+any of them gains or loses an axiom. It covers that module only. Axiom lists
+for the other modules come from the audits recorded in the ledger.
