@@ -1,7 +1,7 @@
 # The formal core: compiler-ratified statements and their exact scope
 
-**Status: v3, 2026-08-05.** Every theorem below is compiled by Lean 4.32.2
-against Mathlib `905b95818eb32af7874a58b427f50c1711a5e96c`, with zero `sorry`,
+**Status: v3, 2026-08-05.** Every theorem below is compiled by Lean 4.33.1
+against Mathlib `0df444a360eaa60ab8c11dca51a86af692955474`, with zero `sorry`,
 zero `native_decide`, and no axioms beyond `propext`, `Classical.choice` and
 `Quot.sound`. Sources: `formal/lean/`. Reproduce: `audit/REPRODUCE.md`.
 
