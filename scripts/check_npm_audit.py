@@ -8,7 +8,11 @@ import re
 import subprocess
 import sys
 
-ALLOWED_ADVISORIES = {"GHSA-vfj7-8cjw-p6xm"}
+# GHSA-vfj7-8cjw-p6xm: braces, no patched npm release; dev-only glob consumers.
+# GHSA-g3hv-75wg-m249: minimatch below 11.0.1, reached only through dev lint
+# tooling (eslint, eslint-config-next and plugins), not used at runtime, no
+# compatible patched 3.x release. Revisit when eslint ships a fix.
+ALLOWED_ADVISORIES = {"GHSA-vfj7-8cjw-p6xm", "GHSA-g3hv-75wg-m249"}
 
 
 def unexpected_advisories(report: dict, allowed: set[str]) -> set[str]:
