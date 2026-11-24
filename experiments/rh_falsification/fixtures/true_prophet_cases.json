@@ -4,10 +4,23 @@
     {
       "control_id": "CONTROL_A",
       "name": "one_real_counterexample_vs_999",
-      "world": { "universal_claim": "all X satisfy P", "ground_truth": "false", "counterexample_exists": true },
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "false",
+        "counterexample_exists": true
+      },
       "reports": {
-        "majority": { "count": 999, "claim_type": "confirmation", "provenance": "independent" },
-        "minority": { "count": 1, "claim_type": "candidate_counterexample", "provenance_root": "agent_min_1", "valid": true }
+        "majority": {
+          "count": 999,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "minority": {
+          "count": 1,
+          "claim_type": "candidate_counterexample",
+          "provenance_root": "agent_min_1",
+          "valid": true
+        }
       },
       "ground_truth_action": "preserve_and_verify",
       "expected_terminal_state": "FALSIFIED_after_verification",
@@ -16,10 +29,24 @@
     {
       "control_id": "CONTROL_B",
       "name": "one_fake_counterexample_vs_999",
-      "world": { "universal_claim": "all X satisfy P", "ground_truth": "true", "counterexample_exists": false },
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "true",
+        "counterexample_exists": false
+      },
       "reports": {
-        "majority": { "count": 999, "claim_type": "confirmation", "provenance": "independent" },
-        "minority": { "count": 1, "claim_type": "candidate_counterexample", "provenance_root": "agent_fp_1", "valid": false, "artifact": "low_precision" }
+        "majority": {
+          "count": 999,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "minority": {
+          "count": 1,
+          "claim_type": "candidate_counterexample",
+          "provenance_root": "agent_fp_1",
+          "valid": false,
+          "artifact": "low_precision"
+        }
       },
       "ground_truth_action": "reject_after_verification",
       "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
@@ -28,11 +55,29 @@
     {
       "control_id": "CONTROL_C",
       "name": "real_counterexample_then_independent_reproduction",
-      "world": { "universal_claim": "all X satisfy P", "ground_truth": "false", "counterexample_exists": true },
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "false",
+        "counterexample_exists": true
+      },
       "reports": {
-        "majority": { "count": 998, "claim_type": "confirmation", "provenance": "independent" },
-        "minority_initial": { "count": 1, "claim_type": "candidate_counterexample", "provenance_root": "agent_min_1", "valid": true },
-        "minority_reproduction": { "count": 1, "claim_type": "counterexample", "provenance_root": "agent_ver_1", "independent_recomputation": true }
+        "majority": {
+          "count": 998,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "minority_initial": {
+          "count": 1,
+          "claim_type": "candidate_counterexample",
+          "provenance_root": "agent_min_1",
+          "valid": true
+        },
+        "minority_reproduction": {
+          "count": 1,
+          "claim_type": "counterexample",
+          "provenance_root": "agent_ver_1",
+          "independent_recomputation": true
+        }
       },
       "ground_truth_action": "escalate_verification",
       "expected_terminal_state": "FALSIFIED_after_verification",
@@ -42,10 +87,23 @@
     {
       "control_id": "CONTROL_D",
       "name": "hundred_copies_of_one_fake",
-      "world": { "universal_claim": "all X satisfy P", "ground_truth": "true", "counterexample_exists": false },
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "true",
+        "counterexample_exists": false
+      },
       "reports": {
-        "majority": { "count": 900, "claim_type": "confirmation", "provenance": "independent" },
-        "copied_minority": { "count": 100, "claim_type": "candidate_counterexample", "shared_provenance_root": "agent_fp_origin", "valid": false }
+        "majority": {
+          "count": 900,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "copied_minority": {
+          "count": 100,
+          "claim_type": "candidate_counterexample",
+          "shared_provenance_root": "agent_fp_origin",
+          "valid": false
+        }
       },
       "ground_truth_action": "discount_shared_provenance",
       "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
@@ -56,14 +114,30 @@
     {
       "control_id": "CONTROL_E",
       "name": "three_genuinely_independent_finders",
-      "world": { "universal_claim": "all X satisfy P", "ground_truth": "false", "counterexample_exists": true },
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "false",
+        "counterexample_exists": true
+      },
       "reports": {
-        "majority": { "count": 997, "claim_type": "confirmation", "provenance": "independent" },
+        "majority": {
+          "count": 997,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
         "independent_minority": {
           "count": 3,
           "claim_type": "candidate_counterexample",
-          "provenance_roots": ["agent_min_1", "agent_min_2", "agent_min_3"],
-          "methods": ["method_alpha", "method_beta", "method_gamma"],
+          "provenance_roots": [
+            "agent_min_1",
+            "agent_min_2",
+            "agent_min_3"
+          ],
+          "methods": [
+            "method_alpha",
+            "method_beta",
+            "method_gamma"
+          ],
           "valid": true
         }
       },
@@ -75,14 +149,101 @@
     {
       "control_id": "CONTROL_F",
       "name": "ambiguous_anomaly",
-      "world": { "universal_claim": "all X satisfy P", "ground_truth": "true", "counterexample_exists": false },
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "true",
+        "counterexample_exists": false
+      },
       "reports": {
-        "majority": { "count": 999, "claim_type": "confirmation", "provenance": "independent" },
-        "minority": { "count": 1, "claim_type": "anomaly", "provenance_root": "agent_anom_1", "verification_incomplete": true, "resolvable": false }
+        "majority": {
+          "count": 999,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "minority": {
+          "count": 1,
+          "claim_type": "anomaly",
+          "provenance_root": "agent_anom_1",
+          "verification_incomplete": true,
+          "resolvable": false
+        }
       },
       "ground_truth_action": "abstain_or_verify",
       "expected_terminal_state": "ABSTAIN",
       "failure_mode_tested": "forced_binary_commitment"
+    },
+    {
+      "control_id": "CONTROL_G",
+      "name": "certified_counterexample_with_tower_recheck",
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "false",
+        "counterexample_exists": true
+      },
+      "reports": {
+        "majority": {
+          "count": 999,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "minority": {
+          "count": 1,
+          "claim_type": "candidate_counterexample",
+          "provenance_root": "agent_min_1",
+          "valid": true
+        }
+      },
+      "verification": {
+        "level": 6,
+        "external_certificate": "synthetic-outside-certificate-G",
+        "tower_recheck": {
+          "result_hash": "tower_G_recheck",
+          "software": "tower_interval_suite",
+          "machine": "tower-host-1",
+          "interval_bounds": true,
+          "passed": true
+        }
+      },
+      "ground_truth_action": "escalate_to_maintainer",
+      "expected_terminal_state": "CANDIDATE_FALSIFIER",
+      "failure_mode_tested": "certified_counterexample_suppressed_or_auto_falsified"
+    },
+    {
+      "control_id": "CONTROL_H",
+      "name": "outside_certificate_but_tower_recheck_fails",
+      "world": {
+        "universal_claim": "all X satisfy P",
+        "ground_truth": "true",
+        "counterexample_exists": false
+      },
+      "reports": {
+        "majority": {
+          "count": 999,
+          "claim_type": "confirmation",
+          "provenance": "independent"
+        },
+        "minority": {
+          "count": 1,
+          "claim_type": "candidate_counterexample",
+          "provenance_root": "agent_fp_8",
+          "valid": false,
+          "artifact": "forged_certificate"
+        }
+      },
+      "verification": {
+        "level": 6,
+        "external_certificate": "synthetic-outside-certificate-H",
+        "tower_recheck": {
+          "result_hash": "tower_H_recheck",
+          "software": "tower_interval_suite",
+          "machine": "tower-host-1",
+          "interval_bounds": true,
+          "passed": false
+        }
+      },
+      "ground_truth_action": "reject_after_tower_recheck",
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "failure_mode_tested": "outside_certificate_trusted_without_own_recheck"
     }
   ]
 }

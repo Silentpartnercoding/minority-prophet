@@ -19,14 +19,14 @@ universal claim, does Minority Prophet keep it through to verification more
 often than consensus baselines?
 
 Null hypothesis. Minority Prophet's retention rate is not higher than the
-baselines on the synthetic control worlds (Controls A, C and E in
+baselines on the synthetic control worlds (Controls A, C, E and G in
 `fixtures/true_prophet_cases.json`).
 
 Metric. Decisive evidence retention rate: the fraction of valid rare
 falsifiers that are routed to verification rather than discarded.
 
 Failure condition. Retention rate at or below the best baseline on Controls
-A, C and E, or any valid synthetic counterexample dropped because 999 reports
+A, C, E and G, or any valid synthetic counterexample dropped because 999 reports
 disagreed.
 
 Success condition. Retention rate strictly above every baseline implemented,
@@ -92,11 +92,32 @@ Null hypothesis. On Control F (an ambiguous anomaly), the system commits to
 Metric. Fraction of fixtures with ground-truth action `abstain_or_verify`
 that end in `ABSTAIN` or `VERIFYING`.
 
-Failure condition. Any commitment to a terminal truth state on Control F
-before verification level 4.
+Failure condition. Any commitment to a terminal truth state on Control F.
 
 Success condition. Control F ends in `ABSTAIN` or `VERIFYING` in every seeded
 replay.
+
+---
+
+## H2.5 Certified path
+
+Question. Does a candidate reach the universal claim only through a level 6
+certificate plus the tower's own recheck, and does the pack stop short of
+FALSIFIED?
+
+Null hypothesis. A candidate with an outside certificate but a failed tower
+recheck is escalated, or a certified and rechecked candidate is suppressed,
+or some output reaches `FALSIFIED`.
+
+Metric. Control G (level 6 certificate, passed tower recheck) must escalate
+to `CANDIDATE_FALSIFIER` with the universal claim refuted against 999
+confirming roots. Control H (level 6 certificate, failed tower recheck) must
+be rejected. No other world may refute the universal claim, and no output may
+be `FALSIFIED`.
+
+Failure condition. Any of the above does not hold.
+
+Success condition. All of the above hold in every seeded replay.
 
 ---
 
@@ -109,19 +130,26 @@ or a yes or no verification fact.
 2. No attributable root: rejected, or withheld under `abstain_if_decisive`
    when unattributed reports exist.
 3. A failed independent recheck rejects the candidate.
-4. An anomaly is never a counterexample: abstain once verification is
+4. A failed tower recheck rejects the whole candidate.
+5. An anomaly is never a counterexample: abstain once verification is
    exhausted (level 4 or higher), otherwise keep verifying.
-5. A certified candidate (level 4 or higher, reproduced, stable, consistent)
-   enters the universal ledger as a counterexample root. If
-   `asymmetric_verdict` then returns `refuted`, escalate.
-6. Otherwise keep verifying.
+6. A candidate certified at level 6 (an outside, machine-checkable
+   certificate, reproduced, stable, consistent) needs a passed tower recheck
+   of its own: own machine, own software, interval-arithmetic error bounds,
+   and a result that replays no finder's calculation. That recheck is issued
+   as the counterexample root. If `asymmetric_verdict` then returns
+   `refuted`, escalate to `CANDIDATE_FALSIFIER` and stop.
+7. Otherwise keep verifying.
+
+The final call to `FALSIFIED` is made by the maintainer, by hand, outside
+this pack. Nothing automated emits it.
 
 ## Root identity
 
 A root is a finished calculation, fingerprinted by region, method, software,
 seed and hash. Empty parents plus no fingerprint is unattributed, not a root.
-A cap on how many roots one identity may mint is a deployment requirement
-(see ROOT-IDENTITY.md). Agent ids are never roots.
+Every calculation is issued as a registry root, capped at 2 roots per hour
+per signed identity (see ROOT-IDENTITY.md). Agent ids are never roots.
 
 ## Forbidden Gate path
 
@@ -182,14 +210,16 @@ may certify a zero.
 (128, 256, 512 and 1024 bits; the candidate must converge, not wander).
 3 independent algorithm. 4 interval or rigorous arithmetic (a certified zero
 and a certified real-part interval excluding 1/2). 5 argument-principle root
-counting. 6 a standalone external verifier producing a reproducible
-certificate.
+counting. 6 a standalone external verifier producing a reproducible,
+machine-checkable certificate. Level 6 is the certification bar, and it
+counts only together with the tower's own recheck.
 
 ### Claim states
 
 SUPPORTED, UNSUPPORTED, ANOMALY, CANDIDATE_FALSIFIER, VERIFYING, REPRODUCED,
 REJECTED_FALSE_POSITIVE, ABSTAIN, FALSIFIED. ANOMALY never moves directly to
-FALSIFIED.
+FALSIFIED. Nothing in this pack moves any claim to FALSIFIED; the maintainer
+declares it.
 
 ### Baselines
 

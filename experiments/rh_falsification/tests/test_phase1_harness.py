@@ -78,10 +78,23 @@ class TestPhase1Harness(unittest.TestCase):
                 self.assertNotIn("confidence", key)
                 self.assertNotIn("weight", key)
 
-    def test_universal_claim_never_refuted_in_phase1(self):
-        """No candidate is certified in the fixtures, so nothing refutes."""
+    def test_only_the_tower_rechecked_world_refutes(self):
+        """Only CONTROL_G has a level 6 certificate plus a passed tower recheck."""
         for row in self.result["controls"]:
-            self.assertEqual(row["universal_outcome"], "not_refuted")
+            want = "refuted" if row["control_id"] == "CONTROL_G" else "not_refuted"
+            self.assertEqual(row["universal_outcome"], want, row["control_id"])
+        for row in self.result["false_prophets"]:
+            self.assertEqual(row["universal_outcome"], "not_refuted", row["fp_id"])
+
+    def test_h25_certified_path_stops_at_candidate_falsifier(self):
+        h = self._h("H2.5")
+        self.assertTrue(h["success"])
+        self.assertFalse(h["failure"])
+        g = next(r for r in self.result["controls"] if r["control_id"] == "CONTROL_G")
+        self.assertEqual(g["mp_next_state"], "CANDIDATE_FALSIFIER")
+        self.assertEqual(g["majority_winner"], "confirmation")
+        for row in self.result["controls"] + self.result["false_prophets"]:
+            self.assertNotEqual(row["mp_next_state"], "FALSIFIED")
 
     def test_all_policies_pass(self):
         for policy in ("quarantine", "abstain_if_decisive", "treat_as_root"):

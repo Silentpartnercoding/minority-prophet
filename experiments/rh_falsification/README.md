@@ -46,19 +46,31 @@ that. A raw anomaly may never move directly to `FALSIFIED`.
 There are no scores, weights or probabilities anywhere in this pack.
 
 1. Every report is recorded in the canonical evidence graph
-   (`provenance/graph.py`). A report that carries a computation fingerprint
-   is recorded as reading that calculation, so one finished calculation is
-   one root no matter how many reports repeat it.
-2. The number of distinct roots behind a candidate comes from
+   (`provenance/graph.py`). Each distinct calculation is issued once as a
+   registry root through `provenance/root_registry.py`, and every report of
+   it is a child of that root, so one finished calculation is one root no
+   matter how many reports repeat it.
+2. Issuance is capped at 2 roots per hour per signed identity. The graph
+   refuses any parentless node the registry did not issue.
+3. The number of distinct roots behind a candidate comes from
    `aggregation/root_vote.py` (`verdict`, the unweighted F).
-3. `src/rh_decision.py` routes the candidate from that count plus the
-   recorded verification facts (level, reproduced or failed, stable,
-   internally consistent). Each fact is yes or no.
-4. A candidate becomes a counterexample root of the universal claim only
-   once its verification is certified (level 4 or higher, reproduced, stable,
-   consistent). The universal claim is then settled by
-   `asymmetric_verdict`: one certified root refutes it, and the confirming
-   roots are not read.
+4. `src/rh_decision.py` routes the candidate from that count plus the
+   recorded verification facts. Each fact is yes or no.
+5. A candidate leads to a counterexample root only when it is certified at
+   level 6 (an outside, machine-checkable certificate, reproduced, stable,
+   consistent) and the tower has rechecked it itself: on its own machine,
+   with its own software and interval-arithmetic error bounds, producing a
+   calculation of its own. That recheck is the counterexample root, issued
+   under the tower's identity and the same cap. A failed tower recheck
+   rejects the whole candidate.
+6. The universal claim is settled by `asymmetric_verdict`: one counterexample
+   root refutes it, and the confirming roots are not read.
+
+## Who declares FALSIFIED
+
+The pack stops at `CANDIDATE_FALSIFIER`. The final call is made by a person,
+the maintainer, outside this pack. Nothing automated emits `FALSIFIED`: the
+ledger refuses that transition and the decision layer cannot produce it.
 
 Confirmations and counterexamples are different propositions. Candidate
 reports live in the candidate ledger. Confirmations and certified
@@ -72,12 +84,13 @@ counterexamples live in the universal ledger.
 - `schemas/evidence.schema.json`: the evidence object, with its mapping onto
   the canonical node.
 - `schemas/search_job.schema.json`: a reproducible search-job description.
-- `fixtures/true_prophet_cases.json`: control worlds A to F with known ground
+- `fixtures/true_prophet_cases.json`: control worlds A to H with known ground
   truth.
 - `fixtures/false_prophet_cases.json`: injection cases FP1 to FP7 that must be
   rejected or abstained on.
 - `src/ledger_adapter.py`: the report log over the canonical graph, and the
   root count from `root_vote`.
+- `src/rh_issuance.py`: issues each calculation as a capped registry root.
 - `src/rh_decision.py`: verification records, the universal ledger, and the
   routing rule.
 - `src/phase1_harness.py`: the Phase 1 synthetic runner. It checks H2.1 to
@@ -99,7 +112,8 @@ canonical graph refuses it. `unattributed_policy` says what happens next:
 - `quarantine` (default): it stays on the report log and adds zero roots.
 - `abstain_if_decisive`: zero roots, and a decision it could change is
   withheld, which is the default meaning in `root_vote`.
-- `treat_as_root`: explicit opt-in. Each such report is its own root.
+- `treat_as_root`: explicit opt-in. Each such report is issued as its own
+  root, under the same cap.
 
 ## Forbidden path
 
@@ -110,7 +124,8 @@ a subject bound to the candidate and a real verifier. Not in this pack.
 ## Phase 1 (synthetic only)
 
 Phase 1 exists to beat majority vote on the fixture worlds before any zeta
-computation. Run:
+computation. Control G walks the whole certified path with synthetic data,
+and Control H shows an outside certificate failing the tower recheck. Run:
 
 ```
 python experiments/rh_falsification/src/phase1_harness.py
@@ -125,8 +140,9 @@ synthetic.
 - A search-coverage ledger. `not_refuted` cannot yet say which regions were
   searched; `knowledge_ledger` carries search coverage and would be wired in
   Phase 2.
-- An enforced cap on how many roots one identity may mint. The canonical
-  `provenance/root_registry.py` can enforce one; this pack accepts a
-  `root_authority` but does not configure one.
+- A real identity verifier. Signing in this pack uses synthetic keys and a
+  clock that follows each report; a deployment injects real ones.
+- Issuance for confirming roots. They are never read by the universal rule,
+  so they are recorded as cited calculations without issuance.
 - Gate `decide()` or `TrustAllVerifier`.
 - Leaderboard integration.

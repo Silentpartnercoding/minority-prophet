@@ -20,7 +20,8 @@ from ledger_adapter import (  # noqa: E402
 )
 
 from aggregation.root_vote import Verdict  # noqa: E402
-from provenance.graph import EvidenceGraph  # noqa: E402
+from provenance.graph import EvidenceGraph, EvidenceNode, RootAuthorizationError  # noqa: E402
+from rh_issuance import SYNTHETIC_T0  # noqa: E402
 
 
 def _report(claim_id, agent_id, parents=(), claim_type="candidate_counterexample", method="m", result_hash="", candidate_key=""):
@@ -225,9 +226,11 @@ class TestCanonicalStorage(unittest.TestCase):
             [_report(f"c{i}", f"a{i}", result_hash="one_work") for i in range(20)]
         )
         self.assertIsInstance(ledger.graph, EvidenceGraph)
-        self.assertEqual(
-            ledger.graph.root_set(), frozenset({"source:urn:rh-calc:hash:one_work"})
-        )
+        roots = ledger.graph.root_set()
+        self.assertEqual(len(roots), 1)
+        self.assertEqual(roots, ledger.issuer.active_roots())
+        self.assertTrue(next(iter(roots)).startswith("mp-root-v1:"))
+        self.assertFalse(any(n.node_id.startswith("source:") for n in ledger.graph.nodes()))
         self.assertEqual(ledger.independent_support_count([f"c{i}" for i in range(20)]), 1)
         self.assertEqual(ledger.raw_support_count([f"c{i}" for i in range(20)]), 20)
 
@@ -255,6 +258,23 @@ class TestCanonicalStorage(unittest.TestCase):
         self.assertEqual(ledger.independent_support_count(["child_hash"]), 1)
         self.assertTrue(ledger.is_quarantined("child_bare"))
 
+    def test_graph_refuses_a_root_the_registry_did_not_issue(self):
+        ledger = build_ledger_from_reports([_report("x", "a", result_hash="h")])
+        with self.assertRaises(RootAuthorizationError):
+            ledger.graph.add(EvidenceNode(
+                node_id="forged_root", proposition_id=ledger.proposition_id,
+                value=True, observer_id="a", source_id="a", confidence=1.0,
+                evidence={"calculation": "urn:rh-calc:hash:forged"},
+            ))
+
+    def test_falsified_is_never_reached_by_the_pack(self):
+        ledger = build_ledger_from_reports(
+            [_report("c", "a", result_hash="h", claim_type="counterexample")]
+        )
+        successor = ledger.transition("c", "CANDIDATE_FALSIFIER")
+        with self.assertRaises(ValueError):
+            ledger.transition(successor.claim_id, "FALSIFIED")
+
     def test_raw_result_hash_is_refused(self):
         with self.assertRaises(ValueError):
             build_ledger_from_reports([{
@@ -270,6 +290,50 @@ class TestCanonicalStorage(unittest.TestCase):
     def test_unknown_policy_refused(self):
         with self.assertRaises(ValueError):
             KnowledgeLedger(unattributed_policy="weighted")
+
+
+class TestIssuanceCap(unittest.TestCase):
+    """2 roots per hour per signed identity, enforced by the root registry."""
+
+    def test_one_operator_twenty_hashes_in_an_hour_counts_two(self):
+        reports = [
+            _report(f"op_{i}", "operator_x", result_hash=f"distinct_{i}")
+            for i in range(20)
+        ]
+        ledger = build_ledger_from_reports(reports)
+        ids = [f"op_{i}" for i in range(20)]
+        self.assertEqual(ledger.independent_support_count(ids), 2)
+        self.assertEqual(sum(ledger.is_over_cap(c) for c in ids), 18)
+
+    def test_next_hour_gets_a_fresh_budget(self):
+        reports = [
+            _report(f"op_{i}", "operator_x", result_hash=f"distinct_{i}")
+            for i in range(3)
+        ]
+        reports.append(dict(_report("op_late", "operator_x", result_hash="late"),
+                            observed_at=SYNTHETIC_T0 + 3600))
+        ledger = build_ledger_from_reports(reports)
+        self.assertEqual(
+            ledger.independent_support_count(["op_0", "op_1", "op_2", "op_late"]), 3
+        )
+
+    def test_control_e_unaffected(self):
+        ledger = build_ledger_from_reports([
+            _report("min_1", "agent_min_1", method="method_alpha", result_hash="hash_E_1"),
+            _report("min_2", "agent_min_2", method="method_beta", result_hash="hash_E_2"),
+            _report("min_3", "agent_min_3", method="method_gamma", result_hash="hash_E_3"),
+        ])
+        self.assertEqual(ledger.independent_support_count(["min_1", "min_2", "min_3"]), 3)
+
+    def test_repeats_of_one_calculation_issue_once(self):
+        """FP5 shape: 20 identities, one hash. One issuance, nobody capped."""
+        ledger = build_ledger_from_reports(
+            [_report(f"r{i}", f"agent_{i}", result_hash="same") for i in range(20)]
+        )
+        ids = [f"r{i}" for i in range(20)]
+        self.assertEqual(ledger.independent_support_count(ids), 1)
+        self.assertFalse(any(ledger.is_over_cap(c) for c in ids))
+        self.assertEqual(len(ledger.issuer.active_roots()), 1)
 
 
 class TestRhProvenUnrepresentable(unittest.TestCase):

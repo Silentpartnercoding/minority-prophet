@@ -30,6 +30,7 @@ from ledger_adapter import (  # noqa: E402
     build_ledger_from_reports,
 )
 from rh_decision import (  # noqa: E402
+    TowerRecheck,
     UniversalLedger,
     VerificationRecord,
     decide,
@@ -101,6 +102,10 @@ def materialize_control_reports(control: dict) -> List[dict]:
         ]
     if cid == "CONTROL_F":
         return [_cand("anom_1", "agent_anom_1", "hash_F_anom", "method_unstable", "anomaly")]
+    if cid == "CONTROL_G":
+        return [_cand("min_1", "agent_min_1", "hash_G_find", "method_alpha")]
+    if cid == "CONTROL_H":
+        return [_cand("fp_8", "agent_fp_8", "hash_H_forged", "method_forged")]
     raise ValueError(f"unknown control {cid}")
 
 
@@ -150,12 +155,25 @@ def majority_vote_from_reports(reports: List[dict]) -> Tuple[str, int, int]:
     return winner, n, len(reports)
 
 
-def _record(level: int, reproducibility: str, stable: bool, consistent: bool = True):
+def _record(level: int, reproducibility: str, stable: bool, consistent: bool = True,
+            external_certificate: str = "", tower_recheck=None):
     return VerificationRecord(
         level=level,
         reproducibility=reproducibility,
         numerically_stable=stable,
         internally_consistent=consistent,
+        external_certificate=external_certificate,
+        tower_recheck=tower_recheck,
+    )
+
+
+def _fixture_record(control: dict) -> VerificationRecord:
+    """Record for a world whose fixture states its verification outcome."""
+    v = control["verification"]
+    return _record(
+        v["level"], "reproduced", True,
+        external_certificate=v["external_certificate"],
+        tower_recheck=TowerRecheck(**v["tower_recheck"]),
     )
 
 
@@ -189,7 +207,10 @@ def evaluate_control(control: dict, unattributed_policy: str = "quarantine") -> 
     reports = materialize_control_reports(control)
     ledger = build_ledger_from_reports(reports, unattributed_policy=unattributed_policy)
     ids = [r["claim_id"] for r in reports]
-    claim_type, record = _CONTROL_RECORDS[cid]
+    if "verification" in control:
+        claim_type, record = "candidate_counterexample", _fixture_record(control)
+    else:
+        claim_type, record = _CONTROL_RECORDS[cid]
     universal = universal_with_confirmations(
         f"world:{cid}", _confirming_root_count(control["reports"]), cid
     )
@@ -269,7 +290,8 @@ class HypothesisOutcome:
 
 
 def _h21(control_rows: List[dict]) -> HypothesisOutcome:
-    targets = [r for r in control_rows if r["control_id"] in ("CONTROL_A", "CONTROL_C", "CONTROL_E")]
+    targets = [r for r in control_rows
+               if r["control_id"] in ("CONTROL_A", "CONTROL_C", "CONTROL_E", "CONTROL_G")]
     mp_keep = sum(1 for r in targets if r["mp_action"] in RETAIN_ACTIONS)
     base_keep = sum(1 for r in targets if r["majority_retains_minority"])
     n = len(targets)
@@ -362,6 +384,32 @@ def _h24(control_rows: List[dict]) -> HypothesisOutcome:
     )
 
 
+def _h25(control_rows: List[dict], fp_rows: List[dict]) -> HypothesisOutcome:
+    """Certified path: the tower's recheck is the only way to a counterexample
+    root, a failed recheck rejects, and nothing reaches FALSIFIED."""
+    g = next(r for r in control_rows if r["control_id"] == "CONTROL_G")
+    h = next(r for r in control_rows if r["control_id"] == "CONTROL_H")
+    g_ok = (g["mp_action"] == "escalate"
+            and g["mp_next_state"] == "CANDIDATE_FALSIFIER"
+            and g["universal_outcome"] == "refuted"
+            and g["ignored_confirming_roots"] == 999)
+    h_ok = h["mp_action"] == "reject" and h["universal_outcome"] == "not_refuted"
+    others = [r for r in control_rows if r["control_id"] != "CONTROL_G"]
+    only_g_refutes = all(r["universal_outcome"] == "not_refuted" for r in others)
+    never_falsified = all(r["mp_next_state"] != "FALSIFIED" for r in control_rows + fp_rows)
+    ok = g_ok and h_ok and only_g_refutes and never_falsified
+    base_g = g["majority_retains_minority"]
+    return HypothesisOutcome(
+        "H2.5",
+        ok,
+        not ok,
+        1.0 if ok else 0.0,
+        1.0 if base_g else 0.0,
+        f"G action={g['mp_action']} state={g['mp_next_state']} universal={g['universal_outcome']}; "
+        f"H action={h['mp_action']} reason={h['mp_reason']}; majority_winner_G={g['majority_winner']}",
+    )
+
+
 def run_phase1(seed: int = SEED, unattributed_policy: str = "quarantine") -> Dict[str, Any]:
     rng = random.Random(seed)
     # Seed is consumed so replay is pinned even if later shuffles appear.
@@ -381,6 +429,7 @@ def run_phase1(seed: int = SEED, unattributed_policy: str = "quarantine") -> Dic
         _h22(fp_rows),
         _h23(control_rows),
         _h24(control_rows),
+        _h25(control_rows, fp_rows),
     ]
     return {
         "seed": seed,

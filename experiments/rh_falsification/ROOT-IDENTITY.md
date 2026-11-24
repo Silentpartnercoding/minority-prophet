@@ -10,11 +10,11 @@ method, software and version, seed, and result hash. In this pack the
 fingerprint is the `result_hash`, or `method` plus `candidate_key` when no
 hash exists yet.
 
-`src/ledger_adapter.py` records a fingerprinted report as reading
-`urn:rh-calc:<fingerprint>`. The canonical graph (`provenance/graph.py`)
-materialises one parentless `source:` node per distinct reference, so every
-report of the same calculation is a child of the same root. Forgetting to
-cite a source therefore does not mint a new root.
+`src/ledger_adapter.py` issues each distinct fingerprint once as a registry
+root (`provenance/root_registry.py`), signed by the identity that first
+posted it. Every later report of the same calculation becomes a child of
+that root and issues nothing. Forgetting to cite a source therefore does not
+mint a new root.
 
 ## Worked cases
 
@@ -38,18 +38,28 @@ the record shows the link.
 
 ## Cap
 
-One computational identity (same software, same method family, same
-operator) must not be able to mint an unbounded number of roots by varying
-only a seed or a window label.
+One computational identity must not be able to mint an unbounded number of
+roots by varying only a seed or a window label.
 
-The repository's mechanism for this is `provenance/root_registry.py`:
-roots are bounded per authenticated issuer per fixed time window, and
-`EvidenceGraph(root_authority=registry)` refuses any parentless node the
-registry did not issue. `KnowledgeLedger` accepts a `root_authority` and
-passes it to the graph. No authority is configured in this pack, so no cap is
-enforced yet. Fingerprinted calculations enter the graph as cited `source:`
-nodes, which the graph does not check against the authority, so enforcing a
-cap on them needs one more step: issue each calculation as a registry root.
+The cap is 2 roots per hour per signed identity, enforced by
+`provenance/root_registry.py`. Every calculation is issued as a registry
+root, and the graph is built with that registry as its `root_authority`, so
+a parentless node the registry did not issue is refused. No calculation
+enters as a cited `source:` node, which is the path the authority does not
+check. A calculation refused for being over the cap adds zero roots.
+
+Worked cases:
+
+- One operator posting 20 distinct hashes within one hour counts 2 roots.
+  The other 18 are refused.
+- The same operator posting again in the next hour gets a fresh budget.
+- Control E (three separate finders, one calculation each) still counts 3.
+- Twenty identities repeating one hash (FP5) is one issuance and one root.
+- The tower's own rechecks are under the same cap: at most 2
+  counterexample roots per hour.
+
+Signing here uses synthetic keys and a clock that follows each report. A
+deployment injects a real identity verifier and clock.
 
 ## Gate
 

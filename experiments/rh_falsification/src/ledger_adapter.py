@@ -5,29 +5,34 @@ Counting is ``aggregation.root_vote.verdict``: the unweighted F the compiled
 theorems are about. Nothing in this module computes a score, a weight or a
 probability. The only number it produces is a count of distinct roots.
 
-Root identity (see ROOT-IDENTITY.md): a root is a finished calculation. A
-report that carries a computation fingerprint (``result_hash``, or
-``method`` plus ``candidate_key``) is recorded as reading that calculation,
-so the graph materialises one ``source:urn:rh-calc:...`` node per distinct
-calculation and every report of it becomes a child of that node. Twenty
-reports with one hash and no declared parents therefore count as one root
-(CE-01 on this wire). Three reports with three hashes count as three.
+Root identity (see ROOT-IDENTITY.md): a root is a finished calculation.
+Each distinct calculation fingerprint (``result_hash``, or ``method`` plus
+``candidate_key``) is issued once as a registry root through
+``rh_issuance.CalculationIssuer`` (``provenance/root_registry.py``), and every
+report of it becomes a child of that root. Twenty reports with one hash and
+no declared parents therefore count as one root (CE-01 on this wire). Three
+reports with three hashes count as three.
+
+Issuance is capped at 2 roots per hour per signed identity. The graph is
+built with that registry as its ``root_authority``, so a parentless node the
+registry did not issue is refused, and no calculation enters as a cited
+``source:`` node (the path the authority does not check). A calculation
+refused for being over the cap adds zero roots.
 
 A report that declares a parent is a recorded copy. Its own fingerprint is
 kept on the record but does not add a root, which is what copy invariance
 says a recorded copy must do.
 
-A parentless report with no fingerprint names nothing checkable. The
-canonical graph refuses it (``UnattributedRootError``). What happens next is
-``unattributed_policy``:
+A parentless report with no fingerprint names nothing checkable.
+``unattributed_policy`` says what happens to it:
 
   quarantine           (default) it is kept on the report log but never
                        enters the graph, so it adds zero roots.
   abstain_if_decisive  as quarantine, and it is passed to ``root_vote`` as an
                        unattributed claim, so a decision that it could change
                        is withheld (root_vote's own default).
-  treat_as_root        explicit opt-in: the graph is built with the evidence
-                       gate off and each such report is its own root.
+  treat_as_root        explicit opt-in: the report is issued as its own
+                       registry root, under the same cap.
 
 Mapping onto the canonical node (``provenance/evidence-lineage.schema.json``):
 
@@ -35,8 +40,11 @@ Mapping onto the canonical node (``provenance/evidence-lineage.schema.json``):
   agent_id            -> observer_id
   method              -> source_id (agent_id when method is empty)
   parent_evidence_ids -> copied_from
-  fingerprint         -> read_from = ("urn:rh-calc:...",)
+  fingerprint         -> copied_from = (registry root of the calculation,)
   result_hash, candidate_key, method, claim_type, claim_state -> evidence
+
+``agent_id`` is the identity that signs issuance requests, so in a deployment
+it must be the authenticated identity of the poster.
 
 ``agent_id`` is never a root. Declared ``independent_of`` is a claim to
 check, never a fact, and is not read here.
@@ -57,6 +65,7 @@ if _REPO_ROOT not in sys.path:
 
 from aggregation.root_vote import RootVerdict, verdict  # noqa: E402
 from provenance.graph import EvidenceGraph, EvidenceNode  # noqa: E402
+from rh_issuance import SYNTHETIC_T0, CalculationIssuer  # noqa: E402
 
 CLAIM_STATES = (
     "SUPPORTED",
@@ -111,6 +120,7 @@ class LedgerEntry:
     claim_state: str = "ANOMALY"
     result_hash: str = ""
     candidate_key: str = ""
+    observed_at: int = SYNTHETIC_T0
 
     def fingerprint(self) -> Optional[str]:
         """Identity of the finished calculation, or None if it cannot be told."""
@@ -155,7 +165,7 @@ class KnowledgeLedger:
         unattributed_policy: str = "quarantine",
         *,
         proposition_id: str = "rh:candidate",
-        root_authority=None,
+        issuer: Optional[CalculationIssuer] = None,
     ) -> None:
         if unattributed_policy not in UNATTRIBUTED_POLICIES:
             raise ValueError(
@@ -164,16 +174,14 @@ class KnowledgeLedger:
             )
         self.unattributed_policy = unattributed_policy
         self.proposition_id = proposition_id
-        # root_authority is passed straight to the canonical graph. None means
-        # no issuance cap is enforced (see ROOT-IDENTITY.md, "Cap").
-        self.graph = EvidenceGraph(
-            strict=True,
-            root_authority=root_authority,
-            require_root_evidence=unattributed_policy != "treat_as_root",
-        )
+        # Every root is issued by the registry, and the graph refuses any
+        # parentless node the registry did not issue.
+        self.issuer = issuer if issuer is not None else CalculationIssuer()
+        self.graph = EvidenceGraph(strict=True, root_authority=self.issuer)
         self._entries: Dict[str, LedgerEntry] = {}
         self._order: List[str] = []
         self._quarantined: Set[str] = set()
+        self._over_cap: Set[str] = set()
 
     # ------------------------------------------------------------- ingest
 
@@ -205,11 +213,10 @@ class KnowledgeLedger:
         self._order.append(entry.claim_id)
 
     def _node_for(self, entry: LedgerEntry) -> Optional[EvidenceNode]:
-        """The canonical node for a report, or None when it is quarantined."""
+        """The canonical node for a report, or None when it adds no root."""
         admitted_parents = tuple(
             sorted(p for p in entry.parent_evidence_ids if p not in self._quarantined)
         )
-        calc = entry.calc_reference()
         evidence = {
             "claim_type": entry.claim_type,
             "claim_state": entry.claim_state,
@@ -222,14 +229,21 @@ class KnowledgeLedger:
             evidence["candidate_key"] = entry.candidate_key
 
         if admitted_parents:
-            # Recorded copy: descends from its parents only.
-            read_from: tuple = ()
-        elif calc is not None:
-            read_from = (calc,)
-        elif self.unattributed_policy == "treat_as_root":
-            read_from = ()
+            # Recorded copy: descends from its parents only. Issues nothing.
+            parents = admitted_parents
         else:
-            return None
+            calc = entry.calc_reference()
+            if calc is not None:
+                fingerprint = calc
+            elif self.unattributed_policy == "treat_as_root":
+                fingerprint = f"urn:rh-report:{entry.claim_id}"
+            else:
+                return None
+            root_id = self._calculation_root(entry, fingerprint)
+            if root_id is None:
+                self._over_cap.add(entry.claim_id)
+                return None
+            parents = (root_id,)
 
         return EvidenceNode(
             node_id=entry.claim_id,
@@ -239,9 +253,33 @@ class KnowledgeLedger:
             source_id=entry.method or entry.agent_id,
             confidence=_UNREAD_REQUIRED_FIELD,
             evidence=evidence,
-            copied_from=admitted_parents,
-            read_from=read_from,
+            copied_from=parents,
         )
+
+    def _calculation_root(self, entry: LedgerEntry, fingerprint: str) -> Optional[str]:
+        """Issue (or reuse) the registry root for one calculation."""
+        root_id = self.issuer.issue(
+            identity=entry.agent_id,
+            fingerprint=fingerprint,
+            proposition_id=self.proposition_id,
+            value=True,
+            observed_at=entry.observed_at,
+        )
+        if root_id is None:
+            return None
+        if root_id not in {n.node_id for n in self.graph.nodes()}:
+            self.graph.add(
+                EvidenceNode(
+                    node_id=root_id,
+                    proposition_id=self.proposition_id,
+                    value=True,
+                    observer_id=entry.agent_id,
+                    source_id=entry.method or entry.agent_id,
+                    confidence=_UNREAD_REQUIRED_FIELD,
+                    evidence={"calculation": fingerprint},
+                )
+            )
+        return root_id
 
     # ------------------------------------------------------------ queries
 
@@ -253,6 +291,10 @@ class KnowledgeLedger:
 
     def is_quarantined(self, claim_id: str) -> bool:
         return claim_id in self._quarantined
+
+    def is_over_cap(self, claim_id: str) -> bool:
+        """True when the report's calculation was refused by the issuance cap."""
+        return claim_id in self._over_cap
 
     def provenance_roots(self, claim_id: str) -> FrozenSet[str]:
         """Canonical graph roots behind one report. Empty when quarantined."""
@@ -298,6 +340,11 @@ class KnowledgeLedger:
         current = self._entries[claim_id]
         if new_state not in CLAIM_STATES:
             raise ValueError(f"unknown claim_state {new_state!r}")
+        if new_state == "FALSIFIED":
+            raise ValueError(
+                "FALSIFIED is declared by the maintainer, outside this pack; "
+                "nothing automated moves a claim past CANDIDATE_FALSIFIER"
+            )
         if (current.claim_state, new_state) in FORBIDDEN_TRANSITIONS:
             raise ValueError(
                 f"forbidden transition {current.claim_state} -> {new_state}: "
@@ -312,6 +359,7 @@ class KnowledgeLedger:
             claim_state=new_state,
             result_hash=current.result_hash,
             candidate_key=current.candidate_key,
+            observed_at=current.observed_at,
         )
         self.append(successor)
         return successor
@@ -331,6 +379,7 @@ def _entry_from_report(report: dict) -> LedgerEntry:
         claim_state=report.get("claim_state", "ANOMALY"),
         result_hash=report.get("result_hash") or "",
         candidate_key=report.get("candidate_key") or "",
+        observed_at=int(report.get("observed_at", SYNTHETIC_T0)),
     )
 
 
@@ -342,7 +391,8 @@ def build_ledger_from_reports(
     """Convenience constructor used by tests and the harness.
 
     Each report needs claim_id, agent_id, claim_type; optional
-    parent_evidence_ids, method, claim_state, result_hash, candidate_key.
+    parent_evidence_ids, method, claim_state, result_hash, candidate_key,
+    observed_at (seconds; default is the synthetic epoch).
     Reports must arrive parents first.
     """
     ledger = KnowledgeLedger(unattributed_policy=unattributed_policy, **kwargs)

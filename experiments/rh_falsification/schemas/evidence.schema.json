@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://minority-prophet.dev/schemas/rh_falsification/evidence.schema.json",
   "title": "RH Falsification Evidence Object",
-  "description": "Structured evidence object for every report in the RH falsification experiment. result_hash and candidate_key identify a finished calculation (see ROOT-IDENTITY.md). Empty parents plus no fingerprint is unattributed, not a root. src/ledger_adapter.py maps this object onto the canonical node of provenance/evidence-lineage.schema.json: claim_id to node_id, agent_id to observer_id, method to source_id, parent_evidence_ids to copied_from, and the fingerprint to read_from as urn:rh-calc:<fingerprint>. There is no confidence, score or weight field, and additionalProperties is false, so an object carrying one is invalid.",
+  "description": "Structured evidence object for every report in the RH falsification experiment. result_hash and candidate_key identify a finished calculation (see ROOT-IDENTITY.md). Empty parents plus no fingerprint is unattributed, not a root. src/ledger_adapter.py maps this object onto the canonical node of provenance/evidence-lineage.schema.json: claim_id to node_id, agent_id to observer_id, method to source_id, parent_evidence_ids to copied_from, and the fingerprint to copied_from, pointing at the registry root issued for that calculation. There is no confidence, score or weight field, and additionalProperties is false, so an object carrying one is invalid.",
   "type": "object",
   "required": [
     "claim_id",
@@ -23,7 +23,8 @@
     },
     "agent_id": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "The identity that signs issuance requests. In a deployment this must be the authenticated identity of the poster. Never a root by itself."
     },
     "claim": {
       "type": "string",
@@ -157,6 +158,10 @@
         "ABSTAIN",
         "FALSIFIED"
       ]
+    },
+    "observed_at": {
+      "type": "integer",
+      "description": "Observation time in seconds since the epoch. The issuance cap (2 roots per hour per signed identity) is counted in the hour this falls in."
     }
   },
   "additionalProperties": false
