@@ -1,0 +1,88 @@
+{
+  "description": "Synthetic control worlds modeled on RH's logical structure: 'All X satisfy P.' Ground truth is known by construction. These do NOT involve real zeta computation; they test aggregation behavior only.",
+  "controls": [
+    {
+      "control_id": "CONTROL_A",
+      "name": "one_real_counterexample_vs_999",
+      "world": { "universal_claim": "all X satisfy P", "ground_truth": "false", "counterexample_exists": true },
+      "reports": {
+        "majority": { "count": 999, "claim_type": "confirmation", "provenance": "independent" },
+        "minority": { "count": 1, "claim_type": "candidate_counterexample", "provenance_root": "agent_min_1", "valid": true }
+      },
+      "ground_truth_action": "preserve_and_verify",
+      "expected_terminal_state": "FALSIFIED_after_verification",
+      "failure_mode_tested": "consensus_capture"
+    },
+    {
+      "control_id": "CONTROL_B",
+      "name": "one_fake_counterexample_vs_999",
+      "world": { "universal_claim": "all X satisfy P", "ground_truth": "true", "counterexample_exists": false },
+      "reports": {
+        "majority": { "count": 999, "claim_type": "confirmation", "provenance": "independent" },
+        "minority": { "count": 1, "claim_type": "candidate_counterexample", "provenance_root": "agent_fp_1", "valid": false, "artifact": "low_precision" }
+      },
+      "ground_truth_action": "reject_after_verification",
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "failure_mode_tested": "believe_every_dissenter"
+    },
+    {
+      "control_id": "CONTROL_C",
+      "name": "real_counterexample_then_independent_reproduction",
+      "world": { "universal_claim": "all X satisfy P", "ground_truth": "false", "counterexample_exists": true },
+      "reports": {
+        "majority": { "count": 998, "claim_type": "confirmation", "provenance": "independent" },
+        "minority_initial": { "count": 1, "claim_type": "candidate_counterexample", "provenance_root": "agent_min_1", "valid": true },
+        "minority_reproduction": { "count": 1, "claim_type": "counterexample", "provenance_root": "agent_ver_1", "independent_recomputation": true }
+      },
+      "ground_truth_action": "escalate_verification",
+      "expected_terminal_state": "FALSIFIED_after_verification",
+      "expected_independent_support": 2,
+      "failure_mode_tested": "reproduction_ignored"
+    },
+    {
+      "control_id": "CONTROL_D",
+      "name": "hundred_copies_of_one_fake",
+      "world": { "universal_claim": "all X satisfy P", "ground_truth": "true", "counterexample_exists": false },
+      "reports": {
+        "majority": { "count": 900, "claim_type": "confirmation", "provenance": "independent" },
+        "copied_minority": { "count": 100, "claim_type": "candidate_counterexample", "shared_provenance_root": "agent_fp_origin", "valid": false }
+      },
+      "ground_truth_action": "discount_shared_provenance",
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "expected_independent_support": 1,
+      "expected_raw_support": 100,
+      "failure_mode_tested": "copy_count_as_evidence"
+    },
+    {
+      "control_id": "CONTROL_E",
+      "name": "three_genuinely_independent_finders",
+      "world": { "universal_claim": "all X satisfy P", "ground_truth": "false", "counterexample_exists": true },
+      "reports": {
+        "majority": { "count": 997, "claim_type": "confirmation", "provenance": "independent" },
+        "independent_minority": {
+          "count": 3,
+          "claim_type": "candidate_counterexample",
+          "provenance_roots": ["agent_min_1", "agent_min_2", "agent_min_3"],
+          "methods": ["method_alpha", "method_beta", "method_gamma"],
+          "valid": true
+        }
+      },
+      "ground_truth_action": "escalate_verification",
+      "expected_terminal_state": "FALSIFIED_after_verification",
+      "expected_independent_support": 3,
+      "failure_mode_tested": "independence_not_rewarded"
+    },
+    {
+      "control_id": "CONTROL_F",
+      "name": "ambiguous_anomaly",
+      "world": { "universal_claim": "all X satisfy P", "ground_truth": "true", "counterexample_exists": false },
+      "reports": {
+        "majority": { "count": 999, "claim_type": "confirmation", "provenance": "independent" },
+        "minority": { "count": 1, "claim_type": "anomaly", "provenance_root": "agent_anom_1", "verification_incomplete": true, "resolvable": false }
+      },
+      "ground_truth_action": "abstain_or_verify",
+      "expected_terminal_state": "ABSTAIN",
+      "failure_mode_tested": "forced_binary_commitment"
+    }
+  ]
+}

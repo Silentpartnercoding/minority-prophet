@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.dev/schemas/rh_falsification/search_job.schema.json",
+  "title": "RH Falsification Search Job",
+  "description": "Reproducible description of a single search job. Every job must be replayable from this record plus deterministic seeds.",
+  "type": "object",
+  "required": ["job_id", "agent_family", "search_region", "random_seed", "precision_bits", "method"],
+  "properties": {
+    "job_id": { "type": "string", "minLength": 1 },
+    "agent_family": {
+      "type": "string",
+      "enum": ["S1_sequential", "S2_random_window", "S3_stratified", "S4_suspicious_region", "S5_offline_grid",
+               "E1_prime_counting", "E2_mobius", "E3_equivalent_criteria", "E4_zero_spacing",
+               "L1_formalization", "L2_ultraproduct", "L3_skeptic",
+               "FP_injector", "VERIFIER", "RED_TEAM"]
+    },
+    "search_region": {
+      "type": "object",
+      "required": ["re_min", "re_max", "im_min", "im_max"],
+      "properties": {
+        "re_min": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
+        "re_max": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
+        "im_min": { "type": "number" },
+        "im_max": { "type": "number" }
+      }
+    },
+    "height_stratum": {
+      "type": ["number", "null"],
+      "description": "For S3: nominal log-stratum height (e.g. 1e6). Null otherwise."
+    },
+    "random_seed": { "type": "string", "description": "Deterministic seed; required even for 'non-random' agents to fix tie-breaking." },
+    "precision_bits": { "type": "integer", "minimum": 53 },
+    "method": { "type": "string", "minLength": 1 },
+    "software": { "type": "string" },
+    "software_version": { "type": "string" },
+    "parent_job_ids": { "type": "array", "items": { "type": "string" } },
+    "injected_false_prophet": {
+      "type": ["string", "null"],
+      "enum": ["FP1", "FP2", "FP3", "FP4", "FP5", "FP6", "FP7", null],
+      "description": "Ground-truth label for injector jobs. Hidden from the decision layer; used only by the evaluator."
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

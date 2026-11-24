@@ -13,6 +13,10 @@ notes. Presence here does not make an experiment canonical.
 - `eaa-p5/` — unified dependence-auditor protocol material.
 - `asymmetric-claims/` — counterexamples for claim shapes where ordinary voting
   is inappropriate.
+- `rh_falsification/`: Riemann Hypothesis falsification benchmark, Phase 1
+  synthetic only. Reports are stored in the canonical evidence graph, counted
+  with `aggregation/root_vote.py`, and the universal claim is settled by
+  `asymmetric_verdict`. No zeta computation yet.
 - `replications/` — replication runners and fixtures.
 - `dri8/` through `dri11/` — decision-relative independence intervention
   series. Closed; see

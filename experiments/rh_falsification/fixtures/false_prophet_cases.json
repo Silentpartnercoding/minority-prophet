@@ -1,0 +1,107 @@
+{
+  "description": "False-prophet injection cases. Each produces a numerically plausible but invalid RH counterexample candidate. Ground-truth labels are hidden from the decision layer at run time; the evaluator uses them to grade false prophet rejection. Coordinates are synthetic placeholders, not real zeta data.",
+  "cases": [
+    {
+      "fp_id": "FP1",
+      "name": "floating_point_artifact",
+      "mechanism": "Candidate appears off-line at 64-bit precision; recomputation at 256-bit shows Re converges to 0.5.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "candidate": { "re": 0.500000318, "im": 371829.44 },
+        "precision_bits": 64
+      },
+      "verification_behavior": { "precision_escalation": "candidate_converges_to_line" },
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    },
+    {
+      "fp_id": "FP2",
+      "name": "cancellation_error",
+      "mechanism": "|zeta(s)| appears ~1e-14 due to catastrophic cancellation in an unstable summation order; stable evaluation gives |zeta(s)| ~ 0.02.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "candidate": { "re": 0.482, "im": 90417.7 },
+        "reported_magnitude": 1e-14,
+        "precision_bits": 128
+      },
+      "verification_behavior": { "independent_algorithm": "magnitude_not_reproduced" },
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    },
+    {
+      "fp_id": "FP3",
+      "name": "truncated_series_error",
+      "mechanism": "Insufficient truncation of the evaluation series produces a fake near-zero; correct truncation bound removes it.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "candidate": { "re": 0.531, "im": 12882.9 },
+        "truncation_terms": 40
+      },
+      "verification_behavior": { "independent_recomputation": "near_zero_vanishes" },
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    },
+    {
+      "fp_id": "FP4",
+      "name": "precision_drift",
+      "mechanism": "Candidate coordinates wander as working precision increases (no convergence), indicating artifact rather than root.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "coordinates_by_precision": {
+          "128": { "re": 0.5071, "im": 55310.02 },
+          "256": { "re": 0.5183, "im": 55309.87 },
+          "512": { "re": 0.4922, "im": 55310.31 }
+        }
+      },
+      "verification_behavior": { "precision_escalation": "candidate_wanders" },
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    },
+    {
+      "fp_id": "FP5",
+      "name": "copied_minority",
+      "mechanism": "20 agents replay the SAME false candidate; every report shares provenance ancestor agent_fp5_origin.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "candidate": { "re": 0.472, "im": 204771.5 },
+        "report_count": 20,
+        "shared_provenance_root": "agent_fp5_origin"
+      },
+      "expected_independent_support": 1,
+      "expected_raw_support": 20,
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    },
+    {
+      "fp_id": "FP6",
+      "name": "confident_hallucination",
+      "mechanism": "Exact-looking coordinates and persuasive prose, no reproducible calculation, no method, no seed, no hash.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "candidate": { "re": 0.4600000000, "im": 777777.7777 },
+        "method": null,
+        "random_seed": null,
+        "result_hash": null,
+        "prose_confidence": 0.99
+      },
+      "expected_independent_support": 0,
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    },
+    {
+      "fp_id": "FP7",
+      "name": "malicious_fabrication",
+      "mechanism": "Internally inconsistent numerical evidence: reported hash does not match reported inputs; claimed magnitude inconsistent with claimed error bound.",
+      "injected_report": {
+        "claim_type": "candidate_counterexample",
+        "candidate": { "re": 0.55, "im": 61803.39 },
+        "result_hash": "deadbeef_mismatch",
+        "estimated_numerical_error": 1e-30,
+        "reported_magnitude": 1e-8
+      },
+      "verification_behavior": { "consistency_check": "internal_contradiction" },
+      "expected_terminal_state": "REJECTED_FALSE_POSITIVE",
+      "must_never_reach": "FALSIFIED"
+    }
+  ]
+}
