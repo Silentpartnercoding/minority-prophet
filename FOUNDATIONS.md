@@ -17,10 +17,10 @@ For a proposition \(p\), let a world contain ground truth \(T(p)\in\{0,1\}\), ag
 A truth aggregator is a function
 
 \[
-F: (G, C, K, \tau) \rightarrow (\hat{T}, q, r)
+F: (G, C, \tau) \rightarrow (\hat{T}, r)
 \]
 
-where \(C\) is the claim set, \(K\) is available competence information, \(\tau\) is evaluation time, \(\hat{T}\) is the selected belief or abstention, \(q\) is calibrated confidence, and \(r\) is a machine-readable rationale.
+where \(C\) is the claim set, \(\tau\) is evaluation time, \(\hat{T}\) is the selected belief or abstention, and \(r\) is a machine-readable rationale. There is no confidence output. In the formal core the verdict depends only on the signed margin between the distinct roots on each side (`F_eq_of_margin_eq` in `formal/lean/MinorityProphetCore/Defs.lean`).
 
 ## Philosophy
 
@@ -54,10 +54,10 @@ This is a distributional benchmark property, not a proof that minority views are
    increase recorded-root support. No claim is made for a copy whose link is
    absent from the record.
 3. **Evidence monotonicity:** adding reliable independent evidence for a proposition should not reduce its support, all else equal.
-4. **Calibration:** among outputs assigned probability \(q\), the long-run truth frequency should approach \(q\).
+4. No scores: the output is a verdict or an abstention with its rationale. It carries no probability, weight, or confidence value. Weighting sources by competence did not survive a preregistered adversary and is closed (`README.md`, `formal/CLAIM-SCOPE.md`).
 5. **Abstention:** insufficient or contradictory evidence should permit no decision.
 6. **Revision:** new evidence can change beliefs without erasing the prior state.
-7. **Auditability:** an output must be traceable to claims, roots, weights, and transformations.
+7. **Auditability:** an output must be traceable to claims, roots, and transformations.
 8. **Verifier independence:** a verifier is not trusted merely because it is a
    third party. Its rules must be transparent, it must remain independent of
    the evidence producer, it must expose uncertainty through abstention, and
