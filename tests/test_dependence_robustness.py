@@ -187,3 +187,28 @@ def test_rejects_empty_evidence_and_bad_threshold():
         assess_dependence_robustness((), 1)
     with pytest.raises(ValueError):
         assess_dependence_robustness(_evidence([(True, {"agent": "a"})]), 0)
+
+
+def test_dr4_witness_settles_only_when_the_record_of_dependence_changes():
+    """The Python counterpart of ledger DR4 and DR5.
+
+    The same three observations, two for true and one for false. While a
+    possible shared source joins the two true observations, the result is not
+    robust. With that link absent from the record, they settle true.
+    """
+    linked = [
+        (True, {"source": "shared"}),
+        (True, {"source": "shared"}),
+        (False, {"source": "s2"}),
+    ]
+    separated = [
+        (True, {"source": "s0"}),
+        (True, {"source": "s1"}),
+        (False, {"source": "s2"}),
+    ]
+    at_junction = assess_dependence_robustness(_evidence(linked), 1)
+    assert at_junction.reachable_settlements == {SETTLED_TRUE, UNSETTLED}
+    assert not at_junction.robust and at_junction.settlement is None
+
+    past_junction = assess_dependence_robustness(_evidence(separated), 1)
+    assert past_junction.robust and past_junction.settlement == SETTLED_TRUE

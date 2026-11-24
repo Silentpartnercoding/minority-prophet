@@ -24,7 +24,7 @@
   "mathlib_input_rev": "v4.33.1",
   "build_command": "lake exe cache get && lake build",
   "clean_room_build": "verified 2026-08-05, exit 0, 3004 jobs; rebuilt 2026-08-17, exit 0, 3005 jobs, with Asymmetric.lean added; rebuilt 2026-09-13 from the existing cache, exit 0, 3007 jobs, with NarrowGate.lean and RootIdentity.lean added. Not a cold clone: `lake exe cache get` found the oleans already present.; rebuilt again 2026-09-13, exit 0, 3008 jobs, with Responsiveness.lean added; rebuilt 2026-10-30 on the pinned toolchain after deleting the MinorityProphetCore build outputs, exit 0, 3019 jobs; not a cold clone, Mathlib oleans came from the cache",
-  "axiom_audit": "re-audited 2026-10-30 on the pinned toolchain (Lean 4.33.1, Mathlib 0df444a360eaa60ab8c11dca51a86af692955474) across every lean_theorem this ledger names plus independent_injOn_lineage and majority_not_copy_invariant, 35 names in total. Every one depends on a subset of [propext, Classical.choice, Quot.sound]. Exact lists: majority_not_copy_invariant, gate_preserves_viability and invariant_gate_nonempty depend on none; demo_is_safe and demo_stuck_state_reachable depend on [propext]; every other audited name, including path_indep_two, independent_injOn_lineage and DR1-DR3 (reading_mem_reachable, robust_settlement_is_true, no_record_rule_is_immune), depends on [propext, Classical.choice, Quot.sound]. The DependenceRobustness axiom lists, including witness_merged_not_admissible on [propext] and witness_distinct_admissible on none, are also asserted by MinorityProphetCore/AxiomAudit.lean and checked by every lake build on the pinned toolchain. Earlier audits, kept for the record: all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]; DR3 (no_record_rule_is_immune) audited 2026-09-15: depends only on [propext, Classical.choice, Quot.sound]; DR1-DR3 re-audited 2026-09-16 under 4.32.2 after repairing the DR3 witness lemmas: propext, Classical.choice and Quot.sound only; from 2026-09-16 the DependenceRobustness axiom lists are asserted by MinorityProphetCore/AxiomAudit.lean and checked by every lake build",
+  "axiom_audit": "re-audited 2026-10-30 on the pinned toolchain (Lean 4.33.1, Mathlib 0df444a360eaa60ab8c11dca51a86af692955474) across every lean_theorem this ledger names plus independent_injOn_lineage and majority_not_copy_invariant, 35 names in total. Every one depends on a subset of [propext, Classical.choice, Quot.sound]. Exact lists: majority_not_copy_invariant, gate_preserves_viability and invariant_gate_nonempty depend on none; demo_is_safe and demo_stuck_state_reachable depend on [propext]; every other audited name, including path_indep_two, independent_injOn_lineage and DR1-DR3 (reading_mem_reachable, robust_settlement_is_true, no_record_rule_is_immune), depends on [propext, Classical.choice, Quot.sound]. The DependenceRobustness axiom lists, including witness_merged_not_admissible on [propext] and witness_distinct_admissible on none, are also asserted by MinorityProphetCore/AxiomAudit.lean and checked by every lake build on the pinned toolchain. Earlier audits, kept for the record: all theorems depend only on [propext, Classical.choice, Quot.sound]; majority_not_copy_invariant depends on none; AC1-AC5 re-audited 2026-08-17: all depend only on [propext, Classical.choice, Quot.sound]; re-audited 2026-09-13 across every lean_theorem this ledger names, 17 in total: all depend only on [propext, Classical.choice, Quot.sound], except majority_not_copy_invariant which depends on none and path_indep_two and independent_injOn_lineage which depend on [propext, Quot.sound]; DR1 and DR2 (DependenceRobustness.lean) audited 2026-09-15: depend only on [propext, Classical.choice, Quot.sound]; DR3 (no_record_rule_is_immune) audited 2026-09-15: depends only on [propext, Classical.choice, Quot.sound]; DR1-DR3 re-audited 2026-09-16 under 4.32.2 after repairing the DR3 witness lemmas: propext, Classical.choice and Quot.sound only; from 2026-09-16 the DependenceRobustness axiom lists are asserted by MinorityProphetCore/AxiomAudit.lean and checked by every lake build Added 2026-11-24: DR4 and DR5 (conflicting_readings_block_settlement, witness_linked_record_cannot_settle, witness_separated_record_settles) are checked by AxiomAudit.lean on the same toolchain, and each depends on [propext, Classical.choice, Quot.sound].",
   "sorry_count": 0,
   "native_decide_count": 0,
   "kernel_soundness_status": {
@@ -714,6 +714,42 @@
    ],
    "security_interpretation": "Immunity to missing lineage cannot come from a better rule over the same record. It needs an observable the loss does not remove, such as a content fingerprint or a lookup. DRI-5 tests a content fingerprint.",
    "prohibited_overstatement": "An existence witness, not a rate: it says nothing about how often real records lose their only link. It does not show that any added observable is sufficient; roots that share a component without being copies leave no content trace."
+  },
+  {
+   "id": "DR4",
+   "short": "A junction blocks settlement: two admissible readings that settle differently leave no single settlement",
+   "statement": "If the record of possible dependence admits two readings whose settlements differ, then for any labelling that same-side shared identities cannot split, the set of settlements the engine computes is not a single settlement.",
+   "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+   "assumptions": [
+    "Admissible share kappa1",
+    "Admissible share kappa2",
+    "SideInvariant share value comp",
+    "readingSettlement value kappa1 k differs from readingSettlement value kappa2 k"
+   ],
+   "proof_status": "proved_compiled",
+   "lean_theorem": "MinorityProphetCore.DependenceRobustness.conflicting_readings_block_settlement",
+   "lean_file": "formal/lean/MinorityProphetCore/Junction.lean",
+   "implementation_tests": [
+    "tests/test_dependence_robustness.py"
+   ],
+   "security_interpretation": "While a possible shared dependence keeps two readings admissible, the engine abstains. The report names that dependence as the junction and names the observation that would remove it from the record or confirm it. If every obtainable record keeps both readings admissible, the engine never settles on any of them, and the report abstains and names the assumption as a floor.",
+   "prohibited_overstatement": "A corollary of DR2, stated for the junction case. It says nothing about which observation removes a dependence in fact, whether a proposed observation is obtainable, or how often real records sit at a junction."
+  },
+  {
+   "id": "DR5",
+   "short": "On the DR3 witness, the settlement moves only when the record of possible dependence changes",
+   "statement": "Take the DR3 witness: three observations, two for true and one for false. With a recorded possible shared source between the two true observations, the engine reports no single settlement. With no recorded shared identity, the engine reports settled true.",
+   "definition_version": "dependence-robustness-v1: abstract readings over observations, independent of the core-v3-dag world definitions",
+   "assumptions": [],
+   "proof_status": "proved_compiled",
+   "lean_theorem": "MinorityProphetCore.DependenceRobustness.witness_linked_record_cannot_settle",
+   "lean_theorem_alt": "MinorityProphetCore.DependenceRobustness.witness_separated_record_settles (the settled side of the witness)",
+   "lean_file": "formal/lean/MinorityProphetCore/Junction.lean",
+   "implementation_tests": [
+    "tests/test_dependence_robustness.py"
+   ],
+   "security_interpretation": "The observations are the same in both records. Only the record of possible dependence differs, so a junction is passed by a new observable that changes that record, never by repeating observations under it. This is the operational side of DR3.",
+   "prohibited_overstatement": "An existence witness on three observations. When the link is absent, the settled-true result is sound only if the record carries every real dependence (DR2), which is exactly what DR3 says the record alone cannot show. It does not model any physical experiment."
   }
  ],
  "remediation": {
@@ -778,6 +814,10 @@
   {
    "date": "2026-10-30",
    "note": "Axiom audit refreshed on the pinned toolchain, Lean 4.33.1 with Mathlib 0df444a360eaa60ab8c11dca51a86af692955474, after a full lake build (exit 0, 3019 jobs). Two entries were out of date. First, the 2026-09-13 audit text listed path_indep_two and independent_injOn_lineage on [propext, Quot.sound]; under 4.33.1 both depend on [propext, Classical.choice, Quot.sound]. kernel_soundness_status.axiom_set_change already recorded this for path_indep_two; independent_injOn_lineage is not a ledgered lean_theorem, so it was outside that 17-name revalidation and gained Classical.choice the same way. Second, the DR1-DR3 audits in the 2026-09-15 and 2026-09-16 notes were run under 4.32.2; under 4.33.1 reading_mem_reachable, robust_settlement_is_true and no_record_rule_is_immune depend on [propext, Classical.choice, Quot.sound], matching AxiomAudit.lean. The 2026-09-14 NarrowGate and Responsiveness audit, also run under 4.32.2, still holds under 4.33.1. No claim status changes; every list stays within propext, Classical.choice and Quot.sound."
+  },
+  {
+   "date": "2026-11-24",
+   "note": "Junction.lean added and ledgered as DR4 (conflicting_readings_block_settlement) and DR5 (witness_linked_record_cannot_settle, with witness_separated_record_settles). DependenceRobustness.lean is unchanged. Full lake build on the pinned toolchain, Lean 4.33.1 with Mathlib 0df444a360eaa60ab8c11dca51a86af692955474, exit 0, 3020 jobs; not a cold clone, Mathlib oleans came from the cache. AxiomAudit.lean now guards the three new names, each [propext, Classical.choice, Quot.sound]."
   }
  ]
 }

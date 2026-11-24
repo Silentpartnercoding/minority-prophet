@@ -229,7 +229,7 @@
       "replacement": null,
       "immutable": false,
       "statusBanner": true,
-      "theorems": ["T1", "T2", "T3", "DR1", "DR2", "DR3", "U1"],
+      "theorems": ["T1", "T2", "T3", "DR1", "DR2", "DR3", "DR4", "DR5", "U1"],
       "researchRecords": [],
       "describesMechanisms": ["recorded_graph_roots", "proximate_mis_count", "recorded_dependence_robust_settlement"],
       "recommendedMechanisms": ["recorded_graph_roots", "recorded_dependence_robust_settlement"]

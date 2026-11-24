@@ -15,10 +15,11 @@ Whitespace matching is lax because the axiom list wraps across lines once it is
 long enough, and the wrapping is a pretty-printer detail rather than part of the
 claim. The axiom names are matched exactly.
 
-Only the DependenceRobustness claims are covered here. Extending it to the other
+Only the DependenceRobustness and Junction claims are covered here. Extending it to the other
 ledgered theorems is a mechanical follow-up.
 -/
 import MinorityProphetCore.DependenceRobustness
+import MinorityProphetCore.Junction
 
 namespace MinorityProphetCore.AxiomAudit
 
@@ -49,5 +50,17 @@ namespace MinorityProphetCore.AxiomAudit
 /-- info: 'MinorityProphetCore.DependenceRobustness.witness_distinct_admissible' does not depend on any axioms -/
 #guard_msgs (whitespace := lax) in
 #print axioms MinorityProphetCore.DependenceRobustness.witness_distinct_admissible
+
+/-- info: 'MinorityProphetCore.DependenceRobustness.conflicting_readings_block_settlement' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms MinorityProphetCore.DependenceRobustness.conflicting_readings_block_settlement
+
+/-- info: 'MinorityProphetCore.DependenceRobustness.witness_linked_record_cannot_settle' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms MinorityProphetCore.DependenceRobustness.witness_linked_record_cannot_settle
+
+/-- info: 'MinorityProphetCore.DependenceRobustness.witness_separated_record_settles' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms MinorityProphetCore.DependenceRobustness.witness_separated_record_settles
 
 end MinorityProphetCore.AxiomAudit
