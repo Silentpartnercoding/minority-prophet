@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minority-prophet.dev/schemas/rh_falsification/evidence.schema.json",
+  "title": "RH Falsification Evidence Object",
+  "description": "Structured evidence object for every report in the RH falsification experiment. result_hash and candidate_key identify a finished calculation (see ROOT-IDENTITY.md). Empty parents plus no fingerprint is unattributed, not a root. src/ledger_adapter.py maps this object onto the canonical node of provenance/evidence-lineage.schema.json: claim_id to node_id, agent_id to observer_id, method to source_id, parent_evidence_ids to copied_from, and the fingerprint to copied_from, pointing at the registry root issued for that calculation. There is no confidence, score or weight field, and additionalProperties is false, so an object carrying one is invalid.",
+  "type": "object",
+  "required": [
+    "claim_id",
+    "agent_id",
+    "claim",
+    "claim_type",
+    "target",
+    "method",
+    "parent_evidence_ids",
+    "source_dependencies",
+    "verification_status",
+    "timestamp"
+  ],
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The identity that signs issuance requests. In a deployment this must be the authenticated identity of the poster. Never a root by itself."
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "confirmation",
+        "candidate_counterexample",
+        "counterexample",
+        "anomaly",
+        "rejection"
+      ]
+    },
+    "target": {
+      "type": "string",
+      "const": "RH"
+    },
+    "method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "software": {
+      "type": "string"
+    },
+    "software_version": {
+      "type": "string"
+    },
+    "precision_bits": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "search_region": {
+      "type": "object",
+      "properties": {
+        "re_min": {
+          "type": "number"
+        },
+        "re_max": {
+          "type": "number"
+        },
+        "im_min": {
+          "type": "number"
+        },
+        "im_max": {
+          "type": "number"
+        }
+      }
+    },
+    "random_seed": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "result_hash": {
+      "type": "string",
+      "description": "Identity of the finished calculation (preferred fingerprint field, the name used across the repository). Two reports with the same result_hash are one root even if parents are omitted."
+    },
+    "candidate_key": {
+      "type": "string",
+      "description": "Identity field used with method when result_hash is absent (fingerprint cand:method:candidate_key). Not a root by itself."
+    },
+    "parent_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Declared parents, mapped to copied_from. Untrusted. An empty array means no declared parent, which does not make the report a root. Empty parents plus no result_hash or candidate_key fingerprint is unattributed and is quarantined by default (zero roots). A report with a declared parent is a recorded copy and adds no root."
+    },
+    "source_dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Sources this report depends on (papers, tables, external datasets). Recorded only; not yet mapped to read_from."
+    },
+    "independent_of": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Claim IDs the reporter asserts independence from. Declared lineage to be checked, never trusted (EXPERIMENT-001 corrupted-lineage finding). Not read by the ledger."
+    },
+    "reproducibility_status": {
+      "type": "string",
+      "enum": [
+        "not_attempted",
+        "reproduced",
+        "failed",
+        "partial"
+      ]
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "level_0",
+        "level_1",
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ]
+    },
+    "estimated_numerical_error": {
+      "type": [
+        "string",
+        "number",
+        "null"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "claim_state": {
+      "type": "string",
+      "enum": [
+        "SUPPORTED",
+        "UNSUPPORTED",
+        "ANOMALY",
+        "CANDIDATE_FALSIFIER",
+        "VERIFYING",
+        "REPRODUCED",
+        "REJECTED_FALSE_POSITIVE",
+        "ABSTAIN",
+        "FALSIFIED"
+      ]
+    },
+    "observed_at": {
+      "type": "integer",
+      "description": "Observation time in seconds since the epoch. The issuance cap (2 roots per hour per signed identity) is counted in the hour this falls in."
+    }
+  },
+  "additionalProperties": false
+}
