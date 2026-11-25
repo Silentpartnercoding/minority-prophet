@@ -48,7 +48,13 @@ Fix the Gate verifier's sampling first (F3), or its result cannot be cited.
 
 ---
 
-## 2. Weighted evidence
+## 2. Weighted evidence (closed)
+
+Status: closed by decision and not pursued (ledger `U3`). Weighting sources by
+competence did not survive a preregistered adversary and is closed rather than
+solved (`README.md`, `research/adversarial-weighting/RESULTS.md`). No theorem
+covers any weighted aggregator (`PUBLIC-CLAIMS.md`). The analysis below is
+kept only as the record of what weighting would change.
 
 **New definition required.** `weight : Fin n → W` for an ordered commutative
 monoid `W` (`ℚ≥0` is the honest first choice; floats are not, because ties —
@@ -75,10 +81,7 @@ zero-weight roots are counted at full strength by `F` and at zero by
 `weighted_vote` today (DEFINITION-AUDIT.md §1.14) — the two must be reconciled
 before any weighted theorem is stated.
 
-**Validation.** The Lean generalization is mechanical (replace `Finset.card`
-with `Finset.sum`); do it and check which proofs still close. Then an experiment
-reporting *both* budgets per verdict, and the ratio `max-single-root-weight /
-total-margin-weight` as a first-class output alongside `flip_budget`.
+**Validation.** None planned while the socket is closed.
 
 ---
 
@@ -259,8 +262,8 @@ root-preserving, T1 already gives the guarantee — no new proof needed.
    to formalize, and the induction shape carries over.
 3. **§5 semantic identity** — highest risk, currently silently trusted; needs
    measurement before claims.
-4. **§2 weighted evidence** — mechanical Lean generalization, but retire the
-   parity result and reconcile the two weight conventions first.
+4. §2 weighted evidence: closed and not pursued (ledger `U3`). Kept in the
+   list so the numbering stays stable.
 5. **§1 multivalued** — needs a new flip condition; the Gate verifier's sampling
    caveat must be fixed first.
 6. **§4 dynamic evidence** — blocked on reproducibility (ledger F4).
