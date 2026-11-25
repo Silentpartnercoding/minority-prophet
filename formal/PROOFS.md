@@ -324,8 +324,27 @@ some grouping, is checked by brute force in
 `tests/test_dependence_robustness.py`. The match between these definitions and
 `provenance/dependence_robustness.py` holds by construction and is unproved.
 
+### Junction (DR4, DR5)
+> When the record admits two groupings that settle differently, the engine
+> computes no single outcome. The outcome moves only when the record of
+> possible dependence changes.
+
+`conflicting_readings_block_settlement`, `witness_linked_record_cannot_settle`,
+`witness_separated_record_settles` ·
+`formal/lean/MinorityProphetCore/Junction.lean`
+
+The first is a corollary of `robust_settlement_is_true`. The other two take the
+DR3 witness: with a recorded possible shared source between the two true
+observations it cannot settle, and with no such link it settles true. The
+observations are the same in both records, so only a new observable that
+changes the record of possible dependence can move the outcome. That possible
+dependence is the junction. If every obtainable record keeps both groupings
+admissible, the first theorem applies to each record and the outcome never
+settles. That is a floor.
+
 ### Axiom audit
 `formal/lean/MinorityProphetCore/AxiomAudit.lean` runs `#print axioms` under
-`#guard_msgs` on the main DependenceRobustness theorems, so the build fails if
-any of them gains or loses an axiom. It covers that module only. Axiom lists
+`#guard_msgs` on the main DependenceRobustness and Junction theorems, so the
+build fails if any of them gains or loses an axiom. It covers those two modules
+only. Axiom lists
 for the other modules come from the audits recorded in the ledger.

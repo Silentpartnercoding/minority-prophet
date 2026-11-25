@@ -215,6 +215,15 @@ Not in the sample, not in the sample's owner, not in the answer. The moment the
 report's content is worth something to us, the report is worth nothing to anyone
 else.
 
+A8: An abstention names its junction.
+When a result does not settle because every root may share one dependence, the
+report names that dependence and names the observation that would separate the
+readings (ledger DR4, DR5). That observation is the next test to design. If no
+obtainable observation could separate them, because any observation would carry
+the same dependence, the report says so: it abstains and names the assumption as
+a floor. It never settles past the junction, and it never leaves the junction
+unnamed.
+
 ---
 
 ## 7. How you would know we had broken it
@@ -232,6 +241,9 @@ The doctrine is falsifiable, and here is how to falsify it:
    violated.**
 5. Find a certification issued to a system that appears in our own dependency
    graph. → **A1 violated.**
+6. Find an abstention of ours on a shared dependence that names neither the
+   dependence nor the observation that would separate it, and does not record
+   it as a floor. → A8 violated.
 
 Each of these is checkable by a stranger with the public artifacts and no access
 to us. That is the point. A doctrine whose violations only we can detect is
