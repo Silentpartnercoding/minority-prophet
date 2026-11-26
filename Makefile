@@ -2,6 +2,12 @@ BOOTSTRAP_PYTHON ?= $(shell command -v python3.12 || command -v python3.11 || co
 PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,$(BOOTSTRAP_PYTHON))
 BASE ?= $(shell git merge-base origin/main HEAD 2>/dev/null || git rev-parse HEAD^)
 HEAD_REF ?= HEAD
+DEMO_PYTHON ?= $(BOOTSTRAP_PYTHON)
+.DEFAULT_GOAL := help
+
+.PHONY: demo
+demo:
+	@"$(DEMO_PYTHON)" scripts/demo.py
 
 .PHONY: help setup paper-setup paper-pdf paper-check ietf-setup ietf-draft ietf-check agentproto-setup agentproto-draft agentproto-check verify verify-python verify-integrity verify-site verify-evaluation \
 	check-doc-navigation \
@@ -9,6 +15,7 @@ HEAD_REF ?= HEAD
 	check-research-integrity check-canonical-model
 
 help:
+	@echo "make demo        Run offline citation and bounded immunity checks (no setup)"
 	@echo "make setup       Create local Python and Node development dependencies"
 	@echo "make paper-setup Install the pinned peer-review PDF dependency"
 	@echo "make paper-pdf   Build the peer-review manuscript PDF"

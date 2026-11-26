@@ -12,6 +12,10 @@ from urllib.parse import unquote
 
 NAVIGATION_DOCUMENTS = (
     "README.md",
+    "REPRODUCTIONS.md",
+    "docs/CHECK.md",
+    "docs/evidence/REPRODUCTION-STATUS.md",
+    "papers/00-CURRENT-PAPER.md",
     "aggregation/README.md",
     "benchmark/README.md",
     "docs/README.md",

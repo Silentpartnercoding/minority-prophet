@@ -2,6 +2,17 @@
 
 Choose the smallest surface that answers your question.
 
+## Run the offline demo
+
+From a Git checkout, with Make and Python 3.11+ installed, run `make demo`.
+It requires no dependency installation or network calls. The
+[check contract](../CHECK.md) distinguishes the citation illustration, bounded
+immunity checks, archived-result consistency, and separate Lean proof build.
+Use `make demo DEMO_PYTHON=/path/to/python3` to select an interpreter.
+
+Only full development and site checks require Node (use `nvm use` to select
+the version in `.nvmrc`) and `make setup`.
+
 ## See the idea
 
 Visit [minorityprophet.org](https://minorityprophet.org/) for the public
