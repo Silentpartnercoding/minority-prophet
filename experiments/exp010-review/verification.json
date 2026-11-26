@@ -1,0 +1,16 @@
+{
+  "all_scientific_files_match": true,
+  "comparison": "byte-for-byte SHA-256 of two clean detached-worktree scientific JSON outputs",
+  "diagnostics_are_noncanonical": true,
+  "implementation_commit": "0bc044716b7795b7e3f4e969f219e92f3e0a35e7",
+  "known_protocol_deviations": [
+    "Only the primary source-receipt pairwise-F1 diagnostic received a world-pair-clustered bootstrap interval; descriptive comparator metrics have point estimates only.",
+    "The observed zero-error/all-success paths use the preregistered exact formulas, but an adverse nonboundary path would conservatively reject with bounds 1 or 0 instead of reporting the promised general exact-binomial interval."
+  ],
+  "protocol_commit": "3e47d1f827d337c52a144b52db7dee2018bfe707",
+  "run_a_diagnostics_sha256": "e36b62ad980e278cdd18155ee642edd4fabe67eecf14f418a57b53a46abdad85",
+  "run_b_diagnostics_sha256": "a0128cd90f72d86d5b1db3d85be0f1bfe317feacf3bbb8e773f4b62cdd472ea1",
+  "runner_source_sha256": "e046f1842d31060316d6d3e593eafb41865829e78a0631db69529cfa85e9cc3c",
+  "schema": "minority-prophet.exp010-verification.v1",
+  "scientific_output_sha256": "d3c360bb2dfe9ea869a7aa5c89d122ca62119595b30c55df1f53a1cb2ecc93c6"
+}
